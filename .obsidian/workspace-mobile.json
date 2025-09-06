@@ -1,0 +1,206 @@
+{
+  "main": {
+    "id": "9c716dc83cafa51b",
+    "type": "split",
+    "children": [
+      {
+        "id": "49de7032e6b26afa",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "9f4f067c4201a278",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "New tab"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "22756f9c2941a683",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "818d81ae6e74925d",
+        "type": "leaf",
+        "state": {
+          "type": "file-explorer",
+          "state": {
+            "sortOrder": "alphabetical",
+            "autoReveal": false
+          },
+          "icon": "lucide-folder-closed",
+          "title": "Files"
+        }
+      },
+      {
+        "id": "9212e6c52c50e5ba",
+        "type": "leaf",
+        "state": {
+          "type": "search",
+          "state": {
+            "query": "",
+            "matchingCase": false,
+            "explainSearch": false,
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical"
+          },
+          "icon": "lucide-search",
+          "title": "Search"
+        }
+      },
+      {
+        "id": "18d23bd7a38ba550",
+        "type": "leaf",
+        "state": {
+          "type": "tag",
+          "state": {
+            "sortOrder": "frequency",
+            "useHierarchy": true,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-tags",
+          "title": "Tags"
+        }
+      },
+      {
+        "id": "b36159717f3e11c7",
+        "type": "leaf",
+        "state": {
+          "type": "bookmarks",
+          "state": {},
+          "icon": "lucide-bookmark",
+          "title": "Bookmarks"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "right": {
+    "id": "a6fe4da0bf588e1f",
+    "type": "mobile-drawer",
+    "children": [
+      {
+        "id": "2e60fca5f43a2d72",
+        "type": "leaf",
+        "state": {
+          "type": "backlink",
+          "state": {
+            "collapseAll": false,
+            "extraContext": false,
+            "sortOrder": "alphabetical",
+            "showSearch": false,
+            "searchQuery": "",
+            "backlinkCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-coming-in",
+          "title": "Backlinks"
+        }
+      },
+      {
+        "id": "920ef17a6486b899",
+        "type": "leaf",
+        "state": {
+          "type": "outgoing-link",
+          "state": {
+            "linksCollapsed": false,
+            "unlinkedCollapsed": true
+          },
+          "icon": "links-going-out",
+          "title": "Outgoing links"
+        }
+      },
+      {
+        "id": "70cb85b5f3384b5f",
+        "type": "leaf",
+        "state": {
+          "type": "outline",
+          "state": {
+            "followCursor": false,
+            "showSearch": false,
+            "searchQuery": ""
+          },
+          "icon": "lucide-list",
+          "title": "Outline"
+        }
+      }
+    ],
+    "currentTab": 0
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "templater-obsidian:Templater": false,
+      "copilot:Open Copilot Chat": false,
+      "homepage:Open homepage": false,
+      "omnisearch:Omnisearch": false,
+      "smart-connections:Open: Smart Chat": false,
+      "smart-connections:Smart Connections: Open connections view": false,
+      "smart-connections:Smart Connections: Open random connection": true
+    }
+  },
+  "active": "9f4f067c4201a278",
+  "lastOpenFiles": [
+    "05_DailyNotes/2025-09-03.md",
+    "05_DailyNotes/2025-09-06.md",
+    "03_Resources/02_Books/Tiago Forte - Building a Second Brain/Building_a_Second_Brain_Tiago_Forte_2022.md",
+    "05_DailyNotes/2025-09-05.md",
+    "01_Projects/Sonrisa/CPS/Services/Inference Farm.md",
+    "01_Projects/Sonrisa/CPS/Services/CI_CD Managed Service.md",
+    "01_Projects/Sonrisa/CPS/Services/24_7 support.md",
+    "01_Projects/Sonrisa/CPS/Projects/Observer.md",
+    "01_Projects/Sonrisa/CPS/Projects/MelindaSteel n8n.md",
+    "01_Projects/Sonrisa/CPS/Projects/EPRIVO.md",
+    "01_Projects/Sonrisa/CPS/Projects/Colosseum Dental.md",
+    "01_Projects/Sonrisa/CPS/Projects/ASH.md",
+    "03_Resources/02_Books/Robert Greene - The 48 Laws of Power/Personal Notes - 48 Laws.md",
+    "01_Projects/Sonrisa/CPS/01. Team.md",
+    "Onyx/Manual/BOOX_NoteAir_User_Manual_(20210305).pdf",
+    "01_Projects/Sonrisa/CPS/00. Strategy.md",
+    "Onyx/icon/org_readera.png",
+    "Onyx/icon/org_koreader_launcher.png",
+    "Onyx/icon/notion_id.png",
+    "Onyx/icon/org_geogebra_android.png",
+    "Onyx/icon/net_skoobe_reader.png",
+    "Onyx/icon/org_geogebra_android_geometry.png",
+    "Onyx/icon/com_zubersoft_mobilesheetsfree.png",
+    "Onyx/icon/com_spreadsong_freebooks.png",
+    "Onyx/icon/com_xodo_pdf_reader.png",
+    "Onyx/icon/com_tagus_reader.png",
+    "02_Areas/Personal Growh/Personal Areas.md",
+    "Templates/Daily_Note_Template.md",
+    "Templates/Atomic_Note_Template.md",
+    "SAPIENS – Az emberiség rövid története - Yuval Noah Harari.azw3",
+    "A_felkegyelmu.epub",
+    "Sapiens.mobi",
+    "01_Projects/Sonrisa/CPS/Services",
+    "01_Projects/Sonrisa/CPS/Projects",
+    "Onyx/Manual",
+    "Onyx/icon",
+    "Onyx",
+    "AppMarket",
+    "05_DailyNotes/2025-09-02.md",
+    "03_Resources/04_Articles/Summaries/WEF_Future_of_Jobs_Report_2025.md",
+    "03_Resources/02_Books/Summaries/Building_a_StoryBrand_Donald_Miller_2017.md",
+    "03_Resources/02_Books/Robert Greene - The 48 Laws of Power/The_48_Laws_of_Power_Robert_Greene_1998.md",
+    "03_Resources/02_Books/Robert Greene - The 48 Laws of Power/Personal Notes.md",
+    "03_Resources/02_Books/Robert B. Cialdini - Influence: The Psychology of Persuasion/Influence_Robert_B_Cialdini_1984.md",
+    "03_Resources/02_Books/Betenbough Companies - A Betenbough Modszer Vezetoi kezikonyv/summary.md",
+    "01_Projects/Sonrisa/CPS/Inference Farm.md"
+  ]
+}

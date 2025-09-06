@@ -1,0 +1,310 @@
+{
+  "main": {
+    "id": "06cacd5658dc0a87",
+    "type": "split",
+    "children": [
+      {
+        "id": "0a3f27d5c5a7df9c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "b9f547ae0ad2c404",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "02_Areas/Personal Growh/Personal Areas.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Personal Areas"
+            }
+          },
+          {
+            "id": "a2324316b3d2f568",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "02_Areas/Personal Growh/Personal Areas.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Personal Areas"
+            }
+          },
+          {
+            "id": "b091236ed3a37283",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "02_Areas/PKM/Obsidian plugins.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Obsidian plugins"
+            }
+          }
+        ],
+        "currentTab": 2
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "fa3ca952ccc6e5a3",
+    "type": "split",
+    "children": [
+      {
+        "id": "1ec7da5c697a653c",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "c13a5592c1f0972e",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical",
+                "autoReveal": true
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "170301dab4779a93",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "cdd91fbf3c8aff6f",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "2f38bc4c73e0b326",
+    "type": "split",
+    "children": [
+      {
+        "id": "f41a8cae917bff8a",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "34b56c7046b163a2",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "02_Areas/PKM/Obsidian plugins.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Obsidian plugins"
+            }
+          },
+          {
+            "id": "d182742e2bd17cbf",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "02_Areas/PKM/Obsidian plugins.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Obsidian plugins"
+            }
+          },
+          {
+            "id": "772b4c1c410b25ab",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "3cc9f061ce96771f",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "02_Areas/PKM/Obsidian plugins.md",
+                "followCursor": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Obsidian plugins"
+            }
+          },
+          {
+            "id": "b6653b79e92c3aca",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
+          },
+          {
+            "id": "675be41fbae77db4",
+            "type": "leaf",
+            "state": {
+              "type": "SC-custom-variables-view",
+              "state": {},
+              "icon": "code-glyph",
+              "title": "Shell commands: Custom variables"
+            }
+          },
+          {
+            "id": "fd833ec648f5df29",
+            "type": "leaf",
+            "state": {
+              "type": "SC-custom-variables-view",
+              "state": {},
+              "icon": "code-glyph",
+              "title": "Shell commands: Custom variables"
+            }
+          },
+          {
+            "id": "875a2d47090c4fc1",
+            "type": "leaf",
+            "state": {
+              "type": "SC-custom-variables-view",
+              "state": {},
+              "icon": "code-glyph",
+              "title": "Shell commands: Custom variables"
+            }
+          },
+          {
+            "id": "d5d59a99d7e4a954",
+            "type": "leaf",
+            "state": {
+              "type": "SC-custom-variables-view",
+              "state": {},
+              "icon": "code-glyph",
+              "title": "Shell commands: Custom variables"
+            }
+          }
+        ],
+        "currentTab": 4
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
+      "templater-obsidian:Templater": false,
+      "smart-connections:Open: Smart Chat": false,
+      "smart-connections:Smart Connections: Open connections view": false,
+      "smart-connections:Smart Connections: Open random connection": true,
+      "omnisearch:Omnisearch": false,
+      "homepage:Open homepage": false,
+      "obsidian-excalidraw-plugin:New drawing": false,
+      "obsidian-git:Open Git source control": false,
+      "obsidian-shellcommands:Shell commands: Custom variables": false
+    }
+  },
+  "active": "d5d59a99d7e4a954",
+  "lastOpenFiles": [
+    "Untitled.md",
+    "Untitled 1.md",
+    "02_Areas/Personal Growh/Personal Areas.md",
+    "01_Projects/Sonrisa/CPS/Projects/EPRIVO.md",
+    "02_Areas/PKM/Obsidian plugins.md",
+    "00_Prompts/Bootstrap.md",
+    "Excalidraw/Drawing 2025-09-06 15.37.52.excalidraw.md",
+    "05_DailyNotes/2025-09-06.md",
+    "03_Resources/02_Books/Robert Greene - The 48 Laws of Power/Personal Notes.md",
+    "01_Projects/Sonrisa/CPS/24_7 support.md",
+    "00_Prompts/Master_Prompt.md",
+    "01_Projects/Sonrisa/CPS/CI_CD Managed Service.md",
+    "01_Projects/Sonrisa/CPS/Inference Farm.md",
+    "05_DailyNotes/2025-09-03.md",
+    "Excalidraw",
+    "00_Prompts/SpeedReadingAgent/PersonalGrowthSheetAgent.md",
+    "00_Prompts/SpeedReadingAgent/Master_Prompt.md",
+    "00_Prompts/SpeedReadingAgent",
+    "Untitled 1",
+    "Untitled",
+    "03_Resources/02_Books/Robert Greene - The 48 Laws of Power/Personal Notes - 48 Laws.md",
+    "01_Projects/Sonrisa/CPS/Projects/MVMI - Support and T&M.md",
+    "05_DailyNotes/2025-09-05.md",
+    "05_DailyNotes/2025-09-04.md",
+    "03_Resources/02_Books/Lee Boonstra - Prompt Engineering/2025-01-18-pdf-1-TechAI-Goolge-whitepaper_Prompt Engineering_v4-af36dcc7a49bb7269a58b1c9b89a8ae1.pdf",
+    "01_Projects/Sonrisa/CPS/Projects/Xeenia.md",
+    "01_Projects/Sonrisa/CPS/TODO.md",
+    "03_Resources/02_Books/Lee Boonstra - Prompt Engineering/Prompt_Engineering_Lee_Boonstra_2024.md",
+    "01_Projects/Sonrisa/CPS/Projects/Low code automation.md",
+    "03_Resources/02_Books/Lee Boonstra - Prompt Engineering",
+    "01_Projects/Sonrisa/CPS/Projects/ASH.md",
+    "Templates/Daily_Note_Template.md",
+    "01_Projects/Sonrisa/CPS/Projects",
+    "01_Projects/Sonrisa/CPS/Services",
+    "Betenbough-Companies-Leader-Guide.pdf",
+    "Onyx/icon/com_zubersoft_mobilesheetsfree.png",
+    "Onyx/Manual/BOOX_NoteAir_User_Manual_(20210305).pdf",
+    "Onyx/icon/org_geogebra_android.png",
+    "Onyx/icon/com_scribd_app_reader0.png",
+    "Onyx/icon/org_koreader_launcher.png",
+    "Onyx/icon/org_readera.png",
+    "Onyx/icon/notion_id.png",
+    "Onyx/icon/com_tagus_reader.png",
+    "Onyx/icon/org_geogebra_android_geometry.png",
+    "Onyx/icon/net_skoobe_reader.png",
+    "Onyx/icon/com_overdrive_mobile_android_libby.png",
+    "Untitled.canvas"
+  ]
+}
