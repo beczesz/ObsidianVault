@@ -1,0 +1,26 @@
+{
+	"nodes":[
+		{"id":"977d5929ef57abe0","type":"text","text":"Ignis Academy\n","x":-80,"y":-140,"width":146,"height":60,"color":"2"},
+		{"id":"2499526ebcde4d2b","type":"text","text":"Szervezet fejlesztés","x":-115,"y":180,"width":110,"height":60},
+		{"id":"aad05c647a6dff56","x":-95,"y":300,"width":71,"height":60,"color":"2","type":"text","text":"KAW"},
+		{"id":"7c3ba23b6276c212","type":"text","text":"[[Dashboard.canvas|Média Műhely]] ","x":-412,"y":-140,"width":142,"height":60,"color":"5"},
+		{"id":"88ba4c5b01fee104","x":-217,"y":-283,"width":70,"height":60,"type":"text","text":"Ignis"},
+		{"id":"c8412aab8b7f36fe","x":-15,"y":-283,"width":105,"height":60,"type":"text","text":"ExarLabs"},
+		{"id":"2fac18d3bc18a88f","x":-7,"y":-460,"width":92,"height":60,"type":"text","text":"Sonrisa"},
+		{"id":"825da920796e6b11","x":-120,"y":-600,"width":137,"height":60,"type":"text","text":"Vision Corner"},
+		{"id":"a3117b6265fcef1e","x":90,"y":-600,"width":67,"height":60,"type":"text","text":"CPS"},
+		{"id":"a83d5aa7449843b7","type":"text","text":"Navigátor Podcast","x":-259,"y":60,"width":112,"height":60}
+	],
+	"edges":[
+		{"id":"417e663138fa039a","fromNode":"7c3ba23b6276c212","fromSide":"right","toNode":"977d5929ef57abe0","toSide":"left"},
+		{"id":"a641a96ffce52e1f","fromNode":"aad05c647a6dff56","fromSide":"top","toNode":"2499526ebcde4d2b","toSide":"bottom"},
+		{"id":"965f79c645ed9510","fromNode":"2499526ebcde4d2b","fromSide":"top","toNode":"977d5929ef57abe0","toSide":"bottom"},
+		{"id":"abc4dd8b0c47c7a1","fromNode":"2499526ebcde4d2b","fromSide":"top","toNode":"a83d5aa7449843b7","toSide":"right"},
+		{"id":"32dcc737030e47cc","fromNode":"c8412aab8b7f36fe","fromSide":"bottom","toNode":"977d5929ef57abe0","toSide":"top"},
+		{"id":"69ff23a563e41a3c","fromNode":"88ba4c5b01fee104","fromSide":"bottom","toNode":"977d5929ef57abe0","toSide":"top"},
+		{"id":"bb48ca71fd4c141d","fromNode":"a3117b6265fcef1e","fromSide":"bottom","toNode":"2fac18d3bc18a88f","toSide":"top"},
+		{"id":"49fad4e7cdce251d","fromNode":"825da920796e6b11","fromSide":"bottom","toNode":"2fac18d3bc18a88f","toSide":"top"},
+		{"id":"954e9b5883007072","fromNode":"2fac18d3bc18a88f","fromSide":"bottom","toNode":"c8412aab8b7f36fe","toSide":"top"},
+		{"id":"333e308bd3388df3","fromNode":"a83d5aa7449843b7","fromSide":"top","toNode":"977d5929ef57abe0","toSide":"bottom"}
+	]
+}

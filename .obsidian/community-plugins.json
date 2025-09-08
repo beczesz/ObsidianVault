@@ -7,7 +7,7 @@
   "obsidian-mind-map",
   "homepage",
   "dataview",
-  "obsidian-excalidraw-plugin",
   "obsidian-git",
-  "obsidian-shellcommands"
+  "obsidian-shellcommands",
+  "obsidian-tracker"
 ]

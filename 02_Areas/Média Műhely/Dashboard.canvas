@@ -1,0 +1,7 @@
+{
+	"nodes":[
+		{"id":"c53d426e02cb3b81","type":"text","text":"Bevétel\n- RMÜE\n- Koffer\n- CleanService\n>[!todo] TODO\n>- Réti Levivel átnézni a költségeket\n\n","x":-360,"y":-340,"width":340,"height":320},
+		{"id":"16fe68b91dbb75a6","type":"text","text":"# TODO\n``` dataview\nTASK\nFROM \"02_Areas/Média Műhely\"\nWHERE !completed\nGROUP BY file.link\n```\n","x":0,"y":-340,"width":388,"height":455}
+	],
+	"edges":[]
+}

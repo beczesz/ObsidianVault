@@ -1,0 +1,4 @@
+- [ ] Alkotmány
+- [ ] stratégiai célok
+- [ ] TODO Samunak kifizetni 
+- [ ] Csala Dénes epizód publish 📅 2025-09-08 

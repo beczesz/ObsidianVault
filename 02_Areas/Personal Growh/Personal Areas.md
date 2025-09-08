@@ -1,6 +1,7 @@
 - [ ] Obsidian plugins #focus 
 - [ ] PKM Learning #focus 
 - [ ] List the ideas [link](https://chatgpt.com/g/g-p-68b7e126a2548191865449f2d76db264-pkm/c/68b7e177-7d10-8329-9d07-e4225653ad0a)
+- [ ] HAbit tracker, weight graph. Personal dashboard
 
 ## To Read0
 - [ ] https://tomtunguz.com/groves-stagger-chart

@@ -12,38 +12,26 @@
 
 ## 🗂 Projects & Tasks
 
+``` dataview
+TASK
+FROM "01_Projects"
+WHERE !completed AND due <= date(today) and due
+GROUP BY file.folder + "/" + file.name
+```
 
-### 📝 Tasks due today
+## 📝Areas TODO
 
-- [ ] Read the emails
-
-
-```tasks
-not done
-due today
+``` dataview
+TASK
+FROM "02_Areas"
+WHERE !completed AND due <= date(today) and due
+GROUP BY file.folder + "/" + file.name
 ```
 
 
+### 📝 Other tasks
 
-### 🔥 [[Inference Farm]] 
-- [ ] 
-
-### 📝 CPS - Teams
-- [ ] 
-
-### 📝 CPS - Admin
-- [ ] 
-
-### 📝 Others
-- [ ] 
-
-### 🔥 [[IgnisAcademy]] 
-
-
-### 🔥 [[Personal Areas]] 
-- [ ] 
-
-
+- [ ] Read the emails
 
 ---
 
@@ -70,4 +58,5 @@ _Free writing / journaling space for reflections, insights, or essay-style entri
 - What did I learn?  
 - What am I grateful for?  
   
-  
+## Habit Tracker
+Weight (kg): 96.
