@@ -3,7 +3,7 @@
 ---
 
 ## 🗂️ Workflow & Navigation
-- [ ] [Calendar](https://obsidian.md/plugins?id=calendar) (~2,023,000 downloads)  📅 2025-09-08 
+- [ ] [Calendar](https://obsidian.md/plugins?id=calendar) (~2,023,000 downloads)  📅 2025-09-09 
 - [ ] [Periodic Notes](https://obsidian.md/plugins?id=periodic-notes)  
 - [ ] [Recent Files](https://obsidian.md/plugins?id=recent-files-obsidian) (~815,000)  
 - [ ] [Workspaces Plus](https://obsidian.md/plugins?id=workspaces-plus)  
@@ -22,7 +22,7 @@
 - [ ] [Paste URL into Selection](https://obsidian.md/plugins?id=paste-url-into-selection)  
 - [ ] [Quick Switcher++](https://obsidian.md/plugins?id=quick-switcher-plus)  
 - [ ] [Rollover Daily Todos](https://obsidian.md/plugins?id=obsidian-rollover-daily-todos)  
-- [ ] [Obsidian GitHub Sync](https://obsidian.md/plugins?id=obsidian-git) (~1,778,200)  📅 2025-09-08
+- [x] [Obsidian GitHub Sync](https://obsidian.md/plugins?id=obsidian-git) (~1,778,200)  📅 2025-09-08
 - [ ] [Obsidian Sync Manager](https://obsidian.md/plugins?id=obsidian-sync-manager)  
 - [ ] [Command Aliases](https://obsidian.md/plugins?id=command-alias)  
 
