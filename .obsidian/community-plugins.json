@@ -7,7 +7,7 @@
   "obsidian-mind-map",
   "homepage",
   "dataview",
-  "obsidian-git",
   "obsidian-shellcommands",
-  "obsidian-tracker"
+  "obsidian-tracker",
+  "obsidian-git"
 ]
