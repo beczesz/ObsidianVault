@@ -14,14 +14,15 @@
         "model_key": "TaylorAI/bge-micro-v2"
       },
       "TaylorAI/bge-micro-v2": {}
-    }
+    },
+    "excluded_headings": "",
+    "file_exclusions": "Untitled",
+    "folder_exclusions": ""
   },
   "ribbon_icons": {
     "connections": true,
     "random_note": false
   },
-  "file_exclusions": "Untitled",
-  "folder_exclusions": "",
   "smart_view_filter": {
     "render_markdown": true,
     "show_full_path": false,
@@ -29,7 +30,6 @@
     "exclude_frontmatter_blocks": true,
     "expanded_view": false
   },
-  "excluded_headings": "",
   "language": "en",
   "new_user": true,
   "re_import_wait_time": 13,

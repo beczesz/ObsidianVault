@@ -1,15 +1,26 @@
-- [ ] Obsidian plugins #focus 
-- [ ] PKM Learning #focus 
 - [ ] List the ideas [link](https://chatgpt.com/g/g-p-68b7e126a2548191865449f2d76db264-pkm/c/68b7e177-7d10-8329-9d07-e4225653ad0a)
-- [ ] HAbit tracker, weight graph. Personal dashboard
-
-## To Read0
-- [ ] https://tomtunguz.com/groves-stagger-chart
-- [ ] High Output management https://www.google.ro/books/edition/High_Output_Management/piCeCgAAQBAJ?hl=en&gbpv=1&printsec=frontcover
 
 
+```tracker
+searchType: dvField
+searchTarget: Weight
+folder: 05_DailyNotes
+dateFormat: 'YYYY-MM-DD'   # match your daily note filenames
+
+line:
+  title: Weight (kg)
+  yAxisLabel: kg
+  showPoint: true
+  yMin: 80
+```
+```habittracker
+{
+	"path": "02_Areas/Personal Growh/Habits/"
+}
+```
 
 ## To Read
+- [ ] High Output management https://www.google.ro/books/edition/High_Output_Management/piCeCgAAQBAJ?hl=en&gbpv=1&printsec=frontcover
 - [ ] Automate the list of the read books and scanned books as well. 
 
 ## Ideas

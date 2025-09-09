@@ -1,2 +1,0 @@
- - [ ] Írni a következő alkalommal kapcsoaltban
- - [ ] Írni a könyvvel kapcsolatban

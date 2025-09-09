@@ -45,12 +45,6 @@ GROUP BY file.folder + "/" + file.name
 
 ---
 # Personal
-## 🌅 Morning Thoughts
-_Free writing / journaling space for reflections, insights, or essay-style entries. Personal and unfiltered._
-
-- 
-- 
-
 
 ## 🌙 Reflection
 - What went well today?  
@@ -59,4 +53,14 @@ _Free writing / journaling space for reflections, insights, or essay-style entri
 - What am I grateful for?  
   
 ## Habit Tracker
-Weight (kg): 96.
+
+```habittracker
+{
+	"path": "02_Areas/Personal Growh/Habits/"
+}
+```
+
+Weight:: 96.8
+
+## 🌅 Morning Thoughts
+_Free writing / journaling space for reflections, insights, or essay-style entries. Personal and unfiltered._

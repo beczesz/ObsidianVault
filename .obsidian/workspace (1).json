@@ -4,63 +4,76 @@
     "type": "split",
     "children": [
       {
-        "id": "0a3f27d5c5a7df9c",
+        "id": "26b81bc58c5d26bd",
         "type": "tabs",
         "children": [
           {
-            "id": "b9f547ae0ad2c404",
+            "id": "d8e51904ca21fff4",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "canvas",
               "state": {
-                "file": "02_Areas/Personal Growh/Personal Areas.md",
-                "mode": "source",
-                "source": false
+                "file": "02_Areas/MainDashboard.canvas",
+                "viewState": {
+                  "x": -14.54891041162169,
+                  "y": 168.91699757869225,
+                  "zoom": -0.35439614793900803
+                }
               },
-              "icon": "lucide-file",
-              "title": "Personal Areas"
+              "icon": "lucide-layout-dashboard",
+              "title": "MainDashboard"
             }
           },
           {
-            "id": "dd00815f72b27f51",
+            "id": "18a26a7e8c0e46e1",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "02_Areas/Navigátor Podcast/Küldetés.md",
+                "file": "01_Projects/Sonrisa/MVMI - Support and T&M.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Küldetés"
+              "title": "MVMI - Support and T&M"
             }
           },
           {
-            "id": "b091236ed3a37283",
+            "id": "b66af9c773d5dbda",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "05_DailyNotes/2025-09-07.md",
+                "file": "02_Areas/Personal Growh/PKM/Obsidian plugins.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "2025-09-07"
+              "title": "Obsidian plugins"
             }
           },
           {
-            "id": "a283c0d2d56402b2",
+            "id": "98e393a882ee9f44",
+            "type": "leaf",
+            "state": {
+              "type": "smart-release-notes-view",
+              "state": {},
+              "icon": "file-text",
+              "title": "Release Notes"
+            }
+          },
+          {
+            "id": "a992420227205009",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Templates/Daily_Note_Template.md",
+                "file": "05_DailyNotes/2025-09-08.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Daily_Note_Template"
+              "title": "2025-09-08"
             }
           }
         ],
@@ -267,51 +280,50 @@
       "smart-connections:Smart Connections: Open connections view": false,
       "smart-connections:Smart Connections: Open random connection": true,
       "omnisearch:Omnisearch": false,
-      "obsidian-excalidraw-plugin:New drawing": false,
       "obsidian-git:Open Git source control": false,
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "dd00815f72b27f51",
+  "active": "18a26a7e8c0e46e1",
   "lastOpenFiles": [
-    "02_Areas/Sonrisa/CPS/Services/Inference Farm/Open Source Models.md",
-    "02_Areas/Sonrisa/CPS/Services/Inference Farm",
-    "Untitled.md",
+    "Példa jegyzet.md",
+    "01_Projects/Sonrisa/MVMI - Support and T&M.md",
     "02_Areas/Personal Growh/Personal Areas.md",
-    "02_Areas/Navigátor Podcast/Küldetés.md",
-    "05_DailyNotes/2025-09-07.md",
-    "02_Areas/Main TODO.md",
+    "02_Areas/Personal Growh/Habits/Wake-up at 5_15.md",
+    "02_Areas/Personal Growh/Habits/Supliments.md",
+    "02_Areas/Personal Growh/Habits/Reading.md",
+    "02_Areas/Personal Growh/Habits/Morning speed run.md",
+    "02_Areas/Personal Growh/Habits/Cold Shower.md",
     "02_Areas/Personal Growh/Personal Dashboard.md",
-    "02_Areas/MainDashboard.canvas",
-    "02_Areas/Média Műhely/Dashboard.canvas",
+    "05_DailyNotes/2025-09-09.md",
+    "02_Areas/Personal Growh/PKM/Obsidian plugins.md",
+    "02_Areas/Main TODO.md",
     "02_Areas/ExarLabs/Feladatok.md",
-    "01_Projects/Sonrisa/ASH.md",
+    "02_Areas/MainDashboard.canvas",
+    "02_Areas/Sonrisa/Vision Corner.md",
+    "Templates/Daily_Note_Template.md",
+    "05_DailyNotes/2025-09-07.md",
+    "05_DailyNotes/2025-09-06.md",
+    "05_DailyNotes/2025-09-05.md",
+    "05_DailyNotes/2025-09-08.md",
+    "02_Areas/Sonrisa/CPS/Services/Inference Farm/Open Source Models.md",
+    "02_Areas/Sonrisa/CPS/TODO.md",
+    "Templates/Contrast_Note_Template.md",
+    "02_Areas/Personal Growh/Habits",
+    "05_DailyNotes/2025-09-02.md",
+    "02_Areas/Szervezet Fejlesztés/Vezetők Imája.md",
+    "02_Areas/Szervezet Fejlesztés/KAW - Vezetői Kézikönyv.md",
+    "02_Areas/Szervezet Fejlesztés/7 Szokás képzés.md",
+    "02_Areas/Sonrisa/CPS/Team",
+    "02_Areas/Sonrisa/CPS/Services/Inference Farm",
+    "02_Areas/Média Műhely/Dashboard.canvas",
     "02_Areas/Ignis",
     "02_Areas/ExarLabs",
     "02_Areas/Sonrisa/Vision Corner",
     "02_Areas/Sonrisa",
-    "02_Areas/Szervezet Fejlesztés/Vezetők Imája.md",
-    "02_Areas/Szervezet Fejlesztés/7 Szokás képzés.md",
     "02_Areas/Navigátor Podcast",
-    "Templates/Daily_Note_Template.md",
-    "05_DailyNotes/2025-09-08.md",
-    "02_Areas/Szervezet Fejlesztés/KAW/Vezetői Kézikönyv.md",
     "02_Areas/Szervezet Fejlesztés/KAW",
     "02_Areas/Szervezet Fejlesztés",
-    "02_Areas/Média Műhely/Timeline.md",
-    "02_Areas/Média Műhely/Belső rendszerek.md",
-    "02_Areas/Média Műhely/Kliensek/Clean Service.md",
-    "02_Areas/Média Műhely/Kliensek/Koffer.md",
-    "02_Areas/Média Műhely/Kliensek/CleanService",
-    "02_Areas/Média Műhely/Kliensek/RMÜE.md",
-    "02_Areas/Média Műhely/Kliensek",
-    "02_Areas/Personal Growh/PKM/Obsidian plugins.md",
-    "Untitled 1.md",
-    "01_Projects/Sonrisa/EPRIVO.md",
-    "00_Prompts/Bootstrap.md",
-    "Excalidraw/Drawing 2025-09-06 15.37.52.excalidraw.md",
-    "05_DailyNotes/2025-09-06.md",
-    "03_Resources/02_Books/Robert Greene - The 48 Laws of Power/Personal Notes.md",
     "Onyx/icon/com_zubersoft_mobilesheetsfree.png",
     "Onyx/icon/org_geogebra_android.png",
     "Onyx/icon/com_scribd_app_reader0.png",

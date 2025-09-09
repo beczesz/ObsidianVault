@@ -19,22 +19,22 @@
 - [ ] [Hotkeys++](https://obsidian.md/plugins?id=hotkeysplus-obsidian)  
 - [ ] [Outliner](https://obsidian.md/plugins?id=obsidian-outliner)  
 - [ ] [Note Refactor](https://obsidian.md/plugins?id=note-refactor-obsidian)  
-- [ ] [Paste URL into Selection](https://obsidian.md/plugins?id=paste-url-into-selection)  
 - [ ] [Quick Switcher++](https://obsidian.md/plugins?id=quick-switcher-plus)  
 - [ ] [Rollover Daily Todos](https://obsidian.md/plugins?id=obsidian-rollover-daily-todos)  
-- [x] [Obsidian GitHub Sync](https://obsidian.md/plugins?id=obsidian-git) (~1,778,200)  📅 2025-09-08
 - [ ] [Obsidian Sync Manager](https://obsidian.md/plugins?id=obsidian-sync-manager)  
 - [ ] [Command Aliases](https://obsidian.md/plugins?id=command-alias)  
 
 ---
 
 ## 🎨 Visualization & Design
-- [ ] [Mind Map](https://obsidian.md/plugins?id=obsidian-mind-map) (~701,000)  
 - [ ] [Obsidian Charts](https://obsidian.md/plugins?id=obsidian-charts)  
 - [ ] [Obsidian Leaflet](https://obsidian.md/plugins?id=obsidian-leaflet-plugin)  
 - [ ] [Obsidian Columns](https://obsidian.md/plugins?id=obsidian-columns)  
 - [ ] [Custom Frames](https://obsidian.md/plugins?id=obsidian-custom-frames)  
 - [ ] [Link Favicons](https://obsidian.md/plugins?id=link-favicons)  
+- [ ] Banner 
+- [ ] [Plugin: Chronos Timeline - interactive timelines from Markdown - Share & showcase - Obsidian Forum](https://forum.obsidian.md/t/plugin-chronos-timeline-interactive-timelines-from-markdown/92508?utm_source=chatgpt.com)
+
 
 ---
 
@@ -42,7 +42,6 @@
 - [ ] [Longform](https://obsidian.md/plugins?id=longform)  
 - [ ] [Annotator](https://obsidian.md/plugins?id=obsidian-annotator)  
 - [ ] [Omnivore](https://obsidian.md/plugins?id=obsidian-omnivore)  
-- [ ] [Folder Notes](https://obsidian.md/plugins?id=folder-notes)  
 - [ ] [Highlightr](https://obsidian.md/plugins?id=obsidian-highlightr-plugin)  
 - [ ] [Reading Mode Enhancer](https://obsidian.md/plugins?id=obsidian-reading-mode-enhancer)  
 - [ ] [Bookmarks Manager](https://obsidian.md/plugins?id=obsidian-bookmarks-manager) (~790,000)  
@@ -50,18 +49,14 @@
 ---
 
 ## 🛠️ Customization & Automation
-- [ ] [Advanced URI](https://obsidian.md/plugins?id=obsidian-advanced-uri)  
-- [ ] [Supercharged Links](https://obsidian.md/plugins?id=supercharged-links)  
 - [ ] [MetaEdit](https://obsidian.md/plugins?id=metaedit)  
 - [ ] [Omnisearch](https://obsidian.md/plugins?id=omnisearch) (~1,002,800)  
 - [ ] [Obsidian Linter](https://obsidian.md/plugins?id=obsidian-linter)  
-- [ ] [Natural Language Dates](https://obsidian.md/plugins?id=nldates-obsidian)  
 - [ ] [Make.md](https://obsidian.md/plugins?id=make-md)  
 - [ ] [Smart Connections](https://obsidian.md/plugins?id=smart-connections)  
 - [ ] [Commander Plugin](https://obsidian.md/plugins?id=obsidian-commander)  
 - [ ] [Commander Palette](https://obsidian.md/plugins?id=commander-palette)  
 - [ ] [Custom Sort](https://obsidian.md/plugins?id=custom-sort)  
-- [ ] [Activity History](https://obsidian.md/plugins?id=activity-history)  
 - [ ] [Commander Workflows](https://obsidian.md/plugins?id=commander-workflows)  
 - [ ] [Commander Hotkeys](https://obsidian.md/plugins?id=commander-hotkeys)  
 
