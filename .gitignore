@@ -1,3 +1,20 @@
 
 /.smart-env/multi
 /.obsidian
+
+# Secrets / credentials (NEVER commit)
+.env
+*.env
+!*.env.example
+
+# BDOS runtime caches (SQLite DBs + sidecars)
+00_Prompts/BDOS/capabilities/vault-indexing/cache/
+_dashboards/_design/agent_logs.json
+
+# Sage cron logs
+00_Prompts/BDOS/agents/sage/cron/logs/
+
+# Python build artifacts
+__pycache__/
+*.pyc
+*.pyo
