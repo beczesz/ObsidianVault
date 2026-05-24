@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Think Engine v0.9 — a gondolkodó motor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:        oklch(0.145 0.012 65);
+    --ink-2:      oklch(0.185 0.014 65);
+    --ink-3:      oklch(0.235 0.016 65);
+    --line:       oklch(0.32 0.014 65);
+    --line-soft:  oklch(0.26 0.012 65);
+    --paper:      oklch(0.94 0.012 80);
+    --paper-dim:  oklch(0.73 0.012 78);
+    --paper-faint:oklch(0.56 0.011 72);
+
+    --signal:     oklch(0.81 0.135 75);   /* meleg okker — a state file / karmesteri jel */
+    --claude:     oklch(0.78 0.125 50);   /* terrakotta — a karmester */
+    --gpt:        oklch(0.80 0.105 195);  /* teal — validátor */
+    --pplx:       oklch(0.81 0.13 150);   /* zöld — kutató */
+    --copilot:    oklch(0.76 0.115 305);  /* viola — enterprise */
+    --human:      oklch(0.92 0.02 85);    /* cream — a döntési hatóság, nem gép */
+
+    --serif: "Fraunces", Georgia, "Times New Roman", serif;
+    --mono:  "JetBrains Mono", "SF Mono", "Consolas", monospace;
+    --sans:  "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+    --maxw: 1180px;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--signal); color: var(--ink); }
+
+  /* ---------- top nav ---------- */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 1.5rem;
+    padding: 0.85rem clamp(1rem, 4vw, 3rem);
+    background: color-mix(in oklch, var(--ink) 82%, transparent);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .brand { font-family: var(--mono); font-size: 0.78rem; letter-spacing: 0.04em; color: var(--paper-dim); }
+  .brand b { color: var(--signal); font-weight: 700; }
+  .navlinks { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+  .navlinks a {
+    color: var(--paper-faint); text-decoration: none;
+    font-size: 0.82rem; letter-spacing: 0.01em;
+    transition: color 0.25s var(--ease);
+  }
+  .navlinks a:hover, .navlinks a.active { color: var(--paper); }
+  @media (max-width: 760px) { .navlinks { display: none; } }
+
+  /* ---------- layout ---------- */
+  section { padding: clamp(4rem, 9vh, 7.5rem) clamp(1.2rem, 5vw, 3rem); }
+  .wrap { max-width: var(--maxw); margin: 0 auto; }
+
+  .kicker {
+    font-family: var(--mono); font-size: 0.74rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--signal); margin-bottom: 1.4rem;
+  }
+
+  h2 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(1.9rem, 4.4vw, 3rem);
+    line-height: 1.06; letter-spacing: -0.02em;
+    max-width: 18ch; margin-bottom: 1.1rem;
+  }
+  .lead { color: var(--paper-dim); font-size: clamp(1.02rem, 1.5vw, 1.18rem); max-width: 60ch; }
+
+  /* ---------- reveal ---------- */
+  .reveal { opacity: 0; transform: translateY(26px); transition: opacity 0.9s var(--ease), transform 0.9s var(--ease); }
+  .reveal.in { opacity: 1; transform: none; }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    min-height: 92vh; display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute; inset: -30% -10% auto auto; width: 65vw; height: 65vw; max-width: 760px; max-height: 760px;
+    background: radial-gradient(circle, color-mix(in oklch, var(--signal) 24%, transparent), transparent 62%);
+    filter: blur(20px); pointer-events: none; z-index: 0;
+  }
+  .hero .wrap { position: relative; z-index: 1; }
+  .hero h1 {
+    font-family: var(--serif); font-weight: 600;
+    font-size: clamp(2.6rem, 7.2vw, 5.7rem);
+    line-height: 0.99; letter-spacing: -0.03em;
+    max-width: 16ch; margin-bottom: 1.6rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--signal); }
+  .hero-sub { font-size: clamp(1.05rem, 2vw, 1.35rem); color: var(--paper-dim); max-width: 54ch; margin-bottom: 2.6rem; }
+  .hero-meta {
+    display: flex; gap: 2.4rem; flex-wrap: wrap;
+    font-family: var(--mono); font-size: 0.82rem; color: var(--paper-faint);
+    border-top: 1px solid var(--line-soft); padding-top: 1.5rem; max-width: 720px;
+  }
+  .hero-meta b { display: block; color: var(--paper); font-size: 1.35rem; font-weight: 500; margin-bottom: 0.15rem; }
+
+  /* ---------- core metaphor ---------- */
+  .metaphor { background: var(--ink-2); border-top: 1px solid var(--line-soft); border-bottom: 1px solid var(--line-soft); }
+  .pull {
+    font-family: var(--serif); font-weight: 500; font-style: italic;
+    font-size: clamp(1.7rem, 4.2vw, 3.1rem); line-height: 1.18; letter-spacing: -0.015em;
+    max-width: 24ch;
+  }
+  .pull .hi { color: var(--signal); font-style: normal; }
+  .pull .dim { color: var(--paper-faint); }
+  .metaphor-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(2rem, 5vw, 5rem); align-items: center; }
+  @media (max-width: 820px){ .metaphor-grid { grid-template-columns: 1fr; } }
+  .metaphor-note { color: var(--paper-dim); font-size: 1rem; }
+  .metaphor-note p + p { margin-top: 1rem; }
+  .metaphor-note strong { color: var(--paper); font-weight: 600; }
+
+  /* ---------- STAGE / orchestration ---------- */
+  .stage-shell { background: var(--ink-2); border: 1px solid var(--line); border-radius: 18px; padding: clamp(1.2rem, 3vw, 2.2rem); margin-top: 2.4rem; }
+  .stage-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .stage-status { font-family: var(--mono); font-size: 0.8rem; color: var(--paper-dim); }
+  .stage-status b { color: var(--signal); }
+
+  .btn {
+    font-family: var(--mono); font-size: 0.82rem; letter-spacing: 0.02em;
+    background: var(--signal); color: var(--ink); border: none; cursor: pointer;
+    padding: 0.7rem 1.3rem; border-radius: 9px; font-weight: 700;
+    transition: transform 0.3s var(--ease), filter 0.3s var(--ease), opacity 0.3s var(--ease);
+  }
+  .btn:hover { transform: translateY(-2px); filter: brightness(1.06); }
+  .btn:disabled { opacity: 0.45; cursor: not-allowed; transform: none; }
+
+  .stage {
+    position: relative; height: 440px; border-radius: 12px;
+    background:
+      radial-gradient(circle at 40% 50%, color-mix(in oklch, var(--signal) 9%, transparent), transparent 56%),
+      var(--ink);
+    border: 1px solid var(--line-soft); overflow: hidden;
+  }
+  .stage { height: 480px; }
+  @media (max-width: 720px){ .stage { height: 600px; } }
+
+  .node {
+    position: absolute; transform: translate(-50%, -50%);
+    text-align: center; width: 132px;
+    transition: filter 0.4s var(--ease);
+  }
+  .node .disc {
+    width: 72px; height: 72px; margin: 0 auto 0.5rem; border-radius: 50%;
+    display: grid; place-items: center;
+    font-family: var(--mono); font-weight: 700; font-size: 0.92rem;
+    border: 1.5px solid var(--c); color: var(--c);
+    background: color-mix(in oklch, var(--c) 12%, var(--ink));
+    transition: box-shadow 0.5s var(--ease), transform 0.5s var(--ease), background 0.5s var(--ease);
+  }
+  .node.busy .disc { box-shadow: 0 0 0 6px color-mix(in oklch, var(--c) 22%, transparent); }
+  .node.done .disc { background: color-mix(in oklch, var(--c) 26%, var(--ink)); }
+  .node .nlabel { font-size: 0.82rem; color: var(--paper); font-weight: 600; line-height: 1.2; }
+  .node .nrole { font-family: var(--mono); font-size: 0.68rem; color: var(--paper-faint); margin-top: 0.15rem; }
+  .node .ntag {
+    display: inline-block; margin-top: 0.4rem; font-family: var(--mono); font-size: 0.6rem;
+    letter-spacing: 0.08em; padding: 0.12rem 0.4rem; border-radius: 4px;
+    border: 1px solid var(--line); color: var(--paper-faint);
+  }
+  .node .timer { font-family: var(--mono); font-size: 0.66rem; color: var(--c); margin-top: 0.3rem; min-height: 0.9rem; opacity: 0; transition: opacity 0.3s; }
+  .node.busy .timer, .node.done .timer { opacity: 1; }
+
+  /* conductor + human */
+  #conductor { z-index: 3; }
+  #conductor .disc { width: 92px; height: 92px; font-size: 1rem; border-width: 2px; }
+  #conductor.pulse .disc, #human.pulse .disc { animation: pulse 0.7s var(--ease); }
+  @keyframes pulse { 0%{ box-shadow: 0 0 0 0 color-mix(in oklch, var(--c) 40%, transparent); } 100%{ box-shadow: 0 0 0 28px transparent; } }
+  #human { z-index: 3; }
+  #human .disc { width: 84px; height: 84px; font-size: 0.92rem; border-width: 2px; border-style: dashed; background: color-mix(in oklch, var(--human) 26%, var(--ink)); }
+
+  /* signal dots traveling on channels */
+  .dot {
+    position: absolute; width: 9px; height: 9px; border-radius: 50%;
+    background: var(--signal); left: 0; top: 0; z-index: 4; opacity: 0; pointer-events: none;
+    box-shadow: 0 0 10px color-mix(in oklch, var(--signal) 70%, transparent);
+  }
+
+  svg.wires { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  svg.wires line { stroke: var(--line); stroke-width: 1.4; transition: stroke 0.4s; }
+  svg.wires line.hot { stroke: color-mix(in oklch, var(--signal) 60%, var(--line)); }
+
+  /* state file panel */
+  .statefile {
+    margin-top: 2.4rem; border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+    background: var(--ink);
+  }
+  .sf-head {
+    display: flex; align-items: center; gap: 0.6rem; padding: 0.7rem 1rem;
+    background: var(--ink-3); border-bottom: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.78rem; color: var(--paper-dim);
+  }
+  .sf-head .dotrow { display: flex; gap: 0.35rem; }
+  .sf-head .dotrow i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .sf-head b { color: var(--signal); }
+  .sf-body { font-family: var(--mono); font-size: 0.82rem; line-height: 1.85; padding: 1rem 1.2rem; min-height: 150px; color: var(--paper-dim); }
+  .sf-line { opacity: 0; transform: translateX(-8px); transition: opacity 0.5s var(--ease), transform 0.5s var(--ease); white-space: pre-wrap; }
+  .sf-line.in { opacity: 1; transform: none; }
+  .sf-line .k { color: var(--signal); }
+  .sf-line .c { color: var(--paper-faint); }
+  .sf-line.claude .b { color: var(--claude); }
+  .sf-line.gpt .b { color: var(--gpt); }
+  .sf-line.pplx .b { color: var(--pplx); }
+  .sf-line.human .b { color: var(--human); }
+  .sf-cursor { color: var(--signal); animation: blink 1s steps(2) infinite; }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  /* ---------- 8-step loop ---------- */
+  .loop-track { display: flex; gap: 0; margin: 2.6rem 0 2rem; position: relative; flex-wrap: wrap; }
+  .loop-track::before { content:""; position:absolute; left:0; right:0; top: 21px; height:1px; background: var(--line-soft); z-index:0; }
+  .step {
+    position: relative; z-index: 1; flex: 1 1 12%; min-width: 96px; background: none; border: none;
+    cursor: pointer; text-align: center; padding: 0 0.2rem; color: var(--paper-faint);
+    font-family: var(--sans); transition: color 0.3s var(--ease);
+  }
+  .step .num {
+    width: 44px; height: 44px; margin: 0 auto 0.55rem; border-radius: 50%;
+    display: grid; place-items: center; background: var(--ink-2); border: 1px solid var(--line);
+    font-family: var(--mono); font-size: 0.9rem; font-weight: 700; color: var(--paper-dim);
+    transition: all 0.35s var(--ease);
+  }
+  .step .sname { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.04em; }
+  .step:hover { color: var(--paper-dim); }
+  .step.active { color: var(--paper); }
+  .step.active .num { background: var(--signal); border-color: var(--signal); color: var(--ink); transform: scale(1.08); }
+  .step-detail {
+    background: var(--ink-2); border: 1px solid var(--line); border-radius: 14px;
+    padding: clamp(1.4rem, 3vw, 2.2rem); min-height: 150px;
+    display: grid; grid-template-columns: auto 1fr; gap: 1.6rem; align-items: start;
+  }
+  @media (max-width: 640px){ .step-detail { grid-template-columns: 1fr; } }
+  .step-detail .big { font-family: var(--serif); font-size: clamp(2.4rem,6vw,3.6rem); color: var(--signal); line-height: 1; font-weight: 600; }
+  .step-detail h3 { font-family: var(--mono); font-size: 1rem; letter-spacing: 0.06em; margin-bottom: 0.5rem; color: var(--paper); }
+  .step-detail p { color: var(--paper-dim); max-width: 64ch; }
+  .step-detail .micro { font-family: var(--mono); font-size: 0.76rem; color: var(--paper-faint); margin-top: 0.7rem; }
+
+  /* ---------- transport ---------- */
+  .transport-grid { display: grid; grid-template-columns: 0.85fr 1.15fr; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
+  @media (max-width: 860px){ .transport-grid { grid-template-columns: 1fr; } }
+  .api-card { border: 1px solid var(--signal); border-radius: 16px; padding: 1.8rem; background: color-mix(in oklch, var(--signal) 7%, var(--ink-2)); }
+  .api-card .tlabel { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; color: var(--signal); }
+  .api-card h3 { font-family: var(--serif); font-size: 1.7rem; margin: 0.4rem 0 0.8rem; font-weight: 600; }
+  .api-card p { color: var(--paper-dim); }
+  .api-card .speed { margin-top: 1.3rem; font-family: var(--mono); font-size: 0.82rem; color: var(--paper); border-top: 1px solid var(--line); padding-top: 1rem; }
+  .api-card .speed b { color: var(--signal); }
+
+  .cases { display: flex; flex-direction: column; gap: 0.7rem; }
+  .case {
+    display: grid; grid-template-columns: auto 1fr; gap: 1.1rem; align-items: baseline;
+    padding: 1.05rem 1.2rem; border: 1px solid var(--line); border-radius: 12px;
+    background: var(--ink-2); cursor: default; transition: border-color 0.3s var(--ease), background 0.3s var(--ease);
+  }
+  .case:hover { border-color: var(--copilot); background: color-mix(in oklch, var(--copilot) 7%, var(--ink-2)); }
+  .case .cn { font-family: var(--mono); font-size: 1.25rem; color: var(--copilot); font-weight: 700; }
+  .case h4 { font-size: 0.98rem; margin-bottom: 0.2rem; }
+  .case p { color: var(--paper-faint); font-size: 0.85rem; }
+  .cases .lead-in { color: var(--paper-dim); font-size: 0.92rem; margin-bottom: 0.3rem; }
+
+  /* ---------- team / presets ---------- */
+  .preset-bar { display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 2rem 0 2rem; }
+  .preset {
+    font-family: var(--mono); font-size: 0.82rem; padding: 0.6rem 1.1rem; border-radius: 9px;
+    background: var(--ink-2); border: 1px solid var(--line); color: var(--paper-dim); cursor: pointer;
+    transition: all 0.3s var(--ease);
+  }
+  .preset:hover { color: var(--paper); border-color: var(--paper-faint); }
+  .preset.active { background: var(--paper); color: var(--ink); border-color: var(--paper); font-weight: 700; }
+
+  .team-board { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  @media (max-width: 820px){ .team-board { grid-template-columns: 1fr; } }
+  .seat {
+    border: 1px solid var(--line); border-radius: 14px; padding: 1.4rem; background: var(--ink-2);
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+  }
+  .seat.empty { opacity: 0.32; }
+  .seat .srole { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--seatc, var(--paper-faint)); }
+  .seat h4 { font-family: var(--serif); font-size: 1.5rem; font-weight: 600; margin: 0.35rem 0 0.2rem; }
+  .seat .model { font-family: var(--mono); font-size: 0.78rem; color: var(--paper-dim); }
+  .seat .transport { display: inline-block; margin-top: 0.9rem; font-family: var(--mono); font-size: 0.68rem; padding: 0.2rem 0.55rem; border-radius: 5px; letter-spacing: 0.05em; }
+  .seat .transport.api { background: color-mix(in oklch, var(--signal) 18%, var(--ink)); color: var(--signal); }
+  .seat .transport.browser { background: color-mix(in oklch, var(--copilot) 18%, var(--ink)); color: var(--copilot); }
+  .cost-line { margin-top: 1.8rem; font-family: var(--mono); font-size: 0.9rem; color: var(--paper-dim); }
+  .cost-line b { color: var(--signal); font-size: 1.1rem; }
+
+  /* ---------- warning / drift ---------- */
+  .warn { background: var(--ink-2); border: 1px solid var(--line); border-radius: 16px; padding: clamp(1.6rem,4vw,2.6rem); margin-top: 2.4rem; }
+  .warn .tag { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.14em; color: var(--claude); text-transform: uppercase; }
+  .warn h3 { font-family: var(--serif); font-size: clamp(1.4rem,3vw,2rem); font-weight: 600; margin: 0.5rem 0 0.8rem; }
+  .warn p { color: var(--paper-dim); max-width: 66ch; }
+
+  /* ---------- closing ---------- */
+  .closing { text-align: center; }
+  .closing .pull { margin: 0 auto; max-width: 28ch; }
+  .closing .sig { font-family: var(--mono); font-size: 0.8rem; color: var(--paper-faint); margin-top: 2.6rem; }
+
+  footer { padding: 2.4rem; text-align: center; border-top: 1px solid var(--line-soft); font-family: var(--mono); font-size: 0.74rem; color: var(--paper-faint); }
+</style>
+</head>
+<body>
+
+<nav>
+  <span class="brand"><b>think&#8209;engine</b> · v0.9</span>
+  <div class="navlinks">
+    <a href="#lenyeg">Lényeg</a>
+    <a href="#orkesztracio">Orkesztráció</a>
+    <a href="#kor">Egy kör</a>
+    <a href="#hurok">A hurok</a>
+    <a href="#transport">Transport</a>
+    <a href="#csapat">Csapat</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="hero-glow"></div>
+  <div class="wrap">
+    <p class="kicker reveal">Think Agent Orchestrator · v0.9</p>
+    <h1 class="reveal">Nem egy AI gondolkodik. <em>Egy csapat.</em> Egy karmesterrel.</h1>
+    <p class="hero-sub reveal">Claude összehangol több AI-t (Opus, GPT&#8209;5, Perplexity, Copilot), párhuzamosan kérdezi őket, majd egyetlen koherens szintézist ad vissza. A motor lényege nem a modellek száma, hanem hogy <strong>hol él az emlékezet</strong>.</p>
+    <div class="hero-meta reveal">
+      <div><b>5&#8209;10×</b>gyorsabb API-val mint böngészővel</div>
+      <div><b>1</b>tartós agy: a state file</div>
+      <div><b>∞</b>cserélhető gondolkodási felület</div>
+    </div>
+  </div>
+</header>
+
+<!-- CORE METAPHOR -->
+<section class="metaphor" id="lenyeg">
+  <div class="wrap metaphor-grid">
+    <div class="reveal">
+      <p class="kicker">A megalapozó belátás</p>
+      <p class="pull"><span class="hi">A state file a tartós agy.</span> <span class="dim">Az AI&#8209;ok csak cserélhető gondolkodási felületek.</span></p>
+    </div>
+    <div class="metaphor-note reveal">
+      <p>Ha ezt elfogadod, eltűnik a „melyik AI a jobb" kérdés. Mindegyik modell ugyanazt csinálja: gondolkodik egy darabot. A <strong>durva kontextus a state file-ban él</strong>, nem a chat-ablakban.</p>
+      <p>Ezért nem baj, hogy az API hívás „állapot nélküli": minden körben a state file-ból injektáljuk a kontextust. A böngésző-AI „emlékezete" pedig csapda, amíg vissza nem szinkronizáljuk: különben rejtett, párhuzamos tudásbázist épít, amit egy másik AI se lát.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ORCHESTRATION + RUN A ROUND -->
+<section id="orkesztracio">
+  <div class="wrap">
+    <p class="kicker reveal">Az orkesztráció</p>
+    <h2 class="reveal">A karmester párhuzamosan vezényel</h2>
+    <p class="lead reveal">A kör a <strong>felhasználóval</strong> indul: te brief-eled Claude-ot, ő szétosztja a feladatot minden tagnak (köztük egy második Claude-szálnak). Az API-tagok ~7 mp alatt válaszolnak, a böngésző-tag ~30 mp alatt, párhuzamosan. A végén Claude visszaad neked, mert <strong>a döntés a tiéd</strong>. A kör hossza a leglassabb tag ideje, nem az összeg. Indíts egy kört.</p>
+
+    <div class="stage-shell reveal">
+      <div class="stage-top">
+        <div class="stage-status">Állapot: <b id="statusTxt">készenlét</b></div>
+        <button class="btn" id="runBtn">▷ Indíts egy kört</button>
+      </div>
+      <div class="stage" id="stage">
+        <svg class="wires" id="wires"></svg>
+        <!-- the decision authority -->
+        <div class="node" id="human" style="left:9%; top:50%; --c: var(--human);">
+          <div class="disc">Te</div>
+          <div class="nlabel">Felhasználó</div>
+          <div class="nrole">Döntési hatóság</div>
+        </div>
+        <!-- the conductor -->
+        <div class="node" id="conductor" style="left:40%; top:50%; --c: var(--claude);">
+          <div class="disc">Claude</div>
+          <div class="nlabel">Karmester</div>
+          <div class="nrole">Stratéga · Opus 4.7</div>
+        </div>
+        <!-- thinking surfaces -->
+        <div class="node surface" data-key="gpt" style="left:68%; top:16%; --c: var(--gpt);">
+          <div class="disc">GPT&#8209;5</div>
+          <div class="nlabel">Validátor</div>
+          <span class="ntag">API</span>
+          <div class="timer">—</div>
+        </div>
+        <div class="node surface" data-key="cchat" style="left:86%; top:38%; --c: var(--claude);">
+          <div class="disc">C·2</div>
+          <div class="nlabel">Claude Chat</div>
+          <span class="ntag">API</span>
+          <div class="timer">—</div>
+        </div>
+        <div class="node surface" data-key="pplx" style="left:86%; top:64%; --c: var(--pplx);">
+          <div class="disc">PPLX</div>
+          <div class="nlabel">Kutató</div>
+          <span class="ntag">BÖNGÉSZŐ</span>
+          <div class="timer">—</div>
+        </div>
+        <div class="node surface" data-key="copilot" style="left:68%; top:84%; --c: var(--copilot);">
+          <div class="disc">Copilot</div>
+          <div class="nlabel">Enterprise</div>
+          <span class="ntag">BÖNGÉSZŐ</span>
+          <div class="timer">—</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STATE FILE -->
+    <div class="statefile reveal">
+      <div class="sf-head">
+        <span class="dotrow"><i style="background:var(--claude)"></i><i style="background:var(--gpt)"></i><i style="background:var(--pplx)"></i></span>
+        <span>brainstorm_state.md &mdash; <b>a tartós agy</b></span>
+      </div>
+      <div class="sf-body" id="sfBody">
+        <div class="sf-line in c"># Várakozás az első körre… <span class="sf-cursor">▌</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8-STEP LOOP -->
+<section style="background:var(--ink-2); border-top:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft);" id="hurok">
+  <div class="wrap">
+    <p class="kicker reveal">A gondolkodási hurok</p>
+    <h2 class="reveal">Nyolc lépés, minden körben ugyanaz</h2>
+    <p class="lead reveal">A transport (API vagy böngésző) változik, a hurok nem. Kattints egy lépésre.</p>
+
+    <div class="loop-track reveal" id="loopTrack"></div>
+    <div class="step-detail reveal" id="stepDetail"></div>
+  </div>
+</section>
+
+<!-- TRANSPORT -->
+<section id="transport">
+  <div class="wrap">
+    <p class="kicker reveal">Transport-pragmatizmus</p>
+    <h2 class="reveal">Alapból API. Böngésző csak akkor, ha tud valamit, amit az API nem.</h2>
+
+    <div class="transport-grid" style="margin-top:2.4rem;">
+      <div class="api-card reveal">
+        <span class="tlabel">ALAPÉRTELMEZETT</span>
+        <h3>API</h3>
+        <p>Közvetlen curl-hívás. Gyors, strukturált, megbízható. Állapot nélküli, ezért a kontextust minden körben a state file-ból injektáljuk. Ez nem hátrány: így nincs rejtett, követhetetlen memória.</p>
+        <div class="speed">Egy kör Opus 4.7-tel: <b>~7 mp</b><br>Böngésző-körrel: ~30 mp</div>
+      </div>
+      <div class="cases">
+        <p class="lead-in reveal">A böngésző (Chrome MCP) pontosan négy esetben nyer:</p>
+        <div class="case reveal"><span class="cn">1</span><div><h4>Hangmód</h4><p>ChatGPT voice beszélgetés &mdash; ennek nincs API-megfelelője.</p></div></div>
+        <div class="case reveal"><span class="cn">2</span><div><h4>Account-oldali adat</h4><p>Custom GPT, ChatGPT Projects, mentett memóriák, Perplexity Spaces, Copilot M365 enterprise hozzáférés.</p></div></div>
+        <div class="case reveal"><span class="cn">3</span><div><h4>Nincs API-alternatíva</h4><p>Copilot, account-höz kötött Gemini.</p></div></div>
+        <div class="case reveal"><span class="cn">4</span><div><h4>Élő emberi beszélgetés</h4><p>A felhasználó éppen chatel az AI-jal, és ki akarja nyerni azt a beszélgetést.</p></div></div>
+      </div>
+    </div>
+
+    <div class="warn reveal">
+      <span class="tag">A memória-illúzió</span>
+      <h3>„Az AI ismer engem"</h3>
+      <p>Ha mindig ugyanabban a ChatGPT böngésző-szálban gondolkodsz, elkezded érezni, hogy „ismer". Pedig csak azt az egy ablakot ismeri. Nyiss új chatet, vagy válts API-ra, és a tudás elpárolog. <strong>A state file az, ami ismer téged.</strong> A böngésző-emlékezet csak cache, amit minden kör végén vissza kell szinkronizálni, különben drift-et okoz.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM / PRESETS -->
+<section style="background:var(--ink-2); border-top:1px solid var(--line-soft);" id="csapat">
+  <div class="wrap">
+    <p class="kicker reveal">Csapat-összeállítás</p>
+    <h2 class="reveal">A felhasználó állítja össze a gondolkodó csapatot</h2>
+    <p class="lead reveal">Minden tag kap szerepet és transportot. Válassz egy presetet, és nézd, hogyan áll össze.</p>
+
+    <div class="preset-bar reveal" id="presetBar"></div>
+    <div class="team-board reveal" id="teamBoard"></div>
+    <div class="cost-line reveal" id="costLine"></div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="closing">
+  <div class="wrap">
+    <p class="kicker reveal" style="display:inline-block;">A vezérelv</p>
+    <p class="pull reveal"><span class="hi">Állíts csapatot bölcsen.</span> Válassz transportot pragmatikusan. Vezényelj proaktívan. <span class="dim">Ments el mindent. Eszkalálj okosan. Hajts végre könyörtelenül:</span> párhuzamosan, strukturált válaszokkal, API-n és böngészőn át.</p>
+    <p class="sig reveal">think-agent-orchestrator · v0.9 · hibrid transport mód</p>
+  </div>
+</section>
+
+<footer>
+  Belső bemutató &middot; a motor kanonikus definíciója: SKILL.md (v0.9)
+</footer>
+
+<script>
+/* ---------- reveal on scroll ---------- */
+const io = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = (Math.min(i % 5, 4) * 0.06) + 's';
+  io.observe(el);
+});
+
+/* ---------- nav active state ---------- */
+const navLinks = [...document.querySelectorAll('.navlinks a')];
+const sections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+const navIO = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id));
+    }
+  });
+}, { rootMargin: '-45% 0px -50% 0px' });
+sections.forEach(s => navIO.observe(s));
+
+/* ===================================================================
+   ORCHESTRATION STAGE + RUN A ROUND
+   =================================================================== */
+const stage = document.getElementById('stage');
+const wires = document.getElementById('wires');
+const conductor = document.getElementById('conductor');
+const surfaces = [...document.querySelectorAll('.node.surface')];
+const runBtn = document.getElementById('runBtn');
+const statusTxt = document.getElementById('statusTxt');
+const sfBody = document.getElementById('sfBody');
+
+// real-world labelled latency (ms) per surface, scaled down for the animation
+const SURFACE_CFG = {
+  gpt:     { realSec: 7,  simMs: 1700, name: 'GPT-5',      finding: '"validáció: a kockázat reális, de a piacméret felülbecsült"' },
+  cchat:   { realSec: 6,  simMs: 1450, name: 'Claude Chat',finding: '"második Claude-szál: alternatív keretezés + 2 vakfolt"' },
+  pplx:    { realSec: 30, simMs: 4200, name: 'PPLX',       finding: '"3 forrás: a szegmens 18%-kal nőtt YoY [citation]"' },
+  copilot: { realSec: 22, simMs: 3300, name: 'Copilot',    finding: '"belső M365 doksi: Q2 pipeline = 14 deal"' },
+};
+const human = document.getElementById('human');
+
+function centerOf(el) {
+  const r = el.getBoundingClientRect();
+  const s = stage.getBoundingClientRect();
+  return { x: r.left - s.left + r.width / 2, y: r.top - s.top + r.height / 2 };
+}
+
+function addWire(from, to, key) {
+  const ln = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+  ln.setAttribute('x1', from.x); ln.setAttribute('y1', from.y);
+  ln.setAttribute('x2', to.x);   ln.setAttribute('y2', to.y);
+  ln.dataset.key = key;
+  wires.appendChild(ln);
+}
+function drawWires() {
+  wires.innerHTML = '';
+  const c = centerOf(conductor);
+  addWire(centerOf(human), c, 'human');
+  surfaces.forEach(node => addWire(c, centerOf(node), node.dataset.key));
+}
+window.addEventListener('resize', drawWires);
+
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function makeDot() {
+  const d = document.createElement('div');
+  d.className = 'dot';
+  stage.appendChild(d);
+  return d;
+}
+
+async function travel(dot, from, to, ms) {
+  dot.style.transition = 'none';
+  dot.style.transform = `translate(${from.x - 4.5}px, ${from.y - 4.5}px)`;
+  dot.style.opacity = '1';
+  // force reflow
+  void dot.offsetWidth;
+  dot.style.transition = `transform ${ms}ms cubic-bezier(0.16,1,0.3,1)`;
+  dot.style.transform = `translate(${to.x - 4.5}px, ${to.y - 4.5}px)`;
+  await sleep(ms);
+  dot.style.opacity = '0';
+}
+
+let round = 0;
+let running = false;
+
+function appendLine(html, cls = '') {
+  const div = document.createElement('div');
+  div.className = 'sf-line ' + cls;
+  div.innerHTML = html;
+  sfBody.appendChild(div);
+  void div.offsetWidth;
+  requestAnimationFrame(() => div.classList.add('in'));
+  sfBody.scrollTop = sfBody.scrollHeight;
+  return div;
+}
+
+async function runRound() {
+  if (running) return;
+  running = true; round++;
+  runBtn.disabled = true;
+  drawWires();
+
+  if (round === 1) sfBody.innerHTML = '';
+  appendLine(`<span class="c">## Kör #${round} &mdash; ${new Date().toLocaleTimeString('hu-HU')}</span>`);
+
+  const cCenter = centerOf(conductor);
+
+  // 0. HUMAN → CLAUDE — a felhasználó brief-eli a karmestert
+  statusTxt.textContent = 'a felhasználó brief-eli Claude-ot';
+  wires.querySelector('line[data-key="human"]')?.classList.add('hot');
+  { const d = makeDot(); d.style.background = 'var(--human)';
+    await travel(d, centerOf(human), cCenter, 640); d.remove(); }
+  appendLine(`<span class="human"><span class="b">Te</span></span> &rarr; <span class="k">brief</span>: <span class="c">"érdemes belépni az új piaci szegmensbe?"</span>`, 'human');
+  wires.querySelector('line[data-key="human"]')?.classList.remove('hot');
+
+  // 1. ASSEMBLE / ANALYZE — Claude szétosztja a feladatokat
+  statusTxt.textContent = 'Claude szétosztja a feladatokat · fat prompt / tag';
+  conductor.classList.add('pulse');
+  await sleep(700);
+  conductor.classList.remove('pulse');
+
+  // 2-3. PROMPT (parallel send) + ACTIVATE
+  statusTxt.textContent = 'párhuzamos prompt → minden tag egyszerre';
+  const sendPromises = surfaces.map(async node => {
+    const key = node.dataset.key;
+    wires.querySelector(`line[data-key="${key}"]`)?.classList.add('hot');
+    const dot = makeDot();
+    await travel(dot, cCenter, centerOf(node), 520);
+    dot.remove();
+  });
+  await Promise.all(sendPromises);
+
+  // 4-5. work + COLLECT (each finishes at its own pace, in parallel)
+  statusTxt.textContent = 'gyűjtés · API ~7mp / böngésző ~30mp (párhuzamosan)';
+  const startedAt = performance.now();
+  let slowest = 0;
+
+  const workPromises = surfaces.map(async node => {
+    const key = node.dataset.key;
+    const cfg = SURFACE_CFG[key];
+    node.classList.add('busy');
+    const timerEl = node.querySelector('.timer');
+
+    // animate a fake countup of the real-world seconds
+    const t0 = performance.now();
+    const tick = setInterval(() => {
+      const frac = Math.min((performance.now() - t0) / cfg.simMs, 1);
+      timerEl.textContent = (frac * cfg.realSec).toFixed(0) + ' mp';
+    }, 80);
+
+    await sleep(cfg.simMs);
+    clearInterval(tick);
+    timerEl.textContent = cfg.realSec + ' mp ✓';
+    node.classList.remove('busy'); node.classList.add('done');
+
+    // return dot to conductor
+    const dot = makeDot();
+    await travel(dot, centerOf(node), cCenter, 460);
+    dot.remove();
+    wires.querySelector(`line[data-key="${key}"]`)?.classList.remove('hot');
+
+    // PERSIST this finding to the state file
+    const clsMap = { gpt: 'gpt', cchat: 'claude', pplx: 'pplx', copilot: '' };
+    appendLine(`<span class="k">findings</span>[<span class="b">${cfg.name}</span>] = <span class="c">${cfg.finding}</span>`, clsMap[key]);
+
+    slowest = Math.max(slowest, cfg.realSec);
+    return cfg.realSec;
+  });
+
+  const times = await Promise.all(workPromises);
+
+  // 6. SYNTHESIZE
+  statusTxt.textContent = 'szintézis · transport-független JSON merge';
+  conductor.classList.add('pulse');
+  await sleep(700);
+  conductor.classList.remove('pulse');
+  appendLine(`<span class="claude"><span class="b">Claude</span></span> &rarr; <span class="k">szintézis</span>: ${surfaces.length} nézőpont egyesítve, 1 nyitott kérdés.`, 'claude');
+
+  // 7. show the parallelism payoff
+  const sum = times.reduce((a, b) => a + b, 0);
+  appendLine(`<span class="c"># wall-time = max(${times.join(', ')}) = <span style="color:var(--signal)">${slowest} mp</span> &mdash; nem az összeg (${sum} mp)</span>`);
+
+  // 8. CLAUDE → HUMAN — eszkaláció a döntési hatósághoz
+  statusTxt.textContent = 'Claude visszaad a döntési hatóságnak';
+  wires.querySelector('line[data-key="human"]')?.classList.add('hot');
+  { const d = makeDot(); d.style.background = 'var(--claude)';
+    await travel(d, cCenter, centerOf(human), 620); d.remove(); }
+  human.classList.add('pulse'); await sleep(640); human.classList.remove('pulse');
+  wires.querySelector('line[data-key="human"]')?.classList.remove('hot');
+  appendLine(`<span class="claude"><span class="b">Claude</span></span> &rarr; <span class="human"><span class="b">Te</span></span>: szintézis átadva, a döntés a tiéd.`, 'human');
+
+  // reset surfaces for the next round (keep state file)
+  await sleep(900);
+  surfaces.forEach(n => { n.classList.remove('done'); n.querySelector('.timer').textContent = '—'; });
+  statusTxt.textContent = `kör #${round} kész · state file frissítve`;
+  runBtn.disabled = false;
+  runBtn.textContent = '▷ Új kör';
+  running = false;
+}
+
+runBtn.addEventListener('click', runRound);
+// draw wires once layout settles
+setTimeout(drawWires, 400);
+
+/* ===================================================================
+   8-STEP LOOP
+   =================================================================== */
+const STEPS = [
+  ['ASSEMBLE', 'Csapat + transportok rögzítve', 'A felhasználó összeállítja a csapatot: ki melyik szerep, és API-n vagy böngészőn keresztül szól. A zárolt csapat bekerül a state file Team táblájába.', 'preset · per-member transport'],
+  ['ANALYZE', 'Helyi fájlok + egy fat prompt tagonként', 'Claude először a helyi state file-t és a vault-ot nézi, majd minden tagnak EGYETLEN, sűrű promptot fogalmaz, a szerepéhez szabva.', 'local-first · 1 prompt / tag'],
+  ['ACTIVATE', 'Párhuzamos batch', 'Egyetlen körben minden hívás előkészül: az API curl-ök és a Chrome MCP tab-ok ugyanabban a vezénylési lépésben.', 'API + böngésző egy turn-ben'],
+  ['PROMPT', 'Minden prompt egyszerre megy ki', 'Az API-hívások elindulnak (akár háttérben), a böngésző-tagokba beinjektálódik a prompt (clipboard-bridge fallbackkel).', 'parallel fire'],
+  ['COLLECT', 'Válaszok begyűjtése', 'API: blokkol a HTTP-válaszra (~3-20 mp, párhuzamosan). Böngésző: az END_OF_RESPONSE tokenre pollozik.', 'wall-time = max(leglassabb)'],
+  ['SYNTHESIZE', 'Lenient parser + JSON merge', 'Minden válasz a megengedő parserrel feldolgozva (kanonikus VAGY lapos GPT-5 alak), majd mező-szinten összefésülve.', 'transport-független'],
+  ['PERSIST', 'State file frissítése', 'Minden tag nyers findings JSON-ja bekerül a state file Raw Notes szekciójába. A böngésző-insightot vissza kell szinkronizálni: ez akadályozza meg a driftet.', 'a tartós agy gyarapodik'],
+  ['EXECUTE', 'Végrehajtás vagy eszkaláció', 'Ha a szintézis elég biztos, Claude cselekszik. Ha nyitott döntés marad, eszkalál a felhasználóhoz: ő a döntési hatóság.', 'Human > local > AI > inference'],
+];
+const loopTrack = document.getElementById('loopTrack');
+const stepDetail = document.getElementById('stepDetail');
+STEPS.forEach((s, i) => {
+  const b = document.createElement('button');
+  b.className = 'step' + (i === 0 ? ' active' : '');
+  b.innerHTML = `<div class="num">${i + 1}</div><div class="sname">${s[0]}</div>`;
+  b.addEventListener('click', () => selectStep(i));
+  loopTrack.appendChild(b);
+});
+function selectStep(i) {
+  [...loopTrack.children].forEach((c, j) => c.classList.toggle('active', j === i));
+  const s = STEPS[i];
+  stepDetail.innerHTML =
+    `<div class="big">${String(i + 1).padStart(2, '0')}</div>
+     <div><h3>${s[0]} &mdash; ${s[1]}</h3><p>${s[2]}</p><div class="micro">› ${s[3]}</div></div>`;
+}
+selectStep(0);
+
+/* ===================================================================
+   TEAM PRESETS
+   =================================================================== */
+const ROLE_COLOR = { Stratéga: 'var(--claude)', Validátor: 'var(--gpt)', Kutató: 'var(--pplx)', Enterprise: 'var(--copilot)' };
+const PRESETS = {
+  'Premium': {
+    cost: '$0.20 – $0.50 / session',
+    seats: [
+      { role: 'Stratéga', name: 'Opus 4.7', model: 'claude-opus-4-7', t: 'api' },
+      { role: 'Kutató', name: 'Perplexity Pro', model: 'perplexity.ai', t: 'browser' },
+      { role: 'Validátor', name: 'GPT-5', model: 'gpt-5', t: 'api' },
+    ]
+  },
+  'Fast': {
+    cost: '$0.03 – $0.10 / session',
+    seats: [
+      { role: 'Stratéga', name: 'Sonnet 4.5', model: 'claude-sonnet-4-5', t: 'api' },
+      { role: 'Kutató', name: 'Perplexity Pro', model: 'perplexity.ai', t: 'browser' },
+      { role: 'Validátor', name: 'GPT-4o', model: 'gpt-4o', t: 'api' },
+    ]
+  },
+  'Solo Claude': {
+    cost: '$0.05 – $0.15 / session',
+    seats: [
+      { role: 'Stratéga', name: 'Opus 4.7', model: 'claude-opus-4-7', t: 'api' },
+      { role: 'Kutató', name: '—', model: 'nincs kutató', t: 'empty' },
+      { role: 'Validátor', name: 'Sonnet 4.5', model: 'devil\'s advocate prompt', t: 'api' },
+    ]
+  },
+  'Browser-Only': {
+    cost: '$0 (csak előfizetés)',
+    seats: [
+      { role: 'Stratéga', name: 'ChatGPT Plus', model: 'chatgpt.com', t: 'browser' },
+      { role: 'Kutató', name: 'Perplexity Pro', model: 'perplexity.ai', t: 'browser' },
+      { role: 'Validátor', name: 'Copilot', model: 'm365 copilot', t: 'browser' },
+    ]
+  },
+};
+const presetBar = document.getElementById('presetBar');
+const teamBoard = document.getElementById('teamBoard');
+const costLine = document.getElementById('costLine');
+Object.keys(PRESETS).forEach((name, i) => {
+  const b = document.createElement('button');
+  b.className = 'preset' + (i === 0 ? ' active' : '');
+  b.textContent = name;
+  b.addEventListener('click', () => selectPreset(name, b));
+  presetBar.appendChild(b);
+});
+function selectPreset(name, btn) {
+  [...presetBar.children].forEach(c => c.classList.toggle('active', c === btn));
+  const p = PRESETS[name];
+  teamBoard.innerHTML = '';
+  p.seats.forEach((s, idx) => {
+    const seat = document.createElement('div');
+    const empty = s.t === 'empty';
+    seat.className = 'seat' + (empty ? ' empty' : '');
+    seat.style.setProperty('--seatc', ROLE_COLOR[s.role] || 'var(--paper-faint)');
+    seat.style.transitionDelay = (idx * 0.05) + 's';
+    const tHtml = empty ? '' :
+      `<span class="transport ${s.t}">${s.t === 'api' ? 'API' : 'BÖNGÉSZŐ'}</span>`;
+    seat.innerHTML = `<div class="srole">${s.role}</div><h4>${s.name}</h4><div class="model">${s.model}</div>${tHtml}`;
+    teamBoard.appendChild(seat);
+    // micro pop-in
+    seat.style.opacity = '0'; seat.style.transform = 'translateY(10px)';
+    requestAnimationFrame(() => { seat.style.opacity = ''; seat.style.transform = ''; });
+  });
+  costLine.innerHTML = `Becsült költség: <b>${p.cost}</b>`;
+}
+selectPreset('Premium', presetBar.children[0]);
+</script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+---
+layer: 6
+layer_name: Creative Direction → Design System
+project: {{PROJECT_NAME}}
+date_started: {{TODAY}}
+date_completed:
+tool_used:
+status: in_progress
+---
+
+# Creative Direction → Design System — {{PROJECT_NAME}}
+
+> **Mit termel:** stylescape (3 ellentétes irány — Chris Do) + formalizált design system (paletta, tipográfia, tokenek, komponensek, restraint rules).
+
+> **Kritikus szabály:** **ELŐBB** a vizuális irány (mood), **AZUTÁN** a formalizált rendszer. A design system **nem tokenekből indul** — Brad Frost: a tokenek "subatomic", önmagukban nem funkcionálisak. Tokens-first öli az art directiont.
+
+> **Anti-reference check KÖTELEZŐ** — olvasd be a state `anti_references` mezőjét vagy a `_anti_references.md`-t.
+
+> **Frameworks:** Kapferer Physique facet · Chris Do stylescape · Atomic Design (Brad Frost) · W3C Design Tokens (DTCG)
+> **Default tool:** brand-toolkit · brand-visual-identity → ui-ux-pro-max → designer-skills (audit)
+
+---
+
+## 0. Anti-reference check (KÖTELEZŐ)
+
+> Mielőtt bármilyen színt vagy fontot választasz, sorold fel mit NEM szabad utánoznod.
+
+### Vault többi projektje (auto-list)
+- [TODO — pl. „DH: warm brick #9B2335 + cream + Playfair Display — FOGLALT"]
+
+### Iparági első reflex
+- [TODO — pl. „tech cég → dark mode + neon + monospace"]
+
+### Iparági második reflex
+- [TODO — pl. „tech cég → modernist Helvetica grid"]
+
+### Művészi korlátok (constraint-injection)
+- [TODO — pl. „csak monospace fontok", „semmilyen rounded corner", „nincs gradient"]
+
+### Fizikai-világ referencia-fotók
+- [TODO — path-ok vagy URL-ek, pl. "/refs/old-butcher-tile.jpg"]
+
+---
+
+## 1. Stylescape — 3 ellentétes irány *(Chris Do módszer)*
+
+> Nem 3 variáció — 3 **ellentét**. Premium tier-ben mindhárom kötelező.
+
+### Direction A — [TODO — pl. „Cathedral monochrome"]
+- **Mood:** [TODO — 1-2 mondat]
+- **Color palette:** [TODO — 3-5 hex]
+- **Typography:** [TODO — heading + body font]
+- **Reference images / brands:** [TODO]
+- **Anti-reference:** [TODO — mi NEM ez]
+
+### Direction B — [TODO]
+- ... (ugyanúgy)
+
+### Direction C — [TODO]
+- ... (ugyanúgy)
+
+### Kiválasztott irány
+**Choice:** [TODO — A / B / C]
+**Indoklás:** [TODO]
+
+---
+
+## 2. Formalizált design system *(a kiválasztott irány alapján)*
+
+### Color tokens
+
+```yaml
+# W3C DTCG formátum
+color:
+  brand:
+    primary: { value: "#TODO", description: "" }
+    secondary: { value: "#TODO", description: "" }
+    accent: { value: "#TODO", description: "" }
+  neutral:
+    paper: { value: "#TODO" }
+    ink: { value: "#TODO" }
+    line: { value: "#TODO" }
+    soft: { value: "#TODO" }
+    faint: { value: "#TODO" }
+  semantic:
+    success: { value: "#TODO" }
+    warning: { value: "#TODO" }
+    error: { value: "#TODO" }
+    info: { value: "#TODO" }
+```
+
+**Restraint rule:** [TODO — pl. „a primary csak hero CTA-n + active nav-on; <10% a felületből"]
+
+### Typography tokens
+
+```yaml
+font:
+  heading:
+    family: "[TODO]"
+    weights: [TODO]
+    usage: "[TODO]"
+  body:
+    family: "[TODO]"
+    weights: [TODO]
+  mono:
+    family: "[TODO]"
+    usage: "[TODO]"
+
+scale:
+  display: { size: "TODO px", weight: TODO, line-height: TODO }
+  h1: { size: "TODO px", weight: TODO }
+  h2: { size: "TODO px", weight: TODO }
+  body: { size: "TODO px", weight: 400 }
+  small: { size: "TODO px", weight: 400 }
+```
+
+### Spacing tokens
+
+```yaml
+spacing:
+  base: 4    # 4px / 8px grid
+  scale: [4, 8, 12, 16, 24, 32, 48, 64, 96]
+```
+
+### Border radius
+
+```yaml
+radius:
+  none: 0
+  sm: 4px
+  md: 8px
+  lg: 12px
+  full: 999px
+```
+
+### Elevation / shadow
+
+```yaml
+shadow:
+  none: 0
+  sm: "0 1px 2px rgba(0,0,0,.04)"
+  md: "0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06)"
+  lg: "0 4px 12px rgba(0,0,0,.08), 0 20px 48px rgba(0,0,0,.12)"
+```
+
+### Motion tokens
+
+```yaml
+duration:
+  fast: 150ms
+  base: 250ms
+  slow: 400ms
+
+easing:
+  out: "cubic-bezier(0.16, 1, 0.3, 1)"     # ease-out-quart
+  in-out: "cubic-bezier(0.65, 0, 0.35, 1)"
+```
+
+---
+
+## 3. Component inventory
+
+| Komponens | Variánsok | Hol használjuk |
+|---|---|---|
+| Button | primary / secondary / tertiary / ghost | minden CTA, form |
+| Input | text / email / number / textarea | form |
+| Card | default / featured / [TODO] | section content |
+| Modal | confirmation / form / [TODO] | overlay |
+| Badge | [TODO] | status, label |
+| [TODO] | | |
+
+---
+
+## 4. Restraint rules — „mit NEM"
+
+> Anti-pattern lista a projekthez. Bárki, aki itt épít, ezt nem hághatja át.
+
+- [TODO — pl. „nincs gradient text"]
+- [TODO — pl. „nincs side-stripe border"]
+- [TODO — pl. „nincs glassmorphism mint default"]
+- [TODO — pl. „nincs em dash, nincs `--`"]
+- [TODO — pl. „nincs hero-metric template"]
+- [TODO — pl. „nincs identical card grid"]
+
+---
+
+## 5. AI slop check
+
+- [ ] Valaki ki tudná-e találni a paletta+fontot a kategóriából? Ha igen → újrakezdés.
+- [ ] A site-rendszer egyértelműen különbözik a vault többi projektjétől? (anti-ref check)
+- [ ] A creative direction-t a 3 stylescape-ből döntöttük el, nem reflexből?
+
+---
+
+## Decisions
+
+- {{TODAY}}: Layer 6 kezdés, anti-reference list lezárva.
+- {{TODAY}}: Stylescape Direction [A/B/C] kiválasztva.
+
+## Open questions
+
+- [ ] [TODO]

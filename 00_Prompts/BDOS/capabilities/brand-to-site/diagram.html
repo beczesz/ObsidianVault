@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Brand Spine v0.2 — Decision Spine · BDOS Capability</title>
+<style>
+  :root {
+    --ink: #1c1a17;
+    --ink-soft: #5b554d;
+    --ink-faint: #8a8378;
+    --paper: #faf8f4;
+    --paper-raised: #ffffff;
+    --line: #e3ddd2;
+    --line-strong: #cdc5b6;
+    --accent: #9a3b2e;
+    --accent-soft: #f3e4e0;
+    --think: #2f5d50;
+    --think-soft: #e3ede9;
+    --cat: #4a4a8a;
+    --cat-soft: #e8e8f1;
+    --pulse: #b5832b;
+    --pulse-soft: #f4ead4;
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(28,26,23,.04), 0 8px 24px rgba(28,26,23,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--paper); color: var(--ink); line-height: 1.6;
+    padding: clamp(20px, 5vw, 64px) clamp(16px, 4vw, 40px) 80px;
+  }
+  .wrap { max-width: 940px; margin: 0 auto; }
+  header { margin-bottom: clamp(26px, 5vw, 44px); }
+  .kicker { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+  .kicker .v { color: var(--ink-faint); }
+  h1 { font-family: Georgia, "Iowan Old Style", "Palatino Linotype", serif; font-size: clamp(28px, 5.5vw, 44px); line-height: 1.12; letter-spacing: -.01em; font-weight: 600; margin-bottom: 14px; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede { font-size: clamp(15px, 2.2vw, 18px); color: var(--ink-soft); max-width: 64ch; }
+  .lede b { color: var(--ink); }
+  .meta-row { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px 10px; font-size: 12.5px; color: var(--ink-faint); }
+  .chip { border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px 11px; background: var(--paper-raised); white-space: nowrap; }
+
+  /* tip banner — non-linearity */
+  .banner { margin-top: 20px; padding: 14px 18px; background: linear-gradient(90deg, var(--pulse-soft), #fdf6e7); border: 1px solid #ead7a8; border-left: 4px solid var(--pulse); border-radius: var(--radius); font-size: 13.5px; color: #5e441b; }
+  .banner b { color: #3d2c0e; }
+  .banner code { background: rgba(255,255,255,.6); border: 1px solid #ead7a8; border-radius: 5px; padding: 0 6px; font-size: 12px; }
+  .banner .hint { display:inline-block; margin-left: 6px; font-size: 11.5px; color: var(--pulse); font-weight: 600; }
+
+  /* legend */
+  .legend { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 22px 0; padding: 14px 16px; background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); font-size: 13px; color: var(--ink-soft); }
+  .legend b { color: var(--ink); font-weight: 600; }
+  .dot { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 7px; vertical-align: middle; }
+  .dot.strat { background: var(--accent); }
+  .dot.think { background: var(--think); }
+  .dot.cat { background: var(--cat); }
+  .dot.pulse { background: var(--pulse); border-radius: 999px; }
+  .legend .click-hint { margin-left: auto; font-size: 12px; color: var(--accent); font-weight: 600; }
+  .legend .matrix-link { font-size: 12.5px; padding: 5px 12px 5px 10px; border-radius: 999px; background: var(--accent); color: #fff; font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 5px; transition: all .15s; box-shadow: 0 1px 2px rgba(154,59,46,.2), 0 4px 12px rgba(154,59,46,.15); }
+  .legend .matrix-link:hover { background: #7d2f25; transform: translateY(-1px); }
+  .legend .matrix-link .icon { font-size: 14px; }
+
+  /* ---- two-column band ---- */
+  .band { display: grid; grid-template-columns: 1fr 280px; gap: 28px; align-items: start; }
+  @media (max-width: 820px) { .band { grid-template-columns: 1fr; } }
+
+  /* ---- spine ---- */
+  .spine { position: relative; padding-left: 36px; }
+  @media (max-width: 620px) { .spine { padding-left: 26px; } }
+  .spine::before { content:""; position:absolute; left:63px; top:8px; bottom:62px; width:2px; background: linear-gradient(var(--accent), var(--accent) 42%, var(--cat) 70%, var(--think)); z-index: 1; }
+  @media (max-width: 620px) { .spine::before { left: 45px; } }
+
+  /* feedback loop SVG layer — sits behind everything in spine */
+  .feedback-svg { position: absolute; left: 0; top: 0; width: 36px; height: 100%; pointer-events: none; z-index: 0; }
+  @media (max-width: 620px) { .feedback-svg { width: 26px; } }
+
+  .layer { position: relative; padding-left: 70px; margin-bottom: 12px; z-index: 2; }
+  @media (max-width: 620px) { .layer { padding-left: 50px; } }
+  .node { position:absolute; left:0; top:14px; width:56px; height:56px; border-radius:50%; background: var(--paper-raised); border:2px solid var(--line-strong); display:flex; align-items:center; justify-content:center; font-family: Georgia, serif; font-size:19px; font-weight:600; color: var(--ink-soft); box-shadow: var(--shadow); z-index:2; }
+  @media (max-width: 620px) { .node { width:40px; height:40px; font-size:14px; top:12px; } }
+  .layer.s1 .node, .layer.s2 .node, .layer.s3 .node, .layer.s4 .node { border-color: var(--accent); color: var(--accent); }
+  .layer.s5 .node { border-color: var(--think); color: var(--think); }
+  .layer.s6 .node { border-color: var(--cat); color: var(--cat); }
+  .layer.s7 .node { border-color: var(--think); color: var(--think); }
+  .layer.pulse .node { border-color: var(--pulse); color: var(--pulse); border-style: dashed; font-size: 22px; }
+
+  .card { background: var(--paper-raised); border:1px solid var(--line); border-radius: var(--radius); padding: 16px 18px 14px; box-shadow: var(--shadow); cursor: pointer; transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; position: relative; }
+  .card:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(28,26,23,.06), 0 14px 32px rgba(28,26,23,.09); border-color: var(--line-strong); }
+  .card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .layer.s1 .card, .layer.s2 .card, .layer.s3 .card, .layer.s4 .card { border-left: 3px solid var(--accent); }
+  .layer.s5 .card, .layer.s7 .card { border-left: 3px solid var(--think); }
+  .layer.s6 .card { border-left: 3px solid var(--cat); }
+  .layer.pulse .card { border-left: 3px solid var(--pulse); background: var(--pulse-soft); border-color: #e7d6ac; }
+
+  .card-head { display:flex; align-items:baseline; flex-wrap:wrap; gap:6px 10px; margin-bottom:6px; }
+  .card h2 { font-family: Georgia, serif; font-size: 17.5px; font-weight:600; letter-spacing:-.005em; }
+  .card h2 small { font-family: ui-sans-serif, sans-serif; font-size: 12px; font-weight:400; color: var(--ink-faint); font-style: italic; }
+  .card p { font-size: 13.5px; color: var(--ink-soft); }
+  .card p b { color: var(--ink); font-weight: 600; }
+  .info-icon { position:absolute; top:10px; right:12px; width:18px; height:18px; border-radius:50%; border:1px solid var(--line-strong); color:var(--ink-faint); font-size:11px; font-weight:700; display:flex; align-items:center; justify-content:center; font-style:italic; background: var(--paper); transition: all .15s; }
+  .card:hover .info-icon { color: var(--accent); border-color: var(--accent); background: var(--accent-soft); }
+
+  .tags { margin-top: 9px; display:flex; flex-wrap:wrap; gap:5px 6px; }
+  .tag { font-size: 10.5px; letter-spacing:.02em; padding: 2px 8px; border-radius: 999px; white-space: nowrap; cursor: pointer; border: 1px solid transparent; font-family: inherit; transition: all .12s; }
+  .tag:hover { transform: translateY(-1px); }
+  .tag:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+  .tag.fw { background: var(--accent-soft); color: var(--accent); }
+  .tag.fw:hover { background: #ecd2cb; }
+  .tag.tool { background: #eef0f3; color: #555; border-color: #e0e2e6; }
+  .tag.tool:hover { background: #e4e7ec; }
+  .tag.think { background: var(--think-soft); color: var(--think); }
+  .tag.think:hover { background: #d2e1dc; }
+  .tag.cat { background: var(--cat-soft); color: var(--cat); }
+  .tag.cat:hover { background: #dadaea; }
+  .beauty-flag { display:inline-block; margin-top:9px; font-size:12px; font-weight:600; color: var(--accent); background: var(--accent-soft); padding: 3px 9px; border-radius: 8px; }
+
+  /* connector caption between 5 & 6 */
+  .together { margin: 4px 0 14px 70px; padding: 10px 14px; font-size: 12.5px; color: var(--think); display:flex; align-items:center; gap:10px; background: var(--think-soft); border-radius: 10px; border: 1px dashed #b6cdc4; }
+  @media (max-width: 620px) { .together { margin-left: 50px; } }
+  .together::before { content:"⇅"; font-size: 18px; color: var(--think); }
+  .together b { color: var(--ink); }
+
+  .pulse-note { margin: 6px 0 0 70px; font-size: 12px; color: var(--pulse); font-weight:600; display: flex; align-items: center; gap: 6px; }
+  @media (max-width: 620px) { .pulse-note { margin-left: 50px; } }
+
+  /* ---- side rail ---- */
+  .rail { display:flex; flex-direction:column; gap: 18px; position: sticky; top: 24px; }
+  @media (max-width: 820px) { .rail { position: static; } }
+  .rail-box { background: var(--paper-raised); border:1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); cursor: pointer; transition: transform .15s, box-shadow .15s; }
+  .rail-box:hover { transform: translateY(-1px); box-shadow: 0 2px 4px rgba(28,26,23,.06), 0 14px 32px rgba(28,26,23,.09); }
+  .rail-box h3 { font-family: Georgia, serif; font-size: 12px; letter-spacing:.12em; text-transform:uppercase; color: var(--ink-faint); margin-bottom: 12px; display:flex; justify-content:space-between; align-items:center; }
+  .rail-box h3 span.info { font-size: 10px; font-style:italic; color: var(--accent); text-transform: none; letter-spacing:.02em; }
+  .rail-box.inputs { border-style: dashed; }
+  .rail-box.inputs h3 { color: var(--ink-soft); }
+  .rail-box ul { list-style:none; display:flex; flex-direction:column; gap: 10px; }
+  .rail-box li { font-size: 13px; color: var(--ink-soft); padding-left: 14px; position: relative; line-height:1.45; }
+  .rail-box li::before { content:""; position:absolute; left:0; top:8px; width:6px; height:6px; border-radius:999px; background: var(--ink-faint); }
+  .rail-box li b { color: var(--ink); font-weight:600; }
+  .rail-box.inputs li::before { border-radius:1px; border:1px solid var(--ink-faint); background: transparent; }
+
+  .tier { font-size: 13px; color: var(--ink-soft); padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .tier:last-child { border-bottom: none; }
+  .tier .name { font-family: Georgia, serif; font-weight:600; color: var(--ink); font-size: 14px; }
+  .tier .n { display:inline-block; min-width: 18px; text-align:center; font-size: 11px; font-weight:700; color: #fff; background: var(--accent); border-radius: 999px; padding: 1px 6px; margin-left: 6px; }
+  .tier.lean .n { background: var(--think); }
+  .tier.prem .n { background: var(--cat); }
+  .tier .who { display:block; color: var(--ink-faint); font-size:12px; margin-top: 2px; }
+
+  /* handoff */
+  .handoff { margin: 22px 0 0; padding: 14px 18px; border:1px dashed var(--line-strong); border-radius: var(--radius); background: var(--paper-raised); font-size: 13.5px; color: var(--ink-soft); }
+  .handoff b { color: var(--ink); }
+  .handoff .arrow { color: var(--accent); font-weight:700; padding: 0 5px; }
+  .handoff .pulse-arrow { color: var(--pulse); font-weight: 700; }
+
+  /* thesis */
+  .thesis { margin-top: clamp(30px, 5vw, 48px); padding: clamp(22px, 3.5vw, 32px); background: var(--ink); color: var(--paper); border-radius: var(--radius); box-shadow: var(--shadow); }
+  .thesis h3 { font-family: Georgia, serif; font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:#c9a99f; margin-bottom: 16px; }
+  .thesis dl { display:grid; gap: 14px; }
+  .thesis dt { font-family: Georgia, serif; font-size:17.5px; font-weight:600; color:#fff; margin-bottom:2px; }
+  .thesis dt em { font-style:italic; color:#e2b5aa; }
+  .thesis dd { font-size:13.5px; color:#c4bdb2; line-height:1.5; }
+  .thesis dd b { color:#efe9df; }
+  .thesis .new { font-size:10px; letter-spacing:.08em; text-transform:uppercase; background:#3a352f; color:#c9a99f; padding:1px 6px; border-radius:5px; margin-left:6px; vertical-align:middle; }
+
+  .changelog { margin-top: 22px; padding: 14px 18px; background: var(--paper-raised); border:1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); font-size: 12.5px; color: var(--ink-soft); }
+  .changelog b { color: var(--ink); }
+  .changelog .src { color: var(--ink-faint); }
+
+  footer { margin-top: 36px; font-size:12px; color: var(--ink-faint); text-align:center; line-height:1.7; }
+  footer code { background: var(--paper-raised); border:1px solid var(--line); border-radius:5px; padding:1px 6px; font-size:11.5px; }
+
+  /* ============ MODAL ============ */
+  .modal-backdrop {
+    position: fixed; inset: 0; background: rgba(28,26,23,.55); backdrop-filter: blur(4px);
+    display: none; align-items: flex-start; justify-content: center; padding: 5vh 16px;
+    z-index: 100; overflow-y: auto;
+    animation: fadeIn .18s ease-out;
+  }
+  .modal-backdrop.open { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal {
+    background: var(--paper-raised); border-radius: var(--radius); max-width: 680px; width: 100%;
+    box-shadow: 0 20px 60px rgba(0,0,0,.3); overflow: hidden;
+    animation: slideUp .22s ease-out;
+    max-height: 90vh; display: flex; flex-direction: column;
+  }
+  .modal-head { padding: 24px 28px 18px; border-bottom: 1px solid var(--line); position: relative; }
+  .modal-head .modal-kicker { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; margin-bottom: 8px; }
+  .modal-head h2 { font-family: Georgia, serif; font-size: 26px; line-height: 1.15; font-weight: 600; color: var(--ink); }
+  .modal-head h2 em { font-style: italic; }
+  .modal-head .sub { margin-top: 8px; font-size: 14px; color: var(--ink-soft); font-style: italic; }
+  .modal-close { position: absolute; top: 18px; right: 18px; background: var(--paper); border: 1px solid var(--line-strong); width: 32px; height: 32px; border-radius: 50%; font-size: 18px; color: var(--ink-soft); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+  .modal-close:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .modal-body { padding: 22px 28px 28px; overflow-y: auto; }
+  .modal-body section { margin-bottom: 22px; }
+  .modal-body section:last-child { margin-bottom: 0; }
+  .modal-body h4 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin-bottom: 8px; }
+  .modal-body p { font-size: 14.5px; color: var(--ink); line-height: 1.6; margin-bottom: 8px; }
+  .modal-body p:last-child { margin-bottom: 0; }
+  .modal-body p b { font-weight: 600; }
+  .modal-body p em { font-style: italic; color: var(--ink-soft); }
+  .modal-body ul { padding-left: 0; list-style: none; }
+  .modal-body ul li { font-size: 14px; color: var(--ink); padding-left: 18px; position: relative; margin-bottom: 6px; line-height: 1.55; }
+  .modal-body ul li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+  .modal-body code { background: #f3efe7; border: 1px solid var(--line); border-radius: 5px; padding: 1px 7px; font-size: 12.5px; font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .modal-body .quote { border-left: 3px solid var(--accent); padding: 8px 16px; background: var(--accent-soft); border-radius: 0 8px 8px 0; font-style: italic; font-size: 14px; color: var(--ink); }
+  .modal-body .danger { border-left: 3px solid #c0473b; background: #fbeae8; padding: 8px 16px; border-radius: 0 8px 8px 0; font-size: 13.5px; color: #6b2521; }
+  .modal-body .danger b { color: #6b2521; }
+  .modal-body .source { font-size: 12px; color: var(--ink-faint); }
+  .modal-body .source a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
+  .modal-body .modal-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .modal-body .modal-tag { font-size: 11px; padding: 3px 9px; border-radius: 999px; background: var(--paper); border: 1px solid var(--line-strong); color: var(--ink-soft); cursor: pointer; transition: all .12s; font-family: inherit; }
+  .modal-body .modal-tag:hover { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); }
+
+  /* ---- Skills grid in tool modals ---- */
+  .skills-group { margin-top: 14px; }
+  .skills-group .group-label { font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--ink-faint); margin-bottom: 8px; padding-left: 2px; }
+  .skills-grid { display: grid; grid-template-columns: 1fr; gap: 6px; }
+  @media (min-width: 600px) { .skills-grid { grid-template-columns: 1fr 1fr; } }
+  .skill-row { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 11px; cursor: pointer; transition: all .12s; text-align: left; font-family: inherit; }
+  .skill-row:hover { border-color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
+  .skill-row .skill-name { display: block; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; font-weight: 600; color: var(--ink); margin-bottom: 2px; }
+  .skill-row .skill-one { display: block; font-size: 11.5px; color: var(--ink-soft); line-height: 1.35; }
+  .skill-row.cmd .skill-name::before { content: "/"; color: var(--accent); }
+
+  /* ---- Back link in skill modals ---- */
+  .back-link { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; color: var(--ink-soft); background: var(--paper); border: 1px solid var(--line-strong); padding: 3px 9px 3px 7px; border-radius: 999px; cursor: pointer; font-family: inherit; transition: all .12s; margin-bottom: 10px; }
+  .back-link:hover { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .back-link::before { content: "←"; font-weight: 700; }
+
+  /* Example code block */
+  .modal-body .code-block { background: #1c1a17; color: #f3efe7; border-radius: 8px; padding: 10px 14px; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12.5px; line-height: 1.55; overflow-x: auto; white-space: pre-wrap; }
+  .modal-body .code-block .prompt { color: #c9a99f; }
+  .modal-body .code-block .cmd { color: #e2b5aa; }
+
+  /* color by category */
+  .modal[data-cat="strat"] .modal-head { background: var(--accent-soft); }
+  .modal[data-cat="strat"] .modal-kicker { color: var(--accent); }
+  .modal[data-cat="think"] .modal-head { background: var(--think-soft); }
+  .modal[data-cat="think"] .modal-kicker { color: var(--think); }
+  .modal[data-cat="cat"] .modal-head { background: var(--cat-soft); }
+  .modal[data-cat="cat"] .modal-kicker { color: var(--cat); }
+  .modal[data-cat="pulse"] .modal-head { background: var(--pulse-soft); }
+  .modal[data-cat="pulse"] .modal-kicker { color: var(--pulse); }
+  .modal[data-cat="fw"] .modal-head { background: var(--accent-soft); }
+  .modal[data-cat="fw"] .modal-kicker { color: var(--accent); }
+  .modal[data-cat="tool"] .modal-head { background: #eef0f3; }
+  .modal[data-cat="tool"] .modal-kicker { color: #555; }
+  .modal[data-cat="input"] .modal-head { background: #efece6; }
+  .modal[data-cat="input"] .modal-kicker { color: var(--ink-soft); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">BDOS · Capability · brand-to-site <span class="v">— v0.2 (Decision Spine)</span></div>
+    <h1><em>Mi rejlik</em> egy komplex, gyönyörű, de mégis letisztult marketing weboldal mögött?</h1>
+    <p class="lede">Egy <b>döntési gerinc</b> — nem "szép weboldal gyártási folyamat". Megakadályozza, hogy szétessen a stratégia, a copy, a design és a build között. Nevesített frameworkökre épül, nem kitalált sémára.</p>
+
+    <div class="banner">
+      <b>↕ A sorrend = függőségi mélység, NEM időrend / vízesés.</b> Az alulról-felfelé sorrend azt jelenti: a felsőbb rétegek az alsóbbakra építenek. A <b>gyakorlatban</b>: a copy és a wireframe (5) <b>együtt születik</b> &nbsp;·&nbsp; a Pulse loop (lent) <b>visszacsatol a 2–5. rétegre</b> &nbsp;·&nbsp; ha valami nem rezonál, gyakran nem a designt cseréled, hanem a messaget. <span class="hint">↓ kattints bárhova a részletekért</span>
+    </div>
+
+    <div class="meta-row">
+      <span class="chip">v0.2 — 2026-05-13</span>
+      <span class="chip">multi-AI brainstorm: ChatGPT + Perplexity + Gemini</span>
+      <span class="chip">tier: Lean(5) / Standard(7) / Premium(9)</span>
+      <span class="chip">pilot: DH — Lean tier</span>
+      <span class="chip">downstream → Microsite Factory</span>
+    </div>
+  </header>
+
+  <div class="legend">
+    <span><span class="dot strat"></span><b>Stratégia</b> — ember / brainstorm + brand-toolkit</span>
+    <span><span class="dot think"></span><b>impeccable</b> — IA-ítélet + build craft</span>
+    <span><span class="dot cat"></span><b>design katalógus</b> — ui-ux-pro-max / ux-pilot / designer-skills</span>
+    <span><span class="dot pulse"></span><b>Pulse</b> — analytics + iteráció</span>
+    <span class="click-hint">→ kattints kártyákra / cimkékre</span>
+    <a class="matrix-link" href="decision-matrix.html" title="11 tool × 12 képesség hőtérkép — ki mire a legjobb"><span class="icon">▦</span>Decision matrix ↗</a>
+  </div>
+
+  <div class="band">
+    <div class="spine">
+
+      <!-- Feedback loop SVG on the left -->
+      <svg class="feedback-svg" viewBox="0 0 36 1000" preserveAspectRatio="none">
+        <defs>
+          <marker id="arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#b5832b"/>
+          </marker>
+        </defs>
+        <!-- main loop from bottom (Pulse) curving up to layer 2 -->
+        <path d="M 18 980 Q 4 800 4 600 Q 4 350 4 180 Q 4 100 18 70" stroke="#b5832b" stroke-width="1.8" fill="none" stroke-dasharray="4 4" marker-end="url(#arrowhead)" opacity=".75"/>
+        <!-- branches to layer 3, 4, 5 -->
+        <path d="M 4 600 Q 10 380 22 260" stroke="#b5832b" stroke-width="1.2" fill="none" stroke-dasharray="3 4" marker-end="url(#arrowhead)" opacity=".5"/>
+        <path d="M 4 600 Q 10 480 22 400" stroke="#b5832b" stroke-width="1.2" fill="none" stroke-dasharray="3 4" marker-end="url(#arrowhead)" opacity=".5"/>
+        <path d="M 4 600 Q 10 560 22 540" stroke="#b5832b" stroke-width="1.2" fill="none" stroke-dasharray="3 4" marker-end="url(#arrowhead)" opacity=".5"/>
+      </svg>
+
+      <div class="layer s1" data-modal="layer-1"><div class="node">1</div>
+        <div class="card" tabindex="0">
+          <span class="info-icon">i</span>
+          <div class="card-head"><h2>Brand Core <small>volt: Alkotmány</small></h2></div>
+          <p>Miért létezünk, miben hiszünk, mi a karakterünk, <b>mit nem csinálunk</b>. NEM 20 oldalas manifesto — 1 oldal elég. A gyökér, ettől nem generikus.</p>
+          <div class="tags">
+            <button class="tag fw" data-modal="fw-golden-circle">Golden Circle</button>
+            <button class="tag fw" data-modal="fw-brand-pyramid">Brand Pyramid</button>
+            <button class="tag tool" data-modal="tool-brand-toolkit">brand-toolkit · voice</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer s2" data-modal="layer-2"><div class="node">2</div>
+        <div class="card" tabindex="0">
+          <span class="info-icon">i</span>
+          <div class="card-head"><h2>Market &amp; Audience Reality</h2></div>
+          <p>Kinek szól, milyen <b>awareness-szinten</b>, milyen alternatívákat mérlegel, milyen döntési helyzetben érkezik, kik a versenytársak. JTBD: milyen <b>haladást</b> akar elérni.</p>
+          <div class="tags">
+            <button class="tag fw" data-modal="fw-jtbd">Jobs-to-be-Done</button>
+            <button class="tag fw" data-modal="fw-ladder">Ladder of Awareness</button>
+            <button class="tag tool" data-modal="tool-brand-toolkit">brand-toolkit</button>
+            <button class="tag tool" data-modal="tool-dembrandt">Dembrandt · versenytárs</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer s3" data-modal="layer-3"><div class="node">3</div>
+        <div class="card" tabindex="0">
+          <span class="info-icon">i</span>
+          <div class="card-head"><h2>Positioning &amp; Offer</h2></div>
+          <p>Kategória, fő ígéret, <b>differenciátor</b>, a konkrét ajánlat, a konverziós cél. Innen következik minden lentebb.</p>
+          <div class="tags">
+            <button class="tag fw" data-modal="fw-dunford">April Dunford — Obviously Awesome</button>
+            <button class="tag tool" data-modal="tool-brand-toolkit">brand-toolkit · positioning</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer s4" data-modal="layer-4"><div class="node">4</div>
+        <div class="card" tabindex="0">
+          <span class="info-icon">i</span>
+          <div class="card-head"><h2>Messaging &amp; Proof Architecture</h2></div>
+          <p>Üzeneti hierarchia, <b>objections</b> (mitől nem hisz nekünk?), proof points, trust elemek. A "letisztult üzenet" itt áll össze — a szavak még nem. <b>A proof nem a copy végén jön — szerkezeti elem.</b></p>
+          <div class="tags">
+            <button class="tag fw" data-modal="fw-storybrand">StoryBrand / PEACE</button>
+            <button class="tag fw" data-modal="fw-mmf">Message-Market Fit</button>
+            <button class="tag fw" data-modal="fw-objection">Objection Mapping</button>
+            <button class="tag tool" data-modal="tool-brand-toolkit">brand-toolkit · messaging</button>
+            <button class="tag tool" data-modal="tool-marketingskills">marketingskills</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer s5" data-modal="layer-5"><div class="node">5</div>
+        <div class="card" tabindex="0">
+          <span class="info-icon">i</span>
+          <div class="card-head"><h2>Narrative UX + IA</h2></div>
+          <p>Milyen oldalak/szekciók, milyen sorrendben, a <b>meggyőzési ív</b> (probléma → miért mi → bizonyíték → akció), a CTA-logika, a látogatói út.</p>
+          <div class="tags">
+            <button class="tag fw" data-modal="fw-content-first">Content-First</button>
+            <button class="tag fw" data-modal="fw-storybrand-wire">StoryBrand wireframe</button>
+            <button class="tag think" data-modal="tool-impeccable">impeccable · gondolkodó mód</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="together">A copy (a tényleges headline-ok / section szövegek / CTA-k) és a wireframe <b>együtt születik</b> — nem utólag. Headline nélkül nincs jó hero.</div>
+
+      <div class="layer s6" data-modal="layer-6"><div class="node">6</div>
+        <div class="card" tabindex="0">
+          <span class="info-icon">i</span>
+          <div class="card-head"><h2>Creative Direction → Design System</h2></div>
+          <p><b>ELŐBB a vizuális irány</b> (prémium / artisan / editorial / tech / minimal…), <b>AZUTÁN</b> a formalizált rendszer: paletta, tipográfia, tokenek, komponensek, restraint rules. A design system nem tokenekből indul — egy erős vizuális irányból.</p>
+          <div class="tags">
+            <button class="tag fw" data-modal="fw-kapferer">Kapferer Prism · Physique</button>
+            <button class="tag fw" data-modal="fw-stylescape">Chris Do stylescape</button>
+            <button class="tag fw" data-modal="fw-atomic">Atomic Design</button>
+            <button class="tag fw" data-modal="fw-design-tokens">W3C Design Tokens</button>
+            <button class="tag cat" data-modal="tool-ui-ux-pro-max">ui-ux-pro-max</button>
+            <button class="tag cat" data-modal="tool-ux-pilot">+ ux-pilot</button>
+            <button class="tag tool" data-modal="tool-designer-skills">designer-skills · audit</button>
+            <button class="tag tool" data-modal="tool-tokven">Tokven</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer s7" data-modal="layer-7"><div class="node">7</div>
+        <div class="card" tabindex="0">
+          <span class="info-icon">i</span>
+          <div class="card-head"><h2>Build + Polish + Quality Gate</h2></div>
+          <p>A design systemből + copyból + IA-ból a kész, mobiloptimalizált site + <b>minőségi kapu</b>: performance, responsive, a11y, image quality, consistency, interaction restraint.</p>
+          <span class="beauty-flag">★ itt lakik a „gyönyörű" — a craft a kivitelezésben, nem a katalógusban</span>
+          <div class="tags">
+            <button class="tag fw" data-modal="fw-atomic">Atomic Design · komponens</button>
+            <button class="tag fw" data-modal="fw-mobile-first">Mobile-First</button>
+            <button class="tag think" data-modal="tool-impeccable">impeccable · build+polish</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="layer pulse" data-modal="layer-pulse"><div class="node">↻</div>
+        <div class="card" tabindex="0">
+          <span class="info-icon">i</span>
+          <div class="card-head"><h2>Pulse <small>loop, nem réteg</small></h2></div>
+          <p><b>Analytics, A/B teszt, iteráció.</b> Visszacsatol a 2–5. rétegre — ha az üzenet nem rezonál, nem a designt cseréled. A v0.1-ből teljesen hiányzott.</p>
+          <div class="tags">
+            <button class="tag fw" data-modal="fw-mmf">Message-Market Fit mérés</button>
+            <button class="tag fw" data-modal="fw-cro">CRO</button>
+            <button class="tag tool" data-modal="tool-marketingskills">marketingskills · analytics</button>
+            <button class="tag tool" data-modal="tool-microsite-analytics">Microsite Factory · analytics</button>
+          </div>
+        </div>
+      </div>
+      <div class="pulse-note">↺ a Pulse a bal oldali szaggatott íven keresztül visszacsatol — ez nem vízesés, hanem gerinc + pulzus</div>
+
+    </div>
+
+    <div class="rail">
+      <div class="rail-box inputs" data-modal="inputs">
+        <h3>Inputok — nem rétegek <span class="info">i</span></h3>
+        <ul>
+          <li><b>Brand asset audit</b> — logó, meglévő színek, tipográfia, fotóstílus, brand debt, tabuk. Korlátozza a 6-ot. <span style="color:var(--ink-faint)">(Dembrandt)</span></li>
+          <li><b>Content / media inventory</b> — van-e jó fotó, videó, ügyféllogó? Ha nincs, a creative direction más.</li>
+          <li><b>Business model logika</b> — teljes BMC csak ha kell; landinghez elég a monetizációs logika.</li>
+        </ul>
+      </div>
+
+      <div class="rail-box" data-modal="tiers">
+        <h3>Tier — méret szerint <span class="info">i</span></h3>
+        <div class="tier lean">
+          <span class="name">Lean<span class="n">5</span></span>
+          <span class="who">Kisvállalkozás (DH), kampányoldal, MVP.</span>
+        </div>
+        <div class="tier">
+          <span class="name">Standard<span class="n">7</span></span>
+          <span class="who">A 7 réteg + Pulse. Tipikus marketing site.</span>
+        </div>
+        <div class="tier prem">
+          <span class="name">Premium<span class="n">9</span></span>
+          <span class="who">Prémium szolgáltatás, B2B high-ticket, befektetői oldal.</span>
+        </div>
+      </div>
+
+      <div class="rail-box" data-modal="tool-stack">
+        <h3>Tool-stack <span class="info">i</span></h3>
+        <ul>
+          <li><b>brand-toolkit</b> — Dunford + StoryBrand + voice + visual identity (1–4)</li>
+          <li><b>impeccable</b> — IA-ítélet + build craft (5, 7)</li>
+          <li><b>ui-ux-pro-max + ux-pilot</b> — design katalógus (6)</li>
+          <li><b>designer-skills</b> — design system audit (6)</li>
+          <li><b>marketingskills</b> — copy + CRO + analytics</li>
+          <li><b>Dembrandt / Tokven</b> — asset audit + token gen</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="handoff">
+    <b>Brand Spine</b> <span class="arrow">→</span> kész site <span class="arrow">→</span> <b>Microsite Factory</b> (web-publishing) <span class="arrow">→</span> Cloudflare / Netlify · DNS · SSL · analytics &nbsp;<span class="pulse-arrow">↻ a Pulse loop ide is köthet</span><br>
+    <span style="color:var(--ink-faint)">„mit, kinek, miért — és működik-e" (upstream) &nbsp;|&nbsp; „hogyan élesítjük" (downstream)</span>
+  </div>
+
+  <div class="thesis">
+    <h3>A capability tézise — hol lakik a szépség</h3>
+    <dl>
+      <div><dt><em>Letisztult</em> = önmegtartóztatás</dt>
+        <dd>Egy gondolat / szekció, egy típus/szín/mozgásrendszer, whitespace. → a <b>design system (6)</b> + a jó <b>IA (5)</b>.</dd></div>
+      <div><dt><em>Komplex &amp; gyönyörű</em> = craft a kivitelezésben</dt>
+        <dd>Micro-interactionök, transitionök, fotóminőség, a váratlan-de-helyes részlet. → az <b>impeccable build craft (7)</b>, <b>nem a katalógus</b>.</dd></div>
+      <div><dt><em>Jelentéssel teli</em> = nem generikus</dt>
+        <dd>→ a <b>Brand Core (1) + Positioning (3) + Messaging (4)</b>. A legtöbb csúnya marketing oldal azért az, mert ezeket átugrották.</dd></div>
+      <div><dt><em>És működik is</em> <span class="new">új a v0.2-ben</span></dt>
+        <dd>Mert pontosan tudjuk: kinek <b>(2)</b>, milyen döntési pillanatban <b>(3)</b>, milyen új hitet kell elfogadnia ahhoz, hogy cselekedjen <b>(4)</b> — és mert mérjük <b>(Pulse)</b>.</dd></div>
+    </dl>
+  </div>
+
+  <div class="changelog">
+    <b>v0.1 → v0.2 változások</b> <span class="src">(forrás: multi-AI brainstorm — ChatGPT Strategist, Perplexity Researcher, Gemini Validator, 2026-05-13)</span><br>
+    • 8 réteg → 7 rétegű „Decision Spine" + <b>Pulse loop</b> &nbsp;•&nbsp; „Alkotmány" → <b>Brand Core</b> &nbsp;•&nbsp; új réteg: <b>Market &amp; Audience Reality</b> (JTBD) &nbsp;•&nbsp; <b>Proof</b> és <b>Offer</b> beépítve &nbsp;•&nbsp; design system előtt <b>Creative Direction</b> &nbsp;•&nbsp; <b>copy + wireframe együtt</b> &nbsp;•&nbsp; <b>tier-ek</b> (Lean/Standard/Premium) &nbsp;•&nbsp; nevesített frameworkök &nbsp;•&nbsp; bővített tool-stack
+  </div>
+
+  <footer>
+    BDOS capability · <code>00_Prompts/BDOS/capabilities/brand-to-site/</code> · belépő: <code>CLAUDE.md</code> · brainstorm: <code>brainstorm/brainstorm_brand-spine.md</code>
+  </footer>
+
+</div>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal" id="modal" data-cat="">
+    <div class="modal-head">
+      <div class="modal-kicker" id="modal-kicker"></div>
+      <h2 id="modal-title"></h2>
+      <div class="sub" id="modal-sub"></div>
+      <button class="modal-close" id="modal-close" aria-label="Bezárás">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+// ============ MODAL CONTENT REGISTRY ============
+const MODALS = {
+  /* ===== LAYERS ===== */
+  'layer-1': {
+    cat: 'strat', kicker: '1. réteg · stratégia · gyökér',
+    title: 'Brand Core',
+    sub: 'A márka „lelke" — miért létezünk, miben hiszünk, mit nem csinálunk',
+    sections: [
+      { h: 'Mit termel', p: 'Egy <b>egyoldalas dokumentumot</b>: miért létezünk, mit hiszünk a világról, mi a karakterünk, mit nem vagyunk hajlandók feladni. Nem 20 oldalas manifesto — ha nem fér el egy oldalon, még nem elég tiszta.' },
+      { h: 'Miért fontos', p: 'Ez az <b>egyetlen ok</b>, ami miatt a weboldal nem fog úgy kinézni, mint minden más SaaS landing. Az alkotmány nélkül a site szavainak nincs gyökerük — generikus „innovative, seamless, revolutionary" szóhalom lesz.' },
+      { h: 'Mi megy rosszul, ha kihagyod', danger: 'A site szép lehet, de cserélhető. Egy másik logót rátéve ugyanúgy működik bárkinek. <b>Ez a generikusság gyökere.</b>' },
+      { h: 'Frameworkök', tags: [['fw-golden-circle','Golden Circle'],['fw-brand-pyramid','Brand Pyramid']] },
+      { h: 'Eszköz', tags: [['tool-brand-toolkit','brand-toolkit · voice skill']] },
+      { h: 'Kapcsolódik', p: 'Minden felsőbb réteg ide hivatkozik. A Pulse <b>NEM</b> csatol vissza ide — a Brand Core nem A/B tesztelhető, csak felfedezhető.' }
+    ]
+  },
+  'layer-2': {
+    cat: 'strat', kicker: '2. réteg · stratégia',
+    title: 'Market & Audience Reality',
+    sub: 'Kinek szól, milyen döntési helyzetben — JTBD szerint',
+    sections: [
+      { h: 'Mit termel', p: '1–3 <b>Jobs-to-be-Done állítás</b> ("amikor X helyzetben vagyok, Y haladást akarok elérni, mert Z"), az awareness-szint (Schwartz létrája), a versenytárs-térkép, és a fő alternatívák listája.' },
+      { h: 'Miért fontos', p: 'A persona-fikció ("marketing manager, 35–45") <b>haszontalan</b>. Az emberek nem termékeket vesznek, hanem <b>"felbérelik"</b> azokat egy feladatra (Christensen). A JTBD a tényleges motivációt tárja fel.' },
+      { h: 'Mi megy rosszul, ha kihagyod', danger: 'A copy mindenkinek szól és senkinek. A site „nagyon szépen elmondja, hogy egy AI-asszisztált CRM" — de a látogató arra kíváncsi, hogyan oldja meg az ő pénteki problémáját.' },
+      { h: 'Frameworkök', tags: [['fw-jtbd','Jobs-to-be-Done'],['fw-ladder','Ladder of Awareness']] },
+      { h: 'Eszközök', tags: [['tool-brand-toolkit','brand-toolkit'],['tool-dembrandt','Dembrandt · versenytárs-audit']] },
+      { h: 'Pulse-visszacsatolás', p: '<b>IGEN</b> — az analytics gyakran itt deríti ki: rossz közönséget szólítottunk meg, vagy rossz awareness-szinten.' }
+    ]
+  },
+  'layer-3': {
+    cat: 'strat', kicker: '3. réteg · stratégia · a gerinc',
+    title: 'Positioning & Offer',
+    sub: 'Kategória + differenciátor + a konkrét ajánlat',
+    sections: [
+      { h: 'Mit termel', p: 'Egy egymondatos pozicionálás (Dunford 5 komponenssel: <em>competitive alternatives → differentiated capabilities → value → best-fit customers → market category</em>), egy konkrét offer (mit kínálunk, milyen áron, milyen feltétellel), és egy elsődleges konverziós cél.' },
+      { h: 'Miért fontos', p: '<b>"A pozicionálás megelőzi a brandinget."</b> (Dunford) Innen következik minden lentebb: a messaging, a narratíva, a copy, sőt a design hangulata is. Pozicionálás nélkül az egész lentebbi épület homokra épül.' },
+      { h: 'Offer architecture', p: 'Mit akarunk, hogy a látogató TEGYEN? Demo? Vásárlás? Audit? Hívás? Letöltés? <b>Ennek nélkül szép lesz az oldal, de nem fog konvertálni.</b>' },
+      { h: 'Mi megy rosszul, ha kihagyod', danger: 'Site lesz, ami szépen sokfélét csinál, mégsem dönthető el róla 5 másodperc alatt, hogy miben jó és kinek. A „rólunk" oldal lesz a leglátogatottabb — mert sehol máshol nem derül ki.' },
+      { h: 'Framework', tags: [['fw-dunford','April Dunford — Obviously Awesome']] },
+      { h: 'Eszköz', tags: [['tool-brand-toolkit','brand-toolkit · positioning skill']] },
+      { h: 'Pulse-visszacsatolás', p: '<b>IGEN, kritikusan.</b> Ha a fő CTA nem konvertál, gyakran a pozicionálás vagy az offer rossz, nem a gomb színe.' }
+    ]
+  },
+  'layer-4': {
+    cat: 'strat', kicker: '4. réteg · stratégia',
+    title: 'Messaging & Proof Architecture',
+    sub: 'Üzeneti hierarchia + objections + proof — szerkezeti, nem dekoráció',
+    sections: [
+      { h: 'Mit termel', p: 'Üzeneti hierarchia (fő ígéret + támogató ígéretek), <b>objections-lista</b> (mitől nem fog hinni nekünk: drága? kockázatos? túl új? már van beszállító?), <b>proof inventory</b> (testimonialok, esettanulmányok, számok, ügyféllogók, before/after, founder story, tanúsítványok).' },
+      { h: 'Miért fontos', p: 'Egy marketing site nem csak <b>elmond</b> valamit — <b>elhitet</b>. A proof <b>nem a copy végén jön</b>, hanem a narratíva szerkezeti eleme. Minden főbb ígérethez tartozik egy "miért hiszem el?" pillanat.' },
+      { h: 'Mi megy rosszul, ha kihagyod', danger: 'Site lesz, ami magabiztosan állít dolgokat, amiket senki nem hisz el. A „mi vagyunk a legjobbak" után semmi. A látogató bezárja a tabot.' },
+      { h: 'Frameworkök', tags: [['fw-storybrand','StoryBrand / PEACE'],['fw-mmf','Message-Market Fit'],['fw-objection','Objection Mapping']] },
+      { h: 'Eszközök', tags: [['tool-brand-toolkit','brand-toolkit · messaging skill'],['tool-marketingskills','marketingskills']] },
+      { h: 'Pulse-visszacsatolás', p: '<b>IGEN.</b> Ha a látogatók kilépnek a proof-szekciók előtt, vagy ha az objection-mapping nem fedte le a valós kifogásokat → ide vissza.' }
+    ]
+  },
+  'layer-5': {
+    cat: 'think', kicker: '5. réteg · IA-ítélet',
+    title: 'Narrative UX + IA',
+    sub: 'Az oldalak, a meggyőzési ív, a CTA-logika — és a copy, együtt',
+    sections: [
+      { h: 'Mit termel', p: 'Sitemap (milyen oldalak), narratív ív (probléma → miért mi → bizonyíték → akció), wireframe-ek <b>tényleges szöveggel</b> (nem lorem ipsum-mal), és CTA-térkép (hol mit teszünk).' },
+      { h: 'Miért fontos', p: 'Ez a réteg dönti el: <b>"komplex"</b> lesz a vége, vagy <b>"zavaros"</b>. A különbség nem a látható elemek mennyisége, hanem az, hogy van-e az ívnek logikája. Egy gondolat egy szekcióban.' },
+      { h: 'A copy itt jön be, nem utólag', quote: 'Headline nélkül nincs jó hero. Proof nélkül nincs jó section. CTA nélkül nincs jó flow. A copy és a wireframe <b>együtt születik</b> — ez nem két fázis.' },
+      { h: 'Mi megy rosszul, ha kihagyod', danger: 'Sok-sok szép szekció, mindegyik egy másik beszélgetésből. A látogató nem tudja, hol van a történetben.' },
+      { h: 'Frameworkök', tags: [['fw-content-first','Content-First'],['fw-storybrand-wire','StoryBrand wireframe']] },
+      { h: 'Eszköz', tags: [['tool-impeccable','impeccable · gondolkodó mód']] },
+      { h: 'Pulse-visszacsatolás', p: '<b>IGEN.</b> A scroll-depth és a section-engagement metrikák itt szólnak vissza: rossz volt a sorrend, vagy hiányzik egy szekció.' }
+    ]
+  },
+  'layer-6': {
+    cat: 'cat', kicker: '6. réteg · design',
+    title: 'Creative Direction → Design System',
+    sub: 'Előbb az irány, AZTÁN a rendszer — nem tokenekkel kezdünk',
+    sections: [
+      { h: 'Mit termel', p: 'Egy <b>stylescape</b> (mood board: hangulat, referenciák, anti-referenciák), majd egy formalizált design system: paletta, tipográfia, design tokenek (W3C DTCG), komponensek, restraint rules (mi NEM lehet az oldalon).' },
+      { h: 'Miért fontos — a sorrend kritikus', p: 'A design system <b>NEM tokenekből indul</b>. Brad Frost: a tokenek <em>subatomic</em>, önmagukban nem funkcionálisak, csak egy atomban (pl. egy gomb háttérszínében) nyerik el értelmüket. Tokens-first → megöli az art directiont. Mood-first → értelmes rendszer.' },
+      { h: 'Mi megy rosszul, ha kihagyod', danger: 'Ha rögtön a katalógusból (ui-ux-pro-max) kapsz egy palettát, kapsz egy <b>korrekt defaultot</b> — pont olyat, mint mindenki más. A „prémium artisan butcher" épp úgy fog kinézni, mint a „modern fintech". A creative direction az, ami ezt megakadályozza.' },
+      { h: 'Frameworkök', tags: [['fw-kapferer','Kapferer Prism · Physique'],['fw-stylescape','Chris Do stylescape'],['fw-atomic','Atomic Design'],['fw-design-tokens','W3C Design Tokens']] },
+      { h: 'Eszközök', tags: [['tool-ui-ux-pro-max','ui-ux-pro-max'],['tool-ux-pilot','ux-pilot'],['tool-designer-skills','designer-skills'],['tool-tokven','Tokven']] },
+      { h: 'Pulse-visszacsatolás', p: 'Részben. A design A/B tesztelhető, de óvatosan — a vizuális élmény jellemzően <b>nem</b> a fő konverziós tényező. Ha a Pulse rossz konverziót mutat, először a 2–4. rétegre nézünk vissza.' }
+    ]
+  },
+  'layer-7': {
+    cat: 'think', kicker: '7. réteg · build · craft',
+    title: 'Build + Polish + Quality Gate',
+    sub: 'Itt lakik a „gyönyörű" — a craft a kivitelezésben',
+    sections: [
+      { h: 'Mit termel', p: 'A kész, élesen mobiloptimalizált HTML site. <b>Plusz egy quality gate report</b>: performance (LCP, CLS), responsive (375 → 1440), accessibility (WCAG AA), image quality, consistency, interaction restraint.' },
+      { h: 'Miért fontos — a tézis központja', quote: 'A „gyönyörű" <b>NEM a katalógusból</b> jön. Az ui-ux-pro-max / ux-pilot korrekt defaultot ad. A gyönyörű az, amikor az impeccable a korrekt rendszert <b>mesterien építi meg</b>: a micro-interactionökben, a transitionökben, a fotók minőségében, a váratlan-de-helyes részletben.' },
+      { h: 'Quality gate — nem opcionális', p: 'Ez nem polírozás a végén, hanem <b>kapu</b>. Ha bukik → vissza. A11y nem stretch goal. A 375px-en is működnie kell. A reduced-motion-t tisztelni kell.' },
+      { h: 'Mi megy rosszul, ha kihagyod', danger: '„Szép" site, ami lassú, nem reszponzív, nem hozzáférhető — vagy ami szépen megy desktopon de elhal mobilon. A craft-hiány itt megöli az 1–6. réteg minden munkáját.' },
+      { h: 'Frameworkök', tags: [['fw-atomic','Atomic Design · komponens'],['fw-mobile-first','Mobile-First']] },
+      { h: 'Eszköz', tags: [['tool-impeccable','impeccable · build+polish mód']] },
+      { h: 'Handoff', p: 'A kész site → <b>Microsite Factory</b> (deploy, DNS, SSL, analytics). A Pulse loop az analytics-rétegből táplálkozik.' }
+    ]
+  },
+  'layer-pulse': {
+    cat: 'pulse', kicker: 'Loop, NEM réteg · új a v0.2-ben',
+    title: 'Pulse',
+    sub: 'Analytics + A/B + iteráció — visszacsatol a 2–5. rétegre',
+    sections: [
+      { h: 'Mit termel', p: 'Mérési riportok (konverzió, scroll-depth, section-engagement, awareness-szint becslés a forrásból), A/B teszt eredmények, és <b>iterációs javaslatok visszafelé</b> a megfelelő rétegre.' },
+      { h: 'Miért fontos', p: 'A v0.1 modellből <b>teljesen hiányzott</b> — a Gemini Validator kritikája szerint ettől volt „narcisztikus, befelé forduló". A Pulse nélkül a Brand Spine csak elmélet: nincs mód annak megtanulására, mi működik.' },
+      { h: 'A kulcs: hova csatol vissza', p: 'A Pulse <b>NEM a 6–7. rétegbe</b> csatol vissza elsősorban. Ha a konverzió rossz, a 99%-ban a probléma a <b>2–4. rétegben</b> van: rossz közönség, rossz pozicionálás, rossz üzenet. A gomb színének cserélése placebo.' },
+      { h: 'Mi megy rosszul, ha kihagyod', danger: 'A site élve van, de senki nem tanul belőle semmit. 6 hónap múlva ugyanaz az oldal, csak a számok rosszabbak.' },
+      { h: 'Frameworkök', tags: [['fw-mmf','Message-Market Fit mérés'],['fw-cro','CRO']] },
+      { h: 'Eszközök', tags: [['tool-marketingskills','marketingskills · analytics'],['tool-microsite-analytics','Microsite Factory · analytics réteg']] }
+    ]
+  },
+
+  /* ===== INPUTS, TIERS, TOOL-STACK ===== */
+  'inputs': {
+    cat: 'input', kicker: 'Inputok — nem rétegek',
+    title: 'Inputok',
+    sub: 'Constraint-ek, amik korlátozzák a rétegeket, de nem önálló fázisok',
+    sections: [
+      { h: 'Brand asset audit', p: 'Mi van már a cégnél? Logó, meglévő színskála, tipográfia, fotóstílus, brand debt (régi anyagok, amik már nem reprezentálnak minket), tabuk (mit NEM lehet használni). <br><br>Korlátozza a <b>6. réteget</b>: a katalógus nem választhat szabadon palettát, ha a logó már bordó. Eszköz: <code>Dembrandt</code> — bármely meglévő site → W3C DTCG tokenek.' },
+      { h: 'Content / media inventory', p: 'Van-e jó fotó, videó, termékkép, screenshot, ügyféllogó? Ha nincs, a <b>creative direction (6) máshogy néz ki</b>: ahol nincs fotó, ott illusztráció vagy tipográfiai hangsúly kell. Ezt korán kell tudni.' },
+      { h: 'Business model logika', p: 'Teljes BMC csak ha kell (Premium tier — prémium szolgáltatás, B2B high-ticket). Egy landinghez elég a <b>monetizációs logika</b>: kinek adunk el, milyen offerrel, milyen konverzióval. A teljes BMC ráerőltetése egy egyoldalas hentes-site-ra → analízis-paralízis.' }
+    ]
+  },
+  'tiers': {
+    cat: 'fw', kicker: 'Tier-rendszer · a túlmérnökölés ellen',
+    title: 'Lean / Standard / Premium',
+    sub: 'A 7 réteg nem mindenkinek való — a „Húsüzlet-szindróma" elleni védelem',
+    sections: [
+      { h: 'A probléma — „Húsüzlet-szindróma"', quote: 'Gemini Validator kritikája: <em>„Egy húsüzletnek nem narratíva kell, hanem bizalom és konverzió (telefonszám, cím, aktuális árlista). A modell egy 2 millió forintos enterprise-szintű weboldalt szül ott, ahol egy Google Maps profil és egy egyoldalas site is elég lenne."</em>' },
+      { h: 'Lean (5 réteg)', p: '<b>Kisvállalkozás, kampányoldal, MVP, sales landing.</b><br>1. Brand Core + Positioning <em>összevonva</em> → 2. Offer / üzleti logika → 3. Copy-first wireframe <em>(IA + Copy együtt)</em> → 4. Visual identity <em>(asset audit + design direction + system)</em> → 5. Build + Polish · <b>+ Pulse</b>.<br><br>Ez a DH pilot tier-je.' },
+      { h: 'Standard (7 réteg)', p: '<b>Tipikus marketing site, scale-up.</b> A teljes 7 rétegű modell + Pulse. Akkor érdemes, ha a brand már megérdemel külön narratív UX-réteget és külön creative direction munkát.' },
+      { h: 'Premium (9 réteg)', p: '<b>Prémium szolgáltatás, B2B high-ticket, befektetői oldal, új kategória, többoldalas site.</b> + <em>teljes BMC</em> külön réteg; <em>Audience + JTBD</em> külön a Positioning-tól; <em>Offer / Conversion architecture</em> külön réteg. Lassabb, drágább, csak ott éri meg, ahol a brand stratégiai asset.' },
+      { h: 'A választás szabálya', p: 'Kezdj alacsonyabban, mint gondolnád. <b>A komplexitás nem profizmus — sok esetben gyengeség.</b> Saint-Exupéry: „A jó design nem az, amit már nem tudsz mivel bővíteni, hanem amiből már nincs mit elvenni."' }
+    ]
+  },
+  'tool-stack': {
+    cat: 'tool', kicker: 'A teljes tool-stack',
+    title: 'Tool-stack',
+    sub: 'Melyik tool melyik réteghez — multi-AI brainstorm eredménye',
+    sections: [
+      { h: 'Stratégia (1–4)', tags: [['tool-brand-toolkit','brand-toolkit']] },
+      { h: 'Design ítélet + build craft (5, 7)', tags: [['tool-impeccable','impeccable']] },
+      { h: 'Design katalógus (6)', tags: [['tool-ui-ux-pro-max','ui-ux-pro-max'],['tool-ux-pilot','ux-pilot'],['tool-designer-skills','designer-skills'],['tool-tokven','Tokven']] },
+      { h: 'Copy + CRO + analytics (4, 7, Pulse)', tags: [['tool-marketingskills','marketingskills']] },
+      { h: 'Asset audit + versenytárs (input, 2)', tags: [['tool-dembrandt','Dembrandt']] },
+      { h: 'Megjegyzés', p: 'Nem kell mindet telepíteni egyszerre. A <code>brand-toolkit</code> a legértékesebb új találat (1–4. réteg lefedi nevesített framework-implementációkkal). Az <code>impeccable</code> + <code>ui-ux-pro-max</code> már telepítve van.' }
+    ]
+  },
+
+  /* ===== FRAMEWORKS ===== */
+  'fw-golden-circle': {
+    cat: 'fw', kicker: 'Framework · Simon Sinek',
+    title: 'Golden Circle',
+    sub: 'WHY → HOW → WHAT — az emberek nem azt veszik, amit csinálsz, hanem amiért',
+    sections: [
+      { h: 'A modell', p: 'Három koncentrikus kör: <b>WHY</b> (cél, misszió, a megkülönböztető hit) → <b>HOW</b> (folyamat, USP) → <b>WHAT</b> (termék/szolgáltatás). A legtöbb cég kívülről befelé kommunikál (WHAT-ből), a kiemelkedők belülről kifelé (WHY-ból).' },
+      { h: 'Hol használjuk', p: 'A <b>Brand Core (1) rétegben</b> — a WHY a Brand Core alapja. <b>Önmagában kevés</b>: a WHY könnyen homályos lesz („segíteni embereknek"). Ki kell egészíteni konkrét hittel és karakterrel.' },
+      { h: 'Forrás', p: '<span class="source">Simon Sinek, „Start With Why" (2009) — TED Talk: „How great leaders inspire action".</span>' }
+    ]
+  },
+  'fw-brand-pyramid': {
+    cat: 'fw', kicker: 'Framework · brand stratégia',
+    title: 'Brand Pyramid',
+    sub: '5 réteg: features → functional benefits → emotional benefits → personality → essence',
+    sections: [
+      { h: 'A modell', p: 'Az Unilever Brand Key egyszerűsített piramis-változata. Lentről fel: <b>features</b> (mit csinál) → <b>functional benefits</b> (mire jó konkrétan) → <b>emotional benefits</b> (mit érez tőle a vevő) → <b>personality</b> (a márka karaktere) → <b>essence</b> (1 mondat, ami minden alatti rétegből következik).' },
+      { h: 'Hol használjuk', p: '<b>Brand Core (1) + Messaging (4) rétegben.</b> Hasznosabb a Golden Circle-nél, mert rétegez: szétválasztja a funkcionális és érzelmi értéket, és kényszerít, hogy mindkét szintre választ adj.' }
+    ]
+  },
+  'fw-jtbd': {
+    cat: 'fw', kicker: 'Framework · Clayton Christensen',
+    title: 'Jobs-to-be-Done',
+    sub: 'Az emberek nem termékeket vesznek — „felbérelik" őket egy feladatra',
+    sections: [
+      { h: 'A modell', p: '<b>Az emberek "felbérelnek"</b> egy terméket egy konkrét feladat (job) elvégzésére. A "job" nem termékkategória, hanem egy <em>haladás</em>, amit a vevő el akar érni egy adott helyzetben. Klasszikus példa (Christensen): a milkshake-eket reggel azért „bérlik fel" az emberek, hogy <em>kibírják az unalmas reggeli ingázást</em> — nem reggelinek.' },
+      { h: 'Job Story formátum', p: '<code>Amikor [helyzet], akkor [motiváció], hogy [eredmény]</code>. Persona-fikció helyett ez a kiindulás.' },
+      { h: 'Hol használjuk', p: '<b>Market & Audience Reality (2) rétegben.</b> A JTBD a <em>mély motivációt</em> tárja fel, a StoryBrand pedig <em>narratívába</em> önti azt. A kettő nagyon jól kombinálódik.' },
+      { h: 'Forrás', p: '<span class="source">Clayton Christensen, Harvard Business School; "Competing Against Luck" (2016).</span>' }
+    ]
+  },
+  'fw-ladder': {
+    cat: 'fw', kicker: 'Framework · Eugene Schwartz',
+    title: 'Ladder of Awareness',
+    sub: '5 szint: unaware → problem-aware → solution-aware → product-aware → most aware',
+    sections: [
+      { h: 'A modell', p: 'A látogató különböző „awareness" szinten érkezik. <b>Unaware</b>: nem tudja, hogy van problémája. <b>Problem-aware</b>: tudja, de nem tud róla, hogy létezik megoldás. <b>Solution-aware</b>: tudja, hogy van megoldás-típus, de nem tud rólunk. <b>Product-aware</b>: ismer minket, de még nem döntött. <b>Most aware</b>: kész vásárolni.' },
+      { h: 'Miért számít', p: 'Minden szinthez <b>más copy</b> kell. Egy „most aware" forgalom egy „unaware" oldalt unalmasnak fog találni — és fordítva.' },
+      { h: 'Hol használjuk', p: '<b>Market & Audience Reality (2) rétegben.</b> A forrás (Google Ads, organikus, hideg outreach…) gyakran determinálja az awareness-szintet — ezt korán tudni kell.' },
+      { h: 'Forrás', p: '<span class="source">Eugene Schwartz, "Breakthrough Advertising" (1966).</span>' }
+    ]
+  },
+  'fw-dunford': {
+    cat: 'fw', kicker: 'Framework · April Dunford · a legteljesebb stratégiai gerinc',
+    title: 'Obviously Awesome (Dunford 5-component)',
+    sub: '„A pozicionálás megelőzi a brandinget" — minden más ebből következik',
+    sections: [
+      { h: 'Az 5 komponens — sorrendben', p: '<b>1. Competitive alternatives</b> — mihez hasonlítják a vevők a terméket (nem csak közvetlen versenytárs!). <b>2. Differentiated capabilities</b> — mit tudunk, amit ők nem. <b>3. Value</b> — milyen vevői értéket termelnek ezek a képességek. <b>4. Best-fit customers</b> — kinek érték ez leginkább. <b>5. Market category</b> — milyen kategóriában versenyzünk (gyakran újrakerethető).' },
+      { h: 'Miért ez a legjobb', quote: 'Dunford: „A pozicionálás határozza meg, milyen piacon akarsz nyerni, és miért érdemled meg a győzelmet — és minden más (üzenetrendszer, branding, tagline, marketing terv, értékesítési stratégia, árazás) ebből következik."' },
+      { h: 'Hol használjuk', p: '<b>Positioning & Offer (3) réteg gerince.</b> Ez az egyetlen olyan framework a stack-ben, ami önmagában elég lehetne egy egész stratégiai blokkhoz.' },
+      { h: 'Tool', p: 'A <code>brand-toolkit</code> (jgerton) positioning skillje ezt automatizálja AI-skillként.' },
+      { h: 'Forrás', p: '<span class="source">April Dunford, "Obviously Awesome" (2019); a podcast a "Positioning" témában a legjobb gyors bevezető.</span>' }
+    ]
+  },
+  'fw-storybrand': {
+    cat: 'fw', kicker: 'Framework · Donald Miller',
+    title: 'StoryBrand BrandScript / PEACE',
+    sub: '7 elemű narratív séma — a vevő a hős, a márka a Guide',
+    sections: [
+      { h: 'A 7 elem', p: '<b>Character</b> (a vevő, ő a hős) → <b>Problem</b> → <b>Guide</b> (a márka, NEM a hős) → <b>Plan</b> → <b>Call to Action</b> → <b>Avoid Failure</b> (mit veszít, ha nem cselekszik) → <b>End in Success</b> (mit nyer).' },
+      { h: 'PEACE framework — frissítés', p: '<b>P</b>roblem, <b>E</b>mpathy, <b>A</b>nswer, <b>C</b>hange, <b>R</b>esult. Bármilyen marketing kampány 5 „soundbite"-ja ez.' },
+      { h: 'A két CTA szabály', p: 'A főoldalon <b>kettő kiemelkedő CTA</b> legyen — egy „direct" (pl. Vásárlás) és egy „transitional" (pl. Letöltés). A márkának <b>empátiát + kompetenciát</b> kell sugároznia <em>egyszerre</em>.' },
+      { h: 'Hol használjuk', p: '<b>Messaging (4) + Narrative UX (5) rétegben.</b> Tool: <code>brand-toolkit</code> messaging skillje. <b>Veszély:</b> formulaszerű tud lenni — sok B2B / luxury / technical site esetében lebutítja a narratívát. Használd okosan, ne vakon.' },
+      { h: 'Forrás', p: '<span class="source">Donald Miller, "Building a StoryBrand" (2017); storybrand.com.</span>' }
+    ]
+  },
+  'fw-mmf': {
+    cat: 'fw', kicker: 'Framework · üzeneti analógia',
+    title: 'Message-Market Fit',
+    sub: 'A product-market fit üzenetszintű analógiája — 4 tengely',
+    sections: [
+      { h: 'A 4 mérési tengely', p: '<b>Clarity</b> (érthető 5 másodperc alatt?) · <b>Relevance</b> (rezonál ezzel a közönséggel?) · <b>Value</b> (látható-e az érték?) · <b>Differentiation</b> (megkülönböztet-e?).' },
+      { h: 'A felismerés', p: 'Lehet kiváló a terméked (product-market fit), de ha az üzenet rossz, a konverzió alacsony marad. A site nem termékkel bukik el, hanem <b>üzenettel</b>.' },
+      { h: 'Hol használjuk', p: '<b>Messaging (4) rétegben</b> validációként, és a <b>Pulse loopban</b> mérési keretként.' }
+    ]
+  },
+  'fw-objection': {
+    cat: 'fw', kicker: 'Framework · CRO',
+    title: 'Objection Mapping',
+    sub: 'Mitől NEM fog hinni nekünk a látogató?',
+    sections: [
+      { h: 'A módszer', p: 'Listázd az összes kifogást, ami megakadályozza a vásárlást. Tipikus kategóriák: <b>ár</b> (drága), <b>kockázat</b> (mi van, ha nem működik?), <b>újdonság</b> (nincs még megbízható), <b>méret</b> (túl kicsik vagytok), <b>idő</b> (most nincs időm), <b>alternatíva</b> (már van beszállító), <b>hiteltelenség</b> (miért higgyek nektek?).' },
+      { h: 'A site szerkezetbe', p: 'Minden major kifogásra <b>egy szekció</b> az oldalon — addressing the elephant in the room. Gyakran „FAQ" formátumban, de jobb beágyazva a narratívába.' },
+      { h: 'Hol használjuk', p: '<b>Messaging & Proof (4) rétegben.</b> A proof inventory közvetlen párja: minden objection mellé kell egy proof.' }
+    ]
+  },
+  'fw-content-first': {
+    cat: 'fw', kicker: 'Framework · UX Collective',
+    title: 'Content-First Design',
+    sub: 'A tartalom (üzenet, szöveg) a tervezés kiindulópontja — nem a layout',
+    sections: [
+      { h: 'A 8 lépés', p: '1. Core message → 2. Content hierarchy → 3. Information architecture → 4. Wireframe szöveggel → 5. Visual design → 6. Build → 7. Test → 8. Iterate.' },
+      { h: 'A felismerés', quote: 'Rian van der Merwe: „Ha design előbb csináljuk a tartalmat, a csomagolást tervezzük meg, mielőtt tudnánk, mi kerül bele."' },
+      { h: 'Mit jelent a Brand Spine-ra nézve', p: 'A copy <b>nem utólag</b> kerül a wireframe-be — a wireframe a copyval együtt születik. Ezért van a v0.2-ben explicit „együtt születik" jelzés az 5. és 6. réteg között.' },
+      { h: 'Hol használjuk', p: '<b>Narrative UX + IA (5) rétegben.</b>' }
+    ]
+  },
+  'fw-storybrand-wire': {
+    cat: 'fw', kicker: 'Framework · StoryBrand alkalmazás',
+    title: 'StoryBrand Wireframe',
+    sub: 'A 7 elem konkrét site-szerkezetbe ültetése',
+    sections: [
+      { h: 'A standard szerkezet', p: '<b>Hero</b> (Character + Problem + a Plan ígérete + két CTA) → <b>Stakes</b> (mi a tét — Avoid Failure) → <b>Value Proposition</b> → <b>Guide</b> (mi a Guide, empathy + authority) → <b>Plan</b> (3 lépés) → <b>Explanatory paragraph</b> → <b>Video/Demo</b> (opcionális) → <b>Price/Choice</b> → <b>Junk drawer footer</b>.' },
+      { h: 'Mikor használd, mikor ne', p: 'Kiváló kiindulás SMB és service business landinghez. <b>Túl formula-szerű</b> luxury, B2B enterprise, deep tech, vagy editorial-jellegű brandhez — ott vázként jó, de finomítani kell.' },
+      { h: 'Hol használjuk', p: '<b>Narrative UX + IA (5) rétegben.</b> Egy kiindulás, nem egy kötelező sablon.' }
+    ]
+  },
+  'fw-kapferer': {
+    cat: 'fw', kicker: 'Framework · Jean-Noël Kapferer (1986)',
+    title: 'Brand Identity Prism',
+    sub: '6 identitás-facet — a Physique közvetlenül a visual identity specje',
+    sections: [
+      { h: 'A 6 facet', p: '<b>Physique</b> (fizikai megjelenés — logo, szín, tipográfia) · <b>Personality</b> (a márka karaktere) · <b>Culture</b> (értékek, eredet) · <b>Relationship</b> (milyen kapcsolat a vevővel) · <b>Reflection</b> (kit reprezentál a tipikus vevő) · <b>Self-image</b> (hogyan érzi magát a vevő, amikor használ minket).' },
+      { h: 'Két tengely', p: '<b>Sender ↔ Receiver</b> (márka oldala ↔ vevő oldala) és <b>Externalization ↔ Internalization</b> (látható ↔ belső).' },
+      { h: 'Hol használjuk', p: '<b>Creative Direction (6) rétegben.</b> A <b>Physique</b> a visual identity közvetlen specifikációja (mi a logó, milyen szín, milyen tipó), a <b>Reflection + Self-image</b> a célközönség árnyalt megértéséhez kell — gyakran felülmúlja a persona-fikciót.' },
+      { h: 'Forrás', p: '<span class="source">Jean-Noël Kapferer, "Strategic Brand Management" (1986, többszöri kiadás).</span>' }
+    ]
+  },
+  'fw-stylescape': {
+    cat: 'fw', kicker: 'Framework · Chris Do · The Futur',
+    title: 'Stylescape',
+    sub: 'Hangulati irány VIZUÁLISAN, mielőtt design system készülne',
+    sections: [
+      { h: 'A módszer', p: 'Egy <b>hosszú panoráma-board</b>, ami a brand vizuális irányát konkrét képekkel mutatja: tipográfia mintázat, fotók, textúrák, színviszonyok, hangulat. Nem moodboard a Pinterest értelmében — <em>tudatosan komponált</em> referencia-mező.' },
+      { h: 'Miért előtte van', p: 'A stylescape <b>megelőzi a design systemet</b>. Először a hangulat („artisan butcher" vagy „premium clinical" vagy „brutalist editorial"), aztán a paletta és a tokenek. Tokens-first → korrekt default. Stylescape-first → karakteres rendszer.' },
+      { h: 'Hol használjuk', p: '<b>Creative Direction (6) rétegben — az első felében.</b>' },
+      { h: 'Forrás', p: '<span class="source">Chris Do, The Futur. Számtalan YouTube oktatóvideó, „stylescape tutorial" keresésre.</span>' }
+    ]
+  },
+  'fw-atomic': {
+    cat: 'fw', kicker: 'Framework · Brad Frost',
+    title: 'Atomic Design',
+    sub: 'tokens → atoms → molecules → organisms → templates → pages',
+    sections: [
+      { h: 'A hierarchia', p: '<b>Subatomic: design tokens</b> (nyersanyag — színérték, távolság stb.) → <b>Atoms</b> (gomb, input, címke — önálló de még nem hasznos) → <b>Molecules</b> (form mező = label + input + helper) → <b>Organisms</b> (header, kártya-lista) → <b>Templates</b> (oldalszerkezet placeholderekkel) → <b>Pages</b> (kész oldal valódi tartalommal).' },
+      { h: 'A 2025-ös frissítés', quote: 'Brad Frost 2025-ben megerősítette: a design token szint <em>subatomic</em> — önmagában nem funkcionális, csak egy atomban (pl. egy gomb háttérszínében) nyeri el értelmét. Ezért NEM token-first.' },
+      { h: 'Hol használjuk', p: '<b>Creative Direction → Design System (6)</b> és <b>Build (7)</b>. A site komponens-hierarchiájához ad nyelvet.' },
+      { h: 'Forrás', p: '<span class="source">Brad Frost, "Atomic Design" (2016, ingyenesen olvasható: atomicdesign.bradfrost.com).</span>' }
+    ]
+  },
+  'fw-design-tokens': {
+    cat: 'fw', kicker: 'Spec · W3C Design Tokens Community Group',
+    title: 'W3C Design Tokens (DTCG)',
+    sub: '2025.10 stabil spec — vendor-semleges token formátum',
+    sections: [
+      { h: 'Mi az', p: 'Egy <b>szabványos JSON formátum</b> design tokenek megosztásához design toolok és platformok között. Támogat: theming, modern color space-eket (OKLCH, Display P3), token alias-okat, cross-platform konzisztenciát.' },
+      { h: 'Miért fontos most', p: '2025 októberében jelent meg az <b>első stabil specifikáció</b> (1.0). Ettől kezdve a Figma → Style Dictionary → CSS / iOS / Android pipeline egységes formátumon megy.' },
+      { h: 'Hol használjuk', p: '<b>Creative Direction → Design System (6) rétegben</b>, a formalizálási szakaszban. Eszközök: <code>Style Dictionary</code> (Amazon), <code>Tokens Studio</code> (Figma plugin), <code>Tokven</code> (AI gen).' },
+      { h: 'Forrás', p: '<span class="source">W3C Design Tokens Community Group: tr.designtokens.org</span>' }
+    ]
+  },
+  'fw-mobile-first': {
+    cat: 'fw', kicker: 'Framework · UX alapelv',
+    title: 'Mobile-First Design',
+    sub: 'A legkisebb képernyőre tervez először, majd skálázza fel',
+    sections: [
+      { h: 'A módszer', p: 'A teljes layoutot, hierarchiát és interakciót először a legkisebb képernyőre (~375px) tervezzük meg. CSS-ben mobile alapértékek, majd <code>@media (min-width: …)</code>-ekkel skálázunk felfelé. Ez a <em>progressive enhancement</em> elve.' },
+      { h: 'Miért nem opcionális', p: '2025-ben a forgalom >60%-a mobilról jön. Egy desktop-first design <b>nem skálázható le</b> mobilra — összeomlik. Mobile-first esetén a desktop „extra hely" lesz, nem feszes szorítás.' },
+      { h: 'Touch target minimum', p: '44×44pt (Apple HIG) / 48×48dp (Material Design). Ez nem stretch goal.' },
+      { h: 'Hol használjuk', p: '<b>Build + Polish (7) rétegben</b> kötelező alapelv.' }
+    ]
+  },
+  'fw-cro': {
+    cat: 'fw', kicker: 'Framework · gyakorlat',
+    title: 'CRO — Conversion Rate Optimization',
+    sub: 'Hipotézis-alapú iteráció a Pulse loop motorja',
+    sections: [
+      { h: 'A munkamódszer', p: '1. <b>Hipotézis</b> (az adat alapján — pl. „a hero CTA túl korai") → 2. <b>Teszt</b> (A/B, multivariáns) → 3. <b>Mérés</b> (statisztikai szignifikancia) → 4. <b>Tanulás</b> (mi rezonált, mi nem) → 5. <b>Iteráció</b> visszafelé a megfelelő rétegre.' },
+      { h: 'A fő hiba, amit el kell kerülni', p: 'A CRO NEM gombszínezés. Ha a konverzió rossz, a 99%-ban a probléma a <b>2–4. rétegben</b> van (közönség, pozicionálás, üzenet). A gomb-szín cserélése <em>placebo</em>.' },
+      { h: 'Hol használjuk', p: 'A <b>Pulse loopban</b>. Tool: <code>marketingskills</code> CRO-skillek.' }
+    ]
+  },
+
+  /* ===== TOOLS ===== */
+  'tool-brand-toolkit': {
+    cat: 'tool', kicker: 'Tool · Claude Code plugin · MIT',
+    title: 'brand-toolkit (jgerton)',
+    sub: '10 skill nevesített framework-implementációkkal — a legértékesebb új találat',
+    sections: [
+      { h: 'Mit ad', p: '10 Claude Code skill, egymással összekötve egy megosztott <code>brand-brief.md</code> YAML fájlon keresztül:<br>· <b>Positioning skill</b> — April Dunford 5-komponens<br>· <b>Messaging skill</b> — StoryBrand BrandScript<br>· <b>Voice skill</b> — NN/g + Aaker személyiségmodell<br>· <b>Visual identity skill</b> — Chris Do stylescape<br>· + 6 további (audience, naming, taglines, stb.)' },
+      { h: 'Anti-slop rendszer', p: 'Beépített szűrő, ami kivágja a generikus „innovative, seamless, revolutionary, cutting-edge" típusú szavakat. Swap-, specificity- és business-type-teszt fut.' },
+      { h: 'Confidence score', p: 'Minden komponens három jelölést kap: <code>validated</code> (vevői interjúval) / <code>researched</code> (másodlagos kutatással) / <code>assumed</code> (csak feltételezés). Ez visszafogja a hamis bizalmat.' },
+      { h: 'Telepítés', p: '<code>git clone https://github.com/jgerton/brand-toolkit.git</code><br><code>claude --plugin-dir ./brand-toolkit</code>' },
+      { h: 'Hol használjuk', p: '<b>Brand Spine 1–4. rétegben</b>. Ez a legfontosabb új találat a brainstormból.' },
+      { h: 'Forrás', p: '<span class="source">github.com/jgerton/brand-toolkit · MIT license · 27 éves fejlesztői tapasztalattal készült</span>' }
+    ]
+  },
+  'tool-impeccable': {
+    cat: 'tool', kicker: 'Tool · Claude Code skill · már telepítve',
+    title: 'impeccable (pbakaus)',
+    sub: 'UI/UX design judgment + craft execution — Tessl benchmark 0.82/1.00',
+    sections: [
+      { h: 'Mit ad', p: 'Az <b>Anthropic frontend-design skillre épül</b> (277k+ telepítés), és hozzátesz:<br>· 7 referencia fájl (tipográfia, OKLCH színek, térbeli rend, mozgás, interakció, reszponzív, UX írás)<br>· 17 slash-parancs<br>· explicit anti-pattern lista' },
+      { h: 'Benchmark', p: 'Tessl független benchmark: <b>0.82/1.00 összpontszám</b>, <b>+0.35 javulás</b> az Anthropic alap felett (1.59× szorzó). Ez a stack legjobban benchmarkolt UI/UX skillje.' },
+      { h: 'Két mód a Brand Spine-ban', p: '<b>5. réteg — gondolkodó mód</b>: IA-ítélet, narratív struktúra, hierarchia review.<br><b>7. réteg — build+polish mód</b>: craft execution, micro-interactionök, transitionök, quality gate. Itt lakik a „gyönyörű".' },
+      { h: 'Kompatibilitás', p: 'Claude Code, Cursor, Gemini CLI, Codex CLI, Kiro, VS Code Copilot.' },
+      { h: 'Forrás', p: '<span class="source">github.com/pbakaus/impeccable</span>' }
+    ]
+  },
+  'tool-ui-ux-pro-max': {
+    cat: 'tool', kicker: 'Tool · Claude Code plugin · már telepítve',
+    title: 'ui-ux-pro-max (nextlevelbuilder)',
+    sub: 'Design katalógus — korrekt defaultot ad, NEM gyönyörűt',
+    sections: [
+      { h: 'Mit ad', p: 'Adatbázis-alapú design system generátor:<br>· 161 industry-specific reasoning rule<br>· 161 színpaletta<br>· 99 UX guideline<br>· 1923 kereshető Google Font<br>· 25 chart-típus<br>· 10 tech stack támogatás' },
+      { h: 'Mi NEM', p: 'Ez egy <b>katalógus</b>, nem code generator marketing-weboldalhoz. A mobil/app-orientált stack-guidance bőséges, a marketing-weboldal-specifikus kevésbé. A databases (color, style, typography) stack-függetlenek és értékesek.' },
+      { h: 'A kritikus határ', p: 'A katalógus <b>korrekt defaultot</b> ad — nem „gyönyörűt". A gyönyörű az impeccable mesteri kivitelezésében születik (7. réteg).' },
+      { h: 'Telepítés', p: '<code>/plugin marketplace add nextlevelbuilder/ui-ux-pro-max-skill</code><br><code>/plugin install ui-ux-pro-max@ui-ux-pro-max-skill</code>' },
+      { h: 'Hol használjuk', p: '<b>Creative Direction → Design System (6) rétegben.</b>' }
+    ]
+  },
+  'tool-ux-pilot': {
+    cat: 'tool', kicker: 'Tool · Claude Code plugin · free',
+    title: 'ux-pilot (Sakaax)',
+    sub: 'Az ui-ux-pro-max KIEGÉSZÍTŐJE — dialógus-első, élő preview',
+    sections: [
+      { h: 'Mit ad', p: '376 UX szabály, 161 paletta, 57 fontpár, 67 UI stílus. <b>Méretben hasonló</b> az ui-ux-pro-max-hoz, de más megközelítéssel.' },
+      { h: 'A kulcskülönbség — dialógus-első', p: 'Strukturált <b>discovery flow</b> a termékről, a felhasználókról és az üzleti modellről, MIELŐTT bármit generálna. Az ui-ux-pro-max katalógus-jellegű (keresel, kapsz); a ux-pilot kérdez, aztán generál.' },
+      { h: 'Élő preview', p: 'Böngésző-előnézet közvetlenül a Claude Code-ban — a generált design realtime látható és iterálható.' },
+      { h: 'Telepítés', p: '<code>/plugin marketplace add Sakaax/ux-pilot</code>' },
+      { h: 'Hol használjuk', p: '<b>Creative Direction → Design System (6) rétegben</b>, az ui-ux-pro-max mellett (nem helyettesítőként).' }
+    ]
+  },
+  'tool-designer-skills': {
+    cat: 'tool', kicker: 'Tool · Claude Code · 977⭐',
+    title: 'designer-skills (Owl-Listener)',
+    sub: '87 skill / 27 parancs / 8 plugin — teljes design lifecycle',
+    sections: [
+      { h: 'Mit ad', p: '8 plugin a teljes tervezési életciklusra: user research, design systems, UX strategy, UI design, interaction design, prototyping/testing, design ops, toolkit.' },
+      { h: 'A „design-systems" plugin — kulcs', p: 'Audit funkciók:<br>· <b>Token coverage</b> — mely komponensek nem használnak tokent<br>· <b>Naming consistency</b> — szabálytalan elnevezések<br>· <b>Accessibility compliance</b> — WCAG check<br>· <b>Theming audit</b> — light/dark konzisztencia' },
+      { h: '/strategize parancs', p: 'UX-stratégiát épít a víziótól a metrikákig — hasonló a Brand Spine 2–4. rétegéhez.' },
+      { h: 'Telepítés', p: '<code>/plugin marketplace add Owl-Listener/designer-skills</code>' },
+      { h: 'Hol használjuk', p: '<b>Creative Direction → Design System (6) rétegben</b> design system auditra (Lean tier-ben kihagyható).' }
+    ]
+  },
+  'tool-marketingskills': {
+    cat: 'tool', kicker: 'Tool · Claude Code skill · MIT · 5700+⭐',
+    title: 'marketingskills (coreyhaines31)',
+    sub: 'Corey Haines · Conversion Factory — 23–30 marketing skill',
+    sections: [
+      { h: 'Mit ad', p: 'Skill-csomag, ami lefedi:<br>· <b>CRO</b> (conversion rate optimization)<br>· <b>Copywriting</b><br>· <b>SEO audit</b><br>· <b>Analytics</b> setup és értelmezés<br>· <b>E-mail szekvenciák</b><br>· <b>Pricing strategy</b>' },
+      { h: 'Telepítés', p: '<code>npx add-skill coreyhaines31/marketingskills</code>' },
+      { h: 'Hol használjuk', p: '<b>Messaging (4) és Pulse loopban.</b> Ez fedi le a copy-iterációt és az analytics-rétegét, ahol az impeccable nem elég mély.' },
+      { h: 'Forrás', p: '<span class="source">github.com/coreyhaines31/marketingskills · 5700+ stars rövid idő alatt</span>' }
+    ]
+  },
+  'tool-dembrandt': {
+    cat: 'tool', kicker: 'Tool · CLI + MCP',
+    title: 'Dembrandt',
+    sub: 'Bármely weboldal design systemét kinyeri W3C DTCG tokenekké',
+    sections: [
+      { h: 'Mit csinál', p: 'Egyetlen CLI-paranccsal kinyeri bármely weboldal teljes design rendszerét <b>strukturált design tokenekké</b> — szín, tipográfia, térköz, szegély, árnyék, logó. Playwright-tal rendereli az oldalt, kiolvas a DOM computed style-jaiból, és <b>W3C DTCG formátumú JSON-t exportál</b>.' },
+      { h: 'Két fő use case', p: '<b>1. Brand asset audit (input)</b> — a saját meglévő site → tokenek → constraint a 6. rétegnek.<br><b>2. Versenytárs-analízis</b> — a versenytárs site → tokenek → tudjuk, hova NE menjünk.' },
+      { h: 'Telepítés', p: '<code>npm install -g dembrandt</code><br><code>dembrandt competitor.com --dtcg</code>' },
+      { h: 'MCP integráció', p: 'Beépíthető Claude Code-ba, Cursor-ba, Windsurf-be MCP serverként.' },
+      { h: 'Hol használjuk', p: '<b>Brand asset audit input + Market & Audience Reality (2) rétegben.</b>' }
+    ]
+  },
+  'tool-tokven': {
+    cat: 'tool', kicker: 'Tool · webalapú · AI gen',
+    title: 'Tokven (tokven.dev)',
+    sub: 'AI design token generátor brand briefből',
+    sections: [
+      { h: 'Mit csinál', p: 'Bemenet: <b>plain English brand brief</b>, hex kód, vagy hangulat-preset. Kimenet: teljes design token rendszer — szín-, tipográfia-, térköz- és radius-tokenek — <b>WCAG AA kontraszt-validációval</b> light/dark módban.' },
+      { h: 'A DO/NEVER irányelvek', p: 'A token-rendszer mellé adott „DO/NEVER" lista magyarázza, mit szabad és mit nem — közvetlenül AI toolokba táplálható.' },
+      { h: 'Hol használjuk', p: '<b>Creative Direction → Design System (6) rétegben</b>, a formalizálási szakasz elején, vagy a stylescape utáni gyors token-prototípushoz.' }
+    ]
+  },
+  'tool-microsite-analytics': {
+    cat: 'tool', kicker: 'Tool · BDOS capability · downstream',
+    title: 'Microsite Factory — analytics réteg',
+    sub: 'A deploy capability része — a Pulse loop adatforrása',
+    sections: [
+      { h: 'Mit ad', p: 'A Microsite Factory (web-publishing capability) része: <b>analytics aktiválás</b> a deploy után. Cloudflare Analytics + Plausible / GA4 / Hotjar setup, Core Web Vitals tracking, conversion event setup.' },
+      { h: 'Hol használjuk', p: 'A <b>Pulse loop adatforrása.</b> A Brand Spine 7. rétege átadja a kész HTML-t a Microsite Factory-nak; az analytics-réteg után a Pulse loop adatai itt érkeznek meg.' },
+      { h: 'Hivatkozott', p: '<code>00_Prompts/BDOS/capabilities/web-publishing/CLAUDE.md</code>' }
+    ]
+  },
+
+  /* ===== COWORK PLUGIN TOOL MODALS ===== */
+  'tool-cowork-design': {
+    cat: 'tool', kicker: 'Anthropic Cowork plugin · knowledge-work',
+    title: 'Cowork · design',
+    sub: 'Role-bundle nem-mérnök designereknek — 6 skill + 6 slash command',
+    sections: [
+      { h: 'Mit ad', p: '<em>"Accelerate design workflows — critique, design system management, UX writing, accessibility audits, research synthesis, and dev handoff."</em> Cowork-bundled MCP connectorokkal: Figma, Atlassian, Notion, Linear, Asana, Intercom, Slack.' },
+      { h: 'Telepítés', p: 'Claude Desktop appon át (`/cowork-plugin-management`-en keresztül), vagy a knowledge-work-plugins marketplace-ből.' },
+      { h: 'Forrás', p: '<span class="source">github.com/anthropics/knowledge-work-plugins · MIT-szerű</span>' }
+    ]
+  },
+  'tool-cowork-marketing': {
+    cat: 'tool', kicker: 'Anthropic Cowork plugin · már telepítve',
+    title: 'Cowork · marketing',
+    sub: 'Általános marketing role-bundle — 5 skill + 7 slash command',
+    sections: [
+      { h: 'Mit ad', p: '<em>"Create content, plan campaigns, and analyze performance across marketing channels. Maintain brand voice consistency, track competitors, and report on what\'s working."</em>' },
+      { h: 'Vs harmadik fél', p: 'Átfedés a <code>marketingskills</code> (coreyhaines31) és <code>brand-toolkit · messaging</code> (jgerton) skillekkel, de <b>általánosabb</b> — kampány, közösségi média, riport, nem csak landing copy.' },
+      { h: 'Brand Spine réteg', p: '4. Messaging (brand voice consistency) · 7. Copy · Pulse (performance analysis, competitor tracking)' }
+    ]
+  },
+  'tool-cowork-pm': {
+    cat: 'tool', kicker: 'Anthropic Cowork plugin · knowledge-work',
+    title: 'Cowork · product-management',
+    sub: 'PM role-bundle — 6 skill + 7 slash command',
+    sections: [
+      { h: 'Mit ad', p: '<em>"Write feature specs, plan roadmaps, and synthesize user research faster. Keep stakeholders updated and stay ahead of the competitive landscape."</em> Cowork-bundled MCP: Amplitude, ClickUp, Fireflies, Monday, Pendo, Similarweb.' },
+      { h: 'Brand Spine réteg', p: '2. Market & Audience Reality (`competitive-analysis`, `user-research-synthesis`) · Pulse (`metrics-tracking`).' },
+      { h: 'Vs brand-toolkit', p: 'A `competitive-analysis` és `user-research-synthesis` skillek hasznosak a 2. rétegben, általánosabb keretben mint a `brand-toolkit · brand-positioning` (Dunford 5-komponens).' }
+    ]
+  }
+};
+
+// ============ SKILL DETAIL MODALS — auto-registered ============
+// Helper to register a skill modal compactly
+function _S(id, parent, title, oneline, body) {
+  MODALS[id] = {
+    cat: 'skill', back: parent,
+    backLabel: `Vissza: ${MODALS[parent].title}`,
+    kicker: `${MODALS[parent].title} · skill`,
+    title, sub: oneline,
+    sections: body
+  };
+}
+// Helper to push a skills section onto a tool modal
+function _addSkills(toolId, label, skillsConfig) {
+  if (!MODALS[toolId]) return;
+  MODALS[toolId].sections.push({ h: label, skills: skillsConfig });
+}
+// HTML-escape helper (because some descriptions / args contain literal < > characters)
+const _esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+// Code-block formatters for examples (auto-escape)
+const $c = (txt) => `<span class="cmd">${_esc(txt)}</span>`;
+const $p = (txt) => `<span class="prompt">${_esc(txt)}</span>`;
+
+/* ===================================================================
+ * IMPECCABLE — 23 sub-commands across 6 categories
+ * Source: github.com/pbakaus/impeccable/skill/SKILL.md
+ * =================================================================== */
+const IMPECCABLE_CMDS = {
+  'Build — új építése': [
+    ['craft', 'Shape, then build a feature end-to-end', 'Shape a tervet, megerősíti a felhasználóval, majd implementálja production-grade kóddal. Build-kategória default.', 'craft "hero section a SaaS pricing oldalhoz"'],
+    ['shape', 'Plan UX/UI before writing code', 'Tervezi a UX/UI-t kódírás előtt — alternatívák, trade-offok, megerősítés.', 'shape "checkout flow B2B SaaS-hoz"'],
+    ['teach', 'Set up PRODUCT.md and DESIGN.md context', 'Inicializálja a project kontextus fájljait: PRODUCT.md (users, brand, tone) és DESIGN.md (colors, typography).', 'teach'],
+    ['document', 'Generate DESIGN.md from existing project code', 'Meglévő projekt kódjából kinyeri a design tokeneket és komponenseket a DESIGN.md-be.', 'document'],
+    ['extract', 'Pull reusable tokens and components into design system', 'Egy konkrét UI elemből kinyeri az újrahasznosítható tokeneket / komponenseket.', 'extract HeroCard.tsx']
+  ],
+  'Evaluate — meglévő értékelése': [
+    ['critique', 'UX design review with heuristic scoring', 'UX heurisztika alapú design review (Nielsen + custom), pontszámmal.', 'critique landing-page.html'],
+    ['audit', 'Technical quality checks (a11y, perf, responsive)', 'Műszaki minőség: accessibility (WCAG), performance (LCP/CLS), responsive viselkedés.', 'audit /dashboard']
+  ],
+  'Refine — finomítás': [
+    ['polish', 'Final quality pass before shipping', 'Utolsó minőségi sweep szállítás előtt.', 'polish app/checkout'],
+    ['bolder', 'Amplify safe or bland designs', 'Túl biztonságosra/jellegtelenre vett designt erősebbre vesz — komittáltabb szín, tipográfia, kontraszt.', 'bolder hero.tsx'],
+    ['quieter', 'Tone down aggressive or overstimulating designs', 'Túl harsány designt csendesít — visszafogottabb szín, kevesebb mozgás, több whitespace.', 'quieter dashboard.tsx'],
+    ['distill', 'Strip to essence, remove complexity', 'A lényegig csupaszít — kihúzza, ami nem szolgálja a fő üzenetet.', 'distill page.tsx'],
+    ['harden', 'Production-ready: errors, i18n, edge cases', 'Production-ready: error state-ek, i18n, edge case-ek, üres állapotok.', 'harden form.tsx'],
+    ['onboard', 'Design first-run flows, empty states, activation', 'First-run flow-k, üres állapotok, aktivációs lépések tervezése.', 'onboard NewUserOnboarding.tsx']
+  ],
+  'Enhance — vizuális gazdagítás': [
+    ['animate', 'Add purposeful animations and motion', 'Célszerű animációkat / mozgásokat ad hozzá — nem dekoratív, jelentéssel teli.', 'animate Card.tsx'],
+    ['colorize', 'Add strategic color to monochromatic UIs', 'Monokróm UI-hoz stratégiai színt ad — egy commitált accent vagy paletta.', 'colorize app/'],
+    ['typeset', 'Improve typography hierarchy and fonts', 'Tipográfia hierarchia + font választás javítása.', 'typeset blog/article.tsx'],
+    ['layout', 'Fix spacing, rhythm, and visual hierarchy', 'Térközök ritmusa, vizuális hierarchia javítása.', 'layout settings.tsx'],
+    ['delight', 'Add personality and memorable touches', 'Karaktert ad — emlékezetes apró részletek, surprise & delight.', 'delight 404.tsx'],
+    ['overdrive', 'Push past conventional limits', 'A konvenciókon túli — ambíciózus vizuális kísérlet egy konkrét elemen.', 'overdrive hero.tsx']
+  ],
+  'Fix — javítás': [
+    ['clarify', 'Improve UX copy, labels, and error messages', 'UX copy / label / error message javítása — érthetőség, hangnem, tömörség.', 'clarify forms/'],
+    ['adapt', 'Adapt for different devices and screen sizes', 'Responsive adaptáció — más képernyőméret, input, kontextus.', 'adapt mobile dashboard'],
+    ['optimize', 'Diagnose and fix UI performance', 'UI performance diagnózis és javítás (rerender, layout shift, asset).', 'optimize page-list.tsx']
+  ],
+  'Iterate — élő iteráció': [
+    ['live', 'Visual variant mode: pick elements in the browser, generate alternatives', 'Élő böngészőben: kiválasztasz egy elemet, AI variánsokat generál mellé.', 'live https://your-site.local']
+  ]
+};
+const impeccable_groups = [];
+Object.entries(IMPECCABLE_CMDS).forEach(([group, cmds]) => {
+  const items = cmds.map(([name, oneline, full, example]) => {
+    const id = `imp-${name}`;
+    _S(id, 'tool-impeccable', name, oneline, [
+      { h: 'Mit csinál', p: full },
+      { h: 'Példa', code: `${$p('/impeccable')} ${name}` + (example !== name ? ' ' + $c(example.replace(name, '').trim()) : '') }
+    ]);
+    return { id, name, oneline, cmd: true };
+  });
+  impeccable_groups.push({ name: group, items });
+});
+_addSkills('tool-impeccable', 'Sub-commands (23) — kattints bármelyikre', { groups: impeccable_groups });
+
+/* ===================================================================
+ * BRAND-TOOLKIT (jgerton) — 10 skills + 1 command
+ * =================================================================== */
+const BRAND_TK_SKILLS = [
+  ['start', 'Onboarding — felismeri a kontextust, létrehoz/megnyit brand-brief.md-t', 'Brand toolkit onboarding. Detects user context, finds or creates brand-brief smart manifest, and routes to the right skill.', 'help me with my brand'],
+  ['brand-audit', 'Meglévő brand assetek felmérése, gap-elemzés', 'Discover and assess existing brand assets for cohesion, gaps, and inconsistencies. Scans codebases, websites, and social presence.', 'audit my current brand'],
+  ['brand-positioning', 'April Dunford 5-komponensű pozicionálás + Marty Neumeier Onliness test', 'Establish brand positioning using April Dunford\'s 5-component framework and Marty Neumeier\'s Onliness test. Research-assisted discovery for users without market knowledge.', 'help me position my brand'],
+  ['brand-messaging', 'Donald Miller StoryBrand 7-elem BrandScript', 'Build brand messaging using Donald Miller\'s StoryBrand 7-element BrandScript. Produces BrandScript, tagline, and Neumeier\'s trueline. Requires positioning to be at least draft status.', 'write a tagline'],
+  ['brand-voice', 'NN/g 4 voice-dimension + Aaker personality + Jung archetypes', 'Define brand voice using NN/g four dimensions, Aaker brand personality, and Jung archetypes. Produces scored voice dimensions, vocabulary lists, and on-brand vs off-brand examples.', 'define our voice'],
+  ['brand-visual-identity', 'Chris Do Stylescapes — 3 ellentétes vizuális irány', 'Design visual brand identity using Chris Do\'s Stylescapes methodology. Produces 3 contrasting visual directions with color, typography, and imagery rationale.', 'how should my brand look'],
+  ['brand-radar', 'Verseny + brand intelligence napló', 'Capture competitive and brand intelligence. Can be invoked actively to analyze a competitor or inspiration brand. Logs findings to brand-brief intelligence section.', 'I saw an interesting competitor'],
+  ['brand-competitor-scan', 'Versenytárs-elemzés minden lencsén át (positioning, messaging, voice, visual)', 'Analyze competitor brands through all framework lenses (positioning, messaging, voice, visual). Score competitors and identify positioning white space.', 'analyze our competitors'],
+  ['brand-ad-copy', 'Platform-specifikus ad copy (Google Ads, social, email) a voice + messaging alapján', 'Generate platform-specific ad copy (Google Ads, social, email) from brand voice and messaging. Handles character limits, platform conventions, and A/B variants.', 'write Google Ads for our launch'],
+  ['brand-landing-page', 'Konverzió-fókuszú landing page a teljes brand brief alapján — StoryBrand szerkezetben', 'Design conversion-focused landing pages consuming the full brand brief. Adapts to business type (lead gen, signup, purchase). Uses StoryBrand structure for page flow and brand voice for copy.', 'design our landing page']
+];
+const bt_items = BRAND_TK_SKILLS.map(([name, oneline, full, example]) => {
+  const id = `bt-${name}`;
+  _S(id, 'tool-brand-toolkit', name, oneline, [
+    { h: 'Mit csinál', p: full },
+    { h: 'Példa trigger', code: `"${example}"` }
+  ]);
+  return { id, name, oneline };
+});
+const bt_cmds = [{ id: 'bt-cmd-sync', name: 'brand-sync', oneline: 'Sync brand-brief.md a projekt és egy külső vault (Obsidian) között', cmd: true }];
+_S('bt-cmd-sync', 'tool-brand-toolkit', 'brand-sync', 'Sync brand-brief.md a projekt és külső vault között', [
+  { h: 'Mit csinál', p: 'Sync brand-brief.md between project directory and an external vault (Obsidian, plain directory, etc.). Handles conflict detection and resolution.' },
+  { h: 'Példa', code: `${$p('/brand-toolkit:brand-sync')}` }
+]);
+_addSkills('tool-brand-toolkit', 'Skills (10)', bt_items);
+_addSkills('tool-brand-toolkit', 'Commands (1)', bt_cmds);
+
+/* ===================================================================
+ * UX-PILOT (Sakaax) — 1 skill, 3 modes
+ * =================================================================== */
+const UXP_MODES = [
+  ['audit', 'UX audit egy meglévő flow-n', 'Strukturált UX audit egy meglévő flow-n vagy oldalon — heurisztika, accessibility, hierarchia.', 'audit checkout flow'],
+  ['preview', 'Élő böngésző-előnézet egy generált design-on', 'A generált UI-t azonnal megnyitja egy preview böngészőben, iterálható.', 'preview generated landing'],
+  ['export', 'A discovery + preview eredményeit exportálja design system fájlokba', 'Az AI-asszisztált discovery flow output-ját és a preview-design-okat exportálja design system fájlokba (tokenek, komponensek).', 'export to design-system/']
+];
+const uxp_items = UXP_MODES.map(([name, oneline, full, example]) => {
+  const id = `uxp-${name}`;
+  _S(id, 'tool-ux-pilot', name, oneline, [
+    { h: 'Mit csinál', p: full },
+    { h: 'Példa', code: `${$p('/ux-pilot')} ${name} ${$c(example.replace(name, '').trim())}` }
+  ]);
+  return { id, name, oneline, cmd: true };
+});
+_addSkills('tool-ux-pilot', 'Sub-modes (3)', uxp_items);
+
+/* ===================================================================
+ * UI-UX-PRO-MAX (nextlevelbuilder) — 1 skill + 14 search domains (CSV-k)
+ * A skill egyetlen tool, ami a CLI search.py-n keresztül 14 doménben keres
+ * =================================================================== */
+const UIPM_DOMAINS = [
+  ['products', '161 terméktípus + reasoning rule-ok (industry-specific defaultok)', 'A search.py `--design-system` flag-jén keresztül az iparágra szabott stack-et javasolja.', 'python3 search.py "fintech crypto" --design-system'],
+  ['styles', '50+ UI stílus (glassmorphism, brutalism, neumorphism, bento, AI-native…)', 'A stílus-katalógus, ami a Creative Direction réteghez ad referenciát.', 'python3 search.py "minimalism dark" --domain style'],
+  ['colors', '161 színpaletta industry-szerint', 'Iparág-szerint kategorizált palettarendszer — saas, ecommerce, healthcare, beauty, fintech, service.', 'python3 search.py "entertainment vibrant" --domain color'],
+  ['typography', '57 font-pár (Google Fonts kombinációk személyiség szerint)', 'Tipográfia párosítások hangulat-szerint — playful, elegant, professional, modern.', 'python3 search.py "elegant luxury" --domain typography'],
+  ['google-fonts', '1923 egyedi Google Font kereshetően', 'Egyedi font-keresés stílus + nyelv szerint (sans, monospace, japanese, variable, popular).', 'python3 search.py "sans serif variable" --domain google-fonts'],
+  ['icons', 'Ikon-családok és használati irányelvek', 'Ikon-set ajánlások és stroke / corner radius / sizing konvenciók.', 'python3 search.py "outline minimal" --domain icons'],
+  ['charts', '25 chart-típus (mikor melyik data-típushoz)', 'Data-vizualizációs minta-katalógus — trend → line, comparison → bar, proportion → pie/donut.', 'python3 search.py "real-time dashboard" --domain chart'],
+  ['landing', 'Landing page minták (hero, social proof, pricing, testimonials)', 'Page szerkezet és CTA stratégiák — hero, hero-centric, testimonial, pricing, social-proof.', 'python3 search.py "hero social-proof" --domain landing'],
+  ['app-interface', 'App UI guidelines (iOS HIG, Material Design, React Native, Flutter)', 'Platform-natív irányelvek: accessibility label, touch target, safe area, Dynamic Type.', 'python3 search.py "touch target safe-area" --domain web'],
+  ['ux-guidelines', '99 UX irányelv (a11y, anti-pattern, performance, navigation)', 'A 10 priority kategória részletes UX szabálylistája — ez a Quick Reference checklist alapja.', 'python3 search.py "animation accessibility z-index" --domain ux'],
+  ['ui-reasoning', '161 industry-specific reasoning rule (BM25 ranking)', 'A reasoning engine, ami az iparághoz a legjobb stack-et választja (a design system generálás motorja).', '(automatikus a --design-system flag-en át)'],
+  ['design', 'Általános design pattern keresés', 'Design pattern + best practice keresés szabad keresőszavakkal.', 'python3 search.py "card hover lift" --domain design'],
+  ['react-performance', 'React/Next.js performance pattern-ek', 'Stack-specifikus performance: waterfall, bundle, suspense, memo, rerender, cache.', 'python3 search.py "waterfall bundle" --domain react'],
+  ['draft', 'AI promptok és CSS keyword bank (a generálás bemenete)', 'AI prompt sablonok és CSS keyword bank a generálási flow-hoz.', 'python3 search.py "minimalism" --domain prompt']
+];
+const uipm_items = UIPM_DOMAINS.map(([name, oneline, full, example]) => {
+  const id = `uipm-${name}`;
+  _S(id, 'tool-ui-ux-pro-max', name, oneline, [
+    { h: 'Mit csinál', p: full },
+    { h: 'CSV adatfájl', p: `<code>data/${name}.csv</code>` },
+    { h: 'Példa CLI', code: $c(example) }
+  ]);
+  return { id, name, oneline };
+});
+_addSkills('tool-ui-ux-pro-max', 'Search-domains (14) — a katalógus CSV-i', uipm_items);
+
+/* ===================================================================
+ * DESIGNER-SKILLS (Owl-Listener) — 38 skills in 4 main plugin groups
+ * Source frontmatter descriptions
+ * =================================================================== */
+const DS_SKILLS = {
+  'UI Design (12)': [
+    ['responsive-design', 'Design adaptive layouts and interactions that work across all screen sizes and input methods.'],
+    ['dark-mode-design', 'Design effective dark mode interfaces with proper color adaptation, contrast, and elevation.'],
+    ['spacing-system', 'Create a consistent spacing system based on a base unit with contextual application rules.'],
+    ['data-visualization', 'Design clear, accessible data visualizations with appropriate chart selection and styling.'],
+    ['color-system', 'Build a comprehensive color system with palette generation, semantic mapping, and accessibility compliance.'],
+    ['typography-scale', 'Create a modular typography scale with size, weight, and line-height relationships.'],
+    ['visual-hierarchy', 'Establish clear visual hierarchy through size, weight, color, spacing, and positioning.'],
+    ['von-restorff-effect', 'Apply the Von Restorff Effect to make the most important element distinctly different from its surroundings.'],
+    ['aesthetic-usability', 'Apply the Aesthetic-Usability Effect — visually consistent, polished interfaces are perceived as more usable.'],
+    ['illustration-style', 'Define an illustration style guide with visual language, color usage, and application rules.'],
+    ['layout-grid', 'Define responsive layout grid systems with columns, gutters, margins, and breakpoint behavior.'],
+    ['readable-measure', 'Set optimal line lengths for readability across typography scales and responsive layouts.'],
+    ['law-of-proximity', 'Apply the Law of Proximity to group related elements through spatial relationships.']
+  ],
+  'Design Systems (11)': [
+    ['localization-design', 'Design interfaces that adapt gracefully to multiple languages, writing directions, and cultural contexts.'],
+    ['pattern-library', 'Structure a pattern library entry with problem context, solution pattern, usage examples, and related patterns.'],
+    ['design-system-governance', 'Define how a design system evolves — contribution models, versioning, change management, and deprecation.'],
+    ['component-spec', 'Write a detailed component specification including props, states, variants, accessibility requirements, and usage guidelines.'],
+    ['theming-system', 'Design a theming architecture that supports brand variants, dark mode, and high-contrast modes with token mapping.'],
+    ['design-token', 'Define and organize design tokens (color, spacing, typography, elevation) with naming conventions and usage guidance.'],
+    ['accessibility-audit', 'Conduct a comprehensive accessibility audit against WCAG guidelines with severity ratings and remediation steps.'],
+    ['icon-system', 'Create an icon system specification covering grid, sizing, naming, categories, and implementation guidance.'],
+    ['motion-system', 'Define a motion system with duration tokens, easing vocabulary, and reduced-motion handling for consistent animation.'],
+    ['naming-convention', 'Establish a naming convention system for design elements, components, and tokens with clear rules and examples.'],
+    ['documentation-template', 'Generate structured documentation templates for components, patterns, or guidelines within a design system.']
+  ],
+  'Interaction Design (8)': [
+    ['onboarding-design', 'Design first-run experiences that get users to value quickly without overwhelming them.'],
+    ['error-handling-ux', 'Design error prevention, detection, and recovery experiences.'],
+    ['doherty-threshold', 'Apply the Doherty Threshold — keep system response times under 400ms to maintain user flow and perceived performance.'],
+    ['micro-interaction-spec', 'Specify micro-interactions with trigger, rules, feedback, and loop/mode definitions.'],
+    ['gesture-patterns', 'Design gesture-based interactions for touch and pointer devices.'],
+    ['animation-principles', 'Apply animation principles to UI motion for purposeful, polished interactions.'],
+    ['millers-law', "Apply Miller's Law — chunk information into groups of ~4 to work within working memory limits."],
+    ['navigation-patterns', 'Select and design navigation patterns that match product structure, user tasks, and platform conventions.']
+  ],
+  'Prototyping & Testing (8)': [
+    ['click-test-plan', 'Design click/first-click tests to evaluate navigation and information findability.'],
+    ['a-b-test-design', 'Design rigorous A/B tests with hypotheses, variants, metrics, and sample size calculations.'],
+    ['user-flow-diagram', 'Create user flow diagrams showing paths, decisions, and branch logic.'],
+    ['heuristic-evaluation', "Conduct expert heuristic evaluations using Nielsen's heuristics and domain-specific criteria."],
+    ['prototype-strategy', 'Choose the right prototyping fidelity and method for the design question.'],
+    ['test-scenario', 'Write usability test scenarios with tasks, success criteria, and observation guides.'],
+    ['wireframe-spec', 'Specify wireframe layouts with content priority, component placement, and annotation.'],
+    ['accessibility-test-plan', 'Create accessibility testing plans covering assistive technologies and WCAG criteria.']
+  ]
+};
+const ds_groups = [];
+Object.entries(DS_SKILLS).forEach(([groupName, skills]) => {
+  const items = skills.map(([name, desc]) => {
+    const id = `ds-${name}`;
+    const oneline = desc.length > 90 ? desc.slice(0, 90).trim() + '…' : desc;
+    _S(id, 'tool-designer-skills', name, oneline, [
+      { h: 'Description (forrás-frontmatter)', p: desc },
+      { h: 'Csoport', p: groupName }
+    ]);
+    return { id, name, oneline };
+  });
+  ds_groups.push({ name: groupName, items });
+});
+_addSkills('tool-designer-skills', 'Skills (38) — 4 plugin-csoport', { groups: ds_groups });
+
+/* ===================================================================
+ * MARKETINGSKILLS (coreyhaines31) — 37 skills tematikus csoportokba rendezve
+ * =================================================================== */
+const MS_SKILLS = {
+  'Conversion Rate Optimization (CRO)': [
+    ['page-cro', 'Optimize, improve, or increase conversions on any marketing page — homepage, landing, pricing, feature pages.'],
+    ['signup-flow-cro', 'Optimize signup, registration, account creation, or trial activation flows.'],
+    ['form-cro', 'Optimize lead capture forms, contact forms, demo request forms — anything NOT signup.'],
+    ['popup-cro', 'Create or optimize popups, modals, overlays, slide-ins, or banners for conversion.'],
+    ['paywall-upgrade-cro', 'Create or optimize in-app paywalls, upgrade screens, upsell modals, feature gates.'],
+    ['ab-test-setup', 'Plan, design, or implement an A/B test — build a growth experimentation program.'],
+    ['analytics-tracking', 'Set up GA4, conversion tracking, event tracking, UTM parameters, attribution.']
+  ],
+  'Copy & Content': [
+    ['copywriting', 'Write, rewrite, or improve marketing copy — homepage, landing, pricing, feature pages.'],
+    ['copy-editing', 'Edit, review, or improve existing copy. Refresh outdated content.'],
+    ['content-strategy', 'Plan a content strategy, decide what content to create, figure out what topics to cover.'],
+    ['social-content', 'Create, schedule, or optimize social media content — LinkedIn, Twitter/X, Instagram, TikTok.'],
+    ['image', 'Create, generate, edit, or optimize images for marketing — blog heroes, social graphics, mockups.'],
+    ['video', 'Create, generate, or produce video content using AI tools (Remotion, HeyGen, Veo, Runway).'],
+    ['ad-creative', 'Generate, iterate, or scale ad creative — headlines, descriptions, primary text, full ad variations.']
+  ],
+  'SEO': [
+    ['seo-audit', 'Audit, review, or diagnose SEO issues — technical SEO, on-page, page speed, indexing.'],
+    ['ai-seo', 'Optimize content for AI search engines (AI Overviews, Perplexity, ChatGPT citations) — AEO/GEO/LLMO.'],
+    ['schema-markup', 'Add, fix, or optimize JSON-LD schema.org structured data for rich results.'],
+    ['programmatic-seo', 'Create SEO-driven pages at scale using templates and data (location, comparison, integration pages).'],
+    ['site-architecture', 'Plan, map, or restructure website page hierarchy, navigation, URL structure, internal linking.']
+  ],
+  'Email & Outreach': [
+    ['email-sequence', 'Create or optimize email sequences, drip campaigns, lifecycle email programs.'],
+    ['cold-email', 'Write B2B cold emails and follow-up sequences that get replies.']
+  ],
+  'Strategy & Growth': [
+    ['marketing-ideas', 'Brainstorm marketing ideas, growth strategies, ways to promote your SaaS product.'],
+    ['marketing-psychology', 'Apply psychology, mental models, cognitive biases, behavioral science to marketing.'],
+    ['pricing-strategy', 'Pricing decisions, tier packaging, freemium vs free trial, monetization strategy.'],
+    ['launch-strategy', 'Plan a product launch, feature announcement, Product Hunt strategy, GTM plan.'],
+    ['free-tool-strategy', 'Plan, evaluate, or build a free tool for marketing — engineering as marketing, calculators, generators.'],
+    ['lead-magnets', 'Create, plan, or optimize a lead magnet for email capture — ebook, checklist, template, PDF.'],
+    ['community-marketing', 'Build and leverage online communities — Discord, Slack, Reddit — for growth and brand loyalty.'],
+    ['co-marketing', 'Find co-marketing partners, plan joint campaigns, brainstorm partnership opportunities.'],
+    ['referral-program', 'Create, optimize, or analyze a referral, affiliate, or word-of-mouth program.']
+  ],
+  'Research & Competitive': [
+    ['customer-research', 'Conduct, analyze, or synthesize customer research — interviews, surveys, reviews, JTBD.'],
+    ['competitor-profiling', 'Research, profile, or analyze competitors from their URLs — structured profile docs.'],
+    ['competitor-alternatives', 'Create competitor comparison or alternative pages — VS pages, battle cards.']
+  ],
+  'Lifecycle & Sales': [
+    ['churn-prevention', 'Reduce churn — cancellation flows, save offers, dunning, win-back, retention strategies.'],
+    ['revops', 'Revenue operations, lead lifecycle management, marketing-to-sales handoff, CRM automation.'],
+    ['paid-ads', 'Paid advertising on Google Ads, Meta, LinkedIn, Twitter/X — campaign strategy and optimization.'],
+    ['sales-enablement', 'Create sales collateral — pitch decks, one-pagers, objection handling, demo scripts.']
+  ],
+  'Foundation': [
+    ['product-marketing-context', 'Create or update product marketing context — positioning, ICP, audience. Foundation for other skills.'],
+    ['directory-submissions', 'Submit your product to startup, SaaS, AI, MCP, no-code, review directories for backlinks.'],
+    ['aso-audit', 'Audit or optimize App Store or Google Play listing — keyword optimization, app store ranking.']
+  ]
+};
+const ms_groups = [];
+Object.entries(MS_SKILLS).forEach(([groupName, skills]) => {
+  const items = skills.map(([name, desc]) => {
+    const id = `ms-${name}`;
+    const oneline = desc.length > 90 ? desc.slice(0, 90).trim() + '…' : desc;
+    _S(id, 'tool-marketingskills', name, oneline, [
+      { h: 'Description (forrás-frontmatter)', p: desc },
+      { h: 'Csoport', p: groupName },
+      { h: 'Példa trigger', code: `${$c('"')}${desc.slice(0, 50)}…${$c('"')}` }
+    ]);
+    return { id, name, oneline };
+  });
+  ms_groups.push({ name: groupName, items });
+});
+_addSkills('tool-marketingskills', 'Skills (37) — 8 tematikus csoport', { groups: ms_groups });
+
+/* ===================================================================
+ * COWORK · design plugin — 6 skills + 6 commands
+ * =================================================================== */
+const CW_DESIGN_SKILLS = [
+  ['accessibility-review', 'WCAG 2.1 AA compliance audit', 'Audit designs and code for WCAG 2.1 AA compliance. Trigger with "is this accessible", "accessibility check", "WCAG audit", "color contrast".'],
+  ['design-critique', 'Strukturált design review — usability, hierarchy, consistency', 'Evaluate designs for usability, visual hierarchy, consistency, and adherence to design principles.'],
+  ['design-handoff', 'Developer handoff dokumentáció generálás', 'Create comprehensive developer handoff documentation from designs — implementation specs.'],
+  ['design-system-management', 'Design system karbantartás — tokenek, komponens-könyvtár, dokumentáció', 'Manage design tokens, component libraries, and pattern documentation.'],
+  ['user-research', 'User research tervezés, levezetés, szintézis', 'Plan, conduct, and synthesize user research — interview guides, usability tests, surveys.'],
+  ['ux-writing', 'UX microcopy — gombok, hibák, üres állapotok', 'Write effective microcopy for user interfaces — button text, error messages, empty states, CTAs.']
+];
+const CW_DESIGN_CMDS = [
+  ['accessibility', 'WCAG accessibility audit Figma URL-en vagy oldalon', '<Figma URL, URL, or description>'],
+  ['critique', 'Strukturált design feedback — usability/hierarchy/consistency', '<Figma URL, screenshot, or description>'],
+  ['design-system', 'Audit, document, or extend your design system', '[audit | document | extend] <component or system>'],
+  ['handoff', 'Developer handoff specs generálás design-ből', '<Figma URL or design description>'],
+  ['research-synthesis', 'User research szintézis — témák, insightok, ajánlások', '<research data, transcripts, or survey results>'],
+  ['ux-copy', 'UX copy írása/review — microcopy, errorok, üres állapotok, CTA-k', '<context or copy to review>']
+];
+const cwd_sk = CW_DESIGN_SKILLS.map(([name, oneline, full]) => {
+  const id = `cwd-${name}`;
+  _S(id, 'tool-cowork-design', name, oneline, [{ h: 'Description', p: full }, { h: 'Trigger', p: 'Auto-trigger a leírás kulcsszavaira (Skill Application).' }]);
+  return { id, name, oneline };
+});
+const cwd_cmd = CW_DESIGN_CMDS.map(([name, oneline, arg]) => {
+  const id = `cwd-cmd-${name}`;
+  _S(id, 'tool-cowork-design', `/${name}`, oneline, [
+    { h: 'Mit csinál', p: oneline },
+    { h: 'Argument', p: `<code>${_esc(arg)}</code>` },
+    { h: 'Példa', code: `${$p('/design:' + name)} ${$c(arg)}` }
+  ]);
+  return { id, name, oneline, cmd: true };
+});
+_addSkills('tool-cowork-design', 'Skills (6)', cwd_sk);
+_addSkills('tool-cowork-design', 'Slash commands (6)', cwd_cmd);
+
+/* ===================================================================
+ * COWORK · marketing plugin — 5 skills + 7 commands
+ * =================================================================== */
+const CW_MKT_SKILLS = [
+  ['brand-voice', 'Brand voice, style guide, messaging pillars alkalmazása', 'Apply and enforce brand voice, style guide, and messaging pillars across content. Use when reviewing content for brand consistency, documenting a brand voice, adapting tone for different audiences.'],
+  ['campaign-planning', 'Marketing kampány tervezés — objektívek, közönség, csatorna, KPI', 'Plan marketing campaigns with objectives, audience segmentation, channel strategy, content calendars, and success metrics.'],
+  ['competitive-analysis', 'Versenytárs-kutatás — pozicionálás, üzenet, content összevetés', 'Research competitors and compare positioning, messaging, content strategy, and market presence.'],
+  ['content-creation', 'Marketing content draftolás — blog, social, email, landing', 'Draft marketing content across channels — blog posts, social media, email newsletters, landing pages, press releases, case studies.'],
+  ['performance-analytics', 'Marketing teljesítmény elemzés — metrikák, trendek, ajánlások', 'Analyze marketing performance with key metrics, trend analysis, and optimization recommendations.']
+];
+const CW_MKT_CMDS = [
+  ['brand-review', 'Content review brand voice + style guide + messaging pillars ellen', '<content to review>'],
+  ['campaign-plan', 'Teljes kampány-brief: célok, csatornák, content kalendár, KPI', '<campaign objective or product>'],
+  ['competitive-brief', 'Versenytárs-kutatás + positioning/messaging összevetés', '<competitor or market segment>'],
+  ['draft-content', 'Blog, social, email, landing, press release, case study draftolás', '<content type and topic>'],
+  ['email-sequence', 'Multi-email sequence: nurture, onboarding, drip', '[sequence type]'],
+  ['performance-report', 'Marketing performance riport — metrikák, trendek, optimalizálás', '<time period or campaign>'],
+  ['seo-audit', 'SEO audit — kulcsszó, on-page, content gap, technikai, versenytárs', '<url or topic> [audit type]']
+];
+const cwm_sk = CW_MKT_SKILLS.map(([name, oneline, full]) => {
+  const id = `cwm-${name}`;
+  _S(id, 'tool-cowork-marketing', name, oneline, [{ h: 'Description', p: full }]);
+  return { id, name, oneline };
+});
+const cwm_cmd = CW_MKT_CMDS.map(([name, oneline, arg]) => {
+  const id = `cwm-cmd-${name}`;
+  _S(id, 'tool-cowork-marketing', `/${name}`, oneline, [
+    { h: 'Mit csinál', p: oneline },
+    { h: 'Argument', p: `<code>${_esc(arg)}</code>` },
+    { h: 'Példa', code: `${$p('/marketing:' + name)} ${$c(arg)}` }
+  ]);
+  return { id, name, oneline, cmd: true };
+});
+_addSkills('tool-cowork-marketing', 'Skills (5)', cwm_sk);
+_addSkills('tool-cowork-marketing', 'Slash commands (7)', cwm_cmd);
+
+/* ===================================================================
+ * COWORK · product-management plugin — 6 skills + 7 commands
+ * =================================================================== */
+const CW_PM_SKILLS = [
+  ['competitive-analysis', 'Versenytárs-elemzés — feature compare, pozicionálás, stratégiai implikációk', 'Analyze competitors with feature comparison matrices, positioning analysis, and strategic implications.'],
+  ['feature-spec', 'PRD írás — problémanyilatkozat, user story, követelmény, sikermetrika', 'Write structured product requirements documents (PRDs) with problem statements, user stories, requirements, and success metrics.'],
+  ['metrics-tracking', 'Termék-metrikák definíció, követés, dashboard tervezés', 'Define, track, and analyze product metrics with frameworks for goal setting and dashboard design.'],
+  ['roadmap-management', 'Roadmap tervezés + priorizálás — RICE, MoSCoW, ICE', 'Plan and prioritize product roadmaps using frameworks like RICE, MoSCoW, and ICE.'],
+  ['stakeholder-comms', 'Stakeholder update-ek — exec, eng, ügyfél, cross-functional', 'Draft stakeholder updates tailored to audience — executives, engineering, customers, or cross-functional partners.'],
+  ['user-research-synthesis', 'Kvalitatív + kvantitatív user research szintézis — témák, opportunity-k', 'Synthesize qualitative and quantitative user research into structured insights and opportunity areas.']
+];
+const CW_PM_CMDS = [
+  ['competitive-brief', 'Competitive analysis brief egy versenytársról vagy feature-area-ról', '<competitor or feature area>'],
+  ['metrics-review', 'Termék-metrikák review trend-analízissel és akcionable insightokkal', '<time period or metric focus>'],
+  ['roadmap-update', 'Roadmap update, létrehozás vagy újrapriorizálás', '<update description>'],
+  ['sprint-planning', 'Sprint tervezés — scope, kapacitás, célok', '[sprint name or date range]'],
+  ['stakeholder-update', 'Stakeholder update közönség + cadence szerint', '<update type and audience>'],
+  ['synthesize-research', 'User research szintézis interjúkból, kérdőívekből, feedback-ből', '<research topic or question>'],
+  ['write-spec', 'Feature spec / PRD egy problem statement vagy feature ötletből', '<feature or problem statement>']
+];
+const cwpm_sk = CW_PM_SKILLS.map(([name, oneline, full]) => {
+  const id = `cwpm-${name}`;
+  _S(id, 'tool-cowork-pm', name, oneline, [{ h: 'Description', p: full }]);
+  return { id, name, oneline };
+});
+const cwpm_cmd = CW_PM_CMDS.map(([name, oneline, arg]) => {
+  const id = `cwpm-cmd-${name}`;
+  _S(id, 'tool-cowork-pm', `/${name}`, oneline, [
+    { h: 'Mit csinál', p: oneline },
+    { h: 'Argument', p: `<code>${_esc(arg)}</code>` },
+    { h: 'Példa', code: `${$p('/product-management:' + name)} ${$c(arg)}` }
+  ]);
+  return { id, name, oneline, cmd: true };
+});
+_addSkills('tool-cowork-pm', 'Skills (6)', cwpm_sk);
+_addSkills('tool-cowork-pm', 'Slash commands (7)', cwpm_cmd);
+
+/* ===================================================================
+ * Cross-link from tool-stack modal to Cowork plugins
+ * =================================================================== */
+MODALS['tool-stack'].sections.push({
+  h: 'Cowork plugins (Anthropic, role-bundles)',
+  p: 'A Claude desktop appon át telepíthetők — knowledge-work-plugins marketplace. Mindegyik 5–7 skill + 5–7 slash command.',
+  tags: [
+    ['tool-cowork-design', 'Cowork · design'],
+    ['tool-cowork-marketing', 'Cowork · marketing'],
+    ['tool-cowork-pm', 'Cowork · product-management']
+  ]
+});
+
+// ============ MODAL LOGIC ============
+const backdrop = document.getElementById('modal-backdrop');
+const modal = document.getElementById('modal');
+const titleEl = document.getElementById('modal-title');
+const subEl = document.getElementById('modal-sub');
+const kickerEl = document.getElementById('modal-kicker');
+const bodyEl = document.getElementById('modal-body');
+const closeBtn = document.getElementById('modal-close');
+
+function openModal(id) {
+  const data = MODALS[id];
+  if (!data) { console.warn('No modal for', id); return; }
+  modal.dataset.cat = data.cat || '';
+  kickerEl.textContent = data.kicker || '';
+  titleEl.innerHTML = data.title || '';
+  subEl.innerHTML = data.sub || '';
+  bodyEl.innerHTML = '';
+
+  // Back link to parent (for skill detail modals)
+  if (data.back) {
+    const back = document.createElement('button');
+    back.className = 'back-link';
+    back.textContent = data.backLabel || 'Vissza';
+    back.addEventListener('click', e => { e.stopPropagation(); openModal(data.back); });
+    bodyEl.appendChild(back);
+  }
+
+  (data.sections || []).forEach(s => {
+    const sec = document.createElement('section');
+    if (s.h) sec.innerHTML += `<h4>${s.h}</h4>`;
+    if (s.p) sec.innerHTML += `<p>${s.p}</p>`;
+    if (s.quote) sec.innerHTML += `<div class="quote">${s.quote}</div>`;
+    if (s.danger) sec.innerHTML += `<div class="danger"><b>Failure mode:</b> ${s.danger}</div>`;
+    if (s.code) sec.innerHTML += `<div class="code-block">${s.code}</div>`;
+    if (s.list) {
+      const ul = document.createElement('ul');
+      s.list.forEach(item => { const li = document.createElement('li'); li.innerHTML = item; ul.appendChild(li); });
+      sec.appendChild(ul);
+    }
+    if (s.tags) {
+      const wrap = document.createElement('div'); wrap.className = 'modal-tags';
+      s.tags.forEach(([modalId, label]) => {
+        const btn = document.createElement('button');
+        btn.className = 'modal-tag';
+        btn.textContent = label;
+        btn.addEventListener('click', e => { e.stopPropagation(); openModal(modalId); });
+        wrap.appendChild(btn);
+      });
+      sec.appendChild(wrap);
+    }
+    // Skills section: clickable grid (optionally grouped)
+    if (s.skills) {
+      // s.skills can be a flat array or { groups: [{ name, items }] }
+      const renderGrid = (items) => {
+        const grid = document.createElement('div');
+        grid.className = 'skills-grid';
+        items.forEach(item => {
+          const btn = document.createElement('button');
+          btn.className = 'skill-row' + (item.cmd ? ' cmd' : '');
+          btn.innerHTML = `<span class="skill-name">${item.name}</span><span class="skill-one">${item.oneline}</span>`;
+          btn.addEventListener('click', e => { e.stopPropagation(); openModal(item.id); });
+          grid.appendChild(btn);
+        });
+        return grid;
+      };
+      if (Array.isArray(s.skills)) {
+        sec.appendChild(renderGrid(s.skills));
+      } else if (s.skills.groups) {
+        s.skills.groups.forEach(g => {
+          const grp = document.createElement('div'); grp.className = 'skills-group';
+          if (g.name) { const lbl = document.createElement('div'); lbl.className = 'group-label'; lbl.textContent = g.name; grp.appendChild(lbl); }
+          grp.appendChild(renderGrid(g.items));
+          sec.appendChild(grp);
+        });
+      }
+    }
+    bodyEl.appendChild(sec);
+  });
+  backdrop.classList.add('open');
+  bodyEl.scrollTop = 0;
+  document.body.style.overflow = 'hidden';
+  closeBtn.focus();
+}
+function closeModal() {
+  backdrop.classList.remove('open');
+  document.body.style.overflow = '';
+}
+closeBtn.addEventListener('click', closeModal);
+backdrop.addEventListener('click', e => { if (e.target === backdrop) closeModal(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && backdrop.classList.contains('open')) closeModal(); });
+
+// hook up all elements with data-modal
+document.querySelectorAll('[data-modal]').forEach(el => {
+  el.addEventListener('click', e => {
+    // if the click is on a child tag with its own data-modal, let that handle it
+    const tagTarget = e.target.closest('.tag[data-modal], .modal-tag[data-modal]');
+    if (tagTarget && tagTarget !== el) {
+      e.stopPropagation();
+      openModal(tagTarget.dataset.modal);
+      return;
+    }
+    openModal(el.dataset.modal);
+  });
+  if (el.tagName !== 'BUTTON') {
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openModal(el.dataset.modal); }
+    });
+  }
+});
+
+// Deep-link support: open a modal from the URL hash (e.g. #tool-impeccable)
+// Lets external pages (like decision-matrix.html) link directly into a wiki entry.
+function _openFromHash() {
+  const id = (location.hash || '').replace(/^#/, '');
+  if (id && MODALS[id]) {
+    // Small delay so the page is painted before the modal pops
+    setTimeout(() => openModal(id), 60);
+  }
+}
+window.addEventListener('load', _openFromHash);
+window.addEventListener('hashchange', _openFromHash);
+</script>
+
+</body>
+</html>

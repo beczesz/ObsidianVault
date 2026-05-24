@@ -1,0 +1,93 @@
+---
+layer: 3
+layer_name: Positioning & Offer
+project: {{PROJECT_NAME}}
+date_started: {{TODAY}}
+date_completed:
+tool_used:
+status: in_progress
+---
+
+# Positioning & Offer — {{PROJECT_NAME}}
+
+> **Mit termel:** egymondatos positioning + konkrét offer + primary conversion goal.
+
+> **Framework:** **April Dunford — Obviously Awesome** (5 komponens). *"A pozicionálás megelőzi a brandinget."* Minden alsóbb réteg ebből következik.
+> **Default tool:** brand-toolkit · brand-positioning
+
+## 1. Dunford 5-komponens — sorrendben
+
+### Komponens 1: Competitive alternatives
+> NEM csak direkt versenytársak — minden, amit a vevő mérlegel. (Layer 2 már megnevezte. Itt **a top 3-at** vesszük be.)
+
+1. [TODO]
+2. [TODO]
+3. [TODO]
+
+### Komponens 2: Differentiated capabilities
+> Mit tudunk, amit ők NEM tudnak? Konkrét, mérhető képességek — nem szlogen.
+
+1. [TODO]
+2. [TODO]
+3. [TODO]
+
+### Komponens 3: Value (a képességek vevői értéke)
+> Minden differenciátorhoz: mit ér a vevőnek?
+
+| Differenciátor | Vevői érték |
+|---|---|
+| [TODO] | [TODO] |
+| [TODO] | [TODO] |
+
+### Komponens 4: Best-fit customers
+> Kinek értéke ez **leginkább**? Specifikusabb mint a Layer 2 JTBD — itt a *legjobb 10%* a célunk.
+
+[TODO]
+
+### Komponens 5: Market category
+> Milyen kategóriában versenyzünk? **Gyakran újrakerethető** — a kategória maga is stratégiai döntés.
+
+- Default kategória: [TODO]
+- Új kategória javaslat (ha van): [TODO]
+- Mi alapján döntöttünk: [TODO]
+
+## 2. Az egymondatos positioning
+
+> Sablon: *„A [BRAND] egy [KATEGÓRIA] [BEST-FIT CUSTOMER]-nek, akik [JTBD/PROBLÉMA]. A [DIFFERENCIÁTOR] miatt jobb, mint [ALTERNATÍVÁK]."*
+
+[TODO — egy mondat, max 25 szó]
+
+## 3. Offer architecture
+
+### Primary offer (a fő ajánlat)
+- **Mit ajánlunk:** [TODO]
+- **Milyen áron / feltétellel:** [TODO]
+- **Konverzióc cél:** [TODO — pl. demo / vásárlás / audit / hívás / letöltés]
+
+### Secondary offer(s) (lépcsőzött)
+> Lean tier-ben 0-1 db. Standard: 1-2. Premium: több (lead magnet → trial → demo → contract).
+
+- [TODO]
+
+### Primary CTA
+[TODO — pontos szöveg, max 4 szó]
+
+### Secondary CTA (transitional — StoryBrand)
+[TODO — pl. „letöltés", „letöltés", „hívj minket"]
+
+## 4. Onliness test *(Premium tier kötelező — Marty Neumeier)*
+
+> Sablon: *„A [BRAND] az egyetlen [KATEGÓRIA], ami [DIFFERENCIÁTOR] [CÉLPIAC]-nak [SZITUÁCIÓ]-ban [TREND] mellett."*
+
+[TODO — csak Premium]
+
+---
+
+## Decisions
+
+- {{TODAY}}: Layer 3 kezdés.
+- {{TODAY}}: Kategória-választás: [TODO]
+
+## Open questions
+
+- [ ] [TODO]

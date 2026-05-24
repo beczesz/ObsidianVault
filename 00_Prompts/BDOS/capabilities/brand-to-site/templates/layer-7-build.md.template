@@ -1,0 +1,134 @@
+---
+layer: 7
+layer_name: Build + Polish + Quality Gate
+project: {{PROJECT_NAME}}
+date_started: {{TODAY}}
+date_completed:
+tool_used:
+status: in_progress
+---
+
+# Build + Polish + Quality Gate — {{PROJECT_NAME}}
+
+> **Mit termel:** kész, mobiloptimalizált HTML/CSS site + minőségi kapu report.
+
+> **A capability tézise:** **itt lakik a „gyönyörű"** — nem a katalógusban. A `ui-ux-pro-max` korrekt defaultot ad; a gyönyörű az, amikor az `impeccable` a korrekt rendszert **mesterien építi meg**: micro-interactionökben, transitionökben, fotóminőségben, a váratlan-de-helyes részletben.
+
+> **Frameworks:** Atomic Design · Mobile-First
+> **Default tool:** impeccable · craft → audit → polish
+
+---
+
+## 1. Build state
+
+| | |
+|---|---|
+| **Repo / path** | [TODO — pl. `./frontend/` vagy `./` ha statikus] |
+| **Stack** | [TODO — pl. „static HTML + Tailwind", „Next.js + shadcn"] |
+| **Build command** | [TODO — pl. `npm run build`] |
+| **Preview URL** | [TODO — pl. `localhost:5173` vagy Netlify preview] |
+| **Production URL** | [TODO — később, deploy után] |
+
+## 2. Page-by-page progress
+
+| Page | Wireframe (L5) | Copy beöntve | Design system applied | Polish kész | Audit kész |
+|---|---|---|---|---|---|
+| `/` | [✓/—] | [✓/—] | [✓/—] | [✓/—] | [✓/—] |
+| [TODO] | | | | | |
+| [TODO] | | | | | |
+
+---
+
+## 3. Quality Gate Checklist
+
+### Visual Quality
+
+- [ ] Nincs emoji ikonként (csak SVG, pl. Lucide / Heroicons)
+- [ ] Minden ikon ugyanabból az ikon-családból
+- [ ] Pressed-state nem mozdítja a layout-bounds-okat
+- [ ] Semantic theme tokens használata (NINCS ad-hoc per-screen hex)
+- [ ] A restraint rules (Layer 6 §4) tiszteletben tartva
+
+### Interaction
+
+- [ ] Minden tappable element clear pressed feedback-et ad (≤150ms)
+- [ ] Touch target ≥44×44pt (iOS) / 48×48dp (Android)
+- [ ] Micro-interaction timing 150-300ms között
+- [ ] Disabled state-ek vizuálisan tisztán azonosíthatóak
+- [ ] Screen reader focus-order = vizuális sorrend
+- [ ] Gesture-konfliktusok elkerülve
+
+### Light/Dark Mode
+
+- [ ] Primary text kontraszt ≥4.5:1 mindkét módban
+- [ ] Secondary text kontraszt ≥3:1 mindkét módban
+- [ ] Borders / dividers látszanak mindkét módban
+- [ ] Modal scrim opacity 40-60% (foreground legibility)
+- [ ] Mindkét mode tesztelve, nem feltételezve
+
+### Layout & Responsive
+
+- [ ] Safe areas tisztelve (header, tab bar, bottom CTA)
+- [ ] Scroll content nem rejtve fixed bar-ok mögött
+- [ ] Tesztelve: 375px / 768px / 1024px / 1440px
+- [ ] Tesztelve portrait + landscape
+- [ ] 4/8dp spacing rhythm tartva
+- [ ] Long-form text olvasható nagyobb képernyőn (line measure)
+
+### Performance (Core Web Vitals)
+
+- [ ] **LCP** < 2.5s
+- [ ] **CLS** < 0.1
+- [ ] **INP** < 200ms
+- [ ] Képek WebP/AVIF, lazy-loaded
+- [ ] Kritikus CSS inline / early
+- [ ] Bundle splitting routes szerint
+
+### Accessibility (WCAG 2.1 AA)
+
+- [ ] Minden meaningful image-nek alt text
+- [ ] Form fields: label + hint + error message
+- [ ] Color NEM az egyetlen jelző
+- [ ] Reduced motion tisztelve
+- [ ] Dynamic Type tisztelve
+- [ ] Keyboard-nav minden interactive elemen
+- [ ] Heading hierarchy sequential (no level skip)
+- [ ] ARIA labels icon-only gomboknál
+
+### Polish — a „gyönyörű" jelek
+
+- [ ] Van legalább **egy váratlan-de-helyes részlet** (a category-reflex elkerülésére)
+- [ ] Micro-interactionök célszerűek (NEM dekoratívak)
+- [ ] Page-transitionök spatial continuity-t tartanak
+- [ ] Fotó-minőség egységesen magas
+- [ ] Egy típus-rendszer, egy szín-rendszer, egy mozgás-rendszer (Layer 6)
+
+---
+
+## 4. Audit eredmények
+
+> Az `impeccable · audit` futtatás kimenete ide.
+
+```
+[TODO — audit output paste]
+```
+
+## 5. Handoff a Microsite Factory-nak
+
+> Mikor a Quality Gate teljes:
+> 1. Commit + push a kész site-ot
+> 2. Hand off → `capabilities/web-publishing/CLAUDE.md` (Microsite Factory)
+> 3. Deploy / DNS / SSL / analytics aktiválás
+
+- [ ] Repo lock — semmi nem változik a deploy után az aktuális verzióban
+- [ ] Microsite Factory értesítve
+
+---
+
+## Decisions
+
+- {{TODAY}}: Layer 7 kezdés.
+
+## Open questions
+
+- [ ] [TODO]

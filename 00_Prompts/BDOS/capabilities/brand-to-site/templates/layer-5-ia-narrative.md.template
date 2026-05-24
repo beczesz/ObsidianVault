@@ -1,0 +1,123 @@
+---
+layer: 5
+layer_name: Narrative UX + IA
+project: {{PROJECT_NAME}}
+date_started: {{TODAY}}
+date_completed:
+tool_used:
+status: in_progress
+---
+
+# Narrative UX + IA — {{PROJECT_NAME}}
+
+> **Mit termel:** Sitemap + narratív ív + wireframe-ek **valós szöveggel** (lorem ipsum tilos) + CTA-térkép.
+
+> **Kritikus szabály:** a copy a wireframe-mel **együtt születik**, nem utólag. Headline nélkül nincs jó hero.
+
+> **Frameworks:** Content-First (UX Collective 8 lépés) · StoryBrand wireframe
+> **Default tool:** impeccable · shape
+
+## 1. Sitemap
+
+> Lean: 1-3 oldal. Standard: 3-7 oldal. Premium: 7-15+ oldal.
+
+```
+{{PROJECT_NAME}}/
+├── / (Home / Landing)        ← elsődleges
+├── [TODO]
+├── [TODO]
+└── ...
+```
+
+| URL | Cél | Awareness target (Layer 2) | Primary CTA |
+|---|---|---|---|
+| `/` | [TODO] | [TODO] | [TODO] |
+| [TODO] | [TODO] | [TODO] | [TODO] |
+| [TODO] | [TODO] | [TODO] | [TODO] |
+
+## 2. Narratív ív — főoldal
+
+> A klasszikus meggyőzési ív: **probléma → miért mi → bizonyíték → akció**. Egy section = egy gondolat.
+
+### Section 1: Hero
+- **Section purpose:** [TODO — egy mondatban]
+- **Storyline elem (StoryBrand):** Character + Problem
+- **Headline (valós szöveg):** [TODO]
+- **Subhead:** [TODO]
+- **Visual:** [TODO]
+- **Primary CTA:** [TODO]
+- **Secondary CTA:** [TODO]
+
+### Section 2: [TODO — pl. Stakes / Problem deepening]
+- **Section purpose:** [TODO]
+- **Storyline elem:** [TODO]
+- **Headline:** [TODO]
+- **Body copy:** [TODO]
+- **Proof / visual:** [TODO]
+
+### Section 3: [TODO — pl. Value proposition / Solution]
+- **Section purpose:** [TODO]
+- **Headline:** [TODO]
+- **Body:** [TODO]
+
+### Section 4: [TODO — pl. Guide / How we're different]
+- ...
+
+### Section 5: [TODO — pl. Plan (3-step)]
+- 1. [TODO]
+- 2. [TODO]
+- 3. [TODO]
+
+### Section 6: [TODO — pl. Proof / Testimonials]
+- ...
+
+### Section 7: [TODO — pl. Pricing / Offer]
+- ...
+
+### Section 8: [TODO — pl. Final CTA / Objection handling]
+- ...
+
+### Footer
+- [TODO]
+
+## 3. Per-page wireframes
+
+> Minden további oldalhoz egy wireframe — külön fájl `./wireframes/<page>.md`-ban, ugyanezzel a sémával.
+
+- [TODO — /about](./wireframes/about.md)
+- [TODO — /pricing](./wireframes/pricing.md)
+- [TODO — ...]
+
+## 4. CTA-térkép
+
+> Az oldal-konverziós logika: hol melyik CTA, mit indítson el.
+
+| Page | Primary CTA | Secondary CTA | Hova vezet |
+|---|---|---|---|
+| `/` | [TODO] | [TODO] | [TODO] |
+| [TODO] | [TODO] | [TODO] | [TODO] |
+
+## 5. Mobile vs desktop narratíva-eltérés
+
+> Lean tier-ben gyakran csak mobile (375px target). Standard+: külön desktop verzió is.
+
+- Mobile-only érintenivalók: [TODO]
+- Desktop-extra elemek (ha vannak): [TODO]
+
+## 6. Content-First sanity check
+
+- [ ] Minden section-höz tartozik egy gondolat (nem több)
+- [ ] Minden state-ment van proof (Layer 4 inventory-ból)
+- [ ] Minden objection (Layer 4) megválaszolva a site-on valahol
+- [ ] A copy a kiválasztott voice-on van (Layer 1 tone)
+- [ ] A CTA-k a positioning (Layer 3) primary conversion-ra mutatnak
+
+---
+
+## Decisions
+
+- {{TODAY}}: Layer 5 kezdés.
+
+## Open questions
+
+- [ ] [TODO]

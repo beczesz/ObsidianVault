@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.becze.sage-daily-harvest</string>
+
+    <key>ProgramArguments</key>
+    <array>
+        <string>/bin/zsh</string>
+        <string>-c</string>
+        <string>cd "/Users/becze-mac/My Drive (beczesz.szabolcs@gmail.com)/0. Ideas Vault" &amp;&amp; /usr/local/bin/claude --print "/sage-harvest" &gt;&gt; "/Users/becze-mac/Library/Logs/sage-daily-harvest.log" 2&gt;&amp;1</string>
+    </array>
+
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>6</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+
+    <key>StandardOutPath</key>
+    <string>/Users/becze-mac/Library/Logs/sage-daily-harvest-stdout.log</string>
+
+    <key>StandardErrorPath</key>
+    <string>/Users/becze-mac/Library/Logs/sage-daily-harvest-stderr.log</string>
+
+    <key>RunAtLoad</key>
+    <false/>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/opt/homebrew/bin:/usr/bin:/bin</string>
+    </dict>
+</dict>
+</plist>

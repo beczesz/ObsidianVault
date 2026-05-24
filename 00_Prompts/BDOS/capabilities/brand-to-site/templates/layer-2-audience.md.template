@@ -1,0 +1,74 @@
+---
+layer: 2
+layer_name: Market & Audience Reality
+project: {{PROJECT_NAME}}
+date_started: {{TODAY}}
+date_completed:
+tool_used:
+status: in_progress
+---
+
+# Market & Audience Reality — {{PROJECT_NAME}}
+
+> **Mit termel:** 1-3 JTBD-állítás, awareness-szint térkép, competitive alternatives lista.
+
+> **Frameworks:** Jobs-to-be-Done (Christensen) · Ladder of Awareness (Schwartz) · Kapferer Brand Identity Prism (Reflection + Self-image facetek)
+> **Default tool:** brand-toolkit · brand-radar (versenytárs) + Cowork:PM · user-research-synthesis (interjúk)
+
+## 1. Jobs-to-be-Done (JTBD)
+
+> **Formátum:** *"Amikor [helyzet], akkor [motiváció], hogy [eredmény]."* — Christensen
+>
+> NEM persona-fikció ("marketing manager, 35-45"). A vevő **felbérel** minket egy konkrét feladatra. Mire?
+
+### Job 1 — primer
+[TODO]
+
+### Job 2 — szekunder (ha van)
+[TODO]
+
+### Job 3 — esetleges harmadik
+[TODO]
+
+## 2. Awareness-szint térkép (Schwartz Ladder)
+
+> A látogató mindig egy szinten érkezik. Más-más copy és design kell mindegyikhez.
+
+| Szint | A vevő mit tud | A mi forgalmunk mennyi része? | Honnan jön? |
+|---|---|---|---|
+| **Unaware** | Nem tudja, hogy van problémája | [TODO]% | [TODO — forrás, pl. cold ads] |
+| **Problem-aware** | Tudja, hogy van baj, megoldást nem ismer | [TODO]% | [TODO] |
+| **Solution-aware** | Ismer megoldás-típust, nem ismer minket | [TODO]% | [TODO] |
+| **Product-aware** | Ismer minket, nem döntött | [TODO]% | [TODO] |
+| **Most aware** | Kész vásárolni | [TODO]% | [TODO] |
+
+**Implikáció:** [TODO — mit kell elsősorban a site-nak megszólítania a legnagyobb % szintjén]
+
+## 3. Competitive alternatives
+
+> NEM direkt versenytársak — minden, amit a vevő mérlegel a mi megoldásunk helyett.
+
+| Alternatíva | Mit ad | Miért választaná helyettünk | Miért választana minket helyette |
+|---|---|---|---|
+| [TODO] | [TODO] | [TODO] | [TODO] |
+| [TODO] | [TODO] | [TODO] | [TODO] |
+| **A "csinálok semmit" alternatíva** | (status quo) | [TODO] | [TODO] |
+
+## 4. Reflection & Self-image (Kapferer)
+
+- **Reflection** (a tipikus vevőnk hogyan néz ki kívülről): [TODO]
+- **Self-image** (a vevő hogyan érzi magát miközben/miután minket használ): [TODO]
+
+## 5. Anti-personák — kit NEM szolgálunk
+
+[TODO — 1-3 vevő-típus, akit explicit nem szólítunk meg. Ettől éles a célzás.]
+
+---
+
+## Decisions
+
+- {{TODAY}}: Layer 2 kezdés.
+
+## Open questions
+
+- [ ] [TODO]

@@ -1,0 +1,98 @@
+---
+layer: pulse
+layer_name: ↻ Pulse
+project: {{PROJECT_NAME}}
+date_started: {{TODAY}}
+status: active
+---
+
+# Pulse — {{PROJECT_NAME}}
+
+> **Mit termel:** Analytics setup + folyamatos kísérlet-napló. **Visszacsatol a Layer 2-5. rétegre** (NEM a vizuálra elsősorban).
+
+> **A kulcs felismerés:** ha a konverzió rossz, a 99%-ban a probléma a **2-4. rétegben** van (közönség, pozicionálás, üzenet). A gomb-szín cseréje placebo. A Pulse szigorú mérési keret, ami megmondja, hová csatolj vissza.
+
+> **Frameworks:** Message-Market Fit · CRO
+> **Default tool:** marketingskills · analytics-tracking + ab-test-setup
+
+---
+
+## 1. Analytics setup
+
+| | Telepítve | Megjegyzés |
+|---|---|---|
+| Cloudflare Analytics / Plausible | [✓/—] | [TODO] |
+| Google Analytics 4 (GA4) | [✓/—] | [TODO] |
+| Hotjar / Microsoft Clarity | [✓/—] | [TODO — heatmap, recording] |
+| Core Web Vitals tracking | [✓/—] | [TODO] |
+| Conversion events | [✓/—] | [TODO — list of events tracked] |
+
+## 2. North-star metric
+
+> Egy fő metrika, amit mindenki nézi.
+
+- **Metric:** [TODO — pl. „weekly active reorders" DH-nak, „demo signups" SaaS-nek]
+- **Current value:** [TODO]
+- **Target (3 month):** [TODO]
+- **Target (12 month):** [TODO]
+
+## 3. Supporting metrics
+
+| Metric | Current | Target | Forrás |
+|---|---|---|---|
+| Conversion rate (primary CTA) | [TODO]% | [TODO]% | GA4 |
+| Bounce rate | [TODO]% | <[TODO]% | GA4 |
+| Avg session duration | [TODO]s | >[TODO]s | GA4 |
+| Scroll depth (homepage) | [TODO]% | >[TODO]% | Hotjar |
+| [TODO] | | | |
+
+---
+
+## 4. Active experiments
+
+### Experiment 1
+- **Hypothesis:** [TODO — „If [X], then [Y], because [Z]"]
+- **Variant A:** [TODO — control]
+- **Variant B:** [TODO — challenger]
+- **Metric:** [TODO]
+- **Required sample size:** [TODO]
+- **Start date:** [TODO]
+- **End date / status:** [TODO]
+- **Result:** [TODO]
+- **Feedback target (which layer to update):** [TODO — pl. „Layer 4: messaging hierarchy"]
+
+### Experiment 2
+- ...
+
+---
+
+## 5. Iteration log — visszacsatolások
+
+> Minden tanulás, ami a felsőbb rétegekre hatott.
+
+| Date | Insight | Layer-feedback | Action |
+|---|---|---|---|
+| [TODO] | [TODO] | [TODO — pl. „L4 messaging — túl absztrakt fő ígéret"] | [TODO — pl. „L4 átírás, A/B teszt"] |
+| | | | |
+
+---
+
+## 6. Quarterly review checklist
+
+> Quarter-onként a Maestro vagy a marketinges futtatja.
+
+- [ ] North-star metric trend (3 hó)
+- [ ] Top 3 best-performing experiments
+- [ ] Top 3 failed experiments — mit tanultunk
+- [ ] Layer-feedback summary: mit kell update-elni a felsőbb rétegeken
+- [ ] AI-szlop-check: a site még mindig nem hasonlít a kategória reflexére?
+
+---
+
+## Decisions
+
+- {{TODAY}}: Pulse loop aktiválva (post-ship).
+
+## Open questions
+
+- [ ] [TODO]

@@ -1,0 +1,118 @@
+---
+title: MARKETING_ENGINE — <Area név>
+version: 0.1
+date: <YYYY-MM-DD>
+author: Becze Szabolcs
+status: active
+description: <Area név> marketing engine playbook — voice, audience, KPI-k, cadence, csatornák.
+---
+
+# Marketing Engine — <Area név>
+
+> Ez a fájl az Area marketing-rendszer **belépője**. Minden új session ezt olvassa először (a Presto is). NE legyen hosszú — tömör, hivatkoznivaló dokumentum.
+
+---
+
+## 1. Mit csinálunk itt és miért
+
+<2-3 mondat. Mi az Area szerepe, miért marketingelünk, mit várunk tőle (lead-gen / brand-build / community / direct-sales / ...).>
+
+---
+
+## 2. Audience (kinek)
+
+**Elsődleges:**
+- <persona 1>: <demographic + role + pain-point + buying-stage>
+
+**Másodlagos (opcionális):**
+- <persona 2>: ...
+
+**Aki NEM a célunk:**
+- <anti-persona — fontos, mert ezzel szűrünk>
+
+---
+
+## 3. Voice & brand pillars
+
+**Hangnem:** <pl. tekintélyes-baráti / szakmai-direkt / közvetlen-játékos>
+
+**3 brand pillar (kulcs-üzenetek):**
+1. **<Pillar 1>** — <one-liner>
+2. **<Pillar 2>** — <one-liner>
+3. **<Pillar 3>** — <one-liner>
+
+**Tiltott:** <pl. clickbait, fluff superlativusok, üres ígéret>
+**Kötelező:** <pl. konkrét adat, példák, magyar helyesírás>
+
+---
+
+## 4. Csatornák
+
+| Csatorna | Aktív? | Cadence | Format |
+|---|---|---|---|
+| Blog | ✅/❌ | <heti/havi/...> | <hossz, formátum> |
+| LinkedIn | ✅/❌ | ... | ... |
+| Email newsletter | ✅/❌ | ... | ... |
+| Facebook | ✅/❌ | ... | ... |
+| Instagram | ✅/❌ | ... | ... |
+| YouTube | ✅/❌ | ... | ... |
+| Podcast | ✅/❌ | ... | ... |
+| Event / Webinar | ✅/❌ | ... | ... |
+
+---
+
+## 5. KPI-k & ramp
+
+**Time horizon:** <pl. quarter / 90 day / fix project deadline>
+
+**Primary KPI:** <pl. signed deals / qualified leads / email subscribers / NPS / brand search volume>
+
+**Secondary KPI-k (max 3):**
+- ...
+- ...
+- ...
+
+**Cadence-target (ne csak konverzió):**
+- Heti publish: <N db tartalom / csatornaként>
+- Heti distribution: <N db share, repost, community engage>
+- Havi review: <KPI mérés napja>
+
+---
+
+## 6. Aktív kampányok
+
+Lásd: [`Pipeline.md`](Pipeline.md) (single source of truth) és [`Campaigns/`](Campaigns/) (per-kampány fájlok).
+
+---
+
+## 7. Skill-stack — amit ez az Area használ
+
+A Presto a Cowork `marketing` plugin 8 skilljét hívhatja itt. <Áttekintés, ha az Area-nak vannak specifikus preferenciák — pl. "ehhez az Area-hoz NEM használjuk a /marketing:email-sequence-t, mert nincs newsletterünk".>
+
+---
+
+## 8. Hard rules (Presto + ember egyaránt)
+
+- **NEVER publish without human send.** A Presto draft-ot készít, az ember küldi.
+- **Verify relevance**: ha kampány > 7 napja idle és time-sensitive, újra-verify mielőtt run-olnánk.
+- **Cadence > one-off**: a heti/havi ritmus fontosabb mint egy nagy push.
+- <egyéb Area-specifikus szabály>
+
+---
+
+## 9. Iteration history
+
+A `MARKETING_ENGINE.md`-t maga az Iteration history nem itt jegyzi (az a `CAMPAIGN.md`-be tartozik). Itt csak a **playbook-változások** kerülnek listára:
+
+- YYYY-MM-DD — v0.1 bootstrap (initial)
+- YYYY-MM-DD — voice & pillars updated based on Q1 review
+- ...
+
+---
+
+## 10. Hivatkozott dokumentumok
+
+- Pipeline (kanban): [`Pipeline.md`](Pipeline.md)
+- (Opcionális) Dashboard (KPI tracker): [`Dashboard.md`](Dashboard.md)
+- Capability recept: [`../../../00_Prompts/BDOS/capabilities/marketing-engine/CLAUDE.md`](../../../00_Prompts/BDOS/capabilities/marketing-engine/CLAUDE.md)
+- Cross-project marketing index: [`../../../_dashboards/00_MARKETING_INDEX.md`](../../../_dashboards/00_MARKETING_INDEX.md)

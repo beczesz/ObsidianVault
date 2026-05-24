@@ -1,0 +1,66 @@
+---
+layer: 1
+layer_name: Brand Core
+project: {{PROJECT_NAME}}
+date_started: {{TODAY}}
+date_completed:
+tool_used:
+status: in_progress
+---
+
+# Brand Core — {{PROJECT_NAME}}
+
+> **Mit termel:** egyoldalas brand-gerinc. **NEM 20 oldalas manifesto.** Ha nem fér el egy oldalon, még nem elég tiszta.
+
+> **Frameworks:** Golden Circle (Sinek) · Brand Pyramid · NN/g voice (4 dim) · Aaker personality · Jung archetypes
+> **Default tool:** brand-toolkit · brand-voice
+
+## 1. Miért létezünk *(WHY — Golden Circle)*
+
+[TODO — egy mondat. Nem cég-misszió-szlogen, hanem a megkülönböztető hit. Pl.: "Hiszünk abban, hogy a húsvásárlás visszacsatolja az embert a helyi termelőhöz, és ez nemcsak vacsora, hanem közösségi aktus."]
+
+## 2. Miben hiszünk *(világnézet)*
+
+[TODO — 3-5 állítás a világról, amit a brandünk vall. Pl.: "A gyors konyhai döntés sosem haszontalan időbeli kompromisszum, hanem napi etika." Lehet provokatív — a célja, hogy szegmentáljon.]
+
+## 3. Karakter *(personality)*
+
+| Dimenzió | Érték | Indoklás |
+|---|---|---|
+| Formal ↔ Casual | [TODO] | |
+| Serious ↔ Funny | [TODO] | |
+| Respectful ↔ Irreverent | [TODO] | |
+| Matter-of-fact ↔ Enthusiastic | [TODO] | |
+
+**Aaker archetípus** (egy fő): [TODO — pl. Sage / Hero / Caregiver / Creator / Innocent / Explorer / Rebel / Magician / Jester / Everyman / Lover / Ruler]
+
+## 4. Mit NEM csinálunk *(non-negotiables)*
+
+[TODO — legalább 5 állítás, mit nem vagyunk hajlandók feladni vagy beleegyezni. Ez az "anti-vision" — sokszor világosabb mint a vision. Pl.: "Nem vagyunk hajlandók olcsóbb húst beadni. Nem futtatunk Black Friday akciókat. Nem csomagolunk műanyag dobozba."]
+
+## 5. Brand Pyramid
+
+- **Features** (mit csinálunk konkrétan): [TODO]
+- **Functional benefits** (mire jó): [TODO]
+- **Emotional benefits** (mit érez tőle a vevő): [TODO]
+- **Personality** (egy szóban, fent): [TODO]
+- **Essence** (1 mondat, ami minden alattit összefoglal): [TODO]
+
+## 6. Az "AI slop check"
+
+> Ha valaki ki tudja találni ezt a brand-core-t a kategóriából (`butcher → "trusted local craftsman"`), akkor még nem elég. Élesítsd, amíg meglep.
+
+- Mi a kategória-default amit el akarunk kerülni? [TODO]
+- Mi a mi különbségünk attól? [TODO]
+
+---
+
+## Decisions
+
+> Időrendi napló — mit döntöttünk és miért.
+
+- {{TODAY}}: Layer 1 kezdés.
+
+## Open questions / Iteration notes
+
+- [ ] [TODO — mit kell még tisztázni]

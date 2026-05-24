@@ -1,0 +1,116 @@
+---
+layer: 4
+layer_name: Messaging & Proof Architecture
+project: {{PROJECT_NAME}}
+date_started: {{TODAY}}
+date_completed:
+tool_used:
+status: in_progress
+---
+
+# Messaging & Proof Architecture — {{PROJECT_NAME}}
+
+> **Mit termel:** üzeneti hierarchia + objections-lista + proof inventory. Ez **NEM a copy** (a tényleges szavak) — ez a *strukturális doku* arról, mit kell elmondani és mivel kell elhitetni.
+
+> **Frameworks:** StoryBrand BrandScript (Miller) · PEACE framework · Message-Market Fit · Objection Mapping
+> **Default tool:** brand-toolkit · brand-messaging
+
+## 1. StoryBrand BrandScript (7 elem)
+
+| Elem | Tartalom |
+|---|---|
+| **Character** (vevő = hős, NEM a márka) | [TODO] |
+| **Problem** (mit küzd) | [TODO] |
+| **Guide** (a márka mint guide, empathy + authority) | [TODO] |
+| **Plan** (3 lépés a vevőnek) | 1. [TODO] · 2. [TODO] · 3. [TODO] |
+| **Call to Action** (primary CTA) | [TODO] |
+| **Avoid Failure** (mit veszít, ha nem cselekszik) | [TODO] |
+| **End in Success** (mit nyer) | [TODO] |
+
+## 2. Üzeneti hierarchia
+
+> **Fő ígéret** + **3-5 támogató ígéret**. A fő ígéret a hero-szekcióban; a támogatók a fő szekciókban.
+
+### Fő ígéret (One Big Idea)
+[TODO — egy mondat, max 15 szó]
+
+### Támogató ígéretek
+
+1. **[TODO — pl. „Helyi termelő, közvetlen kapcsolat"]**
+   - Indoklás: [TODO]
+   - Proof point (lásd alább): [TODO]
+
+2. **[TODO]**
+   - Indoklás: [TODO]
+   - Proof point: [TODO]
+
+3. **[TODO]**
+   - ...
+
+## 3. Objection mapping
+
+> Mitől NEM fog hinni nekünk a látogató? Minden major kifogásnak külön szekció a site-on.
+
+| Kifogás | Forrás (melyik szegmensnél jön) | Hogyan kezeljük |
+|---|---|---|
+| **Drága** | [TODO] | [TODO — pl. „mert mi X-et adunk az X-ért, lásd ár-bontás"] |
+| **Kockázatos** | [TODO] | [TODO] |
+| **Túl új** | [TODO] | [TODO] |
+| **Túl kicsi cég** | [TODO] | [TODO] |
+| **Nincs idő most** | [TODO] | [TODO] |
+| **Már van beszállító** | [TODO] | [TODO] |
+| **Miért higgyek nektek** | [TODO] | [TODO] |
+
+## 4. Proof inventory
+
+> Minden major ígérethez kell egy proof. Itt felsoroljuk, mi a rendelkezésünkre álló muníció.
+
+### Testimonials / case studies
+- [TODO]
+
+### Számok / statisztikák
+- [TODO]
+
+### Ügyféllogók
+- [TODO]
+
+### Before/after
+- [TODO]
+
+### Founder story (ha releváns)
+- [TODO]
+
+### Tanúsítványok / certifikációk
+- [TODO]
+
+### Média említések
+- [TODO]
+
+### Garanciák
+- [TODO]
+
+## 5. Tone reminders *(Layer 1-ből)*
+
+- Formal / Casual: [TODO]
+- Personality: [TODO]
+- "NEM" szavak: [TODO — lista, amit kerülünk, pl. "innovative, seamless, revolutionary"]
+
+## 6. PEACE soundbites *(opcionális — kampányokhoz)*
+
+| | Tartalom |
+|---|---|
+| **P**roblem | [TODO] |
+| **E**mpathy | [TODO] |
+| **A**nswer | [TODO] |
+| **C**hange | [TODO] |
+| **R**esult | [TODO] |
+
+---
+
+## Decisions
+
+- {{TODAY}}: Layer 4 kezdés.
+
+## Open questions
+
+- [ ] [TODO]

@@ -1,0 +1,104 @@
+---
+type: campaign                        # REQUIRED — a dashboard ezt keresi
+area: "<ProjectName>"                 # melyik Area alá tartozik
+title: "<Campaign Title>"
+stage: brief                          # idea | brief | draft | review | scheduled | published | promoted | measured | archived
+owner: "<név>"
+channels: [blog, linkedin, email]     # melyik csatornákon megy
+publish_date: <YYYY-MM-DD>            # tervezett publish dátum (vagy üres)
+status: in_progress                   # in_progress | blocked | done
+kpi_targets: { reach: 0, leads: 0, conversion_pct: 0 }
+brief_url: "./brief.md"               # ha van /marketing:campaign-plan brief
+tags: [<freeform>]                    # pl. [product-launch, lang-hu, q3]
+next_action: "<egy mondat>"           # mit kell legközelebb csinálni
+due: <YYYY-MM-DD>                     # mikor esedékes a next_action
+---
+
+# <Campaign Title>
+
+> Ez a fájl a kampány **primary state**-je. Egy kampány = egy fájl. A `Pipeline.md` és a `00_MARKETING_INDEX.md` ezt aggregálja.
+
+---
+
+## Brief
+
+<2-4 mondat: mi a kampány célja, kinek, mire, mikor. Ha a `/marketing:campaign-plan` futott, link a `brief.md`-re az asset-ben.>
+
+**Cél:** <primary objective>
+**Audience:** <persona>
+**Hook / message:** <a kampány kulcs-üzenete egy mondatban>
+**Sikerkritérium:** <hogyan tudjuk, hogy működött>
+
+---
+
+## Tasks
+
+Marketing kampány task-ok. Minden task-on `type:` mező kell, hogy a Presto `run` mód tudja melyik `/marketing:*` skillt hívja.
+
+- [ ] task 1
+  - type: content-draft         # content-draft | content-review | email-flow | seo-task | competitor-research
+  - skill: draft-content        # opcionális override; default a type-ról jön
+  - input: "<rövid leírás vagy fájl-path>"
+  - due: <YYYY-MM-DD>
+  - assignee: "<név>"
+
+- [ ] task 2
+  - type: content-review
+  - input: "./assets/blog-v1.md"
+  - due: <YYYY-MM-DD>
+
+- [ ] task 3
+  - type: <type>
+  - ...
+
+---
+
+## Assets
+
+Linkeld a kampány tartalom-darabjait:
+
+- [Blog draft v1](./assets/blog-v1.md) — status: ready_for_review
+- [LinkedIn post #1](./assets/linkedin-1.md) — status: draft
+- [Email sequence](./assets/email-seq/) — status: draft
+- ...
+
+---
+
+## Schedule
+
+| Dátum | Csatorna | Mi | Status |
+|---|---|---|---|
+| <YYYY-MM-DD HH:mm> | Blog | Blog post élesítés | scheduled |
+| <YYYY-MM-DD HH:mm> | LinkedIn | Promóciós post | draft |
+| ... | ... | ... | ... |
+
+---
+
+## Results / Metrics
+
+(Akkor kerül kitöltésre, ha `stage: measured` állapotba ér. A `/pres-measure` parancs ide ment riportot is.)
+
+| Metric | Target | Actual | % |
+|---|---|---|---|
+| Reach | <target> | <actual> | <%> |
+| Leads | <target> | <actual> | <%> |
+| Conversion | <target> | <actual> | <%> |
+| ... | ... | ... | ... |
+
+**Win / miss:**
+- ✅ <amit tanultunk pozitívan>
+- ❌ <amit tanultunk negatívan>
+
+**Follow-up javaslat:**
+- <mi következik a tanulságok alapján>
+
+---
+
+## Iteration history
+
+Append-only log. Minden Presto-akció (plan / run / resume) ide ír.
+
+- YYYY-MM-DD HH:mm — created from /pres-plan (objective: "<...>", tier: standard) by Presto
+- YYYY-MM-DD HH:mm — task "content-draft v1" run via /marketing:draft-content → assets/blog-v1.md by Presto
+- YYYY-MM-DD HH:mm — stage transition brief → draft by user (manual)
+- ...

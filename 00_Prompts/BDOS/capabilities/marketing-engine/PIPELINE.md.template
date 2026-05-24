@@ -1,0 +1,61 @@
+---
+title: Marketing Pipeline — <Area név>
+description: Kanban board az Area marketing kampányainak stage-eihez. Single source of truth a kampány-létezéshez és stage-hez.
+---
+
+# Marketing Pipeline — <Area név>
+
+> Minden kampány itt szerepel egy sorral. A stage-prefix (`## <Stage>`) határozza meg, melyik stage-ben van. Az aktív munka mindig a `CAMPAIGN.md` fájlban, ez csak az aggregátor.
+
+**Formátum egy sorra:**
+```
+- [ ] **Campaign Title** #tag1 #tag2 @{YYYY-MM-DD} rövid teaser (max ~80 karakter)
+```
+
+A `@{dátum}` a due/next-action dátuma. A tag-ek (`#tag`) szabadon. A `**Title**` linkelhető, ha akarod: `**[Title](Campaigns/slug/CAMPAIGN.md)**`.
+
+---
+
+## Idea
+
+(Ötletek, még nincs validálva. NE legyen sok — ha 6+ ötlet van itt, ülj le, válassz, és a többit archiváld.)
+
+- [ ] **Example Idea Title** #brainstorm @{2026-06-01} rövid teaser
+
+## Brief
+
+(Brief kész, audience+message megvan. `/marketing:campaign-plan` lefutott.)
+
+## Draft
+
+(Tartalom-darabok készülnek.)
+
+## Review
+
+(Draft kész, review fut — `/marketing:brand-review` vagy emberi review.)
+
+## Scheduled
+
+(Approved, kitűzve, vár a publish-időre.)
+
+## Published
+
+(Élesben kint van.)
+
+## Promoted
+
+(Másodlagos csatornákon megosztva, boost / community share.)
+
+## Measured
+
+(KPI mérés kész — `/marketing:performance-report` lefutott.)
+
+## Archived
+
+(Lezárt, lessons learned dokumentálva. Itt ne legyen 20+ — havi/quarterly archiváld a `Campaigns/_archive/`-ba.)
+
+---
+
+## Megjegyzés
+
+A `Pipeline.md`-t a Presto `today` és `status` módja olvassa, a `index` mód aggregálja a cross-project `00_MARKETING_INDEX.md`-be. Manuálisan is mozgathatsz sorokat (drag-and-drop a stage-ek között az Obsidian Kanban plugin-nel), de írd be a `CAMPAIGN.md` Iteration history-jába is, hogy a változás dokumentálva legyen.

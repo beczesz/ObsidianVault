@@ -1,0 +1,117 @@
+---
+project: {{PROJECT_NAME}}
+project_slug: {{PROJECT_SLUG}}
+tier: {{TIER}}                    # lean | standard | premium
+status: planning
+started: {{TODAY}}
+last_updated: {{TODAY}}
+overall_progress: 0
+current_layer: 1
+maestro_owner: true
+
+anti_references:
+  vault_projects:
+    # auto-listázandó az indító Maestro hívásnál — minden aktív projekt itt
+    - "{{LIST_OTHER_ACTIVE_PROJECTS}}"
+  category_first_reflex: ""        # pl. "tech cég → dark mode + neon + monospace"
+  category_second_reflex: ""       # pl. "tech cég → modernist Helvetica grid"
+  forbidden_palettes: []
+  physical_world_references: []    # fizikai-világ referencia-fotó path-jai
+  artistic_constraints: []         # pl. "csak monospace", "ortogonális only"
+---
+
+# Brand Spine State — {{PROJECT_NAME}}
+
+> **Maestro single source of truth.** A `Maestro` agent ezt a fájlt olvassa és írja. Te is írhatsz bele (decisions, notes, open_questions), de a `## Layers` és `## Iteration history` szekciókba csak a Maestro append-eljen.
+
+## Layers
+
+### 1. Brand Core
+- **status:** not_started
+- **progress:** 0%
+- **artifact:** —
+- **tool_used:** —
+- **last_touched:** —
+- **next_action:** Kezdd a brand-core sablon kitöltésével (templates/layer-1-brand-core.md.template)
+- **blockers:** []
+- **decisions:** []
+
+### 2. {{LAYER_2_NAME}}
+- **status:** not_started
+- **progress:** 0%
+- **artifact:** —
+- **tool_used:** —
+- **last_touched:** —
+- **next_action:** Várja a Layer 1 lezárását
+- **blockers:** []
+- **decisions:** []
+
+### 3. {{LAYER_3_NAME}}
+- **status:** not_started
+- **progress:** 0%
+- **artifact:** —
+- **tool_used:** —
+- **last_touched:** —
+- **next_action:** Várja a Layer 2 lezárását
+- **blockers:** []
+- **decisions:** []
+
+### 4. {{LAYER_4_NAME}}
+- **status:** not_started
+- **progress:** 0%
+- **artifact:** —
+- **tool_used:** —
+- **last_touched:** —
+- **next_action:** —
+- **blockers:** []
+- **decisions:** []
+
+### 5. {{LAYER_5_NAME}}
+- **status:** not_started
+- **progress:** 0%
+- **artifact:** —
+- **tool_used:** —
+- **last_touched:** —
+- **next_action:** —
+- **blockers:** []
+- **decisions:** []
+
+<!-- További rétegeket a Maestro start-mód automatikusan beilleszti a tier szerint:
+  Lean: 5 réteg (a fentiek)
+  Standard: 7 réteg (+ L6, L7)
+  Premium: 9 réteg (+ L6-L9)
+-->
+
+### ↻ Pulse (loop, csak shipping után)
+- **status:** not_applicable_yet
+- **progress:** N/A
+- **active_experiments:** []
+- **insights_fed_back_to:** []
+
+## Iteration history
+
+> Append-only — a Maestro minden írásnál ide tesz egy sort. Sose töröld a régieket.
+
+- {{TODAY}} {{TIME}} — INIT ({{TIER}} tier, Maestro v0.1)
+
+## Tool readiness
+
+| Tool | Telepítve | Megjegyzés |
+|------|-----------|------------|
+| brand-toolkit | {{CHECK}} | Layer 1-{{LAYER_LAST_STRAT}} default |
+| impeccable | {{CHECK}} | Layer 5+, design judgment + build |
+| ui-ux-pro-max | {{CHECK}} | Layer 6 katalógus |
+| marketingskills | {{CHECK}} | Pulse + copy |
+
+## Open questions
+
+> A Maestro nem oldja meg ezeket — csak felsorolja, hogy lásd.
+
+- [ ] Brand-név végleges? (working: {{PROJECT_NAME}})
+- [ ] {{TIER}} tier-rel induljunk, vagy megfontoljuk a feljebb-lépést?
+
+## Notes
+
+> Free-form — te is és a Maestro is írhat ide.
+
+- {{TODAY}}: Init.

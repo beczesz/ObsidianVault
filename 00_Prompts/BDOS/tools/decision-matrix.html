@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tool Decision Matrix — BDOS</title>
+<style>
+  :root {
+    --ink: #1c1a17;
+    --ink-soft: #5b554d;
+    --ink-faint: #8a8378;
+    --paper: #faf8f4;
+    --paper-raised: #ffffff;
+    --line: #e3ddd2;
+    --line-strong: #cdc5b6;
+    --accent: #9a3b2e;
+    --accent-soft: #f3e4e0;
+    --think: #2f5d50;
+    --cat: #4a4a8a;
+    --pulse: #b5832b;
+    --pulse-soft: #f4ead4;
+
+    --c0: transparent;             /* none */
+    --c1: #f0eadc;                 /* touches it */
+    --c2: #d8c896;                 /* covers it */
+    --c3: #a98b3c;                 /* strong */
+    --c4: #9a3b2e;                 /* specialist / best */
+
+    --radius: 14px;
+    --shadow: 0 1px 2px rgba(28,26,23,.04), 0 8px 24px rgba(28,26,23,.06);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: ui-sans-serif, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background: var(--paper); color: var(--ink); line-height: 1.6;
+    padding: clamp(20px, 5vw, 64px) clamp(16px, 4vw, 40px) 80px;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  header { margin-bottom: clamp(28px, 5vw, 48px); }
+  .kicker { font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-bottom: 14px; }
+  h1 { font-family: Georgia, serif; font-size: clamp(28px, 5vw, 44px); line-height: 1.12; letter-spacing: -.01em; font-weight: 600; margin-bottom: 14px; }
+  h1 em { font-style: italic; color: var(--accent); }
+  .lede { font-size: clamp(15px, 2.2vw, 18px); color: var(--ink-soft); max-width: 70ch; }
+  .lede b { color: var(--ink); }
+  .meta-row { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 8px 10px; font-size: 12.5px; color: var(--ink-faint); }
+  .chip { border: 1px solid var(--line-strong); border-radius: 999px; padding: 3px 11px; background: var(--paper-raised); }
+
+  h2.sec { font-family: Georgia, serif; font-size: clamp(22px, 3.5vw, 30px); font-weight: 600; margin: clamp(36px, 6vw, 56px) 0 8px; letter-spacing: -.01em; }
+  h2.sec .n { font-size: 14px; color: var(--ink-faint); font-style: italic; font-weight: 400; margin-left: 8px; }
+  h2.sec .sub { display: block; font-size: 14px; color: var(--ink-soft); font-style: italic; font-family: ui-sans-serif, sans-serif; font-weight: 400; margin-top: 4px; }
+
+  /* ======= MATRIX ======= */
+  .matrix-wrap { margin-top: 18px; overflow-x: auto; border-radius: var(--radius); background: var(--paper-raised); box-shadow: var(--shadow); padding: 16px; }
+  .matrix { border-collapse: separate; border-spacing: 4px; min-width: 100%; }
+  .matrix th, .matrix td { padding: 0; font-size: 11.5px; }
+  .matrix thead th { font-weight: 500; color: var(--ink-soft); text-align: center; padding: 4px 2px; vertical-align: bottom; }
+  .matrix thead th.cap { writing-mode: vertical-rl; transform: rotate(180deg); height: 130px; min-width: 36px; max-width: 36px; line-height: 1.2; letter-spacing: -.005em; cursor: pointer; transition: color .15s, background .15s; border-radius: 6px; }
+  .matrix thead th.cap:hover { color: var(--accent); background: var(--accent-soft); }
+  .matrix thead th.cap span { display: inline-block; padding: 6px 2px; }
+  .matrix thead th.cap span::after { content: " ⓘ"; font-size: 9px; color: var(--ink-faint); opacity: 0; transition: opacity .15s; }
+  .matrix thead th.cap:hover span::after { opacity: 1; color: var(--accent); }
+  .matrix th.row-label, .matrix td.row-label { writing-mode: horizontal-tb; text-align: left; padding: 6px 10px 6px 8px; min-width: 170px; font-weight: 600; color: var(--ink); white-space: nowrap; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 12px; cursor: pointer; border-radius: 6px; transition: background .15s, color .15s; }
+  .matrix td.row-label:hover { background: var(--accent-soft); color: var(--accent); }
+  .matrix td.row-label::after { content: " →"; opacity: 0; color: var(--accent); transition: opacity .15s; font-family: ui-sans-serif, sans-serif; font-weight: 700; }
+  .matrix td.row-label:hover::after { opacity: 1; }
+  .matrix td.row-label .sub-label { display: block; font-family: ui-sans-serif, sans-serif; font-size: 10.5px; font-weight: 400; color: var(--ink-faint); letter-spacing: 0; }
+  .matrix td.row-label:hover .sub-label { color: var(--accent); opacity: .75; }
+  .matrix td.cell { width: 36px; height: 36px; min-width: 36px; max-width: 36px; border-radius: 6px; text-align: center; vertical-align: middle; cursor: pointer; transition: transform .12s; font-weight: 700; font-size: 12px; color: #fff; position: relative; }
+  .matrix td.cell:hover { transform: scale(1.15); z-index: 2; outline: 2px solid var(--ink); }
+  .matrix td.cell.s0 { background: var(--c0); cursor: default; }
+  .matrix td.cell.s1 { background: var(--c1); color: var(--ink-soft); }
+  .matrix td.cell.s2 { background: var(--c2); color: var(--ink); }
+  .matrix td.cell.s3 { background: var(--c3); color: #fff; }
+  .matrix td.cell.s4 { background: var(--c4); color: #fff; box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px var(--c4); }
+  .matrix td.cell.s4::after { content: "★"; position: absolute; right: 2px; top: 0; font-size: 8px; color: #fff; opacity: .9; }
+  .matrix td.cell.s0:hover { transform: none; outline: none; }
+
+  .legend-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 22px; margin: 14px 0 4px; font-size: 12.5px; color: var(--ink-soft); }
+  .legend-row .swatch { display: inline-block; width: 14px; height: 14px; border-radius: 4px; margin-right: 6px; vertical-align: middle; }
+  .filter-toggle { margin-left: auto; display: flex; align-items: center; gap: 8px; font-size: 12.5px; }
+  .filter-toggle button { display: inline-flex; align-items: center; gap: 7px; font-family: inherit; font-size: 12.5px; padding: 6px 14px 6px 11px; border-radius: 999px; border: 1px solid var(--line-strong); background: var(--paper-raised); color: var(--ink-soft); cursor: pointer; transition: all .15s; font-weight: 500; }
+  .filter-toggle button:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-toggle button.active { background: var(--accent); color: #fff; border-color: var(--accent); box-shadow: 0 1px 2px rgba(154,59,46,.2), 0 4px 12px rgba(154,59,46,.15); }
+  .filter-toggle button .star { font-size: 13px; }
+  .filter-toggle .count { font-size: 11px; color: var(--ink-faint); font-style: italic; }
+
+  /* Specialist-only mode: hide non-specialist rows, dim non-★ cells in remaining rows */
+  .matrix.specialist-mode tr[data-has-specialist="false"] { display: none; }
+  .matrix.specialist-mode td.cell:not(.s4) { opacity: 0.12; }
+  .matrix.specialist-mode td.cell.s4 { transform: scale(1.08); transition: transform .25s ease; }
+  .matrix.specialist-mode thead th.cap[data-has-specialist="false"] { opacity: 0.32; }
+
+  /* ======= OVERLAP ZONES ======= */
+  .zone-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 18px; }
+  @media (min-width: 700px) { .zone-grid { grid-template-columns: 1fr 1fr; } }
+  .zone { background: var(--paper-raised); border: 1px solid var(--line); border-left: 4px solid var(--accent); border-radius: var(--radius); padding: 18px 20px; box-shadow: var(--shadow); }
+  .zone h3 { font-family: Georgia, serif; font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .zone .sub { font-size: 12.5px; color: var(--ink-faint); margin-bottom: 12px; font-style: italic; }
+  .zone .tools { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .zone .tools .t { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11.5px; padding: 3px 9px; background: var(--accent-soft); color: var(--accent); border-radius: 999px; }
+  .zone .tools .t.win { background: var(--accent); color: #fff; font-weight: 600; }
+  .zone .verdict { font-size: 13.5px; color: var(--ink); padding-top: 10px; border-top: 1px dashed var(--line); }
+  .zone .verdict b { color: var(--ink); }
+  .zone .verdict em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+  /* ======= COMPLEMENTARITY PAIRS ======= */
+  .pair { background: var(--paper-raised); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 22px; box-shadow: var(--shadow); margin-top: 14px; }
+  .pair-head { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .pair-head .a, .pair-head .b { font-family: ui-monospace, monospace; font-size: 13px; font-weight: 600; padding: 4px 10px; border-radius: 8px; background: var(--think); color: #fff; }
+  .pair-head .b { background: var(--cat); }
+  .pair-head .plus { font-family: Georgia, serif; font-size: 20px; color: var(--ink-faint); font-style: italic; }
+  .pair-head .arrow { font-family: Georgia, serif; font-size: 18px; color: var(--accent); margin: 0 4px; }
+  .pair-head .out { font-family: Georgia, serif; font-size: 16px; color: var(--ink); font-style: italic; }
+  .pair p { font-size: 14px; color: var(--ink-soft); }
+  .pair .who { margin-top: 8px; font-size: 12.5px; color: var(--ink-faint); }
+  .pair .who b { color: var(--ink); font-weight: 600; }
+
+  /* ======= TASK LOOKUP TABLE ======= */
+  .lookup { background: var(--paper-raised); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-top: 18px; }
+  .lookup table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .lookup th { background: var(--paper); text-align: left; padding: 12px 16px; font-weight: 600; font-size: 11.5px; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-faint); border-bottom: 2px solid var(--line); }
+  .lookup td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .lookup tr:last-child td { border-bottom: none; }
+  .lookup tr:hover td { background: var(--paper); }
+  .lookup .task { font-weight: 600; color: var(--ink); max-width: 280px; }
+  .lookup .best { font-family: ui-monospace, monospace; font-size: 12px; font-weight: 700; color: var(--accent); background: var(--accent-soft); padding: 2px 8px; border-radius: 6px; display: inline-block; white-space: nowrap; }
+  .lookup .why { color: var(--ink-soft); font-size: 13px; }
+  .lookup .alt { font-family: ui-monospace, monospace; font-size: 11.5px; color: var(--ink-faint); }
+  .lookup .alt b { color: var(--ink-soft); font-weight: 500; }
+  .lookup .group-row td { background: #f0eadc; font-weight: 600; font-family: Georgia, serif; font-size: 13px; color: var(--ink); letter-spacing: .02em; padding: 8px 16px; }
+  .lookup .group-row td::before { content: "▸ "; color: var(--accent); }
+
+  /* ======= MODAL ======= */
+  .modal-backdrop { position: fixed; inset: 0; background: rgba(28,26,23,.55); backdrop-filter: blur(4px); display: none; align-items: flex-start; justify-content: center; padding: 5vh 16px; z-index: 100; overflow-y: auto; animation: fadeIn .18s ease-out; }
+  .modal-backdrop.open { display: flex; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes slideUp { from { transform: translateY(12px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal { background: var(--paper-raised); border-radius: var(--radius); max-width: 580px; width: 100%; box-shadow: 0 20px 60px rgba(0,0,0,.3); overflow: hidden; animation: slideUp .22s ease-out; max-height: 85vh; display: flex; flex-direction: column; }
+  .modal-head { padding: 22px 26px 16px; border-bottom: 1px solid var(--line); position: relative; background: var(--accent-soft); }
+  .modal-kicker { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; font-weight: 600; color: var(--accent); margin-bottom: 6px; }
+  .modal h2 { font-family: Georgia, serif; font-size: 22px; line-height: 1.18; font-weight: 600; color: var(--ink); }
+  .modal-close { position: absolute; top: 16px; right: 16px; background: var(--paper); border: 1px solid var(--line-strong); width: 30px; height: 30px; border-radius: 50%; font-size: 16px; color: var(--ink-soft); cursor: pointer; }
+  .modal-body { padding: 20px 26px 26px; overflow-y: auto; font-size: 14px; color: var(--ink); }
+  .modal-body section { margin-bottom: 16px; }
+  .modal-body h4 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-faint); font-weight: 600; margin-bottom: 6px; }
+  .modal-body .strength { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 700; color: #fff; }
+  .modal-body .s1 { background: var(--c1); color: var(--ink-soft); }
+  .modal-body .s2 { background: var(--c2); color: var(--ink); }
+  .modal-body .s3 { background: var(--c3); }
+  .modal-body .s4 { background: var(--c4); }
+  .modal-body p b { color: var(--ink); font-weight: 600; }
+  .modal-body p em { color: var(--accent); font-style: normal; font-weight: 600; }
+  .modal-body ul.ranked { list-style: none; padding: 0; margin: 0; }
+  .modal-body ul.ranked li { padding: 7px 0; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; font-size: 13px; }
+  .modal-body ul.ranked li:last-child { border-bottom: none; }
+  .modal-body ul.ranked .tool-name { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-weight: 600; color: var(--ink); cursor: pointer; text-decoration: none; border: 0; background: transparent; padding: 0; font-size: 13px; }
+  .modal-body ul.ranked .tool-name:hover { color: var(--accent); text-decoration: underline; }
+  .modal-body ul.ranked .tool-note { flex: 1; color: var(--ink-faint); font-size: 11.5px; font-style: italic; }
+  .modal-body .cap-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .modal-body .cap-pill { font-size: 11.5px; padding: 3px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); cursor: pointer; border: 0; font-family: inherit; font-weight: 500; }
+  .modal-body .cap-pill:hover { background: var(--accent); color: #fff; }
+  .modal-body .wiki-link { display: block; text-align: center; margin-top: 18px; padding: 12px 16px; background: var(--accent); color: #fff; border-radius: 8px; text-decoration: none; font-weight: 600; font-size: 13.5px; transition: all .15s; }
+  .modal-body .wiki-link:hover { background: #7d2f25; transform: translateY(-1px); }
+  .modal-body .wiki-link .ico { display: inline-block; margin-right: 6px; }
+  .modal-body .layer-badge { display: inline-block; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 11.5px; font-weight: 700; font-family: ui-monospace, monospace; margin-right: 4px; }
+
+  footer { margin-top: 50px; font-size: 12px; color: var(--ink-faint); text-align: center; line-height: 1.7; }
+  footer a { color: var(--accent); text-decoration: none; border-bottom: 1px dotted var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">BDOS · Tools · Decision Matrix</div>
+    <h1>Mit használjak <em>mire</em>? <em>Melyik</em> a legjobb?</h1>
+    <p class="lede"><b>11 tool, 12 képesség-tengely.</b> A hőtérkép megmutatja az <b>átfedéseket</b>, az átfedési zónák szerint <b>melyik nyer</b>, és külön a <b>komplementer párokat</b>. Alul egy "feladat → legjobb tool" lookup-tábla.</p>
+    <div class="meta-row">
+      <span class="chip">2026-05-13</span>
+      <span class="chip">11 tool</span>
+      <span class="chip">12 képesség</span>
+      <span class="chip">8 átfedési zóna · 5 komplementer pár</span>
+      <span class="chip">~40 feladat-lookup</span>
+    </div>
+  </header>
+
+  <h2 class="sec">1. Képesség-hőtérkép <span class="n">11 × 12</span>
+    <span class="sub">Tool × képesség: ki mit fed le. Kattints egy cellára a részletekért.</span></h2>
+
+  <div class="legend-row">
+    <span><span class="swatch" style="background:var(--c1)"></span>érinti</span>
+    <span><span class="swatch" style="background:var(--c2)"></span>lefedi</span>
+    <span><span class="swatch" style="background:var(--c3)"></span>erős</span>
+    <span><span class="swatch" style="background:var(--c4)"></span><b>★ specialist — a legjobb</b></span>
+    <span style="color:var(--ink-faint)">üres = nem fed le</span>
+    <div class="filter-toggle">
+      <button id="specialist-filter" aria-pressed="false" title="Csak azok a toolok, amik valamiben a legjobbak (★)">
+        <span class="star">★</span><span>Csak specialisták</span>
+      </button>
+      <span class="count" id="filter-count"></span>
+    </div>
+  </div>
+
+  <div class="matrix-wrap">
+    <table class="matrix" id="matrix-table"><!-- rendered by JS --></table>
+  </div>
+
+  <h2 class="sec">2. Átfedési zónák <span class="n">8 zóna</span>
+    <span class="sub">Hol találkozik 2+ tool ugyanazon a területen — és melyik a verdikt.</span></h2>
+
+  <div class="zone-grid" id="zones-grid"></div>
+
+  <h2 class="sec">3. Komplementer párok <span class="n">5 fő pár</span>
+    <span class="sub">Két tool együtt többet ad, mint külön. A párokat érdemes egyszerre használni.</span></h2>
+
+  <div id="pairs-list"></div>
+
+  <h2 class="sec">4. Feladat → legjobb tool <span class="n">~40 lookup</span>
+    <span class="sub">Konkrét feladatok és ki a default + alternatívák.</span></h2>
+
+  <div class="lookup">
+    <table id="lookup-table">
+      <thead><tr><th style="width:36%">Feladat</th><th style="width:24%">Default tool</th><th>Miért</th><th style="width:18%">Alternatívák</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <footer>
+    BDOS · <code>00_Prompts/BDOS/tools/decision-matrix.html</code> &nbsp;·&nbsp;
+    kapcsolódó: <a href="INVENTORY.md">INVENTORY.md</a> · <a href="../capabilities/brand-to-site/diagram.html">Brand Spine diagram</a> · <a href="../capabilities/brand-to-site/decision-matrix.html">kanonikus verzió a brand-to-site mellett</a>
+  </footer>
+</div>
+
+<!-- ============ MODAL ============ -->
+<div class="modal-backdrop" id="modal-backdrop" role="dialog" aria-modal="true">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-kicker" id="modal-kicker"></div>
+      <h2 id="modal-title"></h2>
+      <button class="modal-close" id="modal-close" aria-label="Bezárás">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+/* ======================================================================
+ *   DATA
+ * ====================================================================== */
+
+// 12 capability axes — short labels for headers + long labels for tooltips
+const CAPS = [
+  ['brand',     'Brand strategy & pozicionálás'],
+  ['msg',       'Messaging / voice / copy'],
+  ['research',  'Audience & competitor research'],
+  ['ux',        'UX critique & IA / wireframe'],
+  ['cat',       'Design katalógus / inspiráció'],
+  ['system',    'Design system / tokenek'],
+  ['a11y',      'Accessibility & quality gate'],
+  ['build',     'Build / craft / kód'],
+  ['seo',       'SEO'],
+  ['cro',       'CRO & A/B testing & analytics'],
+  ['pm',        'Roadmap / PM / spec'],
+  ['email',     'Email / ads / outreach']
+];
+
+// Tools — strength per capability (0..4)
+// 0 = not in scope, 1 = touches it, 2 = covers it, 3 = strong, 4 = SPECIALIST (best at this)
+const TOOLS = [
+  { id: 'brand-toolkit',  label: 'brand-toolkit',     sub: 'jgerton · 3rd-party',
+    scores: { brand: 4, msg: 4, research: 3, ux: 1, cat: 0, system: 0, a11y: 0, build: 0, seo: 0, cro: 1, pm: 1, email: 2 },
+    notes: 'Dunford + StoryBrand + NN/g voice + Chris Do stylescape skillek. A stratégiai 1–4. réteg gerince.' },
+
+  { id: 'impeccable',     label: 'impeccable',        sub: 'pbakaus · 3rd-party',
+    scores: { brand: 0, msg: 1, research: 0, ux: 4, cat: 1, system: 2, a11y: 3, build: 4, seo: 0, cro: 0, pm: 0, email: 0 },
+    notes: 'UI/UX design judgment + production-grade code. Tessl benchmark 0.82/1.00. 23 sub-command 6 kategóriában.' },
+
+  { id: 'ui-ux-pro-max',  label: 'ui-ux-pro-max',     sub: 'nextlevelbuilder · 3rd-party · telepítve',
+    scores: { brand: 0, msg: 0, research: 1, ux: 1, cat: 4, system: 3, a11y: 2, build: 0, seo: 0, cro: 0, pm: 0, email: 0 },
+    notes: '161 industry-paletta, 99 UX guideline, 161 reasoning rule. Korrekt defaultot ad — nem gyönyörűt.' },
+
+  { id: 'ux-pilot',       label: 'ux-pilot',          sub: 'Sakaax · 3rd-party',
+    scores: { brand: 0, msg: 0, research: 1, ux: 2, cat: 3, system: 2, a11y: 1, build: 1, seo: 0, cro: 0, pm: 0, email: 0 },
+    notes: 'Dialógus-első UX discovery flow + élő preview. Az ui-ux-pro-max kiegészítője, nem helyettesítője.' },
+
+  { id: 'designer-skills',label: 'designer-skills',   sub: 'Owl-Listener · 3rd-party',
+    scores: { brand: 0, msg: 0, research: 2, ux: 3, cat: 1, system: 4, a11y: 3, build: 0, seo: 0, cro: 1, pm: 1, email: 0 },
+    notes: '38 skill 4 plugin-csoportban. A design system audit specialista (token coverage, naming, theming, a11y).' },
+
+  { id: 'marketingskills',label: 'marketingskills',   sub: 'coreyhaines31 · 3rd-party',
+    scores: { brand: 1, msg: 3, research: 3, ux: 0, cat: 0, system: 0, a11y: 0, build: 0, seo: 4, cro: 4, pm: 1, email: 4 },
+    notes: '37 skill 8 csoportban. CRO + SEO + email + ads + analytics. A Pulse loop motorja.' },
+
+  { id: 'cowork-design',  label: 'Cowork · design',   sub: 'Anthropic · role-bundle',
+    scores: { brand: 0, msg: 2, research: 3, ux: 3, cat: 0, system: 3, a11y: 3, build: 0, seo: 0, cro: 0, pm: 0, email: 0 },
+    notes: '6 skill + 6 command. UX writing + design system management + critique + a11y + research synthesis + handoff. Figma/Notion/Linear MCP-vel.' },
+
+  { id: 'cowork-marketing',label: 'Cowork · marketing', sub: 'Anthropic · role-bundle · telepítve',
+    scores: { brand: 1, msg: 3, research: 2, ux: 0, cat: 0, system: 0, a11y: 0, build: 0, seo: 2, cro: 2, pm: 0, email: 2 },
+    notes: 'Brand voice + kampány + content + competitive + performance analytics. Általánosabb mint marketingskills.' },
+
+  { id: 'cowork-pm',      label: 'Cowork · product-mgmt', sub: 'Anthropic · role-bundle',
+    scores: { brand: 0, msg: 1, research: 3, ux: 0, cat: 0, system: 0, a11y: 0, build: 0, seo: 0, cro: 1, pm: 4, email: 0 },
+    notes: 'Spec / PRD / roadmap / metrics / stakeholder comms / user research synthesis. Az egyetlen tool, ami a PM réteget lefedi.' },
+
+  { id: 'dembrandt',      label: 'Dembrandt',         sub: '3rd-party CLI + MCP',
+    scores: { brand: 0, msg: 0, research: 2, ux: 0, cat: 0, system: 3, a11y: 0, build: 0, seo: 0, cro: 0, pm: 0, email: 0 },
+    notes: 'Bármely weboldal → W3C DTCG tokenek. Brand audit input + versenytárs visual analysis.' },
+
+  { id: 'tokven',         label: 'Tokven',            sub: '3rd-party SaaS',
+    scores: { brand: 0, msg: 0, research: 0, ux: 0, cat: 0, system: 3, a11y: 1, build: 0, seo: 0, cro: 0, pm: 0, email: 0 },
+    notes: 'AI design token generálás brand briefből. WCAG AA validáció light/dark, DO/NEVER irányelvek.' }
+];
+
+/* ======================================================================
+ *  RENDER MATRIX
+ * ====================================================================== */
+const tbl = document.getElementById('matrix-table');
+// Header row
+const thead = document.createElement('thead');
+const headRow = document.createElement('tr');
+headRow.appendChild(document.createElement('th')); // corner
+CAPS.forEach(([k, label]) => {
+  const th = document.createElement('th');
+  th.className = 'cap';
+  th.innerHTML = `<span>${label}</span>`;
+  headRow.appendChild(th);
+});
+thead.appendChild(headRow);
+tbl.appendChild(thead);
+
+const tbody = document.createElement('tbody');
+// Pre-compute which capability columns have any specialist (for header dimming)
+const capHasSpecialist = {};
+CAPS.forEach(([k]) => { capHasSpecialist[k] = TOOLS.some(t => (t.scores[k] || 0) === 4); });
+// Mark header columns + wire up click handlers
+headRow.querySelectorAll('th.cap').forEach((th, i) => {
+  const [k, label] = CAPS[i];
+  th.dataset.hasSpecialist = capHasSpecialist[k] ? 'true' : 'false';
+  th.addEventListener('click', () => openCapModal(k));
+  th.title = `${label} — kattints a magyarázatért`;
+});
+
+let _specialistRowCount = 0;
+TOOLS.forEach(tool => {
+  const tr = document.createElement('tr');
+  const hasSpecialist = CAPS.some(([k]) => (tool.scores[k] || 0) === 4);
+  tr.dataset.hasSpecialist = hasSpecialist ? 'true' : 'false';
+  if (hasSpecialist) _specialistRowCount++;
+  const lbl = document.createElement('td');
+  lbl.className = 'row-label';
+  lbl.innerHTML = `${tool.label}<span class="sub-label">${tool.sub}</span>`;
+  lbl.title = `${tool.label} — kattints a részletekért`;
+  lbl.addEventListener('click', () => openToolModal(tool));
+  tr.appendChild(lbl);
+  CAPS.forEach(([k, label]) => {
+    const td = document.createElement('td');
+    const score = tool.scores[k] || 0;
+    td.className = 'cell s' + score;
+    if (score > 0) {
+      td.textContent = score === 4 ? '★' : '';
+      td.title = `${tool.label} × ${label} — szint ${score}`;
+      td.addEventListener('click', () => openCellModal(tool, k, label, score));
+    }
+    tr.appendChild(td);
+  });
+  tbody.appendChild(tr);
+});
+tbl.appendChild(tbody);
+
+// Filter toggle: show only specialist rows
+const filterBtn = document.getElementById('specialist-filter');
+const filterCount = document.getElementById('filter-count');
+filterCount.textContent = `${_specialistRowCount}/${TOOLS.length} tool valamiben a legjobb`;
+filterBtn.addEventListener('click', () => {
+  const on = !tbl.classList.contains('specialist-mode');
+  tbl.classList.toggle('specialist-mode', on);
+  filterBtn.classList.toggle('active', on);
+  filterBtn.setAttribute('aria-pressed', on ? 'true' : 'false');
+});
+
+/* ======================================================================
+ *  OVERLAP ZONES (8) — hol versenyez 2+ tool
+ * ====================================================================== */
+const ZONES = [
+  { title: 'Design katalógus / inspiráció', sub: 'ki ad industry-specifikus défaultokat?',
+    tools: [['ui-ux-pro-max', true], ['ux-pilot'], ['designer-skills']],
+    verdict: `<b>Default: <em>ui-ux-pro-max</em></b> — a legszélesebb adatbázis (161 paletta, 99 UX guideline, 1923 font, industry-reasoning). Mellé <b>ux-pilot</b> ha dialógus-első kell, vagy <b>designer-skills</b> ha audit, nem inspiráció.` },
+
+  { title: 'Design system audit', sub: 'meglévő tokenek/komponensek értékelése',
+    tools: [['designer-skills', true], ['Cowork:design'], ['Dembrandt']],
+    verdict: `<b>Default: <em>designer-skills</em></b> — 11 design-system skill (token coverage, naming, theming, a11y, governance). <b>Cowork:design</b> ha Figma-integrált handoff is kell. <b>Dembrandt</b> ha versenytárs site-jából akarsz tokenek formájában tanulni.` },
+
+  { title: 'UX critique & ítélet', sub: 'meglévő design értékelése, javaslatok',
+    tools: [['impeccable', true], ['Cowork:design'], ['designer-skills']],
+    verdict: `<b>Default: <em>impeccable</em></b> — Tessl benchmark 0.82/1.00, 23 sub-command, az Anthropic frontend-design skill kiterjesztése. <b>Cowork:design /critique</b> egyszerűbb és Figma-integrált. <b>designer-skills heuristic-evaluation</b> Nielsen-keretben.` },
+
+  { title: 'Brand voice & messaging', sub: 'tone, hang, üzeneti hierarchia',
+    tools: [['brand-toolkit', true], ['Cowork:marketing'], ['marketingskills']],
+    verdict: `<b>Default: <em>brand-toolkit</em></b> — egyedül ez használja NN/g + Aaker + Jung archetípusokat együtt, és StoryBrand BrandScriptet. <b>Cowork:marketing</b> hasznos ha már megvan a voice és <em>alkalmazni</em> akarod kampányban. <b>marketingskills</b> ha CRO-fókuszú copy kell.` },
+
+  { title: 'Marketing copy', sub: 'headline, section, CTA írás',
+    tools: [['marketingskills', true], ['brand-toolkit'], ['Cowork:marketing']],
+    verdict: `<b>Default: <em>marketingskills · copywriting</em></b> — dedikált skill, CRO-tudatos, AI-szlop ellenes. <b>brand-toolkit · brand-landing-page</b> ha a brand-brief.md már létezik (akkor brand-aware). <b>Cowork:marketing /draft-content</b> általános content típusokhoz (blog, press release, case study).` },
+
+  { title: 'Versenytárs-elemzés', sub: 'pozicionálás, content, vizuális összevetés',
+    tools: [['brand-toolkit'], ['marketingskills'], ['Cowork:marketing'], ['Cowork:product-mgmt'], ['Dembrandt', true]],
+    verdict: `<b>Több angle, egyik sem nyer egyedül:</b> <em>Dembrandt</em> a vizuális tokenekhez · <em>brand-toolkit · brand-competitor-scan</em> minden framework-lencsén át (positioning, messaging, voice, visual) · <em>marketingskills · competitor-profiling</em> URL-ből strukturált markdown profil · <em>Cowork:PM · competitive-analysis</em> feature compare. <b>Mindegyik más kérdést válaszol meg.</b>` },
+
+  { title: 'Accessibility & quality gate', sub: 'WCAG audit, performance, polish',
+    tools: [['impeccable', true], ['designer-skills'], ['Cowork:design']],
+    verdict: `<b>Default: <em>impeccable · audit</em></b> — kód-szintű, performance + a11y + responsive együtt. <b>designer-skills · accessibility-audit</b> mélyebb WCAG-specifikus checklist. <b>Cowork:design · /accessibility</b> Figma URL-en is dolgozik. Praktikus: <em>impeccable</em> a kódra, <em>Cowork:design</em> a designre.` },
+
+  { title: 'User research synthesis', sub: 'interjúk, kérdőívek, support ticket szintézis',
+    tools: [['Cowork:design'], ['Cowork:product-mgmt', true], ['marketingskills']],
+    verdict: `<b>Default: <em>Cowork:product-management · user-research-synthesis</em></b> — explicit JTBD + opportunity-térkép. <b>Cowork:design · user-research</b> interjú guide + survey design oldal. <b>marketingskills · customer-research</b> Reddit / G2 / review mining oldal.` }
+];
+const zonesEl = document.getElementById('zones-grid');
+ZONES.forEach(z => {
+  const div = document.createElement('div');
+  div.className = 'zone';
+  div.innerHTML = `<h3>${z.title}</h3><div class="sub">${z.sub}</div>
+    <div class="tools">${z.tools.map(([t, win]) => `<span class="t${win ? ' win' : ''}">${t}${win ? ' ★' : ''}</span>`).join('')}</div>
+    <div class="verdict">${z.verdict}</div>`;
+  zonesEl.appendChild(div);
+});
+
+/* ======================================================================
+ *  COMPLEMENTARITY PAIRS (5)
+ * ====================================================================== */
+const PAIRS = [
+  { a: 'ui-ux-pro-max', b: 'impeccable', out: 'korrekt rendszer × mesteri kivitelezés',
+    desc: 'Az <b>ui-ux-pro-max</b> industry-aware <em>defaultokat</em> ad (paletta, font, stílus). Az <b>impeccable</b> ezt a korrekt rendszert <em>mesterien építi meg</em> kódban. Külön korrekt; együtt <b>gyönyörű</b>.',
+    when: 'Mindig — a Brand Spine 6. és 7. rétegében. A katalógus a inputja, az impeccable a build-je.' },
+
+  { a: 'brand-toolkit', b: 'marketingskills', out: 'stratégia × CRO-iteráció',
+    desc: '<b>brand-toolkit</b> a <em>stratégiát</em> rögzíti (positioning, messaging, voice — brand-brief.md). <b>marketingskills</b> a <em>végrehajtás</em> oldala: copy iterálás, A/B teszt, CRO. A brand-brief.md a marketingskills bemenete.',
+    when: 'Brand Spine 3–4. réteg (brand-toolkit) → 7. réteg + Pulse (marketingskills). A `product-marketing-context` skill explicit kapocs.' },
+
+  { a: 'Dembrandt', b: 'Tokven', out: 'meglévő → új tokenek',
+    desc: '<b>Dembrandt</b> <em>kinyer</em> egy meglévő site-ból (a sajátunkból vagy versenytársból) W3C tokeneket. <b>Tokven</b> <em>generál</em> új tokeneket egy brand briefből. Két irány: visszafelé (audit) és előre (gen).',
+    when: 'Brand asset audit input rétegben Dembrandt; a 6. réteg formalizálásnál Tokven. Egyiket vagy másikat, ritkán mindkettőt.' },
+
+  { a: 'Cowork:design', b: 'designer-skills', out: 'role-bundle × deep audit',
+    desc: '<b>Cowork:design</b> általános UX-munkafolyamat 6 skillel + Figma/Notion MCP-vel — <em>napi munkára</em>. <b>designer-skills</b> 38 skill, mélyebb audit + theory (Doherty, Miller\'s Law, Von Restorff). A Cowork-ot futtatod a projekten, a designer-skills-t hívod amikor mélyfúrás kell.',
+    when: 'Cowork:design = default napi flow. designer-skills = "miért nem működik ez a komponens" pillanatokban.' },
+
+  { a: 'brand-toolkit', b: 'Cowork:product-management', out: 'brand-perspektíva × PM-perspektíva',
+    desc: '<b>brand-toolkit · brand-positioning</b> Dunford framework, <em>brand-szempontból</em>. <b>Cowork:PM · competitive-analysis + user-research-synthesis</b> általános PM-szempontból (feature compare, JTBD). A brand-toolkit a "miért létezünk", a Cowork:PM a "mit építünk legközelebb".',
+    when: 'Új projekt indulásakor mindkettő. Iteráció során a Cowork:PM fut többet.' }
+];
+const pairsEl = document.getElementById('pairs-list');
+PAIRS.forEach(p => {
+  const div = document.createElement('div');
+  div.className = 'pair';
+  div.innerHTML = `<div class="pair-head">
+      <span class="a">${p.a}</span><span class="plus">+</span><span class="b">${p.b}</span>
+      <span class="arrow">→</span><span class="out">${p.out}</span>
+    </div>
+    <p>${p.desc}</p>
+    <div class="who"><b>Mikor:</b> ${p.when}</div>`;
+  pairsEl.appendChild(div);
+});
+
+/* ======================================================================
+ *  LOOKUP TABLE (~40 tasks)
+ * ====================================================================== */
+const LOOKUP = [
+  { group: 'Stratégia (Brand Spine 1–4)' },
+  { task: 'Brand pozicionálás (Dunford 5-komponens)', best: 'brand-toolkit · brand-positioning', why: 'Az egyetlen tool amelyik kifejezetten Dunford keretben dolgozik.', alt: '—' },
+  { task: 'Brand messaging / BrandScript', best: 'brand-toolkit · brand-messaging', why: 'StoryBrand BrandScript + Neumeier trueline. Egyedi a stack-ben.', alt: 'Cowork:marketing · brand-voice (általánosabb)' },
+  { task: 'Brand voice definíció (tone, vocab)', best: 'brand-toolkit · brand-voice', why: 'NN/g 4 dimenzió + Aaker + Jung archetípusok — legrigorózusabb.', alt: 'Cowork:marketing · brand-voice (egyszerűbb)' },
+  { task: 'Visual identity / mood / stylescape', best: 'brand-toolkit · brand-visual-identity', why: 'Chris Do stylescape módszer: 3 ellentétes vizuális irány.', alt: 'ui-ux-pro-max (csak default paletta), designer-skills · illustration-style' },
+  { task: 'JTBD / audience research', best: 'brand-toolkit + Cowork:PM', why: 'brand-toolkit brand-szempontból, Cowork:PM PM-szempontból. Mindkettő kell.', alt: 'marketingskills · customer-research (Reddit/G2 mining)' },
+  { task: 'Versenytárs visual / token analízis', best: 'Dembrandt', why: 'Egyedüli, ami valós tokeneket nyer ki bármely weboldalból.', alt: '—' },
+  { task: 'Versenytárs pozicionálás / messaging', best: 'brand-toolkit · brand-competitor-scan', why: 'Minden framework-lencsén át scoroz (positioning/messaging/voice/visual).', alt: 'marketingskills · competitor-profiling, Cowork:PM · competitive-analysis' },
+
+  { group: 'UX / Design (Brand Spine 5–6)' },
+  { task: 'IA + wireframe + narratíva', best: 'impeccable · shape', why: 'Először tervez, megerősít, csak utána épít. Build-kategória.', alt: 'designer-skills · wireframe-spec, Cowork:design · /critique (utólag)' },
+  { task: 'Industry-aware design system generálás', best: 'ui-ux-pro-max', why: '161 industry-specific reasoning rule, 161 paletta, 1923 font. Egyedi mélység.', alt: 'ux-pilot (dialógus-első), Tokven (briefből gen)' },
+  { task: 'Design system audit (meglévő)', best: 'designer-skills · accessibility-audit + design-system-governance', why: '11 dedikált design-system skill — token coverage, naming, theming.', alt: 'Cowork:design · design-system-management' },
+  { task: 'Design tokenek (W3C DTCG)', best: 'Tokven', why: 'AI gen brand briefből + WCAG AA validáció light/dark.', alt: 'designer-skills · design-token (manuális), Dembrandt (kivonás)' },
+  { task: 'Színrendszer építés', best: 'designer-skills · color-system', why: 'Generálás + semantic mapping + a11y compliance egyben.', alt: 'ui-ux-pro-max · colors (industry paletta), Tokven' },
+  { task: 'Tipográfia rendszer', best: 'designer-skills · typography-scale', why: 'Modular scale + weight + line-height közös rendszerben.', alt: 'ui-ux-pro-max · typography (57 fontpár), ui-ux-pro-max · google-fonts (1923 font)' },
+  { task: 'Mozgás-rendszer / motion', best: 'designer-skills · motion-system', why: 'Duration tokens + easing vocab + reduced-motion handling.', alt: 'impeccable · animate (per-elem)' },
+  { task: 'Dark mode design', best: 'designer-skills · dark-mode-design', why: 'Dedikált skill: szín-adaptáció + kontraszt + elevation.', alt: 'impeccable · colorize' },
+  { task: 'Responsive design', best: 'designer-skills · responsive-design', why: 'Adaptív layout minden képernyőre + input metódusra.', alt: 'impeccable · adapt' },
+  { task: 'UX critique meglévő képernyőn', best: 'impeccable · critique', why: 'Heurisztika + scoring; benchmark winner. 23 sub-command-ja a polishhoz is.', alt: 'Cowork:design · /critique, designer-skills · heuristic-evaluation' },
+  { task: 'UX copy (gombok, errorok, üres állapotok)', best: 'Cowork:design · ux-writing', why: 'Dedikált microcopy skill, Anthropic-szintű.', alt: 'impeccable · clarify, marketingskills · copywriting' },
+
+  { group: 'Build & Quality (Brand Spine 7)' },
+  { task: 'Frontend kód (distinctive, polished)', best: 'impeccable · craft', why: 'Az egyetlen, ami explicit AI-szlop-tesztet futtat. Build-mód.', alt: 'Cowork:design · /handoff (specként, nem kódként)' },
+  { task: 'Accessibility (WCAG 2.1 AA) audit', best: 'impeccable · audit', why: 'A11y + perf + responsive egyben, kód-szinten.', alt: 'Cowork:design · /accessibility (Figma URL), designer-skills · accessibility-audit' },
+  { task: 'Performance optimization', best: 'impeccable · optimize', why: 'UI perf diagnózis + javítás (rerender, layout shift, asset).', alt: '—' },
+  { task: 'Micro-interactionök / motion polish', best: 'impeccable · animate', why: 'Per-elem mozgás, purposeful (nem dekoratív).', alt: 'designer-skills · micro-interaction-spec (specként)' },
+  { task: 'Final polish a release előtt', best: 'impeccable · polish', why: 'Utolsó minőségi sweep szállítás előtt.', alt: 'impeccable · harden (production-ready)' },
+  { task: 'Developer handoff Figma-ból', best: 'Cowork:design · /handoff', why: 'Figma-integrált, dev specs generálás.', alt: 'designer-skills · handoff command' },
+
+  { group: 'Marketing & Pulse (Brand Spine 4, Pulse)' },
+  { task: 'Landing page copy', best: 'marketingskills · copywriting', why: 'CRO-tudatos, headline + CTA + value prop fókusz.', alt: 'brand-toolkit · brand-landing-page (brand-aware)' },
+  { task: 'Copy editing / polishing', best: 'marketingskills · copy-editing', why: 'Existing copy szigorítás, refresh.', alt: 'impeccable · clarify (UX-szempontból)' },
+  { task: 'A/B teszt setup', best: 'marketingskills · ab-test-setup', why: 'Hipotézis + variánsok + sample size kalkuláció.', alt: 'designer-skills · a-b-test-design' },
+  { task: 'CRO landing optimalizálás', best: 'marketingskills · page-cro', why: 'Dedikált, deep CRO playbook.', alt: 'impeccable · critique (UX-szempontból)' },
+  { task: 'Form CRO (lead capture)', best: 'marketingskills · form-cro', why: 'Forms-specifikus konverziós taktikák.', alt: 'designer-skills · component-spec' },
+  { task: 'Signup flow CRO', best: 'marketingskills · signup-flow-cro', why: 'Signup-specifikus, friction-csökkentés.', alt: '—' },
+  { task: 'Email sequence (nurture/onboarding)', best: 'marketingskills · email-sequence', why: 'Dedikált, lifecycle-aware.', alt: 'Cowork:marketing · /email-sequence' },
+  { task: 'B2B cold email outreach', best: 'marketingskills · cold-email', why: 'B2B-specifikus, reply-rate fókusz.', alt: '—' },
+  { task: 'SEO audit', best: 'marketingskills · seo-audit', why: 'Technikai + on-page + tartalom-gap egyben.', alt: 'Cowork:marketing · /seo-audit' },
+  { task: 'AI SEO / LLM citation optimization', best: 'marketingskills · ai-seo', why: 'AEO/GEO — AI Overviews, ChatGPT/Perplexity citations.', alt: '—' },
+  { task: 'Schema markup (JSON-LD)', best: 'marketingskills · schema-markup', why: 'Structured data rich results-höz.', alt: '—' },
+  { task: 'Analytics tracking setup (GA4, Mixpanel)', best: 'marketingskills · analytics-tracking', why: 'Conversion + event + attribution tracking.', alt: 'Cowork:marketing · performance-analytics' },
+  { task: 'Paid ads campaign (Google, Meta)', best: 'marketingskills · paid-ads', why: 'Campaign strategy + targeting + bid optimization.', alt: 'brand-toolkit · brand-ad-copy (csak a copy)' },
+  { task: 'Ad creative generálás (variációk)', best: 'marketingskills · ad-creative', why: 'Bulk creative iteráció több platformra.', alt: 'brand-toolkit · brand-ad-copy' },
+  { task: 'Social content (LinkedIn/X/Insta)', best: 'marketingskills · social-content', why: 'Platform-specifikus, short-form video script is.', alt: 'Cowork:marketing · /draft-content' },
+  { task: 'Pricing strategy', best: 'marketingskills · pricing-strategy', why: 'Van Westendorp + freemium vs trial + tier packaging.', alt: '—' },
+  { task: 'Churn / retention strategy', best: 'marketingskills · churn-prevention', why: 'Cancel flows + save offers + dunning.', alt: '—' },
+  { task: 'Launch strategy / Product Hunt', best: 'marketingskills · launch-strategy', why: 'GTM + Product Hunt + directory submission stratégia.', alt: 'Cowork:marketing · campaign-planning' },
+
+  { group: 'PM & Operations' },
+  { task: 'Feature spec / PRD írás', best: 'Cowork:PM · feature-spec', why: 'Strukturált PRD: problem + user story + acceptance criteria.', alt: '—' },
+  { task: 'Roadmap tervezés (RICE/MoSCoW/ICE)', best: 'Cowork:PM · roadmap-management', why: 'Egyedüli tool ezzel.', alt: '—' },
+  { task: 'Metrics / OKR / dashboard tervezés', best: 'Cowork:PM · metrics-tracking', why: 'PM-specifikus dashboard tervezés.', alt: 'marketingskills · analytics-tracking (marketing-szempontból)' },
+  { task: 'Stakeholder update (exec/eng/customer)', best: 'Cowork:PM · stakeholder-comms', why: 'Audience-tailored update sablonok.', alt: '—' },
+  { task: 'Sprint planning', best: 'Cowork:PM · /sprint-planning', why: 'Scope + kapacitás + cél tervezés.', alt: '—' }
+];
+const lookupBody = document.querySelector('#lookup-table tbody');
+LOOKUP.forEach(row => {
+  if (row.group) {
+    const tr = document.createElement('tr');
+    tr.className = 'group-row';
+    tr.innerHTML = `<td colspan="4">${row.group}</td>`;
+    lookupBody.appendChild(tr);
+  } else {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="task">${row.task}</td>
+      <td><span class="best">${row.best}</span></td>
+      <td class="why">${row.why}</td>
+      <td class="alt">${row.alt === '—' ? '<b>—</b>' : row.alt}</td>`;
+    lookupBody.appendChild(tr);
+  }
+});
+
+/* ======================================================================
+ *  CAPABILITY DOCS — magyarázat minden képesség-tengelyhez
+ * ====================================================================== */
+const CAP_DOCS = {
+  brand: {
+    what: 'A márka <b>"miértje"</b> és <b>pozicionálása</b>: miért létezik a cég, miben hisz, mi a kategória, kik a versenytársak, mi a differenciátor.',
+    why: 'Ez az <b>egyetlen ok</b>, ami miatt a marketing site nem lesz cserélhető. A brand strategy nélküli weboldal úgy néz ki, mint minden más SaaS landing — egy másik logó ráhúzva ugyanúgy működik bárkinek. Április Dunford szerint: <em>"a pozicionálás megelőzi a brandinget"</em> — minden más (üzenet, design, copy) ebből következik.',
+    layer: '<span class="layer-badge">1. Brand Core</span><span class="layer-badge">3. Positioning &amp; Offer</span>',
+    failure: 'A „generikusság gyökere". A copy mindenkinek szól és senkinek. A „Rólunk" oldal lesz a leglátogatottabb, mert sehol máshol nem derül ki, hogy mi a cég.'
+  },
+  msg: {
+    what: '<b>Üzeneti hierarchia</b> + <b>hangnem</b> + <b>tényleges copy</b>: headline-ok, value prop-ok, section szövegek, CTA-k. A 3 lépés: messaging architecture → voice → szavak.',
+    why: 'Egy marketing site nem csak <em>elmond</em> valamit — <em>elhitet</em>. A messaging hierarchia rendezi el, mi szól előbb, mi miért következik. A voice teszi felismerhetővé. A copy a végén jön — wireframe-mel együtt születik, nem utólag.',
+    layer: '<span class="layer-badge">4. Messaging &amp; Proof</span><span class="layer-badge">7. Copy</span>',
+    failure: 'Generikus copy ("innovative, seamless, revolutionary"). Vagy: tökéletes brand-stratégia, csapnivaló szavakkal. A látogató bezárja az oldalt mielőtt a proof-szekcióhoz érne.'
+  },
+  research: {
+    what: '<b>Audience research</b> (JTBD, awareness-szint, ICP) + <b>versenytárs-elemzés</b>. Kinek szól, milyen alternatívákat mérlegel, milyen döntési helyzetben érkezik.',
+    why: 'A persona-fikció haszontalan ("marketing manager, 35–45"). Az emberek <em>"felbérelnek"</em> egy terméket egy <em>job</em>-ra (Christensen). A research feltárja a tényleges <b>haladást</b>, amit a vevő el akar érni — ebből születik az érvényes copy és design.',
+    layer: '<span class="layer-badge">2. Market &amp; Audience Reality</span>',
+    failure: 'A copy mindenkinek szól és senkinek. A site „nagyon szépen elmondja, hogy egy AI-asszisztált CRM" — de a látogató arra kíváncsi, hogyan oldja meg az ő pénteki problémáját.'
+  },
+  ux: {
+    what: '<b>UX critique</b> + <b>IA / wireframe / narratív ív</b>. Milyen oldalak, milyen sorrendben, mit mond mindegyik. A meggyőzési út: probléma → miért mi → bizonyíték → akció.',
+    why: 'Ez a réteg dönti el: <b>"komplex"</b> lesz a vége, vagy <b>"zavaros"</b>. A különbség nem a látható elemek mennyisége, hanem hogy van-e az ívnek logikája. Egy gondolat egy szekcióban.',
+    layer: '<span class="layer-badge">5. Narrative UX + IA</span>',
+    failure: 'Sok-sok szép szekció, mindegyik egy másik beszélgetésből. A látogató nem tudja, hol van a történetben. Vagy: lineáris but lapos — proof nélkül, objection-handling nélkül.'
+  },
+  cat: {
+    what: '<b>Design katalógus / inspirációs adatbázis</b>: industry-specific paletták, fontpárok, UI stílusok, reasoning-szabályok. Korrekt <em>defaultokat</em> ad.',
+    why: 'A „hideg start" probléma megoldója: egy húsbolt vagy fintech vagy spa cégnél van egy bevált stack-irány. A katalógus ezt gyorsan beadja. De: <em>"korrekt default"</em>, NEM „gyönyörű" — a craft a 7. rétegben van.',
+    layer: '<span class="layer-badge">6. Creative Direction → Design System</span>',
+    failure: 'Túl korai katalógus-használat → minden projekt egyformán néz ki, mert mindenki ugyanazt a defaultot kapja. A katalógus akkor jó, ha brand-asseteket és creative direction-t már leszorítottál.'
+  },
+  system: {
+    what: '<b>Formalizált design system</b>: design tokenek (W3C DTCG), komponensek, szín- és típusrendszer, motion-rendszer, theming, restraint rules.',
+    why: 'Brad Frost: <em>a tokenek "subatomic"</em> — önmagukban nem funkcionálisak, egy atomban (gomb háttér) nyerik el értelmüket. A design system <b>nem tokenekből indul</b>, hanem egy erős vizuális irányból. Token-first öli az art directiont.',
+    layer: '<span class="layer-badge">6. Creative Direction → Design System</span><span class="layer-badge">7. Build</span>',
+    failure: 'Tokens-first projekt → szépen letokenizált, de jelleg nélküli rendszer. Vagy: design system <em>audit nélkül</em> → token-coverage rés, naming-inkonzisztencia.'
+  },
+  a11y: {
+    what: '<b>Accessibility (WCAG 2.1 AA)</b> + <b>quality gate</b>: kontraszt, fókusz, keyboard nav, screen reader, alt text, touch target, reduced-motion, dynamic type.',
+    why: 'Nem stretch goal — alapkövetelmény. A11y-hibás site = elérhetőség elvesztése + jogi kockázat + rossz SEO. A quality gate egyúttal vizuális minőséget is őriz (image quality, consistency, restraint).',
+    layer: '<span class="layer-badge">7. Build + Polish + Quality Gate</span>',
+    failure: 'Site, ami szépen megy desktopon de elhal mobilon. Vagy: passzol a kontraszt-tesztre, de zoom 200%-on széttörik. A11y-rés gyakran csak prodban derül ki, akkor már drágább.'
+  },
+  build: {
+    what: '<b>Frontend kód végrehajtás</b>: a design system + copy + IA fordítása production-grade HTML/CSS/JS-re. Micro-interactionök, transitionök, polish. <em>„Itt lakik a gyönyörű."</em>',
+    why: 'A katalógus <em>korrekt</em>; a gyönyörű a <b>kivitelezésben</b> van. Animációk célszerűek, fotók minősége számít, a váratlan-de-helyes részletek emlékezetessé teszik. AI-szlop teszt itt bukik vagy nyer.',
+    layer: '<span class="layer-badge">7. Build + Polish + Quality Gate</span>',
+    failure: '„Generic AI aesthetic" — gradient hero, bento grid, em dashes, glassmorphism. Vagy: stílusos design, lassú perf. A craft hiánya itt megöli az 1–6. réteg munkáját.'
+  },
+  seo: {
+    what: '<b>Search Engine Optimization</b>: technikai SEO, on-page (meta, headers, schema markup), content gap, page speed (Core Web Vitals), AI SEO (LLM citations).',
+    why: 'A legnagyobb hosszú-távú forrás. Az AI search (AI Overviews, Perplexity, ChatGPT citation) átalakítja a játékot — strukturált data + schema markup most fontosabb mint valaha. Schema markup nélkül a site nem jelenik meg a rich results-ban.',
+    layer: '<span class="layer-badge">7. Build</span><span class="layer-badge">↻ Pulse</span>',
+    failure: 'Szép site, ami nincs ott a Google-ben. Vagy: rangsorol, de a content nem a vásárlási szándékhoz illik (rossz keyword-intent matching).'
+  },
+  cro: {
+    what: '<b>Conversion Rate Optimization</b> + <b>A/B testing</b> + <b>analytics tracking</b>. Hipotézis → teszt → mérés → tanulás → iteráció a megfelelő rétegre.',
+    why: 'A Pulse loop motorja. A CRO NEM gomb-színezés — ha a konverzió rossz, a 99%-ban a probléma a <b>2–4. rétegben</b> van (közönség, pozicionálás, üzenet). A gomb-szín cserélése placebo. A CRO szigorú mérési keret, ami megmondja, hova vissza.',
+    layer: '<span class="layer-badge">↻ Pulse</span>',
+    failure: 'A site élve van, de senki nem tanul belőle. 6 hónap múlva ugyanaz az oldal, csak a számok rosszabbak. Vagy: 50 A/B teszt, mind statisztikailag jelentéktelen — rossz hipotézisek.'
+  },
+  pm: {
+    what: '<b>Roadmap</b> + <b>spec / PRD írás</b> + <b>metrics tracking</b> + <b>stakeholder kommunikáció</b>. A product oldal: mit építünk legközelebb, miért, milyen kompromisszumokkal.',
+    why: 'A weboldal projektnek van struktúrája — feature-roadmap, priorítás (RICE/MoSCoW/ICE), stakeholder-update. Nélküle: scope creep, túl sok feature, soha nem szállító projekt. A PM réteg „mit építünk" oldal — a brand strategy „miért építjük" oldala.',
+    layer: '<span class="layer-badge">⊥ keresztben — minden rétegen</span>',
+    failure: 'Mindenki dolgozik valamin, semmi nem készül el. Vagy: kész feature, amit senki nem kért. A roadmap-spec-stakeholder communications fegyelem nélkül a projekt sodródik.'
+  },
+  email: {
+    what: '<b>Email sequences</b> (nurture, onboarding, drip) + <b>cold outreach</b> + <b>paid ads</b> (Google, Meta, LinkedIn) + <b>ad creative</b>.',
+    why: 'A site önmagában nem hoz forgalmat. A traffic-csatornák kötik össze a site-ot a piaccal. Email sequences a már megszerzett leadeket nurturálják; cold email új leadeket szerez; paid ads gyorsan teszteli a message-market fitet.',
+    layer: '<span class="layer-badge">↻ Pulse</span>',
+    failure: 'Beautiful site, zero traffic. Vagy: emailszekvencia ami spamnek érződik. A „terméket építeni" és a „terméket eljuttatni" külön diszciplína — utóbbi nélkül az első hiábavaló.'
+  }
+};
+
+/* ======================================================================
+ *  MODAL — három fajta tartalom (cell / tool / capability)
+ * ====================================================================== */
+const backdrop = document.getElementById('modal-backdrop');
+const kEl = document.getElementById('modal-kicker');
+const tEl = document.getElementById('modal-title');
+const bEl = document.getElementById('modal-body');
+const closeBtn = document.getElementById('modal-close');
+
+const _show = () => { backdrop.classList.add('open'); document.body.style.overflow = 'hidden'; bEl.scrollTop = 0; };
+
+function openToolModal(tool) {
+  kEl.textContent = tool.sub;
+  tEl.innerHTML = tool.label;
+  // Group capabilities by score level
+  const specialists = CAPS.filter(([k]) => tool.scores[k] === 4);
+  const strong = CAPS.filter(([k]) => tool.scores[k] === 3);
+  const covers = CAPS.filter(([k]) => tool.scores[k] === 2);
+  const touches = CAPS.filter(([k]) => tool.scores[k] === 1);
+  const pillRow = (list) => list.map(([k, l]) => `<button class="cap-pill" data-cap="${k}">${l}</button>`).join('');
+
+  bEl.innerHTML = `
+    <section><h4>Mit ad</h4><p>${tool.notes}</p></section>
+    ${specialists.length ? `<section><h4>★ Specialista — a legjobb ezen a területeken</h4><div class="cap-list">${pillRow(specialists)}</div></section>` : `<section><h4>Specialista terület</h4><p style="color:var(--ink-faint);font-style:italic">Egyetlen képességben sem ★ — <b>komplementer / niche tool</b>. Más specialista tooljainkat egészíti ki, vagy egy szűk területet fed le mélyen.</p></section>`}
+    ${strong.length ? `<section><h4>Erősen lefedi</h4><div class="cap-list">${pillRow(strong)}</div></section>` : ''}
+    ${covers.length ? `<section><h4>Lefedi</h4><div class="cap-list">${pillRow(covers)}</div></section>` : ''}
+    ${touches.length ? `<section><h4>Érinti (gyengén)</h4><div class="cap-list">${pillRow(touches)}</div></section>` : ''}
+    <a class="wiki-link" href="../capabilities/brand-to-site/diagram.html#tool-${tool.id}" target="_blank" rel="noopener"><span class="ico">▦</span>Teljes skill-wiki a diagramban (új tabban) →</a>
+  `;
+  // Wire cap pills
+  bEl.querySelectorAll('.cap-pill').forEach(btn => {
+    btn.addEventListener('click', e => { e.stopPropagation(); openCapModal(btn.dataset.cap); });
+  });
+  _show();
+}
+
+function openCapModal(capKey) {
+  const cap = CAPS.find(c => c[0] === capKey);
+  if (!cap) return;
+  const doc = CAP_DOCS[capKey] || {};
+  const ranked = TOOLS.map(t => ({ t, s: t.scores[capKey] || 0 })).filter(x => x.s > 0).sort((a, b) => b.s - a.s);
+  const stars = ranked.filter(r => r.s === 4);
+  const rankedList = ranked.map(({ t, s }) => `
+    <li>
+      <span class="strength s${s}" style="min-width: 24px; text-align:center">${s === 4 ? '★' : s}</span>
+      <button class="tool-name" data-tool="${t.id}">${t.label}</button>
+      <span class="tool-note">${t.notes.slice(0, 110)}…</span>
+    </li>`).join('');
+
+  kEl.textContent = 'Képesség-tengely';
+  tEl.innerHTML = cap[1];
+  bEl.innerHTML = `
+    <section><h4>Mit jelent</h4><p>${doc.what || '—'}</p></section>
+    <section><h4>Miért fontos</h4><p>${doc.why || '—'}</p></section>
+    <section><h4>Brand Spine réteg</h4><p>${doc.layer || '—'}</p></section>
+    ${doc.failure ? `<section><h4>Mi megy rosszul, ha kihagyod</h4><p style="background:#fbeae8;border-left:3px solid #c0473b;padding:8px 14px;border-radius:0 8px 8px 0;color:#6b2521">${doc.failure}</p></section>` : ''}
+    <section>
+      <h4>★ Specialista${stars.length > 1 ? 'k' : ''}</h4>
+      ${stars.length ? `<p>${stars.map(s => `<button class="tool-name" data-tool="${s.t.id}">${s.t.label}</button>`).join(' &nbsp; ')}</p>` : `<p style="color:var(--ink-faint);font-style:italic">Senki nem ★ ezen a területen — több tool együtt fedi le, vagy hiány a stack-ben.</p>`}
+    </section>
+    <section><h4>Top eszközök sorrendben (${ranked.length})</h4><ul class="ranked">${rankedList}</ul></section>
+  `;
+  // Wire tool buttons
+  bEl.querySelectorAll('.tool-name').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const t = TOOLS.find(x => x.id === btn.dataset.tool);
+      if (t) openToolModal(t);
+    });
+  });
+  _show();
+}
+
+function openCellModal(tool, capKey, capLabel, score) {
+  kEl.textContent = `${tool.label} × ${capLabel}`;
+  tEl.innerHTML = `Szint: <span class="strength s${score}">${score === 4 ? '★ specialist' : score === 3 ? 'erős' : score === 2 ? 'lefedi' : 'érinti'}</span>`;
+  // Build body: what other tools also cover this capability, ranked
+  const sameCap = TOOLS.map(t => ({ t, s: t.scores[capKey] || 0 })).filter(x => x.s > 0).sort((a, b) => b.s - a.s);
+  const items = sameCap.map(x => `<li><b style="font-family:ui-monospace,monospace;font-size:12.5px;color:${x.t.id === tool.id ? 'var(--accent)' : 'var(--ink)'}">${x.t.label}</b> — <span class="strength s${x.s}">${x.s}</span> &nbsp; <span style="color:var(--ink-faint);font-size:12.5px">${x.t.notes.slice(0, 130)}…</span></li>`).join('');
+  bEl.innerHTML = `
+    <section>
+      <h4>${tool.label} ezen a területen</h4>
+      <p>${tool.notes}</p>
+    </section>
+    <section>
+      <h4>Ki más fedi le ezt a területet (sorrendben)</h4>
+      <ul style="list-style:none;padding-left:0;">${items}</ul>
+    </section>
+  `;
+  backdrop.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+closeBtn.addEventListener('click', () => { backdrop.classList.remove('open'); document.body.style.overflow = ''; });
+backdrop.addEventListener('click', e => { if (e.target === backdrop) { backdrop.classList.remove('open'); document.body.style.overflow = ''; } });
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && backdrop.classList.contains('open')) { backdrop.classList.remove('open'); document.body.style.overflow = ''; } });
+</script>
+</body>
+</html>
