@@ -1,0 +1,1209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM as a Service | Sonrisa Cloud Platform Services</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark-green: #1a2e1a;
+    --mid-green: #3d5a3d;
+    --light-green: #e8ede4;
+    --pale-green: #f0f4ec;
+    --accent-green: #c5d4b8;
+    --mint: #d4f0d4;
+    --orange: #e8956a;
+    --white: #ffffff;
+    --text-dark: #1a2e1a;
+    --text-medium: #4a5a4a;
+    --text-light: #6b7b6b;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text-dark);
+    background: var(--pale-green);
+    line-height: 1.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: var(--pale-green);
+  }
+  .logo { font-size: 28px; font-weight: 800; color: var(--text-dark); }
+  .menu-btn { font-size: 16px; color: var(--text-dark); cursor: pointer; }
+
+  /* ── WIREFRAME NOTE ── */
+  .wireframe-note {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: #1a1a2e; color: #a0a0c0; padding: 10px 20px;
+    font-size: 12px; text-align: center; z-index: 1000; font-family: monospace;
+  }
+  .wireframe-note strong { color: #e0e0ff; }
+  body { padding-top: 36px; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 1: HERO
+     Same layout as CPS & Cost Health Check pages
+     ══════════════════════════════════════════════ */
+  .hero {
+    display: grid;
+    grid-template-columns: 45% 55%;
+    min-height: 560px;
+    background: var(--dark-green);
+    overflow: hidden;
+  }
+  .hero-visual {
+    background: linear-gradient(135deg, #1a2838 0%, #0d1f2e 50%, #1a2e1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  /* Abstract visual placeholder */
+  .hero-visual::before {
+    content: '';
+    position: absolute;
+    width: 280px; height: 280px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(197,212,184,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .hero-visual::after {
+    content: '{ AI }';
+    font-size: 64px; font-weight: 900;
+    color: rgba(255,255,255,0.04);
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    letter-spacing: 8px;
+  }
+  .hero-content {
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: var(--pale-green);
+  }
+  .hero-badge-row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 24px;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+  }
+  .badge-aws {
+    background: #fff3e0;
+    color: #b56a20;
+  }
+  .badge-live {
+    background: var(--mint);
+    color: #1a6a1a;
+  }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.08;
+    color: var(--text-dark);
+    margin-bottom: 20px;
+    letter-spacing: -1.5px;
+  }
+  .hero-subtitle {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--mid-green);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .hero p {
+    font-size: 16px;
+    color: var(--text-medium);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 32px;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+  .btn-dark {
+    background: var(--dark-green);
+    color: var(--white);
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .btn-dark:hover { background: var(--mid-green); }
+  .btn-outline {
+    background: transparent;
+    color: var(--dark-green);
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 2px solid var(--dark-green);
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--dark-green); color: var(--white); }
+  .aws-partner-mark {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 72px; height: 72px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: var(--orange);
+    text-align: center; line-height: 1.2;
+    border: 2px solid var(--orange);
+    border-radius: 4px;
+    padding: 6px;
+  }
+  .aws-partner-mark span { font-size: 16px; font-weight: 900; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 2: TRUST BAR
+     ══════════════════════════════════════════════ */
+  .trust-bar {
+    background: var(--dark-green);
+    padding: 28px 60px;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .trust-label {
+    font-size: 13px; font-weight: 600;
+    color: rgba(255,255,255,0.45);
+    white-space: nowrap; max-width: 130px; line-height: 1.3;
+  }
+  .trust-logos {
+    display: flex; gap: 40px; align-items: center; flex-wrap: wrap;
+  }
+  .trust-logos span {
+    font-size: 15px; font-weight: 700;
+    color: rgba(255,255,255,0.4); letter-spacing: 0.5px;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 3: THE PROBLEM
+     Mirrors "Rising AWS Costs" section
+     ══════════════════════════════════════════════ */
+  .problem-section {
+    padding: 80px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-light);
+    margin-bottom: 16px;
+  }
+  .problem-section h2 {
+    font-size: 44px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -1px;
+  }
+  .problem-section h2 em {
+    font-style: normal;
+    color: var(--mid-green);
+  }
+  .problem-lead {
+    font-size: 18px;
+    color: var(--text-medium);
+    max-width: 640px;
+    line-height: 1.7;
+    margin-bottom: 48px;
+  }
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .problem-card {
+    background: var(--white);
+    padding: 32px;
+    border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .problem-card .icon {
+    font-size: 28px;
+    margin-bottom: 16px;
+  }
+  .problem-card h4 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 10px;
+    letter-spacing: -0.2px;
+  }
+  .problem-card p {
+    font-size: 15px;
+    color: var(--text-medium);
+    line-height: 1.7;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 4: THE SOLUTION
+     Mirrors "Sonrisa FinOps Audit" block
+     ══════════════════════════════════════════════ */
+  .solution-section {
+    background: var(--dark-green);
+    padding: 80px 60px;
+  }
+  .solution-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+  }
+  .solution-text h2 {
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  .solution-text .lead {
+    font-size: 17px;
+    color: rgba(255,255,255,0.7);
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+  .solution-features {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .sol-feature {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .sol-feature .check {
+    width: 28px; height: 28px;
+    background: rgba(197,212,184,0.15);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: var(--accent-green);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .sol-feature h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .sol-feature p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.55);
+    line-height: 1.6;
+  }
+  .solution-visual {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .model-showcase {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 28px;
+  }
+  .model-showcase h4 {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: rgba(255,255,255,0.4);
+    margin-bottom: 20px;
+  }
+  .model-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .model-row:last-child { border-bottom: none; }
+  .model-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .model-use {
+    font-size: 13px;
+    color: rgba(255,255,255,0.45);
+  }
+  .model-speed {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent-green);
+    text-align: right;
+  }
+  .api-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+    padding: 24px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.8;
+  }
+  .api-box .comment { color: rgba(255,255,255,0.25); }
+  .api-box .highlight { color: var(--accent-green); }
+
+  /* ══════════════════════════════════════════════
+     SECTION 5: WHAT YOU GET
+     Mirrors "What you get" from Cost Health Check
+     ══════════════════════════════════════════════ */
+  .whatyouget {
+    padding: 80px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .whatyouget h2 {
+    font-size: 44px;
+    font-weight: 900;
+    margin-bottom: 48px;
+    letter-spacing: -1px;
+  }
+  .wyg-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 28px;
+  }
+  .wyg-card {
+    background: var(--light-green);
+    padding: 32px;
+    border-radius: 4px;
+  }
+  .wyg-card h4 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+  }
+  .wyg-card p {
+    font-size: 15px;
+    color: var(--text-medium);
+    line-height: 1.7;
+  }
+  .wyg-card .stat {
+    font-size: 32px;
+    font-weight: 900;
+    color: var(--dark-green);
+    margin-bottom: 8px;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 6: HOW IT WORKS
+     Mirrors "3 Steps to Savings"
+     ══════════════════════════════════════════════ */
+  .howitworks {
+    background: var(--light-green);
+    padding: 80px 60px;
+  }
+  .howitworks-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .howitworks h2 {
+    font-size: 36px;
+    font-weight: 900;
+    text-align: center;
+    margin-bottom: 48px;
+    letter-spacing: -0.5px;
+  }
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+  }
+  .step-card {
+    background: var(--white);
+    padding: 28px;
+    border-radius: 4px;
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .step-number {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--accent-green);
+    margin-bottom: 12px;
+  }
+  .step-card h4 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .step-card .duration {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+  }
+  .step-card p {
+    font-size: 14px;
+    color: var(--text-medium);
+    line-height: 1.6;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 7: PRICING
+     Mirrors "Monthly Subscription Plans"
+     ══════════════════════════════════════════════ */
+  .pricing-section {
+    padding: 80px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .pricing-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+    margin-bottom: 48px;
+  }
+  .pricing-header h2 {
+    font-size: 40px;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+  }
+  .pricing-header p {
+    font-size: 16px;
+    color: var(--text-medium);
+    line-height: 1.7;
+  }
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 32px;
+  }
+  .price-card {
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.08);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .price-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  }
+  .price-card.featured-price {
+    border: 2px solid var(--dark-green);
+  }
+  .price-card-header {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .price-card-header .tier {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--text-light);
+    margin-bottom: 8px;
+  }
+  .price-card-header .price {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--dark-green);
+    line-height: 1;
+  }
+  .price-card-header .price span {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-light);
+  }
+  .price-card-header .tokens {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mid-green);
+    margin-top: 6px;
+  }
+  .price-card-body {
+    padding: 20px 24px 28px;
+  }
+  .price-card-body .target {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+  }
+  .feature-list {
+    list-style: none;
+  }
+  .feature-list li {
+    font-size: 13px;
+    color: var(--text-medium);
+    padding: 6px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .feature-list li::before {
+    content: '✓';
+    color: var(--mid-green);
+    font-weight: 700;
+    font-size: 12px;
+  }
+  .popular-badge {
+    background: var(--dark-green);
+    color: var(--white);
+    text-align: center;
+    padding: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .pricing-note {
+    font-size: 14px;
+    color: var(--text-light);
+    text-align: center;
+    line-height: 1.7;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 8: COMPARISON TABLE
+     ══════════════════════════════════════════════ */
+  .comparison {
+    background: var(--dark-green);
+    padding: 80px 60px;
+  }
+  .comparison-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .comparison h2 {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--white);
+    text-align: center;
+    margin-bottom: 48px;
+    letter-spacing: -0.5px;
+  }
+  .comp-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .comp-table th, .comp-table td {
+    padding: 16px 20px;
+    text-align: left;
+    font-size: 15px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .comp-table th {
+    font-weight: 700;
+    color: rgba(255,255,255,0.4);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .comp-table td {
+    color: rgba(255,255,255,0.7);
+  }
+  .comp-table td:first-child {
+    color: var(--white);
+    font-weight: 600;
+  }
+  .comp-table .sonrisa-col {
+    color: var(--accent-green);
+    font-weight: 700;
+  }
+  .comp-table tr:last-child td { border-bottom: none; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 9: SECURITY / COMPLIANCE
+     ══════════════════════════════════════════════ */
+  .security-section {
+    padding: 80px 60px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .security-section h2 {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 48px;
+    letter-spacing: -0.5px;
+  }
+  .security-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .sec-card {
+    background: var(--white);
+    border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 4px;
+    padding: 28px;
+  }
+  .sec-card .icon { font-size: 24px; margin-bottom: 14px; }
+  .sec-card h4 {
+    font-size: 16px;
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .sec-card p {
+    font-size: 14px;
+    color: var(--text-medium);
+    line-height: 1.7;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 10: "Wondering if..." CTA
+     Mirrors "Wondering if DevOps fits your team?"
+     ══════════════════════════════════════════════ */
+  .mid-cta {
+    background: var(--mint);
+    padding: 80px 60px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 60px;
+    align-items: center;
+    max-width: 100%;
+  }
+  .mid-cta-text h2 {
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+    max-width: 560px;
+  }
+  .mid-cta-text p {
+    font-size: 16px;
+    color: var(--text-medium);
+    max-width: 480px;
+    line-height: 1.7;
+    margin-bottom: 28px;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 11: BOTTOM CTA
+     Mirrors "Ready to hand off your DevOps headaches?"
+     ══════════════════════════════════════════════ */
+  .bottom-cta {
+    background: var(--pale-green);
+    padding: 80px 60px;
+    text-align: center;
+  }
+  .bottom-cta h2 {
+    font-size: 40px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .bottom-cta p {
+    font-size: 17px;
+    color: var(--text-medium);
+    margin-bottom: 32px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .problem-grid, .wyg-grid, .security-grid { grid-template-columns: 1fr; }
+    .solution-inner { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr 1fr; }
+    .pricing-grid { grid-template-columns: 1fr 1fr; }
+    .mid-cta { grid-template-columns: 1fr; }
+    .pricing-header { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wireframe-note">
+  <strong>WIREFRAME</strong> — LLM as a Service Landing Page (matches CPS & Cost Health Check page structure)
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">sonrisa ☻</div>
+  <div class="menu-btn">Menu</div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1: HERO
+     ═══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-visual">
+    <div class="aws-partner-mark">
+      <span>aws</span>
+      PARTNER<br>Select Tier<br>Services
+    </div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge-row">
+      <span class="hero-badge badge-live">Live & Available</span>
+      <span class="hero-badge badge-aws">AWS GPU Infrastructure</span>
+    </div>
+    <h1>LLM as a Service</h1>
+    <div class="hero-subtitle">Enterprise AI without sending your data outside.</div>
+    <p>Run open-source language models on dedicated EU-based GPU infrastructure. Get ChatGPT-level capabilities for coding, writing, and analysis — with full data sovereignty and predictable costs.</p>
+    <div class="hero-ctas">
+      <a href="#" class="btn-dark">Request a Demo</a>
+      <a href="#" class="btn-outline">Talk to an Expert (30 min)</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2: TRUST BAR
+     ═══════════════════════════════════════════ -->
+<div class="trust-bar">
+  <div class="trust-label">We're proud to be trusted by our global clients.</div>
+  <div class="trust-logos">
+    <span>ORACLE</span>
+    <span>Yettel.</span>
+    <span>SYNLAB</span>
+    <span>Magyar Államkincstár</span>
+    <span>Global Blue</span>
+    <span>Lufthansa Systems</span>
+    <span>Diligent</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3: THE PROBLEM
+     ═══════════════════════════════════════════ -->
+<section class="problem-section">
+  <div class="section-eyebrow">The Challenge</div>
+  <h2>Your team uses AI daily.<br><em>But at what cost — and what risk?</em></h2>
+  <p class="problem-lead">Organizations increasingly depend on generative AI, but public LLM services create real barriers for engineering and leadership teams.</p>
+
+  <div class="problem-grid">
+    <div class="problem-card">
+      <div class="icon">🔓</div>
+      <h4>Data Privacy & Compliance Risk</h4>
+      <p>Sending proprietary code, business documents, and sensitive data to external APIs risks breaches and violates internal policies. Critical for regulated industries and EU companies subject to GDPR.</p>
+    </div>
+    <div class="problem-card">
+      <div class="icon">📈</div>
+      <h4>Unpredictable & Escalating Costs</h4>
+      <p>Per-token pricing from OpenAI and Azure scales unpredictably. Enterprises face 20-30% higher costs than self-hosted alternatives, with no cost ceiling and potential for runaway expenses.</p>
+    </div>
+    <div class="problem-card">
+      <div class="icon">🔗</div>
+      <h4>Vendor Lock-In</h4>
+      <p>Limited ability to fine-tune models on your data. No control over model updates or deprecation. Strategic dependency on a single provider's decisions and pricing changes.</p>
+    </div>
+    <div class="problem-card">
+      <div class="icon">⏱️</div>
+      <h4>Performance Constraints</h4>
+      <p>Shared infrastructure means variable latency and throughput limitations under heavy load — problematic for real-time coding assistance or high-volume document processing.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4: THE SOLUTION
+     ═══════════════════════════════════════════ -->
+<section class="solution-section">
+  <div class="solution-inner">
+    <div class="solution-text">
+      <div class="section-eyebrow" style="color:rgba(255,255,255,0.35);">The Solution</div>
+      <h2>Sonrisa LLMaaS Platform</h2>
+      <p class="lead">We abstract the complexity of GPU infrastructure, model deployment, and operations into a simple, metered service. Your data never leaves controlled infrastructure.</p>
+      <div class="solution-features">
+        <div class="sol-feature">
+          <div class="check">✓</div>
+          <div>
+            <h4>OpenAI-Compatible API</h4>
+            <p>Drop-in replacement. Works with your existing tooling, LangChain, LlamaIndex, and IDE plugins.</p>
+          </div>
+        </div>
+        <div class="sol-feature">
+          <div class="check">✓</div>
+          <div>
+            <h4>Web Interface + IDE Integration</h4>
+            <p>Browser-based chat UI for non-technical users. VS Code and JetBrains plugins for developers.</p>
+          </div>
+        </div>
+        <div class="sol-feature">
+          <div class="check">✓</div>
+          <div>
+            <h4>100% EU Data Residency</h4>
+            <p>All processing within your designated AWS region. No external calls. Full GDPR compliance.</p>
+          </div>
+        </div>
+        <div class="sol-feature">
+          <div class="check">✓</div>
+          <div>
+            <h4>RAG & Fine-Tuning</h4>
+            <p>Retrieval-augmented generation with your documents. LoRA/QLoRA support for domain adaptation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="solution-visual">
+      <div class="model-showcase">
+        <h4>Available Models</h4>
+        <div class="model-row">
+          <div>
+            <div class="model-name">Qwen 32B</div>
+            <div class="model-use">Code generation, refactoring</div>
+          </div>
+          <div class="model-speed">~50 tok/sec · 32K ctx</div>
+        </div>
+        <div class="model-row">
+          <div>
+            <div class="model-name">DeepSeek Coder</div>
+            <div class="model-use">Documentation, debugging</div>
+          </div>
+          <div class="model-speed">~80 tok/sec · 16K ctx</div>
+        </div>
+        <div class="model-row">
+          <div>
+            <div class="model-name">Llama 3.1</div>
+            <div class="model-use">General productivity, analysis</div>
+          </div>
+          <div class="model-speed">~60 tok/sec · 128K ctx</div>
+        </div>
+        <div class="model-row">
+          <div>
+            <div class="model-name">Custom Fine-tuned</div>
+            <div class="model-use">Domain-specific tasks</div>
+          </div>
+          <div class="model-speed">Optimized</div>
+        </div>
+      </div>
+      <div class="api-box">
+        <span class="comment"># Drop-in replacement for OpenAI</span><br>
+        <span class="highlight">curl</span> https://llm.sonrisa.io/v1/chat/completions \<br>
+        &nbsp;&nbsp;-H "Authorization: Bearer $API_KEY" \<br>
+        &nbsp;&nbsp;-d '{"model": "<span class="highlight">qwen-32b</span>", "messages": [...]}'
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5: WHAT YOU GET
+     ═══════════════════════════════════════════ -->
+<section class="whatyouget">
+  <h2>What you get</h2>
+  <div class="wyg-grid">
+    <div class="wyg-card">
+      <div class="stat">40-60%</div>
+      <h4>Cost Savings vs. Public APIs</h4>
+      <p>Token-based pricing that's consistently cheaper than OpenAI, Anthropic, and Azure equivalents. No surprise bills. Clear monthly ceiling.</p>
+    </div>
+    <div class="wyg-card">
+      <div class="stat">Zero</div>
+      <h4>External Data Exposure</h4>
+      <p>Your code, documents, and business data never leave controlled EU infrastructure. Complete audit trail for compliance teams.</p>
+    </div>
+    <div class="wyg-card">
+      <div class="stat">20%</div>
+      <h4>Faster Code Review & Docs</h4>
+      <p>Teams report measurable productivity gains in code review, documentation, and repetitive writing tasks within the first month.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6: HOW IT WORKS (4 steps)
+     ═══════════════════════════════════════════ -->
+<section class="howitworks">
+  <div class="howitworks-inner">
+    <h2>How It Works: From Demo to Production</h2>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">01</div>
+        <h4>Request Demo</h4>
+        <div class="duration">30 minutes</div>
+        <p>We walk you through the platform, models, and pricing. You see real performance on real tasks.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">02</div>
+        <h4>Pilot Agreement</h4>
+        <div class="duration">1 week setup</div>
+        <p>30-day trial with Starter package. Account setup, API keys, and initial team training included.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">03</div>
+        <h4>Team Rollout</h4>
+        <div class="duration">2-4 weeks</div>
+        <p>Limited team rollout with usage monitoring. We help optimize model selection and integration patterns.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">04</div>
+        <h4>Go Live</h4>
+        <div class="duration">Ongoing</div>
+        <p>Organization-wide deployment with full support, usage analytics, and quarterly architecture reviews.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 7: PRICING
+     ═══════════════════════════════════════════ -->
+<section class="pricing-section">
+  <div class="pricing-header">
+    <h2>Token-Based Pricing</h2>
+    <p>Every package includes web interface, API access, usage dashboard, token metering, model updates, and security patches. No hidden fees. Scale up or down any time.</p>
+  </div>
+
+  <div class="pricing-grid">
+    <div class="price-card">
+      <div class="price-card-header">
+        <div class="tier">Starter</div>
+        <div class="price">€500<span>/mo</span></div>
+        <div class="tokens">10M tokens included</div>
+      </div>
+      <div class="price-card-body">
+        <div class="target">Small teams & evaluation</div>
+        <ul class="feature-list">
+          <li>Web interface access</li>
+          <li>OpenAI-compatible API</li>
+          <li>Usage dashboard</li>
+          <li>Business hours support</li>
+          <li>All standard models</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price-card featured-price">
+      <div class="popular-badge">Most Popular</div>
+      <div class="price-card-header">
+        <div class="tier">Professional</div>
+        <div class="price">€2,000<span>/mo</span></div>
+        <div class="tokens">50M tokens included</div>
+      </div>
+      <div class="price-card-body">
+        <div class="target">Development teams</div>
+        <ul class="feature-list">
+          <li>Everything in Starter</li>
+          <li>8/5 support response</li>
+          <li>IDE plugins (VS Code, JetBrains)</li>
+          <li>Priority inference queue</li>
+          <li>Team usage analytics</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-card-header">
+        <div class="tier">Enterprise</div>
+        <div class="price">€5,000<span>/mo</span></div>
+        <div class="tokens">150M tokens included</div>
+      </div>
+      <div class="price-card-body">
+        <div class="target">Organization-wide deployment</div>
+        <ul class="feature-list">
+          <li>Everything in Professional</li>
+          <li>24/7 SLA</li>
+          <li>Dedicated inference capacity</li>
+          <li>Custom model fine-tuning</li>
+          <li>Private VPC deployment</li>
+          <li>Dedicated account manager</li>
+          <li>Quarterly architecture reviews</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="price-card">
+      <div class="price-card-header">
+        <div class="tier">Dedicated</div>
+        <div class="price">Custom</div>
+        <div class="tokens">Unlimited tokens</div>
+      </div>
+      <div class="price-card-body">
+        <div class="target">High-volume & custom models</div>
+        <ul class="feature-list">
+          <li>Everything in Enterprise</li>
+          <li>Dedicated GPU cluster</li>
+          <li>Unlimited inference</li>
+          <li>Custom model training</li>
+          <li>Multi-region deployment</li>
+          <li>Premium SLA</li>
+          <li>On-site onboarding</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <p class="pricing-note">Overage: €0.004/1K tokens (40-60% cheaper than OpenAI equivalent). All prices exclude VAT.</p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 8: COMPARISON TABLE
+     ═══════════════════════════════════════════ -->
+<section class="comparison">
+  <div class="comparison-inner">
+    <h2>Sonrisa LLMaaS vs. Public APIs</h2>
+    <table class="comp-table">
+      <tr>
+        <th>Comparison</th>
+        <th>Public API (OpenAI, Azure)</th>
+        <th>Sonrisa LLMaaS</th>
+      </tr>
+      <tr>
+        <td>50M tokens/month</td>
+        <td>~€1,500</td>
+        <td class="sonrisa-col">€500-800 (40-60% savings)</td>
+      </tr>
+      <tr>
+        <td>200M tokens/month</td>
+        <td>~€6,000</td>
+        <td class="sonrisa-col">€2,000-3,000 (50-65% savings)</td>
+      </tr>
+      <tr>
+        <td>1B tokens/month</td>
+        <td>~€30,000</td>
+        <td class="sonrisa-col">€8,000-12,000 (60-70% savings)</td>
+      </tr>
+      <tr>
+        <td>Data leaves your control</td>
+        <td>Yes — sent to external servers</td>
+        <td class="sonrisa-col">Never — EU infrastructure only</td>
+      </tr>
+      <tr>
+        <td>Custom fine-tuning</td>
+        <td>Limited, expensive</td>
+        <td class="sonrisa-col">Full LoRA/QLoRA support</td>
+      </tr>
+      <tr>
+        <td>Vendor lock-in</td>
+        <td>High — proprietary models</td>
+        <td class="sonrisa-col">None — open-source models</td>
+      </tr>
+      <tr>
+        <td>GDPR compliance</td>
+        <td>Complex, requires DPA review</td>
+        <td class="sonrisa-col">Built-in — EU data residency</td>
+      </tr>
+    </table>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 9: SECURITY & COMPLIANCE
+     ═══════════════════════════════════════════ -->
+<section class="security-section">
+  <h2>Security & Compliance</h2>
+  <div class="security-grid">
+    <div class="sec-card">
+      <div class="icon">🇪🇺</div>
+      <h4>EU Data Sovereignty</h4>
+      <p>All processing within your designated AWS region. No data transfer outside EU borders. Full GDPR compliance by design.</p>
+    </div>
+    <div class="sec-card">
+      <div class="icon">🔐</div>
+      <h4>Encryption Everywhere</h4>
+      <p>TLS encryption in transit, AES-256 at rest. API key management with per-user quotas and RBAC access control.</p>
+    </div>
+    <div class="sec-card">
+      <div class="icon">📋</div>
+      <h4>Audit-Ready</h4>
+      <p>Complete request/response logging for compliance. SOC2-aligned design. Ready for enterprise audit requirements.</p>
+    </div>
+    <div class="sec-card">
+      <div class="icon">🚫</div>
+      <h4>No External Calls</h4>
+      <p>Models run entirely on Sonrisa-controlled infrastructure. Zero third-party AI provider involvement in any processing.</p>
+    </div>
+    <div class="sec-card">
+      <div class="icon">🔑</div>
+      <h4>SSO & Access Control</h4>
+      <p>Optional SSO/SAML integration for Enterprise. Per-user API keys, project-level isolation, and role-based permissions.</p>
+    </div>
+    <div class="sec-card">
+      <div class="icon">📊</div>
+      <h4>Usage Transparency</h4>
+      <p>Real-time usage dashboard, per-user token tracking, and monthly billing reports. Know exactly what you're spending and why.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 10: MID CTA
+     ═══════════════════════════════════════════ -->
+<section class="mid-cta">
+  <div class="mid-cta-text">
+    <h2>Wondering if LLMaaS fits your team?</h2>
+    <p>Let's talk it through: you'll get honest answers, a live demo, and a clear understanding of what it would look like for your organization. No commitment.</p>
+    <a href="#" class="btn-dark">Request a Demo</a>
+  </div>
+  <div style="width:200px; height:200px; border-radius:50%; background:var(--dark-green); display:flex; align-items:center; justify-content:center; color:var(--white); font-weight:800; font-size:18px; text-align:center; line-height:1.3;">
+    Let's<br>chat!
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 11: BOTTOM CTA
+     ═══════════════════════════════════════════ -->
+<section class="bottom-cta">
+  <h2>Ready to bring AI in-house?</h2>
+  <p>Our engineers will review your use case, recommend the right model, and get your team running within a week.</p>
+  <div style="display:flex; gap:16px; justify-content:center;">
+    <a href="#" class="btn-dark">Request a Demo</a>
+    <a href="#" class="btn-outline">Talk to an Expert (30 min)</a>
+  </div>
+</section>
+
+</body>
+</html>

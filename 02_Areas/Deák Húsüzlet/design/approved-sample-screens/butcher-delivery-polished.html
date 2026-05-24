@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kiszállítás — Deák Húsmíves Admin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ─── Reset ─── */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* ─── Tokens (DESIGN.md mapping) ─── */
+:root {
+  /* Brand */
+  --primary: #9B2335;
+  --primary-800: #7D1A2A;
+  --primary-pale: #F4E6E8;
+  --primary-light: #F9E0E3;
+  --secondary: #D4A574;
+  --secondary-dark: #9C7841;
+
+  /* Backgrounds */
+  --cream: #FFFBF7;
+  --cream-dark: #F5EDE5;
+  --card: #FFFFFF;
+  --bg: #FAF8F5;
+
+  /* Text (warm gray, never pure black) */
+  --text: #2C2825;
+  --text-secondary: #5C544C;
+  --text-muted: #8A8078;
+
+  /* Borders */
+  --border: #E8E2DB;
+  --border-strong: #C5BCB3;
+
+  /* Functional */
+  --success: #2D7A4F;
+  --success-bg: #D4EDDA;
+
+  /* DH status palette (DESIGN.md table) */
+  --status-ready-bg: #F5EDDF;
+  --status-ready-text: var(--secondary-dark);
+  --status-delivering-bg: var(--primary-light);
+  --status-delivering-text: var(--primary);
+  --status-delivered-bg: var(--success-bg);
+  --status-delivered-text: var(--success);
+}
+
+html, body {
+  background: var(--bg);
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.page-wrapper {
+  max-width: 448px;
+  width: 100%;
+  margin: 0 auto;
+  min-height: 100vh;
+  background: var(--cream);
+  position: relative;
+}
+
+/* ─── Header (sticky) ─── */
+.header {
+  height: 56px;
+  background: var(--card);
+  position: sticky; top: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border);
+}
+.header h1 {
+  font-size: 18px; font-weight: 600;
+  color: var(--primary-800);
+  letter-spacing: -0.05px;
+}
+.header-date {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 13px; font-weight: 500; color: var(--text-secondary);
+  letter-spacing: 0.13px;
+}
+.header-date svg {
+  width: 16px; height: 16px;
+  color: var(--text-muted);
+  stroke: currentColor; stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ─── Main ─── */
+.main { padding: 16px 16px 96px; display: flex; flex-direction: column; gap: 16px; }
+
+/* ─── Stats card (neutral surface, semantic-colored numbers) ─── */
+.stats-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 12px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  position: relative;
+}
+.stats-card::before,
+.stats-card::after {
+  content: ""; position: absolute; top: 18px; bottom: 18px;
+  width: 1px; background: var(--border);
+}
+.stats-card::before { left: 33.33%; }
+.stats-card::after { left: 66.66%; }
+.stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.stat-number {
+  font-size: 22px; font-weight: 700;
+  letter-spacing: -0.2px; line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.stat-number.ready { color: var(--secondary-dark); }
+.stat-number.delivering { color: var(--primary); }
+.stat-number.delivered { color: var(--success); }
+.stat-label {
+  font-size: 12px; font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.12px;
+  text-align: center;
+}
+
+/* ─── Filter row (horizontally scrollable pills) ─── */
+.filter-wrapper {
+  margin: 0 -16px;
+  overflow-x: auto;
+  scrollbar-width: none; -ms-overflow-style: none;
+}
+.filter-wrapper::-webkit-scrollbar { display: none; }
+.filter-inner {
+  display: inline-flex; gap: 8px;
+  padding: 0 16px;
+}
+.filter-btn {
+  white-space: nowrap;
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  letter-spacing: 0.13px;
+  padding: 7px 14px;
+  border-radius: 9999px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--card); color: var(--text-secondary);
+  transition: border-color 140ms ease-out, background 140ms ease-out, color 140ms ease-out;
+}
+.filter-btn:hover { border-color: var(--border-strong); color: var(--text); }
+.filter-btn.active {
+  background: var(--primary); color: var(--card);
+  border-color: var(--primary);
+}
+.filter-btn:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* ─── Order cards ─── */
+.cards { display: flex; flex-direction: column; gap: 12px; }
+.order-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex; align-items: center; gap: 12px;
+  cursor: pointer;
+  font-family: inherit; text-align: left; width: 100%;
+  transition: border-color 140ms ease-out, box-shadow 140ms ease-out;
+}
+.order-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: 0 3px 12px rgba(155,35,53,0.06);
+}
+.order-card:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.card-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+.card-name-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.card-name {
+  font-size: 15px; font-weight: 600; color: var(--text);
+  letter-spacing: -0.05px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.card-address {
+  font-size: 13px; font-weight: 400; color: var(--text-secondary);
+  letter-spacing: 0.13px; line-height: 1.4;
+}
+.card-time {
+  font-size: 12px; font-weight: 400; color: var(--text-muted);
+  letter-spacing: 0.12px; margin-top: 2px;
+}
+.card-chevron {
+  width: 18px; height: 18px;
+  color: var(--text-muted); flex-shrink: 0;
+  stroke: currentColor; stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ─── Status badges (DESIGN.md table) ─── */
+.badge {
+  font-size: 11px; font-weight: 600;
+  border-radius: 9999px;
+  padding: 3px 10px;
+  white-space: nowrap;
+  letter-spacing: 0.11px;
+}
+.badge-ready {
+  background: var(--status-ready-bg);
+  color: var(--status-ready-text);
+}
+.badge-delivering {
+  background: var(--status-delivering-bg);
+  color: var(--status-delivering-text);
+}
+.badge-delivered {
+  background: var(--status-delivered-bg);
+  color: var(--status-delivered-text);
+}
+
+/* ─── Empty state (used when a filter has 0 results) ─── */
+.empty-state {
+  background: var(--cream-dark);
+  border-radius: 16px;
+  padding: 24px 20px;
+  text-align: center;
+}
+.empty-state .icon {
+  width: 36px; height: 36px;
+  margin: 0 auto 8px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+}
+.empty-state .icon svg {
+  width: 28px; height: 28px;
+  stroke: currentColor; stroke-width: 1.75;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+.empty-state .title {
+  font-size: 14px; font-weight: 600; color: var(--text);
+  letter-spacing: -0.05px;
+}
+.empty-state .body {
+  font-size: 12px; color: var(--text-muted);
+  margin-top: 4px; letter-spacing: 0.12px; line-height: 1.5;
+}
+
+/* ─── Bottom navigation (Operator role: 5 tabs) ─── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 100%; max-width: 448px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  z-index: 50;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+  padding-bottom: env(safe-area-inset-bottom, 0);
+}
+.bottom-nav-inner {
+  display: flex; align-items: stretch;
+  height: 65px;
+}
+.nav-item {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px;
+  text-decoration: none; cursor: pointer;
+  color: var(--text-muted);
+  min-height: 44px;
+  transition: color 140ms ease-out;
+}
+.nav-item svg {
+  width: 22px; height: 22px;
+  stroke: currentColor; stroke-width: 1.75;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+.nav-item span {
+  font-size: 11px; font-weight: 500;
+  letter-spacing: 0.11px;
+}
+.nav-item.active { color: var(--primary); }
+.nav-item:hover { color: var(--text-secondary); }
+.nav-item.active:hover { color: var(--primary-800); }
+.nav-item:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: -2px;
+}
+
+/* ─── Reduced motion ─── */
+@media (prefers-reduced-motion: reduce) {
+  .filter-btn, .order-card, .nav-item { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+
+<!-- Header -->
+<header class="header">
+  <h1>Kiszállítás</h1>
+  <div class="header-date" aria-label="Mai dátum">
+    <!-- lucide-calendar-days -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg>
+    <span>2026. máj. 7., csüt.</span>
+  </div>
+</header>
+
+<!-- Main content -->
+<main class="main">
+
+  <!-- Stats card -->
+  <section class="stats-card" aria-label="Mai napi áttekintés">
+    <div class="stat">
+      <span class="stat-number ready">2</span>
+      <span class="stat-label">Szállításra kész</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number delivering">1</span>
+      <span class="stat-label">Úton</span>
+    </div>
+    <div class="stat">
+      <span class="stat-number delivered">0</span>
+      <span class="stat-label">Kézbesítve</span>
+    </div>
+  </section>
+
+  <!-- Filter row -->
+  <nav class="filter-wrapper" aria-label="Rendelés-szűrő">
+    <div class="filter-inner" role="tablist">
+      <button class="filter-btn active" role="tab" aria-selected="true">Összes · 3</button>
+      <button class="filter-btn" role="tab" aria-selected="false">Szállításra kész · 2</button>
+      <button class="filter-btn" role="tab" aria-selected="false">Úton · 1</button>
+      <button class="filter-btn" role="tab" aria-selected="false">Kézbesítve · 0</button>
+    </div>
+  </nav>
+
+  <!-- Order cards -->
+  <div class="cards">
+
+    <!-- Card 1: Administrator (ready) -->
+    <button class="order-card" type="button" aria-label="Administrator rendelése — Szállításra kész">
+      <div class="card-body">
+        <div class="card-name-row">
+          <span class="card-name">Administrator</span>
+          <span class="badge badge-ready">Szállításra kész</span>
+        </div>
+        <div class="card-address">Odorheiu-Secuiesc, Str. Orban Balazs 9</div>
+        <div class="card-time">11:00–12:00 · 12:00–13:00 · 5 termék</div>
+      </div>
+      <svg class="card-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <!-- Card 2: Becze Szabolcs (ready) -->
+    <button class="order-card" type="button" aria-label="Becze Szabolcs rendelése — Szállításra kész">
+      <div class="card-body">
+        <div class="card-name-row">
+          <span class="card-name">Becze Szabolcs</span>
+          <span class="badge badge-ready">Szállításra kész</span>
+        </div>
+        <div class="card-address">Morii utca 20/1</div>
+        <div class="card-time">13:00–14:00 · 3 termék</div>
+      </div>
+      <svg class="card-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+    <!-- Card 3: Becze Szabolcs (delivering) -->
+    <button class="order-card" type="button" aria-label="Becze Szabolcs rendelése — Úton">
+      <div class="card-body">
+        <div class="card-name-row">
+          <span class="card-name">Becze Szabolcs</span>
+          <span class="badge badge-delivering">Úton</span>
+        </div>
+        <div class="card-address">Morii utca 20/1</div>
+        <div class="card-time">12:00–13:00 · 3 termék</div>
+      </div>
+      <svg class="card-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+
+  </div>
+
+</main>
+
+</div><!-- /.page-wrapper -->
+
+<!-- Bottom navigation (Operator role) -->
+<nav class="bottom-nav" aria-label="Fő menü">
+  <div class="bottom-nav-inner">
+    <a class="nav-item" href="#" aria-label="Előkészítés">
+      <!-- lucide-package -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="m7.5 4.27 9 5.15"/></svg>
+      <span>Előkészítés</span>
+    </a>
+    <a class="nav-item active" href="#" aria-label="Kiszállítás (jelenlegi nézet)" aria-current="page">
+      <!-- lucide-truck -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+      <span>Kiszállítás</span>
+    </a>
+    <a class="nav-item" href="#" aria-label="Statisztikák">
+      <!-- lucide-chart-no-axes-combined -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 16v5"/><path d="M16 14v7"/><path d="M20 10v11"/><path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path d="M4 18v3"/><path d="M8 14v7"/></svg>
+      <span>Statisztikák</span>
+    </a>
+    <a class="nav-item" href="#" aria-label="Vezérlőpult">
+      <!-- lucide-layout-dashboard -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      <span>Vezérlőpult</span>
+    </a>
+    <a class="nav-item" href="#" aria-label="Fiók">
+      <!-- lucide-user -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span>Fiók</span>
+    </a>
+  </div>
+</nav>
+
+</body>
+</html>

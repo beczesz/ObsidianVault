@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>Feature graphic — cream HU 1024×500</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1024px; height: 500px; overflow: hidden; }
+  body {
+    background: #FFFBF7;
+    position: relative;
+    font-family: 'Inter', sans-serif;
+    color: #2C2825;
+  }
+  /* Warm paper noise — very faint */
+  body::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' seed='4'/><feColorMatrix values='0 0 0 0 0.55  0 0 0 0 0.42  0 0 0 0 0.28  0 0 0 0.08 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    background-size: 200px 200px;
+    mix-blend-mode: multiply;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  /* Subtle vignette toward edges to push the eye to center */
+  body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 55%, rgba(155, 35, 53, 0.04) 100%);
+    pointer-events: none;
+  }
+  .stage {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 100px;
+    z-index: 2;
+  }
+  .eyebrow {
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: #9C7841;
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+  .eyebrow .dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    background: #D4A574;
+    border-radius: 50%;
+    vertical-align: middle;
+    margin: 0 10px 2px;
+  }
+  .wordmark {
+    font-family: 'Playfair Display', serif;
+    font-weight: 800;
+    font-size: 96px;
+    line-height: 0.95;
+    letter-spacing: -3px;
+    color: #7D1A2A;
+    text-align: center;
+  }
+  .rule {
+    width: 64px;
+    height: 2px;
+    background: #D4A574;
+    margin: 28px 0 26px;
+    border-radius: 2px;
+  }
+  .tagline {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-style: italic;
+    font-size: 28px;
+    color: #5C544C;
+    letter-spacing: 0.2px;
+  }
+  .tagline .accent {
+    color: #9B2335;
+    font-style: normal;
+  }
+  footer {
+    position: absolute;
+    left: 0; right: 0; bottom: 28px;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 60px;
+    z-index: 3;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: #8A8078;
+  }
+  footer .url {
+    color: #9B2335;
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+  <div class="stage">
+    <div class="eyebrow">Helyi húsmíves<span class="dot"></span>Székelyudvarhely</div>
+    <h1 class="wordmark">Deák Húsmíves</h1>
+    <div class="rule"></div>
+    <p class="tagline">Friss<span class="accent">.</span> Tiszta<span class="accent">.</span> Házhoz<span class="accent">.</span></p>
+  </div>
+  <footer>
+    <span class="url">deakhus.ro</span>
+    <span>Hajnalban készül<span style="display:inline-block;width:3px;height:3px;background:#D4A574;border-radius:50%;vertical-align:middle;margin:0 8px 2px;"></span>Ma nálad</span>
+  </footer>
+</body>
+</html>

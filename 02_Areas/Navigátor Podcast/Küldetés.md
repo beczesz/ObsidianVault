@@ -3,6 +3,8 @@ significance:
   - Közösségi média tapasztalat
   - Ismerettség
   - Fontos témák felkutatása
+id: 7abe13e0-7315-4a35-98a7-c89c7238ec28
+index_schema_version: 1
 ---
 
 
@@ -14,6 +16,4 @@ title: Fontos Linkek
 
 
 ## TODO
-- [ ] Digitális székelyföldi konferencia?
-- [ ] TODO Samunak kifizetni 
-- [ ] stratégiai célok
+- [x] Spotyify Hassan és Palkovics epizód 📅 2025-10-28

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>artistName</key>
+	<string>Jocko Willink</string>
+	<key>book-info</key>
+	<dict>
+		<key>cover-image-hash</key>
+		<string>A2F6B58C9390AB762EACD509A6E5C08A</string>
+		<key>cover-image-path</key>
+		<string>OEBPS/images/9781250276186.jpg</string>
+		<key>mime-type</key>
+		<string>application/epub+zip</string>
+		<key>package-file-hash</key>
+		<string>45D89147C4B4935FCACEB517C39957B0</string>
+		<key>page-progression-direction</key>
+		<string>ltr</string>
+		<key>publisher-unique-id</key>
+		<string>9781250276186</string>
+		<key>unique-id</key>
+		<integer>196967219950462933</integer>
+		<key>update-level</key>
+		<integer>2</integer>
+	</dict>
+	<key>itemName</key>
+	<string>Discipline Equals Freedom</string>
+	<key>playlistName</key>
+	<string>Discipline Equals Freedom</string>
+</dict>
+</plist>

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--
+  Fallback: DH monogram icon (design-system §10 conformist).
+  Use this if the pig-face icon is rejected by Play review or you want to
+  return to the canonical app-icon style from the design system.
+
+  Render: add an extra job to render.js or run a one-off Chrome headless on this file.
+-->
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>DH app icon — 512 (DH monogram fallback)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 512px; height: 512px; overflow: hidden; }
+  body {
+    background: #9B2335;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Playfair Display', serif;
+  }
+  .mark {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .mark::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 38%, rgba(255, 251, 247, 0.05) 0%, transparent 55%);
+    pointer-events: none;
+  }
+  .dh {
+    font-weight: 900;
+    font-size: 300px;
+    line-height: 1;
+    color: #FFFBF7;
+    letter-spacing: -10px;
+    transform: translateY(-8px);
+  }
+  .ornament {
+    position: absolute;
+    bottom: 56px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 56px;
+    height: 2px;
+    background: #D4A574;
+    border-radius: 2px;
+  }
+</style>
+</head>
+<body>
+  <div class="mark">
+    <span class="dh">DH</span>
+    <span class="ornament"></span>
+  </div>
+</body>
+</html>

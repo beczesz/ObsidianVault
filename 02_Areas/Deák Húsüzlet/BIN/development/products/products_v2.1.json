@@ -1,0 +1,694 @@
+{
+  "meta": {
+    "version": "2.1",
+    "date": "2026-03-21",
+    "author": "Becze Szabolcs – Exar Labs",
+    "description": "Deák Húsmíves termék katalógus — 37 termék, 5 kategória. Multilingual (HU + RO). v2.1: price_per_kg feltöltve (RON/kg); popularity_score mező bevezetve (1=legnépszerűbb, 0=legkevésbé; null=nincs beállítva).",
+    "image_path": "Marketing/products/photos/",
+    "image_format": "webp",
+    "image_size": "1000x1000px",
+    "supported_languages": [
+      "hu",
+      "ro"
+    ],
+    "default_language": "hu"
+  },
+  "categories": [
+    {
+      "id": "friss_serteshus",
+      "name": {
+        "hu": "Friss Sertéshús",
+        "ro": "Carne proaspătă de porc"
+      },
+      "icon": "🥩",
+      "product_count": 13
+    },
+    {
+      "id": "fustolt_aruk",
+      "name": {
+        "hu": "Füstölt Áruk",
+        "ro": "Produse afumate"
+      },
+      "icon": "🔥",
+      "product_count": 12
+    },
+    {
+      "id": "kolbasz_szalami",
+      "name": {
+        "hu": "Kolbász & Szalámi",
+        "ro": "Cârnați & Salam"
+      },
+      "icon": "🌭",
+      "product_count": 7
+    },
+    {
+      "id": "felvagott_egyeb",
+      "name": {
+        "hu": "Felvágott & Egyéb",
+        "ro": "Mezeluri & Altele"
+      },
+      "icon": "🍖",
+      "product_count": 4
+    },
+    {
+      "id": "friss_novendek_hus",
+      "name": {
+        "hu": "Friss Növendékhús",
+        "ro": "Carne proaspătă de tineret"
+      },
+      "icon": "🐄",
+      "product_count": 1
+    }
+  ],
+  "products": [
+    {
+      "id": "nyakas_karaj",
+      "name": {
+        "hu": "Nyakas Karaj",
+        "ro": "Ceafă de porc"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "A nyak és a karaj közötti márványos rész, kiváló sütéshez és pároláshoz.",
+        "ro": "Bucată marmorată între gât și cotlet, excelentă la prăjit și înăbușit."
+      },
+      "image": "nyakas_karaj.webp",
+      "unit": "kg",
+      "price_per_kg": 33.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_belszin",
+      "name": {
+        "hu": "Sertés Bélszín",
+        "ro": "Mușchi de porc"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "A sertés legpuhább, legnemesebb része, omlós állagú, tökéletes steaknek vagy sütve.",
+        "ro": "Cea mai fragedă și nobilă parte a porcului, cu textură moale, perfectă pentru friptură sau la tigaie."
+      },
+      "image": "sertes_belszin.webp",
+      "unit": "kg",
+      "price_per_kg": 40.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_borda_csont",
+      "name": {
+        "hu": "Sertés Bordacsont",
+        "ro": "Coaste de porc (os)"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Friss bordacsont, gazdag ízű, ideális levesbe vagy párolva.",
+        "ro": "Coaste proaspete, cu gust bogat, ideale pentru supă sau înăbușite."
+      },
+      "image": "sertes_borda_csont.webp",
+      "unit": "kg",
+      "price_per_kg": 12.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_comb",
+      "name": {
+        "hu": "Sertés Comb",
+        "ro": "Pulpă de porc"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Sovány, nagy húsdarab, sokoldalúan felhasználható sütve, főzve vagy darálva.",
+        "ro": "Bucată mare și slabă, versatilă — la cuptor, fiartă sau tocată."
+      },
+      "image": "sertes_comb.webp",
+      "unit": "kg",
+      "price_per_kg": 25.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_csontos_karaj",
+      "name": {
+        "hu": "Sertés Csontos Karaj",
+        "ro": "Cotlet de porc cu os"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Csontján hagyott karajszelet, saftos és ízletes, grillezéshez vagy sütőbe.",
+        "ro": "Cotlet cu os, suculent și gustos, perfect pe grătar sau la cuptor."
+      },
+      "image": "sertes_csontos_karaj.webp",
+      "unit": "kg",
+      "price_per_kg": 25.5,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_csulok",
+      "name": {
+        "hu": "Sertés Csülök",
+        "ro": "Ciolan de porc"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Kollagénben gazdag friss csülök, párolt fogásokhoz és húsleveshez ideális.",
+        "ro": "Ciolan proaspăt bogat în colagen, ideal pentru mâncăruri înăbușite și supă de carne."
+      },
+      "image": "sertes_csulok.webp",
+      "unit": "kg",
+      "price_per_kg": 19.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_egesz_bordacsont",
+      "name": {
+        "hu": "Sertés Egész Bordacsont",
+        "ro": "Coaste întregi de porc"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Egészben hagyott bordacsont, ünnepi alkalmakra és grillezéshez tökéletes.",
+        "ro": "Coaste întregi, perfecte pentru ocazii festive și grătar."
+      },
+      "image": "sertes_egesz_bordacsont.webp",
+      "unit": "kg",
+      "price_per_kg": 15.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_feher_karaj",
+      "name": {
+        "hu": "Sertés Fehér Karaj",
+        "ro": "Cotlet alb de porc"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Zsírszegény, egyenletes húsú karajdarab, könnyen szeletelhető sütéshez.",
+        "ro": "Cotlet slab cu carne uniformă, ușor de feliat pentru prăjit."
+      },
+      "image": "sertes_feher_karaj.webp",
+      "unit": "kg",
+      "price_per_kg": 33.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_hasresz",
+      "name": {
+        "hu": "Sertés Hasrész",
+        "ro": "Burtă de porc"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Zsíros, ízgazdag hasrész, pörköltnek, darálva vagy frissen sütve kiváló.",
+        "ro": "Burtă de porc grasă și gustoasă, excelentă la tocană, tocată sau prăjită proaspătă."
+      },
+      "image": "sertes_hasresz.webp",
+      "unit": "kg",
+      "price_per_kg": 24.5,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_aprohus",
+      "name": {
+        "hu": "Sertés Apróhús",
+        "ro": "Carne măruntă de porc"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Vegyes húsdarabok, ideálisak pörköltnek, ragúnak vagy daráláshoz.",
+        "ro": "Bucăți mixte de carne, ideale pentru tocană, ragú sau tocat."
+      },
+      "image": "sertes_munka_hus.webp",
+      "unit": "kg",
+      "price_per_kg": 21.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_orolt_hus",
+      "name": {
+        "hu": "Sertés Őrölt Hús",
+        "ro": "Carne tocată de porc"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Frissen darált sertéshús, kolbászkészítéshez, fasírthoz és töltött ételekhez.",
+        "ro": "Carne de porc tocată proaspătă, pentru cârnați, chiftele și mâncăruri umplute."
+      },
+      "image": "sertes_orolt_hus.webp",
+      "unit": "kg",
+      "price_per_kg": 21.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_szalonnas_comb",
+      "name": {
+        "hu": "Sertés Szalonnás Comb",
+        "ro": "Pulpă de porc cu slănină"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "Szalonnával borított combdarab, szaftos és ízletes egészben sütve.",
+        "ro": "Pulpă acoperită cu slănină, suculentă și gustoasă la cuptor întreg."
+      },
+      "image": "sertes_szalonnas_comb.webp",
+      "unit": "kg",
+      "price_per_kg": 24.5,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_toka_szalonna",
+      "name": {
+        "hu": "Sertés Toka Szalonna",
+        "ro": "Slănină de obraz (guler)"
+      },
+      "category_id": "friss_serteshus",
+      "description": {
+        "hu": "A tokájából készített szalonna, jellegzetes márványos szerkezettel, főzve és sütve egyaránt.",
+        "ro": "Slănina de obraz cu structură marmorată caracteristică, excelentă fiartă sau prăjită."
+      },
+      "image": "sertes_toka_szalonna.webp",
+      "unit": "kg",
+      "price_per_kg": 20.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "novendek_velos_csont",
+      "name": {
+        "hu": "Növendék Velős Csont",
+        "ro": "Os cu măduvă de tineret"
+      },
+      "category_id": "friss_novendek_hus",
+      "description": {
+        "hu": "Csontvelőben gazdag csont, gazdag levesalapnak vagy pirítóson tálalva különlegesség.",
+        "ro": "Os bogat în măduvă, bază excelentă pentru supă sau servit pe pâine prăjită ca specialitate."
+      },
+      "image": "novendek_velos_csont.webp",
+      "unit": "kg",
+      "price_per_kg": 22.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_belszin",
+      "name": {
+        "hu": "Füstölt Bélszín",
+        "ro": "Mușchi afumat"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Hagyományos hideg füstöléssel készített bélszín, mélyen füstös ízzel, vékonyra szeletelve.",
+        "ro": "Mușchi preparat prin afumare la rece tradițională, cu aromă adâncă de fum, feliat subțire."
+      },
+      "image": "fustolt_belszin.webp",
+      "unit": "kg",
+      "price_per_kg": 55.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_bordacsont",
+      "name": {
+        "hu": "Füstölt Bordacsont",
+        "ro": "Coaste afumate"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Füstölt bordacsont, bablevesbe és káposztás fogásokhoz nélkülözhetetlen alapanyag.",
+        "ro": "Coaste afumate, ingredient esențial în fasole bătută și mâncăruri cu varză."
+      },
+      "image": "fustolt_bordacsont.webp",
+      "unit": "kg",
+      "price_per_kg": 16.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_csulok",
+      "name": {
+        "hu": "Füstölt Csülök",
+        "ro": "Ciolan afumat"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Csontján füstölt csülök, mélyen átitatott füstös ízzel, főzve vagy sütve omlós.",
+        "ro": "Ciolan afumat pe os, cu aromă profundă de fum, fraged la fiert sau la cuptor."
+      },
+      "image": "fustolt_csulok.webp",
+      "unit": "kg",
+      "price_per_kg": 34.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_csulok_csont_nelkul",
+      "name": {
+        "hu": "Füstölt Csülök Csont Nélkül",
+        "ro": "Ciolan afumat fără os"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Kicsontozott füstölt csülök, kényelmes szeletelésre, hideg tálakhoz vagy melegítve.",
+        "ro": "Ciolan afumat dezos, comod de feliat, pentru platouri reci sau reîncălzit."
+      },
+      "image": "fustolt_csulok_csont_nelkul.webp",
+      "unit": "kg",
+      "price_per_kg": 44.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_egybe_sonka",
+      "name": {
+        "hu": "Füstölt Egész Sonka",
+        "ro": "Șuncă întreagă afumată"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Egészben füstölt sonka, ünnepi alkalmak klasszikusa, hidegen és melegen egyaránt.",
+        "ro": "Șuncă afumată întreagă, clasic al meselor festive, excelentă rece și caldă."
+      },
+      "image": "fustolt_egybe_sonka.webp",
+      "unit": "kg",
+      "price_per_kg": 55.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_feher_karaj",
+      "name": {
+        "hu": "Füstölt Fehér Karaj",
+        "ro": "Cotlet alb afumat"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Enyhén füstölt fehér karaj, sovány és aromás, szendvicsbe vagy hideg tálra.",
+        "ro": "Cotlet alb ușor afumat, slab și aromat, pentru sandvișuri sau platouri reci."
+      },
+      "image": "fustolt_feher_karaj.webp",
+      "unit": "kg",
+      "price_per_kg": 49.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_has",
+      "name": {
+        "hu": "Füstölt Has",
+        "ro": "Burtă afumată"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Füstölt hasrész, ízgazdag és zsíros, babos ételekhez és káposztás fogásokhoz ideális.",
+        "ro": "Burtă afumată, bogată în gust și grasă, ideală pentru fasole și mâncăruri cu varză."
+      },
+      "image": "fustolt_has.webp",
+      "unit": "kg",
+      "price_per_kg": 47.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_kotozott_sonka",
+      "name": {
+        "hu": "Füstölt Kötözött Sonka",
+        "ro": "Șuncă rulată afumată"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Kötöléssel formált egyenletes füstölt sonka, könnyen szeletelhető, hideg tálakhoz tökéletes.",
+        "ro": "Șuncă afumată rulată, uniform formată, ușor de feliat, perfectă pentru platouri reci."
+      },
+      "image": "fustolt_kotozott_sonka.webp",
+      "unit": "kg",
+      "price_per_kg": 50.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_nyakas_karaj",
+      "name": {
+        "hu": "Füstölt Nyakas Karaj",
+        "ro": "Ceafă afumată"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Márványos szerkezetű füstölt nyakas karaj, gazdag füstös ízzel, hidegen és melegen is kiváló.",
+        "ro": "Ceafă afumată cu structură marmorată, gust bogat de fum, excelentă rece și caldă."
+      },
+      "image": "fustolt_nyakas_karaj.webp",
+      "unit": "kg",
+      "price_per_kg": 49.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_oldalas",
+      "name": {
+        "hu": "Füstölt Oldalas",
+        "ro": "Coaste afumate (spare ribs)"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Füstölt oldalas, sütőben vagy grillen omlósra süthető, barbecue kedvencek közé tartozik.",
+        "ro": "Coaste afumate, fragede la cuptor sau pe grătar, un favorit la grătar."
+      },
+      "image": "fustolt_oldalas.webp",
+      "unit": "kg",
+      "price_per_kg": 47.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_szalonna",
+      "name": {
+        "hu": "Füstölt Szalonna",
+        "ro": "Slănină afumată"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Klasszikus házi jellegű füstölt szalonna, vékonyra szeletelve vagy kockázva mindenhez illik.",
+        "ro": "Slănină afumată clasică de casă, feliată subțire sau tăiată cubulețe, se potrivește la orice."
+      },
+      "image": "fustolt_szalonna.webp",
+      "unit": "kg",
+      "price_per_kg": 42.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "fustolt_szalonnas_sonka",
+      "name": {
+        "hu": "Füstölt Szalonnás Sonka",
+        "ro": "Șuncă cu slănină afumată"
+      },
+      "category_id": "fustolt_aruk",
+      "description": {
+        "hu": "Szalonnával érlelt füstölt sonka, gazdag ízprofillal, hideg tálak és szendvicsek alapanyaga.",
+        "ro": "Șuncă afumată maturată cu slănină, profil gustativ bogat, bază pentru platouri reci și sandvișuri."
+      },
+      "image": "fustolt_szalonnas_sonka.webp",
+      "unit": "kg",
+      "price_per_kg": 55.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "cerna_kolbasz",
+      "name": {
+        "hu": "Cérna Kolbász",
+        "ro": "Cârnat subțire (ață)"
+      },
+      "category_id": "kolbasz_szalami",
+      "description": {
+        "hu": "Vékony, spárgával kötött kolbász, fűszeres ízvilággal, sütve és főzve egyaránt kitűnő.",
+        "ro": "Cârnat subțire legat cu sfoară, cu aromă picantă, excelent prăjit și fiert."
+      },
+      "image": "cerna_kolbasz.webp",
+      "unit": "kg",
+      "price_per_kg": 45.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "erdelyi_kolbasz",
+      "name": {
+        "hu": "Erdélyi Kolbász",
+        "ro": "Cârnat ardelenesc"
+      },
+      "category_id": "kolbasz_szalami",
+      "description": {
+        "hu": "Hagyományos erdélyi recept szerinti fokhagymás-paprikás kolbász, füstölt aromával.",
+        "ro": "Cârnat ardelenesc tradițional cu usturoi și boia, cu aromă afumată."
+      },
+      "image": "erdelyi_kolbasz.webp",
+      "unit": "kg",
+      "price_per_kg": 45.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "miccs",
+      "name": {
+        "hu": "Miccs",
+        "ro": "Mici"
+      },
+      "category_id": "kolbasz_szalami",
+      "description": {
+        "hu": "Friss fűszeres darált húsból formált rúd, grillezve vagy serpenyőben sütve a legjobb.",
+        "ro": "Rulou din carne tocată proaspătă condimentată, cel mai bun pe grătar sau la tigaie."
+      },
+      "image": "miccs.webp",
+      "unit": "kg",
+      "price_per_kg": 40.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "novendek_szalami",
+      "name": {
+        "hu": "Növendék Szalámi",
+        "ro": "Salam de tineret"
+      },
+      "category_id": "kolbasz_szalami",
+      "description": {
+        "hu": "Finomszemcsés, enyhén fűszerezett szalámi, hideg tálak és szendvicsek kedvelt alapanyaga.",
+        "ro": "Salam fin, ușor condimentat, ingredient preferat pentru platouri reci și sandvișuri."
+      },
+      "image": "novendek_szalami.webp",
+      "unit": "kg",
+      "price_per_kg": 46.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "sertes_szalami",
+      "name": {
+        "hu": "Sertés Szalámi",
+        "ro": "Salam de porc"
+      },
+      "category_id": "kolbasz_szalami",
+      "description": {
+        "hu": "Tradicionálisan érlelt sertésszalámi, karakteres ízzel, vékonyra szeletelve tálalható.",
+        "ro": "Salam de porc maturat tradițional, cu gust caracteristic, servit feliat subțire."
+      },
+      "image": "sertes_szalami.webp",
+      "unit": "kg",
+      "price_per_kg": 43.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "szekely_kolbasz",
+      "name": {
+        "hu": "Székely Kolbász",
+        "ro": "Cârnat secuiesc"
+      },
+      "category_id": "kolbasz_szalami",
+      "description": {
+        "hu": "Erősen fűszerezett, paprikás székely kolbász, a régió egyik jellegzetes kézműves terméke.",
+        "ro": "Cârnat secuiesc puternic condimentat cu boia, unul dintre produsele artizanale reprezentative ale regiunii."
+      },
+      "image": "szekely_kolbasz.webp",
+      "unit": "kg",
+      "price_per_kg": 45.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "teli_szalami",
+      "name": {
+        "hu": "Téli Szalámi",
+        "ro": "Salam de iarnă"
+      },
+      "category_id": "kolbasz_szalami",
+      "description": {
+        "hu": "Hosszan érlelt, intenzív ízű téli szalámi, hideg tálak és szendvicsek klasszikusa.",
+        "ro": "Salam de iarnă maturat îndelung, cu gust intens, clasic al platourilor reci și sandvișurilor."
+      },
+      "image": "teli_szalami.webp",
+      "unit": "kg",
+      "price_per_kg": 68.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "abalt_szalonna",
+      "name": {
+        "hu": "Abált Szalonna",
+        "ro": "Slănină fiartă"
+      },
+      "category_id": "felvagott_egyeb",
+      "description": {
+        "hu": "Főtt szalonna, fokhagymával és fűszerekkel ízesítve, hidegen szeletelve tálalható.",
+        "ro": "Slănină fiartă, condimentată cu usturoi și mirodenii, servită feliată rece."
+      },
+      "image": "abalt_szalonna.webp",
+      "unit": "kg",
+      "price_per_kg": 35.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "diszno_fosajt",
+      "name": {
+        "hu": "Disznó Fősajt",
+        "ro": "Tobă de porc"
+      },
+      "category_id": "felvagott_egyeb",
+      "description": {
+        "hu": "Hagyományos disznófősajt, kocsonyás állagú, fűszerekkel gazdagítva, hideg tálakra ideális.",
+        "ro": "Tobă tradițională de porc, cu textură gelatinoasă, îmbogățită cu condimente, ideală pentru platouri reci."
+      },
+      "image": "diszno_fosajt.webp",
+      "unit": "kg",
+      "price_per_kg": 35.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "gongyolt_hus",
+      "name": {
+        "hu": "Göngyölt Hús",
+        "ro": "Rulou de carne"
+      },
+      "category_id": "felvagott_egyeb",
+      "description": {
+        "hu": "Fűszerezett húsdarabok göngyölve és főzve, szeletelhető hideg fogás, szendvicsek alapanyaga.",
+        "ro": "Bucăți de carne condimentate, rulate și fierte, fel rece feliabil, bază pentru sandvișuri."
+      },
+      "image": "gongyolt_hus.webp",
+      "unit": "kg",
+      "price_per_kg": 47.0,
+      "available": true,
+      "popularity_score": null
+    },
+    {
+      "id": "pastetom",
+      "name": {
+        "hu": "Pástétom",
+        "ro": "Pate de carne"
+      },
+      "category_id": "felvagott_egyeb",
+      "description": {
+        "hu": "Krémes, finomra dolgozott húspástétom, pirítósra kenve vagy hideg tálak kísérőjeként.",
+        "ro": "Pate de carne cremos, fin prelucrat, uns pe pâine prăjită sau ca garnitură pentru platouri reci."
+      },
+      "image": "pastetom.webp",
+      "unit": "kg",
+      "price_per_kg": 22.0,
+      "available": true,
+      "popularity_score": null
+    }
+  ]
+}

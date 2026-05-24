@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>DH-147 · Profile &amp; Admin Panel</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#F5F0EB; --card:#FFFFFF; --primary:#7B2D3B; --primary-light:#9B4D5B;
+  --primary-pale:#F4E6E8; --text:#2D2D2D; --text2:#777777; --border:#E8E0D8;
+  --green:#2E7D32; --green-light:#E8F5E9;
+  --gold-light:#FFF8E1; --gold-border:#E8C84A;
+  --warn:#E65100; --warn-bg:#FFF3E0;
+  --admin:#1A237E; --admin-bg:#E8EAF6; --admin-border:#9FA8DA;
+}
+body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:#F8F5F0; color:var(--text); }
+
+.back-btn { display:inline-block; padding:8px 14px; background:var(--primary); color:white; border-radius:8px; font-size:13px; text-decoration:none; font-weight:600; margin:16px 24px 0; }
+.back-btn:hover { background:var(--primary-light); }
+
+.header { max-width:1500px; margin:0 auto; padding:16px 24px 0; }
+.header h1 { font-size:26px; font-weight:800; }
+.header p { font-size:14px; color:var(--text2); margin-top:4px; }
+.header-meta { margin-top:8px; font-size:12px; color:var(--text2); }
+.badge-ticket { display:inline-block; background:var(--primary-pale); color:var(--primary); font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px; margin-right:6px; }
+.badge-sprint { display:inline-block; background:#E3F2FD; color:#1565C0; font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px; }
+
+.tabs-nav { display:flex; gap:6px; flex-wrap:wrap; padding:16px 24px 0; max-width:1500px; margin:0 auto; }
+.tab-btn { padding:7px 16px; border-radius:20px; border:2px solid var(--border); background:var(--card); color:var(--text2); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.15s; }
+.tab-btn.active { background:var(--primary); color:white; border-color:var(--primary); }
+.tab-btn:hover:not(.active) { border-color:var(--primary); color:var(--primary); }
+
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+.content { max-width:1500px; margin:0 auto; padding:20px 24px 40px; }
+.flow-wrap { display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start; }
+
+/* Phone frame */
+.phone { width:375px; min-height:720px; background:var(--bg); border-radius:24px; border:2px solid var(--border); overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); flex-shrink:0; display:flex; flex-direction:column; }
+.phone-header { background:var(--card); padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; }
+.phone-header .brand { font-size:18px; font-weight:700; font-family:Georgia,serif; color:var(--primary); flex:1; }
+.phone-body { flex:1; padding:12px 16px 0; overflow-y:auto; max-height:620px; }
+
+/* Bottom tab bar */
+.tab-bar { background:var(--card); border-top:1px solid var(--border); display:flex; padding:6px 0 10px; }
+.tab-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:3px; font-size:10px; color:var(--text2); padding:6px 2px; cursor:pointer; }
+.tab-item.active { color:var(--primary); font-weight:700; }
+.tab-item svg { width:22px; height:22px; stroke-width:1.8; fill:none; stroke:currentColor; }
+.tab-icon-wrap { position:relative; display:inline-flex; }
+.tab-badge { position:absolute; top:-3px; right:-5px; background:#E53935; color:white; font-size:8px; font-weight:700; width:14px; height:14px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
+
+/* Profile hero */
+.profile-hero { background:var(--card); border-radius:14px; padding:16px; margin-bottom:10px; display:flex; align-items:center; gap:14px; border:1px solid var(--border); }
+.avatar { width:52px; height:52px; border-radius:50%; background:var(--primary-pale); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.avatar svg { width:28px; height:28px; stroke:var(--primary); stroke-width:1.8; fill:none; }
+.avatar.admin-av { background:var(--admin-bg); }
+.avatar.admin-av svg { stroke:var(--admin); }
+.profile-info { flex:1; min-width:0; }
+.profile-name { font-size:16px; font-weight:700; color:var(--text); }
+.profile-sub { font-size:12px; color:var(--text2); margin-top:2px; }
+.edit-btn { padding:7px 14px; border-radius:8px; border:1.5px solid var(--primary); background:transparent; color:var(--primary); font-size:12px; font-weight:700; cursor:pointer; white-space:nowrap; }
+
+/* Section */
+.section-group { margin-bottom:10px; }
+.section-label { font-size:11px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:0.6px; margin-bottom:6px; padding-left:2px; }
+.menu-card { background:var(--card); border-radius:14px; border:1px solid var(--border); overflow:hidden; }
+.menu-row { display:flex; align-items:center; gap:12px; padding:13px 14px; border-bottom:1px solid var(--border); cursor:pointer; }
+.menu-row:last-child { border-bottom:none; }
+.menu-row:hover { background:#FAFAFA; }
+.menu-icon { width:34px; height:34px; border-radius:9px; background:var(--primary-pale); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.menu-icon svg { width:18px; height:18px; stroke:var(--primary); stroke-width:2; fill:none; }
+.menu-icon.green-ic { background:var(--green-light); }
+.menu-icon.green-ic svg { stroke:var(--green); }
+.menu-icon.gold-ic { background:var(--gold-light); }
+.menu-icon.gold-ic svg { stroke:#B8860B; }
+.menu-icon.grey-ic { background:#F5F5F5; }
+.menu-icon.grey-ic svg { stroke:#616161; }
+.menu-icon.admin-ic { background:var(--admin-bg); }
+.menu-icon.admin-ic svg { stroke:var(--admin); }
+.menu-text { flex:1; }
+.menu-title { font-size:14px; font-weight:600; color:var(--text); }
+.menu-subtitle { font-size:12px; color:var(--text2); margin-top:1px; }
+.menu-chevron svg { width:16px; height:16px; stroke:#BBBBBB; stroke-width:2.5; fill:none; }
+
+/* Toggle */
+.toggle { width:42px; height:24px; border-radius:12px; background:#CCC; position:relative; cursor:pointer; flex-shrink:0; }
+.toggle.on { background:var(--primary); }
+.toggle::after { content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%; background:white; transition:transform 0.2s; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+.toggle.on::after { transform:translateX(18px); }
+
+/* Admin badge */
+.admin-badge { display:inline-block; font-size:9px; font-weight:800; background:var(--admin-bg); color:var(--admin); padding:2px 6px; border-radius:4px; letter-spacing:0.5px; margin-left:6px; vertical-align:middle; }
+
+/* Admin section */
+.admin-section { background:var(--admin-bg); border:1.5px solid var(--admin-border); border-radius:14px; margin-bottom:10px; overflow:hidden; }
+.admin-section-header { padding:11px 14px; display:flex; align-items:center; gap:8px; border-bottom:1px solid var(--admin-border); }
+.admin-section-header svg { width:18px; height:18px; stroke:var(--admin); stroke-width:2; fill:none; }
+.admin-section-title { font-size:13px; font-weight:700; color:var(--admin); }
+.admin-row { display:flex; align-items:center; gap:12px; padding:12px 14px; border-bottom:1px solid rgba(159,168,218,0.4); cursor:pointer; }
+.admin-row:last-child { border-bottom:none; }
+.admin-row:hover { background:rgba(159,168,218,0.15); }
+.admin-row-icon { width:32px; height:32px; border-radius:8px; background:rgba(26,35,126,0.1); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.admin-row-icon svg { width:17px; height:17px; stroke:var(--admin); stroke-width:2; fill:none; }
+.admin-row-text { flex:1; }
+.admin-row-title { font-size:13px; font-weight:600; color:var(--admin); }
+.admin-row-sub { font-size:11px; color:#5C6BC0; margin-top:1px; }
+.admin-chev svg { width:16px; height:16px; stroke:#9FA8DA; stroke-width:2.5; fill:none; }
+
+/* Logout */
+.logout-btn { display:flex; align-items:center; justify-content:center; gap:8px; padding:13px; border-radius:14px; background:var(--card); border:1.5px solid #FFCDD2; color:#C62828; font-size:14px; font-weight:700; cursor:pointer; margin-bottom:14px; }
+.logout-btn svg { width:18px; height:18px; stroke:#C62828; stroke-width:2; fill:none; }
+
+/* Operator panel */
+.op-header { background:var(--admin); padding:14px 18px; display:flex; align-items:center; gap:10px; }
+.op-header-title { font-size:16px; font-weight:700; color:white; flex:1; }
+.op-header-badge { background:rgba(255,255,255,0.2); color:white; font-size:10px; font-weight:700; padding:3px 10px; border-radius:10px; }
+.op-body { padding:12px 14px 0; background:#F0F2FF; flex:1; overflow-y:auto; max-height:620px; }
+.stats-bar { display:flex; gap:8px; margin-bottom:10px; }
+.stat-card { flex:1; background:white; border-radius:12px; padding:11px 8px; border:1px solid var(--admin-border); text-align:center; }
+.stat-num { font-size:22px; font-weight:800; }
+.stat-num.blue { color:var(--admin); }
+.stat-num.orange { color:var(--warn); }
+.stat-num.green { color:var(--green); }
+.stat-label { font-size:11px; color:var(--text2); margin-top:2px; }
+.op-card { background:var(--card); border-radius:14px; border:1px solid var(--border); margin-bottom:10px; overflow:hidden; }
+.op-card-header { padding:10px 14px; background:#F8F9FF; border-bottom:1px solid var(--border); }
+.op-card-title { font-size:13px; font-weight:700; color:var(--admin); }
+.op-order-row { display:flex; align-items:center; gap:10px; padding:11px 14px; border-bottom:1px solid var(--border); }
+.op-order-row:last-child { border-bottom:none; }
+.op-order-num { font-size:13px; font-weight:700; color:var(--text); }
+.op-order-name { font-size:12px; color:var(--text2); }
+.op-status { font-size:11px; font-weight:700; padding:3px 8px; border-radius:6px; white-space:nowrap; }
+.op-status.new { background:#E3F2FD; color:#1565C0; }
+.op-status.ready { background:var(--green-light); color:var(--green); }
+.op-status.out { background:var(--warn-bg); color:var(--warn); }
+.op-exit { display:flex; align-items:center; justify-content:center; gap:8px; padding:12px; border-radius:14px; background:white; border:1.5px solid var(--admin-border); color:var(--admin); font-size:14px; font-weight:700; cursor:pointer; margin-bottom:14px; }
+.op-exit svg { width:17px; height:17px; stroke:var(--admin); stroke-width:2; fill:none; }
+
+/* Notes */
+.note-box { background:var(--card); border-radius:14px; border:1px solid var(--border); padding:18px 20px; max-width:360px; }
+.note-box h3 { font-size:15px; font-weight:700; margin-bottom:10px; color:var(--primary); }
+.note-box ul { list-style:none; }
+.note-box li { font-size:13px; color:var(--text); padding:5px 0; border-bottom:1px solid var(--border); display:flex; gap:8px; align-items:flex-start; }
+.note-box li:last-child { border-bottom:none; }
+.note-box .dot { color:var(--primary); font-weight:700; flex-shrink:0; }
+.tag { display:inline-block; font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px; margin-left:4px; white-space:nowrap; }
+.tag.new { background:#E3F2FD; color:#1565C0; }
+.tag.keep { background:#E8F5E9; color:#2E7D32; }
+.tag.remove { background:#FFEBEE; color:#C62828; }
+.tag.admin { background:var(--admin-bg); color:var(--admin); }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">&#8592; Vissza a gal&eacute;ri&aacute;ba</a>
+
+<div class="header">
+  <h1>Profile page redesign + Admin panel</h1>
+  <p>Fi&oacute;k oldal meg&uacute;j&iacute;t&aacute;sa &mdash; strukt&uacute;r&aacute;lt men&uuml;, admin panel navig&aacute;ci&oacute;, oper&aacute;tor m&oacute;d</p>
+  <div class="header-meta">
+    <span class="badge-ticket">DH-147</span>
+    <span class="badge-sprint">Sprint 4</span>
+    &nbsp;&middot;&nbsp; v0.4 &middot; 2026-04-17
+  </div>
+</div>
+
+<div class="tabs-nav">
+  <button class="tab-btn active" onclick="showTab('t1',this)">1 &middot; Jelenlegi &aacute;llapot</button>
+  <button class="tab-btn" onclick="showTab('t2',this)">2 &middot; Redesign (user)</button>
+  <button class="tab-btn" onclick="showTab('t3',this)">3 &middot; Redesign (admin)</button>
+  <button class="tab-btn" onclick="showTab('t4',this)">4 &middot; Oper&aacute;tor panel</button>
+  <button class="tab-btn" onclick="showTab('t5',this)">5 &middot; Acceptance Criteria</button>
+</div>
+
+<!-- TAB 1 -->
+<div id="t1" class="tab-panel active">
+<div class="content"><div class="flow-wrap">
+
+<div class="phone">
+  <div class="phone-header"><span class="brand">De&aacute;k H&uacute;sm&iacute;ves</span></div>
+  <div class="phone-body">
+
+    <div style="background:var(--card);border-radius:14px;border:1px solid var(--border);padding:16px;margin-bottom:10px;">
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">Teljes n&eacute;v</div>
+      <div style="font-size:15px;font-weight:700;">Becze Szabolcs</div>
+      <div style="height:1px;background:var(--border);margin:10px 0;"></div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">Telefonsz&aacute;m</div>
+      <div style="font-size:15px;font-weight:600;">0740 507 135</div>
+      <div style="height:1px;background:var(--border);margin:10px 0;"></div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:4px;">Sz&aacute;ll&iacute;t&aacute;si c&iacute;m</div>
+      <div style="font-size:15px;font-weight:600;">Morii, 20/1</div>
+      <button style="width:100%;margin-top:14px;padding:11px;border-radius:10px;background:var(--primary);color:white;font-size:14px;font-weight:700;border:none;">Szerkeszt&eacute;s</button>
+    </div>
+
+    <div style="background:var(--card);border-radius:14px;border:1px solid var(--border);padding:14px 16px;margin-bottom:10px;display:flex;align-items:flex-start;gap:12px;">
+      <div style="flex:1;">
+        <div style="font-size:14px;font-weight:600;">Term&eacute;k analitika</div>
+        <div style="font-size:12px;color:var(--text2);margin-top:3px;">Term&eacute;khaszn&aacute;lati &eacute;s rendel&eacute;si &eacute;letciklus esem&eacute;nyek megoszt&aacute;sa k&ouml;zvetlen szem&eacute;lyes adatok n&eacute;lk&uuml;l.</div>
+      </div>
+      <div class="toggle on"></div>
+    </div>
+
+    <div style="background:var(--card);border:1.5px solid var(--admin-border);border-radius:14px;padding:14px 16px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:6px;margin-bottom:8px;">
+        <span style="font-size:10px;font-weight:800;background:var(--admin-bg);color:var(--admin);padding:2px 8px;border-radius:4px;">ADMIN</span>
+        <span style="font-size:14px;font-weight:700;">Oper&aacute;tor hozz&aacute;f&eacute;r&eacute;s</span>
+      </div>
+      <div style="font-size:12px;color:var(--text2);margin-bottom:10px;">V&aacute;lt&aacute;s az el&#337;k&eacute;sz&iacute;t&eacute;si &eacute;s kiszaacute;ll&iacute;t&aacute;si panelre.</div>
+      <button style="width:100%;padding:11px;border-radius:10px;background:#7B2340;color:white;font-size:14px;font-weight:700;border:none;">&#8645; V&aacute;lt&aacute;s oper&aacute;tor m&oacute;dba</button>
+    </div>
+
+    <div style="padding:6px 0 16px;">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 2px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+        <span style="font-size:13px;color:var(--text2);flex:1;">Alkalmaz&aacute;s verzi&oacute;</span>
+        <span style="font-size:13px;font-weight:600;color:var(--text2);">v0.1.42-s+124</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 2px;">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+        <span style="font-size:13px;color:var(--text2);flex:1;">Kapcsolat</span>
+        <span style="font-size:13px;color:var(--primary);font-weight:600;">contact@exar.ro &#8599;</span>
+      </div>
+    </div>
+  </div>
+  <div class="tab-bar">
+    <div class="tab-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Term&eacute;kek</div>
+    <div class="tab-item"><div class="tab-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg><span class="tab-badge">2</span></div>Kos&aacute;r</div>
+    <div class="tab-item"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Rendel&eacute;sek</div>
+    <div class="tab-item active"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fi&oacute;k</div>
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>Jelenlegi &aacute;llapot &mdash; probl&eacute;m&aacute;k</h3>
+  <ul>
+    <li><span class="dot">&rarr;</span> Profil adatok: egy nagy lapos k&aacute;rtya, nincsenek szekci&oacute;k</li>
+    <li><span class="dot">&rarr;</span> Admin szekci&oacute;: csak egy gomb, nem navig&aacute;lhat&oacute;</li>
+    <li><span class="dot">&rarr;</span> Nincs Jogi inform&aacute;ci&oacute;k bel&eacute;p&eacute;si pont (DH-131 k&eacute;sz, de hidd nincs)</li>
+    <li><span class="dot">&rarr;</span> Nincs Kedvencek bel&eacute;p&eacute;si pont (Sprint 5)</li>
+    <li><span class="dot">&rarr;</span> Nincs Kijelentkezés gomb &mdash; rejtett UX</li>
+    <li><span class="dot">&rarr;</span> Verzi&oacute; + kapcsolat: strukturálatlan</li>
+  </ul>
+</div>
+
+</div></div></div>
+
+<!-- TAB 2 -->
+<div id="t2" class="tab-panel">
+<div class="content"><div class="flow-wrap">
+
+<div class="phone">
+  <div class="phone-header"><span class="brand">De&aacute;k H&uacute;sm&iacute;ves</span></div>
+  <div class="phone-body">
+
+    <div class="profile-hero">
+      <div class="avatar">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name">Becze Szabolcs</div>
+        <div class="profile-sub">0740 507 135</div>
+        <div class="profile-sub">Morii, 20/1</div>
+      </div>
+      <button class="edit-btn">Szerkeszt&eacute;s</button>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">V&aacute;s&aacute;rl&aacute;s</div>
+      <div class="menu-card">
+        <div class="menu-row">
+          <div class="menu-icon gold-ic">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="menu-text">
+            <div class="menu-title">Kedvenceim</div>
+            <div class="menu-subtitle">Csillag&oacute;zott term&eacute;kek &mdash; Sprint 5</div>
+          </div>
+          <div class="menu-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">Be&aacute;ll&iacute;t&aacute;sok</div>
+      <div class="menu-card">
+        <div class="menu-row">
+          <div class="menu-icon green-ic">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+          </div>
+          <div class="menu-text">
+            <div class="menu-title">Term&eacute;k analitika</div>
+            <div class="menu-subtitle">N&eacute;vtelen haszn&aacute;lati adatok megoszt&aacute;sa</div>
+          </div>
+          <div class="toggle on"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">Jogi &amp; Inform&aacute;ci&oacute;k</div>
+      <div class="menu-card">
+        <div class="menu-row">
+          <div class="menu-icon">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="menu-text">
+            <div class="menu-title">Jogi inform&aacute;ci&oacute;k</div>
+            <div class="menu-subtitle">&Aacute;SZF &middot; Adatv&eacute;delem &middot; Cookie</div>
+          </div>
+          <div class="menu-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-icon grey-ic">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+          </div>
+          <div class="menu-text">
+            <div class="menu-title">Alkalmaz&aacute;s verzi&oacute;</div>
+            <div class="menu-subtitle">v0.4.0</div>
+          </div>
+        </div>
+        <div class="menu-row">
+          <div class="menu-icon grey-ic">
+            <svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+          </div>
+          <div class="menu-text">
+            <div class="menu-title">Kapcsolat</div>
+            <div class="menu-subtitle">contact@exar.ro</div>
+          </div>
+          <div class="menu-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="logout-btn">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Kijelentkezés
+    </div>
+
+  </div>
+  <div class="tab-bar">
+    <div class="tab-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Term&eacute;kek</div>
+    <div class="tab-item"><div class="tab-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div>Kos&aacute;r</div>
+    <div class="tab-item"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Rendel&eacute;sek</div>
+    <div class="tab-item active"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fi&oacute;k</div>
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>User n&eacute;zet &mdash; v&aacute;ltoz&aacute;sok</h3>
+  <ul>
+    <li><span class="dot">+</span> Avatar + kompakt hero card <span class="tag new">&Uacute;J</span></li>
+    <li><span class="dot">+</span> Kedvenceim men&uuml;pont (Sprint 5 placeholder) <span class="tag new">&Uacute;J</span></li>
+    <li><span class="dot">+</span> Szekci&oacute;k: V&aacute;s&aacute;rl&aacute;s / Be&aacute;ll&iacute;t&aacute;sok / Jogi <span class="tag new">&Uacute;J</span></li>
+    <li><span class="dot">+</span> Jogi inform&aacute;ci&oacute;k navig&aacute;lhat&oacute; sor (DH-131) <span class="tag new">&Uacute;J</span></li>
+    <li><span class="dot">+</span> Kijelentkezés gomb explicit <span class="tag new">&Uacute;J</span></li>
+    <li><span class="dot">&asymp;</span> Analitika toggle: menu row form&aacute;tumban <span class="tag keep">MEGTART</span></li>
+    <li><span class="dot">&asymp;</span> Verzi&oacute; + kapcsolat: info szekci&oacute;ban <span class="tag keep">MEGTART</span></li>
+    <li><span class="dot">&minus;</span> Admin szekci&oacute; user n&eacute;zetben NEM l&aacute;that&oacute; <span class="tag remove">ELT&Aacute;V.</span></li>
+  </ul>
+</div>
+
+</div></div></div>
+
+<!-- TAB 3 -->
+<div id="t3" class="tab-panel">
+<div class="content"><div class="flow-wrap">
+
+<div class="phone">
+  <div class="phone-header"><span class="brand">De&aacute;k H&uacute;sm&iacute;ves</span></div>
+  <div class="phone-body">
+
+    <div class="profile-hero">
+      <div class="avatar admin-av">
+        <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </div>
+      <div class="profile-info">
+        <div class="profile-name">Becze Szabolcs <span class="admin-badge">ADMIN</span></div>
+        <div class="profile-sub">0740 507 135</div>
+        <div class="profile-sub">Morii, 20/1</div>
+      </div>
+      <button class="edit-btn">Szerkeszt&eacute;s</button>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-header">
+        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <span class="admin-section-title">Admin panel</span>
+      </div>
+      <div class="admin-row">
+        <div class="admin-row-icon"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg></div>
+        <div class="admin-row-text"><div class="admin-row-title">Rendel&eacute;sek kezel&eacute;se</div><div class="admin-row-sub">3 &uacute;j &middot; 1 kiszaacute;ll&iacute;t&aacute;s alatt</div></div>
+        <div class="admin-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-row-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+        <div class="admin-row-text"><div class="admin-row-title">Term&eacute;kek</div><div class="admin-row-sub">37 term&eacute;k &middot; k&eacute;szletkezel&eacute;s</div></div>
+        <div class="admin-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-row-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+        <div class="admin-row-text"><div class="admin-row-title">Analitika</div><div class="admin-row-sub">Firebase dashboard</div></div>
+        <div class="admin-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="admin-row">
+        <div class="admin-row-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="admin-row-text"><div class="admin-row-title">Felhaszn&aacute;l&oacute;k</div><div class="admin-row-sub">Regisztr&aacute;lt v&aacute;s&aacute;rl&oacute;k</div></div>
+        <div class="admin-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="admin-row" style="background:rgba(26,35,126,0.06);">
+        <div class="admin-row-icon"><svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>
+        <div class="admin-row-text"><div class="admin-row-title">V&aacute;lt&aacute;s oper&aacute;tor m&oacute;dba</div><div class="admin-row-sub">Kiszaacute;ll&iacute;t&aacute;si &amp; el&#337;k&eacute;sz&iacute;t&eacute;si n&eacute;zet</div></div>
+        <div class="admin-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">Be&aacute;ll&iacute;t&aacute;sok</div>
+      <div class="menu-card">
+        <div class="menu-row">
+          <div class="menu-icon green-ic"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <div class="menu-text"><div class="menu-title">Term&eacute;k analitika</div><div class="menu-subtitle">N&eacute;vtelen haszn&aacute;lati adatok</div></div>
+          <div class="toggle on"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-group">
+      <div class="section-label">Jogi &amp; Inform&aacute;ci&oacute;k</div>
+      <div class="menu-card">
+        <div class="menu-row">
+          <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+          <div class="menu-text"><div class="menu-title">Jogi inform&aacute;ci&oacute;k</div><div class="menu-subtitle">&Aacute;SZF &middot; Adatv&eacute;delem</div></div>
+          <div class="menu-chevron"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="logout-btn">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Kijelentkezés
+    </div>
+
+  </div>
+  <div class="tab-bar">
+    <div class="tab-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Term&eacute;kek</div>
+    <div class="tab-item"><div class="tab-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div>Kos&aacute;r</div>
+    <div class="tab-item"><svg viewBox="0 0 24 24"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>Rendel&eacute;sek</div>
+    <div class="tab-item active"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fi&oacute;k</div>
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>Admin n&eacute;zet &mdash; k&uuml;l&ouml;nbs&eacute;gek</h3>
+  <ul>
+    <li><span class="dot">+</span> Avatar h&aacute;tt&eacute;r k&eacute;k &mdash; vizuális admin jelz&eacute;s <span class="tag admin">ADMIN</span></li>
+    <li><span class="dot">+</span> ADMIN badge a n&eacute;v mellett <span class="tag admin">ADMIN</span></li>
+    <li><span class="dot">+</span> Admin panel szekci&oacute;: 5 navig&aacute;lhat&oacute; sor <span class="tag admin">ADMIN</span></li>
+    <li><span class="dot">+</span> Rendel&eacute;sek / Term&eacute;kek / Analitika / Felhaszn&aacute;l&oacute;k / Op. m&oacute;d <span class="tag admin">ADMIN</span></li>
+    <li><span class="dot">&asymp;</span> User szekci&oacute;k megmaradnak alul <span class="tag keep">MEGTART</span></li>
+  </ul>
+</div>
+
+</div></div></div>
+
+<!-- TAB 4 -->
+<div id="t4" class="tab-panel">
+<div class="content"><div class="flow-wrap">
+
+<div class="phone" style="background:#F0F2FF;">
+  <div class="op-header">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    <span class="op-header-title">Oper&aacute;tor panel</span>
+    <span class="op-header-badge">ADMIN M&Oacute;D</span>
+  </div>
+  <div class="op-body">
+
+    <div class="stats-bar" style="margin-top:4px;">
+      <div class="stat-card"><div class="stat-num blue">3</div><div class="stat-label">&Uacute;j rendel&eacute;s</div></div>
+      <div class="stat-card"><div class="stat-num orange">1</div><div class="stat-label">Kiszaacute;ll&iacute;t&aacute;s</div></div>
+      <div class="stat-card"><div class="stat-num green">12</div><div class="stat-label">Ma k&eacute;sz</div></div>
+    </div>
+
+    <div class="op-card">
+      <div class="op-card-header"><div class="op-card-title">Mai rendel&eacute;sek</div></div>
+      <div class="op-order-row">
+        <div style="flex:1;"><div class="op-order-num">DH-0042</div><div class="op-order-name">Kov&aacute;cs &Eacute;va &middot; 14:00</div></div>
+        <span class="op-status new">&Uacute;j</span>
+      </div>
+      <div class="op-order-row">
+        <div style="flex:1;"><div class="op-order-num">DH-0041</div><div class="op-order-name">Nagy P&eacute;ter &middot; 13:30</div></div>
+        <span class="op-status new">&Uacute;j</span>
+      </div>
+      <div class="op-order-row">
+        <div style="flex:1;"><div class="op-order-num">DH-0040</div><div class="op-order-name">Moln&aacute;r &Aacute;gnes &middot; 12:45</div></div>
+        <span class="op-status out">Kiszaacute;ll&iacute;t&aacute;s</span>
+      </div>
+      <div class="op-order-row">
+        <div style="flex:1;"><div class="op-order-num">DH-0039</div><div class="op-order-name">Szab&oacute; G&aacute;bor &middot; 11:00</div></div>
+        <span class="op-status ready">K&eacute;sz</span>
+      </div>
+      <div class="op-order-row">
+        <div style="flex:1;"><div class="op-order-num">DH-0038</div><div class="op-order-name">Kiss M&aacute;ria &middot; 10:15</div></div>
+        <span class="op-status ready">K&eacute;sz</span>
+      </div>
+    </div>
+
+    <div class="op-card">
+      <div class="op-card-header"><div class="op-card-title">Gyors m&#369;veletek</div></div>
+      <div class="admin-row" style="background:white;">
+        <div class="admin-row-icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
+        <div class="admin-row-text"><div class="admin-row-title">Term&eacute;k k&eacute;szlet m&oacute;dos&iacute;t&aacute;s</div><div class="admin-row-sub">37 term&eacute;k el&eacute;rhet&#337;</div></div>
+        <div class="admin-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+      <div class="admin-row" style="background:white;">
+        <div class="admin-row-icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="admin-row-text"><div class="admin-row-title">Felhaszn&aacute;l&oacute;k</div><div class="admin-row-sub">Regisztr&aacute;lt v&aacute;s&aacute;rl&oacute;k list&aacute;ja</div></div>
+        <div class="admin-chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div>
+      </div>
+    </div>
+
+    <div class="op-exit">
+      <svg viewBox="0 0 24 24"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>
+      Vissza a Fi&oacute;k n&eacute;zetbe
+    </div>
+
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>Oper&aacute;tor panel &mdash; tervez&eacute;si elvek</h3>
+  <ul>
+    <li><span class="dot">&rarr;</span> S&ouml;t&eacute;tk&eacute;k fejl&eacute;c jelzi az admin m&oacute;dot, nincs bottom nav</li>
+    <li><span class="dot">&rarr;</span> Stats bar: &Uacute;j / Kiszaacute;ll&iacute;t&aacute;s / K&eacute;sz sz&aacute;ml&aacute;l&oacute;k</li>
+    <li><span class="dot">&rarr;</span> Rendel&eacute;slista: DH-XXXX + n&eacute;v + id&#337;pont + st&aacute;tusz</li>
+    <li><span class="dot">&rarr;</span> Rendel&eacute;ssz&aacute;m: DH-XXXX (DH-139 val&oacute;s&iacute;tja meg)</li>
+    <li><span class="dot">&rarr;</span> Gyors m&#369;veletek: k&eacute;szletm&oacute;dos&iacute;t&aacute;s, felhaszn&aacute;l&oacute;k</li>
+    <li><span class="dot">&rarr;</span> Vissza gomb &mdash; egyértelm&#369; kil&eacute;p&eacute;s</li>
+  </ul>
+</div>
+
+</div></div></div>
+
+<!-- TAB 5 -->
+<div id="t5" class="tab-panel">
+<div class="content"><div class="flow-wrap">
+  <div class="note-box" style="max-width:460px;">
+    <h3>Acceptance Criteria &mdash; DH-147</h3>
+    <ul>
+      <li><span class="dot">&#9744;</span> Avatar + hero card: n&eacute;v, telefon, c&iacute;m, szerkeszt&eacute;s gomb</li>
+      <li><span class="dot">&#9744;</span> Kedvenceim men&uuml;pont l&aacute;that&oacute; (Sprint 5 route placeholder)</li>
+      <li><span class="dot">&#9744;</span> Analitika toggle menu row form&aacute;tumban</li>
+      <li><span class="dot">&#9744;</span> Jogi inform&aacute;ci&oacute;k &rarr; DH-131 screen (ÁSZF / Adatv&eacute;delem / Cookie)</li>
+      <li><span class="dot">&#9744;</span> Verzi&oacute; + kapcsolat info szekci&oacute;ban</li>
+      <li><span class="dot">&#9744;</span> Kijelentkezés gomb l&aacute;that&oacute; &eacute;s m&#369;k&ouml;dik</li>
+      <li><span class="dot">&#9744;</span> Admin n&eacute;zetben: ADMIN badge az avataron + admin panel szekci&oacute;</li>
+      <li><span class="dot">&#9744;</span> Admin panel: Rendel&eacute;sek / Term&eacute;kek / Analitika / Felhaszn&aacute;l&oacute;k / Op. m&oacute;d</li>
+      <li><span class="dot">&#9744;</span> Oper&aacute;tor m&oacute;d: stats bar + rendel&eacute;slista + gyors m&#369;veletek</li>
+      <li><span class="dot">&#9744;</span> &bdquo;Vissza a Fi&oacute;k n&eacute;zetbe&rdquo; kil&eacute;p op. m&oacute;db&oacute;l</li>
+      <li><span class="dot">&#9744;</span> User n&eacute;zetben admin panel szekci&oacute; NEM jelenik meg</li>
+    </ul>
+  </div>
+  <div class="note-box" style="max-width:320px;">
+    <h3>F&uuml;gg&#337;s&eacute;gek</h3>
+    <ul>
+      <li><span class="dot">&rarr;</span> DH-131 Jogi info screen (Sprint 3, k&eacute;sz wireframe)</li>
+      <li><span class="dot">&rarr;</span> DH-139 Rendel&eacute;ssz&aacute;m egyszer&#369;s&iacute;t&eacute;s (DH-XXXX form&aacute;tum)</li>
+      <li><span class="dot">&rarr;</span> DH-146 Kedvencek (Sprint 5 &mdash; placeholder link)</li>
+      <li><span class="dot">&rarr;</span> Admin role-check: Frappe backend <code>is_admin</code> flag</li>
+    </ul>
+  </div>
+</div></div></div>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

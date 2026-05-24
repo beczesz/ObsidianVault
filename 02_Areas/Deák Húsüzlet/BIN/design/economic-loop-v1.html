@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DHOP Economic Loop v1 — 6 lépéses rendszer</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d27;
+    --border: #2a2d3a;
+    --accent: #22c55e;
+    --accent-dim: rgba(34,197,94,.15);
+    --warn: #f59e0b;
+    --warn-dim: rgba(245,158,11,.12);
+    --danger: #ef4444;
+    --danger-dim: rgba(239,68,68,.12);
+    --text: #e2e8f0;
+    --text-dim: #94a3b8;
+    --blue: #3b82f6;
+    --blue-dim: rgba(59,130,246,.12);
+    --purple: #a78bfa;
+    --purple-dim: rgba(167,139,250,.12);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text); font-family: 'Inter', -apple-system, system-ui, sans-serif; min-height: 100vh; padding: 2rem 1rem; }
+
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  header { text-align: center; margin-bottom: 2.5rem; }
+  header h1 { font-size: 1.6rem; font-weight: 700; letter-spacing: -0.02em; }
+  header h1 span { color: var(--accent); }
+  header p { color: var(--text-dim); font-size: .85rem; margin-top: .4rem; }
+
+  /* — LOOP DIAGRAM — */
+  .loop-wrap { position: relative; display: flex; justify-content: center; margin-bottom: 2.5rem; }
+  .loop-svg { width: 100%; max-width: 720px; }
+
+  /* — STEP CARDS — */
+  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem; }
+  @media (max-width: 800px) { .steps { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
+
+  .step-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.2rem; cursor: pointer; transition: all .2s;
+    position: relative; overflow: hidden;
+  }
+  .step-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--accent); opacity: .5; transition: opacity .2s;
+  }
+  .step-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .step-card:hover::before { opacity: 1; }
+  .step-card.active { border-color: var(--accent); box-shadow: 0 0 20px var(--accent-dim); }
+  .step-card.active::before { opacity: 1; }
+
+  .step-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-dim); color: var(--accent); font-weight: 700; font-size: .8rem; margin-bottom: .6rem; }
+  .step-title { font-weight: 600; font-size: .95rem; margin-bottom: .35rem; }
+  .step-desc { color: var(--text-dim); font-size: .78rem; line-height: 1.5; }
+
+  /* — DETAIL PANEL — */
+  .detail-panel {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 1.5rem; margin-bottom: 2rem; display: none;
+  }
+  .detail-panel.visible { display: block; animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .detail-panel h3 { font-size: 1rem; font-weight: 600; margin-bottom: 1rem; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+  @media (max-width: 600px) { .detail-grid { grid-template-columns: 1fr; } }
+
+  .detail-box { background: var(--bg); border-radius: 8px; padding: 1rem; }
+  .detail-box h4 { font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--text-dim); margin-bottom: .5rem; }
+  .detail-box ul { list-style: none; }
+  .detail-box li { font-size: .82rem; line-height: 1.6; padding-left: 1rem; position: relative; }
+  .detail-box li::before { content: '→'; position: absolute; left: 0; color: var(--accent); }
+  .detail-box.kpi li::before { content: '◈'; color: var(--blue); }
+  .detail-box.risk li::before { content: '⚠'; color: var(--warn); }
+
+  /* — SPRINT MAP — */
+  .sprint-section { margin-bottom: 2rem; }
+  .sprint-section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; text-align: center; }
+  .sprint-timeline { display: flex; gap: .75rem; overflow-x: auto; padding-bottom: .5rem; }
+  .sprint-item {
+    flex: 0 0 auto; min-width: 200px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1rem; position: relative;
+  }
+  .sprint-item .sprint-label {
+    font-size: .7rem; text-transform: uppercase; letter-spacing: .05em;
+    color: var(--accent); font-weight: 600; margin-bottom: .4rem;
+  }
+  .sprint-item .sprint-name { font-size: .88rem; font-weight: 600; margin-bottom: .5rem; }
+  .sprint-item .sprint-steps { display: flex; gap: .3rem; flex-wrap: wrap; }
+  .sprint-item .sprint-steps span {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; border-radius: 50%; font-size: .7rem; font-weight: 700;
+    background: var(--accent-dim); color: var(--accent);
+  }
+
+  /* — BREAKPOINTS — */
+  .break-section { margin-bottom: 2rem; }
+  .break-section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; text-align: center; }
+  .break-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: .75rem; }
+  .break-card {
+    background: var(--danger-dim); border: 1px solid rgba(239,68,68,.25);
+    border-radius: 10px; padding: 1rem;
+  }
+  .break-card .break-icon { font-size: 1.2rem; margin-bottom: .4rem; }
+  .break-card .break-title { font-size: .85rem; font-weight: 600; margin-bottom: .3rem; color: #fca5a5; }
+  .break-card .break-desc { font-size: .78rem; color: var(--text-dim); line-height: 1.5; }
+
+  /* — RETENTION STACK — */
+  .retention-section { margin-bottom: 2rem; }
+  .retention-section h2 { font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem; text-align: center; }
+  .retention-layers { display: flex; flex-direction: column; gap: .6rem; max-width: 600px; margin: 0 auto; }
+  .ret-layer {
+    border-radius: 10px; padding: 1rem 1.2rem; display: flex; align-items: center; gap: 1rem;
+  }
+  .ret-layer.l1 { background: var(--accent-dim); border: 1px solid rgba(34,197,94,.3); }
+  .ret-layer.l2 { background: var(--blue-dim); border: 1px solid rgba(59,130,246,.3); }
+  .ret-layer.l3 { background: var(--purple-dim); border: 1px solid rgba(167,139,250,.3); }
+  .ret-badge { font-size: .65rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; padding: .25rem .6rem; border-radius: 4px; white-space: nowrap; }
+  .l1 .ret-badge { background: var(--accent); color: #000; }
+  .l2 .ret-badge { background: var(--blue); color: #fff; }
+  .l3 .ret-badge { background: var(--purple); color: #000; }
+  .ret-content { flex: 1; }
+  .ret-content .ret-title { font-size: .88rem; font-weight: 600; }
+  .ret-content .ret-msg { font-size: .78rem; color: var(--text-dim); margin-top: .15rem; }
+
+  /* — KEY INSIGHT — */
+  .insight-box {
+    background: var(--warn-dim); border: 1px solid rgba(245,158,11,.25);
+    border-radius: 12px; padding: 1.2rem 1.5rem; text-align: center; margin-bottom: 1rem;
+  }
+  .insight-box p { font-size: .88rem; line-height: 1.6; }
+  .insight-box strong { color: var(--warn); }
+
+  footer { text-align: center; color: var(--text-dim); font-size: .7rem; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <h1>DHOP <span>Economic Loop</span> v1</h1>
+    <p>A 6 lépéses értékteremtő hurok — kattints a lépésekre a részletekért</p>
+  </header>
+
+  <!-- SVG LOOP DIAGRAM -->
+  <div class="loop-wrap">
+    <svg class="loop-svg" viewBox="0 0 720 400" xmlns="http://www.w3.org/2000/svg">
+      <!-- Circular arrow path -->
+      <defs>
+        <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+          <path d="M0,0 L8,4 L0,8 Z" fill="#22c55e" opacity=".6"/>
+        </marker>
+      </defs>
+
+      <!-- Hexagonal loop path -->
+      <path d="M 360,40 L 580,120 L 580,280 L 360,360 L 140,280 L 140,120 Z"
+            fill="none" stroke="#22c55e" stroke-width="2" stroke-dasharray="8,4" opacity=".3"/>
+
+      <!-- Flow arrows on edges -->
+      <line x1="360" y1="40" x2="575" y2="118" stroke="#22c55e" stroke-width="1.5" opacity=".4" marker-end="url(#arrowG)"/>
+      <line x1="580" y1="125" x2="580" y2="275" stroke="#22c55e" stroke-width="1.5" opacity=".4" marker-end="url(#arrowG)"/>
+      <line x1="577" y1="282" x2="365" y2="358" stroke="#22c55e" stroke-width="1.5" opacity=".4" marker-end="url(#arrowG)"/>
+      <line x1="355" y1="358" x2="145" y2="282" stroke="#22c55e" stroke-width="1.5" opacity=".4" marker-end="url(#arrowG)"/>
+      <line x1="140" y1="275" x2="140" y2="125" stroke="#22c55e" stroke-width="1.5" opacity=".4" marker-end="url(#arrowG)"/>
+      <line x1="143" y1="118" x2="355" y2="42" stroke="#22c55e" stroke-width="1.5" opacity=".4" marker-end="url(#arrowG)"/>
+
+      <!-- Step nodes -->
+      <!-- S1: User Behavior (top) -->
+      <circle cx="360" cy="40" r="30" fill="#1a1d27" stroke="#22c55e" stroke-width="2"/>
+      <text x="360" y="36" text-anchor="middle" fill="#22c55e" font-size="14" font-weight="700">1</text>
+      <text x="360" y="50" text-anchor="middle" fill="#e2e8f0" font-size="8">BEHAVIOR</text>
+      <text x="360" y="85" text-anchor="middle" fill="#94a3b8" font-size="10">User Behavior</text>
+
+      <!-- S2: System Efficiency (top right) -->
+      <circle cx="580" cy="120" r="30" fill="#1a1d27" stroke="#f59e0b" stroke-width="2"/>
+      <text x="580" y="116" text-anchor="middle" fill="#f59e0b" font-size="14" font-weight="700">2</text>
+      <text x="580" y="130" text-anchor="middle" fill="#e2e8f0" font-size="8">EFFICIENCY</text>
+      <text x="580" y="165" text-anchor="middle" fill="#94a3b8" font-size="10">System Efficiency</text>
+      <text x="580" y="178" text-anchor="middle" fill="#ef4444" font-size="8" font-weight="600">⚠ WEAKEST POINT</text>
+
+      <!-- S3: Savings Generation (bottom right) -->
+      <circle cx="580" cy="280" r="30" fill="#1a1d27" stroke="#f59e0b" stroke-width="2"/>
+      <text x="580" y="276" text-anchor="middle" fill="#f59e0b" font-size="14" font-weight="700">3</text>
+      <text x="580" y="290" text-anchor="middle" fill="#e2e8f0" font-size="8">SAVINGS</text>
+      <text x="580" y="325" text-anchor="middle" fill="#94a3b8" font-size="10">Savings Generation</text>
+
+      <!-- S4: Savings Distribution (bottom) -->
+      <circle cx="360" cy="360" r="30" fill="#1a1d27" stroke="#22c55e" stroke-width="2"/>
+      <text x="360" y="356" text-anchor="middle" fill="#22c55e" font-size="14" font-weight="700">4</text>
+      <text x="360" y="370" text-anchor="middle" fill="#e2e8f0" font-size="7">DISTRIBUTION</text>
+
+      <!-- S5: Feedback (bottom left) -->
+      <circle cx="140" cy="280" r="30" fill="#1a1d27" stroke="#3b82f6" stroke-width="2"/>
+      <text x="140" y="276" text-anchor="middle" fill="#3b82f6" font-size="14" font-weight="700">5</text>
+      <text x="140" y="290" text-anchor="middle" fill="#e2e8f0" font-size="8">FEEDBACK</text>
+      <text x="140" y="325" text-anchor="middle" fill="#94a3b8" font-size="10">Feedback</text>
+
+      <!-- S6: Behavior Change (top left) -->
+      <circle cx="140" cy="120" r="30" fill="#1a1d27" stroke="#a78bfa" stroke-width="2"/>
+      <text x="140" y="116" text-anchor="middle" fill="#a78bfa" font-size="14" font-weight="700">6</text>
+      <text x="140" y="130" text-anchor="middle" fill="#e2e8f0" font-size="7">BEH. CHANGE</text>
+      <text x="140" y="165" text-anchor="middle" fill="#94a3b8" font-size="10">Behavior Change</text>
+
+      <!-- Center label -->
+      <text x="360" y="192" text-anchor="middle" fill="#22c55e" font-size="13" font-weight="700" opacity=".7">ECONOMIC</text>
+      <text x="360" y="210" text-anchor="middle" fill="#22c55e" font-size="13" font-weight="700" opacity=".7">LOOP</text>
+
+      <!-- Weak link indicator -->
+      <line x1="580" y1="155" x2="580" y2="245" stroke="#ef4444" stroke-width="2" stroke-dasharray="4,3" opacity=".5"/>
+      <text x="620" y="205" fill="#ef4444" font-size="9" opacity=".7">2→3 gap</text>
+    </svg>
+  </div>
+
+  <!-- STEP CARDS -->
+  <div class="steps" id="stepCards">
+    <div class="step-card" data-step="0" onclick="showDetail(0)">
+      <div class="step-num">1</div>
+      <div class="step-title">User Behavior</div>
+      <div class="step-desc">Nagyobb kosár, group order, reorder — a felhasználó viselkedése indítja a loop-ot</div>
+    </div>
+    <div class="step-card" data-step="1" onclick="showDetail(1)">
+      <div class="step-num" style="background:var(--warn-dim);color:var(--warn);">2</div>
+      <div class="step-title">System Efficiency ⚠</div>
+      <div class="step-desc">Jobb batching, kevesebb waste, optimalizált route — a rendszer hatékonysága nő</div>
+    </div>
+    <div class="step-card" data-step="2" onclick="showDetail(2)">
+      <div class="step-num" style="background:var(--warn-dim);color:var(--warn);">3</div>
+      <div class="step-title">Savings Generation</div>
+      <div class="step-desc">Efficiency gain → savings pool keletkezik, amit el lehet osztani</div>
+    </div>
+    <div class="step-card" data-step="3" onclick="showDetail(3)">
+      <div class="step-num">4</div>
+      <div class="step-title">Savings Distribution</div>
+      <div class="step-desc">Threshold discount, bundle pricing, recap — a user megkapja a megtakarítást</div>
+    </div>
+    <div class="step-card" data-step="4" onclick="showDetail(4)">
+      <div class="step-num" style="background:var(--blue-dim);color:var(--blue);">5</div>
+      <div class="step-title">Feedback</div>
+      <div class="step-desc">"Eddig X lejt spóroltál", "next threshold Y lejnél" — a user látja az értéket</div>
+    </div>
+    <div class="step-card" data-step="5" onclick="showDetail(5)">
+      <div class="step-num" style="background:var(--purple-dim);color:var(--purple);">6</div>
+      <div class="step-title">Behavior Change</div>
+      <div class="step-desc">User: nagyobb kosár, visszatérés, reorder → loop bezárul, újraindul</div>
+    </div>
+  </div>
+
+  <!-- DETAIL PANEL -->
+  <div class="detail-panel" id="detailPanel"></div>
+
+  <!-- KEY INSIGHT -->
+  <div class="insight-box">
+    <p><strong>A loop leggyengébb pontja: STEP 2→3.</strong><br>
+    Amíg a Deáktól nem érkeznek pénzügyi adatok (waste%, per-product margin, delivery cost),<br>
+    a savings counter "referencia ár vs app ár" marad — nem valódi rendszer-hatékonyság megosztás.</p>
+  </div>
+
+  <!-- RETENTION STACK -->
+  <div class="retention-section">
+    <h2>3-Layer Retention Stack</h2>
+    <div class="retention-layers">
+      <div class="ret-layer l1">
+        <span class="ret-badge">L1 PRIMARY</span>
+        <div class="ret-content">
+          <div class="ret-title">ECONOMIC — „megéri"</div>
+          <div class="ret-msg">savings, threshold, bundles → Economic Engine = motor</div>
+        </div>
+      </div>
+      <div class="ret-layer l2">
+        <span class="ret-badge">L2 ROUTINE</span>
+        <div class="ret-content">
+          <div class="ret-title">ROUTINE — „nem kell gondolkodni"</div>
+          <div class="ret-msg">weekly cycle, reorder defaults, memory offload → habit anchor</div>
+        </div>
+      </div>
+      <div class="ret-layer l3">
+        <span class="ret-badge">L3 TRIGGERS</span>
+        <div class="ret-content">
+          <div class="ret-title">TRIGGERS — „eszembe jut"</div>
+          <div class="ret-msg">push, icon, recap → Mobile = gyújtás + pedál</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPRINT MAPPING -->
+  <div class="sprint-section">
+    <h2>Sprint → Loop Mapping</h2>
+    <div class="sprint-timeline">
+      <div class="sprint-item">
+        <div class="sprint-label">v0.3 — Savings Engine</div>
+        <div class="sprint-name">Feedback + Behavior</div>
+        <div class="sprint-steps"><span>4</span><span>5</span><span>6</span></div>
+        <div style="font-size:.72rem;color:var(--text-dim);margin-top:.5rem;">threshold, savings counter, recap, reorder</div>
+      </div>
+      <div class="sprint-item">
+        <div class="sprint-label">v0.4 — Mobile</div>
+        <div class="sprint-name">Loop Activation</div>
+        <div class="sprint-steps"><span>5</span><span>6</span></div>
+        <div style="font-size:.72rem;color:var(--text-dim);margin-top:.5rem;">mobile trigger, push notification</div>
+      </div>
+      <div class="sprint-item">
+        <div class="sprint-label">v0.5 — Growth</div>
+        <div class="sprint-name">Behavior Shaping</div>
+        <div class="sprint-steps"><span>1</span></div>
+        <div style="font-size:.72rem;color:var(--text-dim);margin-top:.5rem;">bundles, swap, shared basket</div>
+      </div>
+      <div class="sprint-item">
+        <div class="sprint-label">v0.6 — Platform</div>
+        <div class="sprint-name">System Depth</div>
+        <div class="sprint-steps"><span>1</span><span>2</span></div>
+        <div style="font-size:.72rem;color:var(--text-dim);margin-top:.5rem;">predictive, multi-supplier</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BREAKPOINTS -->
+  <div class="break-section">
+    <h2>Loop Töréspontok</h2>
+    <div class="break-grid">
+      <div class="break-card">
+        <div class="break-icon">🎭</div>
+        <div class="break-title">Fake Savings</div>
+        <div class="break-desc">User nem hiszi el a spórolási adatot — hitelesség kritikus</div>
+      </div>
+      <div class="break-card">
+        <div class="break-icon">📉</div>
+        <div class="break-title">No Real Efficiency</div>
+        <div class="break-desc">Nincs valódi hatékonyság-javulás → nincs miből visszaadni</div>
+      </div>
+      <div class="break-card">
+        <div class="break-icon">🧩</div>
+        <div class="break-title">Complexity</div>
+        <div class="break-desc">User nem érti a rendszert — túl bonyolult UX</div>
+      </div>
+      <div class="break-card">
+        <div class="break-icon">📦</div>
+        <div class="break-title">Supply Instability</div>
+        <div class="break-desc">Deák nem tud szállítani → loop megszakad</div>
+      </div>
+      <div class="break-card">
+        <div class="break-icon">💸</div>
+        <div class="break-title">Wrong Incentives</div>
+        <div class="break-desc">Margin elégtelen → visszaadás nem fenntartható</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>DHOP Economic Loop v1 — 2026-04-11 — Claude + ChatGPT (Deak GPT) strategic synthesis</footer>
+
+</div>
+
+<script>
+const stepData = [
+  {
+    title: 'STEP 1 — User Behavior',
+    actions: ['Nagyobb kosár összeállítás', 'Group order (család, szomszédok)', 'Korábbi rendelés ismétlése (reorder)'],
+    kpis: ['Avg Order Value (AOV)', 'Orders / user / hónap', 'Product mix változatosság'],
+    risks: ['User nem érti a termékpalettát', 'Minimális kosárméret frusztráció', 'Első rendelés konverzió alacsony']
+  },
+  {
+    title: 'STEP 2 — System Efficiency ⚠',
+    actions: ['Jobb rendelés-batching', 'Kevesebb élelmiszerpazarlás (waste)', 'Optimalizált szállítási útvonal'],
+    kpis: ['Cost / order (szállítás + csomagolás)', 'Waste % (hulladékarány)', 'Margin / rendelés'],
+    risks: ['Deák pénzügyi adatok HIÁNYOZNAK', 'Mérés nem lehetséges adat nélkül', 'Ez a loop leggyengébb pontja']
+  },
+  {
+    title: 'STEP 3 — Savings Generation',
+    actions: ['Efficiency gain → savings pool', 'Volumen-alapú ármérséklés', 'Waste-csökkentés → extra margin'],
+    kpis: ['Savings / rendelés (lej)', 'Margin delta (előtte vs utána)', 'Savings pool total mérete'],
+    risks: ['Feltételezésen alapul amíg STEP 2 nincs mérve', 'Referencia ár vs valódi megtakarítás gap', 'Ha margin negatív → nem fenntartható']
+  },
+  {
+    title: 'STEP 4 — Savings Distribution',
+    actions: ['Threshold discount (pl. 150 lej felett -5%)', 'Bundle pricing (családi csomagok)', 'Post-order recap ("ennyit spóroltál")'],
+    kpis: ['Threshold hit rate (%)', 'Bundle adoption rate', 'Discount / rendelés átlag'],
+    risks: ['Túl magas threshold → senki nem éri el', 'Túl alacsony → margin probléma', 'User nem veszi észre a kedvezményt']
+  },
+  {
+    title: 'STEP 5 — Feedback',
+    actions: ['"Eddig X lejt spóroltál" — running counter', '"Next threshold Y lejnél" — gamification', 'Heti/havi spórolás összesítő'],
+    kpis: ['Recap open rate', 'Savings awareness % (user survey)', 'Counter engagement (kattintás/nézetszám)'],
+    risks: ['Feedback nem elég látható', 'Számok nem meggyőzőek', 'User szkeptikus a "spórolás" címkével']
+  },
+  {
+    title: 'STEP 6 — Behavior Change',
+    actions: ['User visszatér → nagyobb kosár', 'Reorder / "szokásos rendelés"', 'Ajánlás másoknak (word of mouth)'],
+    kpis: ['Second Order Rate 14d (North Star: ≥40%)', 'Reorder rate', 'Referral rate (organikus)'],
+    risks: ['Nem jön vissza → loop nem zárul', 'Push nélkül nincs aktivitás = nincs valódi retention', 'Csak árérzékeny userek maradnak']
+  }
+];
+
+let activeStep = -1;
+
+function showDetail(idx) {
+  const cards = document.querySelectorAll('.step-card');
+  cards.forEach(c => c.classList.remove('active'));
+
+  if (activeStep === idx) {
+    activeStep = -1;
+    document.getElementById('detailPanel').classList.remove('visible');
+    return;
+  }
+
+  activeStep = idx;
+  cards[idx].classList.add('active');
+  const d = stepData[idx];
+  const panel = document.getElementById('detailPanel');
+
+  panel.innerHTML = `
+    <h3>${d.title}</h3>
+    <div class="detail-grid">
+      <div class="detail-box">
+        <h4>Akciók</h4>
+        <ul>${d.actions.map(a => `<li>${a}</li>`).join('')}</ul>
+      </div>
+      <div class="detail-box kpi">
+        <h4>KPI-k</h4>
+        <ul>${d.kpis.map(k => `<li>${k}</li>`).join('')}</ul>
+      </div>
+      <div class="detail-box risk">
+        <h4>Kockázatok</h4>
+        <ul>${d.risks.map(r => `<li>${r}</li>`).join('')}</ul>
+      </div>
+    </div>
+  `;
+  panel.classList.add('visible');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+</script>
+</body>
+</html>

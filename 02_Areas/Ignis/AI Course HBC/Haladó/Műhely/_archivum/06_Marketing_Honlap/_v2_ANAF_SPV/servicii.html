@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Servicii — TransOffice Trade SRL | Livrare, contracte, SEAP</title>
+<meta name="description" content="Servicii TransOffice Trade SRL — livrare la sediu, contracte cadru, oferte personalizate, achiziții publice SEAP, service și mentenanță.">
+<link rel="stylesheet" href="design-system/anaf-style.css">
+<style>
+  .service-grid { display: table; width: 100%; margin: 20px 0; border-spacing: 14px 0; }
+  .service-card { display: table-cell; vertical-align: top; padding: 22px 18px; background: white; border: 1px solid #ddd; width: 50%; }
+  .service-card .sc-icon { font-size: 44px; color: var(--anaf-indigo); margin-bottom: 12px; }
+  .service-card .sc-title { font-size: 17px; font-weight: bold; color: var(--anaf-indigo); margin-bottom: 8px; }
+  .service-card .sc-desc { font-size: 13px; line-height: 1.6; color: var(--text); margin-bottom: 10px; }
+  .service-card .sc-features { font-size: 12px; }
+  .service-card .sc-features li { margin-bottom: 4px; }
+  .price-grid { display: table; width: 100%; margin: 14px 0; border-spacing: 10px 0; }
+  .price-tile { display: table-cell; background: var(--off-white); border: 1px solid #ddd; padding: 16px; text-align: center; vertical-align: top; }
+  .price-tile.featured { background: var(--anaf-indigo); color: white; }
+  .price-tile.featured .pt-price { color: white; }
+  .price-tile .pt-name { font-weight: bold; font-size: 16px; margin-bottom: 6px; }
+  .price-tile .pt-price { font-size: 24px; font-weight: bold; color: var(--anaf-indigo); }
+  .price-tile .pt-unit { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; }
+  .price-tile.featured .pt-unit { color: rgba(255,255,255,0.85); }
+  .price-tile ul { text-align: left; font-size: 12px; padding-left: 18px; margin: 10px 0; }
+  .map-block { background: var(--anaf-indigo); color: white; padding: 22px; margin: 18px 0; display: table; width: 100%; }
+  .map-block > div { display: table-cell; vertical-align: middle; }
+  .map-block .mb-text { padding-right: 20px; }
+  .map-block .mb-text h3 { color: white; font-size: 18px; margin-bottom: 8px; }
+  .map-block .mb-text p { font-size: 13px; line-height: 1.6; color: rgba(255,255,255,0.95); margin: 0 0 6px 0; }
+  .map-block .mb-area { width: 35%; text-align: center; }
+  .map-block .mb-area .area-icon { font-size: 80px; }
+  .map-block .mb-area .area-text { font-size: 12px; color: rgba(255,255,255,0.9); margin-top: 6px; }
+  .process-flow { margin: 20px 0; }
+  .process-step { display: table; width: 100%; margin-bottom: 12px; border-spacing: 12px 0; }
+  .process-step .step-num { display: table-cell; width: 60px; vertical-align: middle; }
+  .process-step .step-num .num-circle { width: 50px; height: 50px; line-height: 50px; text-align: center; background: var(--anaf-indigo); color: white; border-radius: 50%; font-size: 20px; font-weight: bold; }
+  .process-step .step-content { display: table-cell; vertical-align: middle; background: var(--off-white); border-left: 4px solid var(--anaf-indigo); padding: 12px 16px; }
+  .process-step .step-content h4 { color: var(--anaf-indigo); margin: 0 0 4px 0; font-size: 14px; }
+  .process-step .step-content p { font-size: 12px; margin: 0; color: var(--text); }
+  .faq-item { margin: 12px 0; padding: 14px 16px; background: var(--off-white); border-left: 4px solid var(--anaf-indigo); }
+  .faq-item .faq-q { font-weight: bold; color: var(--anaf-indigo); margin-bottom: 6px; font-size: 13px; }
+  .faq-item .faq-a { font-size: 13px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <header class="site-header">
+    <div class="logo-cell">
+      <a href="index.html" class="logo">
+        <div class="logo-shield">TO</div>
+        <div class="logo-text">
+          <div class="brand">TransOffice</div>
+          <div class="tagline">Echipamente de birou și papetărie — din 2003</div>
+        </div>
+      </a>
+    </div>
+    <div class="auth-cell">
+      <div class="flag-bar">
+        <a href="index.html" class="flag-ro">RO</a>
+        <a href="index_en.html" class="flag-en">EN</a>
+        <a href="harta-site.html" class="flag-sitemap">SITE</a>
+      </div>
+      <div class="auth-grid">
+        <span class="search-icon">🔍</span>
+        <a href="comanda-rapida.html" class="auth-btn">Comandă rapidă<br><small style="font-weight:normal; font-size:9px;">cu validare CUI</small></a>
+        <a href="catalog.pdf" class="auth-btn">Catalog produse 2024<br><small style="font-weight:normal; font-size:9px;">PDF · 5,8 MB</small></a>
+        <br>
+        <a href="login.html" class="auth-btn">Autentificare client B2B</a>
+        <a href="cerere-oferta.html" class="auth-btn red">Cerere ofertă personalizată<br><small style="font-weight:normal; font-size:9px;">pentru cantități mari</small></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="breadcrumb-wrap">
+    <div class="breadcrumb">
+      <a href="index.html">TransOffice</a>
+      <span class="separator">&gt;</span>
+      <a href="index.html">Acasă</a>
+      <span class="separator">&gt;</span>
+      Servicii
+    </div>
+  </div>
+
+  <nav class="top-nav">
+    <a href="index.html" class="top-nav-cell">Acasă</a>
+    <a href="despre.html" class="top-nav-cell">Despre noi</a>
+    <a href="produse.html" class="top-nav-cell">Produse</a>
+    <a href="servicii.html" class="top-nav-cell active">Servicii</a>
+    <a href="parteneri.html" class="top-nav-cell">Parteneri</a>
+    <a href="cariere.html" class="top-nav-cell">Cariere</a>
+    <a href="galerie.html" class="top-nav-cell">Galerie foto</a>
+    <a href="contact.html" class="top-nav-cell">Contact</a>
+    <a href="carte-oaspeti.html" class="top-nav-cell">Carte de oaspeți</a>
+  </nav>
+
+  <div class="section-title">Servicii pentru companii, instituții și școli</div>
+
+  <aside class="floating-left">
+    <a href="contact.html" class="floating-icon"><span class="ico">📧</span>Formular contact</a>
+    <a href="tel:0266371058" class="floating-icon"><span class="ico">📞</span>Call Center</a>
+    <a href="calendar.html" class="floating-icon"><span class="ico">📅</span>Calendar livrări</a>
+    <a href="catalog.pdf" class="floating-icon"><span class="ico">📄</span>Catalog PDF</a>
+    <a href="login.html" class="floating-icon"><span class="ico">🔑</span>Login B2B</a>
+    <a href="rss.xml" class="floating-icon"><span class="ico">📡</span>RSS</a>
+    <a href="gdpr.html" class="floating-icon"><span class="ico">🇪🇺</span>GDPR</a>
+    <a href="share.html" class="floating-icon"><span class="ico">🔗</span>Share</a>
+  </aside>
+
+  <aside class="floating-right">
+    <a href="accesibilitate.html" class="floating-icon"><span class="ico">♿</span></a>
+  </aside>
+
+  <main class="content-area">
+
+    <h1>Serviciile noastre</h1>
+
+    <p>
+      Pe lângă vânzarea produselor de birou, oferim o gamă completă de <strong>servicii dedicate clienților B2B</strong> — instituții publice, școli, cabinete profesionale și companii private. Toate serviciile noastre sunt cu prețuri transparente și fără costuri ascunse.
+    </p>
+
+    <h2>Serviciile principale</h2>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="sc-icon">🚚</div>
+        <div class="sc-title">Livrare la sediu</div>
+        <div class="sc-desc">
+          Livrăm produsele direct la sediul dumneavoastră în <strong>24-48 ore</strong> în județul Harghita și în <strong>2-3 zile</strong> în județele învecinate (Covasna, Mureș zona Sovata-Reghin).
+        </div>
+        <ul class="sc-features">
+          <li>✓ Livrare gratuită peste 200 Lei în Odorheiu Secuiesc</li>
+          <li>✓ Livrare 25 Lei pentru județele Harghita, Covasna, Mureș</li>
+          <li>✓ Calendar fix: Luni, Miercuri, Vineri</li>
+          <li>✓ Coletă paletizat pentru comenzi mari (peste 500 kg)</li>
+          <li>✓ Confirmare livrare prin SMS și email</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="sc-icon">📋</div>
+        <div class="sc-title">Contracte cadru anuale</div>
+        <div class="sc-desc">
+          Pentru clienții cu volume mari (peste 30.000 Lei/an), oferim <strong>contracte cadru anuale</strong> cu prețuri fixe, condiții speciale de plată și prioritate la livrare.
+        </div>
+        <ul class="sc-features">
+          <li>✓ Prețuri fixe pe 12 luni (protejate de inflație)</li>
+          <li>✓ Reducere 5-15% sub prețul de catalog</li>
+          <li>✓ Termen de plată: 30-60 zile (în loc de 14)</li>
+          <li>✓ Catalog dedicat per client (cu produse preferate)</li>
+          <li>✓ Manager dedicat cont (Kovács Márton personal)</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="sc-icon">💬</div>
+        <div class="sc-title">Oferte personalizate</div>
+        <div class="sc-desc">
+          Trimiteți-ne o cerere de ofertă pentru cantități mari sau produse nestandard, și răspundem cu o ofertă personalizată în <strong>2 zile lucrătoare</strong>.
+        </div>
+        <ul class="sc-features">
+          <li>✓ Răspuns garantat în 48 ore lucrătoare</li>
+          <li>✓ Oferte pentru orice cantitate (de la 50 buc)</li>
+          <li>✓ Negociere transparentă a prețului</li>
+          <li>✓ Includem produse de la furnizori specializați</li>
+          <li>✓ Valabilitate ofertă: minim 14 zile</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="sc-icon">🏛️</div>
+        <div class="sc-title">SEAP / Achiziții publice</div>
+        <div class="sc-desc">
+          Suntem furnizor înregistrat în <strong>Sistemul Electronic de Achiziții Publice</strong> (SEAP/ANAP). Participăm la licitații publice pentru instituții, școli, primării și unități medicale.
+        </div>
+        <ul class="sc-features">
+          <li>✓ CUI 15847291 înregistrat ANAP din 2012</li>
+          <li>✓ Participare la cumpărări directe și licitații</li>
+          <li>✓ Documente la zi: certificat fiscal, cazier fiscal, ONRC</li>
+          <li>✓ Experiență cu CJ Harghita, Primăria O. Secuiesc</li>
+          <li>✓ Sprijin pentru întocmirea caietului de sarcini</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="service-grid">
+      <div class="service-card">
+        <div class="sc-icon">🔧</div>
+        <div class="sc-title">Service și mentenanță</div>
+        <div class="sc-desc">
+          Pentru imprimantele, multifuncționalele și echipamentele achiziționate de la noi, oferim <strong>service în garanție și post-garanție</strong>. Tehnician propriu pentru intervenții urgente.
+        </div>
+        <ul class="sc-features">
+          <li>✓ Service în garanție pentru toate produsele vândute</li>
+          <li>✓ Intervenție la sediul clientului în 48 ore (Harghita)</li>
+          <li>✓ Mentenanță preventivă imprimante (contract anual)</li>
+          <li>✓ Reparații post-garanție la tarife transparente</li>
+          <li>✓ Curățare imprimante: 80 Lei/buc</li>
+        </ul>
+      </div>
+
+      <div class="service-card">
+        <div class="sc-icon">♻️</div>
+        <div class="sc-title">Recondiționare cartușe</div>
+        <div class="sc-desc">
+          Recondiționăm cartușele uzate ale clienților noștri, oferind <strong>economii de până la 60%</strong> față de cartușele originale, cu garanție de funcționare.
+        </div>
+        <ul class="sc-features">
+          <li>✓ Compatibil cu HP, Canon, Brother, Epson, Lexmark</li>
+          <li>✓ Garanție de 6 luni pe cartușele recondiționate</li>
+          <li>✓ Schimbare gratuită dacă cartușul defectează imprimanta</li>
+          <li>✓ Colectare cartușe goale (gratuit, eco-friendly)</li>
+          <li>✓ Certificate de reciclare pentru companii ESG</li>
+        </ul>
+      </div>
+    </div>
+
+    <h2>Pachete pentru companii — Contracte cadru</h2>
+
+    <p>Pentru clienții care doresc să își simplifice achizițiile, oferim 3 pachete pre-configurate:</p>
+
+    <div class="price-grid">
+      <div class="price-tile">
+        <div class="pt-name">START</div>
+        <div class="pt-unit">pentru companii cu 1-10 angajați</div>
+        <div class="pt-price">~ 5.000 Lei/an</div>
+        <ul>
+          <li>Hârtie A4: 50 topuri/an</li>
+          <li>Cartușe: 8-12 buc/an</li>
+          <li>Birotică: 30 articole/an</li>
+          <li>Livrare gratuită lunar</li>
+          <li>Reducere 5% sub catalog</li>
+        </ul>
+        <a href="cerere-oferta.html?pachet=start" class="btn" style="display:block; margin-top:10px;">Cere ofertă</a>
+      </div>
+
+      <div class="price-tile featured">
+        <div class="pt-name">BUSINESS</div>
+        <div class="pt-unit" style="color:rgba(255,255,255,0.85);">pentru companii cu 10-50 angajați</div>
+        <div class="pt-price">~ 18.000 Lei/an</div>
+        <ul>
+          <li>Hârtie A4: 200 topuri/an</li>
+          <li>Cartușe: 30-50 buc/an</li>
+          <li>Birotică: 100+ articole</li>
+          <li>Livrare săptămânală</li>
+          <li>Reducere 10% sub catalog</li>
+          <li>Manager dedicat cont</li>
+          <li>Termen plată 45 zile</li>
+        </ul>
+        <a href="cerere-oferta.html?pachet=business" class="btn red" style="display:block; margin-top:10px;">Cere ofertă</a>
+      </div>
+
+      <div class="price-tile">
+        <div class="pt-name">ENTERPRISE</div>
+        <div class="pt-unit">pentru instituții publice / grupuri</div>
+        <div class="pt-price">de la 50.000 Lei/an</div>
+        <ul>
+          <li>Hârtie A4: peste 500 topuri/an</li>
+          <li>Catalog complet acces</li>
+          <li>Livrare bi-săptămânală</li>
+          <li>Reducere 12-15%</li>
+          <li>Manager dedicat + tehnician</li>
+          <li>Termen plată 60 zile</li>
+          <li>Contract negociat individual</li>
+        </ul>
+        <a href="cerere-oferta.html?pachet=enterprise" class="btn" style="display:block; margin-top:10px;">Cere ofertă</a>
+      </div>
+    </div>
+
+    <h2>Zona de livrare</h2>
+
+    <div class="map-block">
+      <div class="mb-text">
+        <h3>📍 Acoperire geografică</h3>
+        <p>Livrăm în <strong>toată regiunea Centru</strong>, cu focus pe județele Harghita, Covasna și Mureș. În zonele rurale livrarea poate dura 3-5 zile.</p>
+        <p><strong>Acoperire prioritară:</strong> Odorheiu Secuiesc, Miercuri Ciuc, Gheorgheni, Toplița, Sf. Gheorghe, Târgu Mureș.</p>
+        <p><strong>Acoperire extinsă (taxă transport):</strong> tot județul Harghita, Covasna, Mureș, parțial Brașov.</p>
+      </div>
+      <div class="mb-area">
+        <div class="area-icon">🗺️</div>
+        <div class="area-text">Zona acoperită: aprox. 8.000 km²<br>Populație deservită: ~700.000 locuitori</div>
+      </div>
+    </div>
+
+    <h2>Procesul de comandă</h2>
+
+    <p>De la cererea inițială la livrare, procesul este simplu și transparent:</p>
+
+    <div class="process-flow">
+      <div class="process-step">
+        <div class="step-num"><div class="num-circle">1</div></div>
+        <div class="step-content">
+          <h4>Cerere ofertă</h4>
+          <p>Trimiteți-ne lista de produse dorite prin email, telefon sau formularul online. Validăm CUI-ul firmei dvs. și pregătim oferta.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num"><div class="num-circle">2</div></div>
+        <div class="step-content">
+          <h4>Ofertă personalizată — 48 ore</h4>
+          <p>Primiți o ofertă PDF cu prețuri, termen de livrare și condiții. Valabilă 14 zile. Putem ajusta cantitățile dacă doriți.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num"><div class="num-circle">3</div></div>
+        <div class="step-content">
+          <h4>Acceptare comandă</h4>
+          <p>Acceptați oferta prin email sau telefon. Generăm comanda și o introducem în sistemul nostru. Primește confirmarea.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num"><div class="num-circle">4</div></div>
+        <div class="step-content">
+          <h4>Pregătire în depozit</h4>
+          <p>Atilla și echipa pregătesc comanda în depozit. Verificăm calitatea și completitudinea. Etichetăm pentru transport.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num"><div class="num-circle">5</div></div>
+        <div class="step-content">
+          <h4>Livrare — 24-48 ore</h4>
+          <p>Furgoneta TransOffice ajunge la sediul dvs. în fereastra de timp agreată. Persoana de contact verifică livrarea.</p>
+        </div>
+      </div>
+      <div class="process-step">
+        <div class="step-num"><div class="num-circle">6</div></div>
+        <div class="step-content">
+          <h4>Factură + plată</h4>
+          <p>Emiterea facturii fiscale. Plata se face prin transfer bancar în 14, 30 sau 60 zile (în funcție de contract). Acceptăm și cash pentru clienți noi.</p>
+        </div>
+      </div>
+    </div>
+
+    <h2>Întrebări frecvente</h2>
+
+    <div class="faq-item">
+      <div class="faq-q">Care este comanda minimă pentru livrare gratuită?</div>
+      <div class="faq-a">200 Lei (cu TVA) pentru Odorheiu Secuiesc. Pentru județele Harghita, Covasna, Mureș, taxa de transport este fixă: 25 Lei. Pentru comenzi sub această sumă, taxa de transport este între 12-20 Lei (calculat după distanță).</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Ce metode de plată acceptați?</div>
+      <div class="faq-a">Transfer bancar (preferat), card la livrare (POS mobil), cash (pentru comenzi sub 1.000 Lei). Pentru clienții B2B cu contract, oferim termen de plată 14-60 zile.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Pot returna produsele dacă nu sunt corecte?</div>
+      <div class="faq-a">Da. Aveți 14 zile pentru returnare fără explicații (conform OG 34/2014). Produsele trebuie să fie nedesfăcute și în starea originală. Returnarea se face gratuit pentru clienții B2B.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Aveți garanție pe produsele IT?</div>
+      <div class="faq-a">Da, toate produsele IT au garanție de minimum 24 luni (conform legii). Pentru imprimante și multifuncționale, oferim service la sediul clientului în Harghita.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Cum pot face o licitație SEAP cu TransOffice?</div>
+      <div class="faq-a">Suntem înregistrați ANAP din 2012. Pentru cumpărări directe (sub 270.000 Lei pentru bunuri), putem trimite o ofertă în 24 ore. Pentru licitații deschise, vă ajutăm cu întocmirea caietului de sarcini și răspundem la solicitări de clarificare.</div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q">Faceți livrări internaționale?</div>
+      <div class="faq-a">Doar în România. Pentru clienții din străinătate (de ex. firme din Ungaria), recomandăm parteneri de încredere din Cluj sau Brașov.</div>
+    </div>
+
+    <p style="text-align: center; margin: 30px 0;">
+      <a href="contact.html" class="btn">📞 Contactează-ne</a>
+      <a href="cerere-oferta.html" class="btn red">💬 Cere ofertă personalizată</a>
+    </p>
+
+  </main>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>Despre TransOffice</h4>
+      <ul>
+        <li><a href="despre.html">Cine suntem</a></li>
+        <li><a href="echipa.html">Echipa noastră</a></li>
+        <li><a href="istorie.html">Istoricul firmei</a></li>
+        <li><a href="cariere.html">Cariere</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Servicii</h4>
+      <ul>
+        <li><a href="livrare.html">Livrare la sediu</a></li>
+        <li><a href="contracte.html">Contracte de furnizare</a></li>
+        <li><a href="oferta.html">Oferte personalizate</a></li>
+        <li><a href="seap.html">SEAP / Achiziții publice</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Suport clienți</h4>
+      <ul>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="reclamatii.html">Reclamații</a></li>
+        <li><a href="garantie.html">Garanție</a></li>
+        <li><a href="retur.html">Politica de retur</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Informații legale</h4>
+      <ul>
+        <li><a href="confidentialitate.html">Confidențialitate</a></li>
+        <li><a href="termeni.html">Termeni și condiții</a></li>
+        <li><a href="cookie.html">Politica de cookies</a></li>
+        <li><a href="anpc.html">ANPC</a></li>
+        <li><a href="sol.html">SOL — Soluționare online</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2003–2024 <strong>TransOffice Trade SRL</strong> · CUI: 15847291 · J19/421/2003 · Sediul: Calea Băieșenilor 22, Odorheiu Secuiesc, jud. Harghita<br>
+    Ultima actualizare: 15.03.2024 · WebDesign: Gábor IT Solutions
+  </div>
+</footer>
+
+<a href="chat.html" class="chatbot-btn">Asistent online</a>
+
+</body>
+</html>

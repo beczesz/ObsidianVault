@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkout — Település-mismatch — Deák Húsmíves</title>
+<script type="application/json" id="screen-meta">
+{
+  "id": "v0.4-checkout-rural",
+  "title": "Checkout — zóna-validáció állapotai (3 panel)",
+  "feature": "rural-delivery",
+  "sprint": "Sprint 4",
+  "status": "draft",
+  "version": "v0.4",
+  "platform": "mobile",
+  "publish": true,
+  "order": 30,
+  "tags": ["DH-184", "rural", "checkout", "mismatch", "validation", "F1.3", "F5.1"],
+  "description": "Checkout zóna-validáció 3 állapotban: (A) interaktív multi-address válogató, ahol a kiválasztott cím zónája szabja a feltételeket; (B) első cím beírás kosár-zóna mismatchcsel (amber warning); (C) új cím form inline település-validációval. Cart total 188 RON minden panelben."
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after { margin:0; padding:0; box-sizing:border-box; }
+  :root {
+    --bg: #FFFBF7;
+    --cream-dark: #F5EDE5;
+    --primary: #9B2335;
+    --primary-dark: #842030;
+    --primary-pale: #F4E6E8;
+    --text: #2C2825;
+    --text2: #5C544C;
+    --text3: #6F6259;
+    --text4: #999;
+    --border: #E8E2DB;
+    --border-strong: #C5BCB3;
+    --card-bg: #FFFFFF;
+    --green-dark: #2E7D32;
+    --green-light: #F2FDF4;
+    --green-text: #137949;
+    --amber: #C4841D;
+    --amber-bg: rgba(196,132,29,0.05);
+    --amber-border: rgba(196,132,29,0.2);
+    --amber-text: #6E4810;
+    --amber-text-strong: #4E330A;
+  }
+  html, body {
+    background: #F0EBE4;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    color: var(--text);
+    -webkit-font-smoothing: antialiased;
+    min-height: 100vh;
+    line-height: 1.4;
+  }
+  body { padding: 32px 16px 64px; }
+
+  .back-to-catalog {
+    position:fixed; top:12px; left:12px; z-index:100;
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(0,0,0,0.5); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    text-decoration:none;
+  }
+
+  /* ─── Page intro ─── */
+  .page-intro {
+    max-width: 1200px; margin: 0 auto 32px;
+    padding: 0 8px;
+  }
+  .page-intro .eyebrow {
+    font-size: 12px; font-weight: 600; color: var(--primary-dark);
+    letter-spacing: 0.5px; text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .page-intro h1 {
+    font-size: 26px; font-weight: 600; color: var(--text);
+    letter-spacing: -0.2px; line-height: 1.2; max-width: 720px;
+  }
+  .page-intro p {
+    font-size: 14px; color: var(--text2); line-height: 1.55;
+    margin-top: 12px; max-width: 680px; letter-spacing: 0.14px;
+  }
+  .page-intro .principle {
+    margin-top: 16px; padding: 12px 16px;
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 12px; font-size: 13px; color: var(--text2);
+    max-width: 680px; letter-spacing: 0.13px;
+  }
+  .page-intro .principle strong { color: var(--text); font-weight: 600; }
+
+  /* ─── Panels grid ─── */
+  /* Desktop: oszlop min 448px (a .screen target szélessége, iframe-mel illeszkedik a cart.html-hez).
+     Mobil (<448px viewport): min(100%, 448px) → 1 oszlop a viewport szélességén, oldal nem lóg ki. */
+  .panels {
+    max-width: 1480px; margin: 0 auto;
+    display: grid; gap: 28px 24px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 448px), 1fr));
+    align-items: start;
+    justify-content: center;
+  }
+  .panel {
+    display: flex; flex-direction: column; gap: 12px;
+    min-width: 0;
+  }
+  .panel-meta {
+    display: flex; align-items: center; gap: 10px;
+    padding: 0 4px;
+  }
+  .panel-meta .num {
+    width: 24px; height: 24px; border-radius: 6px;
+    background: var(--primary-dark); color: #fff;
+    font-size: 12px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; letter-spacing: 0;
+  }
+  .panel-meta .ttl {
+    font-size: 13px; font-weight: 600; color: var(--text);
+    letter-spacing: 0.13px;
+    flex: 1; min-width: 0;
+  }
+  .panel-meta .ttl span.muted {
+    color: var(--text3); font-weight: 500; margin-left: 6px;
+  }
+
+  /* ─── Cart-styled phone screen (matches production cart.html) ─── */
+  .screen {
+    width: 100%; max-width: 448px;
+    background: var(--bg);
+    border-radius: 24px;
+    box-shadow:
+      rgba(0,0,0,0.04) 0px 1px 1px,
+      rgba(0,0,0,0.06) 0px 4px 12px,
+      rgba(0,0,0,0.04) 0px 12px 32px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 auto;
+    height: 760px;
+    display: flex; flex-direction: column;
+  }
+
+  /* ─── C variáns: inline checkout-delivery.html + zóna-eltérés warning ─── */
+  .ck-screen { background: #FAF8F5; }
+  .ck-header {
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 56px; background: #FFF; z-index: 10;
+    box-shadow: rgba(0,0,0,0.12) 0 0 1px 0, rgba(0,0,0,0.15) 0 0.5px 2px 0, rgba(0,0,0,0.16) 0 2px 3px 0;
+    display: flex; align-items: center; padding: 0 16px;
+  }
+  .ck-back-btn {
+    width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 12px; border: none; background: none; cursor: pointer;
+    color: var(--text2); flex-shrink: 0;
+  }
+  .ck-back-btn svg { width: 20px; height: 20px; }
+  .ck-h1 {
+    font-size: 18px; font-weight: 600; color: var(--text);
+    letter-spacing: 0.18px; flex: 1; text-align: center;
+  }
+  .ck-spacer { width: 44px; flex-shrink: 0; }
+
+  .ck-body {
+    position: absolute; top: 56px; left: 0; right: 0; bottom: 88px;
+    background: var(--bg);
+    overflow-y: auto;
+    padding: 16px 16px 20px;
+    display: flex; flex-direction: column; gap: 20px;
+  }
+
+  .ck-form-group { display: flex; flex-direction: column; gap: 4px; }
+  .ck-form-label {
+    font-size: 14px; font-weight: 500; color: var(--text); letter-spacing: 0.28px;
+  }
+  .ck-form-label-sm {
+    font-size: 12px; font-weight: 600; color: var(--text3); letter-spacing: 0.24px;
+  }
+  .ck-form-label .ck-required { color: #C4302B; }
+  .ck-form-input {
+    height: 44px; border-radius: 12px;
+    border: 1px solid var(--border-strong); background: var(--card-bg);
+    font-size: 13px; font-weight: 400; color: var(--text);
+    padding: 10px 14px; font-family: inherit; outline: none;
+    letter-spacing: 0.26px; width: 100%;
+  }
+  .ck-form-input::placeholder { color: #9CA3AF; font-weight: 400; }
+  .ck-form-input.flagged {
+    border-color: var(--amber); background: var(--amber-bg);
+  }
+  .ck-textarea {
+    border-radius: 12px; border: 1px solid var(--border-strong);
+    background: var(--card-bg); font-size: 13px; color: var(--text);
+    padding: 10px 14px; font-family: inherit; outline: none;
+    resize: none; height: 72px; width: 100%; letter-spacing: 0.26px;
+  }
+  .ck-section-header {
+    font-size: 11px; font-weight: 700; color: var(--text3);
+    letter-spacing: 0.6px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .ck-address-fields { display: flex; flex-direction: column; gap: 10px; }
+  .ck-row-2 { display: flex; gap: 10px; }
+  .ck-row-2 .ck-form-group:first-child { flex: 2; }
+  .ck-row-2 .ck-form-group:last-child { flex: 1; }
+  .ck-optional-label { font-size: 12px; font-weight: 400; color: var(--text3); letter-spacing: 0.24px; }
+  .ck-char-counter { font-size: 11px; color: var(--text3); letter-spacing: 0.22px; text-align: right; }
+
+  /* Zone-mismatch warning (a production .info-box helyén). Amber warning,
+     felbontásra váró figyelmeztetés — nem error. */
+  .ck-zone-mismatch {
+    margin-top: -10px;
+    background: #FEF3C7;
+    border: 1px solid var(--amber);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .ck-mm-head { display: flex; gap: 10px; align-items: flex-start; }
+  .ck-mm-icon {
+    width: 24px; height: 24px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--amber);
+  }
+  .ck-mm-icon svg { width: 22px; height: 22px; }
+  .ck-mm-text { flex: 1; min-width: 0; }
+  .ck-mm-title {
+    font-size: 14px; font-weight: 600; color: var(--amber-text-strong);
+    letter-spacing: -0.05px; line-height: 1.3;
+  }
+  .ck-mm-body {
+    font-size: 12px; color: var(--amber-text);
+    letter-spacing: 0.12px; line-height: 1.5;
+    margin-top: 3px;
+  }
+  .ck-mm-body strong { color: var(--amber-text-strong); font-weight: 600; }
+  .ck-mm-terms {
+    background: rgba(255,255,255,0.55);
+    border-radius: 10px;
+    padding: 2px 12px;
+  }
+  .ck-mm-terms .ck-mm-row {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 7px 0;
+    font-size: 12px; letter-spacing: 0.12px;
+  }
+  .ck-mm-terms .ck-mm-row + .ck-mm-row {
+    border-top: 1px dashed rgba(196,132,29,0.25);
+  }
+  .ck-mm-terms .ck-mm-lab { color: var(--amber-text); }
+  .ck-mm-terms .ck-mm-val { color: var(--amber-text-strong); font-weight: 600; }
+  .ck-mm-actions { display: flex; flex-direction: column; gap: 6px; }
+  .ck-mm-primary {
+    width: 100%; height: 44px;
+    background: var(--amber-text-strong); color: #fff;
+    border: none; border-radius: 12px;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.13px; cursor: pointer;
+  }
+  .ck-mm-primary:hover { background: #3a2607; }
+  .ck-mm-secondary {
+    width: 100%; min-height: 44px;
+    background: transparent; color: var(--amber-text);
+    border: none; cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 500;
+    letter-spacing: 0.12px;
+    text-decoration: underline; text-decoration-color: rgba(196,132,29,0.4);
+    text-underline-offset: 3px;
+  }
+  .ck-mm-secondary:hover { color: var(--amber-text-strong); text-decoration-color: currentColor; }
+
+  /* Date picker — disabled míg a mismatch nincs feloldva */
+  .ck-date-section { display: flex; flex-direction: column; gap: 6px; }
+  .ck-date-section.disabled { opacity: 0.5; pointer-events: none; }
+  .ck-date-scroll-wrapper { display: flex; align-items: center; gap: 4px; }
+  .ck-date-scroll {
+    display: flex; gap: 10px; overflow-x: auto;
+    padding: 6px 0; flex: 1;
+    scrollbar-width: none;
+  }
+  .ck-date-scroll::-webkit-scrollbar { display: none; }
+  .ck-date-btn {
+    width: 70px; height: 56px; border-radius: 14px;
+    border: 1px solid var(--border-strong); background: var(--card-bg);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; cursor: pointer; flex-shrink: 0; padding: 0;
+    font-family: inherit;
+  }
+  .ck-date-btn .ck-day-name { font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: 0.24px; }
+  .ck-date-btn .ck-day-date { font-size: 13px; font-weight: 500; color: var(--text); letter-spacing: 0.26px; }
+  .ck-date-btn.selected {
+    border-color: var(--primary);
+    background: rgba(155,35,53,0.05);
+  }
+  .ck-date-btn.selected .ck-day-name,
+  .ck-date-btn.selected .ck-day-date { color: var(--primary); }
+  .ck-scroll-arrow {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    border: none; background: none; cursor: pointer; color: var(--text3);
+    flex-shrink: 0;
+  }
+  .ck-scroll-arrow svg { width: 14px; height: 14px; }
+  .ck-scrollbar-track { height: 3px; background: var(--border); border-radius: 2px; position: relative; }
+  .ck-scrollbar-thumb { height: 100%; width: 60%; background: var(--text3); border-radius: 2px; }
+  .ck-date-hint {
+    font-size: 12px; font-weight: 500; color: var(--amber-text);
+    letter-spacing: 0.24px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .ck-date-hint svg { width: 13px; height: 13px; color: var(--amber); flex-shrink: 0; }
+
+  /* ─── Multi-address selector (Panel A & C) ─── */
+  .ck-address-list { display: flex; flex-direction: column; gap: 10px; }
+  .ck-address-card {
+    width: 100%;
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 14px;
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    background: var(--card-bg);
+    cursor: pointer; font-family: inherit; text-align: left;
+    transition: border-color 140ms ease-out, background 140ms ease-out;
+  }
+  .ck-address-card:hover { border-color: var(--border-strong); }
+  .ck-address-card.selected {
+    border-color: var(--primary);
+    background: rgba(155,35,53,0.05);
+  }
+  .ck-radio-outer {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--border-strong);
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--card-bg);
+    margin-top: 2px;
+  }
+  .ck-address-card.selected .ck-radio-outer { border-color: var(--primary); }
+  .ck-radio-inner {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--primary); display: none;
+  }
+  .ck-address-card.selected .ck-radio-inner { display: block; }
+  .ck-card-content { flex: 1; min-width: 0; }
+  .ck-card-title-row {
+    display: flex; gap: 8px; align-items: center; margin-bottom: 3px;
+  }
+  .ck-card-title {
+    font-size: 14px; font-weight: 600; color: var(--text);
+    letter-spacing: -0.05px;
+  }
+  .ck-card-badge {
+    font-size: 9px; font-weight: 700;
+    color: var(--green-text); background: var(--green-light);
+    padding: 2px 7px; border-radius: 9999px;
+    letter-spacing: 0.04em; text-transform: uppercase;
+  }
+  .ck-card-address {
+    font-size: 12px; color: var(--text2);
+    letter-spacing: 0.12px; line-height: 1.4;
+  }
+  .ck-add-address {
+    width: 100%;
+    display: flex; gap: 10px; align-items: center; justify-content: center;
+    padding: 12px 14px;
+    border-radius: 14px;
+    border: 1.5px dashed var(--border-strong);
+    background: var(--card-bg);
+    cursor: pointer; font-family: inherit;
+    color: var(--text2); font-size: 13px; font-weight: 500;
+    letter-spacing: 0.13px;
+  }
+  .ck-add-address svg { width: 16px; height: 16px; color: var(--primary); flex-shrink: 0; }
+  .ck-add-address:hover { border-color: var(--primary); color: var(--text); }
+
+  /* ─── Zone summary (zone match info — Panel A) ─── */
+  .ck-zone-summary {
+    margin-top: -6px;
+    background: var(--cream-dark);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    display: flex; gap: 12px; align-items: flex-start;
+  }
+  .ck-zone-summary .ico {
+    width: 28px; height: 28px; flex-shrink: 0;
+    color: var(--primary-dark); margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ck-zone-summary .ico svg { width: 22px; height: 22px; }
+  .ck-zone-summary .body { flex: 1; min-width: 0; }
+  .ck-zone-summary .eyebrow {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text3); margin-bottom: 2px;
+  }
+  .ck-zone-summary .zone-name {
+    font-size: 16px; font-weight: 700; color: var(--text);
+    letter-spacing: -0.15px; line-height: 1.2;
+  }
+  .ck-zone-summary .terms {
+    font-size: 12px; color: var(--text2);
+    margin-top: 6px; letter-spacing: 0.12px; line-height: 1.5;
+  }
+  .ck-zone-summary .terms strong { color: var(--text); font-weight: 600; }
+
+  /* Threshold nudge — under free-shipping limit */
+  .ck-zone-nudge {
+    background: #FFF3E0;
+    border: 1px solid #F0B569;
+    border-radius: 12px;
+    padding: 10px 12px;
+    margin-top: 10px;
+    display: flex; gap: 8px; align-items: flex-start;
+    font-size: 12px; color: #6E4810;
+    letter-spacing: 0.12px; line-height: 1.45;
+  }
+  .ck-zone-nudge svg { width: 14px; height: 14px; color: #C4841D; flex-shrink: 0; margin-top: 1px; }
+  .ck-zone-nudge strong { color: var(--amber-text-strong); font-weight: 600; }
+
+  /* Free shipping confirmation */
+  .ck-zone-summary .free-tag {
+    display: inline-block;
+    background: var(--green-light); color: var(--green-text);
+    font-size: 11px; font-weight: 600;
+    padding: 3px 10px; border-radius: 9999px;
+    margin-top: 4px;
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── New address form (Panel C) ─── */
+  .ck-new-address-form {
+    background: var(--cream-dark);
+    border: 1.5px solid var(--primary);
+    border-radius: 14px;
+    padding: 14px;
+    margin-top: 10px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .ck-new-address-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 4px;
+  }
+  .ck-new-address-title {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    letter-spacing: 0.05em; text-transform: uppercase;
+  }
+  .ck-collapse-btn {
+    position: relative;
+    width: 28px; height: 28px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; border: none; background: rgba(0,0,0,0.04);
+    color: var(--text3); cursor: pointer;
+  }
+  .ck-collapse-btn::after { content: ""; position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; transform: translate(-50%, -50%); }
+  .ck-collapse-btn:hover { background: rgba(0,0,0,0.08); color: var(--text); }
+  .ck-collapse-btn svg { width: 14px; height: 14px; }
+
+  /* Input with validation icon */
+  .ck-input-with-validation { position: relative; }
+  .ck-input-with-validation .ck-form-input { padding-right: 36px; }
+  .ck-input-with-validation .ck-form-input.validated {
+    border-color: var(--green-dark);
+    background: rgba(46,125,50,0.04);
+  }
+  .ck-validation-icon {
+    position: absolute; right: 10px; top: 50%;
+    transform: translateY(-50%);
+    width: 22px; height: 22px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%; background: var(--green-dark); color: #fff;
+  }
+  .ck-validation-icon svg { width: 13px; height: 13px; }
+  .ck-validation-msg {
+    font-size: 11px; letter-spacing: 0.11px; line-height: 1.4;
+    margin-top: 3px;
+    display: flex; gap: 5px; align-items: center;
+  }
+  .ck-validation-msg.success { color: var(--green-text); }
+  .ck-validation-msg.success svg { width: 11px; height: 11px; flex-shrink: 0; }
+  .ck-save-address {
+    margin-top: 4px;
+    width: 100%; height: 44px;
+    background: var(--primary); color: #fff;
+    border: none; border-radius: 12px;
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.13px; cursor: pointer;
+  }
+  .ck-save-address:hover { background: var(--primary-dark); }
+
+  /* CTA bar variants — enabled (Panel A, C) vs disabled (Panel B) */
+  .ck-cta-btn.ck-active {
+    background: var(--primary); color: #fff;
+    cursor: pointer;
+  }
+  .ck-cta-btn.ck-active:hover { background: var(--primary-dark); }
+
+  /* CTA bar (disabled) */
+  .ck-cta-bar {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    height: 88px; padding: 16px;
+    background: rgba(255,255,255,0.95);
+    box-shadow: rgba(0,0,0,0.1) 0 -1px 3px 0;
+    z-index: 15;
+  }
+  .ck-cta-btn {
+    width: 100%; height: 56px;
+    background: var(--border); color: var(--text3);
+    font-family: inherit; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.26px;
+    border: none; border-radius: 16px;
+    cursor: not-allowed;
+  }
+
+  /* ─── Notes block ─── */
+  .notes {
+    max-width: 1200px; margin: 36px auto 0;
+    padding: 20px 24px;
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-radius: 16px;
+  }
+  .notes h2 {
+    font-size: 13px; font-weight: 700; color: var(--text);
+    letter-spacing: 0.5px; text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .notes ul {
+    list-style: none; font-size: 13px; color: var(--text2);
+    line-height: 1.7; letter-spacing: 0.13px;
+  }
+  .notes li { padding-left: 20px; position: relative; margin-bottom: 4px; }
+  .notes li::before {
+    content: ""; position: absolute; left: 6px; top: 9px;
+    width: 4px; height: 4px; border-radius: 50%; background: var(--primary);
+  }
+  .notes li strong { color: var(--text); font-weight: 600; }
+
+  /* ─── DH copy-ref UI (shared) ─── */
+  .dh-crumb {
+    position:fixed; top:12px; left:60px; z-index:99;
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(255,251,247,0.96); backdrop-filter:blur(6px);
+    border:1px solid var(--border); border-radius:999px;
+    padding:6px 6px 6px 14px;
+    font-size:12px; color:var(--text2);
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    max-width:calc(100vw - 80px);
+  }
+  .dh-crumb .crumb-text { font-weight:500; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; letter-spacing:0.12px; }
+  .dh-crumb .crumb-text strong { color:var(--text); font-weight:600; }
+  .dh-crumb .crumb-text .sep { color:var(--text3); margin:0 4px; opacity:0.7; }
+  .dh-crumb .crumb-file { color:var(--text3); font-family:ui-monospace,monospace; font-size:11px; margin-left:6px; }
+  .dh-copy {
+    display:inline-flex; align-items:center; justify-content:center;
+    width:24px; height:24px; padding:0;
+    border:1px solid var(--border); background:#fff; border-radius:6px;
+    color:var(--text3); cursor:pointer;
+    font-family:inherit; transition:color .12s, background .12s, border-color .12s;
+    flex-shrink:0;
+  }
+  .dh-copy:hover { color:var(--primary); border-color:var(--primary); background:var(--primary-pale); }
+  .dh-copy.copied { color:#2D7A4F; border-color:#A7F3D0; background:#D4EDDA; }
+  .dh-copy svg { width:12px; height:12px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  #dh-toast {
+    position:fixed; bottom:18px; left:50%; transform:translateX(-50%) translateY(8px);
+    background:var(--text); color:#FFFBF7;
+    padding:8px 16px; border-radius:8px; font-size:12px; font-weight:500;
+    opacity:0; transition:opacity .18s, transform .18s; pointer-events:none; z-index:10000;
+    white-space:nowrap; box-shadow:0 4px 14px rgba(0,0,0,0.18);
+  }
+  #dh-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+  @media (prefers-reduced-motion: reduce) { #dh-toast, .dh-copy, .checkout-btn, .btn-pick { transition:none; } }
+
+  /* ─── Harden: long-content resilience ─── */
+  .ck-form-input, .ck-textarea { overflow-wrap: anywhere; }
+  /* Ensure flex children can shrink below content size */
+  .panel-meta, .ck-header { min-width: 0; }
+  /* Currency/amounts must not wrap */
+  [class*="amount"], [class*="total"] strong, .ck-cart-total .total-num,
+  .ck-mm-amount, .ck-row-amount { white-space: nowrap; }
+
+  /* ─── Screen reader only utility ─── */
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+  }
+
+  </style>
+</head>
+<body>
+
+<a href="../index.html" class="back-to-catalog" title="Vissza">
+  <svg aria-hidden="true" focusable="false" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<div class="dh-crumb">
+  <span class="crumb-text"><strong>Falusi route</strong><span class="sep">›</span>Checkout<span class="crumb-file">v0.4-checkout-rural.html</span></span>
+  <button type="button" class="dh-copy" data-ref="[DH] Falusi route › Checkout (v0.4-checkout-rural.html)" aria-label="Útvonal másolása" title="Útvonal másolása"></button>
+</div>
+
+<div class="page-intro">
+  <div class="eyebrow">Sprint 4 · Checkout — zóna-validáció állapotai (v1.6)</div>
+  <h1>A cím dönti el a zónát, a zóna a feltételeket.</h1>
+  <p>Három checkout-állapot: mentett címek közti váltás (zóna + threshold automatikusan frissül), mismatch-warning ha a kosár-zóna nem egyezik a beírt címmel, és új cím inline validációja. A production checkout-delivery.html vizuális nyelvében.</p>
+  <div class="principle"><strong>Spec:</strong> F1.3 (zóna-validáció), F5.1 (cím-választó). Település → zóna lookup (14 keresztúri falu + Udvarhely). Cart total fix: <strong>188 RON</strong> minden panelben — A panelben a kiválasztott cím zónája dönti el, hogy ingyenes-e a szállítás (Udvarhely 150 RON / Keresztúri 200 RON threshold).</div>
+</div>
+
+<div class="panels">
+
+  <!-- ============ A) Mentett címek · zóna-egyezés (interaktív) ============ -->
+  <div class="panel">
+    <div class="panel-meta">
+      <span class="num">A</span>
+      <span class="ttl">Mentett címek · zóna-egyezés <span class="muted">interaktív · 3 cím · click-to-switch</span></span>
+      <button type="button" class="dh-copy" data-ref="[DH] Falusi route › Checkout › A — Mentett címek · zóna-egyezés (v0.4-checkout-rural.html)" aria-label="Hivatkozás másolása" title="Másolás: A — Mentett címek"></button>
+    </div>
+    <div class="screen ck-screen" data-panel="A">
+
+      <div class="ck-header">
+        <button type="button" class="ck-back-btn">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h2 class="ck-h1">Szállítási adatok</h2>
+        <div class="ck-spacer"></div>
+      </div>
+
+      <div class="ck-body">
+
+        <div class="ck-form-group">
+          <label class="ck-form-label">Címzett neve <span class="ck-required">*</span></label>
+          <input class="ck-form-input" type="text" value="Szabolcs Becze" readonly>
+        </div>
+        <div class="ck-form-group">
+          <label class="ck-form-label">Telefonszám <span class="ck-required">*</span></label>
+          <input class="ck-form-input" type="text" value="0740 507 135" readonly>
+        </div>
+
+        <p class="ck-section-header">Szállítási cím</p>
+
+        <div class="ck-address-list" data-address-list>
+          <button class="ck-address-card" type="button" data-zone="udvarhely" data-threshold="150" data-day="Pén, 8 máj.">
+            <span class="ck-radio-outer"><span class="ck-radio-inner"></span></span>
+            <div class="ck-card-content">
+              <div class="ck-card-title-row">
+                <span class="ck-card-title">Otthon</span>
+                <span class="ck-card-badge">Alapért.</span>
+              </div>
+              <p class="ck-card-address">Morii utca 20</p>
+              <p class="ck-card-address">Székelyudvarhely · 535600</p>
+            </div>
+          </button>
+          <button class="ck-address-card selected" type="button" data-zone="kereszturi" data-threshold="200" data-day="Csüt, 8 máj.">
+            <span class="ck-radio-outer"><span class="ck-radio-inner"></span></span>
+            <div class="ck-card-content">
+              <div class="ck-card-title-row">
+                <span class="ck-card-title">Anyu</span>
+              </div>
+              <p class="ck-card-address">Fő út 18</p>
+              <p class="ck-card-address">Bögöz (Mugeni) · 537005</p>
+            </div>
+          </button>
+          <button class="ck-address-card" type="button" data-zone="kereszturi" data-threshold="200" data-day="Csüt, 8 máj.">
+            <span class="ck-radio-outer"><span class="ck-radio-inner"></span></span>
+            <div class="ck-card-content">
+              <div class="ck-card-title-row">
+                <span class="ck-card-title">Iroda</span>
+              </div>
+              <p class="ck-card-address">Templom tér 5</p>
+              <p class="ck-card-address">Siménfalva · 537250</p>
+            </div>
+          </button>
+          <button class="ck-add-address" type="button">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Más címre kérem
+          </button>
+        </div>
+
+        <!-- Zone summary — frissül kattintásra -->
+        <div class="ck-zone-summary">
+          <div class="ico">
+            <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+          </div>
+          <div class="body">
+            <div class="eyebrow">Kiszállítási zóna</div>
+            <div class="zone-name" data-zone-name>Keresztúri</div>
+            <div class="terms" data-zone-terms><strong>Csüt., 14:00–18:00</strong> · ingyenes <strong>200 RON</strong> felett · cutoff: csüt. hajnal 05:00</div>
+            <div class="ck-zone-nudge" data-zone-nudge>
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              <span>Még <strong>12 RON</strong>-nal ingyenes a csütörtöki szállítás.</span>
+            </div>
+            <div class="free-tag" data-zone-free style="display:none">Ingyenes szállítás</div>
+          </div>
+        </div>
+
+        <div class="ck-date-section">
+          <label class="ck-form-label">Szállítási nap <span class="ck-required">*</span></label>
+          <div class="ck-date-scroll-wrapper">
+            <div class="ck-date-scroll" data-day-list></div>
+          </div>
+        </div>
+
+        <div class="ck-form-group">
+          <label class="ck-form-label">Megjegyzés <span class="ck-optional-label">(opcionális)</span></label>
+          <textarea class="ck-textarea" placeholder="Pl: Csöngessen kétszer"></textarea>
+        </div>
+
+      </div>
+
+      <div class="ck-cta-bar">
+        <button type="button" class="ck-cta-btn ck-active" data-cta>Tovább a fizetéshez · <span data-cta-total>203,00</span> RON</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ B) Település-mismatch — első cím beírás, kosár-zóna eltérés ============ -->
+  <div class="panel">
+    <div class="panel-meta">
+      <span class="num" style="background: var(--amber-text-strong);">B</span>
+      <span class="ttl">Település-mismatch <span class="muted">első cím beírás · kosár-zóna eltérés warning</span></span>
+      <button type="button" class="dh-copy" data-ref="[DH] Falusi route › Checkout › B — Település-mismatch (v0.4-checkout-rural.html)" aria-label="Hivatkozás másolása" title="Másolás: B — Település-mismatch"></button>
+    </div>
+    <div class="screen ck-screen">
+
+      <div class="ck-header">
+        <button type="button" class="ck-back-btn">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h2 class="ck-h1">Szállítási adatok</h2>
+        <div class="ck-spacer"></div>
+      </div>
+
+      <div class="ck-body">
+
+        <div class="ck-form-group">
+          <label class="ck-form-label">Címzett neve <span class="ck-required">*</span></label>
+          <input class="ck-form-input" type="text" value="Kovács Anna" readonly>
+        </div>
+        <div class="ck-form-group">
+          <label class="ck-form-label">Telefonszám <span class="ck-required">*</span></label>
+          <input class="ck-form-input" type="text" value="0744 123 456" readonly>
+        </div>
+
+        <p class="ck-section-header">Szállítási cím</p>
+
+        <div class="ck-address-fields">
+          <div class="ck-form-group">
+            <label class="ck-form-label-sm">Utca <span class="ck-required">*</span></label>
+            <input class="ck-form-input" type="text" value="Fő utca" readonly>
+          </div>
+          <div class="ck-form-group">
+            <label class="ck-form-label-sm">Házszám <span class="ck-required">*</span></label>
+            <input class="ck-form-input" type="text" value="12" readonly>
+          </div>
+          <div class="ck-row-2">
+            <div class="ck-form-group">
+              <label class="ck-form-label-sm">Város <span class="ck-required">*</span></label>
+              <input class="ck-form-input flagged" type="text" value="Betfalva" readonly>
+            </div>
+            <div class="ck-form-group">
+              <label class="ck-form-label-sm">Irányítószám <span class="ck-required">*</span></label>
+              <input class="ck-form-input" type="text" value="537095" readonly>
+            </div>
+          </div>
+        </div>
+
+        <div class="ck-zone-mismatch">
+          <div class="ck-mm-head">
+            <div class="ck-mm-icon">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            </div>
+            <div class="ck-mm-text">
+              <div class="ck-mm-title">Másik zóna ide tartozik</div>
+              <p class="ck-mm-body">A megadott település (<strong>Betfalva</strong>) a <strong>Keresztúri zónához</strong> tartozik. A kosárban Udvarhely volt kiválasztva.</p>
+            </div>
+          </div>
+          <div class="ck-mm-terms">
+            <div class="ck-mm-row"><span class="ck-mm-lab">Új zóna</span><span class="ck-mm-val">Keresztúri</span></div>
+            <div class="ck-mm-row"><span class="ck-mm-lab">Szállítás</span><span class="ck-mm-val">Csüt., 14:00–18:00</span></div>
+            <div class="ck-mm-row"><span class="ck-mm-lab">Cutoff</span><span class="ck-mm-val">Csüt. hajnal 05:00</span></div>
+            <div class="ck-mm-row"><span class="ck-mm-lab">Ingyenes határ</span><span class="ck-mm-val">200 RON</span></div>
+          </div>
+          <div class="ck-mm-actions">
+            <button type="button" class="ck-mm-primary">Átállítom Keresztúri zónára</button>
+            <button type="button" class="ck-mm-secondary">Cím javítása</button>
+          </div>
+        </div>
+
+        <div class="ck-date-section disabled">
+          <label class="ck-form-label">Szállítási nap <span class="ck-required">*</span></label>
+          <div class="ck-date-scroll-wrapper">
+            <div class="ck-date-scroll">
+              <button type="button" class="ck-date-btn"><span class="ck-day-name">Sze</span><span class="ck-day-date">6 máj.</span></button>
+              <button type="button" class="ck-date-btn"><span class="ck-day-name">Pén</span><span class="ck-day-date">8 máj.</span></button>
+              <button type="button" class="ck-date-btn"><span class="ck-day-name">Sze</span><span class="ck-day-date">13 máj.</span></button>
+            </div>
+          </div>
+        </div>
+
+        <p class="ck-date-hint">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+          Először erősítsd meg a kiszállítási zónát.
+        </p>
+
+      </div>
+
+      <div class="ck-cta-bar">
+        <button type="button" class="ck-cta-btn" disabled>Erősítsd meg a kört a folytatáshoz</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ C) Új cím validáció ============ -->
+  <div class="panel">
+    <div class="panel-meta">
+      <span class="num">C</span>
+      <span class="ttl">Új cím validáció <span class="muted">település-lookup · success state</span></span>
+      <button type="button" class="dh-copy" data-ref="[DH] Falusi route › Checkout › C — Új cím validáció (v0.4-checkout-rural.html)" aria-label="Hivatkozás másolása" title="Másolás: C — Új cím validáció"></button>
+    </div>
+    <div class="screen ck-screen">
+
+      <div class="ck-header">
+        <button type="button" class="ck-back-btn">
+          <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <h2 class="ck-h1">Szállítási adatok</h2>
+        <div class="ck-spacer"></div>
+      </div>
+
+      <div class="ck-body">
+
+        <div class="ck-form-group">
+          <label class="ck-form-label">Címzett neve <span class="ck-required">*</span></label>
+          <input class="ck-form-input" type="text" value="Szabolcs Becze" readonly>
+        </div>
+        <div class="ck-form-group">
+          <label class="ck-form-label">Telefonszám <span class="ck-required">*</span></label>
+          <input class="ck-form-input" type="text" value="0740 507 135" readonly>
+        </div>
+
+        <p class="ck-section-header">Szállítási cím</p>
+
+        <div class="ck-address-list">
+          <button class="ck-address-card" type="button">
+            <span class="ck-radio-outer"><span class="ck-radio-inner"></span></span>
+            <div class="ck-card-content">
+              <div class="ck-card-title-row">
+                <span class="ck-card-title">Otthon</span>
+                <span class="ck-card-badge">Alapért.</span>
+              </div>
+              <p class="ck-card-address">Morii utca 20, Székelyudvarhely</p>
+            </div>
+          </button>
+          <button class="ck-address-card" type="button">
+            <span class="ck-radio-outer"><span class="ck-radio-inner"></span></span>
+            <div class="ck-card-content">
+              <div class="ck-card-title-row">
+                <span class="ck-card-title">Anyu</span>
+              </div>
+              <p class="ck-card-address">Fő út 18, Bögöz</p>
+            </div>
+          </button>
+        </div>
+
+        <!-- Open new address form -->
+        <div class="ck-new-address-form">
+          <div class="ck-new-address-header">
+            <span class="ck-new-address-title">Új cím</span>
+            <button class="ck-collapse-btn" type="button" aria-label="Bezárás">
+              <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+            </button>
+          </div>
+          <div class="ck-form-group">
+            <label class="ck-form-label-sm">Cím megnevezése</label>
+            <input class="ck-form-input" type="text" value="Nagymama" placeholder="pl. Otthon, Iroda">
+          </div>
+          <div class="ck-form-group">
+            <label class="ck-form-label-sm">Utca <span class="ck-required">*</span></label>
+            <input class="ck-form-input" type="text" value="Posta utca">
+          </div>
+          <div class="ck-form-group">
+            <label class="ck-form-label-sm">Házszám <span class="ck-required">*</span></label>
+            <input class="ck-form-input" type="text" value="7">
+          </div>
+          <div class="ck-row-2">
+            <div class="ck-form-group">
+              <label class="ck-form-label-sm">Város <span class="ck-required">*</span></label>
+              <div class="ck-input-with-validation">
+                <input class="ck-form-input validated" type="text" value="Bögöz">
+                <span class="ck-validation-icon">
+                  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                </span>
+              </div>
+              <div class="ck-validation-msg success">
+                <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Bögöz · Keresztúri zónához tartozik</span>
+              </div>
+            </div>
+            <div class="ck-form-group">
+              <label class="ck-form-label-sm">Irányítószám <span class="ck-required">*</span></label>
+              <input class="ck-form-input" type="text" value="537005">
+            </div>
+          </div>
+          <button class="ck-save-address" type="button">Mentés és kiválasztás</button>
+        </div>
+
+      </div>
+
+      <div class="ck-cta-bar">
+        <button type="button" class="ck-cta-btn" disabled>Mentsd el az új címet a folytatáshoz</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="notes">
+  <h2>Tervezési jegyzetek (v1.6)</h2>
+  <ul>
+    <li><strong>Vizuális forrás:</strong> a production <code>checkout-delivery.html</code> (form layout, h-56 header, 88px fix CTA) és <code>checkout-delivery-filled.html</code> (multi-address card + radio + "Más címre kérem" pattern). Cart total fix 188 RON minden panelben.</li>
+    <li><strong>A) Mentett címek · zóna-egyezés (interaktív)</strong> — 3 saved address (Otthon Udvarhelyen, Anyu Bögözben, Iroda Siménfalván). Click-to-switch: a kiválasztott cím zónája dönti el a szállítási feltételeket. Udvarhely (150 RON threshold, daily) → 188 RON ≥ 150 → ingyenes. Keresztúri (200 RON) → 188 RON < 200 → 15 RON + nudge „még 12 RON-nal ingyenes a csüt. szállítás". Date picker is zónánként cserélődik (Sze/Pén/Szo... Udvarhely vs csak Csüt Keresztúri).</li>
+    <li><strong>B) Település-mismatch</strong> — első cím beírás (no saved address). User Betfalvát ír be, de a kosárban Udvarhely volt kiválasztva. Amber warning a form alatt: cél-zóna feltételeit listázza, primary CTA „Átállítom Keresztúri zónára", secondary text-link „Cím javítása". Date picker disabled (50% opacity), main CTA disabled.</li>
+    <li><strong>C) Új cím validáció</strong> — 2 mentett cím + nyitott „Más címre kérem" form. Inline validáció: a Város mezőbe gépelve („Bögöz") → zöld pipa ikon a mezőben + success message „Bögöz · Keresztúri zónához tartozik". A form cream-dark háttérrel + primary border kiemeli a focus-állapotot. „Mentés és kiválasztás" CTA a form alján.</li>
+    <li><strong>Copy-tone:</strong> semleges, faktuális. „Másik zóna ide tartozik" nem „Hibás cím". „Még 12 RON-nal ingyenes" nem „Csak X RON hiányzik!". PRODUCT.md: calm confidence, no FOMO, no urgency theatre.</li>
+    <li><strong>Validáció pillanata:</strong> blur (mező elhagyásakor) vagy debounced 400ms gépelés közben. Lookup táblázat: 14 keresztúri falu (HU + RO név) + Székelyudvarhely. Kívül eső → „még nem szállítunk" warning + waitlist-CTA (jövőbeli feature, most nem mockoljuk).</li>
+    <li><strong>Interaktivitás scope:</strong> Panel A teljes interaktivitása JS-sel a wireframe-ben (zone summary, dates, CTA total). Panel B és C statikus mock — a tényleges interakciókat (form-mező-fokuszálás, validáció-trigger) implementáció során finomítjuk.</li>
+  </ul>
+</div>
+
+<script>
+(function(){
+  var COPY='<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+  var CHECK='<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+  var toast=document.createElement('div'); toast.id='dh-toast'; toast.textContent='Másolva'; document.body.appendChild(toast);
+  var t;
+  function showToast(m){ toast.textContent=m||'Másolva'; toast.classList.add('show'); clearTimeout(t); t=setTimeout(function(){toast.classList.remove('show');},1500); }
+  function fb(text,ok,fail){ var ta=document.createElement('textarea'); ta.value=text; ta.style.cssText='position:fixed;left:-9999px;opacity:0'; document.body.appendChild(ta); ta.focus(); ta.select(); try{ document.execCommand('copy')?ok():fail(); }catch(e){ fail(); } document.body.removeChild(ta); }
+  function copyText(text,btn){
+    function ok(){ if(btn){ btn.classList.add('copied'); btn.innerHTML=CHECK; setTimeout(function(){btn.classList.remove('copied'); btn.innerHTML=COPY;},1200);} showToast('Másolva: '+text.slice(0,40)+(text.length>40?'…':'')); }
+    function fail(){ showToast('Másolás sikertelen'); }
+    if(navigator.clipboard && window.isSecureContext){ navigator.clipboard.writeText(text).then(ok).catch(function(){fb(text,ok,fail);}); }
+    else { fb(text,ok,fail); }
+  }
+  document.addEventListener('click', function(e){
+    var b=e.target.closest('.dh-copy'); if(!b) return;
+    e.preventDefault(); e.stopPropagation();
+    var ref=b.dataset.ref; if(ref) copyText(ref,b);
+  });
+  document.querySelectorAll('.dh-copy').forEach(function(b){ if(!b.innerHTML.trim()) b.innerHTML=COPY; });
+
+  /* ─── Panel A interaktivitás: address-card click → zone summary, dates, CTA frissül ─── */
+  var CART_TOTAL = 188.00; /* RON, fix kosár-érték a demóban */
+  var ZONE_DATA = {
+    udvarhely: {
+      name: 'Udvarhely',
+      terms: '<strong>Napi kiszállítás</strong> · ingyenes <strong>150 RON</strong> felett · másnap reggel nálad',
+      days: [['Sze','6 máj.'],['Csüt','7 máj.'],['Pén','8 máj.'],['Szo','9 máj.'],['Hét','11 máj.']]
+    },
+    kereszturi: {
+      name: 'Keresztúri',
+      terms: '<strong>Csüt., 14:00–18:00</strong> · ingyenes <strong>200 RON</strong> felett · cutoff: csüt. hajnal 05:00',
+      days: [['Csüt','8 máj.'],['Csüt','15 máj.'],['Csüt','22 máj.'],['Csüt','29 máj.']]
+    }
+  };
+
+  function fmtRon(n){ return n.toFixed(2).replace('.', ',') + ' RON'; }
+
+  function renderPanelA(card){
+    var screen = card.closest('[data-panel="A"]');
+    if (!screen) return;
+    var zone = card.dataset.zone;
+    var threshold = parseFloat(card.dataset.threshold);
+    var data = ZONE_DATA[zone];
+    if (!data) return;
+
+    /* 1. selected card visual */
+    screen.querySelectorAll('.ck-address-card').forEach(function(c){ c.classList.remove('selected'); });
+    card.classList.add('selected');
+
+    /* 2. zone summary */
+    screen.querySelector('[data-zone-name]').textContent = data.name;
+    screen.querySelector('[data-zone-terms]').innerHTML = data.terms;
+
+    var nudge = screen.querySelector('[data-zone-nudge]');
+    var freeTag = screen.querySelector('[data-zone-free]');
+    var ctaTotal = screen.querySelector('[data-cta-total]');
+
+    var isFree = CART_TOTAL >= threshold;
+    var shippingFee = isFree ? 0 : (zone === 'kereszturi' ? 15 : 10);
+    var grandTotal = CART_TOTAL + shippingFee;
+
+    if (isFree) {
+      nudge.style.display = 'none';
+      freeTag.style.display = 'inline-block';
+      freeTag.textContent = 'Ingyenes szállítás · ' + fmtRon(CART_TOTAL);
+    } else {
+      nudge.style.display = 'flex';
+      var diff = (threshold - CART_TOTAL).toFixed(0);
+      var dayWord = zone === 'kereszturi' ? 'csütörtöki' : 'napi';
+      nudge.querySelector('span').innerHTML = 'Még <strong>' + diff + ' RON</strong>-nal ingyenes a ' + dayWord + ' szállítás.';
+      freeTag.style.display = 'none';
+    }
+    if (ctaTotal) ctaTotal.textContent = grandTotal.toFixed(2).replace('.', ',');
+
+    /* 3. date picker */
+    var dayList = screen.querySelector('[data-day-list]');
+    if (dayList) {
+      dayList.innerHTML = '';
+      data.days.forEach(function(d, i){
+        var btn = document.createElement('button');
+        btn.className = 'ck-date-btn' + (i === 0 ? ' selected' : '');
+        btn.type = 'button';
+        btn.innerHTML = '<span class="ck-day-name">' + d[0] + '</span><span class="ck-day-date">' + d[1] + '</span>';
+        dayList.appendChild(btn);
+      });
+    }
+  }
+
+  /* Init Panel A: render based on default-selected card */
+  var panelA = document.querySelector('[data-panel="A"]');
+  if (panelA) {
+    var initSelected = panelA.querySelector('.ck-address-card.selected');
+    if (initSelected) renderPanelA(initSelected);
+    panelA.querySelectorAll('.ck-address-card').forEach(function(c){
+      c.addEventListener('click', function(){ renderPanelA(c); });
+    });
+  }
+
+  /* Selected date-btn highlight (Panel A) */
+  document.addEventListener('click', function(e){
+    var b = e.target.closest('[data-panel="A"] .ck-date-btn');
+    if (!b) return;
+    b.parentElement.querySelectorAll('.ck-date-btn').forEach(function(x){ x.classList.remove('selected'); });
+    b.classList.add('selected');
+  });
+})();
+</script>
+
+</body>
+</html>

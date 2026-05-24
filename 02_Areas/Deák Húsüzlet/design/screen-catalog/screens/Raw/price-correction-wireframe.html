@@ -1,0 +1,931 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Admin ar-korrekció wireframe</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+:root {
+  --bg:#FAF8F5; --card:#FFFFFF; --primary:#9B2335; --primary-light:#F4E6E8;
+  --text:#2C2825; --text2:#5C544C; --text3:#8A8078; --border:#E8E2DB; --border-strong:#C5BCB3;
+  --success:#2D7A4F; --success-light:#E8F5E9; --success-bg:rgba(45,122,79,0.06);
+  --warning:#C4841D; --warning-light:#FFF8E1; --warning-bg:rgba(196,132,29,0.06);
+  --error:#C4302B; --error-light:#FEF2F2; --error-border:#FECACA;
+  --info:#2B6CB0; --info-light:#EBF4FF;
+  --secondary:#D4A574;
+  --cream:#FAF8F5;
+}
+body { font-family:Inter,'Inter var',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); }
+
+.back-btn { display:inline-flex; align-items:center; gap:6px; padding:10px 16px; margin:16px 24px 0; background:white; border:1px solid var(--border); border-radius:8px; font-family:inherit; font-size:14px; font-weight:600; color:var(--primary); text-decoration:none; cursor:pointer; }
+.back-btn:hover { background:#FAF7F4; }
+
+.header { max-width:1500px; margin:0 auto; padding:16px 24px 0; }
+.header h1 { font-size:26px; font-weight:800; }
+.header p { font-size:14px; color:var(--text3); margin-top:4px; }
+.header-meta { margin-top:8px; font-size:12px; color:var(--text3); }
+.badge-ticket { display:inline-block; background:var(--primary-light); color:var(--primary); font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px; margin-right:6px; }
+
+.tabs-nav { display:flex; gap:6px; flex-wrap:wrap; padding:16px 24px 0; max-width:1500px; margin:0 auto; }
+.tab-btn { padding:7px 16px; border-radius:20px; border:2px solid var(--border); background:var(--card); color:var(--text3); font-size:13px; font-weight:600; cursor:pointer; transition:all 0.15s; }
+.tab-btn.active { background:var(--primary); color:white; border-color:var(--primary); }
+.tab-btn:hover:not(.active) { border-color:var(--primary); color:var(--primary); }
+
+.tab-panel { display:none; }
+.tab-panel.active { display:block; }
+
+.content { max-width:1500px; margin:0 auto; padding:20px 24px 40px; }
+.flow-wrap { display:flex; gap:24px; flex-wrap:wrap; align-items:flex-start; }
+
+/* Phone frame */
+.phone { width:375px; min-height:720px; background:var(--bg); border-radius:24px; border:2px solid var(--border); overflow:hidden; box-shadow:0 8px 32px rgba(0,0,0,0.12); flex-shrink:0; display:flex; flex-direction:column; }
+.phone-header { background:var(--card); padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.phone-header .brand { font-size:18px; font-weight:700; font-family:Georgia,serif; color:var(--primary); flex:1; }
+.phone-body { flex:1; padding:12px 16px 0; overflow-y:auto; max-height:620px; }
+
+/* Back header */
+.back-header { background:var(--card); padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:10px; box-shadow:0 1px 3px rgba(0,0,0,0.06); }
+.back-header .back-arrow { cursor:pointer; display:flex; align-items:center; color:var(--text); }
+.back-header .back-arrow svg { width:22px; height:22px; stroke:var(--text); stroke-width:2; fill:none; }
+.back-header .page-title { flex:1; text-align:center; font-size:16px; font-weight:700; color:var(--text); }
+.back-header .spacer { width:22px; }
+
+/* Bottom fixed CTA */
+.phone-bottom-cta { background:var(--card); border-top:1px solid var(--border); padding:12px 16px 16px; box-shadow:0 -2px 8px rgba(0,0,0,0.06); }
+.btn-primary { width:100%; padding:14px; background:var(--primary); color:white; border:none; border-radius:8px; font-family:inherit; font-size:15px; font-weight:600; cursor:pointer; text-align:center; }
+.btn-primary:hover { opacity:0.95; }
+.btn-primary:disabled { background:var(--border); color:var(--text3); cursor:not-allowed; }
+
+/* Info rows (customer card style from PreparationDetail) */
+.info-card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:16px; margin-bottom:12px; }
+.info-row { display:flex; align-items:start; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+.info-row:last-child { border-bottom:none; }
+.info-row-icon { flex-shrink:0; margin-top:2px; }
+.info-row-icon svg { width:16px; height:16px; stroke:var(--text3); stroke-width:2; fill:none; }
+.info-row-content { flex:1; }
+.info-label { font-size:12px; color:var(--text3); }
+.info-value { font-size:15px; font-weight:500; color:var(--text); margin-top:1px; }
+
+/* Product list (prep detail) */
+.products-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+.products-title { font-size:14px; font-weight:600; color:var(--text2); }
+.products-meta { display:flex; align-items:center; gap:8px; }
+.products-count { font-size:12px; font-weight:600; color:var(--text3); background:#F5F2EF; border-radius:20px; padding:2px 8px; }
+.edit-icon-btn { width:32px; height:32px; border-radius:8px; border:1.5px solid var(--primary); background:transparent; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.15s; }
+.edit-icon-btn:hover { background:var(--primary-light); }
+.edit-icon-btn svg { width:16px; height:16px; stroke:var(--primary); stroke-width:2; fill:none; }
+
+.product-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border); }
+.product-row:last-child { border-bottom:none; }
+.product-name { font-size:14px; color:var(--text); }
+.product-qty { font-size:14px; font-weight:700; color:var(--primary); }
+
+/* Savings breakdown */
+.savings-row { display:flex; justify-content:space-between; align-items:center; padding:4px 0; }
+.savings-label { font-size:13px; color:var(--text2); }
+.savings-value { font-size:13px; color:var(--text2); }
+.savings-value.free { color:var(--success); font-weight:500; }
+.savings-value.discount { color:var(--success); font-weight:500; }
+.savings-strikethrough { text-decoration:line-through; color:var(--text3); margin-right:4px; font-size:12px; }
+
+/* Total row */
+.total-row { display:flex; justify-content:space-between; align-items:center; padding:12px 0 4px; border-top:1px solid var(--border); margin-top:4px; }
+.total-label { font-size:14px; font-weight:600; color:var(--text2); }
+.total-value { font-size:16px; font-weight:800; color:var(--primary); }
+
+/* Warning banner */
+.warning-banner { display:flex; align-items:center; gap:8px; padding:12px; border-radius:12px; background:var(--warning-bg); border:1px solid rgba(196,132,29,0.25); margin-bottom:12px; }
+.warning-banner svg { width:16px; height:16px; stroke:var(--warning); stroke-width:2; fill:none; flex-shrink:0; }
+.warning-banner p { font-size:13px; font-weight:500; color:var(--warning); }
+
+/* CTA area */
+.cta-btn { width:100%; border-radius:12px; height:56px; font-size:15px; font-weight:700; display:flex; align-items:center; justify-content:center; border:none; cursor:pointer; font-family:inherit; margin-bottom:12px; }
+.cta-btn.primary { background:var(--primary); color:white; }
+
+/* --- Edit screen styles --- */
+
+/* Cart-style item card */
+.edit-item { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:14px; margin-bottom:10px; }
+.edit-item.modified { border-color:var(--primary); border-width:1.5px; }
+.edit-item-top { display:flex; gap:12px; }
+.edit-item-thumb { width:56px; height:56px; border-radius:8px; background:#F0ECE8; flex-shrink:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.edit-item-thumb img { width:100%; height:100%; object-fit:cover; }
+.edit-item-thumb svg { width:24px; height:24px; stroke:var(--text3); stroke-width:1.5; fill:none; }
+.edit-item-info { flex:1; min-width:0; }
+.edit-item-name-row { display:flex; align-items:start; justify-content:space-between; gap:8px; }
+.edit-item-name { font-size:15px; font-weight:600; color:var(--text); line-height:1.3; }
+.edit-item-delete { width:32px; height:32px; border-radius:8px; border:none; background:transparent; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+.edit-item-delete:hover { background:var(--error-light); }
+.edit-item-delete svg { width:16px; height:16px; stroke:var(--text3); stroke-width:2; fill:none; }
+.edit-item-delete:hover svg { stroke:var(--error); }
+.edit-item-delete.disabled { opacity:0.3; pointer-events:none; }
+.edit-item-unit-price { font-size:13px; color:var(--text3); margin-top:3px; }
+
+.edit-item-controls { display:flex; align-items:center; justify-content:space-between; margin-top:10px; gap:8px; }
+.edit-item-original { font-size:11px; color:var(--text3); margin-top:4px; }
+.edit-item-original span { font-weight:600; }
+
+/* Quantity selector (compact) */
+.qty-selector { display:flex; align-items:center; gap:6px; }
+.qty-btn { width:36px; height:36px; border-radius:8px; border:1px solid var(--border-strong); background:var(--card); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+.qty-btn:hover { border-color:var(--primary); }
+.qty-btn:active { background:var(--primary-light); border-color:var(--primary); }
+.qty-btn svg { width:14px; height:14px; stroke:var(--text); stroke-width:2.5; fill:none; }
+.qty-input { width:56px; height:36px; border-radius:8px; border:1px solid var(--border-strong); text-align:center; font-size:15px; font-weight:600; color:var(--text); font-family:inherit; background:var(--card); }
+.qty-input:focus { border-color:var(--primary); outline:none; box-shadow:0 0 0 2px rgba(155,35,53,0.15); }
+.qty-input.changed { border-color:var(--primary); background:var(--primary-light); }
+
+.edit-item-subtotal { text-align:right; flex-shrink:0; }
+.edit-item-subtotal-label { font-size:11px; color:var(--text3); }
+.edit-item-subtotal-value { font-size:15px; font-weight:600; color:var(--text); }
+.edit-item-subtotal-value.changed { color:var(--primary); }
+
+/* Modified indicator */
+.modified-tag { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:700; color:var(--primary); background:var(--primary-light); padding:2px 6px; border-radius:4px; margin-left:6px; }
+
+/* Summary section on edit screen */
+.edit-summary { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:16px; margin-bottom:12px; }
+.edit-summary-title { font-size:14px; font-weight:600; color:var(--text2); margin-bottom:10px; }
+
+.original-total-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; }
+.original-total-label { font-size:13px; color:var(--text3); }
+.original-total-value { font-size:13px; color:var(--text3); text-decoration:line-through; }
+
+.new-total-row { display:flex; justify-content:space-between; align-items:center; padding:8px 0 0; border-top:1px solid var(--border); margin-top:4px; }
+.new-total-label { font-size:15px; font-weight:600; color:var(--text); }
+.new-total-value { font-size:18px; font-weight:800; color:var(--primary); }
+
+.deviation-row { display:flex; justify-content:space-between; align-items:center; padding:4px 0 0; }
+.deviation-label { font-size:12px; color:var(--text3); }
+.deviation-value { font-size:12px; font-weight:600; }
+.deviation-value.positive { color:var(--error); }
+.deviation-value.negative { color:var(--success); }
+
+/* Min order warning */
+.min-order-warning { display:flex; align-items:start; gap:8px; padding:12px; border-radius:10px; background:var(--error-light); border:1px solid var(--error-border); margin-bottom:12px; }
+.min-order-warning svg { width:16px; height:16px; stroke:var(--error); stroke-width:2; fill:none; flex-shrink:0; margin-top:1px; }
+.min-order-warning p { font-size:13px; font-weight:500; color:var(--error); }
+
+/* --- Bottom sheet modal --- */
+.modal-overlay { position:absolute; inset:0; background:rgba(0,0,0,0.35); z-index:50; display:flex; align-items:flex-end; }
+.modal-sheet { background:var(--card); width:100%; border-radius:16px 16px 0 0; padding:24px 20px 28px; }
+.modal-sheet h3 { font-size:17px; font-weight:700; color:var(--text); margin-bottom:8px; }
+.modal-sheet p { font-size:14px; color:var(--text2); line-height:1.5; margin-bottom:16px; }
+.modal-actions { display:flex; gap:10px; }
+.modal-btn { flex:1; height:48px; border-radius:12px; font-family:inherit; font-size:14px; font-weight:700; cursor:pointer; border:none; }
+.modal-btn.secondary { background:transparent; border:1.5px solid var(--border-strong); color:var(--text2); }
+.modal-btn.primary { background:var(--primary); color:white; }
+.modal-btn.danger { background:var(--error); color:white; }
+
+.modal-warning-icon { width:40px; height:40px; border-radius:10px; background:var(--warning-bg); border:1px solid rgba(196,132,29,0.2); display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+.modal-warning-icon svg { width:20px; height:20px; stroke:var(--warning); stroke-width:2; fill:none; }
+.modal-danger-icon { width:40px; height:40px; border-radius:10px; background:var(--error-light); border:1px solid var(--error-border); display:flex; align-items:center; justify-content:center; margin-bottom:12px; }
+.modal-danger-icon svg { width:20px; height:20px; stroke:var(--error); stroke-width:2; fill:none; }
+
+.modal-detail-box { background:var(--bg); border-radius:8px; padding:10px 12px; margin-bottom:16px; }
+.modal-detail-row { display:flex; justify-content:space-between; align-items:center; padding:3px 0; }
+.modal-detail-label { font-size:13px; color:var(--text3); }
+.modal-detail-value { font-size:13px; font-weight:600; color:var(--text); }
+.modal-detail-value.highlight { color:var(--primary); }
+
+/* --- Customer order detail: modification log --- */
+.timeline { display:flex; flex-direction:column; }
+.timeline-item { display:flex; align-items:start; gap:12px; }
+.timeline-dot-col { display:flex; flex-direction:column; align-items:center; }
+.timeline-dot { width:12px; height:12px; border-radius:50%; flex-shrink:0; margin-top:5px; }
+.timeline-dot.active { background:var(--primary); }
+.timeline-dot.inactive { border:2px solid var(--border-strong); background:var(--card); }
+.timeline-dot.modification { background:var(--info); }
+.timeline-line { width:2px; flex:1; min-height:32px; background:var(--border); margin-top:4px; }
+.timeline-content { flex:1; padding-bottom:16px; }
+.timeline-status { font-size:15px; font-weight:500; color:var(--text); }
+.timeline-time { font-size:13px; color:var(--text3); margin-top:2px; }
+.timeline-note { font-size:13px; color:var(--text2); margin-top:2px; }
+
+/* Modification changelog inside timeline */
+.mod-changelog { background:var(--info-light); border-radius:8px; padding:10px 12px; margin-top:6px; }
+.mod-changelog-title { font-size:12px; font-weight:700; color:var(--info); margin-bottom:6px; display:flex; align-items:center; gap:4px; }
+.mod-changelog-title svg { width:12px; height:12px; stroke:var(--info); stroke-width:2.5; fill:none; }
+.mod-change-row { display:flex; align-items:center; gap:6px; padding:3px 0; font-size:13px; }
+.mod-change-name { color:var(--text); font-weight:500; }
+.mod-change-arrow { color:var(--text3); font-size:11px; }
+.mod-change-old { color:var(--text3); }
+.mod-change-new { color:var(--info); font-weight:600; }
+.mod-change-removed { color:var(--error); font-weight:500; font-size:12px; }
+
+/* Status badge inline */
+.status-badge { display:inline-flex; align-items:center; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:700; }
+.status-badge.processing { background:#FFF3E0; color:#E65100; }
+.status-badge.new-order { background:#E3F2FD; color:#1565C0; }
+
+/* Call button */
+.call-btn { display:inline-flex; align-items:center; gap:4px; background:var(--success-light); color:var(--success); border-radius:8px; padding:8px 12px; font-size:13px; font-weight:600; text-decoration:none; flex-shrink:0; }
+.call-btn svg { width:14px; height:14px; stroke:var(--success); stroke-width:2; fill:none; }
+
+/* Time slot chip */
+.slot-chip { display:inline-flex; align-items:center; padding:3px 8px; border-radius:6px; background:rgba(155,35,53,0.05); border:1px solid rgba(155,35,53,0.15); font-size:13px; font-weight:500; color:var(--text); margin-right:4px; }
+
+/* Status section (customer) */
+.status-card { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:16px; margin-bottom:12px; }
+.status-indicator { display:flex; gap:4px; margin:12px 0; }
+.status-step { flex:1; height:4px; border-radius:2px; }
+.status-step.done { background:var(--primary); }
+.status-step.current { background:var(--primary); opacity:0.5; }
+.status-step.pending { background:var(--border); }
+.status-summary { font-size:14px; font-weight:500; color:var(--primary); }
+
+/* Items section (customer) */
+.customer-item-row { display:flex; justify-content:space-between; align-items:start; padding:10px 0; border-bottom:1px solid var(--border); }
+.customer-item-row:last-child { border-bottom:none; }
+.customer-item-left { flex:1; }
+.customer-item-name { font-size:15px; font-weight:500; color:var(--text); }
+.customer-item-unit-price { font-size:13px; color:var(--text3); margin-top:1px; }
+.customer-item-right { text-align:right; flex-shrink:0; margin-left:12px; }
+.customer-item-qty { font-size:13px; color:var(--text3); }
+.customer-item-amount { font-size:15px; font-weight:500; color:var(--text); }
+
+/* Note boxes */
+.note-box { background:var(--card); border-radius:12px; border:1px solid var(--border); padding:18px 20px; max-width:360px; }
+.note-box h3 { font-size:15px; font-weight:700; margin-bottom:10px; color:var(--primary); }
+.note-box ul { list-style:none; }
+.note-box li { font-size:13px; color:var(--text); padding:5px 0; border-bottom:1px solid var(--border); display:flex; gap:8px; align-items:flex-start; }
+.note-box li:last-child { border-bottom:none; }
+.note-box .dot { color:var(--primary); font-weight:700; flex-shrink:0; }
+.tag { display:inline-block; font-size:10px; font-weight:700; padding:1px 6px; border-radius:4px; margin-left:4px; white-space:nowrap; }
+.tag.new { background:#E3F2FD; color:#1565C0; }
+.tag.keep { background:#E8F5E9; color:#2E7D32; }
+.tag.change { background:var(--primary-light); color:var(--primary); }
+</style>
+</head>
+<body>
+
+<a class='back-btn' href='/'>&#8592; Vissza a galeriaba</a>
+
+<div class="header">
+  <h1>Admin ar-korrekció (suly elteres nyomonkovetes)</h1>
+  <p>Rendelesek modositasa az elokeszites soran: mennyiseg korrekció, tetel torles, savings ujraszamolas, vasarloi ertesites</p>
+  <div class="header-meta">
+    <span class="badge-ticket">DHOP-XX</span>
+    &nbsp;&middot;&nbsp; v0.1 wireframe &middot; 2026-04-29
+  </div>
+</div>
+
+<div class="tabs-nav">
+  <button class="tab-btn active" onclick="showTab('t1',this)">1. Elokeszites reszletek</button>
+  <button class="tab-btn" onclick="showTab('t2',this)">2. Rendeles szerkesztes</button>
+  <button class="tab-btn" onclick="showTab('t3',this)">3. Kuszob figyelmeztetés</button>
+  <button class="tab-btn" onclick="showTab('t4',this)">4. Tetel torles</button>
+  <button class="tab-btn" onclick="showTab('t5',this)">5. Vasarloi nézet</button>
+</div>
+
+<!-- ============================================================ -->
+<!-- TAB 1: PreparationDetail with edit icon                       -->
+<!-- ============================================================ -->
+<div id="t1" class="tab-panel active">
+<div class="content"><div class="flow-wrap">
+
+<div class="phone">
+  <div class="phone-header"><span class="brand">Deak Husmives</span> <span class="status-badge processing">Feldolgozas alatt</span></div>
+  <div class="phone-body">
+
+    <!-- Customer info card -->
+    <div class="info-card">
+      <div class="info-row">
+        <div class="info-row-icon"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="info-row-content">
+          <div class="info-label">Vasarlo</div>
+          <div class="info-value">Kovacs Maria</div>
+        </div>
+      </div>
+      <div class="info-row" style="display:flex;justify-content:space-between;align-items:center">
+        <div style="display:flex;gap:12px;align-items:start">
+          <div class="info-row-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div class="info-row-content">
+            <div class="info-label">Telefon</div>
+            <div class="info-value">0740 123 456</div>
+          </div>
+        </div>
+        <a class="call-btn" href="#">
+          <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Hivas
+        </a>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon"><svg viewBox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="info-row-content">
+          <div class="info-label">Szallitasi cim</div>
+          <div class="info-value">Strada Morii 20/1, Szekelyudvarhely</div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <div class="info-row-content">
+          <div class="info-label">Idosav</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px">
+            <span class="slot-chip">10:00-12:00</span>
+            <span class="slot-chip">14:00-16:00</span>
+          </div>
+        </div>
+      </div>
+      <div class="info-row">
+        <div class="info-row-icon"><svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M12 4v16M2 12h20"/></svg></div>
+        <div class="info-row-content">
+          <div class="info-label">Fizetes modja</div>
+          <div class="info-value">Keszpenzes fizetes szallitaskor</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Products card with EDIT ICON -->
+    <div class="info-card">
+      <div class="products-header">
+        <span class="products-title">Termekek</span>
+        <div class="products-meta">
+          <span class="products-count">4</span>
+          <button class="edit-icon-btn" title="Rendeles modositasa" style="position:relative">
+            <svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+            <!-- Pulsating ring for wireframe emphasis -->
+            <div style="position:absolute;inset:-4px;border:2px solid var(--primary);border-radius:12px;opacity:0.4;animation:pulse 2s infinite"></div>
+          </button>
+        </div>
+      </div>
+      <div class="product-row">
+        <span class="product-name">Csontos karaj</span>
+        <span class="product-qty">1,50 kg</span>
+      </div>
+      <div class="product-row">
+        <span class="product-name">Csirkemell filé</span>
+        <span class="product-qty">2,00 kg</span>
+      </div>
+      <div class="product-row">
+        <span class="product-name">Daralt hus (sertes)</span>
+        <span class="product-qty">1,00 kg</span>
+      </div>
+      <div class="product-row">
+        <span class="product-name">Kolbasz (hazi)</span>
+        <span class="product-qty">5 buc</span>
+      </div>
+
+      <!-- Savings -->
+      <div style="padding-top:12px;margin-top:8px;border-top:1px solid var(--border)">
+        <div class="savings-row">
+          <span class="savings-label">Szallitasi dij</span>
+          <span class="savings-value free"><span class="savings-strikethrough">10,00 RON</span> Ingyenes</span>
+        </div>
+        <div class="savings-row">
+          <span class="savings-label">Mennyisegi kedvezmeny (5%)</span>
+          <span class="savings-value discount">-7,25 RON</span>
+        </div>
+      </div>
+      <div class="total-row">
+        <span class="total-label">Becsult vegosszeg</span>
+        <span class="total-value">~137,75 RON</span>
+      </div>
+    </div>
+
+    <!-- Warning + CTA (existing) -->
+    <div class="warning-banner">
+      <svg viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <p>Ellenorizd a termekeket es mennyisegeket elokeszites elott!</p>
+    </div>
+    <button class="cta-btn primary">Elokeszites inditasa</button>
+
+    <div style="height:16px"></div>
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>Elokeszites reszletek: valtozasok</h3>
+  <ul>
+    <li><span class="dot">+</span> Ceruza (edit) ikon a Termekek fejlecben <span class="tag new">UJ</span></li>
+    <li><span class="dot">&rarr;</span> Kattintasra navigal: /preparation/:id/edit</li>
+    <li><span class="dot">&rarr;</span> Csak New Order + Processing statuszban latszik</li>
+    <li><span class="dot">&asymp;</span> Minden mas valtozatlan marad <span class="tag keep">MARAD</span></li>
+  </ul>
+</div>
+
+</div></div></div>
+
+<!-- ============================================================ -->
+<!-- TAB 2: Order Edit Screen                                      -->
+<!-- ============================================================ -->
+<div id="t2" class="tab-panel">
+<div class="content"><div class="flow-wrap">
+
+<div class="phone">
+  <div class="back-header">
+    <div class="back-arrow"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <span class="page-title">Rendeles modositasa</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="phone-body">
+
+    <!-- Item 1: MODIFIED -->
+    <div class="edit-item modified">
+      <div class="edit-item-top">
+        <div class="edit-item-thumb">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        </div>
+        <div class="edit-item-info">
+          <div class="edit-item-name-row">
+            <span class="edit-item-name">Csontos karaj <span class="modified-tag">Modositva</span></span>
+            <button class="edit-item-delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+          </div>
+          <div class="edit-item-unit-price">32,00 RON / kg</div>
+        </div>
+      </div>
+      <div class="edit-item-controls">
+        <div>
+          <div class="qty-selector">
+            <button class="qty-btn"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <input class="qty-input changed" value="1,62" readonly/>
+            <button class="qty-btn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+          <div class="edit-item-original">Eredeti: <span>1,50 kg</span></div>
+        </div>
+        <div class="edit-item-subtotal">
+          <div class="edit-item-subtotal-label">Reszosszeg</div>
+          <div class="edit-item-subtotal-value changed">51,84 RON</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 2: UNCHANGED -->
+    <div class="edit-item">
+      <div class="edit-item-top">
+        <div class="edit-item-thumb">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        </div>
+        <div class="edit-item-info">
+          <div class="edit-item-name-row">
+            <span class="edit-item-name">Csirkemell file</span>
+            <button class="edit-item-delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+          </div>
+          <div class="edit-item-unit-price">42,00 RON / kg</div>
+        </div>
+      </div>
+      <div class="edit-item-controls">
+        <div>
+          <div class="qty-selector">
+            <button class="qty-btn"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <input class="qty-input" value="2,00" readonly/>
+            <button class="qty-btn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+          <div class="edit-item-original">Eredeti: <span>2,00 kg</span></div>
+        </div>
+        <div class="edit-item-subtotal">
+          <div class="edit-item-subtotal-label">Reszosszeg</div>
+          <div class="edit-item-subtotal-value">84,00 RON</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 3: UNCHANGED -->
+    <div class="edit-item">
+      <div class="edit-item-top">
+        <div class="edit-item-thumb">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        </div>
+        <div class="edit-item-info">
+          <div class="edit-item-name-row">
+            <span class="edit-item-name">Daralt hus (sertes)</span>
+            <button class="edit-item-delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+          </div>
+          <div class="edit-item-unit-price">28,00 RON / kg</div>
+        </div>
+      </div>
+      <div class="edit-item-controls">
+        <div>
+          <div class="qty-selector">
+            <button class="qty-btn"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <input class="qty-input" value="1,00" readonly/>
+            <button class="qty-btn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+          <div class="edit-item-original">Eredeti: <span>1,00 kg</span></div>
+        </div>
+        <div class="edit-item-subtotal">
+          <div class="edit-item-subtotal-label">Reszosszeg</div>
+          <div class="edit-item-subtotal-value">28,00 RON</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 4: LAST ITEM (delete disabled) -->
+    <div class="edit-item">
+      <div class="edit-item-top">
+        <div class="edit-item-thumb">
+          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+        </div>
+        <div class="edit-item-info">
+          <div class="edit-item-name-row">
+            <span class="edit-item-name">Kolbasz (hazi)</span>
+            <button class="edit-item-delete"><svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button>
+          </div>
+          <div class="edit-item-unit-price">8,00 RON / buc</div>
+        </div>
+      </div>
+      <div class="edit-item-controls">
+        <div>
+          <div class="qty-selector">
+            <button class="qty-btn"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            <input class="qty-input" value="5" readonly/>
+            <button class="qty-btn"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+          </div>
+          <div class="edit-item-original">Eredeti: <span>5 buc</span></div>
+        </div>
+        <div class="edit-item-subtotal">
+          <div class="edit-item-subtotal-label">Reszosszeg</div>
+          <div class="edit-item-subtotal-value">40,00 RON</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary section -->
+    <div class="edit-summary">
+      <div class="edit-summary-title">Osszesites</div>
+
+      <div class="savings-row">
+        <span class="savings-label">Szallitasi dij</span>
+        <span class="savings-value free"><span class="savings-strikethrough">10,00 RON</span> Ingyenes</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Mennyisegi kedvezmeny (5%)</span>
+        <span class="savings-value discount">-10,19 RON</span>
+      </div>
+
+      <div class="original-total-row">
+        <span class="original-total-label">Eredeti becsult osszeg</span>
+        <span class="original-total-value">~137,75 RON</span>
+      </div>
+
+      <div class="new-total-row">
+        <span class="new-total-label">Modositott osszeg</span>
+        <span class="new-total-value">~193,65 RON</span>
+      </div>
+
+      <div class="deviation-row">
+        <span class="deviation-label">Elteres</span>
+        <span class="deviation-value positive">+3,84 RON (+2,8%)</span>
+      </div>
+    </div>
+
+    <div style="height:72px"></div>
+  </div>
+
+  <!-- Fixed bottom save CTA -->
+  <div class="phone-bottom-cta">
+    <button class="btn-primary">Mentes</button>
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>Rendeles szerkesztes: specifikacio</h3>
+  <ul>
+    <li><span class="dot">+</span> Uj oldal: /preparation/:id/edit <span class="tag new">UJ</span></li>
+    <li><span class="dot">&rarr;</span> Vissza nyil: visszanavigal PreparationDetail-re</li>
+    <li><span class="dot">&rarr;</span> Tetel kartya: cart item minta (kep, nev, egysegar, qty selector, reszosszeg, torles)</li>
+    <li><span class="dot">&rarr;</span> "Eredeti: X.XX kg" felirat minden tetelnel</li>
+    <li><span class="dot">&rarr;</span> Modositott teteleknel: primary border + "Modositva" tag</li>
+    <li><span class="dot">&rarr;</span> Qty selector: compact variant, step 0.05, min > 0, nincs felso hatar</li>
+    <li><span class="dot">&rarr;</span> Savings ujraszamolas: volume discount, delivery fee, product discount</li>
+    <li><span class="dot">&rarr;</span> Eredeti vs. uj osszeg + elteres szazalekban</li>
+    <li><span class="dot">&rarr;</span> Fix bottom CTA: "Mentes"</li>
+    <li><span class="dot">&rarr;</span> Kuszob felett: confirmation modal (lasd 3. tab)</li>
+    <li><span class="dot">&rarr;</span> Kuszob alatt: mentes + visszanavigalas</li>
+  </ul>
+</div>
+
+</div></div></div>
+
+<!-- ============================================================ -->
+<!-- TAB 3: Threshold Warning Bottom Sheet                         -->
+<!-- ============================================================ -->
+<div id="t3" class="tab-panel">
+<div class="content"><div class="flow-wrap">
+
+<div class="phone" style="position:relative">
+  <div class="back-header">
+    <div class="back-arrow"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <span class="page-title">Rendeles modositasa</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="phone-body" style="filter:blur(1px);opacity:0.4">
+    <div class="edit-item"><div style="height:80px"></div></div>
+    <div class="edit-item"><div style="height:80px"></div></div>
+    <div class="edit-item"><div style="height:80px"></div></div>
+    <div class="edit-summary"><div style="height:100px"></div></div>
+  </div>
+
+  <!-- Modal overlay -->
+  <div class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-warning-icon">
+        <svg viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <h3>Ertesites a vasarlonak</h3>
+      <p>A rendeles osszege jelentosen modosult. Mentesre ertesites megy a vasarlonak az uj osszegrol.</p>
+
+      <div class="modal-detail-box">
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Eredeti osszeg</span>
+          <span class="modal-detail-value">~137,75 RON</span>
+        </div>
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Uj osszeg</span>
+          <span class="modal-detail-value highlight">~193,65 RON</span>
+        </div>
+        <div class="modal-detail-row">
+          <span class="modal-detail-label">Elteres</span>
+          <span class="modal-detail-value" style="color:var(--error)">+3,84 RON (+2,8%)</span>
+        </div>
+      </div>
+
+      <div class="modal-actions">
+        <button class="modal-btn secondary">Megse</button>
+        <button class="modal-btn primary">Mentes es ertesites</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>Kuszob figyelmeztetés: specifikacio</h3>
+  <ul>
+    <li><span class="dot">&rarr;</span> Bottom sheet modal (rounded-2xl top corners)</li>
+    <li><span class="dot">&rarr;</span> Trigger: |uj_total - eredeti_total| / eredeti_total > X%</li>
+    <li><span class="dot">&rarr;</span> X% konfiguralhato: Deak Order Settings single doctype</li>
+    <li><span class="dot">&rarr;</span> Warning ikon (narancs) + cim + leiras</li>
+    <li><span class="dot">&rarr;</span> Osszeg reszletezo: eredeti vs uj + elteres</li>
+    <li><span class="dot">&rarr;</span> "Megse": bezarja a modalt, marad az edit screen-en</li>
+    <li><span class="dot">&rarr;</span> "Mentes es ertesites": ment + email megy + visszanavigal</li>
+    <li><span class="dot">&rarr;</span> Kuszob ALATT: nincs modal, siman ment</li>
+  </ul>
+</div>
+
+</div></div></div>
+
+<!-- ============================================================ -->
+<!-- TAB 4: Delete Confirmation Bottom Sheet                       -->
+<!-- ============================================================ -->
+<div id="t4" class="tab-panel">
+<div class="content"><div class="flow-wrap">
+
+<div class="phone" style="position:relative">
+  <div class="back-header">
+    <div class="back-arrow"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <span class="page-title">Rendeles modositasa</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="phone-body" style="filter:blur(1px);opacity:0.4">
+    <div class="edit-item"><div style="height:80px"></div></div>
+    <div class="edit-item"><div style="height:80px"></div></div>
+    <div class="edit-item"><div style="height:80px"></div></div>
+    <div class="edit-item"><div style="height:80px"></div></div>
+  </div>
+
+  <!-- Modal overlay -->
+  <div class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-danger-icon">
+        <svg viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+      </div>
+      <h3>Termek torlese</h3>
+      <p>Biztosan torolni szeretned a kovetkezo tetelt?</p>
+
+      <div class="modal-detail-box">
+        <div style="display:flex;align-items:center;gap:10px">
+          <div style="width:40px;height:40px;border-radius:8px;background:#F0ECE8;flex-shrink:0;display:flex;align-items:center;justify-content:center">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:600;color:var(--text)">Daralt hus (sertes)</div>
+            <div style="font-size:12px;color:var(--text3)">1,00 kg &middot; 28,00 RON</div>
+          </div>
+        </div>
+      </div>
+
+      <p style="font-size:13px;color:var(--text3);margin-bottom:16px;margin-top:-8px">Ez a muvelet nem vonhato vissza. A tetel veglegesen eltavolitasra kerul a rendelesbol.</p>
+
+      <div class="modal-actions">
+        <button class="modal-btn secondary">Megse</button>
+        <button class="modal-btn danger">Torles</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Second phone: last item protection -->
+<div class="phone" style="position:relative">
+  <div class="back-header">
+    <div class="back-arrow"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <span class="page-title">Rendeles modositasa</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="phone-body" style="filter:blur(1px);opacity:0.4">
+    <div class="edit-item"><div style="height:80px"></div></div>
+  </div>
+
+  <!-- Modal overlay: last item -->
+  <div class="modal-overlay">
+    <div class="modal-sheet">
+      <div class="modal-warning-icon">
+        <svg viewBox="0 0 24 24"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <h3>Nem torolheto</h3>
+      <p>Legalabb egy tetelnek maradnia kell a rendelesben. Ha nem szeretned teljesiteni a rendelest, hasznald a rendeles torlese opciot.</p>
+      <div class="modal-actions">
+        <button class="modal-btn primary" style="flex:1">Rendben</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>Tetel torles: specifikacio</h3>
+  <ul>
+    <li><span class="dot">&rarr;</span> Trash ikon kattintasra: confirmation bottom sheet</li>
+    <li><span class="dot">&rarr;</span> Danger stilus (piros torles gomb)</li>
+    <li><span class="dot">&rarr;</span> Termek neve + reszletei lathatok a modalban</li>
+    <li><span class="dot">&rarr;</span> Hard delete: a tetel eltűnik a listabol</li>
+    <li><span class="dot">&rarr;</span> Utolso tetel vedelme: figyelmeztetés, hogy legalabb 1 kell maradjon</li>
+    <li><span class="dot">&rarr;</span> Utolso tetelnel: "Rendben" gomb (nem torles)</li>
+    <li><span class="dot">&rarr;</span> Torles utan: savings + total ujraszamolas</li>
+  </ul>
+</div>
+
+</div></div></div>
+
+<!-- ============================================================ -->
+<!-- TAB 5: Customer OrderDetail with Modification Log             -->
+<!-- ============================================================ -->
+<div id="t5" class="tab-panel">
+<div class="content"><div class="flow-wrap">
+
+<div class="phone">
+  <div class="back-header">
+    <div class="back-arrow"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></div>
+    <span class="page-title">Rendeles #00142</span>
+    <div class="spacer"></div>
+  </div>
+  <div class="phone-body">
+
+    <!-- Status section -->
+    <div class="status-card">
+      <span class="status-badge processing">Feldolgozas alatt</span>
+      <div class="status-indicator">
+        <div class="status-step done"></div>
+        <div class="status-step current"></div>
+        <div class="status-step pending"></div>
+        <div class="status-step pending"></div>
+      </div>
+      <p class="status-summary">A rendelésed elokeszites alatt all.</p>
+    </div>
+
+    <!-- Items section (updated quantities) -->
+    <div class="info-card">
+      <h2 style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:8px">Termekek</h2>
+      <div class="customer-item-row">
+        <div class="customer-item-left">
+          <div class="customer-item-name">Csontos karaj</div>
+          <div class="customer-item-unit-price">32,00 RON/kg</div>
+        </div>
+        <div class="customer-item-right">
+          <div class="customer-item-qty">~1,62 kg</div>
+          <div class="customer-item-amount">~51,84 RON</div>
+        </div>
+      </div>
+      <div class="customer-item-row">
+        <div class="customer-item-left">
+          <div class="customer-item-name">Csirkemell file</div>
+          <div class="customer-item-unit-price">42,00 RON/kg</div>
+        </div>
+        <div class="customer-item-right">
+          <div class="customer-item-qty">~2,00 kg</div>
+          <div class="customer-item-amount">~84,00 RON</div>
+        </div>
+      </div>
+      <div class="customer-item-row">
+        <div class="customer-item-left">
+          <div class="customer-item-name">Kolbasz (hazi)</div>
+          <div class="customer-item-unit-price">8,00 RON/buc</div>
+        </div>
+        <div class="customer-item-right">
+          <div class="customer-item-qty">5 buc</div>
+          <div class="customer-item-amount">~40,00 RON</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total section (updated) -->
+    <div class="info-card">
+      <div class="savings-row">
+        <span class="savings-label">Szallitasi dij</span>
+        <span class="savings-value free"><span class="savings-strikethrough">10,00 RON</span> Ingyenes</span>
+      </div>
+      <div class="savings-row">
+        <span class="savings-label">Mennyisegi kedvezmeny (5%)</span>
+        <span class="savings-value discount">-8,79 RON</span>
+      </div>
+      <div class="total-row" style="margin-top:8px">
+        <span class="total-label">Becsult osszeg</span>
+        <span class="total-value">~167,05 RON</span>
+      </div>
+    </div>
+
+    <!-- Status History section WITH modification log -->
+    <div class="info-card">
+      <h2 style="font-size:18px;font-weight:600;color:var(--text);margin-bottom:12px">Tortenelem</h2>
+
+      <div class="timeline">
+        <!-- Latest: modification entry -->
+        <div class="timeline-item">
+          <div class="timeline-dot-col">
+            <div class="timeline-dot modification"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-status">Rendeles modositva</div>
+            <div class="timeline-time">2026. apr. 29, 09:45</div>
+            <div class="mod-changelog">
+              <div class="mod-changelog-title">
+                <svg viewBox="0 0 24 24"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                Valtozasok
+              </div>
+              <div class="mod-change-row">
+                <span class="mod-change-name">Csontos karaj:</span>
+                <span class="mod-change-old">1,50 kg</span>
+                <span class="mod-change-arrow">&rarr;</span>
+                <span class="mod-change-new">1,62 kg</span>
+              </div>
+              <div class="mod-change-row">
+                <span class="mod-change-name">Daralt hus (sertes):</span>
+                <span class="mod-change-removed">eltavolitva</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Processing -->
+        <div class="timeline-item">
+          <div class="timeline-dot-col">
+            <div class="timeline-dot active"></div>
+            <div class="timeline-line"></div>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-status">Feldolgozas alatt</div>
+            <div class="timeline-time">2026. apr. 29, 09:30</div>
+          </div>
+        </div>
+
+        <!-- New Order -->
+        <div class="timeline-item">
+          <div class="timeline-dot-col">
+            <div class="timeline-dot inactive"></div>
+          </div>
+          <div class="timeline-content">
+            <div class="timeline-status">Uj rendeles</div>
+            <div class="timeline-time">2026. apr. 29, 08:15</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="height:16px"></div>
+  </div>
+</div>
+
+<div class="note-box">
+  <h3>Vasarloi nezet: specifikacio</h3>
+  <ul>
+    <li><span class="dot">&rarr;</span> A termekek es osszegek azonnal frissulnek <span class="tag change">FRISSUL</span></li>
+    <li><span class="dot">&rarr;</span> Torolt termek eltűnik a listabol (hard delete)</li>
+    <li><span class="dot">+</span> Uj log tipus a tortenelemben: "Rendeles modositva" <span class="tag new">UJ</span></li>
+    <li><span class="dot">&rarr;</span> Kek timeline pont (info szin): megkulonbozteti a statusz valtozasoktol</li>
+    <li><span class="dot">&rarr;</span> Changelog kartya: elotte &rarr; utana ertekek termekenként</li>
+    <li><span class="dot">&rarr;</span> Torolt teteleknel: "eltavolitva" piros szoveggel</li>
+    <li><span class="dot">&rarr;</span> Tobbszori modositas: minden mentes uj log bejegyzest hoz letre</li>
+    <li><span class="dot">&rarr;</span> Info hatter (kek): vizualisan elkulonitett a statusz bejegyzesektol</li>
+  </ul>
+</div>
+
+</div></div></div>
+
+<style>
+@keyframes pulse {
+  0%, 100% { opacity:0.4; transform:scale(1); }
+  50% { opacity:0; transform:scale(1.15); }
+}
+</style>
+
+<script>
+function showTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

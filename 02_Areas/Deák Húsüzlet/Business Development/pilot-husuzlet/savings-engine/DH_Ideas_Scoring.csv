@@ -1,0 +1,66 @@
+ID,Name,KPI,Feasibility,PilotFit,RevProtect,Unique,Composite,Layer,Risk_Category,Recommendation
+I4,Margin guardrail system (max discount cap),9,7,10,10,8,8.75,Calculation,CRITICAL_CONTROL,IMPLEMENT_WEEK1
+E1,1-click reorder (modify previous order),8,9,10,8,6,8.55,Behavior,NONE,IMPLEMENT_WEEK2
+A1,Running savings counter in cart,8,9,10,7,6,8.45,Communication,NONE,IMPLEMENT_WEEK1
+A3,Volume discount nudge (→300/600 RON),8,9,10,8,5,8.45,Communication,NONE,IMPLEMENT_WEEK3
+A2,Free delivery threshold nudge,7,10,10,8,5,8.40,Communication,NONE,IMPLEMENT_WEEK2
+G2,Tiered volume discount (300/600),8,9,10,8,4,8.35,Calculation,EXISTING,REINFORCE_MESSAGING
+G1,Store price vs online per product,7,9,10,9,6,8.35,Communication,NONE,IMPLEMENT_WEEK1
+E2,My usual order button,7,9,10,8,5,8.15,Behavior,NONE,IMPLEMENT_WEEK2
+A4,Multi-threshold progress bar,7,9,10,8,5,8.15,Communication,NONE,IMPLEMENT_WEEK2
+H1,TTFO email drip (24/48/72h),7,9,10,8,4,8.05,Communication,NONE,IMPLEMENT_WEEK1
+B2,Trial package first order,8,8,9,5,8,7.95,Calculation,MARGIN_RISK,IMPLEMENT_WEEK3_CAPPED
+E7,Product-based reorder trigger email,7,8,9,8,6,7.75,Behavior,NONE,IMPLEMENT_WEEK4
+A6,Delivery fee savings counter,6,10,9,8,4,7.75,Communication,NONE,IMPLEMENT_WEEK2
+C2,Referral program (inviter/invitee bonus),7,8,9,5,7,7.55,Behavior,MARGIN_RISK,DEFER_POST_MVP
+F4,Progress bar to next milestone,6,9,9,8,4,7.50,Communication,NONE,IMPLEMENT_WEEK4
+B1,Family weekly package,8,7,8,6,7,7.45,Calculation,MARGIN_RISK,DEFER_POST_MVP
+A8,Post-order savings recap email,6,9,9,7,4,7.40,Communication,EMAIL_FATIGUE,CONSOLIDATE_F5
+E4,Weekly suggested cart pre-fill,7,7,9,7,6,7.40,Behavior,NONE,IMPLEMENT_WEEK3
+H2,Savings tutorial at first checkout,6,8,9,8,5,7.35,Communication,NONE,IMPLEMENT_WEEK4
+F1,Savings history dashboard,6,8,9,8,5,7.35,Communication,NONE,IMPLEMENT_WEEK4
+E5,Household size onboarding (→defaults),6,8,9,8,5,7.35,Behavior,NONE,IMPLEMENT_WEEK1
+H5,Savings challenge first 3 orders,7,7,9,6,6,7.30,Behavior,MARGIN_RISK,DEFER_POST_MVP
+C1,Shared cart / Group order,9,5,7,8,8,7.30,Behavior,OPS_RISK,MVP_MANUAL_TEST
+A7,Exit-intent nudge near threshold,7,8,8,7,5,7.30,Behavior,NONE,IMPLEMENT_WEEK3
+B3,Seasonal package,6,7,9,7,7,7.20,Calculation,NONE,DEFER_POST_MVP
+F5,Monthly savings email summary,5,9,9,8,4,7.20,Communication,EMAIL_FATIGUE,CONSOLIDATE_A8
+D8,VIP customer status (20+ orders/10k RON),7,8,7,7,6,7.15,Behavior,NONE,DEFER_POST_MVP
+A5,Smart suggestion to reach threshold,7,6,9,7,6,7.15,Hybrid,NONE,DEFER_POST_MVP
+H3,Referral discount on first order,6,8,9,5,5,7.05,Behavior,MARGIN_RISK,DEFER_POST_MVP
+B6,Promotional items (time-limited %off),6,8,9,6,4,7.05,Calculation,MARGIN_RISK,DEFER_POST_MVP
+I1,Whole animal savings framing,5,8,8,8,7,7.00,Communication,NONE,DEFER_POST_MVP
+D4,Weekly ordering streak (3 weeks → bonus),7,7,8,6,5,6.95,Behavior,NONE,DEFER_POST_MVP
+B5,Bundle builder (5 items → discount),7,6,8,6,7,6.90,Calculation,MARGIN_RISK,DEFER_POST_MVP
+D2,Intermediate milestones (500/1000),6,8,8,6,5,6.90,Calculation,MARGIN_RISK,DEFER_POST_MVP
+B4,Weekly menu package (recipe-tied),7,5,8,7,8,6.85,Hybrid,CONTENT_REQUIRED,DEFER_POST_MVP
+H4,In-store assisted registration (QR),6,5,9,8,7,6.80,Behavior,NONE,DEFER_POST_MVP
+I2,Waste reduction savings framing,4,8,8,8,8,6.80,Communication,NONE,DEFER_POST_MVP
+F2,Annual savings summary email,5,8,8,8,5,6.80,Communication,NONE,IMPLEMENT_WEEK4
+D1,Revenue milestone voucher (5000/10000),6,8,7,6,6,6.75,Calculation,MARGIN_RISK,DEFER_POST_MVP
+C6,Social proof (I recommend),5,7,9,8,4,6.70,Communication,NONE,DEFER_POST_MVP
+D5,10th order = 10% off,6,8,7,6,4,6.55,Calculation,MARGIN_RISK,DEFER_POST_MVP
+F3,Savings source breakdown,5,7,8,8,5,6.55,Communication,NONE,DEFER_POST_MVP
+C4,Pinduoduo-style team buying,8,4,6,7,9,6.50,Behavior,OPS_RISK,DEFER_POST_MVP
+C3,Neighbor invite / Building unlock,6,5,8,6,8,6.45,Behavior,OPS_RISK,DEFER_POST_MVP
+E3,Cart optimizer suggestion (swap X→Y save RON),6,5,8,7,7,6.45,Calculation,NONE,DEFER_POST_MVP
+C7,Community savings dashboard,4,6,9,8,7,6.45,Communication,PRIVACY_RISK,DEFER_POST_MVP
+C5,Workplace group order,6,6,7,7,6,6.35,Behavior,OPS_RISK,DEFER_POST_MVP
+I3,Early bird discount (order by Sunday 8pm),5,7,7,7,5,6.20,Calculation,MARGIN_RISK,DEFER_POST_MVP
+F6,Savings leaderboard opt-in,4,7,7,8,6,6.10,Communication,PRIVACY_RISK,DEFER_POST_MVP
+D3,Sizzle point system (1 RON = 1 point),5,7,7,6,5,6.10,Calculation,NONE,DEFER_POST_MVP
+C8,Family savings competition,5,5,7,8,7,6.00,Behavior,NONE,DEFER_POST_MVP
+D6,Birthday bonus,4,7,8,6,4,5.95,Calculation,PRIVACY_RISK,DEFER_POST_MVP
+I5,Smart decision badge system,4,6,7,8,7,5.95,Behavior,NONE,DEFER_POST_MVP
+G6,Whole cut discount (unsliced),3,7,7,8,6,5.80,Calculation,NONE,DEFER_POST_MVP
+B7,Whole animal pre-order (10-15 families),5,4,6,8,9,5.70,Hybrid,OPS_RISK,DEFER_POST_MVP
+E6,Auto-order opt-in (no changes),5,5,6,8,6,5.65,Behavior,OPS_RISK,DEFER_POST_MVP
+G4,Happy hour time-based discount,4,6,6,6,5,5.30,Calculation,MARGIN_RISK,DEFER_POST_MVP
+D7,Review reward (5-10 points),3,6,6,8,3,5.00,Behavior,NONE,REJECT
+G3,Pick-up from store discount,3,6,5,9,4,4.95,Calculation,MODEL_RISK,REJECT
+G5,Inventory-based dynamic pricing,4,4,5,5,7,4.65,Calculation,OPS_RISK,REJECT
+J1,Streakable cart state (gentle reminders),8,8,10,8,7,8.25,Hybrid,NONE,IMPLEMENT_WEEK2
+J2,First-order margin protection (hard caps),7,9,10,9,6,8.15,Hybrid,CRITICAL_CONTROL,IMPLEMENT_WEEK1
+J3,Repeat-ability score (personal dashboard),7,7,9,8,8,7.65,Hybrid,NONE,IMPLEMENT_WEEK4
+J4,Zero delivery fee conditionals,8,7,8,9,6,7.90,Hybrid,OPS_RISK,IMPLEMENT_WEEK3_DEFER_LOGISTICS
+J5,Savings companion email (weekly digest),7,8,10,8,7,7.85,Communication,EMAIL_CONSOL,IMPLEMENT_WEEK3

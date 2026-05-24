@@ -1,0 +1,332 @@
+{
+  "meta": {
+    "build": 90,
+    "generatedAt": "2026-05-15T03:25:00.000000+00:00",
+    "description": "DH Hub — unified design & documentation portal"
+  },
+  "screens": [
+    {
+      "file": "screens/v0.4-product-variations.html",
+      "title": "Termék testreszabás (Hogyan kéred?) — 3 panel",
+      "feature": "product-variations",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 5,
+      "platform": "mobile",
+      "version": "v0.4",
+      "tags": [
+        "DH-173",
+        "options",
+        "preferences",
+        "variations"
+      ],
+      "description": "DH-173 — opció-választó (kg / hibrid / db), kosár opció-megjelenítés és inline edit, mészáros nyomtatható munkalap"
+    },
+    {
+      "file": "screens/product_details.html",
+      "title": "Termék Részletek — kg / hibrid / db / kosár (DH-183)",
+      "feature": "product-detail",
+      "sprint": "Sprint 4",
+      "status": "approved",
+      "publish": true,
+      "order": 4,
+      "version": "v1",
+      "tags": [
+        "product",
+        "detail",
+        "DH-183",
+        "kg",
+        "hybrid",
+        "db",
+        "cart"
+      ],
+      "description": "Termék részlet oldal — 3 termék típus + típus-tudatos kosár nézet egy fájlban, fenti tab navigációval."
+    },
+    {
+      "file": "screens/v0.5-shared-basket-v2.html",
+      "title": "Shared Basket v2 — Közös kosár",
+      "feature": "basket",
+      "sprint": "Sprint 5",
+      "status": "review",
+      "publish": true,
+      "order": 10,
+      "version": "v2",
+      "tags": [
+        "basket",
+        "shared",
+        "family"
+      ]
+    },
+    {
+      "file": "screens/v0.5-notification-component.html",
+      "title": "Notification Component — Products oldal",
+      "feature": "notifications",
+      "sprint": "Sprint 5",
+      "status": "approved",
+      "publish": true,
+      "order": 1,
+      "version": "v1",
+      "tags": [
+        "DH-159",
+        "notification",
+        "banner",
+        "products"
+      ]
+    },
+    {
+      "file": "screens/v0.5-favorites-v3.html",
+      "title": "Termékek — Kedvencek",
+      "feature": "favorites",
+      "sprint": "Sprint 5",
+      "status": "draft",
+      "publish": true,
+      "order": 22,
+      "version": "v3",
+      "tags": [
+        "DH-146",
+        "DH-160",
+        "favorites",
+        "retention"
+      ],
+      "description": "Csillag toggle kedvencekhez, Kedvenceim szekció a lista tetején, vendég login nudge toast"
+    },
+    {
+      "file": "screens/v0.4-seasonal-article.html",
+      "title": "Szezonális Cikk Oldal",
+      "feature": "article",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 90,
+      "version": "v0.4",
+      "tags": [
+        "DH-163",
+        "seasonal",
+        "content",
+        "article"
+      ],
+      "description": "Szezonális cikk részletes oldal — Sprint 4-ben kerül kidolgozásra"
+    },
+    {
+      "file": "screens/v0.4-rural-delivery.html",
+      "title": "Falusi route — teljes flow (4 nézet, v1.6)",
+      "feature": "rural-delivery",
+      "sprint": "Sprint 4",
+      "status": "approved",
+      "publish": true,
+      "order": 10,
+      "version": "v0.4",
+      "tags": [
+        "DH-184",
+        "rural",
+        "F1",
+        "F2",
+        "F4",
+        "F5",
+        "F6",
+        "F9.2"
+      ],
+      "description": "Teljes falusi szállítási flow (v1.6) — felső tab-okkal: kosár (zóna-állapotok), checkout (mismatch + multi-address), visszaigazolás, futár. 200 RON Keresztúri threshold. A route-banner és zone-picker tab-ok eltávolítva — átszervezve a kosárba és checkoutba."
+    },
+    {
+      "file": "screens/v0.3-kassza-qr.html",
+      "title": "Kassza Szalag — QR Kód",
+      "feature": "qr-print",
+      "sprint": "Sprint 4",
+      "status": "approved",
+      "publish": true,
+      "order": 30,
+      "version": "v1",
+      "tags": [
+        "DH-167",
+        "DH-157",
+        "founding50",
+        "qr",
+        "print"
+      ],
+      "description": "Kassza szalagra nyomtatandó QR kód — deakhus.ro landing, utm_source=qr_bon"
+    },
+    {
+      "file": "screens/cart.html",
+      "title": "Kosár — production reference",
+      "feature": "cart",
+      "sprint": "Reference",
+      "status": "approved",
+      "publish": false,
+      "order": 999,
+      "platform": "mobile",
+      "version": "production",
+      "tags": [
+        "reference",
+        "iframe-resource"
+      ],
+      "description": "Production cart.html — iframe-resource a v0.4-cart-rural.html (Jelenlegi állapot panel) referenciaként. Nem önálló képernyő a katalógusban."
+    },
+    {
+      "file": "screens/cart-zone-keresztur.html",
+      "title": "Kosár — Keresztúri zóna perzisztens",
+      "feature": "rural-delivery",
+      "sprint": "Reference",
+      "status": "approved",
+      "publish": false,
+      "order": 999,
+      "platform": "mobile",
+      "version": "v0.4",
+      "tags": [
+        "reference",
+        "iframe-resource",
+        "rural"
+      ],
+      "description": "Cart Keresztúri zónával — iframe-resource a v0.4-cart-rural.html (A — Perzisztens állapot panel) referenciaként."
+    },
+    {
+      "file": "screens/v0.4-cart-rural.html",
+      "title": "Kosár — Falusi route (3 panel)",
+      "feature": "rural-delivery",
+      "sprint": "Reference",
+      "status": "approved",
+      "publish": false,
+      "order": 999,
+      "platform": "mobile",
+      "version": "v0.4",
+      "tags": [
+        "reference",
+        "iframe-resource",
+        "rural"
+      ],
+      "description": "Kosár falusi adaptáció — iframe-resource a v0.4-rural-delivery.html tab shellből (Kosár fül)."
+    },
+    {
+      "file": "screens/v0.4-checkout-rural.html",
+      "title": "Checkout — Falusi route (3 panel)",
+      "feature": "rural-delivery",
+      "sprint": "Reference",
+      "status": "approved",
+      "publish": false,
+      "order": 999,
+      "platform": "mobile",
+      "version": "v0.4",
+      "tags": [
+        "reference",
+        "iframe-resource",
+        "rural"
+      ],
+      "description": "Checkout zóna-validáció — iframe-resource a v0.4-rural-delivery.html tab shellből (Checkout fül)."
+    },
+    {
+      "file": "screens/v0.4-order-confirm-rural.html",
+      "title": "Visszaigazolás — Falusi route",
+      "feature": "rural-delivery",
+      "sprint": "Reference",
+      "status": "approved",
+      "publish": false,
+      "order": 999,
+      "platform": "mobile",
+      "version": "v0.4",
+      "tags": [
+        "reference",
+        "iframe-resource",
+        "rural"
+      ],
+      "description": "Sikeres rendelés képernyő rural variant — iframe-resource a v0.4-rural-delivery.html tab shellből (Visszaigazolás fül)."
+    },
+    {
+      "file": "screens/v0.4-courier-route.html",
+      "title": "Futár route — Falusi (3 panel)",
+      "feature": "rural-delivery",
+      "sprint": "Reference",
+      "status": "approved",
+      "publish": false,
+      "order": 999,
+      "platform": "mobile",
+      "version": "v0.4",
+      "tags": [
+        "reference",
+        "iframe-resource",
+        "rural",
+        "courier"
+      ],
+      "description": "Futár fő nézet csüt. — iframe-resource a v0.4-rural-delivery.html tab shellből (Futár fül)."
+    }
+  ],
+  "docs": [
+    {
+      "category": "Analytics",
+      "items": [
+        {
+          "file": "screens/v0.2-analytics-dictionary.html",
+          "title": "Analytics Dictionary v2.2",
+          "desc": "Firebase Analytics event szótár — 26 event státusza (OK / Javítandó / Hiányzó), kereshető, szűrhető",
+          "icon": "analytics",
+          "version": "v2.2",
+          "tags": [
+            "DH-104",
+            "firebase",
+            "analytics"
+          ],
+          "updated": "2026-04-28",
+          "live": true
+        }
+      ]
+    },
+    {
+      "category": "Business",
+      "items": [
+        {
+          "file": "screens/v0.1-economic-loop.html",
+          "title": "Economic Loop",
+          "desc": "DH gazdasági modell — flywheel és unit economics vizualizáció",
+          "icon": "business",
+          "version": "v1",
+          "tags": [
+            "flywheel",
+            "economics"
+          ],
+          "updated": "2026-04",
+          "live": false
+        }
+      ]
+    },
+    {
+      "category": "Adatok",
+      "items": [
+        {
+          "file": "data/products-v1.2.json",
+          "title": "Products Master Catalog",
+          "desc": "Termékkatalógus — schema v1.2, 46 termék, 6 kategória, 15 termék VG-opcióval (DH-173: Pácolás, Szeletelés, Méret, Zsírosság)",
+          "icon": "business",
+          "version": "v1.2",
+          "tags": ["products", "master", "DH-173", "DH-183", "46-termek", "VG"],
+          "updated": "2026-05-09",
+          "live": true,
+          "download": true,
+          "viewer_url": "screens/v0.4-data-explorer.html"
+        },
+        {
+          "file": "data/_schema-v1.2.json",
+          "title": "Products JSON Schema",
+          "desc": "JSON Schema v1.2 — VG (Variation Group) támogatás: options[] + option_value[] kind/default/price_modifier mezőkkel",
+          "icon": "design",
+          "version": "v1.2",
+          "tags": ["schema", "validation", "frappe", "options", "DH-173"],
+          "updated": "2026-05-09",
+          "live": true,
+          "download": true,
+          "viewer_url": "screens/v0.4-data-explorer.html#schema"
+        },
+        {
+          "file": "screens/v0.4-data-explorer.html",
+          "title": "Adatok Explorer (kereső + viewer)",
+          "desc": "Termékkatalógus interaktív böngészése: keresés HU/RO/kód/ID szerint, szűrés kategóriára, termék típusra és VG-opciókra (mandatory, díjköteles, opció-típus). Per-termék kibontható JSON, schema struktúra, raw JSON copy.",
+          "icon": "analytics",
+          "version": "v1.0",
+          "tags": ["DH-173", "explorer", "search", "viewer", "data"],
+          "updated": "2026-05-09",
+          "live": true,
+          "viewer_url": "screens/v0.4-data-explorer.html"
+        }
+      ]
+    }
+  ]
+}

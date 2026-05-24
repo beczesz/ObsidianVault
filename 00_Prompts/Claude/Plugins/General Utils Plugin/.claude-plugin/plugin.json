@@ -1,0 +1,10 @@
+{
+  "name": "general-utils",
+  "version": "0.5.0",
+  "description": "General utility skills for Cowork — multi-AI orchestrator with API-first hybrid mode (think-agent-orchestrator v0.7/v0.8/v0.9: Anthropic + OpenAI APIs and Chrome MCP for ChatGPT/Perplexity/Copilot/Gemini, structured Response Contract, Transport Decision Principle), YAML frontmatter management (file-header), and project state engine.",
+  "author": {
+    "name": "Szabolcs",
+    "email": "exarlabs@gmail.com"
+  },
+  "license": "MIT"
+}

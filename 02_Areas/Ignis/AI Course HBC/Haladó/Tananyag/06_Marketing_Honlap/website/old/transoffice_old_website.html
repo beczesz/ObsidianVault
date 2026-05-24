@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TransOffice Trade SRL - Furnizor de Echipamente de Birou - Miercurea Ciuc</title>
+    <style>
+        /* === A DELIBERATELY TERRIBLE 2012-ERA WEBSITE === */
+        
+        body {
+            background-color: #d4d0c8;
+            background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='1' height='1' fill='%23c8c4bc'/%3E%3C/svg%3E");
+            font-family: 'Comic Sans MS', 'Trebuchet MS', cursive, sans-serif;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Scrolling marquee style */
+        .marquee-bar {
+            background: linear-gradient(to right, #000080, #0000cd, #000080);
+            color: #ffff00;
+            font-size: 13px;
+            font-weight: bold;
+            padding: 4px 0;
+            overflow: hidden;
+            white-space: nowrap;
+            font-family: 'Verdana', sans-serif;
+        }
+        .marquee-bar .scroll-text {
+            display: inline-block;
+            animation: marquee 25s linear infinite;
+        }
+        @keyframes marquee {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-200%); }
+        }
+
+        /* Top banner area */
+        .top-banner {
+            background: linear-gradient(180deg, #1a0a5e 0%, #000080 40%, #00005a 100%);
+            padding: 10px 0;
+            text-align: center;
+            border-bottom: 3px solid #ffd700;
+        }
+        .top-banner h1 {
+            font-family: 'Times New Roman', serif;
+            color: #ffd700;
+            font-size: 32px;
+            text-shadow: 2px 2px 4px #000, 0 0 10px rgba(255,215,0,0.5);
+            margin: 5px 0;
+            letter-spacing: 3px;
+        }
+        .top-banner .subtitle {
+            color: #87ceeb;
+            font-size: 14px;
+            font-family: 'Verdana', sans-serif;
+            letter-spacing: 1px;
+        }
+        .top-banner .flags {
+            margin-top: 5px;
+            font-size: 20px;
+        }
+
+        /* Navigation - the classic table-cell nav */
+        .nav-bar {
+            background: linear-gradient(180deg, #4a4a4a, #2a2a2a);
+            border-top: 1px solid #666;
+            border-bottom: 2px solid #000;
+            text-align: center;
+            padding: 0;
+        }
+        .nav-bar a {
+            display: inline-block;
+            color: #fff;
+            text-decoration: none;
+            padding: 8px 18px;
+            font-family: 'Verdana', sans-serif;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-right: 1px solid #555;
+            transition: background 0.2s;
+        }
+        .nav-bar a:hover {
+            background: #000080;
+            color: #ffd700;
+        }
+        .nav-bar a:first-child { border-left: 1px solid #555; }
+        .nav-bar a.active { background: #000080; color: #ffd700; }
+
+        /* Main layout - classic 3-column table */
+        .main-wrapper {
+            width: 960px;
+            margin: 0 auto;
+            background: #fff;
+            border-left: 1px solid #999;
+            border-right: 1px solid #999;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .content-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .sidebar-left {
+            width: 180px;
+            background: linear-gradient(180deg, #e8e8f0, #d0d0e0);
+            vertical-align: top;
+            padding: 10px;
+            border-right: 1px solid #bbb;
+            font-size: 12px;
+        }
+        .main-content {
+            vertical-align: top;
+            padding: 15px 20px;
+        }
+        .sidebar-right {
+            width: 180px;
+            background: linear-gradient(180deg, #f0f0e8, #e0e0d0);
+            vertical-align: top;
+            padding: 10px;
+            border-left: 1px solid #bbb;
+            font-size: 11px;
+        }
+
+        /* Sidebar menu */
+        .side-menu h3 {
+            background: linear-gradient(180deg, #000080, #000060);
+            color: #fff;
+            font-size: 12px;
+            padding: 6px 8px;
+            margin: 0 0 5px 0;
+            font-family: 'Verdana', sans-serif;
+            border-radius: 3px 3px 0 0;
+        }
+        .side-menu ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 15px 0;
+        }
+        .side-menu li {
+            border-bottom: 1px dotted #aaa;
+        }
+        .side-menu a {
+            display: block;
+            padding: 5px 8px;
+            color: #000080;
+            text-decoration: none;
+            font-size: 11px;
+            font-family: 'Verdana', sans-serif;
+        }
+        .side-menu a:hover {
+            background: #e0e0ff;
+            text-decoration: underline;
+        }
+
+        /* Blink animation for "NOU!" badges */
+        .blink {
+            animation: blink-anim 1s step-start infinite;
+            color: red;
+            font-weight: bold;
+            font-size: 10px;
+        }
+        @keyframes blink-anim {
+            50% { opacity: 0; }
+        }
+
+        /* "Under construction" gif replacement */
+        .under-construction {
+            background: repeating-linear-gradient(
+                45deg,
+                #ffd700,
+                #ffd700 10px,
+                #000 10px,
+                #000 20px
+            );
+            color: #fff;
+            text-align: center;
+            padding: 6px;
+            font-family: 'Impact', sans-serif;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px #000;
+            margin: 10px 0;
+            border: 2px solid #ff6600;
+        }
+
+        /* Visitor counter */
+        .visitor-counter {
+            text-align: center;
+            margin: 15px 0;
+            padding: 8px;
+            background: #000;
+            border: 2px inset #666;
+            border-radius: 4px;
+        }
+        .visitor-counter span {
+            font-family: 'Courier New', monospace;
+            color: #0f0;
+            font-size: 16px;
+            letter-spacing: 3px;
+        }
+        .visitor-counter .label {
+            display: block;
+            color: #999;
+            font-size: 9px;
+            font-family: 'Verdana', sans-serif;
+            margin-top: 3px;
+        }
+
+        /* Content styles */
+        .welcome-section {
+            border: 2px solid #000080;
+            background: #f0f0ff;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+        .welcome-section h2 {
+            color: #000080;
+            font-family: 'Times New Roman', serif;
+            font-size: 18px;
+            border-bottom: 2px solid #000080;
+            padding-bottom: 5px;
+            margin: 0 0 10px 0;
+        }
+        .welcome-section p {
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        /* Product table - the classic */
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 12px;
+        }
+        .product-table th {
+            background: linear-gradient(180deg, #000080, #000060);
+            color: #fff;
+            padding: 6px 10px;
+            text-align: left;
+            font-family: 'Verdana', sans-serif;
+            font-size: 11px;
+        }
+        .product-table td {
+            padding: 6px 10px;
+            border: 1px solid #ccc;
+        }
+        .product-table tr:nth-child(even) { background: #f5f5ff; }
+        .product-table tr:hover { background: #e0e0ff; }
+        .old-price { text-decoration: line-through; color: #999; }
+        .new-price { color: red; font-weight: bold; font-size: 14px; }
+
+        /* Animated "OFERTĂ" banner */
+        .offer-banner {
+            background: linear-gradient(90deg, #ff0000, #ff6600, #ff0000);
+            background-size: 200% 100%;
+            animation: gradient-move 3s ease infinite;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            font-family: 'Impact', sans-serif;
+            font-size: 20px;
+            text-shadow: 2px 2px 3px #000;
+            border: 3px double #ffd700;
+            margin: 10px 0;
+            letter-spacing: 3px;
+        }
+        @keyframes gradient-move {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Guestbook / Contact section */
+        .guestbook {
+            background: #fffff0;
+            border: 1px solid #cc9;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        .guestbook h3 {
+            color: #660066;
+            font-size: 14px;
+        }
+        .guestbook textarea {
+            width: 95%;
+            font-family: 'Comic Sans MS', cursive;
+            font-size: 12px;
+            border: 2px inset #ccc;
+        }
+        .guestbook input[type="submit"] {
+            background: linear-gradient(180deg, #ddd, #aaa);
+            border: 2px outset #ccc;
+            padding: 4px 20px;
+            font-family: 'Verdana', sans-serif;
+            font-size: 11px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+
+        /* Right sidebar widgets */
+        .widget {
+            background: #fff;
+            border: 1px solid #ccc;
+            margin-bottom: 12px;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .widget h4 {
+            background: linear-gradient(180deg, #006600, #004400);
+            color: #fff;
+            padding: 5px 8px;
+            margin: 0;
+            font-size: 11px;
+            font-family: 'Verdana', sans-serif;
+        }
+        .widget-content {
+            padding: 8px;
+        }
+        .weather-widget {
+            font-family: 'Courier New', monospace;
+            font-size: 11px;
+            text-align: center;
+        }
+        .weather-widget .temp { font-size: 24px; color: #cc0000; }
+
+        /* Spinning email gif replacement */
+        .email-icon {
+            display: inline-block;
+            animation: spin 4s linear infinite;
+            font-size: 20px;
+        }
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Best viewed badge */
+        .best-viewed {
+            text-align: center;
+            font-family: 'Verdana', sans-serif;
+            font-size: 9px;
+            color: #666;
+            margin: 10px 0;
+            padding: 5px;
+            border: 1px dashed #999;
+        }
+
+        /* Footer */
+        .site-footer {
+            background: linear-gradient(180deg, #2a2a2a, #1a1a1a);
+            color: #999;
+            text-align: center;
+            padding: 15px;
+            font-family: 'Verdana', sans-serif;
+            font-size: 10px;
+            border-top: 3px solid #000080;
+        }
+        .site-footer a { color: #87ceeb; }
+
+        /* Rainbow HR */
+        .rainbow-hr {
+            height: 4px;
+            border: none;
+            background: linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet);
+            margin: 10px 0;
+        }
+
+        /* Sparkle stars */
+        .sparkle {
+            animation: sparkle-anim 1.5s ease-in-out infinite;
+            display: inline-block;
+        }
+        @keyframes sparkle-anim {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.4; transform: scale(0.8); }
+        }
+
+        /* Photo frame */
+        .photo-frame {
+            border: 4px ridge #8B7355;
+            padding: 3px;
+            background: #fff;
+            display: inline-block;
+            margin: 5px;
+            box-shadow: 3px 3px 5px rgba(0,0,0,0.3);
+        }
+        .photo-placeholder {
+            width: 200px;
+            height: 140px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-family: 'Verdana', sans-serif;
+            font-size: 10px;
+            text-align: center;
+        }
+
+        /* Hit counter digits */
+        .counter-digit {
+            display: inline-block;
+            background: #111;
+            color: #0f0;
+            padding: 2px 5px;
+            margin: 0 1px;
+            border: 1px solid #333;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border-radius: 2px;
+        }
+
+        /* Scrolling news ticker */
+        .news-ticker {
+            background: #fffde0;
+            border: 1px solid #cc9;
+            padding: 5px 8px;
+            font-size: 11px;
+            margin: 10px 0;
+        }
+        .news-ticker strong { color: red; }
+
+        /* "NEW" gif replacement */
+        .new-badge {
+            display: inline-block;
+            background: #ff0000;
+            color: #fff;
+            font-size: 8px;
+            padding: 1px 4px;
+            font-family: 'Arial', sans-serif;
+            font-weight: bold;
+            animation: pulse 0.8s ease-in-out infinite;
+            border-radius: 2px;
+            vertical-align: super;
+        }
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Stock photo placeholder */
+        .stock-img {
+            background: linear-gradient(135deg, #e0e0e0, #c0c0c0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+            font-family: 'Verdana', sans-serif;
+            font-size: 10px;
+            text-align: center;
+            border: 1px solid #999;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Scrolling marquee -->
+<div class="marquee-bar">
+    <span class="scroll-text">
+        ★★★ BINE AȚI VENIT PE SITE-UL TRANSOFFICE TRADE SRL! ★★★ CELE MAI BUNE PREȚURI DIN ȚINUTUL SECUIESC! ★★★ OFERTĂ SPECIALĂ LA CARTUȘE DE IMPRIMANTĂ - REDUCERE 15%! ★★★ LIVRARE GRATUITĂ ÎN MIERCUREA CIUC! ★★★ SUNAȚI ACUM: 0266-371-XXX ★★★
+    </span>
+</div>
+
+<!-- Top banner -->
+<div class="top-banner">
+    <div class="flags">🇷🇴 🇪🇺</div>
+    <h1>✦ TRANSOFFICE TRADE SRL ✦</h1>
+    <div class="subtitle">
+        ── Furnizor de Echipamente de Birou și Papetărie din 2008 ──<br>
+        Miercurea Ciuc, Str. Băieșenilor Nr. 14, Jud. Harghita
+    </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+    <a href="#" class="active">🏠 ACASĂ</a>
+    <a href="#">PRODUSE</a>
+    <a href="#">SERVICII</a>
+    <a href="#">DESPRE NOI</a>
+    <a href="#">GALERIE FOTO</a>
+    <a href="#">PARTENERI</a>
+    <a href="#">CONTACT</a>
+    <a href="#">CARTE DE OASPEȚI</a>
+</div>
+
+<!-- Main 3-column layout -->
+<div class="main-wrapper">
+    <table class="content-table">
+        <tr>
+            <!-- LEFT SIDEBAR -->
+            <td class="sidebar-left">
+                <div class="side-menu">
+                    <h3>📁 CATEGORII</h3>
+                    <ul>
+                        <li><a href="#">→ Imprimante & Copiatoare</a></li>
+                        <li><a href="#">→ Cartușe & Tonere <span class="blink">NOU!</span></a></li>
+                        <li><a href="#">→ Hârtie & Papetărie</a></li>
+                        <li><a href="#">→ Mobilier de Birou</a></li>
+                        <li><a href="#">→ Rechizite Școlare</a></li>
+                        <li><a href="#">→ Consumabile IT</a></li>
+                        <li><a href="#">→ Echipamente de Prezentare</a></li>
+                        <li><a href="#">→ Distrugătoare Documente</a></li>
+                    </ul>
+
+                    <h3>📞 CONTACT RAPID</h3>
+                    <ul>
+                        <li style="padding: 5px 8px; font-size: 11px;">
+                            Tel: 0266-371-XXX<br>
+                            Fax: 0266-371-XXY<br>
+                            <span class="email-icon">✉</span> office@transoffice.ro
+                        </li>
+                    </ul>
+
+                    <h3>🕐 PROGRAM</h3>
+                    <ul>
+                        <li style="padding: 5px 8px; font-size: 10px;">
+                            Luni-Vineri: 08:00-17:00<br>
+                            Sâmbătă: 09:00-13:00<br>
+                            Duminică: <span style="color:red;">ÎNCHIS</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Visitor counter -->
+                <div class="visitor-counter">
+                    <span class="counter-digit">0</span>
+                    <span class="counter-digit">1</span>
+                    <span class="counter-digit">4</span>
+                    <span class="counter-digit">8</span>
+                    <span class="counter-digit">7</span>
+                    <span class="counter-digit">2</span>
+                    <span class="label">VIZITATORI DE LA 01.03.2012</span>
+                </div>
+
+                <div class="best-viewed">
+                    🖥️ Site optimizat pentru<br>
+                    <b>Internet Explorer 8+</b><br>
+                    Rezoluție: 1024×768<br>
+                    <span style="font-size:8px;">© WebDesign: Gábor IT Solutions, Miercurea Ciuc</span>
+                </div>
+            </td>
+
+            <!-- MAIN CONTENT -->
+            <td class="main-content">
+                
+                <!-- Welcome -->
+                <div class="welcome-section">
+                    <h2>🤝 Bine ați venit la TransOffice Trade!</h2>
+                    <table style="width:100%">
+                        <tr>
+                            <td style="width:210px; vertical-align:top; padding-right:15px;">
+                                <div class="photo-frame">
+                                    <div class="photo-placeholder" style="width:200px; height:140px;">
+                                        📸<br>SEDIUL FIRMEI<br>Str. Băieșenilor 14
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="vertical-align:top;">
+                                <p>
+                                    <b>TransOffice Trade SRL</b> este principalul furnizor de echipamente de birou, papetărie 
+                                    și consumabile IT din zona Miercurea Ciuc și împrejurimi. Din <b>2008</b> deservim cu 
+                                    profesionalism firmele și instituțiile din Ținutul Secuiesc.
+                                </p>
+                                <p style="margin-top:8px;">
+                                    Oferim <span style="color: #000080; font-weight: bold;">cele mai bune prețuri</span> din zonă, 
+                                    livrare rapidă și consultanță personalizată pentru toate nevoile dumneavoastră de birou!
+                                </p>
+                                <p style="margin-top:8px; font-size: 11px; color: #666;">
+                                    <span class="sparkle">⭐</span> Peste 500 de clienți mulțumiți! 
+                                    <span class="sparkle">⭐</span> 15 ani de experiență! 
+                                    <span class="sparkle">⭐</span>
+                                </p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <!-- OFERTĂ banner -->
+                <div class="offer-banner">
+                    🔥 MEGA OFERTĂ DE PRIMĂVARĂ 2024 — REDUCERI PÂNĂ LA 25%! 🔥
+                </div>
+
+                <!-- Under construction -->
+                <div class="under-construction">
+                    ⚠️ SECȚIUNEA "MAGAZIN ONLINE" ESTE ÎN CONSTRUCȚIE ⚠️
+                </div>
+
+                <!-- Product table -->
+                <h3 style="color:#000080; font-family:'Times New Roman',serif; margin: 10px 0 5px;">
+                    📋 Produse Recomandate Săptămâna Aceasta:
+                </h3>
+                <table class="product-table">
+                    <tr>
+                        <th>Cod</th>
+                        <th>Produs</th>
+                        <th>Preț vechi</th>
+                        <th>Preț NOU!</th>
+                        <th>Stoc</th>
+                    </tr>
+                    <tr>
+                        <td>TO-1001</td>
+                        <td>Cartuș HP 305 Black <span class="new-badge">NEW</span></td>
+                        <td class="old-price">89 Lei</td>
+                        <td class="new-price">75 Lei</td>
+                        <td style="color:green;">✓ În stoc</td>
+                    </tr>
+                    <tr>
+                        <td>TO-1002</td>
+                        <td>Hârtie A4 Navigator 80g (5 topuri)</td>
+                        <td class="old-price">145 Lei</td>
+                        <td class="new-price">119 Lei</td>
+                        <td style="color:green;">✓ În stoc</td>
+                    </tr>
+                    <tr>
+                        <td>TO-1003</td>
+                        <td>Imprimantă HP LaserJet M110we</td>
+                        <td class="old-price">890 Lei</td>
+                        <td class="new-price">749 Lei</td>
+                        <td style="color:orange;">⚠ Ultimele 3 buc.</td>
+                    </tr>
+                    <tr>
+                        <td>TO-1004</td>
+                        <td>Scaun ergonomic "Confort Plus"</td>
+                        <td class="old-price">1.250 Lei</td>
+                        <td class="new-price">999 Lei</td>
+                        <td style="color:red;">✗ Comandă specială</td>
+                    </tr>
+                    <tr>
+                        <td>TO-1005</td>
+                        <td>Set pixuri Bic Cristal (50 buc)</td>
+                        <td class="old-price">65 Lei</td>
+                        <td class="new-price">49 Lei</td>
+                        <td style="color:green;">✓ În stoc</td>
+                    </tr>
+                    <tr>
+                        <td>TO-1006</td>
+                        <td>Biblioraft plastifiat A4 (10 buc) <span class="new-badge">NEW</span></td>
+                        <td class="old-price">110 Lei</td>
+                        <td class="new-price">85 Lei</td>
+                        <td style="color:green;">✓ În stoc</td>
+                    </tr>
+                </table>
+
+                <p style="font-size:11px; color:#666; text-align:right;">
+                    * Prețurile includ TVA. Livrare gratuită pentru comenzi peste 200 Lei în Miercurea Ciuc.
+                </p>
+
+                <hr class="rainbow-hr">
+
+                <!-- News section -->
+                <h3 style="color:#000080; font-family:'Times New Roman',serif; margin: 10px 0 5px;">
+                    📰 Noutăți & Anunțuri:
+                </h3>
+
+                <div class="news-ticker">
+                    <strong>[15.03.2024]</strong> Am primit noile modele de calculatoare Casio! Veniți în magazin!<br>
+                    <strong>[02.03.2024]</strong> PROMOȚIE: La 10 topuri de hârtie A4, primiți 1 GRATIS!<br>
+                    <strong>[14.02.2024]</strong> Programul de Valentine's Day: 09:00-15:00 (sâmbătă)<br>
+                    <strong>[20.01.2024]</strong> Am actualizat lista de prețuri pentru 2024. Cereți oferta!<br>
+                    <strong>[15.12.2023]</strong> Mulțumim pentru un an minunat! La mulți ani 2024! 🎄<br>
+                </div>
+
+                <hr class="rainbow-hr">
+
+                <!-- Photo gallery -->
+                <h3 style="color:#000080; font-family:'Times New Roman',serif; margin: 10px 0 5px;">
+                    📸 Galerie Foto:
+                </h3>
+                <div style="text-align:center;">
+                    <div class="photo-frame">
+                        <div class="photo-placeholder" style="width:150px; height:110px;">
+                            🏬<br>Magazinul<br>nostru
+                        </div>
+                    </div>
+                    <div class="photo-frame">
+                        <div class="photo-placeholder" style="width:150px; height:110px; background: linear-gradient(135deg, #f093fb, #f5576c);">
+                            🖨️<br>Showroom<br>imprimante
+                        </div>
+                    </div>
+                    <div class="photo-frame">
+                        <div class="photo-placeholder" style="width:150px; height:110px; background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                            📦<br>Depozitul<br>central
+                        </div>
+                    </div>
+                </div>
+                <p style="font-size:10px; color:#999; text-align:center; margin-top:5px;">
+                    Click pe poze pentru mărire (funcție indisponibilă momentan)
+                </p>
+
+                <hr class="rainbow-hr">
+
+                <!-- Guestbook -->
+                <div class="guestbook">
+                    <h3>📝 Carte de Oaspeți — Lăsați-ne un mesaj!</h3>
+                    <p style="font-size:11px; margin: 5px 0;">
+                        <b>Ionescu M. (15.02.2024):</b> "Foarte mulțumit de servicii! Recomand!" ⭐⭐⭐⭐⭐<br>
+                        <b>Kiss Attila (03.02.2024):</b> "Gyors kiszállítás, jó árak. Köszi!" ⭐⭐⭐⭐<br>
+                        <b>Pop Vasile (22.01.2024):</b> "Am comandat 50 de bibliorafturi, au venit în 2 zile. Super!" ⭐⭐⭐⭐⭐<br>
+                    </p>
+                    <hr style="border: 1px dashed #cc9;">
+                    <p style="font-size:11px;">Scrieți mesajul dvs.:</p>
+                    <input type="text" placeholder="Numele dvs." style="width:95%; margin-bottom:4px; padding:3px; border:2px inset #ccc; font-family:'Comic Sans MS',cursive; font-size:11px;"><br>
+                    <textarea rows="3" placeholder="Mesajul dvs. aici..."></textarea><br>
+                    <input type="submit" value="📨 Trimite Mesajul">
+                    <span style="font-size:9px; color:#999; margin-left:10px;">Mesajul va fi publicat după aprobare.</span>
+                </div>
+
+            </td>
+
+            <!-- RIGHT SIDEBAR -->
+            <td class="sidebar-right">
+
+                <!-- "Partener de încredere" badge -->
+                <div style="text-align:center; margin-bottom:12px; padding:10px; background: linear-gradient(135deg, #ffd700, #ff8c00); border-radius: 50%; width:120px; height:120px; margin:0 auto 12px; display:flex; flex-direction:column; align-items:center; justify-content:center; border: 3px double #8B6914;">
+                    <span style="font-size:28px;">🏆</span>
+                    <span style="font-size:9px; font-weight:bold; color:#333; text-align:center; line-height:1.2;">PARTENER<br>DE ÎNCREDERE<br>DIN 2008</span>
+                </div>
+
+                <!-- Weather widget -->
+                <div class="widget">
+                    <h4>☁️ Vremea în M. Ciuc</h4>
+                    <div class="widget-content weather-widget">
+                        <div class="temp">-3°C</div>
+                        <div>Noros, ninsoare ușoară</div>
+                        <div style="font-size:9px; color:#999;">Actualizat: 15.03.2024</div>
+                    </div>
+                </div>
+
+                <!-- Exchange rate widget -->
+                <div class="widget">
+                    <h4>💶 Curs Valutar</h4>
+                    <div class="widget-content" style="font-size:10px; font-family:'Courier New',monospace;">
+                        1 EUR = 4,9732 Lei<br>
+                        1 USD = 4,5891 Lei<br>
+                        1 GBP = 5,7645 Lei<br>
+                        1 HUF = 0,0128 Lei<br>
+                        <span style="font-size:8px; color:#999;">Curs BNR 15.03.2024</span>
+                    </div>
+                </div>
+
+                <!-- Partners -->
+                <div class="widget">
+                    <h4>🤝 Parteneri</h4>
+                    <div class="widget-content" style="text-align:center;">
+                        <div class="stock-img" style="width:100%; height:35px; margin-bottom:4px; font-size:9px;">HP Partner</div>
+                        <div class="stock-img" style="width:100%; height:35px; margin-bottom:4px; font-size:9px;">Canon Authorized</div>
+                        <div class="stock-img" style="width:100%; height:35px; margin-bottom:4px; font-size:9px;">Xerox Dealer</div>
+                        <div class="stock-img" style="width:100%; height:35px; font-size:9px;">Navigator Paper</div>
+                    </div>
+                </div>
+
+                <!-- Poll -->
+                <div class="widget">
+                    <h4>📊 Sondaj</h4>
+                    <div class="widget-content" style="font-size:10px;">
+                        <b>Ce folosiți cel mai des?</b><br>
+                        <input type="radio" name="poll"> Imprimantă<br>
+                        <input type="radio" name="poll"> Copiator<br>
+                        <input type="radio" name="poll"> Scanner<br>
+                        <input type="radio" name="poll"> Multifuncțional<br>
+                        <button style="font-size:9px; margin-top:4px; border:1px outset #ccc; background:#eee; padding:2px 8px;">Votează</button>
+                        <div style="font-size:8px; color:#999; margin-top:3px;">Total voturi: 23</div>
+                    </div>
+                </div>
+
+                <!-- Social links (2012 style) -->
+                <div style="text-align:center; margin-top:10px;">
+                    <p style="font-size:10px; font-weight:bold; color:#333;">Urmăriți-ne:</p>
+                    <span style="font-size:20px; cursor:pointer;" title="Facebook">📘</span>
+                    <span style="font-size:20px; cursor:pointer;" title="Email">📧</span>
+                    <span style="font-size:20px; cursor:pointer;" title="Hi5">👋</span>
+                </div>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- Footer -->
+<div style="width:960px; margin:0 auto;">
+    <div class="site-footer">
+        <p>
+            © 2008-2024 TransOffice Trade SRL — Toate drepturile rezervate.<br>
+            Str. Băieșenilor Nr. 14, Miercurea Ciuc, Jud. Harghita, România<br>
+            CUI: RO24681357 | Nr. Reg. Com.: J19/456/2008<br>
+            Tel: 0266-371-XXX | Fax: 0266-371-XXY | Email: office@transoffice.ro<br>
+            <br>
+            <a href="#">Politica de Confidențialitate</a> | 
+            <a href="#">Termeni și Condiții</a> | 
+            <a href="#">ANPC</a> | 
+            <a href="#">Soluționarea litigiilor</a>
+        </p>
+        <p style="margin-top: 8px;">
+            🌐 Site realizat de <a href="#">Gábor IT Solutions</a>, Miercurea Ciuc — 2012<br>
+            <span style="font-size:8px;">Ultima actualizare: 15.03.2024 | Versiunea 2.1.3</span>
+        </p>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kiszállítás — Deák Húsmíves Admin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg: #FFFBF7;
+  --primary: #9B2335;
+  --primary-light: #F9E0E3;
+  --text: #2C2825;
+  --text2: #5C544C;
+  --text3: #8A8078;
+  --border: #E8E2DB;
+  --card-bg: #FFFFFF;
+  --green: #2D7A4F;
+  --amber: #D4A574;
+  --amber-text: #96724A;
+  --amber-bg: #F5EDDF;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: #FAF8F5; font-family: Inter, system-ui, -apple-system, sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; margin: 0; }
+.page-wrapper { max-width: 512px; width: 100%; margin: 0 auto; min-height: 100vh; background: var(--bg); }
+
+/* Header */
+.header { height: 56px; background: #FFF; position: sticky; top: 0; z-index: 40; display: flex; align-items: center; justify-content: space-between; padding: 0 16px;
+  box-shadow: rgba(0,0,0,0.08) 0px 2px 8px 0px; }
+.header h1 { font-size: 18px; font-weight: 400; color: #842030; letter-spacing: normal; }
+.header-date { display: flex; align-items: center; gap: 8px; font-size: 14px; font-weight: 500; color: var(--text2); }
+.header-date svg { width: 18px; height: 18px; color: var(--text3); }
+
+/* Main */
+.main { padding-bottom: 80px; }
+
+/* Stats bar */
+.stats-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; background: var(--primary-light); border-radius: 16px; padding: 12px; margin: 12px 16px 0; }
+.stat { text-align: center; }
+.stat-number { font-size: 16px; font-weight: 800; }
+.stat-number.amber { color: var(--amber); }
+.stat-number.primary { color: var(--primary); }
+.stat-number.green { color: var(--green); }
+.stat-label { font-size: 10px; font-weight: 400; color: var(--text2); }
+
+/* Filter tabs */
+.filter-wrapper { overflow-x: auto; padding: 12px 0; scrollbar-width: none; -ms-overflow-style: none; }
+.filter-wrapper::-webkit-scrollbar { display: none; }
+.filter-inner { display: inline-flex; gap: 8px; padding: 0 16px; }
+.filter-btn { white-space: nowrap; font-family: inherit; font-size: 13px; font-weight: 500; letter-spacing: 0.26px; padding: 6px 14px; border-radius: 9999px; cursor: pointer; border: 1px solid transparent; }
+.filter-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+.filter-btn.inactive { background: var(--card-bg); color: var(--text2); border-color: var(--border); }
+
+/* Order cards */
+.cards { display: flex; flex-direction: column; gap: 12px; padding: 0 16px; }
+.order-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 16px; cursor: pointer; }
+.card-inner { display: flex; flex-direction: column; gap: 8px; }
+.card-name-row { display: flex; justify-content: space-between; align-items: center; }
+.card-name { font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: 0.32px; }
+.card-address { font-size: 14px; font-weight: 400; color: var(--text2); letter-spacing: 0.28px; }
+.card-time { font-size: 13px; font-weight: 400; color: var(--text3); letter-spacing: 0.26px; }
+
+/* Badges */
+.badge { font-size: 12px; font-weight: 500; border-radius: 9999px; padding: 2px 10px; white-space: nowrap; }
+.badge-ready { background: var(--amber-bg); color: var(--amber-text); }
+.badge-delivering { background: var(--primary-light); color: var(--primary); }
+
+/* Bottom nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; z-index: 50; background: var(--card-bg); border-top: 1px solid var(--border); box-shadow: rgba(0,0,0,0.08) 0px -2px 8px 0px; }
+.bottom-nav-inner { max-width: 448px; margin: 0 auto; display: flex; align-items: center; justify-content: space-around; height: 64px; padding: 0 8px; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-decoration: none; cursor: pointer; }
+.nav-item svg { width: 24px; height: 24px; }
+.nav-item span { font-size: 12px; font-weight: 500; }
+.nav-item.active svg { color: var(--primary); }
+.nav-item.active span { color: var(--primary); }
+.nav-item.inactive svg { color: var(--text3); }
+.nav-item.inactive span { color: var(--text3); }
+
+.static-label { position: fixed; top: 8px; right: 8px; background: rgba(0,0,0,0.5); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; z-index: 100; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="static-label">STATIC COPY — staging.deakhus.ro</div>
+
+<div class="page-wrapper">
+
+<!-- Header -->
+<header class="header">
+  <h1>Kiszállítás</h1>
+  <div class="header-date">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <span>7 máj. 2026</span>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="main">
+
+  <!-- Stats bar -->
+  <div class="stats-bar">
+    <div class="stat">
+      <div class="stat-number amber">2</div>
+      <div class="stat-label">Kész</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number primary">1</div>
+      <div class="stat-label">Úton</div>
+    </div>
+    <div class="stat">
+      <div class="stat-number green">0</div>
+      <div class="stat-label">Kézbesítve</div>
+    </div>
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="filter-wrapper">
+    <div class="filter-inner">
+      <button class="filter-btn active">Összes (3)</button>
+      <button class="filter-btn inactive">Kiszállításra kész (2)</button>
+      <button class="filter-btn inactive">Úton (1)</button>
+      <button class="filter-btn inactive">Kézbesítve (0)</button>
+    </div>
+  </div>
+
+  <!-- Order cards -->
+  <div class="cards">
+    <!-- Card 1: Administrator -->
+    <div class="order-card">
+      <div class="card-inner">
+        <div class="card-name-row">
+          <span class="card-name">Administrator</span>
+          <span class="badge badge-ready">Szállításra kész</span>
+        </div>
+        <div class="card-address">Odorheiu-Secuiesc, Str. Orban Balazs, Nr. 9 -</div>
+        <div class="card-time">11:00 - 12:00, 12:00 - 13:00 · 5 termék</div>
+      </div>
+    </div>
+
+    <!-- Card 2: Becze szabolcs -->
+    <div class="order-card">
+      <div class="card-inner">
+        <div class="card-name-row">
+          <span class="card-name">Becze szabolcs</span>
+          <span class="badge badge-ready">Szállításra kész</span>
+        </div>
+        <div class="card-address">Morii -, 20/1</div>
+        <div class="card-time">13:00 - 14:00 · 3 termék</div>
+      </div>
+    </div>
+
+    <!-- Card 3: Becze szabolcs (delivering) -->
+    <div class="order-card">
+      <div class="card-inner">
+        <div class="card-name-row">
+          <span class="card-name">Becze szabolcs</span>
+          <span class="badge badge-delivering">Kiszállítás alatt</span>
+        </div>
+        <div class="card-address">Morii -, 20/1</div>
+        <div class="card-time">12:00 - 13:00 · 3 termék</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+</div><!-- /.page-wrapper -->
+
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a class="nav-item inactive">
+      <!-- lucide-beef -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.4 13.7A6.5 6.5 0 1 0 6.28 6.6c-1.1 3.13-.78 3.9-3.18 6.08A3 3 0 0 0 5 18c4 0 8.4-1.8 11.4-4.3"/><path d="m18.5 6 2.19 4.5a6.48 6.48 0 0 1-2.29 7.2C15.4 20.2 11 22 7 22a3 3 0 0 1-2.68-1.66L2.4 16.5"/><circle cx="12.5" cy="8.5" r="2.5"/></svg>
+      <span>Előkészítés</span>
+    </a>
+    <a class="nav-item active">
+      <!-- lucide-truck -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+      <span>Kiszállítás</span>
+    </a>
+    <a class="nav-item inactive">
+      <!-- lucide-chart-no-axes-combined -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v5"/><path d="M16 14v7"/><path d="M20 10v11"/><path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path d="M4 18v3"/><path d="M8 14v7"/></svg>
+      <span>Statisztikák</span>
+    </a>
+    <a class="nav-item inactive">
+      <!-- lucide-layout-dashboard -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      <span>Vezérlőpult</span>
+    </a>
+    <a class="nav-item inactive">
+      <!-- lucide-users -->
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Fiók</span>
+    </a>
+  </div>
+</nav>
+
+</body>
+</html>

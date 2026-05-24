@@ -1,0 +1,1 @@
+TÖRLENDŐ — ezt a fájlt törölni kell

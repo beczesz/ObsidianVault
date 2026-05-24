@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>Deák Húsmíves — Szórólap v11 (Hátoldal) — A4 nyomtatás</title>
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 297mm; height: 210mm;
+    background: #fff;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sheet {
+    width: 297mm;
+    height: 210mm;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 148mm 148mm;
+    grid-template-rows: 210mm;
+    width: 296mm;
+    height: 210mm;
+    transform: scale(0.96);
+    transform-origin: center center;
+  }
+
+  .card {
+    width: 148mm;
+    height: 210mm;
+    overflow: hidden;
+    position: relative;
+    background: #fff;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #2C2C2C;
+    transform: rotate(180deg);
+  }
+
+  /* Crop mark */
+  .crop-v {
+    position: absolute;
+    top: 0; bottom: 0;
+    left: 50%;
+    border-left: 0.3mm dashed #bbb;
+    z-index: 100;
+  }
+
+  /* === Card content styles === */
+  
+  .card {
+    width: 148mm; height: 210mm;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    background: #FFFFFF;
+    color: #2C2C2C;
+    overflow: hidden;
+    position: relative;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .card .back-top-bar {
+    width: 100%; height: 4mm;
+    background: linear-gradient(90deg, #C0392B, #E74C3C);
+  }
+
+  .card .back-header {
+    text-align: center;
+    padding: 5mm 8mm 3mm 8mm;
+  }
+  .card .back-header h2 {
+    font-size: 7mm;
+    font-weight: 900;
+    color: #C0392B;
+    text-transform: uppercase;
+    letter-spacing: 1mm;
+    line-height: 1.2;
+  }
+  .card .back-header .back-subtitle {
+    font-size: 3.2mm;
+    color: #666;
+    margin-top: 2mm;
+    line-height: 1.35;
+  }
+
+  .card .back-divider {
+    width: 24mm; height: 0.5mm;
+    background: #C0392B;
+    margin: 2.5mm auto;
+  }
+
+  .card .ingredients-block {
+    padding: 2mm 8mm 0 8mm;
+  }
+
+  .card .ingredient-category {
+    margin-bottom: 3mm;
+  }
+  .card .ingredient-category .cat-title {
+    font-size: 3.2mm;
+    font-weight: 700;
+    color: #C0392B;
+    text-transform: uppercase;
+    letter-spacing: 0.3mm;
+    margin-bottom: 0.8mm;
+  }
+  .card .ingredient-category .cat-items {
+    font-size: 2.8mm;
+    color: #444;
+    line-height: 1.4;
+    padding-left: 3mm;
+  }
+
+  .card .back-note {
+    margin: 4mm 8mm;
+    padding: 3.5mm 4mm;
+    background: #FDF2F0;
+    border-radius: 2mm;
+    border-left: 1.2mm solid #C0392B;
+  }
+  .card .back-note p {
+    font-size: 2.8mm;
+    color: #555;
+    line-height: 1.4;
+  }
+  .card .back-note strong {
+    color: #C0392B;
+  }
+
+  .card .back-bottom {
+    text-align: center;
+    padding: 3mm 8mm 1mm 8mm;
+  }
+  .card .back-bottom .tagline {
+    font-size: 4.5mm;
+    font-weight: 800;
+    color: #C0392B;
+    letter-spacing: 0.5mm;
+  }
+
+  .card .back-footer {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    background: linear-gradient(90deg, #C0392B, #E74C3C);
+    color: white;
+    text-align: center;
+    padding: 2mm 4mm;
+    font-size: 2.6mm;
+    letter-spacing: 0.2mm;
+  }
+
+  @media print {
+    html, body { width: 297mm; height: 210mm; }
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="crop-v"></div>
+  <div class="grid">
+    <div class="card"><div class="back-top-bar"></div>
+
+<div class="back-header">
+  <h2>Amit NEM teszünk<br>a húsunkba</h2>
+  <div class="back-subtitle">
+    A Deák Húsmíves kézműves termékei az alábbi<br>
+    ipari adalékanyagokat nem tartalmazzák.
+  </div>
+</div>
+
+<div class="back-divider"></div>
+
+<div class="ingredients-block">
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Szintetikus antioxidánsok</div>
+    <div class="cat-items">
+      BHA (E320) · BHT (E321) · Propil-gallát (E310)
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Töltőanyagok és fehérjepótlók</div>
+    <div class="cat-items">
+      Szójafehérje · Módosított keményítő (E1442) · Karragén (E407) · Cellulóz (E460) · Metil-cellulóz (E461) · Tejfehérje-kazeinát
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Mesterséges ízfokozók</div>
+    <div class="cat-items">
+      Dinátrium-guanilát (E627) · Dinátrium-inozinát (E631) · Hidrolizált növényi fehérje · Autolizált élesztő kivonat
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Tartósítószerek</div>
+    <div class="cat-items">
+      Kálium-nitrit (E249) · Nátrium-nitrát (E251) · Kálium-nitrát (E252) · Szorbinsav (E200) · Kálium-szorbát (E202) · Nátrium-laktát (E325)
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Színezékek</div>
+    <div class="cat-items">
+      Ponceau 4R (E124) · Annatto (E160b) · Karamellszínezék (E150a)
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Egyéb ipari adalékok</div>
+    <div class="cat-items">
+      Füstaroma (liquid smoke) · Transz-glutamináz („húsragasztó") · Xantángumi (E415) · Guargumi (E412) · Szójaszósz por
+    </div>
+  </div>
+
+</div>
+
+<div class="back-note">
+  <p>
+    <strong>Mit használunk?</strong> Hús, só, természetes fűszerek és hagyományos
+    kézműves eljárások. A Deák Húsmíves termékei ipari töltőanyagok,
+    szójafehérje, húsragasztó és füstaroma nélkül készülnek.
+  </p>
+</div>
+
+<div class="back-bottom">
+  <div class="tagline">Kézműves minőség, ipari kompromisszumok nélkül.</div>
+</div>
+
+<div class="back-footer">
+  Deák Húsmíves &nbsp;•&nbsp; Székelyudvarhely &nbsp;•&nbsp; www.deakhus.ro
+</div></div>
+    <div class="card"><div class="back-top-bar"></div>
+
+<div class="back-header">
+  <h2>Amit NEM teszünk<br>a húsunkba</h2>
+  <div class="back-subtitle">
+    A Deák Húsmíves kézműves termékei az alábbi<br>
+    ipari adalékanyagokat nem tartalmazzák.
+  </div>
+</div>
+
+<div class="back-divider"></div>
+
+<div class="ingredients-block">
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Szintetikus antioxidánsok</div>
+    <div class="cat-items">
+      BHA (E320) · BHT (E321) · Propil-gallát (E310)
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Töltőanyagok és fehérjepótlók</div>
+    <div class="cat-items">
+      Szójafehérje · Módosított keményítő (E1442) · Karragén (E407) · Cellulóz (E460) · Metil-cellulóz (E461) · Tejfehérje-kazeinát
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Mesterséges ízfokozók</div>
+    <div class="cat-items">
+      Dinátrium-guanilát (E627) · Dinátrium-inozinát (E631) · Hidrolizált növényi fehérje · Autolizált élesztő kivonat
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Tartósítószerek</div>
+    <div class="cat-items">
+      Kálium-nitrit (E249) · Nátrium-nitrát (E251) · Kálium-nitrát (E252) · Szorbinsav (E200) · Kálium-szorbát (E202) · Nátrium-laktát (E325)
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Színezékek</div>
+    <div class="cat-items">
+      Ponceau 4R (E124) · Annatto (E160b) · Karamellszínezék (E150a)
+    </div>
+  </div>
+
+  <div class="ingredient-category">
+    <div class="cat-title">&#x2716; Egyéb ipari adalékok</div>
+    <div class="cat-items">
+      Füstaroma (liquid smoke) · Transz-glutamináz („húsragasztó") · Xantángumi (E415) · Guargumi (E412) · Szójaszósz por
+    </div>
+  </div>
+
+</div>
+
+<div class="back-note">
+  <p>
+    <strong>Mit használunk?</strong> Hús, só, természetes fűszerek és hagyományos
+    kézműves eljárások. A Deák Húsmíves termékei ipari töltőanyagok,
+    szójafehérje, húsragasztó és füstaroma nélkül készülnek.
+  </p>
+</div>
+
+<div class="back-bottom">
+  <div class="tagline">Kézműves minőség, ipari kompromisszumok nélkül.</div>
+</div>
+
+<div class="back-footer">
+  Deák Húsmíves &nbsp;•&nbsp; Székelyudvarhely &nbsp;•&nbsp; www.deakhus.ro
+</div></div>
+  </div>
+</div>
+</body>
+</html>

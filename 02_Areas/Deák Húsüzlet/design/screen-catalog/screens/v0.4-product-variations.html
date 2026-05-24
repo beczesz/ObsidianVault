@@ -1,0 +1,2031 @@
+<!DOCTYPE html>
+<!-- v0.4 product variations · DH-173 VG demo -->
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Termék testreszabás (VG komponens) — Deák Húsmíves</title>
+
+<script type="application/json" id="screen-meta">
+{
+  "id": "v0.4-product-variations",
+  "title": "Termék testreszabás — VG komponens (5 típus + kosár edge case-ek)",
+  "feature": "product-variations",
+  "sprint": "Sprint 4",
+  "status": "draft",
+  "publish": true,
+  "order": 5,
+  "platform": "mobile",
+  "version": "v0.4",
+  "tags": ["DH-173", "options", "preferences", "variations", "VG"],
+  "description": "DH-173 — VG komponens demó: mind az 5 opció-típusra (Pácolva, Szeletelve-forma, Szeletelve-vastagság, Méret MANDATORY, Zsírosság MANDATORY) detail panel + kosár edge case-ek a cart.html alapján."
+}
+</script>
+
+<!--
+  REFERENCIÁK (lásd: design/screen-base-mapping.md):
+  - Detail panelek: design/screen-catalog/screens/v0.4-cart-rural.html (flat 448-wide frame)
+  - Kosár panel:   design/approved-sample-screens/cart.html (448 wide flat)
+  - dh-crumb / dh-copy / panels grid: design/screen-catalog/screens/v0.4-courier-route.html
+
+  NYELV: Wireframe HU. Production copy RO. Lásd vg-content-spec-v1.1.md.
+-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary:#9B2335; --primary-800:#7D1A2A; --primary-light:#F9E0E3; --primary-pale:#F4E6E8;
+  --primary-tint:rgba(155,35,53,0.04);
+  --secondary:#D4A574; --secondary-bg:#F5EDDF;
+  --cream:#FFFBF7; --cream-dark:#F5EDE5;
+  --card:#FFFFFF; --bg:#FAF8F5;
+  --border:#E8E2DB; --border-strong:#C5BCB3;
+  --text:#2C2825; --text-secondary:#5C544C; --text-muted:#8A8078; --text-faint:#999;
+  --green-bg:#D4EDDA; --green-text:#2D7A4F; --green-light:#F2FDF4; --green-msg:#137949;
+  --warning-bg:#FEF3C7; --warning-text:#92400E; --warning-muted:#B45309;
+  --success:#2D7A4F;
+  --ease-out:cubic-bezier(0.25,1,0.5,1);
+}
+
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  padding: 24px 16px 64px 56px;
+}
+@media (max-width: 768px) {
+  body {
+    padding: 60px 12px 48px;  /* mobile: tight sides + extra top to clear fixed back button */
+  }
+  .dh-crumb,
+  .page-intro,
+  .section-heading,
+  .panels {
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .panel { padding: 0; }
+}
+
+/* ─── Catalog wrapper ─── */
+.back-to-catalog {
+  position: fixed; top: 12px; left: 12px; z-index: 100;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0,0,0,0.5); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+}
+
+.dh-crumb {
+  max-width: 1480px; margin: 0 auto;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text-muted);
+}
+.dh-crumb .crumb-text { font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; flex: 0 1 auto; min-width: 0; }
+.dh-crumb .crumb-text strong { color: var(--text); font-weight: 600; }
+.dh-crumb .crumb-text .sep { color: var(--text-muted); margin: 0 6px; opacity: 0.7; }
+.dh-crumb .crumb-file { color: var(--text-muted); font-family: ui-monospace, monospace; font-size: 11px; margin-left: 8px; }
+
+.page-intro { max-width: 1480px; margin: 14px auto 24px; }
+.page-intro .eyebrow {
+  font-size: 11px; font-weight: 700; color: var(--primary-800);
+  letter-spacing: 0.6px; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.page-intro h1 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.2px; line-height: 1.2; max-width: 720px; }
+.page-intro p { font-size: 14px; color: var(--text-secondary); line-height: 1.55; margin-top: 10px; max-width: 720px; }
+
+.section-heading {
+  max-width: 1480px;
+  margin: 24px auto 16px;
+  display: flex; align-items: baseline; gap: 12px;
+  flex-wrap: wrap;
+}
+.section-heading h2 { font-size: 16px; font-weight: 700; color: var(--text); letter-spacing: -0.1px; }
+.section-heading p { font-size: 12px; color: var(--text-muted); max-width: 640px; }
+
+.panels {
+  max-width: 1480px; margin: 0 auto;
+  display: grid; gap: 32px 28px;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 410px), 1fr));
+  align-items: start; justify-content: start;
+}
+.panel { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.panel-meta { display: flex; align-items: center; gap: 10px; padding: 0 4px; }
+.panel-meta .num {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--primary-800); color: #fff;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; letter-spacing: 0.04em;
+}
+.panel-meta .ttl { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.panel-meta .ttl-sub { font-size: 11px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
+.panel-tag {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 4px;
+  background: var(--cream-dark); color: var(--text-secondary);
+}
+.panel-tag.tag-mandatory { background: var(--primary-pale); color: var(--primary); }
+
+/* ─── Screen frame (cart-rural minta — flat, no phone bezel) ─── */
+.phone-frame {
+  width: 100%; max-width: 448px;
+  height: 760px;
+  background: var(--cream);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow:
+    rgba(0,0,0,0.04) 0 1px 1px,
+    rgba(0,0,0,0.06) 0 4px 12px,
+    rgba(0,0,0,0.04) 0 12px 32px;
+  position: relative;
+  display: flex; flex-direction: column;
+  margin: 0 auto;
+}
+.phone-frame.frame-cart { max-width: 448px; }
+.dynamic-island { display: none; }
+.app { display: flex; flex-direction: column; height: 100%; background: var(--card); }
+
+.app-header {
+  background: var(--card);
+  padding: 14px 12px;
+  height: 56px;
+  display: flex; align-items: center; justify-content: center;
+  position: relative;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+}
+.app-header .header-back {
+  position: absolute;
+  left: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px; height: 36px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: none; cursor: pointer;
+}
+.app-header .header-back svg {
+  width: 22px; height: 22px;
+  stroke: var(--text-secondary); stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+.app-header .header-title {
+  font-size: 17px; font-weight: 600; color: var(--text);
+  max-width: calc(100% - 88px);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.app-header .header-aside {
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px; font-weight: 500; color: var(--text-muted);
+}
+
+.scroll-content {
+  flex: 1; overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  background: var(--card);
+  display: flex; flex-direction: column;
+}
+.scroll-content::-webkit-scrollbar { width: 6px; }
+.scroll-content::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.sticky-cta {
+  flex-shrink: 0;
+  padding: 10px 16px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+}
+.bottom-nav {
+  flex-shrink: 0;
+  height: 56px;
+  background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex;
+}
+.bottom-nav .nav-item {
+  flex: 1;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 3px;
+  font-size: 10px; font-weight: 500; color: var(--text-muted);
+  position: relative;
+}
+.bottom-nav .nav-item.active { color: var(--primary); }
+.bottom-nav .nav-item svg {
+  width: 22px; height: 22px;
+  stroke: currentColor; fill: none; stroke-width: 1.8;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.cart-badge {
+  position: absolute;
+  top: 6px;
+  right: calc(50% - 18px);
+  min-width: 16px; height: 16px;
+  border-radius: 9999px;
+  background: var(--primary);
+  font-size: 9px; font-weight: 700; color: #fff;
+  padding: 0 4px;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ─── Product detail content ─── */
+.product-image {
+  width: 100%;
+  height: 200px;
+  background:
+    repeating-linear-gradient(45deg,
+      #F0EDE8 0, #F0EDE8 14px,
+      #E8E2DB 14px, #E8E2DB 28px);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  flex-shrink: 0;
+}
+.product-body { padding: 14px 16px 0; }
+.product-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 8px; }
+.chip {
+  display: inline-flex; align-items: center;
+  padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 500;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: transparent;
+}
+.chip.green { background: var(--green-bg); color: var(--green-text); border-color: var(--green-bg); }
+.product-name { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: 4px; }
+.price-row { display: flex; align-items: baseline; gap: 4px; margin-bottom: 12px; }
+.price-value { font-size: 18px; font-weight: 700; color: var(--primary); }
+.price-unit { font-size: 13px; color: var(--text-muted); }
+.product-desc { font-size: 13px; line-height: 1.55; color: var(--text-secondary); margin-bottom: 12px; }
+.section-rule { height: 1px; background: var(--border); margin: 0 -16px 12px; }
+
+.hybrid-info {
+  background: var(--warning-bg);
+  padding: 8px 16px;
+  display: flex; align-items: flex-start; gap: 8px;
+}
+.hybrid-info svg {
+  width: 14px; height: 14px;
+  stroke: var(--warning-muted); stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0; margin-top: 2px;
+}
+.hybrid-weight { font-size: 12px; font-weight: 600; color: var(--warning-text); line-height: 1.3; }
+.hybrid-disclaimer { font-size: 11px; color: var(--warning-muted); line-height: 1.4; }
+
+.qty-section { padding: 10px 16px 12px; }
+.section-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 6px; }
+.qty-stepper { display: flex; align-items: center; }
+.step-btn {
+  width: 40px; height: 40px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.step-btn svg {
+  width: 14px; height: 14px;
+  stroke: var(--text-secondary); stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+.step-input {
+  flex: 1; height: 40px;
+  border: 1px solid var(--border);
+  border-left: none; border-right: none;
+  text-align: center;
+  font-size: 14px; font-weight: 600; font-family: inherit;
+  color: var(--text);
+  background: var(--card);
+}
+
+/* ════════════════════════════════════════
+   .vg — Variation Group komponens
+   Modes: OPTIONAL (default) | MANDATORY (.is-mandatory)
+   States: .is-on / .is-off
+   Variants: .is-narrow (kosár belül)
+   ════════════════════════════════════════ */
+.vg-stack {
+  display: flex; flex-direction: column; gap: 8px;
+  padding: 12px 16px;
+  background: var(--cream);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.vg-stack-title {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.04em; text-transform: uppercase;
+  margin-bottom: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.vg-stack-title svg {
+  width: 13px; height: 13px;
+  stroke: var(--text-secondary); stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.vg {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: border-color 150ms var(--ease-out);
+}
+.vg.is-on, .vg.is-mandatory { border-color: var(--border-strong); }
+
+.vg-toggle {
+  width: 100%;
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  min-height: 44px;
+  transition: background-color 120ms var(--ease-out);
+}
+.vg-toggle:hover { background: var(--cream); }
+.vg.is-mandatory .vg-toggle { cursor: default; }
+.vg.is-mandatory .vg-toggle:hover { background: transparent; }
+.vg-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+
+.vg-checkbox {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 4px;
+  background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background-color 120ms var(--ease-out), border-color 120ms var(--ease-out);
+}
+.vg-checkbox svg {
+  width: 12px; height: 12px;
+  stroke: #fff; stroke-width: 3;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+  opacity: 0;
+  transition: opacity 120ms var(--ease-out);
+}
+.vg.is-on .vg-checkbox { background: var(--primary); border-color: var(--primary); }
+.vg.is-on .vg-checkbox svg { opacity: 1; }
+.vg.is-mandatory .vg-checkbox { display: none; }
+
+.vg-required-marker { display: none; }
+
+.vg-label { flex: 1; display: flex; align-items: baseline; gap: 8px; min-width: 0; flex-wrap: wrap; }
+.vg-name { font-size: 14px; font-weight: 600; color: var(--text); }
+.vg-current { font-size: 12px; font-weight: 500; color: var(--primary); font-style: italic; }
+.vg.is-off .vg-current { display: none; }
+.vg-hint { font-size: 11px; font-weight: 400; color: var(--text-muted); }
+.vg.is-on .vg-hint, .vg.is-mandatory .vg-hint { display: none; }
+
+.vg-chevron {
+  width: 16px; height: 16px;
+  stroke: var(--text-muted); stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0;
+  transition: transform 160ms var(--ease-out);
+}
+.vg.is-on .vg-chevron { transform: rotate(180deg); }
+.vg.is-mandatory .vg-chevron { display: none; }
+
+.vg-body { display: none; border-top: 1px solid var(--border); background: var(--card); }
+.vg.is-on .vg-body, .vg.is-mandatory .vg-body { display: block; }
+.vg.is-mandatory .vg-body { border-top: none; }
+
+.vg-radio {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 12px;
+  cursor: pointer;
+  border-bottom: 1px solid var(--cream-dark);
+  min-height: 44px;
+  transition: background-color 100ms var(--ease-out);
+}
+.vg-radio:last-child { border-bottom: none; }
+.vg-radio:hover { background: var(--cream); }
+.vg-radio input { position: absolute; opacity: 0; pointer-events: none; }
+.vg-radio-marker {
+  width: 18px; height: 18px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 50%;
+  background: var(--card);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: border-color 120ms var(--ease-out);
+}
+.vg-radio-marker::after {
+  content: "";
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--primary);
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 120ms var(--ease-out), transform 120ms var(--ease-out);
+}
+.vg-radio.is-selected .vg-radio-marker { border-color: var(--primary); }
+.vg-radio.is-selected .vg-radio-marker::after { opacity: 1; transform: scale(1); }
+
+.vg-radio-text { flex: 1; display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.vg-radio-label { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.3; }
+.vg-radio.is-selected .vg-radio-label { font-weight: 600; }
+.vg-radio-meta { font-size: 11px; font-weight: 400; color: var(--text-muted); letter-spacing: 0.04em; }
+
+.vg-radio-price {
+  font-size: 11px; font-weight: 600;
+  color: var(--primary);
+  background: var(--primary-pale);
+  padding: 3px 7px;
+  border-radius: 5px;
+  letter-spacing: 0.02em;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+.vg.is-narrow .vg-radio-price {
+  font-size: 10px;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+
+.vg-info {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  position: relative;
+  transition: all 120ms var(--ease-out);
+}
+.vg-info::after { content: ""; position: absolute; inset: -8px; border-radius: 50%; }
+.vg-info:hover { color: var(--primary); border-color: var(--primary); background: var(--primary-pale); }
+.vg-info:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.vg-info svg {
+  width: 14px; height: 14px;
+  stroke: currentColor; stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* VG narrow variant — kosár belül */
+.vg.is-narrow .vg-toggle { padding: 8px 10px; min-height: 40px; }
+.vg.is-narrow .vg-name { font-size: 13px; }
+.vg.is-narrow .vg-current { font-size: 11px; }
+.vg.is-narrow .vg-hint { font-size: 10px; }
+.vg.is-narrow .vg-radio { padding: 8px 10px; min-height: 40px; gap: 8px; }
+.vg.is-narrow .vg-radio-label { font-size: 13px; }
+.vg.is-narrow .vg-info { width: 28px; height: 28px; }
+.vg.is-narrow .vg-info svg { width: 12px; height: 12px; }
+.vg.is-narrow .vg-required-marker { font-size: 8px; padding: 1px 5px; }
+
+/* CTA */
+.btn-cart {
+  display: block; width: 100%;
+  min-height: 48px; padding: 14px;
+  background: var(--primary);
+  color: #fff;
+  font-family: inherit; font-size: 15px; font-weight: 600;
+  border: none; border-radius: 12px;
+  cursor: pointer;
+  transition: transform 120ms var(--ease-out), box-shadow 120ms var(--ease-out);
+}
+.btn-cart:active { transform: scale(0.98); }
+.btn-cart:hover { box-shadow: 0 4px 16px rgba(155,35,53,0.22); }
+
+/* ════════════════════════════════════════
+   Kosár (cart.html alapján)
+   ════════════════════════════════════════ */
+.cart-app-header {
+  height: 56px;
+  background: var(--card);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px;
+  flex-shrink: 0;
+  box-shadow: 0 0 1px rgba(0,0,0,0.12), 0 0.5px 2px rgba(0,0,0,0.15), 0 2px 3px rgba(0,0,0,0.16);
+}
+.cart-app-header h2 { font-size: 20px; font-weight: 400; color: var(--primary-800); letter-spacing: 0.2px; }
+.cart-app-header .header-right { display: flex; align-items: center; gap: 8px; }
+.cart-app-header .count { font-size: 13px; font-weight: 500; color: var(--text-muted); }
+
+.cart-main { padding: 16px; }
+.cart-items { display: flex; flex-direction: column; gap: 12px; }
+
+.cart-item {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  padding: 16px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+}
+.cart-item-inner { display: flex; gap: 12px; }
+.cart-item-img {
+  width: 80px; height: 80px;
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background:
+    repeating-linear-gradient(45deg,
+      #F0EDE8 0, #F0EDE8 6px,
+      #E8E2DB 6px, #E8E2DB 12px);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted); font-size: 9px; letter-spacing: 0.04em;
+}
+.cart-item-details { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.cart-item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.cart-item-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.4; }
+.trash-btn {
+  width: 32px; height: 32px;
+  border: none; background: none;
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.trash-btn:hover { color: var(--primary); background: var(--primary-pale); }
+.trash-btn svg {
+  width: 16px; height: 16px;
+  stroke: currentColor; stroke-width: 1.5;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+.cart-item-unit { font-size: 13px; color: var(--text-muted); }
+.cart-item-qty-row { display: flex; align-items: center; justify-content: space-between; }
+.qty-controls { display: flex; align-items: center; gap: 4px; }
+.qty-controls .qty-btn {
+  width: 40px; height: 40px;
+  border: 1px solid var(--border-strong);
+  background: var(--card);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  color: var(--text);
+}
+.qty-controls .qty-btn svg {
+  width: 16px; height: 16px;
+  stroke: currentColor; stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+.qty-controls .qty-input {
+  width: 64px; height: 40px;
+  border: 1px solid var(--border-strong);
+  border-radius: 12px;
+  text-align: center;
+  font-size: 14px; font-weight: 600;
+  color: var(--text);
+  font-family: inherit;
+  background: var(--card);
+  outline: none;
+}
+.cart-item-line-total { font-size: 14px; font-weight: 500; color: var(--text); white-space: nowrap; }
+
+.cart-item-vg-stack {
+  /* Kifut a teljes kosár-kártya szélességére (kép alatt is) */
+  margin: 12px -16px -16px;  /* offset a .cart-item padding-jából */
+  padding: 12px 16px 16px;
+  background: rgba(245, 237, 229, 0.45);  /* halvány cream-dark, alpha — kevesebb vizuális ismétlődés stack-ben */
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+
+/* OFF VG kompresszió: blend into stack background, dashed border — kevésbé prominent */
+.cart-item-vg-stack .vg.is-off {
+  background: transparent;
+  border-style: dashed;
+  border-color: rgba(197, 188, 179, 0.55);
+}
+.cart-item-vg-stack .vg.is-off .vg-toggle:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+/* Mivel a .cart-item-vg-stack a .cart-item-details belsejében van (flex:1),
+   és nem a .cart-item közvetlen gyermeke, kicsit trükkös teljes szélességig
+   feltolni. A negative margin-left kompenzálja a kép szélességét + gap-et. */
+.cart-item-inner > .cart-item-details > .cart-item-vg-stack {
+  margin-left: -108px;  /* 16px padding + 80px image + 12px gap — full card-left edge */
+}
+
+/* Disclaimer */
+.disclaimer {
+  display: flex; align-items: flex-start; gap: 8px;
+  margin-top: 16px;
+  padding: 12px;
+  background: rgba(196,132,29,0.05);
+  border: 1px solid rgba(196,132,29,0.2);
+  border-radius: 12px;
+}
+.disclaimer svg {
+  width: 16px; height: 16px;
+  stroke: var(--warning-muted); stroke-width: 1.5;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+  flex-shrink: 0; margin-top: 1px;
+}
+.disclaimer span { font-size: 13px; color: var(--text-secondary); }
+
+/* Savings progress */
+.savings-box {
+  background: var(--card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.10);
+  padding: 16px;
+  margin-top: 16px;
+}
+.progress-track {
+  position: relative;
+  height: 8px;
+  background: var(--border);
+  border-radius: 9999px;
+  margin-bottom: 40px;
+}
+.progress-fill { height: 100%; border-radius: 9999px; background: var(--green-text); width: 78%; }
+.progress-marker {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  display: flex; align-items: center; justify-content: center;
+}
+.progress-marker svg { width: 12px; height: 12px; stroke: #fff; stroke-width: 3; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.marker-150 { left: 50%; background: var(--green-text); }
+.marker-300 { left: calc(100% - 0px); background: #E0D8D0; }
+.progress-label { position: absolute; top: 20px; font-size: 11px; white-space: nowrap; }
+.label-0 { left: 0; color: var(--text-faint); }
+.label-150 { left: 50%; transform: translateX(-50%); color: var(--green-text); font-weight: 600; }
+.label-150-sub { left: 50%; transform: translateX(-50%); top: 34px; color: var(--green-text); font-size: 11px; }
+.label-300 { right: 0; color: var(--text-muted); }
+.label-300-sub { right: 0; top: 34px; color: var(--text-muted); font-size: 11px; }
+
+.savings-msg { background: var(--green-light); border-radius: 16px; padding: 10px 14px; margin-top: 8px; font-size: 13px; color: var(--green-msg); }
+.next-threshold { font-size: 13px; color: var(--green-msg); margin-top: 4px; padding: 4px 4px 0; }
+.next-threshold-sub { font-size: 11px; color: var(--text-faint); padding: 4px 4px 0; font-style: italic; }
+
+.summary { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+.summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.summary-label { font-size: 11px; color: var(--text-faint); }
+.summary-value { font-size: 11px; color: var(--text-faint); }
+.summary-delivery-label { font-size: 11px; color: var(--green-msg); }
+.summary-delivery-value { display: flex; align-items: center; gap: 6px; }
+.strike { text-decoration: line-through; font-size: 11px; color: var(--text-muted); }
+.free-label { font-size: 11px; color: var(--green-msg); }
+.summary-total-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; }
+.summary-total-label { font-size: 14px; font-weight: 600; color: var(--text); }
+.summary-total-value { font-size: 18px; font-weight: 600; color: var(--primary); }
+.summary-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+/* ─── DH copy-ref UI ─── */
+.dh-copy {
+  position: relative;
+  width: 28px; height: 28px;
+  display: inline-flex; align-items: center; justify-content: center;
+  border-radius: 6px; border: 1px solid var(--border-strong);
+  background: var(--card); color: var(--text-muted);
+  cursor: pointer; padding: 0; flex-shrink: 0;
+  transition: color 120ms, border-color 120ms, background 120ms;
+}
+.dh-copy::after { content: ""; position: absolute; top: 50%; left: 50%; width: 44px; height: 44px; transform: translate(-50%, -50%); }
+.dh-copy:hover { color: var(--primary); border-color: var(--primary); background: rgba(155,35,53,0.04); }
+.dh-copy.copied { color: var(--success); border-color: var(--success); background: rgba(45,122,79,0.06); }
+.dh-copy svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+#dh-toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(20,15,12,0.92); color: #fff;
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 12px; font-weight: 500;
+  opacity: 0; transition: opacity .18s, transform .18s;
+  pointer-events: none; z-index: 10000;
+  white-space: nowrap; box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+}
+#dh-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* VG info modal */
+.vg-modal-backdrop {
+  position: fixed; inset: 0;
+  background: rgba(20,15,12,0.5);
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px;
+  z-index: 9000;
+  opacity: 0; visibility: hidden;
+  transition: opacity 180ms var(--ease-out), visibility 180ms;
+}
+.vg-modal-backdrop.show { opacity: 1; visibility: visible; }
+.vg-modal {
+  background: var(--card);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 85vh;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.25);
+  transform: translateY(8px) scale(0.98);
+  transition: transform 200ms var(--ease-out);
+  position: relative;
+}
+.vg-modal-backdrop.show .vg-modal { transform: translateY(0) scale(1); }
+.vg-modal-image {
+  width: 100%; height: 200px;
+  background:
+    repeating-linear-gradient(45deg,
+      #F0EDE8 0, #F0EDE8 14px,
+      #E8E2DB 14px, #E8E2DB 28px);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase;
+  flex-shrink: 0;
+}
+.vg-modal-body { padding: 18px 20px 20px; overflow-y: auto; }
+.vg-modal-eyebrow { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+.vg-modal-title { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 10px; }
+.vg-modal-desc { font-size: 14px; line-height: 1.55; color: var(--text-secondary); }
+.vg-modal-desc p { margin-bottom: 8px; }
+.vg-modal-desc p:last-child { margin-bottom: 0; }
+.vg-modal-close {
+  position: absolute;
+  top: 12px; right: 12px;
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.5);
+  color: #fff;
+  border: none;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.vg-modal-close svg {
+  width: 18px; height: 18px;
+  stroke: currentColor; stroke-width: 2.5;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* ─── Top-level tabs (Termékdetail / Kosár / Admin) ─── */
+.dh-tabs {
+  max-width: 1480px;
+  margin: 0 auto 28px;
+  display: flex; gap: 4px;
+  background: var(--card);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.dh-tab {
+  flex: 1;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit;
+  font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 8px; justify-content: center;
+  min-height: 48px;
+  transition: background-color 150ms var(--ease-out), color 150ms var(--ease-out);
+  flex-wrap: wrap;
+}
+.dh-tab:hover { background: var(--cream); color: var(--primary); }
+.dh-tab.active { background: var(--primary); color: #fff; font-weight: 600; }
+.dh-tab-num {
+  font-size: 11px; font-weight: 700;
+  background: var(--cream-dark); color: var(--text-muted);
+  padding: 2px 7px; border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+.dh-tab.active .dh-tab-num { background: rgba(255,255,255,0.2); color: #fff; }
+.dh-tab-meta { font-size: 11px; font-weight: 400; opacity: 0.7; }
+.dh-tab.active .dh-tab-meta { opacity: 0.85; }
+.dh-tab.is-future { opacity: 0.7; }
+.dh-tab.is-future::after {
+  content: "";
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--secondary);
+  margin-left: 2px;
+}
+
+.dh-tab-content { display: none; }
+.dh-tab-content.active { display: block; }
+
+/* ─── Future / placeholder panel ─── */
+.placeholder-panel {
+  max-width: 720px;
+  margin: 24px auto 0;
+  padding: 48px 32px;
+  background: var(--card);
+  border: 1px dashed var(--border-strong);
+  border-radius: 16px;
+  text-align: center;
+}
+.placeholder-icon {
+  width: 56px; height: 56px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: var(--cream-dark);
+  display: flex; align-items: center; justify-content: center;
+}
+.placeholder-icon svg {
+  width: 24px; height: 24px;
+  stroke: var(--text-muted); stroke-width: 1.8;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+.placeholder-panel h2 {
+  font-size: 18px; font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  letter-spacing: -0.1px;
+}
+.placeholder-panel p {
+  font-size: 14px; line-height: 1.6;
+  color: var(--text-secondary);
+  max-width: 520px;
+  margin: 0 auto 16px;
+}
+.placeholder-panel ul {
+  text-align: left;
+  display: inline-block;
+  margin: 8px auto 0;
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  list-style: none;
+  padding: 0;
+}
+.placeholder-panel ul li {
+  padding-left: 20px;
+  position: relative;
+}
+.placeholder-panel ul li::before {
+  content: "·";
+  position: absolute;
+  left: 8px;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+
+/* ─── Kompakt collapsed summary (kosár cart-item-vg-stack) ─── */
+.cart-item-vg-stack.is-collapsed .vg-summary { display: flex; }
+.cart-item-vg-stack.is-collapsed .vg-list { display: none; }
+.cart-item-vg-stack:not(.is-collapsed) .vg-summary { display: none; }
+.cart-item-vg-stack:not(.is-collapsed) .vg-list {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.vg-summary {
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 2px 0;
+  flex-wrap: wrap;
+}
+.vg-sum-list {
+  flex: 1; min-width: 0;
+  display: flex; flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 6px;
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.vg-sum-item {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  white-space: nowrap;
+}
+.vg-sum-item.is-off { color: var(--text-muted); }
+.vg-sum-name { font-weight: 500; }
+.vg-sum-value { color: var(--text); font-weight: 600; }
+.vg-sum-item.is-off .vg-sum-value { color: var(--text-muted); font-weight: 400; font-style: italic; }
+.vg-sum-mod {
+  background: var(--secondary-bg);
+  color: var(--secondary-dark);
+  font-weight: 600;
+  padding: 0 5px;
+  border-radius: 3px;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+}
+.vg-sum-sep { color: var(--text-muted); opacity: 0.4; padding: 0 1px; }
+.vg-sum-edit {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--primary);
+  background: var(--card);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+  transition: all 120ms var(--ease-out);
+}
+.vg-sum-edit:hover { background: var(--primary-pale); border-color: var(--primary); }
+.vg-sum-edit svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.vg-list-done {
+  margin-top: 8px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.vg-done-btn {
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  border-radius: 6px;
+  padding: 5px 14px;
+  cursor: pointer;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 28px;
+  transition: all 120ms var(--ease-out);
+}
+.vg-done-btn:hover { background: var(--primary-800); border-color: var(--primary-800); }
+.vg-done-btn svg { width: 11px; height: 11px; stroke: currentColor; stroke-width: 2.4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-to-catalog" title="Vissza a katalógusba">
+  <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<div class="dh-crumb">
+  <span class="crumb-text"><strong>Product Variations</strong><span class="sep">›</span>VG specimen book + edge case kosár<span class="crumb-file">v0.4-product-variations.html</span></span>
+  <button type="button" class="dh-copy" data-ref="[DH] Product Variations › VG specimen book (v0.4-product-variations.html)" aria-label="Hivatkozás másolása" title="Hivatkozás másolása"></button>
+</div>
+
+<div class="page-intro">
+  <div class="eyebrow">Sprint 4 · DH-173 · VG komponens · 5 opció-típus</div>
+  <h1>Hogyan kéred?</h1>
+  <p>Minden VG-típus saját panelben — Pácolva, Szeletelve (forma), Szeletelve (vastagság), Méret MANDATORY, Zsírosság MANDATORY. A kosár panelen minden edge case egyszerre: optional ON saved · optional OFF · multi-VG · mandatory · VG nélküli termék. A spec a vg-content-spec-v1.1.md-ben.</p>
+</div>
+
+<nav class="dh-tabs" role="tablist" aria-label="Nézet választó">
+  <button class="dh-tab active" type="button" role="tab" aria-selected="true" data-tab="detail">
+    <span class="dh-tab-num">1</span>
+    <span>Termékdetail</span>
+    <span class="dh-tab-meta">5 VG típus</span>
+  </button>
+  <button class="dh-tab" type="button" role="tab" aria-selected="false" data-tab="cart">
+    <span class="dh-tab-num">2</span>
+    <span>Kosaram</span>
+    <span class="dh-tab-meta">edge case-ek</span>
+  </button>
+  <button class="dh-tab is-future" type="button" role="tab" aria-selected="false" data-tab="admin">
+    <span class="dh-tab-num">3</span>
+    <span>Admin rendelés nézet</span>
+    <span class="dh-tab-meta">később</span>
+  </button>
+</nav>
+
+<div class="dh-tab-content active" data-content="detail" role="tabpanel">
+
+<div class="section-heading">
+  <h2>A. Termékdetail variánsok · 5 panel = 5 VG típus</h2>
+  <p>Flat 448 wide frame (v0.4-cart-rural.html alap). Minden panel egy konkrét terméket mutat, fókusszal a VG-re. Próbáld ki a checkboxot, radio-t, [i] gombot.</p>
+</div>
+
+<div class="panels">
+
+  <!-- ════════════════════════════════════════════════
+       A1 — Pácolva OPTIONAL (Sertés Csontos Karaj 016, hibrid)
+       ════════════════════════════════════════════════ -->
+  <section class="panel">
+    <div class="panel-meta">
+      <span class="num">A1</span>
+      <span class="ttl">Pácolva <span class="ttl-sub">016 Sertés Csontos Karaj · hibrid · Pácolva OPTIONAL (saved: hagyományos)</span></span>
+      <span class="panel-tag">OPTIONAL</span>
+      <button type="button" class="dh-copy" data-ref="[DH] Product Variations › A1 — Pácolva OPTIONAL (016 Csontos Karaj)" aria-label="Másolás" title="Másolás: A1"></button>
+    </div>
+
+    <div class="phone-frame">
+      <div class="dynamic-island"></div>
+      <div class="app">
+        <header class="app-header">
+          <button class="header-back" type="button" aria-label="Vissza"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="header-title">Sertés Csontos Karaj</span>
+        </header>
+        <div class="scroll-content">
+          <div class="product-image">termékfotó · csontos karaj</div>
+          <div class="product-body">
+            <div class="product-chips"><span class="chip">Friss Sertéshús</span><span class="chip green">Elérhető</span></div>
+            <div class="product-name">Sertés Csontos Karaj</div>
+            <div class="price-row"><span class="price-value">25,50 RON</span><span class="price-unit">/ kg</span></div>
+            <div class="product-desc">Csontos, szalonnás karaj. Sütésre, grillezésre, lassú sütésre.</div>
+          </div>
+          <div class="hybrid-info">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <div><div class="hybrid-weight">1 db kb. 1,2 - 1,8 kg</div><div class="hybrid-disclaimer">A végleges árat a pontos súly határozza meg, max. ±10% eltérés.</div></div>
+          </div>
+          <div class="qty-section">
+            <div class="section-label">Mennyiség</div>
+            <div class="qty-stepper">
+              <button class="step-btn" type="button" aria-label="Csökkentés"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <input class="step-input" type="text" value="1 db" readonly>
+              <button class="step-btn" type="button" aria-label="Növelés"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </div>
+          </div>
+          <div class="vg-stack">
+            <div class="vg-stack-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Hogyan kéred?</div>
+            <div class="vg is-on" data-vg="pacolas" data-last="hagyomanyos">
+              <button class="vg-toggle" type="button" aria-expanded="true">
+                <span class="vg-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="vg-label"><span class="vg-name">Pácolva</span><span class="vg-current">Hagyományos</span><span class="vg-hint">Pácolatlan</span></span>
+                <svg class="vg-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="vg-body" role="radiogroup" aria-label="Pácolva">
+                <label class="vg-radio is-selected" data-value="hagyomanyos">
+                  <input type="radio" name="a1-pacolas" value="hagyomanyos" checked>
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Hagyományos</span><span class="vg-radio-meta">Só, bors, fokhagyma</span></span>
+                  <span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:hagyomanyos" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio" data-value="barbecue">
+                  <input type="radio" name="a1-pacolas" value="barbecue">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Barbecue</span><span class="vg-radio-meta">Paradicsomos, BBQ-szerű</span></span>
+                  <span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:barbecue" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sticky-cta"><button class="btn-cart">Kosárba · kb. 41,25 RON</button></div>
+        <nav class="bottom-nav">
+          <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Termékek</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Kosár</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fiók</div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════
+       A2 — Szeletelve (forma) OPTIONAL (Sertés nyakaskaraj 014)
+       ════════════════════════════════════════════════ -->
+  <section class="panel">
+    <div class="panel-meta">
+      <span class="num">A2</span>
+      <span class="ttl">Szeletelve <em>(forma)</em> + Pácolva <span class="ttl-sub">014 Sertés nyakaskaraj · weight · multi-VG (Forma OFF + Pácolva ON saved)</span></span>
+      <span class="panel-tag">OPTIONAL</span>
+      <button type="button" class="dh-copy" data-ref="[DH] Product Variations › A2 — Szeletelve-forma + Pácolva (014 nyakaskaraj)" aria-label="Másolás" title="Másolás: A2"></button>
+    </div>
+
+    <div class="phone-frame">
+      <div class="dynamic-island"></div>
+      <div class="app">
+        <header class="app-header">
+          <button class="header-back" type="button" aria-label="Vissza"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="header-title">Sertés nyakaskaraj</span>
+        </header>
+        <div class="scroll-content">
+          <div class="product-image">termékfotó · nyakaskaraj</div>
+          <div class="product-body">
+            <div class="product-chips"><span class="chip">Friss Sertéshús</span><span class="chip green">Elérhető</span></div>
+            <div class="product-name">Sertés nyakaskaraj</div>
+            <div class="price-row"><span class="price-value">33,00 RON</span><span class="price-unit">/ kg</span></div>
+            <div class="section-rule"></div>
+          </div>
+          <div class="qty-section">
+            <div class="section-label">Mennyiség</div>
+            <div class="qty-stepper">
+              <button class="step-btn" type="button" aria-label="Csökkentés"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <input class="step-input" type="text" value="1,00 kg" readonly>
+              <button class="step-btn" type="button" aria-label="Növelés"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </div>
+          </div>
+          <div class="vg-stack">
+            <div class="vg-stack-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Hogyan kéred?</div>
+
+            <div class="vg is-off" data-vg="forma" data-last="">
+              <button class="vg-toggle" type="button" aria-expanded="false">
+                <span class="vg-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="vg-label"><span class="vg-name">Szeletelve</span><span class="vg-current"></span><span class="vg-hint">Standard</span></span>
+                <svg class="vg-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="vg-body" role="radiogroup" aria-label="Szeletelve (forma)">
+                <label class="vg-radio" data-value="normal">
+                  <input type="radio" name="a2-forma" value="normal">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Normál</span><span class="vg-radio-meta">Klasszikus szelet</span></span>
+                  <button type="button" class="vg-info" data-info="forma:normal" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio" data-value="dupla">
+                  <input type="radio" name="a2-forma" value="dupla">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Dupla <em>(Lecsi pecsi)</em></span><span class="vg-radio-meta">Két szelet egyben, potyolva</span></span>
+                  <button type="button" class="vg-info" data-info="forma:dupla" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+              </div>
+            </div>
+
+            <div class="vg is-on" data-vg="pacolas" data-last="hagyomanyos">
+              <button class="vg-toggle" type="button" aria-expanded="true">
+                <span class="vg-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="vg-label"><span class="vg-name">Pácolva</span><span class="vg-current">Hagyományos</span><span class="vg-hint">Pácolatlan</span></span>
+                <svg class="vg-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="vg-body" role="radiogroup" aria-label="Pácolva">
+                <label class="vg-radio is-selected" data-value="hagyomanyos">
+                  <input type="radio" name="a2-pacolas" value="hagyomanyos" checked>
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Hagyományos</span><span class="vg-radio-meta">Só, bors, fokhagyma</span></span>
+                  <span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:hagyomanyos" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio" data-value="barbecue">
+                  <input type="radio" name="a2-pacolas" value="barbecue">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Barbecue</span><span class="vg-radio-meta">Paradicsomos, BBQ-szerű</span></span>
+                  <span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:barbecue" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sticky-cta"><button class="btn-cart">Kosárba · 35,00 RON</button></div>
+        <nav class="bottom-nav">
+          <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Termékek</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Kosár</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fiók</div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════
+       A3 — Szeletelve (vastagság) OPTIONAL (Füstölt Has 946)
+       ════════════════════════════════════════════════ -->
+  <section class="panel">
+    <div class="panel-meta">
+      <span class="num">A3</span>
+      <span class="ttl">Szeletelve <em>(vastagság)</em> + Pácolva <span class="ttl-sub">946 Füstölt Has · weight · Szeletelve ON saved (Normál 4mm) + Pácolva OFF</span></span>
+      <span class="panel-tag">OPTIONAL</span>
+      <button type="button" class="dh-copy" data-ref="[DH] Product Variations › A3 — Szeletelve-vastagság + Pácolva (946 Füstölt Has)" aria-label="Másolás" title="Másolás: A3"></button>
+    </div>
+
+    <div class="phone-frame">
+      <div class="dynamic-island"></div>
+      <div class="app">
+        <header class="app-header">
+          <button class="header-back" type="button" aria-label="Vissza"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="header-title">Füstölt Has</span>
+        </header>
+        <div class="scroll-content">
+          <div class="product-image">termékfotó · füstölt has</div>
+          <div class="product-body">
+            <div class="product-chips"><span class="chip">Füstölt Áruk</span><span class="chip green">Elérhető</span></div>
+            <div class="product-name">Füstölt Has</div>
+            <div class="price-row"><span class="price-value">47,00 RON</span><span class="price-unit">/ kg</span></div>
+            <div class="section-rule"></div>
+          </div>
+          <div class="qty-section">
+            <div class="section-label">Mennyiség</div>
+            <div class="qty-stepper">
+              <button class="step-btn" type="button" aria-label="Csökkentés"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <input class="step-input" type="text" value="0,50 kg" readonly>
+              <button class="step-btn" type="button" aria-label="Növelés"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </div>
+          </div>
+          <div class="vg-stack">
+            <div class="vg-stack-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Hogyan kéred?</div>
+
+            <div class="vg is-on" data-vg="szeletes" data-last="normal">
+              <button class="vg-toggle" type="button" aria-expanded="true">
+                <span class="vg-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="vg-label"><span class="vg-name">Szeletelve</span><span class="vg-current">Normál · 4 mm</span><span class="vg-hint">Egészben</span></span>
+                <svg class="vg-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="vg-body" role="radiogroup" aria-label="Szeletelve (vastagság)">
+                <label class="vg-radio" data-value="vekony">
+                  <input type="radio" name="a3-szeletes" value="vekony">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Vékony</span><span class="vg-radio-meta">2 mm</span></span>
+                  <button type="button" class="vg-info" data-info="szeletes:vekony" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio is-selected" data-value="normal">
+                  <input type="radio" name="a3-szeletes" value="normal" checked>
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Normál</span><span class="vg-radio-meta">4 mm</span></span>
+                  <button type="button" class="vg-info" data-info="szeletes:normal" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio" data-value="vastagabb">
+                  <input type="radio" name="a3-szeletes" value="vastagabb">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Vastagabb</span><span class="vg-radio-meta">6 mm</span></span>
+                  <button type="button" class="vg-info" data-info="szeletes:vastagabb" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+              </div>
+            </div>
+
+            <div class="vg is-off" data-vg="pacolas" data-last="">
+              <button class="vg-toggle" type="button" aria-expanded="false">
+                <span class="vg-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                <span class="vg-label"><span class="vg-name">Pácolva</span><span class="vg-current"></span><span class="vg-hint">Pácolatlan</span></span>
+                <svg class="vg-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+              </button>
+              <div class="vg-body" role="radiogroup" aria-label="Pácolva">
+                <label class="vg-radio" data-value="hagyomanyos">
+                  <input type="radio" name="a3-pacolas" value="hagyomanyos">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Hagyományos</span><span class="vg-radio-meta">Só, bors, fokhagyma</span></span>
+                  <span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:hagyomanyos" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio" data-value="barbecue">
+                  <input type="radio" name="a3-pacolas" value="barbecue">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Barbecue</span><span class="vg-radio-meta">Paradicsomos, BBQ-szerű</span></span>
+                  <span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:barbecue" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sticky-cta"><button class="btn-cart">Kosárba · 23,50 RON</button></div>
+        <nav class="bottom-nav">
+          <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Termékek</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Kosár</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fiók</div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════
+       A4 — Méret MANDATORY (Sertés Csülök 007, hibrid)
+       ════════════════════════════════════════════════ -->
+  <section class="panel">
+    <div class="panel-meta">
+      <span class="num">A4</span>
+      <span class="ttl">Méret <span class="ttl-sub">007 Sertés Csülök · hibrid · MANDATORY (default Közepes, nincs checkbox)</span></span>
+      <span class="panel-tag tag-mandatory">MANDATORY</span>
+      <button type="button" class="dh-copy" data-ref="[DH] Product Variations › A4 — Méret MANDATORY (007 Csülök)" aria-label="Másolás" title="Másolás: A4"></button>
+    </div>
+
+    <div class="phone-frame">
+      <div class="dynamic-island"></div>
+      <div class="app">
+        <header class="app-header">
+          <button class="header-back" type="button" aria-label="Vissza"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="header-title">Sertés Csülök</span>
+        </header>
+        <div class="scroll-content">
+          <div class="product-image">termékfotó · sertés csülök</div>
+          <div class="product-body">
+            <div class="product-chips"><span class="chip">Friss Sertéshús</span><span class="chip green">Elérhető</span></div>
+            <div class="product-name">Sertés Csülök</div>
+            <div class="price-row"><span class="price-value">19,00 RON</span><span class="price-unit">/ kg</span></div>
+          </div>
+          <div class="hybrid-info">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <div><div class="hybrid-weight">Méret szerint kb. 1,2 - 1,8 kg / db</div><div class="hybrid-disclaimer">A pontos méretet alább választhatod. Ár max. ±10% eltérés.</div></div>
+          </div>
+          <div class="qty-section">
+            <div class="section-label">Mennyiség</div>
+            <div class="qty-stepper">
+              <button class="step-btn" type="button" aria-label="Csökkentés"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <input class="step-input" type="text" value="1 db" readonly>
+              <button class="step-btn" type="button" aria-label="Növelés"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </div>
+          </div>
+          <div class="vg-stack">
+            <div class="vg-stack-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Termékspecifikus választás</div>
+            <div class="vg is-mandatory" data-vg="meret">
+              <div class="vg-toggle" role="presentation">
+                <span class="vg-required-marker">Kötelező</span>
+                <span class="vg-label"><span class="vg-name">Méret</span><span class="vg-current">Közepes · 1,4 - 1,6 kg</span></span>
+              </div>
+              <div class="vg-body" role="radiogroup" aria-label="Méret">
+                <label class="vg-radio" data-value="kisebb">
+                  <input type="radio" name="a4-meret" value="kisebb">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Kisebb</span><span class="vg-radio-meta">1,2 - 1,4 kg</span></span>
+                  <button type="button" class="vg-info" data-info="meret:kisebb" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio is-selected" data-value="kozepes">
+                  <input type="radio" name="a4-meret" value="kozepes" checked>
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Közepes</span><span class="vg-radio-meta">1,4 - 1,6 kg · alapértelmezett</span></span>
+                  <button type="button" class="vg-info" data-info="meret:kozepes" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio" data-value="nagyobb">
+                  <input type="radio" name="a4-meret" value="nagyobb">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Nagyobb</span><span class="vg-radio-meta">1,6 - 1,8 kg</span></span>
+                  <button type="button" class="vg-info" data-info="meret:nagyobb" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sticky-cta"><button class="btn-cart">Kosárba · kb. 28,50 RON</button></div>
+        <nav class="bottom-nav">
+          <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Termékek</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Kosár</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fiók</div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════
+       A5 — Zsírosság MANDATORY (Sertés Őrölt Hús 902)
+       ════════════════════════════════════════════════ -->
+  <section class="panel">
+    <div class="panel-meta">
+      <span class="num">A5</span>
+      <span class="ttl">Zsírosság <span class="ttl-sub">902 Sertés Őrölt Hús · weight · MANDATORY (default Normál, nincs checkbox)</span></span>
+      <span class="panel-tag tag-mandatory">MANDATORY</span>
+      <button type="button" class="dh-copy" data-ref="[DH] Product Variations › A5 — Zsírosság MANDATORY (902 Őrölt Hús)" aria-label="Másolás" title="Másolás: A5"></button>
+    </div>
+
+    <div class="phone-frame">
+      <div class="dynamic-island"></div>
+      <div class="app">
+        <header class="app-header">
+          <button class="header-back" type="button" aria-label="Vissza"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+          <span class="header-title">Sertés Őrölt Hús</span>
+        </header>
+        <div class="scroll-content">
+          <div class="product-image">termékfotó · őrölt hús</div>
+          <div class="product-body">
+            <div class="product-chips"><span class="chip">Friss Sertéshús</span><span class="chip green">Elérhető</span></div>
+            <div class="product-name">Sertés Őrölt Hús</div>
+            <div class="price-row"><span class="price-value">21,00 RON</span><span class="price-unit">/ kg</span></div>
+            <div class="product-desc">Frissen darált sertéshús. Kolbászhoz, fasírthoz, töltött ételekhez.</div>
+            <div class="section-rule"></div>
+          </div>
+          <div class="qty-section">
+            <div class="section-label">Mennyiség</div>
+            <div class="qty-stepper">
+              <button class="step-btn" type="button" aria-label="Csökkentés"><svg viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+              <input class="step-input" type="text" value="0,50 kg" readonly>
+              <button class="step-btn" type="button" aria-label="Növelés"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
+            </div>
+          </div>
+          <div class="vg-stack">
+            <div class="vg-stack-title"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Termékspecifikus választás</div>
+            <div class="vg is-mandatory" data-vg="zsirossag">
+              <div class="vg-toggle" role="presentation">
+                <span class="vg-required-marker">Kötelező</span>
+                <span class="vg-label"><span class="vg-name">Zsírosság</span><span class="vg-current">Normál · 50/50</span></span>
+              </div>
+              <div class="vg-body" role="radiogroup" aria-label="Zsírosság">
+                <label class="vg-radio" data-value="kevesbe_zsiros">
+                  <input type="radio" name="a5-zsir" value="kevesbe_zsiros">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Kevésbé zsíros</span><span class="vg-radio-meta">Bolognai, ragú · kb. 70/30</span></span>
+                  <button type="button" class="vg-info" data-info="zsirossag:kevesbe_zsiros" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio is-selected" data-value="normal">
+                  <input type="radio" name="a5-zsir" value="normal" checked>
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Normál</span><span class="vg-radio-meta">Alapértelmezett, fele-fele</span></span>
+                  <button type="button" class="vg-info" data-info="zsirossag:normal" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+                <label class="vg-radio" data-value="zsirosabb">
+                  <input type="radio" name="a5-zsir" value="zsirosabb">
+                  <span class="vg-radio-marker"></span>
+                  <span class="vg-radio-text"><span class="vg-radio-label">Zsírosabb</span><span class="vg-radio-meta">Fasírt, töltelékes káposzta · kb. 35/65</span></span>
+                  <button type="button" class="vg-info" data-info="zsirossag:zsirosabb" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="sticky-cta"><button class="btn-cart">Kosárba · 10,50 RON</button></div>
+        <nav class="bottom-nav">
+          <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Termékek</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Kosár</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fiók</div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</div><!-- /tab-content: detail -->
+
+<div class="dh-tab-content" data-content="cart" role="tabpanel">
+
+<div class="section-heading">
+  <h2>B. Kosaram · edge case-ek</h2>
+  <p>Flat 448 wide frame (cart-rural alap). 5 termék: optional ON saved · optional OFF · multi-VG · 2× mandatory · VG nélküli. Savings progress + summary cart.html-ből.</p>
+</div>
+
+<div class="panels">
+
+  <section class="panel">
+    <div class="panel-meta">
+      <span class="num">B</span>
+      <span class="ttl">Kosár · edge case-ek <span class="ttl-sub">5 termék mind az 5 VG állapotban</span></span>
+      <button type="button" class="dh-copy" data-ref="[DH] Product Variations › B — Kosár edge case-ek (cart.html alap)" aria-label="Másolás" title="Másolás: B"></button>
+    </div>
+
+    <div class="phone-frame frame-cart">
+      <div class="dynamic-island"></div>
+      <div class="app">
+        <header class="cart-app-header">
+          <h2>Kosaram</h2>
+          <div class="header-right"><span class="count">5 termék</span></div>
+        </header>
+        <div class="scroll-content">
+          <div class="cart-main">
+            <div class="cart-items">
+
+              <!-- B1: Sertés nyakaskaraj — multi-VG (Szeletelve-forma OFF + Pácolva ON saved) -->
+              <div class="cart-item">
+                <div class="cart-item-inner">
+                  <div class="cart-item-img">img</div>
+                  <div class="cart-item-details">
+                    <div class="cart-item-header">
+                      <span class="cart-item-name">Sertés nyakaskaraj</span>
+                      <button class="trash-btn" aria-label="Eltávolítás"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+                    </div>
+                    <span class="cart-item-unit">33,00 RON / kg</span>
+                    <div class="cart-item-qty-row">
+                      <div class="qty-controls">
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+                        <input class="qty-input" type="text" value="1,00" readonly>
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+                      </div>
+                      <span class="cart-item-line-total">35,00 RON</span>
+                    </div>
+                  </div>
+                </div>
+                  <div class="cart-item-vg-stack is-collapsed">
+                    <div class="vg-summary">
+                      <div class="vg-sum-list"></div>
+                      <button type="button" class="vg-sum-edit"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>Módosítás</button>
+                    </div>
+                    <div class="vg-list">
+                      <div class="vg is-off is-narrow" data-vg="forma">
+                        <button class="vg-toggle" type="button" aria-expanded="false">
+                          <span class="vg-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                          <span class="vg-label"><span class="vg-name">Szeletelve</span><span class="vg-current"></span><span class="vg-hint">Standard</span></span>
+                          <svg class="vg-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="vg-body">
+                          <label class="vg-radio" data-value="normal"><input type="radio" name="b1-forma"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Normál</span></span><button type="button" class="vg-info" data-info="forma:normal" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                          <label class="vg-radio" data-value="dupla"><input type="radio" name="b1-forma"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Dupla (Lecsi pecsi)</span></span><button type="button" class="vg-info" data-info="forma:dupla" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                        </div>
+                      </div>
+                      <div class="vg is-on is-narrow" data-vg="pacolas" data-last="Hagyományos">
+                        <button class="vg-toggle" type="button" aria-expanded="true">
+                          <span class="vg-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                          <span class="vg-label"><span class="vg-name">Pácolva</span><span class="vg-current">Hagyományos</span><span class="vg-hint">Pácolatlan</span></span>
+                          <svg class="vg-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="vg-body">
+                          <label class="vg-radio is-selected" data-value="hagyomanyos"><input type="radio" name="b1-pacolas" checked><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Hagyományos</span></span><span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:hagyomanyos" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                          <label class="vg-radio" data-value="barbecue"><input type="radio" name="b1-pacolas"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Barbecue</span></span><span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:barbecue" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                        </div>
+                      </div>
+                      <div class="vg-list-done"><button type="button" class="vg-done-btn"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Kész</button></div>
+                    </div>
+                  </div>
+              </div>
+
+              <!-- B2: Sertés Csülök — Méret MANDATORY -->
+              <div class="cart-item">
+                <div class="cart-item-inner">
+                  <div class="cart-item-img">img</div>
+                  <div class="cart-item-details">
+                    <div class="cart-item-header">
+                      <span class="cart-item-name">Sertés Csülök</span>
+                      <button class="trash-btn" aria-label="Eltávolítás"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+                    </div>
+                    <span class="cart-item-unit">19,00 RON / kg · kb. 1,5 kg / db</span>
+                    <div class="cart-item-qty-row">
+                      <div class="qty-controls">
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+                        <input class="qty-input" type="text" value="1 db" readonly>
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+                      </div>
+                      <span class="cart-item-line-total">~28,50 RON</span>
+                    </div>
+                  </div>
+                </div>
+                  <div class="cart-item-vg-stack is-collapsed">
+                    <div class="vg-summary">
+                      <div class="vg-sum-list"></div>
+                      <button type="button" class="vg-sum-edit"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>Módosítás</button>
+                    </div>
+                    <div class="vg-list">
+                      <div class="vg is-mandatory is-narrow" data-vg="meret">
+                        <div class="vg-toggle">
+                          <span class="vg-required-marker">Kötelező</span>
+                          <span class="vg-label"><span class="vg-name">Méret</span><span class="vg-current">Közepes · 1,4-1,6 kg</span></span>
+                        </div>
+                        <div class="vg-body">
+                          <label class="vg-radio" data-value="kisebb"><input type="radio" name="b2-meret"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Kisebb</span><span class="vg-radio-meta">1,2-1,4 kg</span></span><button type="button" class="vg-info" data-info="meret:kisebb" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                          <label class="vg-radio is-selected" data-value="kozepes"><input type="radio" name="b2-meret" checked><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Közepes</span><span class="vg-radio-meta">1,4-1,6 kg · alapértelmezett</span></span><button type="button" class="vg-info" data-info="meret:kozepes" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                          <label class="vg-radio" data-value="nagyobb"><input type="radio" name="b2-meret"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Nagyobb</span><span class="vg-radio-meta">1,6-1,8 kg</span></span><button type="button" class="vg-info" data-info="meret:nagyobb" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                        </div>
+                      </div>
+                      <div class="vg-list-done"><button type="button" class="vg-done-btn"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Kész</button></div>
+                    </div>
+                  </div>
+              </div>
+
+              <!-- B3: Sertés Őrölt Hús — Zsírosság MANDATORY -->
+              <div class="cart-item">
+                <div class="cart-item-inner">
+                  <div class="cart-item-img">img</div>
+                  <div class="cart-item-details">
+                    <div class="cart-item-header">
+                      <span class="cart-item-name">Sertés Őrölt Hús</span>
+                      <button class="trash-btn" aria-label="Eltávolítás"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+                    </div>
+                    <span class="cart-item-unit">21,00 RON / kg</span>
+                    <div class="cart-item-qty-row">
+                      <div class="qty-controls">
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+                        <input class="qty-input" type="text" value="0,50" readonly>
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+                      </div>
+                      <span class="cart-item-line-total">10,50 RON</span>
+                    </div>
+                  </div>
+                </div>
+                  <div class="cart-item-vg-stack is-collapsed">
+                    <div class="vg-summary">
+                      <div class="vg-sum-list"></div>
+                      <button type="button" class="vg-sum-edit"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>Módosítás</button>
+                    </div>
+                    <div class="vg-list">
+                      <div class="vg is-mandatory is-narrow" data-vg="zsirossag">
+                        <div class="vg-toggle">
+                          <span class="vg-required-marker">Kötelező</span>
+                          <span class="vg-label"><span class="vg-name">Zsírosság</span><span class="vg-current">Normál · 50/50</span></span>
+                        </div>
+                        <div class="vg-body">
+                          <label class="vg-radio" data-value="kevesbe_zsiros"><input type="radio" name="b3-zsirossag"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Kevésbé zsíros</span><span class="vg-radio-meta">70/30</span></span><button type="button" class="vg-info" data-info="zsirossag:kevesbe_zsiros" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                          <label class="vg-radio is-selected" data-value="normal"><input type="radio" name="b3-zsirossag" checked><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Normál</span><span class="vg-radio-meta">50/50 · alapértelmezett</span></span><button type="button" class="vg-info" data-info="zsirossag:normal" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                          <label class="vg-radio" data-value="zsirosabb"><input type="radio" name="b3-zsirossag"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Zsírosabb</span><span class="vg-radio-meta">35/65</span></span><button type="button" class="vg-info" data-info="zsirossag:zsirosabb" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                        </div>
+                      </div>
+                      <div class="vg-list-done"><button type="button" class="vg-done-btn"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Kész</button></div>
+                    </div>
+                  </div>
+              </div>
+
+              <!-- B4: Füstölt Has — Szeletelve ON Normál + Pácolva OFF -->
+              <div class="cart-item">
+                <div class="cart-item-inner">
+                  <div class="cart-item-img">img</div>
+                  <div class="cart-item-details">
+                    <div class="cart-item-header">
+                      <span class="cart-item-name">Füstölt Has</span>
+                      <button class="trash-btn" aria-label="Eltávolítás"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+                    </div>
+                    <span class="cart-item-unit">47,00 RON / kg</span>
+                    <div class="cart-item-qty-row">
+                      <div class="qty-controls">
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+                        <input class="qty-input" type="text" value="0,50" readonly>
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+                      </div>
+                      <span class="cart-item-line-total">23,50 RON</span>
+                    </div>
+                  </div>
+                </div>
+                  <div class="cart-item-vg-stack is-collapsed">
+                    <div class="vg-summary">
+                      <div class="vg-sum-list"></div>
+                      <button type="button" class="vg-sum-edit"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 1 1 3 3L7 19l-4 1 1-4Z"/></svg>Módosítás</button>
+                    </div>
+                    <div class="vg-list">
+                      <div class="vg is-on is-narrow" data-vg="szeletes" data-last="Normál · 4 mm">
+                        <button class="vg-toggle" type="button" aria-expanded="true">
+                          <span class="vg-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                          <span class="vg-label"><span class="vg-name">Szeletelve</span><span class="vg-current">Normál · 4 mm</span><span class="vg-hint">Egészben</span></span>
+                          <svg class="vg-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="vg-body">
+                          <label class="vg-radio" data-value="vekony"><input type="radio" name="b4-szeletes"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Vékony</span><span class="vg-radio-meta">2 mm</span></span><button type="button" class="vg-info" data-info="szeletes:vekony" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                          <label class="vg-radio is-selected" data-value="normal"><input type="radio" name="b4-szeletes" checked><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Normál</span><span class="vg-radio-meta">4 mm</span></span><button type="button" class="vg-info" data-info="szeletes:normal" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                          <label class="vg-radio" data-value="vastagabb"><input type="radio" name="b4-szeletes"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Vastagabb</span><span class="vg-radio-meta">6 mm</span></span><button type="button" class="vg-info" data-info="szeletes:vastagabb" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                        </div>
+                      </div>
+                      <div class="vg is-off is-narrow" data-vg="pacolas">
+                        <button class="vg-toggle" type="button" aria-expanded="false">
+                          <span class="vg-checkbox"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>
+                          <span class="vg-label"><span class="vg-name">Pácolva</span><span class="vg-current"></span><span class="vg-hint">Pácolatlan</span></span>
+                          <svg class="vg-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+                        </button>
+                        <div class="vg-body">
+                          <label class="vg-radio" data-value="hagyomanyos"><input type="radio" name="b4-pacolas"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Hagyományos</span></span><span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:hagyomanyos" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                          <label class="vg-radio" data-value="barbecue"><input type="radio" name="b4-pacolas"><span class="vg-radio-marker"></span><span class="vg-radio-text"><span class="vg-radio-label">Barbecue</span></span><span class="vg-radio-price">+2 RON/kg</span><button type="button" class="vg-info" data-info="pacolas:barbecue" aria-label="Részletek"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button></label>
+                        </div>
+                      </div>
+                      <div class="vg-list-done"><button type="button" class="vg-done-btn"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>Kész</button></div>
+                    </div>
+                  </div>
+              </div>
+
+              <!-- B5: Cérna Kolbász — VG nélküli (egyszerű termék) -->
+              <div class="cart-item">
+                <div class="cart-item-inner">
+                  <div class="cart-item-img">img</div>
+                  <div class="cart-item-details">
+                    <div class="cart-item-header">
+                      <span class="cart-item-name">Cérna Kolbász</span>
+                      <button class="trash-btn" aria-label="Eltávolítás"><svg viewBox="0 0 24 24"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg></button>
+                    </div>
+                    <span class="cart-item-unit">45,00 RON / kg</span>
+                    <div class="cart-item-qty-row">
+                      <div class="qty-controls">
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/></svg></button>
+                        <input class="qty-input" type="text" value="0,30" readonly>
+                        <button class="qty-btn"><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+                      </div>
+                      <span class="cart-item-line-total">13,50 RON</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+
+            <div class="disclaimer">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+              <span>A végső súly és ár ±10%-kal eltérhet a hibrid termékeknél.</span>
+            </div>
+
+            <div class="savings-box">
+              <div class="progress-track">
+                <div class="progress-fill"></div>
+                <div class="progress-marker marker-150"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+                <div class="progress-marker marker-300"></div>
+                <span class="progress-label label-0">0 RON</span>
+                <span class="progress-label label-150">150 RON</span>
+                <span class="progress-label label-150-sub">Ingy. száll.</span>
+                <span class="progress-label label-300">300 RON</span>
+                <span class="progress-label label-300-sub">2% kedv.</span>
+              </div>
+            </div>
+            <div class="savings-msg">Ingyenes szállítás!</div>
+            <div class="next-threshold">+10 RON (ingyenes szállítás)</div>
+            <div class="next-threshold-sub">Még 191 RON → 2% kedvezmény</div>
+
+            <div class="summary">
+              <div class="summary-row"><span class="summary-label">Becsült részösszeg</span><span class="summary-value">~109,00 RON</span></div>
+              <div class="summary-row"><span class="summary-label">Felárak (pácolás)</span><span class="summary-value">+2,00 RON</span></div>
+              <div class="summary-row"><span class="summary-delivery-label">Szállítás</span><div class="summary-delivery-value"><span class="strike">10,00 RON</span><span class="free-label">Ingyenes</span></div></div>
+              <div class="summary-total-row"><span class="summary-total-label">Becsült összesen</span><span class="summary-total-value">~111,00 RON</span></div>
+              <div class="summary-subtitle">5 termék · becslés a kiválasztott mennyiségek és VG-felárak alapján</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sticky-cta"><button class="btn-cart">Tovább a fizetéshez</button></div>
+        <nav class="bottom-nav">
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Termékek</div>
+          <div class="nav-item active"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="cart-badge">5</span>Kosár</div>
+          <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fiók</div>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+</div><!-- /tab-content: cart -->
+
+<div class="dh-tab-content" data-content="admin" role="tabpanel">
+  <div class="section-heading">
+    <h2>C. Admin rendelés nézet</h2>
+    <p>Mészáros / admin oldali nézet — a beérkező rendelésnél a VG-választások egyértelműen megjelennek, és nyomtatható munkalap is generálható. Külön ticket alá fogjuk kidolgozni.</p>
+  </div>
+
+  <div class="placeholder-panel">
+    <div class="placeholder-icon">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+    </div>
+    <h2>Még kidolgozás alatt</h2>
+    <p>Ez a tab fogja tartalmazni az admin / mészáros oldali rendelés-nézetet, valamint a nyomtatható munkalapot. A VG-választások itt fognak láthatóak lenni a rendelési tételeken.</p>
+    <ul>
+      <li>Beérkező rendelés részletező — VG-választások termékenként</li>
+      <li>Nyomtatható mészáros munkalap (A4 portrait), 1,5 m-ről olvasható Előkészítés oszloppal</li>
+      <li>Standard jelölés a VG nélküli vagy OFF-állapotú termékekre</li>
+      <li>Csoportosítás termékkategóriánként a hatékony előkészítéshez</li>
+      <li>Rendelési azonosító, vásárló, szállítási idő prominens pozícióban</li>
+    </ul>
+  </div>
+</div><!-- /tab-content: admin -->
+
+<!-- VG info modal -->
+<div class="vg-modal-backdrop" id="vg-modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="vg-modal">
+    <button class="vg-modal-close" type="button" aria-label="Bezárás"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    <div class="vg-modal-image" id="vg-modal-image">előkészítés-fotó</div>
+    <div class="vg-modal-body">
+      <div class="vg-modal-eyebrow" id="vg-modal-eyebrow">Pácolva</div>
+      <h3 class="vg-modal-title" id="vg-modal-title">Hagyományos</h3>
+      <div class="vg-modal-desc" id="vg-modal-desc"><p>Lorem ipsum.</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ─── Top-level tab switching ─── */
+(function () {
+  var tabs = document.querySelectorAll('.dh-tab');
+  var contents = document.querySelectorAll('.dh-tab-content');
+  function activate(name) {
+    tabs.forEach(function (t) {
+      var on = t.dataset.tab === name;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    contents.forEach(function (c) {
+      c.classList.toggle('active', c.dataset.content === name);
+    });
+    if (history.replaceState) history.replaceState(null, '', '#' + name);
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () { activate(tab.dataset.tab); });
+  });
+  var initial = (location.hash || '').replace('#', '');
+  if (initial && document.querySelector('.dh-tab[data-tab="' + initial + '"]')) {
+    activate(initial);
+  }
+})();
+
+/* ─── VG checkbox toggle (csak OPTIONAL) ─── */
+var VG_LAST = { forma: '', pacolas: '', szeletes: '', meret: '', zsirossag: '' };
+
+document.querySelectorAll('.vg').forEach(function (vg) {
+  var last = vg.dataset.last;
+  if (last) VG_LAST[vg.dataset.vg] = last;
+});
+
+document.querySelectorAll('.vg:not(.is-mandatory) .vg-toggle').forEach(function (toggle) {
+  toggle.addEventListener('click', function (e) {
+    if (e.target.closest('.vg-info') || e.target.closest('.vg-radio')) return;
+    var vg = toggle.closest('.vg');
+    if (vg.classList.contains('is-mandatory')) return;
+    var name = vg.dataset.vg;
+    var willTurnOn = vg.classList.contains('is-off');
+    if (willTurnOn) {
+      vg.classList.remove('is-off');
+      vg.classList.add('is-on');
+      toggle.setAttribute('aria-expanded', 'true');
+      var lastVal = VG_LAST[name];
+      if (lastVal) selectRadio(vg, lastVal);
+      else clearRadio(vg);
+    } else {
+      vg.classList.remove('is-on');
+      vg.classList.add('is-off');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+  });
+});
+
+function selectRadio(vg, value) {
+  vg.querySelectorAll('.vg-radio').forEach(function (r) {
+    var on = r.dataset.value === value;
+    r.classList.toggle('is-selected', on);
+    var input = r.querySelector('input');
+    if (input) input.checked = on;
+  });
+  var current = vg.querySelector('.vg-current');
+  var picked = vg.querySelector('.vg-radio.is-selected .vg-radio-label');
+  if (current && picked) current.textContent = picked.textContent;
+}
+function clearRadio(vg) {
+  vg.querySelectorAll('.vg-radio').forEach(function (r) {
+    r.classList.remove('is-selected');
+    var input = r.querySelector('input');
+    if (input) input.checked = false;
+  });
+  var current = vg.querySelector('.vg-current');
+  if (current) current.textContent = '';
+}
+
+document.querySelectorAll('.vg-radio').forEach(function (radio) {
+  radio.addEventListener('click', function (e) {
+    if (e.target.closest('.vg-info')) { e.preventDefault(); return; }
+    var vg = radio.closest('.vg');
+    var name = vg.dataset.vg;
+    var value = radio.dataset.value;
+    selectRadio(vg, value);
+    VG_LAST[name] = value;
+    document.querySelectorAll('.vg[data-vg="' + name + '"]').forEach(function (other) {
+      if (other === vg) return;
+      if (other.classList.contains('is-on') || other.classList.contains('is-mandatory')) selectRadio(other, value);
+    });
+  });
+});
+
+
+/* ─── Compact VG summary (kosár collapsed/expanded) ─── */
+function buildVgSummary(stack) {
+  var listEl = stack.querySelector('.vg-sum-list');
+  if (!listEl) return;
+  var vgs = stack.querySelectorAll('.vg');
+  var parts = [];
+  vgs.forEach(function (vg) {
+    var name = vg.querySelector('.vg-name');
+    var nameTxt = name ? name.textContent : '';
+    var isOff = vg.classList.contains('is-off');
+    var isMandatory = vg.classList.contains('is-mandatory');
+    var current = vg.querySelector('.vg-current');
+    var hint = vg.querySelector('.vg-hint');
+    var selected = vg.querySelector('.vg-radio.is-selected');
+
+    var item = document.createElement('span');
+    item.className = 'vg-sum-item' + (isOff ? ' is-off' : '');
+    var html = '<span class="vg-sum-name">' + nameTxt + ':</span>';
+    if (isOff) {
+      html += '<span class="vg-sum-value">' + (hint ? hint.textContent : 'standard') + '</span>';
+    } else {
+      var valTxt = current && current.textContent ? current.textContent : (selected ? selected.querySelector('.vg-radio-label').textContent : '');
+      html += '<span class="vg-sum-value">' + valTxt + '</span>';
+      // Add price modifier badge if any
+      if (selected) {
+        var meta = selected.querySelector('.vg-radio-meta');
+        if (meta && meta.textContent && meta.textContent.trim() && !isMandatory) {
+          // Show a meta hint inline (e.g., "4 mm")
+          html += '<span class="vg-sum-meta" style="color:var(--text-muted);font-size:11px;font-weight:400">· ' + meta.textContent + '</span>';
+        }
+      }
+      // Find price modifier from radio data — search master JSON if needed; quick way is to check static labels
+      // For now, hardcode: pacolas hagyomanyos/barbecue → +2 RON/kg
+      var oid = vg.dataset.vg;
+      if (oid === 'pacolas' && selected) {
+        var v = selected.dataset.value;
+        if (v === 'hagyomanyos' || v === 'barbecue') {
+          html += ' <span class="vg-sum-mod">+2 RON/kg</span>';
+        }
+      }
+    }
+    item.innerHTML = html;
+    parts.push(item);
+  });
+
+  listEl.innerHTML = '';
+  parts.forEach(function (p, i) {
+    if (i > 0) {
+      var sep = document.createElement('span');
+      sep.className = 'vg-sum-sep';
+      sep.textContent = '·';
+      listEl.appendChild(sep);
+    }
+    listEl.appendChild(p);
+  });
+}
+
+function rebuildAllSummaries() {
+  document.querySelectorAll('.cart-item-vg-stack').forEach(buildVgSummary);
+}
+
+document.querySelectorAll('.vg-sum-edit').forEach(function (btn) {
+  btn.addEventListener('click', function (e) {
+    e.preventDefault(); e.stopPropagation();
+    var stack = btn.closest('.cart-item-vg-stack');
+    if (stack) stack.classList.remove('is-collapsed');
+  });
+});
+document.querySelectorAll('.vg-done-btn').forEach(function (btn) {
+  btn.addEventListener('click', function (e) {
+    e.preventDefault(); e.stopPropagation();
+    var stack = btn.closest('.cart-item-vg-stack');
+    if (stack) {
+      buildVgSummary(stack);
+      stack.classList.add('is-collapsed');
+    }
+  });
+});
+
+// Hook into existing radio click + checkbox toggle to rebuild summaries
+document.querySelectorAll('.cart-item-vg-stack .vg-radio').forEach(function (radio) {
+  radio.addEventListener('click', function () {
+    setTimeout(function () {
+      var stack = radio.closest('.cart-item-vg-stack');
+      if (stack) buildVgSummary(stack);
+    }, 0);
+  });
+});
+document.querySelectorAll('.cart-item-vg-stack .vg-toggle').forEach(function (tog) {
+  tog.addEventListener('click', function () {
+    setTimeout(function () {
+      var stack = tog.closest('.cart-item-vg-stack');
+      if (stack) buildVgSummary(stack);
+    }, 0);
+  });
+});
+
+// Initial build on load
+rebuildAllSummaries();
+
+
+/* ─── VG info modal ─── */
+var INFO_DATA = {
+  'pacolas:hagyomanyos': { eyebrow: 'Pácolva', title: 'Hagyományos', desc: '<p>Só, bors, fokhagyma, friss fűszerek. Klasszikus kárpát-medencei ízprofil sütésre és grillezésre.</p><p>A mészáros 24 órás pácolást javasol, hogy az ízek mélyen átjárják a húst.</p>', image: 'hagyományos pácolás · referencia' },
+  'pacolas:barbecue': { eyebrow: 'Pácolva', title: 'Barbecue', desc: '<p>Paradicsomos, édeskés, füstös ízprofil. Grillezésre kifejezetten ajánlott.</p><p>A pác benne van — közvetlenül a grillre helyezhető.</p>', image: 'barbecue pácolás · referencia' },
+  'forma:normal': { eyebrow: 'Szeletelve (forma)', title: 'Normál', desc: '<p>Egyszelet, klasszikus, minimum újnyi vastagságú.</p><p>Pörkölthez, rántott karajhoz, gyorsan átsülő ételekhez.</p>', image: 'normál szeletelés · referencia' },
+  'forma:dupla': { eyebrow: 'Szeletelve (forma)', title: 'Dupla (Lecsi pecsi)', desc: '<p>Két szelet középen egyben tartva, kinyitva, potyolva — a hagyományos „Lecsi pecsi".</p><p>Vastagabb, férfiasabb porció lassú sütésre. A mészáros 4 ujjnyi vastagságot javasol pörkölésre.</p>', image: 'dupla (Lecsi pecsi) · referencia' },
+  'szeletes:vekony': { eyebrow: 'Szeletelve', title: 'Vékony', desc: '<p>Vékonyra szeletelve — szalámi 2 mm, karaj 1 cm, has 1,5 cm.</p><p>Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.</p>', image: 'vékony szelet · referencia' },
+  'szeletes:normal': { eyebrow: 'Szeletelve', title: 'Normál', desc: '<p>Normál vastagság — szalámi 4 mm, karaj 1,5 cm, has 2 cm.</p><p>A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.</p>', image: 'normál szelet · referencia' },
+  'szeletes:vastagabb': { eyebrow: 'Szeletelve', title: 'Vastagabb', desc: '<p>Vastagabbra szeletelve — szalámi 6 mm, karaj 2,5 cm, has 3 cm.</p><p>Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre.</p>', image: 'vastagabb szelet · referencia' },
+  'meret:kisebb': { eyebrow: 'Méret', title: 'Kisebb', desc: '<p>1,2 - 1,4 kg. Ideális kisebb háztartásnak, 2-3 fős vacsorára.</p><p>Gyorsabban sül.</p>', image: 'kisebb csülök · referencia' },
+  'meret:kozepes': { eyebrow: 'Méret', title: 'Közepes (alapértelmezett)', desc: '<p>1,4 - 1,6 kg. A leggyakoribb választás.</p><p>4 fős család vasárnapi ebédjéhez.</p>', image: 'közepes csülök · referencia' },
+  'meret:nagyobb': { eyebrow: 'Méret', title: 'Nagyobb', desc: '<p>1,6 - 1,8 kg. Nagyobb társasághoz, lassan sült ünnepi ételekhez.</p><p>Hosszabb sütési idővel.</p>', image: 'nagyobb csülök · referencia' },
+  'zsirossag:kevesbe_zsiros': { eyebrow: 'Zsírosság', title: 'Kevésbé zsíros', desc: '<p>Kb. 70% sovány, 30% zsír. Egészségtudatosabb választás bolognai szószhoz, ragúhoz, könnyebb fasírthoz.</p>', image: '70/30 darált hús · referencia' },
+  'zsirossag:normal': { eyebrow: 'Zsírosság', title: 'Normál (alapértelmezett)', desc: '<p>Kb. 50-50% sovány-zsír arány. A mészáros alapbeállítása, minden klasszikus recepthez illik.</p>', image: '50/50 darált hús · referencia' },
+  'zsirossag:zsirosabb': { eyebrow: 'Zsírosság', title: 'Zsírosabb', desc: '<p>Kb. 35% sovány, 65% zsír. Lédús fasírthoz, töltelékes káposztához, hagyományos magyar és román ételekhez.</p>', image: '35/65 darált hús · referencia' }
+};
+
+var modal = document.getElementById('vg-modal');
+var modalEyebrow = document.getElementById('vg-modal-eyebrow');
+var modalTitle = document.getElementById('vg-modal-title');
+var modalDesc = document.getElementById('vg-modal-desc');
+var modalImage = document.getElementById('vg-modal-image');
+
+function openModal(key) {
+  var data = INFO_DATA[key];
+  if (!data) return;
+  modalEyebrow.textContent = data.eyebrow;
+  modalTitle.textContent = data.title;
+  modalDesc.innerHTML = data.desc;
+  modalImage.textContent = data.image;
+  modal.classList.add('show');
+  modal.setAttribute('aria-hidden', 'false');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  modal.classList.remove('show');
+  modal.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+document.querySelectorAll('.vg-info').forEach(function (btn) {
+  btn.addEventListener('click', function (e) { e.preventDefault(); e.stopPropagation(); openModal(btn.dataset.info); });
+});
+modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+modal.querySelector('.vg-modal-close').addEventListener('click', closeModal);
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('show')) closeModal(); });
+
+/* ─── DH copy-ref + toast ─── */
+(function () {
+  var COPY = '<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+  var CHECK = '<svg aria-hidden="true" focusable="false" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+  var toast = document.createElement('div');
+  toast.id = 'dh-toast'; toast.setAttribute('role', 'status'); toast.setAttribute('aria-live', 'polite');
+  toast.textContent = 'Másolva'; document.body.appendChild(toast);
+  var t;
+  function showToast(m) { toast.textContent = m || 'Másolva'; toast.classList.add('show'); clearTimeout(t); t = setTimeout(function () { toast.classList.remove('show'); }, 1500); }
+  function fb(text, ok, fail) {
+    var ta = document.createElement('textarea'); ta.value = text; ta.style.cssText = 'position:fixed;left:-9999px;opacity:0';
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand('copy') ? ok() : fail(); } catch (e) { fail(); }
+    document.body.removeChild(ta);
+  }
+  function copyText(text, btn) {
+    function ok() { if (btn) { btn.classList.add('copied'); btn.innerHTML = CHECK; setTimeout(function () { btn.classList.remove('copied'); btn.innerHTML = COPY; }, 1200); } showToast('Másolva: ' + text.slice(0, 40) + (text.length > 40 ? '…' : '')); }
+    function fail() { showToast('Másolás sikertelen'); }
+    if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(text).then(ok).catch(function () { fb(text, ok, fail); }); }
+    else { fb(text, ok, fail); }
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('.dh-copy'); if (!b) return;
+    e.preventDefault(); e.stopPropagation();
+    var ref = b.dataset.ref; if (ref) copyText(ref, b);
+  });
+  document.querySelectorAll('.dh-copy').forEach(function (b) { if (!b.innerHTML.trim()) b.innerHTML = COPY; });
+})();
+</script>
+
+</body>
+</html>

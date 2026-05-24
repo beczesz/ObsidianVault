@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM as a Service | Sonrisa Cloud Platform Services</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark-green: #1a2e1a;
+    --mid-green: #3d5a3d;
+    --light-green: #e8ede4;
+    --pale-green: #f0f4ec;
+    --accent-green: #c5d4b8;
+    --mint: #d4f0d4;
+    --orange: #e8956a;
+    --white: #ffffff;
+    --text-dark: #1a2e1a;
+    --text-medium: #4a5a4a;
+    --text-light: #6b7b6b;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text-dark);
+    background: var(--pale-green);
+    line-height: 1.6;
+  }
+
+  /* ── WIREFRAME NOTE ── */
+  .wireframe-note {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: #1a1a2e; color: #a0a0c0; padding: 10px 20px;
+    font-size: 12px; text-align: center; z-index: 1000; font-family: monospace;
+  }
+  .wireframe-note strong { color: #e0e0ff; }
+  body { padding-top: 36px; }
+
+  /* ── NAV ── */
+  nav {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 60px; background: var(--pale-green);
+  }
+  .logo { font-size: 28px; font-weight: 800; color: var(--text-dark); }
+  .menu-btn { font-size: 16px; color: var(--text-dark); cursor: pointer; }
+
+  /* ── BUTTONS ── */
+  .btn-dark {
+    background: var(--dark-green); color: var(--white);
+    padding: 14px 28px; font-size: 15px; font-weight: 600;
+    border: none; cursor: pointer; text-decoration: none;
+    display: inline-block; transition: all 0.2s;
+  }
+  .btn-dark:hover { background: var(--mid-green); }
+  .btn-outline {
+    background: transparent; color: var(--dark-green);
+    padding: 14px 28px; font-size: 15px; font-weight: 600;
+    border: 2px solid var(--dark-green); cursor: pointer;
+    text-decoration: none; display: inline-block; transition: all 0.2s;
+  }
+  .btn-outline:hover { background: var(--dark-green); color: var(--white); }
+  .btn-white {
+    background: var(--white); color: var(--dark-green);
+    padding: 14px 28px; font-size: 15px; font-weight: 600;
+    border: none; cursor: pointer; text-decoration: none;
+    display: inline-block; transition: all 0.2s;
+  }
+  .btn-white:hover { background: var(--light-green); }
+
+  /* ── SECTION UTILITIES ── */
+  .section-eyebrow {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 2px; color: var(--text-light); margin-bottom: 16px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 1: HERO
+     ══════════════════════════════════════════════ */
+  .hero {
+    display: grid; grid-template-columns: 45% 55%;
+    min-height: 540px; background: var(--dark-green); overflow: hidden;
+  }
+  .hero-visual {
+    background: linear-gradient(135deg, #1a2838 0%, #0d1f2e 50%, #1a2e1a 100%);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-visual::before {
+    content: ''; position: absolute;
+    width: 280px; height: 280px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(197,212,184,0.12) 0%, transparent 70%);
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+  }
+  .hero-visual-text {
+    position: relative; z-index: 1; text-align: center; padding: 40px;
+  }
+  .hero-visual-text .icon-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+    margin-bottom: 24px;
+  }
+  .hero-visual-text .icon-item {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+  }
+  .hero-visual-text .icon-item span {
+    font-size: 32px;
+  }
+  .hero-visual-text .icon-item small {
+    font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.4);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .aws-partner-mark {
+    position: absolute; top: 24px; right: 24px;
+    width: 72px; height: 72px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    font-size: 9px; font-weight: 700; color: var(--orange);
+    text-align: center; line-height: 1.2;
+    border: 2px solid var(--orange); border-radius: 4px; padding: 6px;
+  }
+  .aws-partner-mark span { font-size: 16px; font-weight: 900; }
+  .hero-content {
+    padding: 80px 60px; display: flex; flex-direction: column;
+    justify-content: center; background: var(--pale-green);
+  }
+  .hero-badge-row { display: flex; gap: 10px; margin-bottom: 24px; }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 5px 14px; border-radius: 3px;
+    font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.2px;
+  }
+  .badge-live { background: var(--mint); color: #1a6a1a; }
+  .badge-aws { background: #fff3e0; color: #b56a20; }
+  .hero h1 {
+    font-size: 46px; font-weight: 900; line-height: 1.08;
+    color: var(--text-dark); margin-bottom: 16px; letter-spacing: -1.5px;
+  }
+  .hero-subtitle {
+    font-size: 20px; font-weight: 700; color: var(--mid-green);
+    margin-bottom: 16px; line-height: 1.3;
+  }
+  .hero p {
+    font-size: 16px; color: var(--text-medium);
+    max-width: 480px; line-height: 1.7; margin-bottom: 32px;
+  }
+  .hero-ctas { display: flex; gap: 16px; align-items: center; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 2: TRUST BAR
+     ══════════════════════════════════════════════ */
+  .trust-bar {
+    background: var(--dark-green); padding: 28px 60px;
+    display: flex; align-items: center; gap: 50px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .trust-label {
+    font-size: 13px; font-weight: 600; color: rgba(255,255,255,0.45);
+    white-space: nowrap; max-width: 160px; line-height: 1.3;
+  }
+  .trust-logos { display: flex; gap: 40px; align-items: center; flex-wrap: wrap; }
+  .trust-logos span {
+    font-size: 15px; font-weight: 700; color: rgba(255,255,255,0.4);
+    letter-spacing: 0.5px;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 3: SOUND FAMILIAR
+     ══════════════════════════════════════════════ */
+  .familiar-section { padding: 80px 60px; }
+  .familiar-section h2 {
+    font-size: 44px; font-weight: 900; line-height: 1.1;
+    margin-bottom: 48px; letter-spacing: -1px;
+  }
+  .familiar-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 24px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .familiar-card {
+    background: var(--white); padding: 32px; border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.06); border-left: 4px solid var(--accent-green);
+  }
+  .familiar-card .quote-mark {
+    font-size: 36px; font-weight: 900; color: var(--accent-green);
+    line-height: 1; margin-bottom: 8px;
+  }
+  .familiar-card h4 {
+    font-size: 17px; font-weight: 800; margin-bottom: 10px;
+    letter-spacing: -0.2px; color: var(--dark-green);
+  }
+  .familiar-card p {
+    font-size: 15px; color: var(--text-medium); line-height: 1.7;
+  }
+  .familiar-closing {
+    margin-top: 40px; font-size: 20px; font-weight: 700;
+    color: var(--mid-green); max-width: 1100px; margin-left: auto; margin-right: auto;
+    margin-top: 40px;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 4: WHAT WE DO (Two Paths)
+     ══════════════════════════════════════════════ */
+  .whatwedo { background: var(--dark-green); padding: 80px 60px; }
+  .whatwedo-header {
+    max-width: 1100px; margin: 0 auto 48px;
+  }
+  .whatwedo-header h2 {
+    font-size: 44px; font-weight: 900; color: var(--white);
+    margin-bottom: 16px; letter-spacing: -1px;
+  }
+  .whatwedo-header p {
+    font-size: 17px; color: rgba(255,255,255,0.65); max-width: 640px; line-height: 1.7;
+  }
+  .paths-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+    max-width: 1100px; margin: 0 auto;
+  }
+  .path-card {
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 4px; overflow: hidden; display: flex; flex-direction: column;
+  }
+  .path-card-label {
+    padding: 12px 28px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px;
+  }
+  .path-a .path-card-label { background: var(--accent-green); color: var(--dark-green); }
+  .path-b .path-card-label { background: var(--orange); color: var(--white); }
+  .path-card-body { padding: 32px 28px; flex: 1; display: flex; flex-direction: column; }
+  .path-card h3 {
+    font-size: 24px; font-weight: 900; color: var(--white);
+    margin-bottom: 8px; letter-spacing: -0.3px;
+  }
+  .path-card .subtitle {
+    font-size: 15px; font-weight: 600; color: rgba(255,255,255,0.5);
+    margin-bottom: 20px;
+  }
+  .path-card .desc {
+    font-size: 15px; color: rgba(255,255,255,0.6); line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .path-features {
+    list-style: none; margin-bottom: 28px; flex: 1;
+  }
+  .path-features li {
+    font-size: 14px; color: rgba(255,255,255,0.7);
+    padding: 7px 0; display: flex; align-items: flex-start; gap: 10px;
+  }
+  .path-features li::before {
+    content: '✓'; color: var(--accent-green); font-weight: 700;
+    font-size: 13px; flex-shrink: 0; margin-top: 1px;
+  }
+  .path-price {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 20px; margin-bottom: 20px;
+  }
+  .path-price .amount {
+    font-size: 28px; font-weight: 900; color: var(--white);
+  }
+  .path-price .amount span {
+    font-size: 15px; font-weight: 500; color: rgba(255,255,255,0.4);
+  }
+  .path-price .detail {
+    font-size: 13px; color: rgba(255,255,255,0.45); margin-top: 4px;
+  }
+
+  /* Journey bar */
+  .journey-bar {
+    max-width: 1100px; margin: 48px auto 0;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px; padding: 32px; text-align: center;
+  }
+  .journey-steps {
+    display: flex; align-items: center; justify-content: center; gap: 0;
+    margin-bottom: 16px;
+  }
+  .journey-step {
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    padding: 0 24px;
+  }
+  .journey-step .step-label {
+    font-size: 12px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px; color: rgba(255,255,255,0.35);
+  }
+  .journey-step .step-text {
+    font-size: 15px; font-weight: 700; color: var(--white);
+  }
+  .journey-step .step-sub {
+    font-size: 12px; color: rgba(255,255,255,0.4);
+  }
+  .journey-arrow {
+    font-size: 24px; color: var(--accent-green); flex-shrink: 0;
+    margin: 0 8px; padding-top: 10px;
+  }
+  .journey-caption {
+    font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.6;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 5: TECHNICAL PROOF
+     ══════════════════════════════════════════════ */
+  .tech-section { padding: 80px 60px; }
+  .tech-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start;
+  }
+  .tech-left h2 {
+    font-size: 36px; font-weight: 900; margin-bottom: 16px; letter-spacing: -0.5px;
+  }
+  .tech-left .lead {
+    font-size: 16px; color: var(--text-medium); line-height: 1.7; margin-bottom: 28px;
+  }
+  .model-table {
+    width: 100%; border-collapse: collapse; background: var(--white);
+    border: 1px solid rgba(0,0,0,0.06); border-radius: 4px; overflow: hidden;
+  }
+  .model-table th {
+    text-align: left; padding: 14px 16px; font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1px; color: var(--text-light);
+    background: var(--light-green); border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .model-table td {
+    padding: 14px 16px; font-size: 14px; color: var(--text-medium);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  .model-table td:first-child {
+    font-weight: 700; color: var(--text-dark);
+  }
+  .model-table tr:last-child td { border-bottom: none; }
+  .tech-right { display: flex; flex-direction: column; gap: 20px; }
+  .api-box {
+    background: var(--dark-green); border-radius: 4px; padding: 28px;
+    font-family: 'Courier New', monospace; font-size: 13px;
+    color: rgba(255,255,255,0.65); line-height: 1.9; overflow-x: auto;
+  }
+  .api-box .comment { color: rgba(255,255,255,0.3); }
+  .api-box .highlight { color: var(--accent-green); }
+  .api-callout {
+    background: var(--light-green); padding: 20px; border-radius: 4px;
+    font-size: 15px; color: var(--text-dark); line-height: 1.6; font-weight: 500;
+  }
+  .api-callout strong { font-weight: 800; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 6: WHY SWITCH
+     ══════════════════════════════════════════════ */
+  .why-section {
+    background: var(--light-green); padding: 80px 60px;
+  }
+  .why-inner { max-width: 1100px; margin: 0 auto; }
+  .why-inner h2 {
+    font-size: 36px; font-weight: 900; margin-bottom: 48px; letter-spacing: -0.5px;
+  }
+  .why-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px;
+  }
+  .why-card {
+    background: var(--white); padding: 28px; border-radius: 4px;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .why-card .stat {
+    font-size: 36px; font-weight: 900; color: var(--dark-green);
+    margin-bottom: 8px; line-height: 1;
+  }
+  .why-card h4 {
+    font-size: 16px; font-weight: 800; margin-bottom: 10px;
+  }
+  .why-card p {
+    font-size: 14px; color: var(--text-medium); line-height: 1.7;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 7: COMPARISON TABLE
+     ══════════════════════════════════════════════ */
+  .comparison { background: var(--dark-green); padding: 80px 60px; }
+  .comparison-inner { max-width: 1000px; margin: 0 auto; }
+  .comparison h2 {
+    font-size: 36px; font-weight: 900; color: var(--white);
+    text-align: center; margin-bottom: 16px; letter-spacing: -0.5px;
+  }
+  .comparison .comp-note {
+    font-size: 14px; color: rgba(255,255,255,0.4); text-align: center;
+    margin-bottom: 40px; max-width: 560px; margin-left: auto; margin-right: auto;
+    line-height: 1.6;
+  }
+  .comp-table { width: 100%; border-collapse: collapse; }
+  .comp-table th, .comp-table td {
+    padding: 14px 16px; text-align: left; font-size: 14px;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+  .comp-table th {
+    font-weight: 700; color: rgba(255,255,255,0.4); font-size: 11px;
+    text-transform: uppercase; letter-spacing: 1px;
+  }
+  .comp-table th.sonrisa-th { color: var(--accent-green); }
+  .comp-table td { color: rgba(255,255,255,0.6); }
+  .comp-table td:first-child { color: var(--white); font-weight: 600; }
+  .comp-table .sonrisa-col { color: var(--accent-green); font-weight: 600; }
+  .comp-table tr:last-child td { border-bottom: none; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 8: SECURITY
+     ══════════════════════════════════════════════ */
+  .security-section { padding: 80px 60px; }
+  .security-inner { max-width: 1100px; margin: 0 auto; }
+  .security-inner h2 {
+    font-size: 36px; font-weight: 900; margin-bottom: 48px; letter-spacing: -0.5px;
+  }
+  .security-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px;
+  }
+  .sec-card {
+    background: var(--white); border: 1px solid rgba(0,0,0,0.06);
+    border-radius: 4px; padding: 28px;
+  }
+  .sec-card .icon { font-size: 24px; margin-bottom: 14px; }
+  .sec-card h4 { font-size: 16px; font-weight: 800; margin-bottom: 8px; }
+  .sec-card p { font-size: 14px; color: var(--text-medium); line-height: 1.7; }
+
+  /* ══════════════════════════════════════════════
+     SECTION 9: HOW TO GET STARTED + PRICING
+     ══════════════════════════════════════════════ */
+  .getstarted { background: var(--light-green); padding: 80px 60px; }
+  .getstarted-inner { max-width: 1100px; margin: 0 auto; }
+  .getstarted-inner h2 {
+    font-size: 36px; font-weight: 900; margin-bottom: 48px;
+    letter-spacing: -0.5px; text-align: center;
+  }
+  .tracks {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    margin-bottom: 48px;
+  }
+  .track {
+    background: var(--white); border-radius: 4px; overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .track-header {
+    padding: 20px 28px; font-size: 13px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 1.5px;
+  }
+  .track-a .track-header { background: var(--accent-green); color: var(--dark-green); }
+  .track-b .track-header { background: var(--dark-green); color: var(--white); }
+  .track-body { padding: 28px; }
+  .track-steps { list-style: none; }
+  .track-steps li {
+    display: flex; gap: 16px; padding: 14px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.04);
+  }
+  .track-steps li:last-child { border-bottom: none; }
+  .step-num {
+    width: 32px; height: 32px; border-radius: 50%;
+    background: var(--pale-green); display: flex; align-items: center;
+    justify-content: center; font-size: 14px; font-weight: 800;
+    color: var(--dark-green); flex-shrink: 0;
+  }
+  .step-content h4 { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .step-content p { font-size: 13px; color: var(--text-medium); }
+  .step-content .time {
+    font-size: 11px; font-weight: 600; color: var(--text-light);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+
+  /* Pricing summary table */
+  .pricing-summary {
+    background: var(--white); border-radius: 4px; overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .pricing-summary table { width: 100%; border-collapse: collapse; }
+  .pricing-summary th, .pricing-summary td {
+    padding: 14px 20px; text-align: left; font-size: 14px;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+  }
+  .pricing-summary th {
+    font-weight: 700; font-size: 12px; text-transform: uppercase;
+    letter-spacing: 1px; color: var(--text-light); background: var(--pale-green);
+  }
+  .pricing-summary td:first-child { font-weight: 600; color: var(--text-dark); }
+  .pricing-summary td { color: var(--text-medium); }
+  .pricing-summary .highlight-col {
+    font-weight: 700; color: var(--dark-green);
+  }
+  .pricing-summary tr:last-child td { border-bottom: none; }
+  .pricing-note {
+    text-align: center; font-size: 14px; color: var(--text-light);
+    margin-top: 24px; line-height: 1.7;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 10: MID CTA
+     ══════════════════════════════════════════════ */
+  .mid-cta {
+    background: var(--mint); padding: 80px 60px;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 60px; align-items: center;
+  }
+  .mid-cta-text h2 {
+    font-size: 40px; font-weight: 900; line-height: 1.1;
+    margin-bottom: 16px; letter-spacing: -0.5px; max-width: 500px;
+  }
+  .mid-cta-text p {
+    font-size: 16px; color: var(--text-medium); max-width: 460px;
+    line-height: 1.7; margin-bottom: 28px;
+  }
+  .mid-cta-circle {
+    width: 180px; height: 180px; border-radius: 50%;
+    background: var(--dark-green); display: flex; align-items: center;
+    justify-content: center; color: var(--white); font-weight: 800;
+    font-size: 18px; text-align: center; line-height: 1.3;
+  }
+
+  /* ══════════════════════════════════════════════
+     SECTION 11: BOTTOM CTA
+     ══════════════════════════════════════════════ */
+  .bottom-cta {
+    background: var(--pale-green); padding: 80px 60px; text-align: center;
+  }
+  .bottom-cta h2 {
+    font-size: 36px; font-weight: 900; margin-bottom: 12px;
+    letter-spacing: -0.5px; max-width: 600px; margin-left: auto; margin-right: auto;
+    line-height: 1.15;
+  }
+  .bottom-cta p {
+    font-size: 17px; color: var(--text-medium); margin-bottom: 32px;
+  }
+  .bottom-cta .ctas { display: flex; gap: 16px; justify-content: center; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .hero-content { padding: 60px 30px; }
+    .familiar-grid, .paths-grid, .tracks { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: 1fr 1fr; }
+    .security-grid { grid-template-columns: 1fr; }
+    .tech-inner { grid-template-columns: 1fr; }
+    .mid-cta { grid-template-columns: 1fr; }
+    .mid-cta-circle { display: none; }
+    .hero h1 { font-size: 36px; }
+    nav { padding: 20px 24px; }
+    .familiar-section, .tech-section, .security-section,
+    .bottom-cta { padding: 60px 24px; }
+    .whatwedo, .comparison, .why-section, .getstarted, .mid-cta { padding: 60px 24px; }
+    .trust-bar { padding: 20px 24px; gap: 20px; flex-wrap: wrap; }
+    .comp-table { font-size: 12px; }
+    .comp-table th, .comp-table td { padding: 10px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wireframe-note">
+  <strong>WIREFRAME v2</strong> — LLM as a Service Landing Page · Two-path model (Shared Platform → Managed Infrastructure)
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">sonrisa ☻</div>
+  <div class="menu-btn">Menu</div>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1: HERO
+     ═══════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-visual">
+    <div class="aws-partner-mark">
+      <span>aws</span>
+      PARTNER<br>Select Tier<br>Services
+    </div>
+    <div class="hero-visual-text">
+      <div class="icon-grid">
+        <div class="icon-item"><span>🔒</span><small>Private</small></div>
+        <div class="icon-item"><span>🇪🇺</span><small>EU-hosted</small></div>
+        <div class="icon-item"><span>⚡</span><small>Fast</small></div>
+        <div class="icon-item"><span>🔧</span><small>Managed</small></div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge-row">
+      <span class="hero-badge badge-live">Live & Available</span>
+      <span class="hero-badge badge-aws">AWS GPU Infrastructure</span>
+    </div>
+    <h1>Your Own Private AI.<br>Fully Managed.</h1>
+    <div class="hero-subtitle">Run open-source LLMs on infrastructure you control — without hiring ML engineers.</div>
+    <p>Your team already uses AI every day. But sending company data to ChatGPT or Copilot isn't a strategy — it's a risk. We deploy, optimize, and manage private LLM infrastructure so you get the same capabilities with full data control.</p>
+    <div class="hero-ctas">
+      <a href="#" class="btn-dark">Talk to Us</a>
+      <a href="#whatwedo" class="btn-outline">See How It Works</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2: TRUST BAR
+     ═══════════════════════════════════════════ -->
+<div class="trust-bar">
+  <div class="trust-label">Trusted by engineering teams across Europe.</div>
+  <div class="trust-logos">
+    <span>ORACLE</span>
+    <span>Yettel.</span>
+    <span>SYNLAB</span>
+    <span>Magyar Államkincstár</span>
+    <span>Global Blue</span>
+    <span>Lufthansa Systems</span>
+    <span>Diligent</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3: SOUND FAMILIAR?
+     ═══════════════════════════════════════════ -->
+<section class="familiar-section">
+  <div class="container">
+    <div class="section-eyebrow">The Challenge</div>
+    <h2>Sound familiar?</h2>
+
+    <div class="familiar-grid">
+      <div class="familiar-card">
+        <div class="quote-mark">"</div>
+        <h4>Security flagged it</h4>
+        <p>Your developers use ChatGPT daily — but your security team just sent a company-wide email saying it's not allowed. Now productivity dropped and nobody has an alternative.</p>
+      </div>
+      <div class="familiar-card">
+        <div class="quote-mark">"</div>
+        <h4>The costs aren't predictable</h4>
+        <p>You started with a few API keys for OpenAI. Six months later the invoice is 3x what you expected, and nobody can tell finance exactly what they're paying for.</p>
+      </div>
+      <div class="familiar-card">
+        <div class="quote-mark">"</div>
+        <h4>We need to own this</h4>
+        <p>Your CTO wants AI capabilities but refuses to send proprietary code and customer data to external providers. GDPR, internal policy, or just common sense — the data has to stay yours.</p>
+      </div>
+      <div class="familiar-card">
+        <div class="quote-mark">"</div>
+        <h4>We don't have ML engineers</h4>
+        <p>You know self-hosted LLMs exist, but who sets up the GPU infrastructure? Who keeps models updated? Who handles scaling? You're a product company, not an AI lab.</p>
+      </div>
+    </div>
+
+    <p class="familiar-closing">If any of this sounds like your Monday morning — we can help.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4: WHAT WE DO (Two Paths)
+     ═══════════════════════════════════════════ -->
+<section class="whatwedo" id="whatwedo">
+  <div class="whatwedo-header">
+    <div class="section-eyebrow" style="color:rgba(255,255,255,0.35);">What We Do</div>
+    <h2>Two ways to get started</h2>
+    <p>We help companies run private AI — from first API call to fully managed infrastructure. Start fast with our shared platform, or go straight to a dedicated setup. Either way, your data never leaves controlled EU infrastructure.</p>
+  </div>
+
+  <div class="paths-grid">
+    <!-- PATH A -->
+    <div class="path-card path-a">
+      <div class="path-card-label">Start fast</div>
+      <div class="path-card-body">
+        <h3>Shared LLM Platform</h3>
+        <div class="subtitle">Get an API key today. No infrastructure decisions needed.</div>
+        <p class="desc">Access open-source models through an OpenAI-compatible API and web interface. EU-hosted, ready in a day. Perfect for evaluation, small teams, or your first private AI project.</p>
+        <ul class="path-features">
+          <li>OpenAI-compatible API — drop-in replacement</li>
+          <li>Web chat interface for non-technical users</li>
+          <li>Up to 10 users included</li>
+          <li>All data on Sonrisa-managed EU infrastructure</li>
+          <li>Usage dashboard with monthly reporting</li>
+        </ul>
+        <div class="path-price">
+          <div class="amount">€500<span>/month</span></div>
+          <div class="detail">Private AI platform for your team. All models included.</div>
+        </div>
+        <a href="#" class="btn-white">Request Access</a>
+      </div>
+    </div>
+
+    <!-- PATH B -->
+    <div class="path-card path-b">
+      <div class="path-card-label">Go all-in</div>
+      <div class="path-card-body">
+        <h3>Managed LLM Infrastructure</h3>
+        <div class="subtitle">Dedicated infrastructure. Your models. Our operations.</div>
+        <p class="desc">We deploy and manage a complete LLM stack on infrastructure you control — AWS, on-prem, or hybrid. You pick the models. We handle GPUs, scaling, updates, monitoring, and 24/7 operations.</p>
+        <ul class="path-features">
+          <li>Deploy on YOUR AWS account or on-premises</li>
+          <li>Any model from Hugging Face — LLMs, code, image</li>
+          <li>Fine-tuning with LoRA/QLoRA on your data</li>
+          <li>Full observability — dashboards, prompt analytics</li>
+          <li>Integration with your tools (IDE, Slack, CI/CD)</li>
+          <li>24/7 operations, updates, and security patches</li>
+        </ul>
+        <div class="path-price">
+          <div class="amount">€1,000 <span>setup</span></div>
+          <div class="detail">+ from €200/month managed operations</div>
+        </div>
+        <a href="#" class="btn-white">Let's Discuss Your Setup</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Journey bar -->
+  <div class="journey-bar">
+    <div class="journey-steps">
+      <div class="journey-step">
+        <div class="step-label">Start here</div>
+        <div class="step-text">Shared Platform</div>
+        <div class="step-sub">€500/mo · API key in 1 day</div>
+      </div>
+      <div class="journey-arrow">→</div>
+      <div class="journey-step">
+        <div class="step-label">Validate</div>
+        <div class="step-text">Grow usage & teams</div>
+        <div class="step-sub">Prove the value internally</div>
+      </div>
+      <div class="journey-arrow">→</div>
+      <div class="journey-step">
+        <div class="step-label">Own it</div>
+        <div class="step-text">Dedicated Infrastructure</div>
+        <div class="step-sub">Your stack, we manage</div>
+      </div>
+    </div>
+    <div class="journey-caption">Most customers start on our shared platform. When AI becomes strategic, we migrate you to your own infrastructure with zero downtime.</div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5: TECHNICAL PROOF
+     ═══════════════════════════════════════════ -->
+<section class="tech-section">
+  <div class="tech-inner">
+    <div class="tech-left">
+      <div class="section-eyebrow">Under the Hood</div>
+      <h2>What this looks like</h2>
+      <p class="lead">Open-source models, optimized for real work. Same API your tools already speak.</p>
+
+      <table class="model-table">
+        <thead>
+          <tr>
+            <th>Model</th>
+            <th>Best for</th>
+            <th>Speed</th>
+            <th>Context</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Qwen 32B</td>
+            <td>Code generation, refactoring</td>
+            <td>~50 tok/s</td>
+            <td>32K</td>
+          </tr>
+          <tr>
+            <td>DeepSeek Coder</td>
+            <td>Documentation, debugging</td>
+            <td>~80 tok/s</td>
+            <td>16K</td>
+          </tr>
+          <tr>
+            <td>Llama 3.1</td>
+            <td>General writing, analysis</td>
+            <td>~60 tok/s</td>
+            <td>128K</td>
+          </tr>
+          <tr>
+            <td>Custom fine-tuned</td>
+            <td>Your domain-specific tasks</td>
+            <td>Optimized</td>
+            <td>Varies</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tech-right">
+      <div class="api-box">
+        <span class="comment"># Drop-in replacement for OpenAI</span><br><br>
+        <span class="highlight">curl</span> https://llm.yourcompany.io/v1/chat/completions \<br>
+        &nbsp;&nbsp;-H "Authorization: Bearer <span class="highlight">$API_KEY</span>" \<br>
+        &nbsp;&nbsp;-d '{<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"model": "<span class="highlight">qwen-32b</span>",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;"messages": [{<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"role": "user",<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"content": "Review this PR..."<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;}]<br>
+        &nbsp;&nbsp;}'
+      </div>
+      <div class="api-callout">
+        <strong>Same API. Same SDKs. Same IDE plugins.</strong><br>
+        Just a different endpoint — one that keeps your data private.
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6: WHY SWITCH
+     ═══════════════════════════════════════════ -->
+<section class="why-section">
+  <div class="why-inner">
+    <h2>Why companies switch to private AI</h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="stat">Zero</div>
+        <h4>External Data Exposure</h4>
+        <p>Your code, documents, and business data never leave controlled infrastructure. Complete audit trail for compliance.</p>
+      </div>
+      <div class="why-card">
+        <div class="stat">Flat</div>
+        <h4>Predictable Cost</h4>
+        <p>One monthly fee — no per-token surprises, no runaway bills. Know exactly what AI costs your team each month.</p>
+      </div>
+      <div class="why-card">
+        <div class="stat">1 week</div>
+        <h4>To Production</h4>
+        <p>From first call to live platform. No 6-month procurement cycle. No ML hiring process.</p>
+      </div>
+      <div class="why-card">
+        <div class="stat">No</div>
+        <h4>Lock-in</h4>
+        <p>Open-source models (Apache 2.0, MIT). Migrate or self-host anytime. Your data, your models, your choice.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 7: COMPARISON TABLE
+     ═══════════════════════════════════════════ -->
+<section class="comparison">
+  <div class="comparison-inner">
+    <h2>How it compares</h2>
+    <p class="comp-note">We compete on privacy and control, not token price. Public APIs may be cheaper per-token — but your data leaves your hands.</p>
+
+    <table class="comp-table">
+      <thead>
+        <tr>
+          <th style="width:22%"></th>
+          <th style="width:26%">Public APIs</th>
+          <th class="sonrisa-th" style="width:26%">Sonrisa Shared</th>
+          <th class="sonrisa-th" style="width:26%">Sonrisa Managed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Your data</td>
+          <td>Sent to external servers</td>
+          <td class="sonrisa-col">EU-hosted, Sonrisa-controlled</td>
+          <td class="sonrisa-col">Your own infrastructure</td>
+        </tr>
+        <tr>
+          <td>Cost model</td>
+          <td>Per-token, unpredictable at scale</td>
+          <td class="sonrisa-col">Flat monthly fee</td>
+          <td class="sonrisa-col">Setup + monthly ops</td>
+        </tr>
+        <tr>
+          <td>Vendor lock-in</td>
+          <td>High — proprietary models</td>
+          <td class="sonrisa-col">Low — open-source</td>
+          <td class="sonrisa-col">None — you own everything</td>
+        </tr>
+        <tr>
+          <td>Fine-tuning</td>
+          <td>Limited, expensive</td>
+          <td class="sonrisa-col">On request</td>
+          <td class="sonrisa-col">Full LoRA/QLoRA</td>
+        </tr>
+        <tr>
+          <td>GDPR</td>
+          <td>Complex DPA needed</td>
+          <td class="sonrisa-col">Built-in</td>
+          <td class="sonrisa-col">Built-in, your control</td>
+        </tr>
+        <tr>
+          <td>Time to start</td>
+          <td>API key in minutes</td>
+          <td class="sonrisa-col">API key in 1 day</td>
+          <td class="sonrisa-col">1-2 weeks</td>
+        </tr>
+        <tr>
+          <td>User limits</td>
+          <td>Per-seat pricing</td>
+          <td class="sonrisa-col">Up to 10 included</td>
+          <td class="sonrisa-col">Unlimited</td>
+        </tr>
+        <tr>
+          <td>Best for</td>
+          <td>Quick experiments</td>
+          <td class="sonrisa-col">Teams validating private AI</td>
+          <td class="sonrisa-col">Organizations going all-in</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 8: SECURITY & COMPLIANCE
+     ═══════════════════════════════════════════ -->
+<section class="security-section">
+  <div class="security-inner">
+    <h2>Security & Compliance</h2>
+    <div class="security-grid">
+      <div class="sec-card">
+        <div class="icon">🇪🇺</div>
+        <h4>EU Data Sovereignty</h4>
+        <p>All processing within your designated AWS region or on-prem. No data transfer outside your control.</p>
+      </div>
+      <div class="sec-card">
+        <div class="icon">🔐</div>
+        <h4>Encryption Everywhere</h4>
+        <p>TLS in transit, AES-256 at rest. API key management with per-user quotas and RBAC.</p>
+      </div>
+      <div class="sec-card">
+        <div class="icon">🚫</div>
+        <h4>No External Calls</h4>
+        <p>Models run entirely on controlled infrastructure. Zero third-party AI provider involvement.</p>
+      </div>
+      <div class="sec-card">
+        <div class="icon">📋</div>
+        <h4>Audit-Ready</h4>
+        <p>Complete request/response logging. SOC2-aligned design for enterprise audit requirements.</p>
+      </div>
+      <div class="sec-card">
+        <div class="icon">🔑</div>
+        <h4>Access Control</h4>
+        <p>RBAC, SSO/SAML integration, per-user API keys, and project-level isolation.</p>
+      </div>
+      <div class="sec-card">
+        <div class="icon">🛡️</div>
+        <h4>Air-Gap Support</h4>
+        <p>For high-security environments, we support fully air-gapped deployments with no external connectivity.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 9: HOW TO GET STARTED + PRICING
+     ═══════════════════════════════════════════ -->
+<section class="getstarted">
+  <div class="getstarted-inner">
+    <h2>How to get started</h2>
+
+    <div class="tracks">
+      <!-- Track A -->
+      <div class="track track-a">
+        <div class="track-header">Shared Platform</div>
+        <div class="track-body">
+          <ol class="track-steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <h4>Talk to us</h4>
+                <div class="time">30 minutes</div>
+                <p>We understand your use case and recommend models</p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <h4>Get access</h4>
+                <div class="time">1 day</div>
+                <p>API keys, web interface, team onboarding</p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <h4>Use it</h4>
+                <div class="time">Ongoing</div>
+                <p>Flat monthly fee with usage reporting</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+
+      <!-- Track B -->
+      <div class="track track-b">
+        <div class="track-header">Managed Infrastructure</div>
+        <div class="track-body">
+          <ol class="track-steps">
+            <li>
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <h4>Discovery call</h4>
+                <div class="time">30 minutes</div>
+                <p>Your requirements, infrastructure, and goals</p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <h4>Architecture & setup</h4>
+                <div class="time">1-2 weeks</div>
+                <p>Deploy on your AWS or on-prem, configure models</p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <h4>Pilot</h4>
+                <div class="time">30 days</div>
+                <p>Limited rollout with monitoring and optimization</p>
+              </div>
+            </li>
+            <li>
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <h4>Go live</h4>
+                <div class="time">Ongoing</div>
+                <p>24/7 managed operations, updates, quarterly reviews</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pricing summary -->
+    <div class="pricing-summary">
+      <table>
+        <thead>
+          <tr>
+            <th></th>
+            <th>Shared Platform</th>
+            <th>Managed: Basic</th>
+            <th>Managed: Pro</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Setup</td>
+            <td class="highlight-col">None</td>
+            <td>€1,000</td>
+            <td>€1,000</td>
+          </tr>
+          <tr>
+            <td>Monthly</td>
+            <td class="highlight-col">€500/month</td>
+            <td>€200/month</td>
+            <td>€1,000/month</td>
+          </tr>
+          <tr>
+            <td>Users</td>
+            <td>Up to 10</td>
+            <td>Unlimited</td>
+            <td>Unlimited</td>
+          </tr>
+          <tr>
+            <td>Models</td>
+            <td>All standard</td>
+            <td>Any from Hugging Face</td>
+            <td>Any + custom fine-tuned</td>
+          </tr>
+          <tr>
+            <td>Support</td>
+            <td>Business hours</td>
+            <td>8/5</td>
+            <td>24/7</td>
+          </tr>
+          <tr>
+            <td>Infrastructure</td>
+            <td>Sonrisa-managed (EU)</td>
+            <td>Your AWS / on-prem</td>
+            <td>Your AWS / on-prem</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="pricing-note">Need more users on the shared platform? Contact us for team pricing.<br>Not sure which path? Start shared — we'll migrate you when you're ready.</p>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 10: MID CTA
+     ═══════════════════════════════════════════ -->
+<section class="mid-cta">
+  <div class="mid-cta-text">
+    <h2>Not sure which path is right?</h2>
+    <p>Let's talk it through. 30 minutes, no commitment. You'll get honest advice on whether private AI makes sense for your team — and if so, which approach fits.</p>
+    <a href="#" class="btn-dark">Book a Call</a>
+  </div>
+  <div class="mid-cta-circle">Let's<br>chat!</div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════
+     SECTION 11: BOTTOM CTA
+     ═══════════════════════════════════════════ -->
+<section class="bottom-cta">
+  <h2>Your team is already using AI.<br>The question is whether you control it.</h2>
+  <p>We'll help you figure that out.</p>
+  <div class="ctas">
+    <a href="#" class="btn-dark">Talk to Us</a>
+    <a href="#" class="btn-outline">Learn about Sonrisa CPS →</a>
+  </div>
+</section>
+
+</body>
+</html>

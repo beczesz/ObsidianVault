@@ -1,0 +1,18 @@
+# Deák Húsmíves — Global Settings
+# Maps to schema's `settings` block (Deak Product Settings doctype)
+# Defaults apply unless overridden per-product via quantity_override
+
+default_min_quantity: 0.5         # kg, smallest order amount globally
+default_max_quantity: 5.0         # kg, max amount globally
+default_step: 0.05                # kg, increment step (50g)
+default_hot_amounts: [0.5, 1, 2, 3, 5]   # quick-pick buttons (kg)
+weight_range_percent: 20.0        # ±% for hybrid products
+
+# Unit definitions (Deak Unit Option doctype)
+unit_options:
+  - unit_id: kg
+    unit_label_ro: kg
+    unit_label_hu: kg
+  - unit_id: pcs
+    unit_label_ro: buc
+    unit_label_hu: db

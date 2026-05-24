@@ -1,4 +1,3 @@
-SAVE-TO: /04_Articles/Summaries/WEF_Future_of_Jobs_Report_2025.md ALSO-CREATE: /04_Articles/Atomic_Ideas/Macrotrends_in_Future_of_Jobs_2025.md, /04_Articles/Atomic_Ideas/Net_Job_Growth_170M_Created_92M_Displaced.md, /04_Articles/Atomic_Ideas/Fastest_Growing_and_Declining_Jobs_2025_2030.md, /04_Articles/Atomic_Ideas/Skills_Disruption_and_Top_Skills_2025_2030.md, /04_Articles/Atomic_Ideas/Reskilling_and_Workforce_Strategies_2025_2030.md, /04_Articles/Atomic_Ideas/Global_Labour_Market_Outlook_2025.md, /04_Articles/Contrasts/Future_of_Jobs_2025_vs_2023.md, /04_Articles/Contrasts/AI_Impact_vs_Green_Transition.md, /04_Articles/Contrasts/Reskilling_vs_Hiring_New_Talent.md, /04_Articles/Contrasts/High_vs_Low_Income_Labour_Markets.md
 ---
 title: "Future of Jobs Report 2025"
 type: article
@@ -11,6 +10,8 @@ status: "processed"
 created: "2025-08-31"
 processed_by: "AI Speed‑Reading Agent"
 confidence: "medium"
+id: 680edf9c-7b99-4487-a44c-6310c26fb8f1
+index_schema_version: 1
 ---
 
 # Future of Jobs Report 2025 (World Economic Forum, 2025)
@@ -18,7 +19,7 @@ confidence: "medium"
 ## Abstract (<300 words)
 The World Economic Forum’s *Future of Jobs Report 2025* synthesizes insights from over 1,000 employers across 14.1 million workers, 22 industry clusters and 55 economies【377571214104098†L580-L604】.  The report identifies five macrotrends reshaping labour markets—technological change, the green transition, geoeconomic fragmentation, economic uncertainty and demographic shifts【377571214104098†L588-L604】.  Surveyed employers believe digital access, AI and big data, robotics and energy technologies will be the most transformative forces; 60% expect broadening digital access to drive business change, while 86% anticipate AI and information‑processing technologies to be transformative by 2030【377571214104098†L673-L679】【377571214104098†L695-L706】.
 
-Employers predict that structural labour‑market transformation between 2025 and 2030 will create 170 million jobs (14% of today’s employment) and displace 92 million jobs (8%), resulting in net growth of 78 million jobs【377571214104098†L330-L339】.  Frontline roles such as farmworkers, delivery drivers, construction workers and food‑processing workers are expected to see the largest absolute growth【377571214104098†L347-L355】, while technology‑related positions (Big Data specialists, AI and machine‑learning engineers, software developers, renewable‑energy engineers) will experience the fastest percentage growth【377571214104098†L359-L367】.  Conversely, clerical and secretarial roles—including cashiers, ticket clerks and administrative assistants—are projected to decline【377571214104098†L369-L375】.
+Employers predict that structural labour‑market transformation between 2025 and 2030 will create *170 million jobs* (14% of today’s employment) and displace *92 million jobs (8%),* resulting in net growth of *78 million jobs*【377571214104098†L330-L339】.  Frontline roles such as farmworkers, delivery drivers, construction workers and food‑processing workers are expected to see the largest absolute growth【377571214104098†L347-L355】, while technology‑related positions (Big Data specialists, AI and machine‑learning engineers, software developers, renewable‑energy engineers) will experience the fastest percentage growth【377571214104098†L359-L367】.  Conversely, clerical and secretarial roles—including cashiers, ticket clerks and administrative assistants—are projected to decline【377571214104098†L369-L375】.
 
 The survey suggests that 39% of workers’ current skills will be transformed by 2030【377571214104098†L376-L381】.  Analytical thinking, resilience, flexibility, leadership and social influence top the list of in‑demand skills【377571214104098†L388-L393】, while AI, big data and cybersecurity skills are the fastest‑growing technical competencies【377571214104098†L395-L403】.  Employers expect significant upskilling: if the world’s workforce were 100 people, 59 would need training by 2030; 29 could be reskilled in their current roles, 19 redeployed elsewhere and 11 risk missing out on necessary training【377571214104098†L417-L425】.  Skill gaps are the primary barrier to transformation—63% of employers identify them as a major challenge【377571214104098†L426-L429】.  In response, 85% plan to prioritize upskilling, 70% intend to hire talent with new skills and 40% expect to reduce staff where skills become obsolete【377571214104098†L431-L434】.
 

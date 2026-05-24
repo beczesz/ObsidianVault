@@ -1,5 +1,5 @@
 ## TODO
-- [ ] Select open source models  📅 2025-09-08 
+- [x] Select open source models  📅 2025-09-08
 
 ## Core models to consider 2025 August
 ### 1. **Qwen 3 Series (235B MoE / 22B active)**

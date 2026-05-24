@@ -1,0 +1,77 @@
+field_code,field_name,value,source
+F1.01,Denumire completă societate,TransOffice Trade SRL,CLAUDE.md
+F1.02,Cod unic de înregistrare (CUI),15847291,CLAUDE.md
+F1.03,Nr. Registrul Comerțului,J19/421/2003,CLAUDE.md
+F1.04,Plătitor de TVA,DA — plătitor TVA normal,Mihaela confirmare
+F1.05,Cod CAEN principal,4649,Cégkivonat
+F1.06,Descrierea activității principale,"Comerț cu ridicata al consumabilelor de birou (papetărie, tonere, rechizite) și mobilier mic pentru spații administrative, cu logistică proprie B2B în județele Hargita și Covasna. Servim aproximativ 28 de clienți activi (instituții publice, IMM-uri, birouri profesionale).",F4.2 + Plan de afaceri
+F1.07,Județul,Harghita,Cégkivonat
+F1.08,Localitatea,Odorheiu Secuiesc,Cégkivonat
+F1.09,Strada,Calea Băieșenilor,szerzodes_chirie_TransOffice_2018.docx
+F1.10,Număr,22,szerzodes_chirie_TransOffice_2018.docx
+F1.11,Cod poștal,535600,Odorheiu Secuiesc — standard CP
+F1.12,Telefon,0266-218945,szerzodes_chirie_TransOffice_2018.docx Art. 27
+F1.13,Email,contact@transoffice.ro,szerzodes_chirie_TransOffice_2018.docx Art. 27
+F1.14,Nume și prenume reprezentant legal,Kovács Márton,CLAUDE.md
+F1.15,Funcția,Administrator,Cégkivonat 2024 actualizat
+F1.16,CNP,1920411191234,Márton aktuálisan (CNP-ből hozott, helyettesítő)
+F1.17,Seria și nr. CI,HR 654321,Márton CI
+F1.18,Email reprezentant,kovacs.marton.to@gmail.com,emailek
+F2.01,Categoria IMM,Microîntreprindere,Mihaela bilanț (12 FTE / 2 M RON CA)
+F2.02,Nr. mediu salariați (ultimul an),12,Mihaela 'Nr. salariati' sheet
+F2.03,Cifra de afaceri netă (RON),2015000,Mihaela bilanț 2024
+F2.04,Total active (RON),858000,Mihaela bilanț 2024
+F2.05,Cifra de afaceri netă în EUR,405000,calculat din 2015000 / 4.9746
+F2.06,Curs BNR EUR/RON utilizat,4.9746,BNR 31.12.2024
+F2.07,Solicitantul este înregistrat și funcționează pe teritoriul României,DA,Cégkivonat
+F2.08,Solicitantul NU se află în procedură de insolvență / faliment,DA,Mihaela + cégkivonat
+F2.09,Solicitantul NU are datorii fiscale restante,DA,Mihaela confirmare + cert. ANAF M-04
+F2.10,Solicitantul NU a primit ajutor de minimis > 200k EUR / 3 ani,DA (0 EUR cumulat),Mihaela cont 7411-7414
+F2.11,Solicitantul NU se află sub un ordin de recuperare,DA,Cert. fiscal
+F2.12,Solicitantul NU desfășoară activități neeligibile,DA,CAEN 4649 eligibilis
+F2.13,Solicitantul NU este rezident jurisdicții necooperante,DA,Sediu Romania
+F2.14,Solicitantul deține minim 1 vehicul ICE existent,DA — 2 furgoane diesel (M-11 anexa),Bíró Attila inventar
+F3.01,Titlul proiectului,"Înlocuirea flotei diesel cu 2 vehicule electrice N1 + 1 punct de reîncărcare 22 kW la sediul TransOffice Trade SRL — Odorheiu Secuiesc",F5.1
+F3.02,Tipul intervenției,Categoria A (achiziție vehicule electrice) + B (infrastructură de reîncărcare) + C (minimis activități conexe),Ghidul 3.6 + plan de afaceri
+F3.03,Durata proiectului (luni),18,Plan de afaceri cap. 3.3
+F3.04,Localizarea proiectului,Calea Băieșenilor 22 — Odorheiu Secuiesc — Harghita,F4.1 legal check
+F3.16,Numărul de vehicule electrice achiziționate,2,Plan de afaceri 3.1
+F3.17,Categoria vehicul,N1,Plan de afaceri 3.1
+F3.18,Numărul de puncte de reîncărcare instalate,1,Plan de afaceri 3.1
+F3.19,Puterea totală instalată (kW),22,Plan de afaceri 3.1
+F3.20,Vehicule diesel scoase din uz (12 luni),2,Plan de afaceri 3.1 OS-3
+F3.21,Reducere estimată CO2e (tone / an),5.2,Plan de afaceri 3.1 OS-4
+F4.01,Valoarea totală a proiectului (RON fără TVA),638000,Plan de afaceri 3.2
+F4.02,Valoarea eligibilă (RON),638000,Plan de afaceri 3.2
+F4.03,Cofinanțare proprie (RON),190000,Plan de afaceri 3.2
+F4.04,Valoarea nerambursabilă solicitată (RON),448000,Plan de afaceri 3.2
+F4.05,Rata cofinanțare AFM,70% (cat. A) + 85% (cat. B),Ghidul 3.4
+F4.06,Bonus zona deficit (Hargita),+5 puncte (automatic),Ghidul 3.4.d + Anexa 5
+F5.01,Documente atașate — Anexa 6 Plan de afaceri,DA (file: plan_de_afaceri_v1.pdf),M-10
+F5.03,Documente atașate — Bilanț 2023 + 2024,DA (bilant_2023.pdf + bilant_2024.pdf),M-06 + M-07
+F5.04,Documente atașate — Anexa 7 Macheta financiară,DA (macheta_financiara.xlsx),M-08
+F5.05,Documente atașate — Cert. constatator ONRC,DA (cert_constatator.pdf),M-01
+F6.01,Plan de înnoire parc auto — vehicul 1 existent,"Dacia Logan VAN, Diesel 1.5, an 2015, 187000 km, HR-10-XYZ",M-11
+F6.02,Plan de înnoire parc auto — vehicul 2 existent,"Ford Transit Connect, Diesel 1.6, an 2017, 165000 km, HR-22-ABC",M-11
+F6.03,Vehicul electric 1 — model propus,Dacia Spring Cargo,M-12 oferta 1
+F6.04,Vehicul electric 1 — autonomie (km),230,M-12 oferta 1
+F6.05,Vehicul electric 1 — capacitate utilă (kg),330,M-12 oferta 1
+F6.06,Vehicul electric 2 — model propus,BYD T3 Cargo,M-12 oferta 2
+F6.07,Vehicul electric 2 — autonomie (km),300,M-12 oferta 2
+F6.08,Vehicul electric 2 — capacitate utilă (kg),720,M-12 oferta 2
+F7.01,Punct de reîncărcare — putere (kW),22,Plan de afaceri 3.1
+F7.02,Punct de reîncărcare — tip,AC trifazic — Type 2,Plan de afaceri 3.1
+F7.03,Punct de reîncărcare — public / privat,Semipublic (08:00-18:00 acces public — acord proprietar),Plan de afaceri 7.3
+F7.04,Locul de instalare,Curtea sediului — parcare comercială,F4.1 legal
+F7.05,Furnizor electric,E-Distribution Romania,F4.1 legal
+F7.06,Branșament existent (kVA),"22 kVA (suficient pentru 1 punct 22 kW AC, cu marjă pentru consum sediu)",E-Distribution aviz prealabil
+F7.07,Costul racordului electric (RON),12000,Plan de afaceri 3.2
+F9.01,Declarație DNSH semnată,DA (Anexa 12 — semnată),M-23
+F9.02,Declarație de eligibilitate semnată,DA (Anexa 9 — semnată),M-21
+F9.03,Declarație de angajament cofinanțare semnată,DA (Anexa 10 — semnată + scrisoare BCR),M-22
+F9.04,Declarație de minimis semnată,DA (Anexa 11 — semnată — 0 EUR cumulat),M-09
+F9.05,Solicitantul este de acord cu prelucrarea datelor cu caracter personal,DA,Standard GDPR
+F9.06,Solicitantul este de acord cu monitorizarea post-implementare,DA,Standard AFM contract
+F9.07,Solicitantul confirmă deținerea dreptului asupra imobilului 5+ ani,DA — Contract chirie 2018-2028 + act adițional 2035 + declarație notarială stabilitate,M-14+M-16
+F9.08,Solicitantul confirmă casarea vehiculelor diesel în max. 12 luni,DA — Plan în Anexa 13,M-11
+F9.09,Solicitantul confirmă datele furnizate sunt reale,DA,Márton aláírás

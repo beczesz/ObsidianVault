@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH Wireframe — Privacy Policy (3 nyelvű)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #F5F0EB; --card: #FFFFFF; --primary: #7B2D3B; --primary-light: #9B4D5B;
+    --text: #2D2D2D; --text2: #777777; --border: #E8E0D8;
+    --green: #2E7D32; --green-light: #E8F5E9;
+    --blue: #1565C0; --blue-light: #E3F2FD;
+    --red: #C62828; --red-light: #FFEBEE;
+  }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #F8F5F0; color: var(--text); }
+  .header { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+  .tabs { display: flex; gap: 8px; max-width: 1200px; margin: 16px auto; padding: 0 24px; overflow-x: auto; }
+  .tab { padding: 10px 20px; border-radius: 24px; font-size: 13px; border: 1px solid var(--border); background: white; color: var(--text); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 400; }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+  .content { max-width: 1200px; margin: 0 auto; padding: 0 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+  .feature > h2 { font-size: 18px; font-weight: 700; margin: 0 0 6px; }
+  .feature > .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 16px; }
+  .phones { display: flex; gap: 20px; flex-wrap: wrap; }
+  .phone { width: 375px; min-height: 700px; background: var(--bg); border-radius: 24px; border: 2px solid var(--border); overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12); flex-shrink: 0; position: relative; }
+  .phone-header { background: var(--bg); padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .phone-header span:first-child { font-size: 20px; font-weight: 700; font-family: Georgia, serif; }
+  .phone-body { padding: 0 16px 80px; max-height: 640px; overflow-y: auto; }
+  .card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .label-info { display: inline-block; background: var(--blue-light); color: var(--blue); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .label-good { display: inline-block; background: var(--green-light); color: var(--green); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .annotation { background: #FFF3CD; border-left: 3px solid #F9A825; padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+  .note-box { background: var(--green-light); border-left: 3px solid var(--green); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+  .info-box { background: var(--blue-light); border-left: 3px solid var(--blue); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+
+  /* Privacy policy specific */
+  .lang-selector { display: flex; gap: 6px; margin: 12px 0; }
+  .lang-btn { padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1.5px solid var(--border); background: white; cursor: pointer; color: var(--text2); transition: all 0.15s; }
+  .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .page-title { font-size: 18px; font-weight: 700; margin: 14px 0 4px; color: var(--text); }
+  .page-brand { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+  .page-date { font-size: 11px; color: var(--text2); margin-bottom: 14px; }
+  .toc { background: var(--card); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; border: 1px solid var(--border); }
+  .toc-title { font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .toc-item { display: block; padding: 6px 0; font-size: 13px; color: var(--primary); text-decoration: none; border-bottom: 1px solid #F0ECE7; cursor: pointer; }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-item:hover { color: var(--primary-light); }
+  .toc-num { color: var(--text2); font-weight: 600; margin-right: 6px; }
+  .section { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .section-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); color: white; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .section-body { font-size: 12.5px; line-height: 1.7; color: #444; }
+  .section-body ul { padding-left: 16px; margin: 6px 0; }
+  .section-body li { margin-bottom: 4px; }
+  .section-body strong { color: var(--text); }
+  .mini-table { width: 100%; font-size: 11px; border-collapse: collapse; margin: 8px 0; }
+  .mini-table th { text-align: left; padding: 6px 8px; background: #F5F0EB; border-bottom: 1px solid var(--border); font-weight: 600; color: var(--text); }
+  .mini-table td { padding: 6px 8px; border-bottom: 1px solid #F0ECE7; color: #555; vertical-align: top; }
+  .company-block { background: #FAF7F4; border-radius: 8px; padding: 10px 12px; margin: 8px 0; border: 1px solid #EDE8E2; }
+  .company-name { font-size: 12px; font-weight: 700; color: var(--text); }
+  .company-detail { font-size: 11px; color: var(--text2); line-height: 1.6; }
+  .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 65px; background: white; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; padding: 0 8px; box-shadow: 0 -2px 8px rgba(0,0,0,0.08); }
+  .nav-item { text-align: center; font-size: 10px; color: var(--text2); }
+  .nav-icon { font-size: 20px; margin-bottom: 2px; }
+  .back-arrow { font-size: 18px; color: var(--text); cursor: pointer; }
+
+  .changelog { max-width: 1200px; margin: 32px auto; padding: 16px 24px; background: white; border-radius: 12px; border: 1px solid var(--border); }
+  .changelog h3 { font-size: 14px; margin-bottom: 8px; }
+  .changelog ul { font-size: 13px; color: var(--text2); padding-left: 20px; line-height: 1.8; }
+
+  @media (max-width: 500px) {
+    html, body { overflow-x: hidden; }
+    .header { padding: 16px 8px 0; }
+    .header h1 { font-size: 22px; }
+    .tabs { padding: 0 4px; margin: 12px auto; gap: 6px; }
+    .tab { padding: 8px 14px; font-size: 12px; }
+    .content { padding: 0 4px 24px; }
+    .phones { gap: 8px; }
+    .phone { width: 100%; min-height: auto; border-radius: 16px; border-width: 1px; }
+    .phone-body { max-height: none; overflow-y: visible; padding: 0 10px 80px; }
+    .phone-header { padding: 12px 14px; }
+    .changelog { padding: 12px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Privacy Policy — 3 nyelvű</h1>
+  <p>DH-134 · Adatvédelmi szabályzat — GDPR Art. 13/14 teljes tájékoztató</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab(0)">🇭🇺 Magyar nézet</div>
+  <div class="tab" onclick="showTab(1)">🇷🇴 Román nézet</div>
+  <div class="tab" onclick="showTab(2)">🇬🇧 Angol nézet</div>
+  <div class="tab" onclick="showTab(3)">UX megjegyzések</div>
+</div>
+
+<div class="content">
+
+  <\!-- TAB 0: Hungarian -->
+  <div class="feature active" id="tab0">
+    <h2>Adatvédelmi Szabályzat — Magyar</h2>
+    <p class="subtitle">Teljes GDPR-kompatibilis tájékoztató, 10 szekció, tartalomjegyzékkel</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="back-arrow">←</span>
+          <span style="font-size:16px;font-weight:600;font-family:system-ui">Adatvédelem</span>
+          <span style="width:20px"></span>
+        </div>
+        <div class="phone-body">
+          <\!-- Language selector -->
+          <div class="lang-selector">
+            <div class="lang-btn">RO</div>
+            <div class="lang-btn">EN</div>
+            <div class="lang-btn active">HU</div>
+          </div>
+
+          <div class="page-title">Adatvédelmi Szabályzat</div>
+          <div class="page-brand">Deák Húsmíves Online Platform — deakhus.ro</div>
+          <div class="page-date">Utolsó frissítés: 2026. április 17.</div>
+
+          <\!-- TOC -->
+          <div class="toc">
+            <div class="toc-title">Tartalomjegyzék</div>
+            <a class="toc-item"><span class="toc-num">1.</span> Az adatkezelő</a>
+            <a class="toc-item"><span class="toc-num">2.</span> Milyen adatokat gyűjtünk</a>
+            <a class="toc-item"><span class="toc-num">3.</span> Az adatgyűjtés célja és jogalapja</a>
+            <a class="toc-item"><span class="toc-num">4.</span> Adatok megosztása</a>
+            <a class="toc-item"><span class="toc-num">5.</span> Elemzés (Analytics)</a>
+            <a class="toc-item"><span class="toc-num">6.</span> Cookie-k (sütik)</a>
+            <a class="toc-item"><span class="toc-num">7.</span> Adatmegőrzés</a>
+            <a class="toc-item"><span class="toc-num">8.</span> Adatbiztonság</a>
+            <a class="toc-item"><span class="toc-num">9.</span> Az Ön jogai</a>
+            <a class="toc-item"><span class="toc-num">10.</span> Kapcsolat</a>
+          </div>
+
+          <\!-- Section 1 -->
+          <div class="section">
+            <div class="section-title"><span class="section-num">1</span> Az adatkezelő</div>
+            <div class="section-body">
+              <div class="company-block">
+                <div class="company-name">EXARGROUPS S.R.L.</div>
+                <div class="company-detail">
+                  Székhely: Székelyudvarhely, Orbán Balázs u. 9.<br>
+                  CUI: RO41839221 · J2019000789190<br>
+                  Képviselő: Becze Szabolcs<br>
+                  Email: contact@exar.ro
+                </div>
+              </div>
+              <p style="margin:8px 0 6px;font-size:12px">A Platform szoftver tulajdonosa és <strong>kizárólagos adatkezelője</strong>.</p>
+              <div class="company-block">
+                <div class="company-name">DEAK PROD SRL</div>
+                <div class="company-detail">
+                  Székhely: Székelyudvarhely, Solymossy u. 9.<br>
+                  CUI: 4845288 · J1993001038198
+                </div>
+              </div>
+              <p style="margin:8px 0 0;font-size:12px">A Platform megrendelője és partnere. Szállítási adatokhoz <strong>adatfeldolgozói</strong> minőségben fér hozzá.</p>
+            </div>
+          </div>
+
+          <\!-- Section 2 -->
+          <div class="section">
+            <div class="section-title"><span class="section-num">2</span> Milyen adatokat gyűjtünk</div>
+            <div class="section-body">
+              <ul>
+                <li><strong>Teljes név</strong> — fiók azonosítás, szállítás</li>
+                <li><strong>Email cím</strong> — Google vagy email/jelszó regisztráció</li>
+                <li><strong>Telefonszám</strong> — szállítási kapcsolattartás</li>
+                <li><strong>Szállítási cím</strong> — kézbesítés</li>
+              </ul>
+              <p style="margin-top:6px">Különleges adatokat (egészségügyi, biometrikus stb.) <strong>nem gyűjtünk</strong>.</p>
+            </div>
+          </div>
+
+          <\!-- Section 3 -->
+          <div class="section">
+            <div class="section-title"><span class="section-num">3</span> Cél és jogalap</div>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Cél</th><th>Jogalap</th></tr>
+                <tr><td>Fiók kezelése</td><td>Szerződés (Art. 6(1)(b))</td></tr>
+                <tr><td>Rendelés feldolgozás</td><td>Szerződés (Art. 6(1)(b))</td></tr>
+                <tr><td>Kiszállítás</td><td>Szerződés (Art. 6(1)(b))</td></tr>
+                <tr><td>Rendelés státusz</td><td>Szerződés (Art. 6(1)(b))</td></tr>
+                <tr><td>Firebase Analytics</td><td>Hozzájárulás (Art. 6(1)(a))</td></tr>
+                <tr><td>Számvitel</td><td>Jogi kötelezettsség (Art. 6(1)(c))</td></tr>
+              </table>
+              <p style="margin-top:6px"><strong>Nem használunk</strong> marketing, profilalkotás vagy automatizált döntéshozatal célokra.</p>
+            </div>
+          </div>
+
+          <\!-- Section 4 -->
+          <div class="section">
+            <div class="section-title"><span class="section-num">4</span> Adatok megosztása</div>
+            <div class="section-body">
+              <ul>
+                <li><strong>Futár:</strong> Név, telefon, cím → kizárólag kézbesítéshez (DEAK PROD SRL)</li>
+                <li><strong>Google Auth:</strong> OAuth bejelentkezés esetén</li>
+                <li><strong>Firebase Analytics:</strong> Csak hozzájárulással</li>
+                <li><strong>Hatóságok:</strong> Jogszabályi kötelezettség alapján</li>
+              </ul>
+              <p style="margin-top:6px">Hirdetési platformnak <strong>nem</strong> továbbítunk adatot. EGT-n kívülre nem továbbítunk (kivéve Google EU keretrendszer).</p>
+            </div>
+          </div>
+
+          <\!-- Section 5 -->
+          <div class="section">
+            <div class="section-title"><span class="section-num">5</span> Elemzés (Analytics)</div>
+            <div class="section-body">
+              <p>Firebase Analytics — anonimizált események.</p>
+              <ul>
+                <li>Csak <strong>kifejezett hozzájárulás</strong> után</li>
+                <li>Személyes adatot <strong>nem</strong> küldünk paraméterként</li>
+                <li>Álnevesített elemzési azonosító</li>
+                <li>Profil beállításokban <strong>bármikor visszavonható</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <\!-- Section 6 - NEW -->
+          <div class="section" style="border-left: 3px solid var(--green);">
+            <div class="section-title"><span class="section-num">6</span> Cookie-k (sütik)</div>
+            <span class="label-good">ÚJ SZEKCIÓ</span>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Típus</th><th>Cél</th><th>Idő</th></tr>
+                <tr><td>Session</td><td>Bejelentkezés</td><td>Böngésző bezárásáig</td></tr>
+                <tr><td>Auth token</td><td>Hitelesítés</td><td>≤ 1 óra</td></tr>
+                <tr><td>Consent</td><td>Analytics beállítás</td><td>1 év</td></tr>
+              </table>
+              <p style="margin-top:6px">Reklám- vagy nyomkövető sütiket <strong>nem használunk</strong>.</p>
+            </div>
+          </div>
+
+          <\!-- Section 7 - NEW -->
+          <div class="section" style="border-left: 3px solid var(--green);">
+            <div class="section-title"><span class="section-num">7</span> Adatmegőrzés</div>
+            <span class="label-good">ÚJ SZEKCIÓ</span>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Adat</th><th>Megőrzés</th></tr>
+                <tr><td>Fiókadatok</td><td>Fiók fennállásáig / törlési kérelemig</td></tr>
+                <tr><td>Rendelési előzmények</td><td>Törlés után max. 5 év (adójog)</td></tr>
+                <tr><td>Analytics események</td><td>Max. 14 hónap</td></tr>
+                <tr><td>Consent állapot</td><td>Fiók fennállásáig</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <\!-- Section 8 -->
+          <div class="section">
+            <div class="section-title"><span class="section-num">8</span> Adatbiztonság</div>
+            <div class="section-body">
+              <ul>
+                <li><strong>HTTPS/TLS</strong> titkosítás</li>
+                <li>Jelszavak <strong>titkosítva</strong> tárolva</li>
+                <li>EU szerverek (Hetzner, Németország)</li>
+                <li>Jogosult személyzetre korlátozva</li>
+                <li>Rendszeres biztonsági mentések</li>
+              </ul>
+            </div>
+          </div>
+
+          <\!-- Section 9 - EXPANDED -->
+          <div class="section" style="border-left: 3px solid var(--blue);">
+            <div class="section-title"><span class="section-num">9</span> Az Ön jogai</div>
+            <span class="label-info">BŐVÍTVE</span>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Jog</th><th>GDPR</th></tr>
+                <tr><td>Hozzáférés</td><td>Art. 15</td></tr>
+                <tr><td>Helyesbítés</td><td>Art. 16</td></tr>
+                <tr><td>Törlés</td><td>Art. 17</td></tr>
+                <tr><td><strong>Korlátozás</strong></td><td>Art. 18 ★</td></tr>
+                <tr><td><strong>Hordozhatóság</strong></td><td>Art. 20 ★</td></tr>
+                <tr><td>Hozzájárulás visszavonása</td><td>—</td></tr>
+              </table>
+              <p style="margin-top:8px;font-size:11px">★ = új jog, a korábbi verzióból hiányzott</p>
+              <p style="margin-top:6px">Válaszidő: <strong>max. 30 nap</strong></p>
+              <div class="company-block" style="margin-top:10px;">
+                <div class="company-name" style="font-size:11px">Panasz → ANSPDCP</div>
+                <div class="company-detail" style="font-size:10px">
+                  B-dul Gheorghe Magheru 28-30, București<br>
+                  www.dataprotection.ro
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <\!-- Section 10 -->
+          <div class="section">
+            <div class="section-title"><span class="section-num">10</span> Kapcsolat</div>
+            <div class="section-body">
+              <p><strong>Email:</strong> contact@exar.ro</p>
+              <p><strong>Üzemeltető:</strong> EXARGROUPS S.R.L.</p>
+            </div>
+          </div>
+
+          <p style="font-size:10px;color:var(--text2);text-align:center;margin:16px 0 8px">© 2026 EXARGROUPS S.R.L. Minden jog fenntartva.</p>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🥩</div>Termékek</div>
+          <div class="nav-item"><div class="nav-icon">🛒</div>Kosár</div>
+          <div class="nav-item"><div class="nav-icon">📦</div>Rendelések</div>
+          <div class="nav-item" style="color:var(--primary)"><div class="nav-icon">👤</div>Fiókom</div>
+        </div>
+      </div>
+
+      <\!-- Second phone: scrolled down to rights section -->
+      <div class="phone">
+        <div class="phone-header">
+          <span class="back-arrow">←</span>
+          <span style="font-size:16px;font-weight:600;font-family:system-ui">Adatvédelem</span>
+          <span style="width:20px"></span>
+        </div>
+        <div class="phone-body">
+          <div class="annotation">
+            <strong>DESIGN MEGJEGYZÉS:</strong> Ez a második telefon ugyanazt az oldalt mutatja, lejjebb görgetve — az „Ön jogai" szekciónál. Nem külön oldal, csak a scroll pozíciót illusztrálja.
+          </div>
+
+          <\!-- Section 9 detail view -->
+          <div class="section" style="border-left: 3px solid var(--blue);">
+            <div class="section-title"><span class="section-num">9</span> Az Ön jogai</div>
+            <div class="section-body">
+              <div style="padding:10px 0; border-bottom: 1px solid #F0ECE7;">
+                <div style="font-size:13px;font-weight:600;">🔍 Hozzáférés joga <span style="font-size:10px;color:var(--text2)">(Art. 15)</span></div>
+                <div style="font-size:11px;color:#555;margin-top:3px">Kérheti az Önről tárolt személyes adatok másolatát</div>
+              </div>
+              <div style="padding:10px 0; border-bottom: 1px solid #F0ECE7;">
+                <div style="font-size:13px;font-weight:600;">✏️ Helyesbítés joga <span style="font-size:10px;color:var(--text2)">(Art. 16)</span></div>
+                <div style="font-size:11px;color:#555;margin-top:3px">Kérheti a pontatlan adatok javítását</div>
+              </div>
+              <div style="padding:10px 0; border-bottom: 1px solid #F0ECE7;">
+                <div style="font-size:13px;font-weight:600;">🗑️ Törlés joga <span style="font-size:10px;color:var(--text2)">(Art. 17)</span></div>
+                <div style="font-size:11px;color:#555;margin-top:3px">Kérheti fiókja és adatai teljes törlését</div>
+              </div>
+              <div style="padding:10px 0; border-bottom: 1px solid #F0ECE7;">
+                <div style="font-size:13px;font-weight:600;">⏸️ Korlátozás joga <span style="font-size:10px;color:var(--text2)">(Art. 18)</span></div>
+                <div style="font-size:11px;color:#555;margin-top:3px">Kérheti az adatkezelés korlátozását bizonyos esetekben</div>
+              </div>
+              <div style="padding:10px 0; border-bottom: 1px solid #F0ECE7;">
+                <div style="font-size:13px;font-weight:600;">📤 Hordozhatóság joga <span style="font-size:10px;color:var(--text2)">(Art. 20)</span></div>
+                <div style="font-size:11px;color:#555;margin-top:3px">Kérheti adatait géppel olvasható formátumban</div>
+              </div>
+              <div style="padding:10px 0;">
+                <div style="font-size:13px;font-weight:600;">↩️ Visszavonás joga</div>
+                <div style="font-size:11px;color:#555;margin-top:3px">Bármikor visszavonhatja hozzájárulását</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="note-box">
+            Válaszidő: <strong>max. 30 nap</strong> a kérelem beérkezésétől.
+          </div>
+
+          <\!-- Complaint block -->
+          <div class="section">
+            <div class="section-title" style="font-size:13px">⚠️ Panasz benyújtása</div>
+            <div class="section-body">
+              <div class="company-block">
+                <div class="company-name" style="font-size:12px">ANSPDCP</div>
+                <div class="company-detail">
+                  Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal<br>
+                  B-dul Gheorghe Magheru 28-30, Sector 1, București<br>
+                  <span style="color:var(--primary)">www.dataprotection.ro</span><br>
+                  anspdcp@dataprotection.ro
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <\!-- Section 10 -->
+          <div class="section">
+            <div class="section-title"><span class="section-num">10</span> Kapcsolat</div>
+            <div class="section-body">
+              <p style="margin-bottom:4px"><strong>Email:</strong> <span style="color:var(--primary)">contact@exar.ro</span></p>
+              <p><strong>Üzemeltető:</strong> EXARGROUPS S.R.L.</p>
+            </div>
+          </div>
+
+          <p style="font-size:10px;color:var(--text2);text-align:center;margin:16px 0 8px;line-height:1.5">
+            Ezt a szabályzatot rendszeresen felülvizsgáljuk.<br>
+            Lényeges változás esetén értesítjük Önt.
+          </p>
+          <p style="font-size:10px;color:var(--text2);text-align:center;margin-bottom:16px">© 2026 EXARGROUPS S.R.L.</p>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🥩</div>Termékek</div>
+          <div class="nav-item"><div class="nav-icon">🛒</div>Kosár</div>
+          <div class="nav-item"><div class="nav-icon">📦</div>Rendelések</div>
+          <div class="nav-item" style="color:var(--primary)"><div class="nav-icon">👤</div>Fiókom</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- TAB 1: Romanian -->
+  <div class="feature" id="tab1">
+    <h2>Politica de Confidențialitate — Română</h2>
+    <p class="subtitle">Aceeași structură, limba română</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="back-arrow">←</span>
+          <span style="font-size:16px;font-weight:600;font-family:system-ui">Confidențialitate</span>
+          <span style="width:20px"></span>
+        </div>
+        <div class="phone-body">
+          <div class="lang-selector">
+            <div class="lang-btn active">RO</div>
+            <div class="lang-btn">EN</div>
+            <div class="lang-btn">HU</div>
+          </div>
+
+          <div class="page-title">Politica de Confidențialitate</div>
+          <div class="page-brand">Platforma Online Deák Húsmíves — deakhus.ro</div>
+          <div class="page-date">Ultima actualizare: 17 aprilie 2026</div>
+
+          <div class="toc">
+            <div class="toc-title">Cuprins</div>
+            <a class="toc-item"><span class="toc-num">1.</span> Operatorul de date</a>
+            <a class="toc-item"><span class="toc-num">2.</span> Ce date colectăm</a>
+            <a class="toc-item"><span class="toc-num">3.</span> Scopul și temeiul juridic</a>
+            <a class="toc-item"><span class="toc-num">4.</span> Partajarea datelor</a>
+            <a class="toc-item"><span class="toc-num">5.</span> Analiză (Analytics)</a>
+            <a class="toc-item"><span class="toc-num">6.</span> Cookie-uri</a>
+            <a class="toc-item"><span class="toc-num">7.</span> Retenția datelor</a>
+            <a class="toc-item"><span class="toc-num">8.</span> Securitatea datelor</a>
+            <a class="toc-item"><span class="toc-num">9.</span> Drepturile dumneavoastră</a>
+            <a class="toc-item"><span class="toc-num">10.</span> Contact</a>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">1</span> Operatorul de date</div>
+            <div class="section-body">
+              <div class="company-block">
+                <div class="company-name">EXARGROUPS S.R.L.</div>
+                <div class="company-detail">
+                  Sediul: Odorheiu Secuiesc, str. Orbán Balázs, nr. 9<br>
+                  CUI: RO41839221 · J2019000789190<br>
+                  Reprezentant: Becze Szabolcs<br>
+                  Email: contact@exar.ro
+                </div>
+              </div>
+              <p style="margin:8px 0 6px;font-size:12px">Proprietarul software-ului și <strong>operatorul exclusiv</strong> al datelor.</p>
+              <div class="company-block">
+                <div class="company-name">DEAK PROD SRL</div>
+                <div class="company-detail">
+                  Sediul: Odorheiu Secuiesc, str. Solymossy, nr. 9<br>
+                  CUI: 4845288 · J1993001038198
+                </div>
+              </div>
+              <p style="margin:8px 0 0;font-size:12px">Client și partener. Acces la date de livrare — exclusiv ca <strong>persoană împuternicită</strong>.</p>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">2</span> Ce date colectăm</div>
+            <div class="section-body">
+              <ul>
+                <li><strong>Numele complet</strong></li>
+                <li><strong>Adresa de email</strong></li>
+                <li><strong>Numărul de telefon</strong></li>
+                <li><strong>Adresa de livrare</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">3</span> Scopul și temeiul juridic</div>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Scopul</th><th>Temeiul</th></tr>
+                <tr><td>Gestionarea contului</td><td>Contract (Art. 6(1)(b))</td></tr>
+                <tr><td>Procesarea comenzilor</td><td>Contract (Art. 6(1)(b))</td></tr>
+                <tr><td>Livrare</td><td>Contract (Art. 6(1)(b))</td></tr>
+                <tr><td>Firebase Analytics</td><td>Consimțământ (Art. 6(1)(a))</td></tr>
+                <tr><td>Contabilitate</td><td>Obligație legală (Art. 6(1)(c))</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="section" style="border-left: 3px solid var(--green);">
+            <div class="section-title"><span class="section-num">6</span> Cookie-uri</div>
+            <span class="label-good">SECȚIUNE NOUĂ</span>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Tip</th><th>Scop</th><th>Retenție</th></tr>
+                <tr><td>Sesiune</td><td>Autentificare</td><td>Închiderea browserului</td></tr>
+                <tr><td>Auth token</td><td>Autentificare</td><td>≤ 1 oră</td></tr>
+                <tr><td>Consimțământ</td><td>Preferințe analytics</td><td>1 an</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="section" style="border-left: 3px solid var(--green);">
+            <div class="section-title"><span class="section-num">7</span> Retenția datelor</div>
+            <span class="label-good">SECȚIUNE NOUĂ</span>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Date</th><th>Retenție</th></tr>
+                <tr><td>Date cont</td><td>Pe durata contului</td></tr>
+                <tr><td>Istoric comenzi</td><td>Max. 5 ani (fiscal)</td></tr>
+                <tr><td>Analytics</td><td>Max. 14 luni</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="info-box">Structura identică cu versiunea maghiară — toate cele 10 secțiuni prezente.</div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🥩</div>Produse</div>
+          <div class="nav-item"><div class="nav-icon">🛒</div>Coș</div>
+          <div class="nav-item"><div class="nav-icon">📦</div>Comenzi</div>
+          <div class="nav-item" style="color:var(--primary)"><div class="nav-icon">👤</div>Contul meu</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- TAB 2: English -->
+  <div class="feature" id="tab2">
+    <h2>Privacy Policy — English</h2>
+    <p class="subtitle">Same structure, English language</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="back-arrow">←</span>
+          <span style="font-size:16px;font-weight:600;font-family:system-ui">Privacy</span>
+          <span style="width:20px"></span>
+        </div>
+        <div class="phone-body">
+          <div class="lang-selector">
+            <div class="lang-btn">RO</div>
+            <div class="lang-btn active">EN</div>
+            <div class="lang-btn">HU</div>
+          </div>
+
+          <div class="page-title">Privacy Policy</div>
+          <div class="page-brand">Deák Húsmíves Online Platform — deakhus.ro</div>
+          <div class="page-date">Last updated: April 17, 2026</div>
+
+          <div class="toc">
+            <div class="toc-title">Table of Contents</div>
+            <a class="toc-item"><span class="toc-num">1.</span> Data Controller</a>
+            <a class="toc-item"><span class="toc-num">2.</span> What Data We Collect</a>
+            <a class="toc-item"><span class="toc-num">3.</span> Purpose and Legal Basis</a>
+            <a class="toc-item"><span class="toc-num">4.</span> Data Sharing</a>
+            <a class="toc-item"><span class="toc-num">5.</span> Analytics</a>
+            <a class="toc-item"><span class="toc-num">6.</span> Cookies</a>
+            <a class="toc-item"><span class="toc-num">7.</span> Data Retention</a>
+            <a class="toc-item"><span class="toc-num">8.</span> Data Security</a>
+            <a class="toc-item"><span class="toc-num">9.</span> Your Rights</a>
+            <a class="toc-item"><span class="toc-num">10.</span> Contact</a>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">1</span> Data Controller</div>
+            <div class="section-body">
+              <div class="company-block">
+                <div class="company-name">EXARGROUPS S.R.L.</div>
+                <div class="company-detail">
+                  Office: Odorheiu Secuiesc, str. Orbán Balázs 9, Romania<br>
+                  Tax ID: RO41839221 · Reg: J2019000789190<br>
+                  Representative: Becze Szabolcs<br>
+                  Email: contact@exar.ro
+                </div>
+              </div>
+              <p style="margin:8px 0 6px;font-size:12px">Software owner and <strong>sole data controller</strong>.</p>
+              <div class="company-block">
+                <div class="company-name">DEAK PROD SRL</div>
+                <div class="company-detail">
+                  Office: Odorheiu Secuiesc, str. Solymossy 9, Romania<br>
+                  Tax ID: 4845288 · Reg: J1993001038198
+                </div>
+              </div>
+              <p style="margin:8px 0 0;font-size:12px">Platform's client and partner. Access to delivery data as <strong>data processor</strong> only.</p>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">2</span> What Data We Collect</div>
+            <div class="section-body">
+              <ul>
+                <li><strong>Full name</strong></li>
+                <li><strong>Email address</strong></li>
+                <li><strong>Phone number</strong></li>
+                <li><strong>Delivery address</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">3</span> Purpose and Legal Basis</div>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Purpose</th><th>Legal Basis</th></tr>
+                <tr><td>Account management</td><td>Contract (Art. 6(1)(b))</td></tr>
+                <tr><td>Order processing</td><td>Contract (Art. 6(1)(b))</td></tr>
+                <tr><td>Delivery</td><td>Contract (Art. 6(1)(b))</td></tr>
+                <tr><td>Firebase Analytics</td><td>Consent (Art. 6(1)(a))</td></tr>
+                <tr><td>Accounting</td><td>Legal obligation (Art. 6(1)(c))</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="section" style="border-left: 3px solid var(--green);">
+            <div class="section-title"><span class="section-num">6</span> Cookies</div>
+            <span class="label-good">NEW SECTION</span>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Type</th><th>Purpose</th><th>Duration</th></tr>
+                <tr><td>Session</td><td>Authentication</td><td>Browser close</td></tr>
+                <tr><td>Auth token</td><td>Auth state</td><td>≤ 1 hour</td></tr>
+                <tr><td>Consent</td><td>Analytics pref</td><td>1 year</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="section" style="border-left: 3px solid var(--green);">
+            <div class="section-title"><span class="section-num">7</span> Data Retention</div>
+            <span class="label-good">NEW SECTION</span>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Data</th><th>Retention</th></tr>
+                <tr><td>Account data</td><td>While account exists</td></tr>
+                <tr><td>Order history</td><td>Up to 5 years (tax law)</td></tr>
+                <tr><td>Analytics events</td><td>Up to 14 months</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="info-box">Same structure as Hungarian version — all 10 sections present.</div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🥩</div>Products</div>
+          <div class="nav-item"><div class="nav-icon">🛒</div>Cart</div>
+          <div class="nav-item"><div class="nav-icon">📦</div>Orders</div>
+          <div class="nav-item" style="color:var(--primary)"><div class="nav-icon">👤</div>Account</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- TAB 3: UX Notes -->
+  <div class="feature" id="tab3">
+    <h2>UX és implementációs megjegyzések</h2>
+    <p class="subtitle">Design döntések és fejlesztői útmutató</p>
+
+    <div class="note-box" style="max-width:700px">
+      <strong>Fő változás a jelenlegi verzióhoz képest:</strong><br>
+      A jelenlegi oldal mind a 3 nyelvet egyszerre mutatja minden szekcióban → nagyon hosszú, zavaros.<br>
+      Az új verzióban a <strong>nyelvváltó gombok (RO/EN/HU)</strong> egyszerre csak 1 nyelvet jelenítenek meg.
+    </div>
+
+    <div style="max-width:700px; margin-top:16px;">
+      <div class="section">
+        <div class="section-title">📐 Layout döntések</div>
+        <div class="section-body">
+          <ul>
+            <li><strong>Nyelvváltó a tartalom tetején</strong> — nem a headerben, mert a privacy policy az egyetlen többnyelvű tartalom-oldal. A header nyelvváltó az app globális nyelve.</li>
+            <li><strong>Tartalomjegyzék</strong> — kártya stílusban, kattintható anchor linkekkel. Gyors navigáció 10 szekción.</li>
+            <li><strong>Szekció számozás</strong> — burgundi körök (section-num), vizuális orientáció a hosszú oldalon.</li>
+            <li><strong>Új szekciók zöld jelölése</strong> — bal border + „ÚJ SZEKCIÓ" badge, hogy a fejlesztő lássa mi a diff.</li>
+            <li><strong>Bővített szekciók kék jelölése</strong> — „BŐVÍTVE" badge a 9. szekciónál.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">🔄 Mi változott a korábbi verzióhoz képest</div>
+        <div class="section-body">
+          <table class="mini-table">
+            <tr><th>Szekció</th><th>Változás</th></tr>
+            <tr><td style="font-weight:600;color:var(--green)">1. Adatkezelő (ÚJ)</td><td>Exar Labs = tulajdonos + kizárólagos adatkezelő. Deák = megrendelő + adatfeldolgozó.</td></tr>
+            <tr><td>3. Cél és jogalap</td><td>Táblázatos formátum, GDPR Art. 6 jogalapok hozzáadva</td></tr>
+            <tr><td>4. Adatok megosztása</td><td>Google OAuth, Firebase, EGT kívüli továbbítás nevesítve</td></tr>
+            <tr><td style="font-weight:600;color:var(--green)">6. Cookie-k (ÚJ)</td><td>Session, Auth token, Consent süti táblázatban</td></tr>
+            <tr><td style="font-weight:600;color:var(--green)">7. Adatmegőrzés (ÚJ)</td><td>Megőrzési idők és indoklások</td></tr>
+            <tr><td style="font-weight:600;color:var(--blue)">9. Jogok (BŐVÍTVE)</td><td>+ Art. 18 (korlátozás), + Art. 20 (hordozhatóság), + 30 nap válaszidő, + ANSPDCP elérhetőség</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">🛠 Implementációs útmutató</div>
+        <div class="section-body">
+          <ul>
+            <li><strong>Route:</strong> <code>/privacy-policy</code> (meglévő, nem változik)</li>
+            <li><strong>Nyelvváltás:</strong> URL paraméter (<code>?lang=hu</code>) VAGY localStorage — nem a Frappe site nyelve, hanem a privacy oldal saját toggleja</li>
+            <li><strong>Alapértelmezett nyelv:</strong> A Frappe site nyelvéből (<code>frappe.boot.lang</code>) detektálva → hu/ro/en</li>
+            <li><strong>Anchor linkek:</strong> Tartalomjegyzék → smooth scroll a szekcióhoz (<code>#section-1</code>)</li>
+            <li><strong>Tartalom:</strong> A 3 markdown fájlból (<code>privacy-policy-{hu,ro,en}-v1.0.md</code>) generálva</li>
+            <li><strong>Responsive:</strong> Mobile-first — az oldal már most is mobil nézetben van</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="changelog">
+  <h3>Changelog</h3>
+  <ul>
+    <li><strong>v1.0</strong> (2026-04-17) — Első verzió: 3 nyelvű privacy policy wireframe, 10 szekció, tartalomjegyzékkel. 3 új szekció (Adatkezelő, Cookie-k, Adatmegőrzés), 1 bővített (Jogok). UX megjegyzések tab.</li>
+  </ul>
+</div>
+
+<script>
+function showTab(index) {
+  document.querySelectorAll('.feature').forEach(f => f.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab' + index).classList.add('active');
+  document.querySelectorAll('.tab')[index].classList.add('active');
+}
+</script>
+
+</body>
+</html>

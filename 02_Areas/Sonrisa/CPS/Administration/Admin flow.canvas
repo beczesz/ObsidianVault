@@ -1,0 +1,316 @@
+{
+	"nodes":[
+		{
+			"id":"phase2_header",
+			"type":"text",
+			"text":"# Phase 2: Dashboard Update\n**Tool:** Claude for Excel\n**Skill:** sonrisa-cps-dashboard-update-v0.1\n\n**Skill = the LOGIC**\n**MUB = the DATA**",
+			"styleAttributes":{"background":"4"},
+			"x":160,
+			"y":-1270,
+			"width":400,
+			"height":200
+		},
+		{
+			"id":"input_mub",
+			"type":"text",
+			"text":"**INPUT 1**\n`MUB_YYYY_MM.md`\n(attached or pasted into Claude for Excel chat)",
+			"styleAttributes":{"background":"6"},
+			"x":160,
+			"y":-1020,
+			"width":400,
+			"height":100
+		},
+		{
+			"id":"input_dashboard",
+			"type":"text",
+			"text":"**INPUT 2**\n`CPS - Dashboard - v2.xlsx`\nOpen in Excel Online (browser)",
+			"styleAttributes":{"background":"6"},
+			"x":160,
+			"y":-880,
+			"width":400,
+			"height":100
+		},
+		{
+			"id":"p2_step1",
+			"type":"text",
+			"text":"1. Open dashboard in Excel Online\n2. Open Claude for Excel sidebar\n3. Attach MUB or paste content",
+			"styleAttributes":{},
+			"x":160,
+			"y":-740,
+			"width":400,
+			"height":100
+		},
+		{
+			"id":"p2_step2",
+			"type":"text",
+			"text":"4. **Per project loop (skill-driven):**\n- Claude reads MUB block for project\n- Announces: \"Next: [Project]. Adding [N] rows. Ready?\"\n- ACK -> writes rows (Status = PREFILLED)\n- Verify in sheet -> ACK -> Status = ACK\n- Next project",
+			"styleAttributes":{},
+			"x":160,
+			"y":-600,
+			"width":400,
+			"height":180
+		},
+		{
+			"id":"p2_step3",
+			"type":"text",
+			"text":"5. Service Income, PSIC, EDC, Team (if applicable)\n6. Final verification: BU Dash1, CPS Dash V2, BU Dash2",
+			"styleAttributes":{},
+			"x":160,
+			"y":-380,
+			"width":400,
+			"height":100
+		},
+		{
+			"id":"output_dashboard",
+			"type":"text",
+			"text":"**OUTPUT**\nUpdated `CPS - Dashboard - v2.xlsx`\nAll rows ACK'd, synced to SharePoint",
+			"styleAttributes":{"background":"5"},
+			"x":160,
+			"y":-240,
+			"width":400,
+			"height":100
+		},
+		{
+			"id":"resumability",
+			"type":"text",
+			"text":"**Resumability**\nStatus column AC tracks progress:\n- ACK = done\n- PREFILLED = needs review\n- No status = not started\n- REVIEW = needs discussion\n\nPaste same MUB next session, Claude picks up where you left off.",
+			"styleAttributes":{"background":"1"},
+			"x":160,
+			"y":-100,
+			"width":400,
+			"height":160
+		},
+		{
+			"id":"phase3_header",
+			"type":"text",
+			"text":"# Phase 3: TIG Review\n**Tool:** Cowork + tig-review-v0.1",
+			"styleAttributes":{"background":"4"},
+			"x":800,
+			"y":-1270,
+			"width":360,
+			"height":160
+		},
+		{
+			"id":"input_tig",
+			"type":"text",
+			"text":"**INPUT**\nContractor TIG document (SharePoint)\n+ `_base.xlsx` Sontime data",
+			"styleAttributes":{"background":"6"},
+			"x":800,
+			"y":-1060,
+			"width":360,
+			"height":100
+		},
+		{
+			"id":"p3_step1",
+			"type":"text",
+			"text":"1. Say **\"review TIG\"** in Cowork\n2. Downloads TIG from Banfi Istvan's SharePoint folder",
+			"styleAttributes":{},
+			"x":800,
+			"y":-920,
+			"width":360,
+			"height":80
+		},
+		{
+			"id":"p3_step2",
+			"type":"text",
+			"text":"3. Cross-references hours per project with Sontime data\n4. Identifies Account Managers per project",
+			"styleAttributes":{},
+			"x":800,
+			"y":-810,
+			"width":360,
+			"height":80
+		},
+		{
+			"id":"p3_step3",
+			"type":"text",
+			"text":"5. Drafts Hungarian sign-off emails (one per AM)\n6. Creates Gmail drafts (CC: Finance + PM)",
+			"styleAttributes":{},
+			"x":800,
+			"y":-700,
+			"width":360,
+			"height":80
+		},
+		{
+			"id":"output_emails",
+			"type":"text",
+			"text":"**OUTPUT**\nGmail drafts\n(AM sign-off requests in Hungarian)",
+			"styleAttributes":{"background":"5"},
+			"x":800,
+			"y":-580,
+			"width":360,
+			"height":100
+		},
+		{
+			"id":"phase4_header",
+			"type":"text",
+			"text":"# Phase 4: (TBD)\nInvoice verification, review meeting prep, etc.",
+			"styleAttributes":{"background":"1"},
+			"x":800,
+			"y":-440,
+			"width":360,
+			"height":100
+		},
+		{
+			"id":"phase1_header",
+			"type":"text",
+			"text":"# Phase 1: Statistics Processing\n**Tool:** Cowork + cps-statistics-v0.1\n**Rules:** [[MUB_Instructions_v0.2]]",
+			"styleAttributes":{"background":"4"},
+			"x":-1430,
+			"y":-1290,
+			"width":360,
+			"height":160
+		},
+		{
+			"id":"input_raw",
+			"type":"text",
+			"text":"**INPUT 1**\n`activityreport_YYYY_MM (N).xlsx`\nRaw Sontime export from SharePoint",
+			"styleAttributes":{"background":"6"},
+			"x":-1430,
+			"y":-1080,
+			"width":360,
+			"height":100
+		},
+		{
+			"id":"input_example",
+			"type":"text",
+			"text":"**INPUT 2**\n`activityreport_2026_02_Example.xlsx`\nTemplate with pivot tables + team list\n(or user-specified template)",
+			"styleAttributes":{"background":"6"},
+			"x":-1430,
+			"y":-960,
+			"width":360,
+			"height":120
+		},
+		{
+			"id":"p1_step1",
+			"type":"text",
+			"text":"1. Say **\"process timesheets\"** in Cowork\n2. Confirm: which raw file? which template?\n3. Skill reads MUB Instructions + build-process refs",
+			"styleAttributes":{},
+			"x":-1430,
+			"y":-810,
+			"width":360,
+			"height":100
+		},
+		{
+			"id":"output_base",
+			"type":"text",
+			"text":"**OUTPUT 1**\n`activityreport_YYYY_MM_base.xlsx`\nAll data + CPS table + pivot tables (refreshOnLoad)\n6 sheets from Example template",
+			"styleAttributes":{"background":"5"},
+			"x":-800,
+			"y":-790,
+			"width":340,
+			"height":130
+		},
+		{
+			"id":"output_tam",
+			"type":"text",
+			"text":"**OUTPUT 2**\n`activityreport_YYYY_MM_tam.xlsx`\nCPS extract for TAMs (11 cols, no Team)",
+			"styleAttributes":{"background":"5"},
+			"x":-800,
+			"y":-630,
+			"width":300,
+			"height":100
+		},
+		{
+			"id":"output_mub",
+			"type":"text",
+			"text":"**OUTPUT 3**\n`MUB_YYYY_MM.md`\nMonthly Update Brief (7 sections):\nSummary, Projects by Client, Person by Client,\nHours Summary, Contractors, Verification\n\n**MUB = the DATA for Phase 2**\nNo rates, no comparison -- skill derives those",
+			"styleAttributes":{"background":"3"},
+			"x":-800,
+			"y":-480,
+			"width":340,
+			"height":180
+		},
+		{
+			"id":"p1_step2",
+			"type":"text",
+			"text":"4. Extract Example template (ZIP PK header scan)\n5. Parse raw file via XML (zipfile + ElementTree)\n6. Filter CPS rows by team member names\n   (FirstName LastName format, 14 members)",
+			"styleAttributes":{},
+			"x":-1430,
+			"y":-680,
+			"width":360,
+			"height":225
+		},
+		{
+			"id":"p1_step3",
+			"type":"text",
+			"text":"7. Classify all CPS hours into 5 categories:\n   Billable / Internal / MVMI Avail / Sick+Leave / Other\n8. If **Other** exists: ask user, update MUB Instructions\n9. Apply aggregation rules (SIL->Spinwheel, etc.)",
+			"styleAttributes":{},
+			"x":-1430,
+			"y":-420,
+			"width":360,
+			"height":220
+		},
+		{
+			"id":"p1_step4",
+			"type":"text",
+			"text":"10. Generate `_base.xlsx` (XML template + CPSTable)\n11. Generate `_tam.xlsx` (xlsxwriter, CPS only)\n12. Generate `MUB_YYYY_MM.md` (full 7-section template)\n13. Verify: category sum = CPS total",
+			"styleAttributes":{},
+			"x":-1430,
+			"y":-170,
+			"width":360,
+			"height":230
+		},
+		{
+			"id":"p1_step5",
+			"type":"text",
+			"text":"14. Save all to `raports/generated/YYYY_Month/`\n15. Upload `_base` + `_tam` to SharePoint\n    (MUB stays local for Phase 2)",
+			"styleAttributes":{},
+			"x":-1430,
+			"y":120,
+			"width":360,
+			"height":160
+		}
+	],
+	"edges":[
+		{"id":"e_input_raw_to_s1","fromNode":"input_raw","fromSide":"bottom","toNode":"input_example","toSide":"top"},
+		{"id":"e_input_ex_to_s1","fromNode":"input_example","fromSide":"bottom","toNode":"p1_step1","toSide":"top"},
+		{"id":"e_s1_to_s2","fromNode":"p1_step1","fromSide":"bottom","toNode":"p1_step2","toSide":"top"},
+		{"id":"e_s2_to_s3","fromNode":"p1_step2","fromSide":"bottom","toNode":"p1_step3","toSide":"top"},
+		{"id":"e_s3_to_s4","fromNode":"p1_step3","fromSide":"bottom","toNode":"p1_step4","toSide":"top"},
+		{"id":"e_s4_to_s5","fromNode":"p1_step4","fromSide":"bottom","toNode":"p1_step5","toSide":"top"},
+		{"id":"e_s4_to_base","toFloating":false,"fromFloating":false,"fromNode":"p1_step4","fromSide":"right","toNode":"output_base","toSide":"left"},
+		{"id":"e_s4_to_tam","fromFloating":false,"toFloating":false,"fromNode":"p1_step4","fromSide":"right","toNode":"output_tam","toSide":"left"},
+		{"id":"e_s4_to_mub","fromNode":"p1_step4","fromSide":"right","toNode":"output_mub","toSide":"left","label":"generates MUB"},
+		{
+			"id":"e_mub_to_p2",
+			"styleAttributes":{"pathfindingMethod":"square"},
+			"fromNode":"output_mub",
+			"fromSide":"right",
+			"toNode":"input_mub",
+			"toSide":"left",
+			"label":"attach or paste"
+		},
+		{"id":"e_p2in1_to_s1","fromNode":"input_mub","fromSide":"bottom","toNode":"p2_step1","toSide":"top"},
+		{"id":"e_p2in2_to_s1","fromNode":"input_dashboard","fromSide":"bottom","toNode":"p2_step1","toSide":"top"},
+		{"id":"e_p2s1_to_s2","fromNode":"p2_step1","fromSide":"bottom","toNode":"p2_step2","toSide":"top"},
+		{"id":"e_p2s2_to_s3","fromNode":"p2_step2","fromSide":"bottom","toNode":"p2_step3","toSide":"top"},
+		{"id":"e_p2s3_to_out","fromNode":"p2_step3","fromSide":"bottom","toNode":"output_dashboard","toSide":"top"},
+		{
+			"id":"e_base_to_p3",
+			"styleAttributes":{"pathfindingMethod":"square"},
+			"fromNode":"output_base",
+			"fromSide":"right",
+			"toNode":"input_tig",
+			"toSide":"left",
+			"label":"feeds Phase 3"
+		},
+		{"id":"e_p3in_to_s1","fromNode":"input_tig","fromSide":"bottom","toNode":"p3_step1","toSide":"top"},
+		{"id":"e_p3s1_to_s2","fromNode":"p3_step1","fromSide":"bottom","toNode":"p3_step2","toSide":"top"},
+		{"id":"e_p3s2_to_s3","fromNode":"p3_step2","fromSide":"bottom","toNode":"p3_step3","toSide":"top"},
+		{"id":"e_p3s3_to_out","fromNode":"p3_step3","fromSide":"bottom","toNode":"output_emails","toSide":"top"},
+		{
+			"id":"e_dash_to_p3",
+			"styleAttributes":{"pathfindingMethod":"square"},
+			"fromNode":"output_dashboard",
+			"fromSide":"right",
+			"toNode":"phase3_header",
+			"toSide":"left",
+			"label":"then"
+		},
+		{"id":"e_p3_to_p4","fromNode":"output_emails","fromSide":"bottom","toNode":"phase4_header","toSide":"top","label":"then"}
+	],
+	"metadata":{
+		"version":"1.0-1.0",
+		"frontmatter":{}
+	}
+}

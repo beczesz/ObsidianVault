@@ -1,0 +1,252 @@
+# Deák Húsmíves — Option (VG = Variation Group) Master
+#
+# Egyetlen forrás az 5 opció-típushoz (DH-173). A termék MD-ek csak `option_ids`
+# listával hivatkoznak ide, és per-termék override-okat adhatnak az
+# `option_value_overrides` mezővel.
+#
+# A build.py merge-eli az itteni master-t a per-termék override-okkal és
+# generálja a teljes products-vX.Y.json `options[]` array-t termékenként.
+#
+# Spec: Business Development/pilot-husuzlet/product-variations/vg-content-spec-v1.0.md
+# Schema: _schema-v1.2.json
+# Verzió: 1.0 (2026-05-09)
+
+options:
+
+  # ─────────────────────────────────────────────────────
+  # 1. PÁCOLÁS / MARINARE — OPTIONAL, díjköteles (+2 RON/kg)
+  # ─────────────────────────────────────────────────────
+  - option_id: pacolas
+    option_name_hu: Pácolva
+    option_name_ro: Marinare
+    option_type: single_select
+    kind: optional
+    default_value: null
+    vg_off_hint_hu: Pácolatlan
+    vg_off_hint_ro: Nemarinat
+    display_order: 20
+    values:
+      - value_id: hagyomanyos
+        value_label_hu: Hagyományos
+        value_label_ro: Tradițional
+        meta_hint_hu: "Só, bors, fokhagyma"
+        meta_hint_ro: "Sare, piper, usturoi"
+        image_url: null
+        image_alt_hu: "Sózott-borsozott, fokhagymás karaj"
+        image_alt_ro: "Cotlet sărat-piperat cu usturoi"
+        description_hu: "Só, bors, fokhagyma, friss fűszerek. Klasszikus kárpát-medencei ízprofil sütésre és grillezésre. A mészáros 24 órás pácolást javasol, hogy az ízek mélyen átjárják a húst. Felár: +2 RON/kg."
+        description_ro: "Sare, piper, usturoi, ierburi proaspete. Profil clasic carpatic pentru frigare și grătar. Măcelarul recomandă 24 de ore de marinare pentru ca aromele să pătrundă bine. Supliment: +2 RON/kg."
+        price_modifier: 2
+        price_modifier_unit: per_kg
+      - value_id: barbecue
+        value_label_hu: Barbecue
+        value_label_ro: Barbecue
+        meta_hint_hu: "Paradicsomos, BBQ-szerű"
+        meta_hint_ro: "Cu roșii, stil BBQ"
+        image_url: null
+        image_alt_hu: "Paradicsomos BBQ pácban karaj grillen"
+        image_alt_ro: "Cotlet în marinată BBQ cu roșii pe grătar"
+        description_hu: "Paradicsomos, édeskés, füstös ízprofil. Grillezésre kifejezetten ajánlott. A pác benne van, közvetlenül a grillre helyezhető. Felár: +2 RON/kg."
+        description_ro: "Profil cu roșii, dulce, afumat. Recomandat pentru grătar. Marinata este deja în carne, direct pe grătar. Supliment: +2 RON/kg."
+        price_modifier: 2
+        price_modifier_unit: per_kg
+
+  # ─────────────────────────────────────────────────────
+  # 2. SZELETELÉS (forma) — OPTIONAL, ingyenes
+  # Csak nyakaskaraj (014). Karaj-specifikus szeletelési forma.
+  # ─────────────────────────────────────────────────────
+  - option_id: forma
+    option_name_hu: Szeletelve
+    option_name_ro: Tăiere
+    option_type: single_select
+    kind: optional
+    default_value: null
+    vg_off_hint_hu: Standard
+    vg_off_hint_ro: Standard
+    display_order: 10
+    values:
+      - value_id: normal
+        value_label_hu: Normál
+        value_label_ro: Normal
+        meta_hint_hu: "Klasszikus szelet"
+        meta_hint_ro: "Felie clasică"
+        image_url: null
+        image_alt_hu: "Klasszikus nyakaskaraj szelet"
+        image_alt_ro: "Felie clasică de ceafă"
+        description_hu: "Egyszelet, klasszikus, minimum újnyi vastagságú. Pörkölthöz, rántott karajhoz, gyorsan átsülő ételekhez."
+        description_ro: "O singură felie clasică, minimum un deget de groasă. Pentru tocăniță, șnițel, rețete care se gătesc rapid."
+        price_modifier: 0
+        price_modifier_unit: null
+      - value_id: dupla
+        value_label_hu: "Dupla (Lecsi pecsi)"
+        value_label_ro: Dublă
+        meta_hint_hu: "Két szelet egyben, potyolva"
+        meta_hint_ro: "Două felii unite, bătute"
+        image_url: null
+        image_alt_hu: "Dupla nyakaskaraj kinyitva, potyolva"
+        image_alt_ro: "Ceafă dublă deschisă și bătută"
+        description_hu: "Két szelet középen egyben tartva, kinyitva, potyolva — a hagyományos „Lecsi pecsi\". Vastagabb, férfiasabb porció lassú sütésre. A mészáros 4 ujjnyi vastagságot javasol pörkölésre."
+        description_ro: "Două felii unite la mijloc, deschise, bătute, „Lecsi pecsi\" tradițional. Porție mai groasă pentru gătit lent. Măcelarul recomandă grosime de 4 degete pentru frigare."
+        price_modifier: 0
+        price_modifier_unit: null
+
+  # ─────────────────────────────────────────────────────
+  # 3. SZELETELÉS — OPTIONAL, ingyenes
+  # Vékony / Normál / Vastagabb. mm-érték termékenként override.
+  # OFF = egészben hagyja.
+  # ─────────────────────────────────────────────────────
+  - option_id: szeletes
+    option_name_hu: Szeletelve
+    option_name_ro: Tăiere
+    option_type: single_select
+    kind: optional
+    default_value: null
+    vg_off_hint_hu: Egészben
+    vg_off_hint_ro: Întreg
+    display_order: 10
+    values:
+      - value_id: vekony
+        value_label_hu: Vékony
+        value_label_ro: Subțire
+        meta_hint_hu: "2 mm"
+        meta_hint_ro: "2 mm"
+        image_url: null
+        image_alt_hu: "Vékonyra szeletelt hús"
+        image_alt_ro: "Carne feliată subțire"
+        description_hu: "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez."
+        description_ro: "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine."
+        price_modifier: 0
+        price_modifier_unit: null
+      - value_id: normal
+        value_label_hu: Normál
+        value_label_ro: Normal
+        meta_hint_hu: "4 mm"
+        meta_hint_ro: "4 mm"
+        image_url: null
+        image_alt_hu: "Egységesen szeletelt hús közepes vastagságra"
+        image_alt_ro: "Carne feliată uniform la grosime medie"
+        description_hu: "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt."
+        description_ro: "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare."
+        price_modifier: 0
+        price_modifier_unit: null
+      - value_id: vastagabb
+        value_label_hu: Vastagabb
+        value_label_ro: "Mai gros"
+        meta_hint_hu: "6 mm"
+        meta_hint_ro: "6 mm"
+        image_url: null
+        image_alt_hu: "Vastag szeletek hús"
+        image_alt_ro: "Felii groase de carne"
+        description_hu: "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz."
+        description_ro: "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată."
+        price_modifier: 0
+        price_modifier_unit: null
+
+  # ─────────────────────────────────────────────────────
+  # 4. MÉRET / MĂRIME — MANDATORY, ingyenes
+  # Csak hibrid termékek (007, 945, 945.1).
+  # weight_range_min/max termékenként override.
+  # ─────────────────────────────────────────────────────
+  - option_id: meret
+    option_name_hu: Méret
+    option_name_ro: Mărime
+    option_type: single_select
+    kind: mandatory
+    default_value: kozepes
+    vg_off_hint_hu: null
+    vg_off_hint_ro: null
+    display_order: 10
+    values:
+      - value_id: kisebb
+        value_label_hu: Kisebb
+        value_label_ro: "Mai mic"
+        meta_hint_hu: null  # termékenként override (kg-tartomány)
+        meta_hint_ro: null
+        image_url: null
+        image_alt_hu: "Kisebb csülök referenciával méretarányhoz"
+        image_alt_ro: "Ciolan mai mic cu referință de scară"
+        description_hu: "Ideális kisebb háztartásnak, 2-3 fős vacsorára. Gyorsabban sül."
+        description_ro: "Ideal pentru gospodării mici, cină pentru 2-3 persoane. Se gătește mai repede."
+        price_modifier: 0
+        price_modifier_unit: null
+        weight_range_min: null  # termékenként override
+        weight_range_max: null
+      - value_id: kozepes
+        value_label_hu: Közepes
+        value_label_ro: Mediu
+        meta_hint_hu: null
+        meta_hint_ro: null
+        image_url: null
+        image_alt_hu: "Közepes csülök, referencia konyhakéssel"
+        image_alt_ro: "Ciolan mediu, referință cu cuțit"
+        description_hu: "A leggyakoribb választás. 4 fős család vasárnapi ebédjéhez."
+        description_ro: "Cea mai populară alegere. Pentru prânzul de duminică al unei familii de 4."
+        price_modifier: 0
+        price_modifier_unit: null
+        weight_range_min: null
+        weight_range_max: null
+      - value_id: nagyobb
+        value_label_hu: Nagyobb
+        value_label_ro: "Mai mare"
+        meta_hint_hu: null
+        meta_hint_ro: null
+        image_url: null
+        image_alt_hu: "Nagyobb csülök tálon"
+        image_alt_ro: "Ciolan mai mare pe platou"
+        description_hu: "Nagyobb társasághoz, lassan sült ünnepi ételekhez. Hosszabb sütési idővel."
+        description_ro: "Pentru grupuri mai mari, mâncăruri festive gătite lent. Timp de gătire mai lung."
+        price_modifier: 0
+        price_modifier_unit: null
+        weight_range_min: null
+        weight_range_max: null
+
+  # ─────────────────────────────────────────────────────
+  # 5. ZSÍROSSÁG / CONȚINUT DE GRĂSIME — MANDATORY, ingyenes
+  # Csak Sertés Őrölt Hús (902).
+  # ─────────────────────────────────────────────────────
+  - option_id: zsirossag
+    option_name_hu: Zsírosság
+    option_name_ro: "Conținut de grăsime"
+    option_type: single_select
+    kind: mandatory
+    default_value: normal
+    vg_off_hint_hu: null
+    vg_off_hint_ro: null
+    display_order: 10
+    values:
+      - value_id: kevesbe_zsiros
+        value_label_hu: "Kevésbé zsíros"
+        value_label_ro: "Mai slab"
+        meta_hint_hu: "Bolognai, ragú · kb. 70/30"
+        meta_hint_ro: "Bolognese, ragout · cca. 70/30"
+        image_url: null
+        image_alt_hu: "Sovány, kevés zsírral darált hús"
+        image_alt_ro: "Carne tocată slabă cu puțină grăsime"
+        description_hu: "Kb. 70% sovány, 30% zsír. Egészségtudatosabb választás bolognai szószhoz, ragúhoz, könnyebb fasírthoz."
+        description_ro: "Aprox. 70% slab, 30% grăsime. Alegere mai sănătoasă pentru sos bolognez, ragout, chiftele ușoare."
+        price_modifier: 0
+        price_modifier_unit: null
+      - value_id: normal
+        value_label_hu: Normál
+        value_label_ro: Normal
+        meta_hint_hu: "Alapértelmezett, fele-fele"
+        meta_hint_ro: "Standard, jumi-juma"
+        image_url: null
+        image_alt_hu: "Klasszikus arányú darált hús"
+        image_alt_ro: "Carne tocată cu raport clasic"
+        description_hu: "Kb. 50-50% sovány-zsír arány. A mészáros alapbeállítása, minden klasszikus recepthez illik."
+        description_ro: "Aprox. 50-50% slab-grăsime. Setarea standard a măcelarului, potrivită pentru toate rețetele clasice."
+        price_modifier: 0
+        price_modifier_unit: null
+      - value_id: zsirosabb
+        value_label_hu: Zsírosabb
+        value_label_ro: "Mai gras"
+        meta_hint_hu: "Fasírt, töltelékes káposzta · kb. 35/65"
+        meta_hint_ro: "Chiftele, sarmale · cca. 35/65"
+        image_url: null
+        image_alt_hu: "Zsírosabb, lédús darált hús"
+        image_alt_ro: "Carne tocată mai grasă, suculentă"
+        description_hu: "Kb. 35% sovány, 65% zsír. Lédús fasírthoz, töltelékes káposztához, hagyományos magyar és román ételekhez."
+        description_ro: "Aprox. 35% slab, 65% grăsime. Pentru chiftele suculente, sarmale, mâncăruri tradiționale ungare și românești."
+        price_modifier: 0
+        price_modifier_unit: null

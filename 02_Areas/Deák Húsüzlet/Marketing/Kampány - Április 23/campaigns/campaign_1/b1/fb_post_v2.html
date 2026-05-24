@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>Deák Húsmíves — Facebook Poszt 1080×1080</title>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: transparent; }
+  body {
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  }
+  #root { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+</style>
+<script type="text/babel">
+
+
+const PRODUCTS = [
+{ name: 'Füstölt Has', cat: 'Füstölt Áruk', price: '47,00', bg: '#E8D5C4', bg2: '#D4B89A' },
+{ name: 'Füstölt Oldalas', cat: 'Füstölt Áruk', price: '47,00', bg: '#D9C4B0', bg2: '#C4A88C' },
+{ name: 'Sertés Őrölt Hús', cat: 'Friss Sertéshús', price: '21,00', bg: '#F0D5D0', bg2: '#E0B8B0' },
+{ name: 'Fehér Karaj', cat: 'Friss Sertéshús', price: '33,00', bg: '#F4E6E8', bg2: '#E8D5D8' },
+{ name: 'Cérna Kolbász', cat: 'Kolbász & Szalámi', price: '45,00', bg: '#D4B89A', bg2: '#C09878' },
+{ name: 'Erdélyi Kolbász', cat: 'Kolbász & Szalámi', price: '45,00', bg: '#E0C8A8', bg2: '#D0B490' }];
+
+
+function MiniCard({ product, s }) {
+  return (
+    <div style={{
+      background: '#fff', borderRadius: 6 * s, overflow: 'hidden',
+      border: `${0.5 * s}px solid #E8E2DB`,
+      boxShadow: `0 ${0.5 * s}px ${1 * s}px rgba(0,0,0,0.06)`
+    }}>
+      <div style={{
+        height: 52 * s,
+        background: `linear-gradient(135deg, ${product.bg} 0%, ${product.bg2} 100%)`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center'
+      }}>
+        <svg width={16 * s} height={16 * s} viewBox="0 0 24 24" fill="none" stroke="#8A8078" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z" />
+          <path d="M12 22V12" /><path d="m3.29 7 8.71 5 8.71-5" />
+        </svg>
+      </div>
+      <div style={{ padding: `${4 * s}px ${5 * s}px` }}>
+        <div style={{ fontSize: 4.5 * s, color: '#D4A574', fontWeight: 500 }}>{product.cat}</div>
+        <div style={{ fontSize: 5.5 * s, fontWeight: 600, color: '#2C2825', lineHeight: 1.2, margin: `${1 * s}px 0` }}>{product.name}</div>
+        <div style={{ fontSize: 5 * s, fontWeight: 600, color: '#9B2335' }}>{product.price} <span style={{ fontWeight: 400, color: '#8A8078', fontSize: 4 * s }}>RON/kg</span></div>
+      </div>
+    </div>);
+
+}
+
+function PhoneScreen({ s }) {
+  return (
+    <div style={{
+      width: '100%', height: '100%', background: '#FFFBF7',
+      fontFamily: "'Segoe UI', system-ui, sans-serif",
+      overflow: 'hidden', display: 'flex', flexDirection: 'column'
+    }}>
+      {/* Header */}
+      <div style={{
+        height: 22 * s, display: 'flex', alignItems: 'center', padding: `0 ${6 * s}px`,
+        background: '#fff', borderBottom: `${0.4 * s}px solid #E8E2DB`
+      }}>
+        <span style={{ fontSize: 8 * s, fontWeight: 400, color: '#842030' }}>Termékek</span>
+      </div>
+      {/* Tabs */}
+      <div style={{ display: 'flex', gap: 2 * s, padding: `${4 * s}px ${6 * s}px`, overflow: 'hidden' }}>
+        <div style={{
+          background: '#9B2335', color: '#fff', borderRadius: 99, padding: `${2 * s}px ${6 * s}px`,
+          fontSize: 4.5 * s, fontWeight: 500, whiteSpace: 'nowrap'
+        }}>Összes</div>
+        {['Felvágott', 'Friss hús'].map((t) =>
+        <div key={t} style={{
+          background: 'rgba(232,226,219,0.6)', color: '#5C544C', borderRadius: 99,
+          padding: `${2 * s}px ${6 * s}px`, fontSize: 4.5 * s, fontWeight: 500, whiteSpace: 'nowrap'
+        }}>{t}</div>
+        )}
+      </div>
+      {/* Grid */}
+      <div style={{
+        display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 4 * s,
+        padding: `0 ${6 * s}px ${6 * s}px`, flex: 1, alignContent: 'start'
+      }}>
+        {PRODUCTS.map((p, i) => <MiniCard key={i} product={p} s={s} />)}
+      </div>
+      {/* Bottom nav */}
+      <div style={{
+        display: 'flex', justifyContent: 'space-around', alignItems: 'center',
+        height: 22 * s, background: '#fff', borderTop: `${0.4 * s}px solid #E8E2DB`, flexShrink: 0
+      }}>
+        {['Termékek', 'Kosár', 'Rendelések', 'Fiók'].map((l, i) =>
+        <span key={l} style={{ fontSize: 3.5 * s, fontWeight: 500, color: i === 0 ? '#9B2335' : '#8A8078' }}>{l}</span>
+        )}
+      </div>
+    </div>);
+
+}
+
+function App() {
+  const canvasRef = React.useRef(null);
+  const [scale, setScale] = React.useState(1);
+
+  React.useEffect(() => {
+    function fit() {
+      if (!canvasRef.current) return;
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      const s = Math.min(vw / 1080, vh / 1080, 1);
+      setScale(s);
+    }
+    fit();
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, []);
+
+  const phoneS = 2.2; // scale factor for phone internals
+  const phoneW = 150 * phoneS;
+  const phoneH = 310 * phoneS;
+
+  return (
+    <div ref={canvasRef} style={{
+      width: 1080, height: 1080,
+      transform: `scale(${scale})`,
+      transformOrigin: 'center center',
+      background: '#FFFBF7',
+      position: 'relative', overflow: 'hidden',
+      display: 'flex'
+    }}>
+      {/* ── Left column ── */}
+      <div style={{
+        flex: 1, display: 'flex', flexDirection: 'column',
+        justifyContent: 'center', padding: '0 0 0 72px',
+        zIndex: 1
+      }}>
+        {/* Logo */}
+        <img src="assets/deak-logo-raster.png" style={{
+          alignSelf: 'flex-start', marginBottom: 36, height: 140
+        }} />
+
+        {/* Pre-title */}
+        <div style={{
+          fontSize: 24, fontWeight: 700, color: '#D4A574',
+          textTransform: 'uppercase', letterSpacing: 5, marginBottom: 18
+        }}>Most már online is</div>
+
+        {/* Headline */}
+        <div style={{
+          fontSize: 72, fontWeight: 900, color: '#2C2825',
+          lineHeight: 1.06, letterSpacing: -1.5, marginBottom: 28
+        }}>
+          Rendeld meg,<br />mi <span style={{ color: '#9B2335' }}>házhoz<br />visszük</span>
+        </div>
+
+        {/* Subtitle */}
+        <div style={{
+          fontSize: 28, color: '#8A8078', lineHeight: 1.5, marginBottom: 40
+        }}>
+          37 kézműves termék. Aznap készül,<br />aznap szállítjuk Székelyudvarhelyen.
+        </div>
+
+        {/* Founding 50 block */}
+        <div style={{
+          background: '#FDF6F7', border: '2px solid #9B2335',
+          borderRadius: 16, padding: '20px 26px', maxWidth: 400
+        }}>
+          <div style={{ fontSize: 28, fontWeight: 800, color: '#9B2335', marginBottom: 8 }}>
+            Legyél az első 50 alapító tag!
+          </div>
+          <div style={{ fontSize: 22, color: '#5C564F', lineHeight: 1.45 }}>
+            3 hónapig <strong style={{ color: '#2C2825' }}>ingyenes kiszállítás</strong> minden rendelésedre.
+          </div>
+        </div>
+      </div>
+
+      {/* ── Right column: Phone ── */}
+      <div style={{
+        width: 440, display: 'flex', alignItems: 'center', justifyContent: 'center',
+        position: 'relative', marginRight: 20
+      }}>
+        {/* Subtle bg glow */}
+        <div style={{
+          position: 'absolute', width: 420, height: 420, borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(155,35,53,0.06) 0%, transparent 70%)',
+          top: '50%', left: '50%', transform: 'translate(-50%,-50%)'
+        }} />
+        {/* Phone device */}
+        <div style={{
+          width: phoneW, height: phoneH,
+          borderRadius: 32, background: '#222',
+          padding: 6, position: 'relative',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.22), 0 4px 12px rgba(0,0,0,0.1)'
+        }}>
+          {/* Notch */}
+          <div style={{
+            position: 'absolute', top: 6, left: '50%', transform: 'translateX(-50%)',
+            width: 80, height: 18, background: '#222', borderRadius: '0 0 12px 12px', zIndex: 2
+          }} />
+          <div style={{
+            width: '100%', height: '100%', borderRadius: 26,
+            overflow: 'hidden', background: '#FFFBF7'
+          }}>
+            <img src="assets/phone-screen-real.png" style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'top', display: 'block' }} alt="Termékek" />
+          </div>
+        </div>
+      </div>
+
+      {/* ── CTA bar ── */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0,
+        background: '#9B2335', padding: '28px 72px',
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between'
+      }}>
+        <span style={{ fontSize: 34, fontWeight: 800, color: 'white', letterSpacing: 0.3 }}>deakhus.ro</span>
+        <span style={{ fontSize: 26, fontWeight: 500, color: 'rgba(255,255,255,0.9)' }}>Regisztrálj most!</span>
+      </div>
+    </div>);
+
+}
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(<App />);
+</script>
+</head>
+<body>
+<div id="root"></div>
+</body>
+</html>

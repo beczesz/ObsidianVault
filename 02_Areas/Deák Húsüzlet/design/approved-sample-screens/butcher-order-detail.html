@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Rendelés részletei — Deák Húsmíves Admin</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg: #FFFBF7;
+  --primary: #9B2335;
+  --primary-light: #F9E0E3;
+  --text: #2C2825;
+  --text2: #5C544C;
+  --text3: #8A8078;
+  --border: #E8E2DB;
+  --card-bg: #FFFFFF;
+  --green: #2D7A4F;
+  --amber: #D4A574;
+  --amber-text: #96724A;
+  --amber-bg: #F5EDDF;
+  --gray100: #F3F4F6;
+  --gray400: #9CA3AF;
+  --gray600: #5C544C;
+  --success: #2D7A4F;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: #FAF8F5; font-family: Inter, system-ui, -apple-system, sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; margin: 0; }
+.page-wrapper { max-width: 512px; width: 100%; margin: 0 auto; min-height: 100vh; background: var(--bg); }
+
+/* Header */
+.header { height: 56px; background: #FFF; position: sticky; top: 0; z-index: 40; display: flex; align-items: center; padding: 0 16px;
+  box-shadow: rgba(0,0,0,0.12) 0px 0px 1px 0px, rgba(0,0,0,0.15) 0px 0.5px 2px 0px, rgba(0,0,0,0.16) 0px 2px 3px 0px; }
+.back-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 8px; border: none; background: transparent; cursor: pointer; color: var(--text3); flex-shrink: 0; }
+.back-btn svg { width: 20px; height: 20px; }
+.header-title { font-size: 16px; font-weight: 600; color: var(--text); letter-spacing: 0.32px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.header-badge-wrap { margin-left: auto; flex-shrink: 0; }
+
+/* Badges */
+.badge { font-size: 12px; font-weight: 500; border-radius: 9999px; padding: 2px 10px; white-space: nowrap; }
+.badge-ready { background: var(--amber-bg); color: var(--amber-text); }
+
+/* Main */
+.main { padding: 0 0 80px; }
+.content { padding: 16px 16px 0; display: flex; flex-direction: column; gap: 16px; }
+
+/* Cards */
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 16px; box-shadow: rgba(0,0,0,0.04) 0px 1px 2px 0px; }
+
+/* Info rows */
+.info-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.info-row:first-child { padding-top: 0; }
+.info-row:last-child { border-bottom: none; padding-bottom: 0; }
+.info-row svg { width: 16px; height: 16px; color: var(--text3); flex-shrink: 0; margin-top: 2px; }
+.info-text { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.info-label { font-size: 12px; font-weight: 400; color: var(--text3); line-height: 1.4; }
+.info-value { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.5; letter-spacing: 0.28px; }
+
+/* Phone row */
+.phone-row { display: flex; align-items: flex-start; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); }
+.phone-row svg.row-icon { width: 16px; height: 16px; color: var(--text3); flex-shrink: 0; margin-top: 2px; }
+.phone-content { display: flex; flex-direction: column; flex: 1; min-width: 0; }
+.hivas-btn { display: inline-flex; align-items: center; gap: 4px; background: rgba(45,122,79,0.08); color: var(--green); font-size: 13px; font-weight: 600; border-radius: 9999px; padding: 4px 12px; text-decoration: none; cursor: pointer; flex-shrink: 0; align-self: flex-start; }
+.hivas-btn svg { width: 14px; height: 14px; }
+
+/* Time badge */
+.time-badge { display: inline-block; font-size: 13px; font-weight: 500; color: var(--text); background: var(--gray100); border-radius: 8px; padding: 4px 10px; margin-top: 2px; }
+
+/* Products card */
+.prod-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.prod-title { font-size: 14px; font-weight: 600; color: var(--gray600); }
+.prod-count { font-size: 12px; font-weight: 600; color: var(--gray400); background: var(--gray100); border-radius: 9999px; padding: 2px 8px; }
+.prod-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.prod-row:last-of-type { border-bottom: none; }
+.prod-name { font-size: 14px; font-weight: 400; color: var(--text); }
+.prod-qty { font-size: 14px; font-weight: 600; color: var(--text); }
+
+/* Summary */
+.summary { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; padding-top: 12px; margin-top: 4px; border-top: 1px solid var(--border); }
+.summary-row { display: flex; align-items: center; justify-content: space-between; }
+.summary-label { font-size: 14px; font-weight: 400; color: var(--gray600); }
+.summary-value { font-size: 14px; }
+.line-through { text-decoration: line-through; color: var(--gray400); margin-right: 4px; }
+.text-success { color: var(--success); font-weight: 500; }
+.total-row { display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid var(--border); }
+.total-label { font-size: 14px; font-weight: 600; color: var(--text); }
+.total-value { font-size: 16px; font-weight: 700; color: var(--text); }
+
+/* Buttons */
+.btn-primary { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; height: 56px; background: var(--primary); color: white; font-family: inherit; font-size: 16px; font-weight: 700; letter-spacing: 0.32px; border: none; border-radius: 16px; cursor: pointer; }
+.btn-outlined { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: var(--card-bg); color: var(--primary); font-family: inherit; font-size: 16px; font-weight: 700; letter-spacing: 0.32px; border: 1px solid var(--primary); border-radius: 16px; cursor: pointer; }
+.btn-ghost { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: var(--card-bg); color: var(--text3); font-family: inherit; font-size: 16px; font-weight: 700; letter-spacing: 0.32px; border: 1px solid var(--border); border-radius: 16px; cursor: pointer; }
+
+/* Bottom nav */
+.bottom-nav { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; z-index: 50; background: var(--card-bg); border-top: 1px solid var(--border); box-shadow: rgba(0,0,0,0.08) 0px -2px 8px 0px; }
+.bottom-nav-inner { max-width: 448px; margin: 0 auto; display: flex; align-items: center; justify-content: space-around; height: 64px; padding: 0 8px; }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; text-decoration: none; cursor: pointer; }
+.nav-item svg { width: 24px; height: 24px; }
+.nav-item span { font-size: 12px; font-weight: 500; }
+.nav-item.active svg { color: var(--primary); }
+.nav-item.active span { color: var(--primary); }
+.nav-item.inactive svg { color: var(--text3); }
+.nav-item.inactive span { color: var(--text3); }
+
+.static-label { position: fixed; top: 8px; right: 8px; background: rgba(0,0,0,0.5); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; z-index: 100; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="static-label">STATIC COPY — staging.deakhus.ro</div>
+
+<div class="page-wrapper">
+
+<!-- Header -->
+<header class="header">
+  <button class="back-btn">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+  </button>
+  <h1 class="header-title">#DEAK-ORD-00041</h1>
+  <div class="header-badge-wrap">
+    <span class="badge badge-ready">Szállításra kész</span>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="main">
+<div class="content">
+
+  <!-- Info card -->
+  <div class="card">
+    <!-- Ügyfél -->
+    <div class="info-row">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <div class="info-text">
+        <span class="info-label">Ügyfél</span>
+        <span class="info-value">Becze szabolcs</span>
+      </div>
+    </div>
+
+    <!-- Telefonszám -->
+    <div class="phone-row">
+      <svg class="row-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+      <div class="phone-content">
+        <span class="info-label">Telefonszám</span>
+        <span class="info-value">0740507135</span>
+      </div>
+      <a class="hivas-btn" href="tel:0740507135">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/></svg>
+        Hívás
+      </a>
+    </div>
+
+    <!-- Szállítási cím -->
+    <div class="info-row">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0"/><circle cx="12" cy="10" r="3"/></svg>
+      <div class="info-text">
+        <span class="info-label">Szállítási cím</span>
+        <span class="info-value">Morii -, 20/1 , Székelyudvarhely, 535600</span>
+      </div>
+    </div>
+
+    <!-- Időablak -->
+    <div class="info-row">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 6v6l4 2"/><circle cx="12" cy="12" r="10"/></svg>
+      <div class="info-text">
+        <span class="info-label">Időablak</span>
+        <span class="time-badge">13:00 - 14:00</span>
+      </div>
+    </div>
+
+    <!-- Fizetési mód -->
+    <div class="info-row">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+      <div class="info-text">
+        <span class="info-label">Fizetési mód</span>
+        <span class="info-value">Készpénzes fizetés kiszállításkor</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Products card -->
+  <div class="card">
+    <div class="prod-header">
+      <p class="prod-title">Termékek</p>
+      <span class="prod-count">3</span>
+    </div>
+
+    <div class="prod-row">
+      <span class="prod-name">Füstölt Has</span>
+      <span class="prod-qty">5,0 kg</span>
+    </div>
+    <div class="prod-row">
+      <span class="prod-name">Füstölt Oldalas</span>
+      <span class="prod-qty">2,0 kg</span>
+    </div>
+    <div class="prod-row">
+      <span class="prod-name">Cérna Kolbász</span>
+      <span class="prod-qty">1,0 kg</span>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary">
+      <div class="summary-row">
+        <span class="summary-label">Szállítás</span>
+        <span class="summary-value"><span class="line-through">10,00 RON</span><span class="text-success">Ingyenes</span></span>
+      </div>
+      <div class="summary-row">
+        <span class="summary-label">Kosár kedvezmény (2%)</span>
+        <span class="summary-value text-success" style="font-weight:500;">-7,48 RON</span>
+      </div>
+    </div>
+
+    <!-- Total -->
+    <div class="total-row">
+      <span class="total-label">Becsült összeg</span>
+      <span class="total-value">366,52 RON</span>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <button class="btn-primary">Kiszállítás indítása &rsaquo;</button>
+  <button class="btn-outlined">Mérlegelés módosítása</button>
+  <button class="btn-ghost">Rendelés lemondása</button>
+
+</div>
+</main>
+
+</div><!-- /.page-wrapper -->
+
+<!-- Bottom nav -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <a class="nav-item inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16.4 13.7A6.5 6.5 0 1 0 6.28 6.6c-1.1 3.13-.78 3.9-3.18 6.08A3 3 0 0 0 5 18c4 0 8.4-1.8 11.4-4.3"/><path d="m18.5 6 2.19 4.5a6.48 6.48 0 0 1-2.29 7.2C15.4 20.2 11 22 7 22a3 3 0 0 1-2.68-1.66L2.4 16.5"/><circle cx="12.5" cy="8.5" r="2.5"/></svg>
+      <span>Előkészítés</span>
+    </a>
+    <a class="nav-item active">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+      <span>Kiszállítás</span>
+    </a>
+    <a class="nav-item inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16v5"/><path d="M16 14v7"/><path d="M20 10v11"/><path d="m22 3-8.646 8.646a.5.5 0 0 1-.708 0L9.354 8.354a.5.5 0 0 0-.707 0L2 15"/><path d="M4 18v3"/><path d="M8 14v7"/></svg>
+      <span>Statisztikák</span>
+    </a>
+    <a class="nav-item inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect width="7" height="9" x="3" y="3" rx="1"/><rect width="7" height="5" x="14" y="3" rx="1"/><rect width="7" height="9" x="14" y="12" rx="1"/><rect width="7" height="5" x="3" y="16" rx="1"/></svg>
+      <span>Vezérlőpult</span>
+    </a>
+    <a class="nav-item inactive">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      <span>Fiók</span>
+    </a>
+  </div>
+</nav>
+
+</body>
+</html>

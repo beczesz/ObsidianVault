@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Termékek — Deák Húsmíves</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root {
+  --bg: #FFFBF7;
+  --primary: #9B2335;
+  --primary-dark: #842030;
+  --text: #2C2825;
+  --text2: #5C544C;
+  --text3: #8A8078;
+  --border: #E8E2DB;
+  --card-bg: #FFFFFF;
+  --tab-inactive-bg: rgba(232,226,219,0.6);
+  --nav-bg: #FFFFFF;
+  --category-color: #D4A574;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--bg); font-family: Inter, system-ui, -apple-system, sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; }
+body { max-width: 448px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 80px; }
+
+/* Header - white bg, shadow, 56px */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; height: 56px;
+  background: #FFFFFF;
+  position: sticky; top: 0; z-index: 10;
+  box-shadow: rgba(0,0,0,0.12) 0px 0px 1px 0px, rgba(0,0,0,0.15) 0px 0.5px 2px 0px, rgba(0,0,0,0.16) 0px 2px 3px 0px;
+}
+.header h1 { font-size: 20px; font-weight: 400; color: var(--primary-dark); line-height: 23px; }
+.lang-btn {
+  background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.lang-btn:active { background: rgba(0,0,0,0.05); }
+.lang-flag { width: 22px; height: 16px; border-radius: 2px; }
+
+/* Active order banner */
+.order-banner {
+  margin: 12px 16px 0;
+  background: linear-gradient(to right bottom, #FFFFFF, #FFFBF7);
+  border-radius: 16px;
+  padding: 10px 12px 10px 18px;
+  display: flex; align-items: center; gap: 12px;
+  border: 1px solid #E8DDD0;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+/* Gold left accent bar */
+.order-banner::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: #C9A247;
+  border-radius: 16px 0 0 16px;
+}
+/* Icon stack container */
+.icon-stack { position: relative; width: 36px; height: 36px; flex-shrink: 0; }
+.icon-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.icon-circle svg { width: 16px; height: 16px; }
+.icon-secondary {
+  position: absolute; top: -6px; right: -6px; z-index: 0;
+  background: #E8F0EA; color: #3F6B52; opacity: 0.9;
+}
+.icon-primary {
+  position: relative; z-index: 1;
+  background: #FAF1D8; color: #8F6F1F;
+}
+.order-info { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.order-info .title { font-size: 13px; font-weight: 600; color: rgb(44,40,37); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.order-info .subtitle { font-size: 11px; font-weight: 400; color: #999; }
+.order-chevron { color: var(--primary); flex-shrink: 0; }
+.order-chevron svg { width: 16px; height: 16px; }
+
+/* Category tabs */
+.tabs-wrapper { padding: 12px 16px 0; }
+.tabs {
+  display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; scroll-snap-type: x mandatory;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 8px 16px; border-radius: 9999px; font-size: 13px; font-weight: 500;
+  white-space: nowrap; border: none; cursor: pointer; flex-shrink: 0;
+  height: 40px; display: inline-flex; align-items: center;
+  scroll-snap-align: start;
+}
+.tab.active { background: var(--primary); color: white; }
+.tab.inactive { background: var(--tab-inactive-bg); color: var(--text2); }
+
+/* Product grid */
+.grid-wrapper { padding: 0 16px 80px; }
+.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+.product-card {
+  background: var(--card-bg); border-radius: 16px; overflow: hidden;
+  border: 1px solid var(--border); cursor: pointer;
+  box-shadow: rgba(0,0,0,0.1) 0px 1px 2px 0px;
+  display: flex; flex-direction: column;
+  transition: all 0.15s;
+}
+.product-card:active { transform: scale(0.98); }
+.product-img { width: 100%; height: 150px; object-fit: cover; display: block; background: #f0ebe6; }
+.product-info { padding: 16px; display: flex; flex-direction: column; }
+.product-category { font-size: 12px; font-weight: 500; color: var(--category-color); margin-bottom: 4px; }
+.product-name { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 6px; line-height: 1.3; }
+.product-price { font-size: 14px; font-weight: 500; color: var(--primary); }
+.product-price .unit { font-weight: 400; color: var(--text3); font-size: 13px; }
+
+/* Bottom nav */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 448px; background: var(--nav-bg);
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around; align-items: center;
+  height: 65px;
+  z-index: 20;
+  box-shadow: rgba(0,0,0,0.08) 0px -2px 8px 0px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; padding: 4px 12px; }
+.nav-item svg { width: 24px; height: 24px; }
+.nav-item span { font-size: 12px; font-weight: 500; }
+.nav-item.active svg { color: var(--primary); }
+.nav-item.active span { color: var(--primary); }
+.nav-item:not(.active) svg { color: var(--text3); }
+.nav-item:not(.active) span { color: var(--text3); }
+
+/* Static label */
+.static-label { position: fixed; top: 8px; right: 8px; background: rgba(0,0,0,0.5); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; z-index: 100; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="static-label">STATIC COPY — staging.deakhus.ro</div>
+
+<!-- Header -->
+<div class="header">
+  <h1>Termékek</h1>
+  <button class="lang-btn" title="Nyelv kiválasztása">
+    <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="5.33" fill="#CE2939"/><rect y="5.33" width="22" height="5.33" fill="#FFF"/><rect y="10.66" width="22" height="5.34" fill="#1A8B42"/></svg>
+  </button>
+</div>
+
+<!-- Active order banner -->
+<div class="order-banner">
+  <div class="icon-stack">
+    <span class="icon-circle icon-secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
+    </span>
+    <span class="icon-circle icon-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+    </span>
+  </div>
+  <div class="order-info">
+    <span class="title">6 aktív rendelés</span>
+    <span class="subtitle">11 termék · ~1361 RON</span>
+  </div>
+  <div class="order-chevron">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+  </div>
+</div>
+
+<!-- Category tabs -->
+<div class="tabs-wrapper">
+  <div class="tabs">
+    <button class="tab active">Összes</button>
+    <button class="tab inactive">Felvágott & Egyéb</button>
+    <button class="tab inactive">Friss Növendékhús</button>
+    <button class="tab inactive">Friss Sertéshús</button>
+    <button class="tab inactive">Füstölt Áruk</button>
+    <button class="tab inactive">Kolbász & Szalámi</button>
+  </div>
+</div>
+
+<!-- Product grid -->
+<div class="grid-wrapper">
+<div class="product-grid">
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/fustolt_has_small.webp" alt="Füstölt Has">
+    <div class="product-info">
+      <div class="product-category">Füstölt Áruk</div>
+      <div class="product-name">Füstölt Has</div>
+      <div class="product-price">47,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/fustolt_oldalas_small.webp" alt="Füstölt Oldalas">
+    <div class="product-info">
+      <div class="product-category">Füstölt Áruk</div>
+      <div class="product-name">Füstölt Oldalas</div>
+      <div class="product-price">47,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/sertes_orolt_hus_small.webp" alt="Sertés Őrölt Hús">
+    <div class="product-info">
+      <div class="product-category">Friss Sertéshús</div>
+      <div class="product-name">Sertés Őrölt Hús</div>
+      <div class="product-price">21,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/sertes_feher_karaj_small.webp" alt="Sertés Fehér Karaj">
+    <div class="product-info">
+      <div class="product-category">Friss Sertéshús</div>
+      <div class="product-name">Sertés Fehér Karaj</div>
+      <div class="product-price">33,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/sertes_munka_hus_small.webp" alt="Sertés Apróhús">
+    <div class="product-info">
+      <div class="product-category">Friss Sertéshús</div>
+      <div class="product-name">Sertés Apróhús</div>
+      <div class="product-price">21,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/abalt_szalonna_small.webp" alt="Abált Szalonna">
+    <div class="product-info">
+      <div class="product-category">Felvágott & Egyéb</div>
+      <div class="product-name">Abált Szalonna</div>
+      <div class="product-price">35,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/cerna_kolbasz_small.webp" alt="Cérna Kolbász">
+    <div class="product-info">
+      <div class="product-category">Kolbász & Szalámi</div>
+      <div class="product-name">Cérna Kolbász</div>
+      <div class="product-price">45,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/diszno_fosajt_small.webp" alt="Disznó Fősajt">
+    <div class="product-info">
+      <div class="product-category">Felvágott & Egyéb</div>
+      <div class="product-name">Disznó Fősajt</div>
+      <div class="product-price">35,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/erdelyi_kolbasz_small.webp" alt="Erdélyi Kolbász">
+    <div class="product-info">
+      <div class="product-category">Kolbász & Szalámi</div>
+      <div class="product-name">Erdélyi Kolbász</div>
+      <div class="product-price">45,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/fustolt_belszin_small.webp" alt="Füstölt Bélszín">
+    <div class="product-info">
+      <div class="product-category">Füstölt Áruk</div>
+      <div class="product-name">Füstölt Bélszín</div>
+      <div class="product-price">55,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/fustolt_bordacsont_small.webp" alt="Füstölt Bordacsont">
+    <div class="product-info">
+      <div class="product-category">Füstölt Áruk</div>
+      <div class="product-name">Füstölt Bordacsont</div>
+      <div class="product-price">16,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/fustolt_csulok_small.webp" alt="Füstölt Csülök">
+    <div class="product-info">
+      <div class="product-category">Füstölt Áruk</div>
+      <div class="product-name">Füstölt Csülök</div>
+      <div class="product-price">34,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- Bottom navigation -->
+<nav class="bottom-nav">
+  <a href="#" class="nav-item active">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Termékek</span>
+  </a>
+  <a href="#" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <span>Kosár</span>
+  </a>
+  <a href="#" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <span>Rendelések</span>
+  </a>
+  <a href="#" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Fiók</span>
+  </a>
+</nav>
+
+</body>
+</html>

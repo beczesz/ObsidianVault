@@ -1,0 +1,128 @@
+flowchart TB
+    %% ============================================
+    %% PHASE 1: Statistics Processing (Cowork)
+    %% ============================================
+
+    subgraph P1["Phase 1: Statistics Processing"]
+        direction TB
+        P1_tool["Cowork + cps-statistics-v0.1"]
+        P1_input[/"activityreport_YYYY_MM (N).xlsx\n(Raw Sontime export)"/]
+
+        P1_S1["1. Download raw activity report\nfrom Sontime/SharePoint"]
+        P1_S2["2. Say 'process timesheets' in Cowork"]
+        P1_S3["3. Copy example sheet,\nreplace data with new RAW"]
+        P1_S4["4. Parse data, build pivot tables"]
+        P1_S5["5. Read previous month T&M Raw\nfrom dashboard (OneDrive)"]
+        P1_S6["6. Compare project by project\n(hours, rates, new/dropped people)"]
+        P1_S7["7. Generate Monthly Update Brief"]
+        P1_S8["8. Upload _base and _tam\nto SharePoint"]
+
+        P1_input --> P1_S1 --> P1_S2 --> P1_S3 --> P1_S4 --> P1_S5 --> P1_S6 --> P1_S7 --> P1_S8
+    end
+
+    %% Phase 1 Outputs
+    P1_S8 --> OUT_base[/"OUTPUT 1\nactivityreport_YYYY_MM_base.xlsx\n(raw data + pivot tables)"/]
+    P1_S8 --> OUT_tam[/"OUTPUT 2\nactivityreport_YYYY_MM_tam.xlsx\n(CPS extract for TAMs)"/]
+    P1_S7 --> OUT_mub[/"OUTPUT 3\nMUB_YYYY_MM.md\nMonthly Update Brief\n(structured markdown)"/]
+
+    %% ============================================
+    %% PHASE 2: Dashboard Update (Claude for Excel)
+    %% ============================================
+
+    subgraph P2["Phase 2: Dashboard Update"]
+        direction TB
+        P2_tool["Claude for Excel\n+ sonrisa-cps-dashboard-update skill\n\nSkill = LOGIC | MUB = DATA"]
+        P2_input1[/"INPUT 1: MUB\n(attach or paste into chat)"/]
+        P2_input2[/"INPUT 2: CPS - Dashboard - v2.xlsx\n(open in Excel Online)"/]
+
+        P2_S1["1. Open dashboard in Excel Online\n2. Open Claude for Excel sidebar\n3. Attach MUB or paste content"]
+
+        subgraph P2_loop["Per-project loop (skill-driven)"]
+            direction TB
+            P2_L1["Claude announces:\n'Next: Project. Adding N rows. Ready?'"]
+            P2_L2["User ACKs"]
+            P2_L3["Claude writes rows\n(Status = PREFILLED)"]
+            P2_L4["User verifies in spreadsheet"]
+            P2_L5["User ACKs\n(Status = ACK)"]
+            P2_L6{"More\nprojects?"}
+
+            P2_L1 --> P2_L2 --> P2_L3 --> P2_L4 --> P2_L5 --> P2_L6
+            P2_L6 -- Yes --> P2_L1
+        end
+
+        P2_S2["5. Service Income, PSIC,\nEDC, Team (if applicable)"]
+        P2_S3["6. Final verification:\nBU Dash1, CPS Dash V2, BU Dash2"]
+
+        P2_input1 --> P2_S1
+        P2_input2 --> P2_S1
+        P2_S1 --> P2_loop
+        P2_L6 -- No --> P2_S2 --> P2_S3
+    end
+
+    OUT_mub -- "attach or paste" --> P2_input1
+
+    P2_S3 --> OUT_dash[/"OUTPUT\nUpdated CPS - Dashboard - v2.xlsx\n(all rows ACK'd, synced to SharePoint)"/]
+
+    %% ============================================
+    %% PHASE 3: TIG Review (Cowork)
+    %% ============================================
+
+    subgraph P3["Phase 3: TIG Review"]
+        direction TB
+        P3_tool["Cowork + tig-review-v0.1"]
+        P3_input[/"INPUT\nContractor TIG document\n+ _base.xlsx Sontime data"/]
+
+        P3_S1["1. Say 'review TIG' in Cowork"]
+        P3_S2["2. Download TIG from\nBanfi Istvan's SharePoint folder"]
+        P3_S3["3. Cross-reference hours\nwith Sontime data"]
+        P3_S4["4. Identify Account Managers\nper project"]
+        P3_S5["5. Draft Hungarian sign-off emails\n(one per AM)"]
+        P3_S6["6. Create Gmail drafts\n(CC: Finance + PM)"]
+
+        P3_input --> P3_S1 --> P3_S2 --> P3_S3 --> P3_S4 --> P3_S5 --> P3_S6
+    end
+
+    OUT_base -- "feeds Phase 3" --> P3_input
+    OUT_dash -- "then" --> P3
+
+    P3_S6 --> OUT_emails[/"OUTPUT\nGmail drafts\n(AM sign-off requests in Hungarian)"/]
+
+    %% ============================================
+    %% PHASE 4: TBD
+    %% ============================================
+
+    OUT_emails --> P4["Phase 4: TBD\n(Invoice verification,\nreview meeting prep)"]
+
+    %% ============================================
+    %% RESUMABILITY NOTE
+    %% ============================================
+
+    subgraph Resume["Resumability (T&M Raw column AC)"]
+        direction LR
+        R1["ACK = done"]
+        R2["PREFILLED = needs review"]
+        R3["No status = not started"]
+        R4["REVIEW = needs discussion"]
+    end
+
+    P2 -. "state tracking" .-> Resume
+
+    %% ============================================
+    %% Styling
+    %% ============================================
+
+    classDef phase fill:#4a6fa5,color:#fff,stroke:#2d4a7a
+    classDef input fill:#5bc0de,color:#fff,stroke:#31a2c0
+    classDef output fill:#5cb85c,color:#fff,stroke:#3d8b3d
+    classDef mub fill:#f0ad4e,color:#fff,stroke:#d08b1e
+    classDef tbd fill:#d9534f,color:#fff,stroke:#b52b27
+    classDef loop fill:#f5f5f5,color:#333,stroke:#999
+    classDef resume fill:#ddd,color:#333,stroke:#999
+
+    class P1,P2,P3 phase
+    class P1_input,P2_input1,P2_input2,P3_input input
+    class OUT_base,OUT_tam,OUT_dash,OUT_emails output
+    class OUT_mub mub
+    class P4 tbd
+    class P2_loop loop
+    class Resume resume

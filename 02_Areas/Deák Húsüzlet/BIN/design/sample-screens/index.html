@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH Sample Screens</title>
+<style>
+:root { --bg: #F5F0EB; --primary: #9B2335; --text: #2D2D2D; --text2: #777; --border: #E8E0D8; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); padding: 32px 24px; max-width: 900px; margin: 0 auto; }
+h1 { font-size: 24px; font-weight: 800; margin-bottom: 4px; }
+.subtitle { font-size: 13px; color: var(--text2); margin-bottom: 24px; }
+h2 { font-size: 16px; font-weight: 700; margin: 24px 0 12px; padding-left: 4px; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 12px; }
+.card { display: block; background: white; border: 1px solid var(--border); border-radius: 12px; padding: 16px; text-decoration: none; color: var(--text); transition: all 0.15s; }
+.card:hover { border-color: var(--primary); box-shadow: 0 4px 12px rgba(155,35,53,0.1); transform: translateY(-1px); }
+.card-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.card-file { font-size: 11px; color: var(--text2); font-family: monospace; }
+</style>
+</head>
+<body>
+<h1>DH Sample Screens</h1>
+<p class="subtitle">Standalone mobile nézetek a wireframe-ekből kinyerve + statikus oldalmásolatok. Minden screen 448px szélességben renderel (max-w-md).</p>
+<h2>💰 Savings Counter (done)</h2><div class="grid"><a class="card" href="savings-cart-120ron.html">
+  <div class="card-title">Savings Cart 120Ron</div>
+  <div class="card-file">savings-cart-120ron.html</div>
+</a><a class="card" href="savings-cart-145ron.html">
+  <div class="card-title">Savings Cart 145Ron</div>
+  <div class="card-file">savings-cart-145ron.html</div>
+</a><a class="card" href="savings-cart-180ron.html">
+  <div class="card-title">Savings Cart 180Ron</div>
+  <div class="card-file">savings-cart-180ron.html</div>
+</a><a class="card" href="savings-cart-350ron.html">
+  <div class="card-title">Savings Cart 350Ron</div>
+  <div class="card-file">savings-cart-350ron.html</div>
+</a><a class="card" href="savings-cart-empty.html">
+  <div class="card-title">Savings Cart Empty</div>
+  <div class="card-file">savings-cart-empty.html</div>
+</a></div><h2>📋 Post-order Recap (ready)</h2><div class="grid"><a class="card" href="recap-confirmed-180ron.html">
+  <div class="card-title">Recap Confirmed 180Ron</div>
+  <div class="card-file">recap-confirmed-180ron.html</div>
+</a><a class="card" href="recap-confirmed-350ron.html">
+  <div class="card-title">Recap Confirmed 350Ron</div>
+  <div class="card-file">recap-confirmed-350ron.html</div>
+</a><a class="card" href="recap-home-active-order.html">
+  <div class="card-title">Recap Home Active Order</div>
+  <div class="card-file">recap-home-active-order.html</div>
+</a></div><h2>🔄 Reorder / Újrarendelés (ready)</h2><div class="grid"><a class="card" href="reorder-list.html">
+  <div class="card-title">Reorder List</div>
+  <div class="card-file">reorder-list.html</div>
+</a><a class="card" href="reorder-loaded-cart.html">
+  <div class="card-title">Reorder Loaded Cart</div>
+  <div class="card-file">reorder-loaded-cart.html</div>
+</a><a class="card" href="reorder-merge-modal.html">
+  <div class="card-title">Reorder Merge Modal</div>
+  <div class="card-file">reorder-merge-modal.html</div>
+</a></div><h2>🔐 Statikus oldalak (staging másolatok)</h2><div class="grid"><a class="card" href="products.html">
+  <div class="card-title">Products / Termékek</div>
+  <div class="card-file">products.html</div>
+</a><a class="card" href="orders.html">
+  <div class="card-title">Orders / Rendeléseim</div>
+  <div class="card-file">orders.html</div>
+</a><a class="card" href="login.html">
+  <div class="card-title">Login / Bejelentkezés</div>
+  <div class="card-file">login.html</div>
+</a><a class="card" href="privacy-policy.html">
+  <div class="card-title">Privacy Policy / Adatvédelmi Szabályzat</div>
+  <div class="card-file">privacy-policy.html</div>
+</a></div>
+</body>
+</html>

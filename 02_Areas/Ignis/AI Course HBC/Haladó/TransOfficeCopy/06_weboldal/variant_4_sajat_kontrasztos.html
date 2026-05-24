@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TransOffice Trade — Logistica zilei tale începe aici</title>
+<style>
+  /* Saját variáns — F6.2
+     Diktálás a Cowork-nek: "Vegyük az erdélyi variánst, de
+     - tedd lila + sárga kontrasztba (rétegezett)
+     - vidd előre az AFM-projektet a hero-ba
+     - tegyél egy 'Hívjon most' lebegő gombot mobilra
+     - rakd a magyar szlogent 'Erdély logisztikai partnere'-re
+     A többi maradjon."
+  */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Manrope', 'Inter', system-ui, sans-serif; color: #1a0e2a; background: #faf7ff; line-height: 1.65; }
+  a { color: #6b2db3; text-decoration: none; }
+  .container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+
+  /* Header */
+  header { background: #1a0e2a; color: #f0e7ff; padding: 20px 0; position: sticky; top: 0; z-index: 50; }
+  .header-row { display: flex; justify-content: space-between; align-items: center; }
+  .logo { display: flex; align-items: center; gap: 12px; }
+  .logo-mark { width: 44px; height: 44px; background: #fbcb35; color: #1a0e2a; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 18px; }
+  .logo-text { font-weight: 800; font-size: 19px; letter-spacing: -0.3px; }
+  .logo-text .accent { color: #fbcb35; }
+  .nav-links { display: flex; gap: 28px; }
+  .nav-links a { color: #c8b6e3; font-size: 14px; font-weight: 600; }
+  .nav-links a:hover { color: #fbcb35; }
+  .nav-cta { background: #fbcb35; color: #1a0e2a; padding: 10px 20px; border-radius: 8px; font-weight: 700; font-size: 14px; }
+
+  /* Hero — sötét lila gradiens + sárga accentek */
+  .hero { background: linear-gradient(135deg, #1a0e2a 0%, #3b1a6e 50%, #6b2db3 100%); color: #f0e7ff; padding: 80px 0 100px; position: relative; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; top: -80px; right: -80px; width: 400px; height: 400px; background: radial-gradient(circle, rgba(251,203,53,0.18) 0%, transparent 60%); }
+  .hero-grid { display: grid; grid-template-columns: 1.3fr 1fr; gap: 48px; align-items: center; position: relative; z-index: 1; }
+  .hero .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: rgba(251,203,53,0.15); color: #fbcb35; padding: 6px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; margin-bottom: 20px; letter-spacing: 0.5px; }
+  .hero .eyebrow::before { content: "⚡"; }
+  .hero h1 { font-size: 54px; line-height: 1.05; font-weight: 800; letter-spacing: -1.5px; margin-bottom: 22px; }
+  .hero h1 .highlight { color: #fbcb35; }
+  .hero .lead { font-size: 19px; color: #d4c7eb; margin-bottom: 32px; max-width: 540px; }
+  .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn-primary { background: #fbcb35; color: #1a0e2a; padding: 14px 28px; border-radius: 8px; font-weight: 700; font-size: 15px; box-shadow: 0 8px 24px -8px rgba(251,203,53,0.5); }
+  .btn-ghost { padding: 14px 28px; border-radius: 8px; font-weight: 700; font-size: 15px; color: #f0e7ff; border: 1.5px solid rgba(240,231,255,0.3); }
+  .hero-card { background: rgba(255,255,255,0.06); border: 1px solid rgba(251,203,53,0.3); border-radius: 16px; padding: 28px; backdrop-filter: blur(8px); }
+  .hero-card .label { font-size: 13px; color: #fbcb35; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 12px; }
+  .hero-card h3 { font-size: 24px; margin-bottom: 14px; color: #fff; }
+  .hero-card .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .hero-card .meta div { font-size: 13px; color: #d4c7eb; }
+  .hero-card .meta div span { display: block; color: #fbcb35; font-size: 22px; font-weight: 800; margin-top: 2px; }
+
+  /* Trust strip */
+  .trust { background: #fbcb35; padding: 24px 0; color: #1a0e2a; }
+  .trust-row { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 24px; font-size: 15px; font-weight: 700; }
+  .trust-row span::before { content: "✓ "; color: #6b2db3; }
+
+  /* Sections */
+  section { padding: 88px 0; }
+  .section-head { text-align: center; margin-bottom: 56px; }
+  .section-head .label { display: inline-block; background: #f3eaff; color: #6b2db3; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 14px; }
+  .section-head h2 { font-size: 42px; font-weight: 800; letter-spacing: -1px; color: #1a0e2a; }
+  .section-head p { font-size: 17px; color: #4a3e5e; margin-top: 12px; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
+  .service { background: #fff; border: 1px solid #ebe2f5; border-radius: 14px; padding: 32px; transition: all 0.2s; }
+  .service:hover { border-color: #fbcb35; transform: translateY(-4px); box-shadow: 0 16px 40px -16px rgba(107,45,179,0.2); }
+  .service-icon { width: 52px; height: 52px; background: #6b2db3; color: #fbcb35; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 18px; }
+  .service h3 { font-size: 21px; font-weight: 800; margin-bottom: 10px; color: #1a0e2a; }
+  .service p { font-size: 15px; color: #4a3e5e; }
+
+  /* About */
+  .about { background: #f3eaff; }
+  .about-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 56px; align-items: center; }
+  .about p { font-size: 16px; color: #2d1f4a; margin-bottom: 18px; }
+  .quote-box { background: #1a0e2a; color: #fbcb35; padding: 36px; border-radius: 16px; font-size: 19px; font-style: italic; line-height: 1.5; position: relative; }
+  .quote-box::before { content: """; position: absolute; top: 8px; left: 16px; font-size: 64px; color: rgba(251,203,53,0.3); line-height: 1; }
+  .quote-box .author { font-size: 14px; color: #d4c7eb; font-style: normal; letter-spacing: 1px; text-transform: uppercase; margin-top: 18px; }
+
+  /* AFM (most már másodlagos, mert a hero-ban már szerepelt) */
+  .afm-detail { background: linear-gradient(135deg, #fbcb35 0%, #f0a800 100%); color: #1a0e2a; padding: 72px 0; }
+  .afm-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 48px; align-items: center; }
+  .afm-detail h2 { font-size: 38px; font-weight: 800; letter-spacing: -1px; margin-bottom: 18px; }
+  .afm-detail p { font-size: 16px; line-height: 1.7; margin-bottom: 16px; }
+  .afm-detail strong { color: #6b2db3; }
+  .afm-checklist { background: #1a0e2a; color: #f0e7ff; padding: 36px; border-radius: 16px; }
+  .afm-checklist h3 { font-size: 22px; color: #fbcb35; margin-bottom: 18px; }
+  .afm-checklist ul { list-style: none; }
+  .afm-checklist li { padding: 10px 0 10px 32px; position: relative; font-size: 15px; border-bottom: 1px solid rgba(251,203,53,0.15); }
+  .afm-checklist li:last-child { border-bottom: none; }
+  .afm-checklist li::before { content: "→"; position: absolute; left: 0; color: #fbcb35; font-weight: 800; }
+
+  /* Contact */
+  .contact { background: #1a0e2a; color: #f0e7ff; }
+  .contact .section-head h2 { color: #f0e7ff; }
+  .contact .section-head .label { background: rgba(251,203,53,0.15); color: #fbcb35; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; max-width: 880px; margin: 0 auto; }
+  .contact-item { margin-bottom: 22px; }
+  .contact-item .lbl { font-size: 12px; color: #fbcb35; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 4px; font-weight: 700; }
+  .contact-item .val { font-size: 17px; color: #f0e7ff; }
+  .contact-item .val a { color: #fbcb35; }
+
+  /* Mobile floating CTA */
+  .floating-call { position: fixed; bottom: 20px; right: 20px; background: #fbcb35; color: #1a0e2a; padding: 16px 24px; border-radius: 999px; font-weight: 800; font-size: 15px; box-shadow: 0 12px 30px -8px rgba(251,203,53,0.6); z-index: 100; display: none; }
+  .floating-call::before { content: "📞 "; }
+  @media (max-width: 720px) {
+    .floating-call { display: inline-block; }
+  }
+
+  footer { background: #0c0716; color: #6e5f8a; padding: 28px 0; text-align: center; font-size: 13px; }
+  footer .accent { color: #fbcb35; }
+
+  @media (max-width: 880px) {
+    .hero-grid, .about-grid, .afm-grid, .contact-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="container header-row">
+    <div class="logo">
+      <div class="logo-mark">TO</div>
+      <div class="logo-text">Trans<span class="accent">Office</span></div>
+    </div>
+    <div class="nav-links">
+      <a href="#mobilitate">Mobilitate verde</a>
+      <a href="#servicii">Servicii</a>
+      <a href="#despre">Despre noi</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Ofertă</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <div class="eyebrow">AFM Mobilitate Verde 2025 — în depunere</div>
+      <h1>Erdély logisztikai partnere. Most már <span class="highlight">elektromosan is.</span></h1>
+      <p class="lead">22 de ani de papetărie. 2 mașini diesel în prag de pensionare. Și un proiect de 638 000 RON care le înlocuiește cu electric. Hai să-ți spunem cum.</p>
+      <div class="cta-row">
+        <a href="#mobilitate" class="btn-primary">Vezi proiectul →</a>
+        <a href="#contact" class="btn-ghost">Cere ofertă</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="label">⚡ Mobilitate Verde 2025</div>
+      <h3>Proiect AFM în curs de depunere</h3>
+      <p style="font-size: 14px; color: #d4c7eb; margin-bottom: 16px;">2 vehicule electrice N1 + 1 punct AC public, finanțat 70% AFM.</p>
+      <div class="meta">
+        <div>Vehicule<span>2</span></div>
+        <div>Punct AC<span>22 kW</span></div>
+        <div>CO₂ redus<span>5,2 t/an</span></div>
+        <div>Operațional<span>2026</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust">
+  <div class="container trust-row">
+    <span>22 de ani local</span>
+    <span>28 clienți B2B activi</span>
+    <span>Livrare 24h în Hargita</span>
+    <span>Magyar & român ügyintézés</span>
+  </div>
+</div>
+
+<section id="mobilitate" class="afm-detail">
+  <div class="container afm-grid">
+    <div>
+      <h2>De ce ne mutăm pe electric?</h2>
+      <p>Pentru că <strong>încă mai folosim 2 furgoane diesel</strong> din 2015 și 2017 — au servit bine, dar consumă ~7 200 RON combustibil anual fiecare. Și pentru că <strong>clienții publici</strong> (primării, școli, spitale) ne întreabă tot mai des despre <strong>achizițiile verzi</strong>.</p>
+      <p>Aplicăm la programul <strong>AFM Mobilitate Verde IMM 2025</strong> pentru:</p>
+      <p>Și punctul de reîncărcare va fi <strong>accesibil publicului</strong> între 8:00–18:00 — un mic gest pentru o rețea de încărcare care în Hargita are deficit (sub 1 punct la 10 000 locuitori).</p>
+    </div>
+    <div class="afm-checklist">
+      <h3>Ce conține proiectul</h3>
+      <ul>
+        <li>2 autoutilitare electrice categoria N1</li>
+        <li>1 punct de reîncărcare AC trifazic 22 kW</li>
+        <li>Racord electric + aviz ISC</li>
+        <li>Casarea a 2 vehicule diesel existente (12 luni post-livrare)</li>
+        <li>Studiu de fezabilitate + plan de afaceri 5 ani</li>
+        <li>Buget total: ~638 000 RON · grant AFM ~70%</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="servicii">
+  <div class="container">
+    <div class="section-head">
+      <div class="label">Ce facem</div>
+      <h2>Trei lucruri, făcute bine</h2>
+      <p>O sută de produse, douăzeci de furnizori, un singur telefon de la dumneavoastră.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service">
+        <div class="service-icon">📄</div>
+        <h3>Consumabile birou</h3>
+        <p>Hârtie A4/A3, tonere HP (originale și echivalent), rechizite. Stocuri pentru top 30 referințe.</p>
+      </div>
+      <div class="service">
+        <div class="service-icon">🚛</div>
+        <h3>Livrare 24h</h3>
+        <p>Comanda azi până 14:00 — mâine la biroul tău. Hargita și Covasna.</p>
+      </div>
+      <div class="service">
+        <div class="service-icon">🪑</div>
+        <h3>Mobilier de birou</h3>
+        <p>Scaune, birouri, dulapuri. Pentru 5 sau 50 de oameni. Cu montaj.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="despre" class="about">
+  <div class="container about-grid">
+    <div>
+      <div class="label" style="background: #1a0e2a; color: #fbcb35; display: inline-block; padding: 6px 16px; border-radius: 999px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 14px;">Despre noi</div>
+      <h2 style="font-size: 36px; margin-bottom: 24px;">Un magazin de papetărie<br>care nu se uită pe sine</h2>
+      <p>TransOffice Trade SRL a fost fondat în 2003 de Kovács István la Odorheiu Secuiesc — cu un singur autoturism Dacia și o garajă închiriată. Astăzi, după 22 de ani, avem 12 angajați și deservim 28 de clienți activi din Hargita și Covasna.</p>
+      <p>În 2024, conducerea operativă a trecut la <strong>Kovács Márton</strong>, fiul fondatorului. Și odată cu el — o nouă generație de procese: digitalizare, AI-asistat operational, și acum: <strong>mobilitate verde</strong>.</p>
+    </div>
+    <div class="quote-box">
+      Apám 22 éve egy Daciaval kezdte. Anyám 20 évig fejből vezette mindent. Most rendszerünk van — és villanyautóink lesznek. Ez a TransOffice 2025-ben.
+      <div class="author">— Kovács Márton</div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="section-head">
+      <div class="label">Contact</div>
+      <h2>Hai să discutăm</h2>
+      <p>Cerere de ofertă, contract anual sau o întrebare despre proiectul AFM — răspundem în 24 de ore lucrătoare.</p>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-item"><div class="lbl">Sediu</div><div class="val">Calea Băieșenilor 22<br>535600 Odorheiu Secuiesc · Harghita</div></div>
+        <div class="contact-item"><div class="lbl">Date juridice</div><div class="val">CUI 15847291 · J19/421/2003</div></div>
+      </div>
+      <div>
+        <div class="contact-item"><div class="lbl">Telefon</div><div class="val"><a href="tel:+40266218945">0266-218 945</a></div></div>
+        <div class="contact-item"><div class="lbl">Email</div><div class="val"><a href="mailto:contact@transoffice.ro">contact@transoffice.ro</a></div></div>
+        <div class="contact-item"><div class="lbl">Program / Nyitva</div><div class="val">L–V 08:00–17:00<br>S 09:00–13:00 (programare)</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<a href="tel:+40266218945" class="floating-call">Hívjon most</a>
+
+<footer>
+  © 2003–2025 TransOffice Trade SRL · <span class="accent">♥</span> Made in Udvarhely · Cofinanțat (în depunere) prin AFM Mobilitate Verde 2025
+</footer>
+
+</body>
+</html>

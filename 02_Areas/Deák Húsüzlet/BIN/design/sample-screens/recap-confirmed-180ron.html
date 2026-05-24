@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rendelés leadva - 180 RON</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #F5F0EB; --card: #FFFFFF; --primary: #9B2335; --primary-light: #B8465A;
+    --text: #2D2D2D; --text2: #777777; --border: #E8E0D8;
+    --green: #2E7D32; --green-light: #E8F5E9; --green-dark: #1B5E20;
+    --gold-light: #FFF8E1; --warn: #E65100; --warn-bg: #FFF3E0;
+  }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #F8F5F0; color: var(--text); }
+
+  .header { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; max-width: 1200px; margin: 16px auto; padding: 0 24px; overflow-x: auto; }
+  .tab { padding: 10px 20px; border-radius: 24px; font-size: 13px; border: 1px solid var(--border); background: white; color: var(--text); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 400; }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+
+  .content { max-width: 1200px; margin: 0 auto; padding: 0 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+  .feature > h2 { font-size: 18px; font-weight: 700; margin: 0 0 12px; }
+
+  /* Scenario buttons */
+  .scenarios { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .scenario-btn { padding: 6px 12px; border-radius: 20px; font-size: 11px; border: 1px solid var(--border); background: white; cursor: pointer; }
+  .scenario-btn.active { border: 2px solid var(--primary); background: var(--primary); color: white; font-weight: 600; }
+
+  .phones { display: flex; gap: 20px; flex-wrap: wrap; }
+
+  /* Phone frame */
+  .phone { width: 375px; min-height: 700px; background: var(--bg); border-radius: 24px; border: 2px solid var(--border); overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12); flex-shrink: 0; }
+  .phone-header { background: var(--bg); padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .phone-header span:first-child { font-size: 20px; font-weight: 700; font-family: Georgia, serif; }
+  .phone-body { padding: 0 16px 16px; max-height: 640px; overflow-y: auto; }
+
+  /* Cards */
+  .card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .card-highlight { border: 2px solid var(--primary); }
+
+  /* Badge */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-green { color: var(--green); background: var(--green-light); }
+  .badge-gold { color: var(--green-dark); background: var(--gold-light); }
+  .badge-warn { color: var(--warn); background: var(--warn-bg); }
+  .badge-status { color: var(--green); background: var(--green-light); }
+
+  /* Buttons */
+  .btn { width: 100%; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; }
+  .btn-primary { background: var(--primary); color: #FFF; border: none; }
+  .btn-primary:disabled { background: #CCC; cursor: default; }
+  .btn-secondary { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+  .btn-ghost { background: transparent; color: var(--primary-light); border: none; text-decoration: underline; }
+  .btn + .btn { margin-top: 10px; }
+
+  /* Progress bar */
+  .progress-wrap { position: relative; height: 8px; background: #E0D8D0; border-radius: 4px; margin-bottom: 6px; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .progress-marker { position: absolute; top: 50%; transform: translateY(-50%); width: 2px; height: 16px; }
+  .progress-bubble { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; z-index: 2; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+  .progress-bubble.reached { background: var(--green); color: white; }
+  .progress-bubble.not-reached { background: #E0D8D0; color: #AAA; border-color: #E0D8D0; }
+  .progress-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); }
+  .progress-sublabels { display: flex; justify-content: space-between; font-size: 9px; color: var(--text2); margin-top: 1px; margin-bottom: 4px; }
+  .progress-sublabels span { text-align: center; }
+
+  /* Cart item */
+  .cart-item { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; }
+  .cart-item-img { width: 56px; height: 56px; border-radius: 10px; background: #E8D5C0; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: 14px; font-weight: 600; }
+  .cart-item-price { font-size: 12px; color: var(--text2); }
+  .cart-item-qty { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text2); }
+  .cart-item-qty span.qty { padding: 4px 10px; border: 1px solid var(--border); border-radius: 6px; font-size: 13px; color: var(--text); }
+  .cart-item-total { font-size: 14px; font-weight: 600; min-width: 60px; text-align: right; }
+
+  .nudge { padding: 10px 14px; border-radius: 12px; font-size: 13px; }
+  .nudge-warn { background: var(--warn-bg); color: var(--warn); }
+  .nudge-green { background: var(--green-light); color: var(--green); }
+  .nudge-gold { background: linear-gradient(135deg, var(--green-light), var(--gold-light)); color: var(--green-dark); font-weight: 600; }
+
+  .breakdown { font-size: 12px; color: var(--green); padding: 4px 4px 0; }
+  .breakdown-hint { font-size: 11px; color: var(--text2); font-style: italic; padding: 4px 4px 0; }
+
+  .total-row { display: flex; justify-content: space-between; padding: 4px 0; }
+  .total-main { font-size: 16px; font-weight: 700; margin-top: 8px; }
+
+  .category-filters { display: flex; gap: 8px; margin: 12px 0; overflow-x: auto; }
+  .cat-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; border: 1px solid var(--border); background: white; white-space: nowrap; }
+  .cat-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  .placeholder-card { background: #E8D5C0; height: 80px; border-radius: 12px; margin-bottom: 10px; opacity: 0.3; }
+
+  /* Bundle grid */
+  .bundle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .bundle-card { background: var(--card); border-radius: 16px; padding: 16px; border: 1px solid var(--border); cursor: pointer; position: relative; overflow: hidden; }
+  .bundle-card:hover { border-color: var(--primary); }
+  .bundle-icon { font-size: 32px; margin-bottom: 8px; }
+  .bundle-name { font-size: 16px; font-weight: 700; }
+  .bundle-meta { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+  .bundle-price { font-size: 15px; font-weight: 700; color: var(--primary); }
+  .bundle-badges { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .bundle-saving { position: absolute; top: 10px; right: 10px; }
+  .bundle-saving-tag { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; color: var(--green-dark); background: var(--green-light); }
+
+  /* Icon badges for bundles — v3: with text labels */
+  .icon-badges { display: flex; gap: 8px; margin-top: 8px; }
+  .icon-badge-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .icon-badge-item .ib-label { font-size: 8px; color: var(--green); font-weight: 600; white-space: nowrap; }
+  .icon-badge { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .icon-badge-truck { background: var(--green-light); color: var(--green); }
+  .icon-badge-pct { position: relative; width: 30px; height: 30px; background: var(--gold-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .icon-badge-pct::before { content: ''; position: absolute; inset: -3px; background: var(--gold-light); clip-path: polygon(50% 0%,61% 11%,75% 3%,73% 18%,90% 18%,82% 31%,95% 40%,82% 49%,90% 62%,75% 60%,73% 75%,61% 66%,50% 78%,39% 66%,27% 75%,25% 60%,10% 62%,18% 49%,5% 40%,18% 31%,10% 18%,27% 18%,25% 3%,39% 11%); z-index: 0; }
+  .icon-badge-pct span { position: relative; z-index: 1; font-size: 9px; font-weight: 800; color: var(--green-dark); }
+
+  /* Modal overlay */
+  .modal-overlay { background: rgba(0,0,0,0.4); border-radius: 16px; padding: 20px; margin: 12px 0; }
+  .modal-inner { background: var(--card); border-radius: 16px; padding: 20px; }
+  .modal-inner h3 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+  .modal-inner p { font-size: 13px; color: var(--text2); margin-bottom: 16px; }
+
+  .return-banner { background: var(--card); border-radius: 16px; padding: 14px 16px; margin: 12px 0; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .return-banner-btn { padding: 10px 16px; border-radius: 10px; background: var(--primary); color: white; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+  /* Active order banner — C1 parity (compact variant for recap home) */
+  .active-order-banner { position: relative; background: var(--card); border-radius: 16px; padding: 12px 14px 12px 18px; margin: 12px 0; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; cursor: pointer; overflow: hidden; }
+  .active-order-banner::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--green); }
+  .active-order-banner.state-in_transit::before { background: var(--green); }
+  .active-order-banner.state-arriving_soon::before { background: var(--warn); }
+  .active-order-banner.state-preparing::before { background: #D4A017; }
+  .active-order-banner.state-confirmed::before { background: #8A8078; }
+  .aob-icon { width: 36px; height: 36px; border-radius: 50%; background: var(--green-light); display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--green); }
+  .active-order-banner.state-arriving_soon .aob-icon { background: var(--warn-bg); color: var(--warn); animation: aob-pulse 1.8s ease-in-out infinite; }
+  .active-order-banner.state-preparing .aob-icon { background: #FFF8E1; color: #8A6A00; }
+  .active-order-banner.state-confirmed .aob-icon { background: #F3EEE9; color: #5A544E; }
+  @keyframes aob-pulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(230,81,0,0.35); } 50% { box-shadow: 0 0 0 6px rgba(230,81,0,0); } }
+  .aob-body { flex: 1; min-width: 0; }
+  .aob-chip { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.3px; text-transform: uppercase; padding: 2px 7px; border-radius: 6px; background: var(--green-light); color: var(--green-dark); margin-bottom: 3px; }
+  .active-order-banner.state-arriving_soon .aob-chip { background: var(--warn-bg); color: var(--warn); }
+  .active-order-banner.state-preparing .aob-chip { background: #FFF8E1; color: #8A6A00; }
+  .active-order-banner.state-confirmed .aob-chip { background: #F3EEE9; color: #5A544E; }
+  .aob-title { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.2; }
+  .aob-meta { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .aob-cta { font-size: 12px; font-weight: 600; color: var(--primary); white-space: nowrap; display: inline-flex; align-items: center; gap: 2px; }
+
+  .success-icon { font-size: 56px; margin-bottom: 8px; }
+  .savings-big { font-size: 24px; font-weight: 800; color: var(--green-dark); margin: 8px 0 4px; }
+  .savings-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px; color: var(--text2); }
+  .savings-row .val { color: var(--green); }
+
+  /* Admin */
+  .admin-item { display: flex; justify-content: space-between; align-items: center; background: var(--card); border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .toggle { width: 36px; height: 20px; border-radius: 10px; background: var(--green); position: relative; display: inline-block; }
+  .toggle-knob { width: 16px; height: 16px; border-radius: 8px; background: white; position: absolute; right: 2px; top: 2px; }
+
+  .form-field { margin-bottom: 12px; }
+  .form-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+  .form-input { padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; width: 100%; }
+  .form-chip { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #F9F6F2; border-radius: 8px; margin-bottom: 4px; font-size: 13px; }
+  .form-chip .remove { color: var(--primary-light); cursor: pointer; }
+
+  .unavailable { opacity: 0.5; }
+  .unavailable .cart-item-name { text-decoration: line-through; }
+
+  .loaded-msg { font-size: 12px; color: var(--green); background: var(--green-light); padding: 8px 12px; border-radius: 10px; margin: 12px 0; text-align: center; }
+
+  /* v3: Success toast */
+  .toast { background: var(--green); color: white; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 600; text-align: center; margin: 12px 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+  /* v3: Delivery ETA */
+  .eta-card { background: var(--card); border-radius: 12px; padding: 12px 16px; margin: 12px 0; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .eta-icon { font-size: 24px; }
+  .eta-text { font-size: 13px; }
+  .eta-text strong { display: block; font-size: 14px; }
+
+  /* v3 changelog */
+  .changelog { max-width: 1200px; margin: 0 auto; padding: 16px 24px; }
+  .changelog summary { font-size: 13px; color: var(--text2); cursor: pointer; }
+  .changelog ul { font-size: 12px; color: var(--text2); margin: 8px 0 0 20px; line-height: 1.8; }
+
+  /* ── Dev docs block (technical spec per scenario) — mirrors v0.3-reorder-v2.html ── */
+  .doc-block {
+    width: 100%; margin-top: 20px;
+    border: 1px solid #D4CCC3; border-radius: 10px;
+    background: #FAF6F0; font-family: 'SF Mono', 'Monaco', 'Consolas', monospace;
+    font-size: 12px; color: #3A3028; overflow: hidden;
+  }
+  .doc-trigger {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 12px 16px; background: #F5EFE7; border: none;
+    color: #4A3F37; font-family: inherit; font-size: 12px;
+    cursor: pointer; text-align: left; transition: background 0.15s;
+  }
+  .doc-trigger:hover { background: #F2EDE5; }
+  .doc-trigger-left { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+  .doc-trigger-chev { display: inline-block; transition: transform 0.2s; color: #8B7D6F; font-size: 10px; }
+  .doc-block.open .doc-trigger-chev { transform: rotate(90deg); }
+  .doc-trigger-title { font-weight: 700; letter-spacing: 0.3px; }
+  .doc-ticket {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #E7EEF8; color: #1F4E8C; padding: 2px 8px; border-radius: 4px;
+    font-size: 10.5px; font-weight: 700; text-decoration: none;
+  }
+  .doc-ticket:hover { background: #D6E3F3; }
+  .doc-trigger-right { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .doc-copy-btn {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: white; color: #4A3F37; border: 1px solid #D4CCC3;
+    padding: 3px 8px; border-radius: 4px; font-family: inherit;
+    font-size: 10.5px; font-weight: 600; cursor: pointer; transition: all 0.15s;
+  }
+  .doc-copy-btn:hover { background: #F2EDE5; border-color: #B5ABA0; }
+  .doc-copy-btn.copied { background: #E8F5E9; border-color: #2D7A4F; color: #2D7A4F; }
+
+  .doc-content { display: none; padding: 4px 16px 16px; border-top: 1px solid #E8DDD0; }
+  .doc-block.open .doc-content { display: block; }
+  .doc-section { margin-top: 14px; }
+  .doc-section:first-child { margin-top: 10px; }
+  .doc-section h4 {
+    margin: 0 0 6px; font-size: 10px; font-weight: 700;
+    color: #8B7D6F; letter-spacing: 0.8px; text-transform: uppercase;
+  }
+  .doc-section p {
+    margin: 0; font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13px; color: #2C2825; line-height: 1.5;
+  }
+  .doc-section ul { margin: 0; padding-left: 18px; list-style: none; }
+  .doc-section ul li {
+    position: relative; font-size: 11.5px; color: #3A3028;
+    line-height: 1.55; padding: 2px 0;
+  }
+  .doc-section ul li::before {
+    content: '›'; position: absolute; left: -14px; top: 2px;
+    color: #8B7D6F; font-weight: 700;
+  }
+  .doc-section code, .doc-inline {
+    background: #F2EDE5; padding: 1px 5px; border-radius: 3px;
+    font-size: 10.5px; color: #7D4E1F; border: 1px solid #E8DDD0;
+  }
+  .doc-state-list li { padding: 3px 0; }
+  .doc-state-tag {
+    display: inline-block; background: #2C2825; color: #F5EFE7;
+    padding: 1px 6px; border-radius: 3px; font-size: 9.5px;
+    font-weight: 700; margin-right: 6px; text-transform: uppercase;
+  }
+  .doc-state-tag.ok { background: #2D7A4F; }
+  .doc-state-tag.warn { background: #C96A2E; }
+  .doc-state-tag.err { background: #9B2335; }
+  .doc-state-tag.info { background: #4A5B7B; }
+
+  /* === MOBILE RESPONSIVE === */
+  @media (max-width: 500px) {
+    html, body { overflow-x: hidden; }
+    .header { padding: 16px 8px 0; }
+    .header h1 { font-size: 22px; }
+    .tabs { padding: 0 4px; margin: 12px auto; gap: 6px; }
+    .tab { padding: 8px 14px; font-size: 12px; }
+    .content { padding: 0 4px 24px; }
+    .phones { gap: 8px; }
+    .phone { width: 100%; min-height: auto; border-radius: 16px; border-width: 1px; }
+    .phone-body { max-height: none; overflow-y: visible; padding: 0 10px 12px; }
+    .phone-header { padding: 12px 14px; }
+    .scenarios { gap: 4px; }
+    .scenario-btn { padding: 5px 10px; font-size: 10px; }
+    .changelog { padding: 12px 8px; }
+  }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px; margin: 16px 24px 0;
+    background: white; border: 1px solid #D8D0C8;
+    border-radius: 8px; font-family: system-ui, sans-serif;
+    font-size: 14px; font-weight: 600; color: #9B2335;
+    text-decoration: none; cursor: pointer;
+  }
+  .back-btn:hover { background: #F5F0EB; }
+
+  /* ── Order Card v3 ─────────────────────────────── */
+  .order-card-v3 {
+    background: white; border: 1px solid #E8E2DB; border-radius: 16px;
+    padding: 14px; margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+  .order-card-v3.card-highlight { border-left: 3px solid #9B2335; }
+  .ocv3-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .ocv3-date { font-size: 12px; color: #999; font-weight: 500; }
+  .ocv3-summary { font-size: 12px; color: #666; margin-bottom: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ocv3-body-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; gap: 8px; }
+  .ocv3-body-left { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 0; }
+  .ocv3-price { font-size: 15px; font-weight: 700; color: #2C2825; }
+  .ocv3-id { font-size: 10px; color: #bbb; text-align: center; margin-bottom: 10px; letter-spacing: 0.3px; }
+  /* Piggy bank savings badge — Lucide piggy-bank icon */
+  .savings-pig-wrap {
+    display: inline-flex; flex-direction: column; align-items: center;
+    background: #2D7A4F; border-radius: 14px;
+    padding: 8px 12px; gap: 4px; min-width: 64px;
+  }
+  .pig-icon { display: flex; align-items: center; justify-content: center; line-height: 1; }
+  .pig-amount { font-size: 12px; font-weight: 800; color: white; line-height: 1.1; white-space: nowrap; }
+
+  /* progress-edge-fix: prevent right-edge bubble/dot/label from overflowing */
+  .progress-bubble[style*="left:100%"], .progress-bubble[style*="left: 100%"],
+  .progress-dot[style*="left:100%"], .progress-dot[style*="left: 100%"],
+  .progress-label[style*="left:100%"], .progress-label[style*="left: 100%"] {
+    transform: translate(-100%, -50%) !important;
+  }
+  .progress-bubble[style*="left:0%"], .progress-bubble[style*="left: 0%"],
+  .progress-dot[style*="left:0%"], .progress-dot[style*="left: 0%"],
+  .progress-label[style*="left:0%"], .progress-label[style*="left: 0%"] {
+    transform: translate(0, -50%) !important;
+  }
+</style>
+
+<style>
+  .feature { display: none !important; }
+  .feature#recap { display: block !important; }
+  .changelog { display: none; }
+</style>
+
+<style id="sample-screen-overrides">
+/* === SAMPLE SCREEN MODE === */
+/* Hide wireframe chrome */
+.back-btn, .header, .tabs, .changelog, .doc-block, .doc-trigger, .doc-panel { display: none !important; }
+
+/* Hide all features except target */
+.feature { display: none !important; }
+#recap { display: block !important; }
+
+/* Hide feature title and scenario buttons */
+#recap > h2 { display: none !important; }
+#recap > .scenarios { display: none !important; }
+
+/* Phone frame: mobile-only look */
+body { background: var(--bg, #F5F0EB) !important; }
+.content { max-width: 375px !important; margin: 0 auto !important; padding: 0 !important; }
+.phones { display: block !important; gap: 0 !important; }
+.phone {
+  width: 375px !important; min-height: auto !important;
+  border: none !important; border-radius: 0 !important;
+  box-shadow: none !important;
+}
+.phone-body { max-height: none !important; overflow: visible !important; }
+
+/* Hide all phones except the target one */
+.phones > .phone { display: none !important; }
+.phones > .phone:nth-child(1) { display: block !important; }
+
+
+</style>
+
+</head>
+<body>
+<a href="index.html" class="back-btn">&#8592; Vissza</a>
+
+<div class="header">
+  <h1>Post-order Recap</h1>
+  <p>Deák Húsmíves · v0.3 · Post-order Recap</p>
+</div>
+
+
+
+<div class="content">
+
+<!-- ============================================================ -->
+<!-- FEATURE 1: SAVINGS COUNTER                                    -->
+<!-- ============================================================ -->
+<div class="feature" id="savings">
+  <h2>NEW-1: Running Savings Counter</h2>
+  <div class="scenarios" id="savings-scenarios">
+    <button class="scenario-btn" data-amount="0">Üres kosár</button>
+    <button class="scenario-btn active" data-amount="120">120 RON (alap)</button>
+    <button class="scenario-btn" data-amount="145">145 RON (near)</button>
+    <button class="scenario-btn" data-amount="180">180 RON (ingyenes száll.)</button>
+    <button class="scenario-btn" data-amount="350">350 RON (teljes kedv.)</button>
+  </div>
+  <div class="phones">
+    <div class="phone">
+      <div class="phone-header"><span>Kosaram</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+      <div class="phone-body" id="savings-phone"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FEATURE 2: POST-ORDER RECAP                                   -->
+<!-- ============================================================ -->
+<div class="feature active" id="recap">
+  <h2>NEW-3: Post-order Recap</h2>
+  <div class="scenarios" id="recap-scenarios">
+    <button class="scenario-btn" data-amount="120">120 RON (nincs spórolás)</button>
+    <button class="scenario-btn active" data-amount="180">180 RON (szállítás + aktív rendelés)</button>
+    <button class="scenario-btn" data-amount="350">350 RON (teljes kedv.)</button>
+  </div>
+  <div class="phones">
+    <div class="phone">
+      <div class="phone-header"><span>Rendelés leadva ✓</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+      <div class="phone-body" id="recap-phone"></div>
+    </div>
+    <div class="phone">
+      <div class="phone-header"><span>Termékek</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+      <div class="phone-body" id="recap-home"></div>
+    </div>
+  </div>
+  <div id="recap-docs"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FEATURE 3: REORDER                                            -->
+<!-- ============================================================ -->
+<div class="feature" id="reorder">
+  <h2>NEW-4: Reorder (Újrarendelés)</h2>
+  <div class="scenarios" id="reorder-scenarios">
+    <button class="scenario-btn active" data-view="list">Rendeléseim + gomb</button>
+    <button class="scenario-btn" data-view="merge">Merge modal</button>
+    <button class="scenario-btn" data-view="loaded">Betöltött kosár</button>
+  </div>
+  <div class="phones" id="reorder-phones"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FEATURE 4: FAMILY BUNDLES                                     -->
+<!-- ============================================================ -->
+<div class="feature" id="bundles">
+  <h2>NEW-5: Családi csomagok</h2>
+  <div class="scenarios" id="bundle-scenarios">
+    <button class="scenario-btn active" data-view="grid">Vásárlói nézet</button>
+    <button class="scenario-btn" data-view="detail">Csomag részletező</button>
+    <button class="scenario-btn" data-view="admin">Admin nézet</button>
+  </div>
+  <div class="phones" id="bundle-phones"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FEATURE 5: ORDERS + SAVINGS BADGE                             -->
+<!-- ============================================================ -->
+<div class="feature" id="orders">
+  <h2>Rendeléseim + Spórolás badge</h2>
+  <div class="phones">
+    <div class="phone">
+      <div class="phone-header"><span>Rendeléseim</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+      <div class="phone-body" id="orders-phone"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<div class="changelog">
+  <details>
+    <summary>v3 changelog (design review javítások)</summary>
+    <ul>
+      <li>Progress bar: szöveges label a küszöbök alatt ("Ingy. szállítás" / "2% kedv.")</li>
+      <li>Bundle icon badge-ek: szöveges label az ikonok alatt (mobilon is egyértelmű)</li>
+      <li>Min. rendelés: pozitívabb hangnem ("Még X RON és leadhatod a rendelést!")</li>
+      <li>Üres kosár: CTA gomb ("Böngéssz a termékeink között →")</li>
+      <li>Merge modal: dátum + rendelésszám kontextus</li>
+      <li>Bundle subtitle: "Válassz kényelmes csomagot" (konkrétabb)</li>
+      <li>Becsült ár: magyarázat ("a végső ár a mérés alapján változhat")</li>
+      <li>Post-order recap: szállítási idő becslés kártya</li>
+      <li>Admin: success toast a mentés után</li>
+      <li>Reorder gomb: minden kiszállított rendelésen (nem csak az elsőn)</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.feature').forEach(f => f.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ============================================================
+// HELPERS
+// ============================================================
+function calcSavings(amount) {
+  const delivery = amount >= 150 ? 10 : 0;
+  const volume = amount >= 300 ? Math.round(amount * 0.02) : 0;
+  return { delivery, volume, total: delivery + volume };
+}
+
+// v3: progress bar with sublabels under thresholds
+function progressBar(amount) {
+  const pct = Math.min((amount / 300) * 100, 100);
+  const r1 = amount >= 150, r2 = amount >= 300;
+  const color = r2 ? 'var(--green-dark)' : r1 ? 'var(--green)' : 'var(--primary)';
+  return `
+    <div class="card">
+      <div class="progress-wrap">
+        <div class="progress-fill" style="width:${pct}%;background:${color}"></div>
+        <div class="progress-bubble ${r1 ? 'reached' : 'not-reached'}" style="left:50%">${r1 ? '✓' : ''}</div>
+        <div class="progress-bubble ${r2 ? 'reached' : 'not-reached'}" style="left:100%">${r2 ? '✓' : ''}</div>
+      </div>
+      <div class="progress-labels">
+        <span>0 RON</span>
+        <span style="color:${r1?'var(--green)':'var(--text2)'};font-weight:${r1?600:400}">150 RON</span>
+        <span style="color:${r2?'var(--green-dark)':'var(--text2)'};font-weight:${r2?600:400}">300 RON</span>
+      </div>
+      <div class="progress-sublabels">
+        <span></span>
+        <span style="color:${r1?'var(--green)':'var(--text2)'}">Ingy. szállítás</span>
+        <span style="color:${r2?'var(--green-dark)':'var(--text2)'}">2% kedv.</span>
+      </div>
+    </div>`;
+}
+
+function decisionConfidence(amount) {
+  const s = calcSavings(amount);
+  if (amount === 0)
+    return '<div class="nudge nudge-warn">Adj hozzá termékeket → 150 RON-tól ingyenes szállítás!</div>';
+  if (amount < 10)
+    return '<div class="nudge nudge-warn">Adj hozzá termékeket → 150 RON-tól ingyenes szállítás!</div>';
+  if (amount < 150) {
+    const gap = 150 - amount;
+    const txt = gap <= 15
+      ? `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg> Már csak ${gap} RON → Ingyenes szállítás!`
+      : `Még ${gap} RON → ingyenes szállítás`;
+    return `<div class="nudge nudge-warn">${txt}</div>`;
+  }
+  if (amount < 300) {
+    const gap2 = 300 - amount;
+    return `
+      <div class="nudge nudge-green" style="display:flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Ingyenes szállítás!</div>
+      <div class="breakdown">-10 RON megtakarítás (ingyenes szállítás)</div>
+      <div class="breakdown-hint">Még ${gap2} RON → 2% kedvezmény a teljes rendelésből</div>`;
+  }
+  return `
+    <div class="nudge nudge-gold" style="display:flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Teljes kedvezmény!</div>
+    <div class="breakdown" style="color:var(--green-dark)">+${s.delivery} RON szállítás + ${s.volume} RON kedvezmény (2%) = <strong>+${s.total} RON megtakarítás</strong></div>`;
+}
+
+function cartItem(name, price, qty, emoji) {
+  return `
+    <div class="cart-item">
+      <div class="cart-item-img">${emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${name}</div>
+        <div class="cart-item-price">${price} RON / kg</div>
+      </div>
+      <div class="cart-item-qty"><span>−</span><span class="qty">${qty.toFixed(2).replace('.',',')}</span><span>+</span></div>
+      <div class="cart-item-total">${Math.round(price * qty)} RON</div>
+    </div>`;
+}
+
+const cartItems120 = [
+  ['Deák háziKolbász', 45, 1, '🌭'], ['Füstölt Szalonna', 42, 0.5, '🥓'], ['Abált Szalonna', 35, 1.5, '🥩']
+];
+const cartItems145 = [
+  ['Deák háziKolbász', 45, 1.5, '🌭'], ['Füstölt Szalonna', 42, 1, '🥓'], ['Abált Szalonna', 35, 1.5, '🥩']
+];
+const cartItems180 = [
+  ['Deák háziKolbász', 45, 2, '🌭'], ['Füstölt Szalonna', 42, 1, '🥓'], ['Abált Szalonna', 35, 1, '🥩'], ['Füstölt Csülök', 34, 0.5, '🍖']
+];
+const cartItems350 = [
+  ['Deák háziKolbász', 45, 2, '🌭'], ['Füstölt Fehér Karaj', 49, 2, '🥩'], ['Füstölt Egész Sonka', 55, 2, '🍖'], ['Cérna Kolbász', 48, 1, '🌭'], ['Abált Szalonna', 35, 1, '🥓']
+];
+
+function getItems(amount) {
+  if (amount === 0) return [];
+  if (amount <= 120) return cartItems120;
+  if (amount <= 145) return cartItems145;
+  if (amount <= 180) return cartItems180;
+  return cartItems350;
+}
+
+// ============================================================
+// SAVINGS COUNTER
+// ============================================================
+function renderSavings(amount) {
+  const el = document.getElementById('savings-phone');
+  const items = getItems(amount);
+  const s = calcSavings(amount);
+
+  // v3: Empty cart with CTA
+  if (amount === 0) {
+    el.innerHTML = `
+      <div style="text-align:center;padding:40px 20px;color:var(--text2)">
+        <div style="margin-bottom:12px"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#CCC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div>
+        <div style="font-size:15px;margin-bottom:8px">A kosarad üres</div>
+        <div style="font-size:13px;margin-bottom:16px;color:var(--text2)">Nézd meg a kínálatunkat és válassz!</div>
+        <button class="btn btn-secondary" style="width:auto;display:inline-block;padding:10px 20px;font-size:13px">Böngéssz a termékeink között →</button>
+      </div>
+      <div style="margin-top:16px">${progressBar(0)}</div>
+      ${decisionConfidence(0)}
+      <div style="margin-top:16px"><button class="btn btn-primary" disabled>Tovább a fizetéshez</button></div>`;
+    return;
+  }
+
+  let html = `<div style="font-size:13px;color:var(--text2);text-align:right;padding:8px 0">${items.length} termék</div>`;
+  items.forEach(i => html += cartItem(...i));
+  html += `<div style="margin-top:16px">${progressBar(amount)}${decisionConfidence(amount)}</div>`;
+
+  // Total section
+  html += `<div style="margin-top:16px;padding:12px 0;border-top:1px solid var(--border)">`;
+  html += `<div class="total-row" style="font-size:11px;color:var(--text2)"><span>Becsült összeg</span><span>~${amount},00 RON</span></div>`;
+  if (amount >= 150)
+    html += `<div class="total-row" style="font-size:11px;color:var(--green)"><span>Szállítás</span><span><s style="color:var(--text2);margin-right:4px">10 RON</s> Ingyenes</span></div>`;
+  if (amount >= 300)
+    html += `<div class="total-row" style="font-size:11px;color:var(--green-dark)"><span>2% kedvezmény</span><span>-${s.volume} RON</span></div>`;
+  html += `<div class="total-row total-main"><span>Összesen</span><span>~${amount - s.volume},00 RON</span></div>`;
+  html += `</div>`;
+
+  // v3: Minimum order — positive framing
+  if (amount < 80)
+    html += `<div class="nudge nudge-warn" style="font-size:12px;margin-top:8px">Még ${80-amount} RON és leadhatod a rendelést!</div>`;
+
+  html += `<div style="margin-top:16px"><button class="btn btn-primary" ${amount<80?'disabled':''}>Tovább a fizetéshez</button></div>`;
+  el.innerHTML = html;
+}
+
+document.querySelectorAll('#savings-scenarios .scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#savings-scenarios .scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderSavings(parseInt(btn.dataset.amount));
+  });
+});
+renderSavings(120);
+
+// ============================================================
+// POST-ORDER RECAP
+// ============================================================
+function renderRecap(amount) {
+  const s = calcSavings(amount);
+  const el = document.getElementById('recap-phone');
+  const home = document.getElementById('recap-home');
+
+  let html = `
+    <div style="text-align:center;padding:24px 0 16px">
+      <div class="success-icon"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <div style="font-size:24px;font-weight:700;margin-bottom:4px">Köszönjük a rendelést!</div>
+      <div style="font-size:13px;color:var(--text2)">DEAK-ORD-00044 · ${amount},00 RON</div>
+    </div>`;
+
+  // v3: Delivery ETA card
+  html += `
+    <div class="eta-card">
+      <div class="eta-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9B2335" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg></div>
+      <div class="eta-text">
+        <strong>Szállítás holnap, 14:00–16:00</strong>
+        <span style="font-size:12px;color:var(--text2)">SMS-ben értesítünk a pontos időről</span>
+      </div>
+    </div>`;
+
+  html += `<div class="card">`;
+
+  if (s.total > 0) {
+    const cls = amount >= 300 ? 'nudge-gold' : 'nudge-green';
+    const label = amount >= 300 ? 'Teljes kedvezmény!' : 'Ingyenes szállítás!';
+    html += `
+      <div class="nudge ${cls}" style="text-align:center;margin-bottom:12px">
+        <div style="font-size:15px;font-weight:600">${label}</div>
+        <div class="savings-big">+${s.total} RON megtakarítás</div>
+      </div>`;
+    if (s.delivery > 0)
+      html += `<div class="savings-row"><span>Ingyenes szállítás</span><span class="val">+${s.delivery} RON</span></div>`;
+    if (s.volume > 0)
+      html += `<div class="savings-row"><span>2% kedvezmény</span><span class="val">+${s.volume} RON</span></div>`;
+  } else {
+    html += `<div style="text-align:center;padding:8px 0;color:var(--text2);font-size:13px;font-style:italic"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg> Legközelebb 150 RON felett ingyenes a szállítás!</div>`;
+  }
+  html += `</div>`;
+  html += `
+    <button class="btn btn-primary">← Vissza a termékekre</button>
+    <button class="btn btn-secondary">Rendelés részletei</button>`;
+  el.innerHTML = html;
+
+  // Home banner — 180 RON scenario shows active order banner (C1 parity);
+  // other scenarios keep the legacy "last order" banner.
+  const hasActiveOrder = amount === 180;
+  const truckSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>`;
+  const activeBanner = `
+    <div class="active-order-banner state-in_transit">
+      <div class="aob-icon">${truckSvg}</div>
+      <div class="aob-body">
+        <span class="aob-chip">Szállítás alatt</span>
+        <div class="aob-title">DEAK-ORD-00045 · ma 15–17h</div>
+        <div class="aob-meta">3 termék · ~${amount} RON</div>
+      </div>
+      <span class="aob-cta">Követés →</span>
+    </div>`;
+
+  const legacyBanner = `
+    <div class="return-banner">
+      <div>
+        <div style="font-size:12px;color:var(--text2)">Utolsó rendelésed</div>
+        <div style="font-size:14px;font-weight:600">3 termék · ~${amount} RON</div>
+        ${s.total > 0 ? `<div style="font-size:11px;color:var(--green)">+${s.total} RON megtakarítás</div>` : ''}
+      </div>
+      <button class="return-banner-btn">Újrarendelem →</button>
+    </div>`;
+
+  home.innerHTML = `
+    ${hasActiveOrder ? activeBanner : legacyBanner}
+    <div class="category-filters">
+      <span class="cat-pill active">Összes</span>
+      <span class="cat-pill">Felvágott</span>
+      <span class="cat-pill">Friss</span>
+    </div>
+    <div class="placeholder-card"></div>
+    <div class="placeholder-card"></div>
+    <div class="placeholder-card"></div>
+    <div class="placeholder-card"></div>`;
+
+  // Render dev docs for this scenario
+  renderRecapDocs(amount);
+}
+
+// =====================================================
+// DEV DOCS — per-scenario technical documentation
+// Pattern mirrors v0.3-reorder-v2.html (REORDER_DOCS).
+// =====================================================
+const RECAP_DOCS = {
+  120: {
+    ticket: 'DH-118',
+    title: 'Recap — 120 RON (nincs megtakarítás)',
+    description: 'A vásárló leadott egy rendelést a 150 RON-os ingyenes szállítás küszöb alatt. A recap képernyő megerősíti a rendelést (order ID + összeg), mutatja a szállítási ETA-t, és egy edukatív nudge-ot tartalmaz: "Legközelebb 150 RON felett ingyenes a szállítás!". A home banner az utolsó rendelést hirdeti CTA-val ("Újrarendelem").',
+    interactions: [
+      'First render: success-icon + köszönő szöveg + order ID (`DEAK-ORD-00044`)',
+      '**ETA kártya** — statikus, csak info: "Szállítás holnap, 14:00–16:00" + "SMS-ben értesítünk"',
+      'Tap `← Vissza a termékekre` → navigate `/` (home, katalógus)',
+      'Tap `Rendelés részletei` → navigate `/orders/:id` (teljes részletező)',
+      'Home banner tap `Újrarendelem →` → POST /reorder/:id (lásd DH-120 reorder flow)',
+    ],
+    states: [
+      { tag: 'default', label: 'Rendelés < 150 RON → nudge-hint megjelenik, savings card üresen' },
+      { tag: 'no-savings', label: 'Nincs megtakarítás → italic hint szöveg "Legközelebb 150 RON felett ingyenes"' },
+      { tag: 'loading', label: 'Payment confirm közben (0-2s) — skeleton helyett inline spinner a CTA-n' },
+      { tag: 'error', label: 'Ha POST /order 5xx → retry screen (külön ticket: DH-119)' },
+    ],
+    edgeCases: [
+      'Az ETA idő backend-től jön (`delivery_window`) — ha hiányzik, fallback: "Hamarosan értesítünk"',
+      'Ha a user payment flow-ban kilép majd visszatér → idempotens render, ne dupla POST',
+      'Ha 150 RON-hoz közel van (pl. 145) → nudge szöveg: "Már csak 5 RON!" (külön case, lásd DH-117 savings-counter)',
+      'Order ID formázás mindig `DEAK-ORD-` + 5-digit zero-pad (konzisztens minden screennel)',
+    ],
+  },
+  180: {
+    ticket: 'DH-125',
+    title: 'Recap — 180 RON (aktív rendelés banner)',
+    description: 'A rendelés leadva, és még folyamatban van (nem érkezett meg). A home képernyő ezért az aktív rendelés bannert mutatja az "Utolsó rendelésed" kártya helyett — ez a **C1 wireframe konzisztencia**: ugyanaz a vizuális nyelv (accent rail, status chip, ikon), de kompaktabb forma (egy sor, nem három). A recap oldalon maradnak: savings kártya (+20 RON ingyenes szállítás), ETA kártya.',
+    interactions: [
+      '**Aktív rendelés banner** (home) — Tap bárhol → navigate `/orders/:id/tracking` (live státusz + térkép)',
+      '4 állapot flavor (ugyanaz mint C1-ben): `confirmed` / `preparing` / `in_transit` (default) / `arriving_soon`',
+      'Aktív sáv accent rail bal oldalt — zöld (in_transit), narancs (arriving_soon, pulse anim), sárga (preparing), szürke (confirmed)',
+      'Tap `Követés →` link → ugyanaz mint teljes kártya tap (két tap-target)',
+      'Tap `← Vissza a termékekre` (recap) → navigate `/` (home) — ott továbbra is az aktív banner látszik',
+      'Aktív rendelés lezárul (delivered) → banner eltűnik, legacy "Utolsó rendelésed" banner jelenik meg (WebSocket vagy polling)',
+    ],
+    states: [
+      { tag: 'default', label: 'in_transit — zöld accent, teherautó ikon, "Szállítás alatt" chip, ETA tartomány' },
+      { tag: 'confirmed', label: 'Megerősítve, csomagolás indul → szürke accent, check-circle ikon' },
+      { tag: 'preparing', label: 'Csomagolás alatt → sárga accent, doboz ikon, "~2 óra múlva indul"' },
+      { tag: 'arriving_soon', label: 'Futár közelben → narancs accent, pulse anim, "~30 perc múlva"' },
+      { tag: 'delivered', label: 'Szállítva → banner eltűnik, legacy `.return-banner` visszatér (fallback)' },
+      { tag: 'error', label: 'Ha GET /orders/:id/status fail → cached banner + "offline" jelző' },
+    ],
+    edgeCases: [
+      '**Több aktív rendelés** egyszerre (ritka): a legfrissebb (closest to arrival) jelenik meg; a többi a `/orders` listán látható — link "+N további aktív"',
+      '**Polling intervallum**: `in_transit` és `arriving_soon` → 30s; `confirmed` és `preparing` → 2 perc',
+      '**State-change animáció**: amikor a szerver frissít (pl. preparing → in_transit), cross-fade az accent rail + chip színén (200ms)',
+      'A recap oldal (bal phone) **nem** tartalmazza az aktív bannert — csak a home (jobb phone) mutatja, mert a recap screen szerepe az ÜRES utáni megerősítés',
+      'Ha a user reload-olja az oldalt — a banner állapot idempotens (server-side source of truth)',
+      'Accessibility: `role="button"` + `tabindex="0"` a kártyán, screen reader: "Aktív rendelés, szállítás alatt, 15 és 17 óra között érkezik"',
+    ],
+  },
+  350: {
+    ticket: 'DH-118',
+    title: 'Recap — 350 RON (teljes kedvezmény)',
+    description: 'Nagy rendelés, eléri a 2%-os volume discount küszöböt (300 RON+). A recap gold/green "Teljes kedvezmény!" nudge-ot mutat, részletes savings breakdown-nal (ingyenes szállítás + 2% engedmény). Ez a legjobb user élmény — a megtakarítás explicit, ünnepelt.',
+    interactions: [
+      'First render: ugyanaz mint 120 RON (success + order ID + ETA)',
+      '**Savings breakdown** kártya: nudge-gold style (gradient) + "+X RON megtakarítás" big number + 2 sor (szállítás + 2%)',
+      'Tap a savings számra → **NINCS akció** (pure info)',
+      'Tap `← Vissza a termékekre` → navigate `/`',
+      'Tap `Rendelés részletei` → navigate `/orders/:id`',
+    ],
+    states: [
+      { tag: 'default', label: 'Minden savings component látható (delivery + volume)' },
+      { tag: 'delivery-only', label: '150–299 RON → csak delivery savings (10 RON) — lásd 180 RON scenario' },
+      { tag: 'ok', label: 'Volume 2% kiszámolva pontosan az amount alapján (pl. 350 × 0.02 = 7 RON)' },
+    ],
+    edgeCases: [
+      'Ha a user kuponkódot is használt (külön savings pool) → a breakdown kiegészül "Kupon: -X RON" sorral',
+      'Kerekítés: `Math.round(amount × 0.02)`; tört értékek nincsenek a UI-on',
+      'Ha egy akció termék volt a kosárban (flash-sale) → külön tag "Akciós ár megtakarítva" (külön ticket: DH-124)',
+      'A "Teljes kedvezmény!" címke csak 300 RON+ esetén; 150–299 RON esetén csak "Ingyenes szállítás!"',
+    ],
+  },
+};
+
+function renderRecapDocs(amount) {
+  const doc = RECAP_DOCS[amount];
+  const container = document.getElementById('recap-docs');
+  if (!container || !doc) { if (container) container.innerHTML = ''; return; }
+  const statesHtml = doc.states.map(s => {
+    const cls = s.tag === 'error' || s.tag === 'err' ? 'err'
+      : s.tag === 'warn' || s.tag === 'delivery-only' || s.tag === 'delivered' ? 'warn'
+      : s.tag === 'default' || s.tag === 'ok' ? 'ok' : 'info';
+    return `<li><span class="doc-state-tag ${cls}">${s.tag}</span>${s.label}</li>`;
+  }).join('');
+  const interactionsHtml = doc.interactions.map(i => `<li>${i}</li>`).join('');
+  const edgesHtml = doc.edgeCases.map(e => `<li>${e}</li>`).join('');
+
+  container.innerHTML = `
+    <div class="doc-block" data-doc-view="${amount}">
+      <button class="doc-trigger" data-doc-toggle>
+        <span class="doc-trigger-left">
+          <span class="doc-trigger-chev">▶</span>
+          <span class="doc-trigger-title">📄 Dokumentáció — ${doc.title}</span>
+        </span>
+        <span class="doc-trigger-right">
+          <a class="doc-ticket" href="#${doc.ticket}" onclick="event.stopPropagation()">${doc.ticket}</a>
+          <span class="doc-copy-btn" data-doc-copy="${amount}">📋 Copy MD</span>
+        </span>
+      </button>
+      <div class="doc-content">
+        <div class="doc-section">
+          <h4>// Leírás / cél</h4>
+          <p>${doc.description}</p>
+        </div>
+        <div class="doc-section">
+          <h4>// Interakciók / események</h4>
+          <ul>${interactionsHtml}</ul>
+        </div>
+        <div class="doc-section">
+          <h4>// State-ek</h4>
+          <ul class="doc-state-list">${statesHtml}</ul>
+        </div>
+        <div class="doc-section">
+          <h4>// Edge case-ek</h4>
+          <ul>${edgesHtml}</ul>
+        </div>
+      </div>
+    </div>`;
+
+  // Wire up toggle + copy
+  container.querySelector('.doc-trigger[data-doc-toggle]').addEventListener('click', (e) => {
+    if (e.target.closest('[data-doc-copy]') || e.target.closest('.doc-ticket')) return;
+    e.currentTarget.closest('.doc-block').classList.toggle('open');
+  });
+  container.querySelector('[data-doc-copy]').addEventListener('click', async (e) => {
+    e.stopPropagation();
+    const btn = e.currentTarget;
+    const md = recapDocToMarkdown(amount);
+    try {
+      await navigator.clipboard.writeText(md);
+    } catch (err) {
+      const ta = document.createElement('textarea');
+      ta.value = md; document.body.appendChild(ta); ta.select();
+      document.execCommand('copy'); ta.remove();
+    }
+    btn.classList.add('copied');
+    const prev = btn.textContent;
+    btn.textContent = '✓ Másolva';
+    setTimeout(() => { btn.classList.remove('copied'); btn.textContent = prev; }, 1800);
+  });
+}
+
+function recapDocToMarkdown(amount) {
+  const doc = RECAP_DOCS[amount];
+  if (!doc) return '';
+  const lines = [];
+  lines.push(`## [${doc.ticket}] ${doc.title}`);
+  lines.push('');
+  lines.push(`**Leírás / cél**`);
+  lines.push('');
+  lines.push(doc.description);
+  lines.push('');
+  lines.push(`**Interakciók / események**`);
+  lines.push('');
+  doc.interactions.forEach(i => lines.push(`- ${i.replace(/<[^>]+>/g, '')}`));
+  lines.push('');
+  lines.push(`**State-ek**`);
+  lines.push('');
+  doc.states.forEach(s => lines.push(`- \`${s.tag}\` — ${s.label}`));
+  lines.push('');
+  lines.push(`**Edge case-ek**`);
+  lines.push('');
+  doc.edgeCases.forEach(e => lines.push(`- ${e}`));
+  lines.push('');
+  return lines.join('\n');
+}
+
+document.querySelectorAll('#recap-scenarios .scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#recap-scenarios .scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderRecap(parseInt(btn.dataset.amount));
+  });
+});
+renderRecap(180);
+
+// ============================================================
+// REORDER
+// ============================================================
+// ============================================================
+// SHARED HELPERS — ORDER CARD v3
+// ============================================================
+const ORDER_PRODUCTS = {
+  '00042': 'Házikolbász, Füstölt szalonna +1',
+  '00038': 'Csirkecomb, Darált hús',
+  '00035': 'Karaj, Kolbász, Szalonna +2',
+};
+
+function savingsPig(amount) {
+  return `<div class="savings-pig-wrap">
+    <span class="pig-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"/><path d="M15 6h1v4"/><path d="m6.134 14.768.866-.5 2 3.464"/><circle cx="16" cy="8" r="6"/></svg></span>
+    <div class="pig-amount">-${amount} RON</div>
+  </div>`;
+}
+
+const svgReorderIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;flex-shrink:0"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
+
+function orderCard(o, highlight) {
+  const products = ORDER_PRODUCTS[o.id] || (o.items + ' termék');
+  return `<div class="order-card-v3${highlight ? ' card-highlight' : ''}">
+    <div class="ocv3-top">
+      <span class="badge badge-green">Kiszállítva</span>
+      <span class="ocv3-date">${o.date} 2026</span>
+    </div>
+    <div class="ocv3-body-row">
+      <div class="ocv3-body-left">
+        <span class="ocv3-summary" style="margin-bottom:0">${products}</span>
+        <span class="ocv3-price">${o.amount},00 RON</span>
+      </div>
+      <span style="${o.saving > 0 ? '' : 'visibility:hidden'}">${savingsPig(o.saving || 10)}</span>
+    </div>
+    <div class="ocv3-id">DEAK-ORD-${o.id}</div>
+    <button class="btn btn-primary" style="width:100%;display:flex;align-items:center;justify-content:center">
+      ${svgReorderIcon}Újrarendelem
+    </button>
+  </div>`;
+}
+
+function renderReorder(view) {
+  const el = document.getElementById('reorder-phones');
+
+  if (view === 'list') {
+    // v3: Unified order card with savingsPig, SVG reorder icon, consistent btn-primary
+    const reorderOrders = [
+      { id: '00042', date: '3 ápr.', items: 3, amount: 110, saving: 10 },
+      { id: '00038', date: '28 márc.', items: 2, amount: 85, saving: 0 },
+    ];
+    el.innerHTML = `
+      <div class="phone">
+        <div class="phone-header"><span>Rendeléseim</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+        <div class="phone-body">
+          ${reorderOrders.map((o, i) => orderCard(o, i === 0)).join('')}
+        </div>
+      </div>`;
+  } else if (view === 'merge') {
+    // v3: Merge modal with date + order context, "Hozzáadás" as primary
+    el.innerHTML = `
+      <div class="phone">
+        <div class="phone-header"><span>Kosaram</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+        <div class="phone-body">
+          <div class="modal-overlay">
+            <div class="modal-inner">
+              <h3>A kosaradban már van termék</h3>
+              <p>A <strong>DEAK-ORD-00042</strong> rendelésed (ápr. 3) 3 terméket tartalmaz. Mit szeretnél?</p>
+              <button class="btn btn-primary">Hozzáadás a meglévőhöz</button>
+              <button class="btn btn-secondary">Kosár cseréje</button>
+              <button class="btn btn-ghost">Mégse</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  } else {
+    el.innerHTML = `
+      <div class="phone">
+        <div class="phone-header"><span>Kosaram</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+        <div class="phone-body">
+          <div class="loaded-msg">✓ Betöltve a DEAK-ORD-00042 rendelésből (ápr. 3)</div>
+          ${cartItem('Deák háziKolbász', 45, 1, '🌭')}
+          ${cartItem('Füstölt Szalonna', 42, 0.5, '🥓')}
+          ${cartItem('Abált Szalonna', 35, 1, '🥩')}
+          <div class="cart-item unavailable">
+            <div class="cart-item-img" style="display:flex;align-items:center;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#CCC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg></div>
+            <div class="cart-item-info">
+              <div class="cart-item-name">Füstölt Csülök</div>
+              <span class="badge badge-warn">Nem elérhető</span>
+              <div style="font-size:11px;color:var(--primary-light);margin-top:4px;cursor:pointer">Hasonló termékek →</div>
+            </div>
+          </div>
+          <div style="margin-top:12px">${progressBar(110)}${decisionConfidence(110)}</div>
+          <div style="margin-top:16px"><button class="btn btn-primary">Tovább a fizetéshez</button></div>
+        </div>
+      </div>`;
+  }
+}
+
+document.querySelectorAll('#reorder-scenarios .scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#reorder-scenarios .scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderReorder(btn.dataset.view);
+  });
+});
+renderReorder('list');
+
+// ============================================================
+// FAMILY BUNDLES
+// ============================================================
+const bundles = [
+  { name: 'Páros csomag', size: '2 fős · ~2-3 kg', price: 150, items: 4, icon: '👫' },
+  { name: 'Családi csomag', size: '4 fős · ~4-5 kg', price: 250, items: 6, icon: '👨‍👩‍👧‍👦' },
+  { name: 'Nagy családi', size: '6 fős · ~6-8 kg', price: 350, items: 8, icon: '🏠' },
+  { name: 'Grillezős csomag', size: '4-6 fős · grill', price: 180, items: 5, icon: '_flame' },
+];
+
+function bundleSaving(price) {
+  return price >= 300 ? 10 + Math.round(price * 0.02) : price >= 150 ? 10 : 0;
+}
+
+function renderBundles(view) {
+  const el = document.getElementById('bundle-phones');
+
+  if (view === 'grid') {
+    // v3: Icon badges with text labels underneath
+    let cards = bundles.map(b => {
+      const sv = bundleSaving(b.price);
+      return `
+        <div class="bundle-card">
+          ${sv > 0 ? `<div class="bundle-saving"><span class="bundle-saving-tag">-${sv} RON</span></div>` : ''}
+          <div class="bundle-icon">${b.icon === '_flame' ? '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E65100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg>' : b.icon}</div>
+          <div class="bundle-name">${b.name}</div>
+          <div class="bundle-meta">${b.size} · ${b.items} termék</div>
+          <div class="bundle-price">~${b.price} RON</div>
+          <div class="icon-badges">
+            ${b.price >= 150 ? `<div class="icon-badge-item"><div class="icon-badge icon-badge-truck"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg></div><span class="ib-label">Ingyenes</span></div>` : ''}
+            ${b.price >= 300 ? `<div class="icon-badge-item"><div class="icon-badge-pct"><span>2%</span></div><span class="ib-label">Kedvezm.</span></div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+
+    el.innerHTML = `
+      <div class="phone">
+        <div class="phone-header"><span>Termékek</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+        <div class="phone-body">
+          <div style="margin:12px 0">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <div style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:6px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>Csomagok</div>
+              <span style="font-size:12px;color:var(--primary-light)">Válassz kényelmes csomagot</span>
+            </div>
+            <div class="bundle-grid">${cards}</div>
+          </div>
+          <div class="category-filters">
+            <span class="cat-pill active">Összes</span><span class="cat-pill">Felvágott</span><span class="cat-pill">Friss</span><span class="cat-pill">Füstölt</span>
+          </div>
+          <div class="placeholder-card"></div><div class="placeholder-card"></div>
+        </div>
+      </div>`;
+  } else if (view === 'detail') {
+    const b = bundles[1]; // Családi
+    const sv = bundleSaving(b.price);
+    const prodList = ['Csirkecomb 1kg', 'Sertéskaraj 800g', 'Deák háziKolbász 600g', 'Darált hús 800g', 'Szalonna 400g'].map((p, i, arr) => {
+      const parts = p.split(' ');
+      const wt = parts.pop();
+      const nm = parts.join(' ');
+      return `<div style="display:flex;justify-content:space-between;padding:6px 0;${i<arr.length-1?'border-bottom:1px solid var(--border);':''}font-size:13px"><span>${nm}</span><span style="color:var(--text2)">${wt}</span></div>`;
+    }).join('');
+
+    // v3: icon badges with labels in detail view + price explanation
+    el.innerHTML = `
+      <div class="phone">
+        <div class="phone-header"><span>← ${b.name}</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+        <div class="phone-body">
+          <div style="text-align:center;padding:20px 0"><div style="font-size:64px">${b.icon}</div></div>
+          <div class="card">
+            <div style="font-size:20px;font-weight:700;margin-bottom:4px">${b.name}</div>
+            <div style="font-size:13px;color:var(--text2);margin-bottom:12px">${b.size}</div>
+            <div class="icon-badges" style="margin-bottom:16px">
+              <div class="icon-badge-item"><div class="icon-badge icon-badge-truck"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg></div><span class="ib-label">Ingyenes</span></div>
+              ${b.price >= 300 ? '<div class="icon-badge-item"><div class="icon-badge-pct"><span>2%</span></div><span class="ib-label">Kedvezm.</span></div>' : ''}
+            </div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px">Tartalom:</div>
+            ${prodList}
+          </div>
+          <div class="card" style="text-align:center">
+            <div style="font-size:12px;color:var(--text2)">Becsült ár</div>
+            <div style="font-size:24px;font-weight:800;color:var(--primary)">~${b.price} RON</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px;font-style:italic">A végső ár a mérés alapján változhat</div>
+            <div style="font-size:12px;color:var(--green);margin-top:8px;display:flex;align-items:center;gap:4px;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>${b.price >= 300 ? 'Ingyenes szállítás + 2% kedvezmény' : 'Ingyenes szállítás'}</div>
+          </div>
+          <button class="btn btn-primary">Kosárba teszem</button>
+        </div>
+      </div>`;
+  } else {
+    // Admin — v3: success toast added
+    let adminList = bundles.map(b => `
+      <div class="admin-item">
+        <div>
+          <div style="font-size:14px;font-weight:600">${b.icon} ${b.name}</div>
+          <div style="font-size:11px;color:var(--text2)">${b.items} termék · ~${b.price} RON</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="toggle"><div class="toggle-knob"></div></div>
+          <span style="cursor:pointer;display:flex;align-items:center"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></span>
+        </div>
+      </div>`).join('');
+
+    const formChips = ['Csirkecomb 1kg', 'Sertéskaraj 800g', 'Kolbász 600g', 'Darált hús 800g'].map(p =>
+      `<div class="form-chip"><span>${p}</span><span class="remove">✕</span></div>`
+    ).join('');
+
+    el.innerHTML = `
+      <div class="phone">
+        <div class="phone-header"><span>Admin: Csomagok</span><span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:#8A8078;background:#F3EEE9;padding:3px 8px;border-radius:10px"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/></svg>HU</span></div>
+        <div class="phone-body">
+          <div style="margin:12px 0">
+            <div class="toast" style="display:flex;align-items:center;gap:6px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Csomag sikeresen mentve!</div>
+            ${adminList}
+            <div style="margin-top:16px"><button class="btn btn-secondary">+ Új csomag létrehozása</button></div>
+            <div class="card card-highlight" style="margin-top:16px">
+              <div style="font-size:14px;font-weight:700;margin-bottom:12px">Csomag szerkesztése</div>
+              <div class="form-field"><div class="form-label">Név</div><div class="form-input">Családi csomag</div></div>
+              <div class="form-field"><div class="form-label">Leírás</div><div class="form-input">4 fős, ~4-5 kg vegyes húscsomag</div></div>
+              <div class="form-label">Termékek</div>
+              ${formChips}
+              <div style="margin-top:8px;font-size:12px;color:var(--primary-light);cursor:pointer">+ Termék hozzáadása</div>
+              <div style="margin-top:16px;display:flex;gap:8px">
+                <button class="btn btn-primary" style="flex:1">Mentés</button>
+                <button class="btn btn-secondary" style="flex:1">Deaktiválás</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+}
+
+document.querySelectorAll('#bundle-scenarios .scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#bundle-scenarios .scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderBundles(btn.dataset.view);
+  });
+});
+renderBundles('grid');
+
+// ============================================================
+// ORDERS + SAVINGS BADGE
+// ============================================================
+(function() {
+  const orders = [
+    { id: '00042', date: '3 ápr.', items: 3, amount: 110, saving: 10 },
+    { id: '00038', date: '28 márc.', items: 2, amount: 85, saving: 0 },
+    { id: '00035', date: '21 márc.', items: 5, amount: 320, saving: 16 },
+  ];
+  const el = document.getElementById('orders-phone');
+  // v3: Unified orderCard helper — consistent btn-primary, savingsPig badge, SVG icon
+  el.innerHTML = orders.map((o, i) => orderCard(o, i === 0)).join('');
+})();
+</script>
+
+<script id="sample-screen-init">
+// Auto-select the right scenario after page load
+document.addEventListener('DOMContentLoaded', function() {
+  setTimeout(function() {
+    var btn = document.querySelector('#recap-scenarios .scenario-btn[data-amount="180"]');
+    if (btn) btn.click();
+  }, 50);
+});
+// Also try immediately (in case DOMContentLoaded already fired)
+setTimeout(function() {
+  var btn = document.querySelector('#recap-scenarios .scenario-btn[data-amount="180"]');
+  if (btn) btn.click();
+}, 100);
+</script>
+
+</body>
+</html>

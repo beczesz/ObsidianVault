@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>BKAllocatedSize</key>
+	<integer>10203136</integer>
+	<key>BKDisplayName</key>
+	<string>dokumen.pub_discipline-equals-freedom-9781250276186-9781250184719-9781250156952-9781250274434</string>
+	<key>BKGenerationCount</key>
+	<integer>2</integer>
+	<key>BKInsertionDate</key>
+	<integer>789142898</integer>
+	<key>artistName</key>
+	<string>Jocko Willink</string>
+	<key>book-info</key>
+	<dict>
+		<key>cover-image-hash</key>
+		<string>A2F6B58C9390AB762EACD509A6E5C08A</string>
+		<key>cover-image-path</key>
+		<string>OEBPS/images/9781250276186.jpg</string>
+		<key>mime-type</key>
+		<string>application/epub+zip</string>
+		<key>package-file-hash</key>
+		<string>45D89147C4B4935FCACEB517C39957B0</string>
+		<key>page-progression-direction</key>
+		<string>ltr</string>
+		<key>publisher-unique-id</key>
+		<string>9781250276186</string>
+		<key>unique-id</key>
+		<integer>196967219950462933</integer>
+		<key>update-level</key>
+		<integer>2</integer>
+	</dict>
+	<key>bookDescription</key>
+	<string>&lt;p&gt;&lt;b&gt;In this expanded edition of the 2017 mega-bestseller, updated with brand new sections like DO WHAT MAKES YOU HAPPY, SUGAR COATED LIES and DON'T NEGOTIATE WITH WEAKNESS, readers will discover new ways to become stronger, smarter, and healthier.&lt;br&gt;&lt;/b&gt;Jocko Willink's methods for success were born in the SEAL Teams, where he spent most of his adult life, enlisting after high school and rising through the ranks to become the commander of the most highly decorated special operations unit of the war in Iraq. In Discipline Equals Freedom, the #1 New York Times bestselling coauthor of Extreme Ownership describes how he lives that mantra: the mental and physical disciplines he imposes on himself in order to achieve freedom in all aspects of life. Many books offer advice on how to overcome obstacles and reach your goals?but that advice often misses the most critical ingredient: discipline. Without discipline, there will be no real progress. Discipline Equals Freedom covers it all,...</string>
+	<key>isPreview</key>
+	<false/>
+	<key>itemName</key>
+	<string>Discipline Equals Freedom</string>
+	<key>updateDate</key>
+	<date>2026-01-03T14:21:38Z</date>
+</dict>
+</plist>

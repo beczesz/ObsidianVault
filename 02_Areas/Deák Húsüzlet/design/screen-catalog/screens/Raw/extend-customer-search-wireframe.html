@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH Wireframe — Admin Customer Search Extension</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #FAF8F5; --card: #FFFFFF; --primary: #9B2335; --primary-light: #F9E0E3;
+    --text: #2C2825; --text2: #5C544C; --text3: #8A8078; --border: #E8E2DB; --border-strong: #C5BCB3;
+    --success: #2D7A4F; --success-light: #E8F5E9;
+    --warning: #C4841D; --warning-light: #FFF3CD;
+    --error: #C4302B; --error-light: #FFEBEE;
+    --info: #2B6CB0; --info-light: #E3F2FD;
+    --founding50: #7B2D8B;
+  }
+  body { font-family: Inter, 'Inter var', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); }
+
+  /* Layout */
+  .header { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text3); margin-top: 4px; }
+  .tabs { display: flex; gap: 8px; max-width: 1200px; margin: 16px auto; padding: 0 24px; overflow-x: auto; }
+  .tab { padding: 10px 20px; border-radius: 24px; font-size: 13px; border: 1px solid var(--border); background: white; color: var(--text); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 400; }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+  .content { max-width: 1200px; margin: 0 auto; padding: 0 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+  .feature > h2 { font-size: 18px; font-weight: 700; margin: 0 0 6px; }
+  .feature > .subtitle { font-size: 13px; color: var(--text3); margin-bottom: 16px; }
+
+  /* Scenarios */
+  .scenarios { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .scenario-btn { padding: 6px 12px; border-radius: 20px; font-size: 11px; border: 1px solid var(--border); background: white; cursor: pointer; transition: all 0.15s; }
+  .scenario-btn.active { border: 2px solid var(--primary); background: var(--primary); color: white; font-weight: 600; }
+  .scenario-btn:hover:not(.active) { border-color: var(--primary); }
+
+  /* Phone frame */
+  .phones { display: flex; gap: 20px; flex-wrap: wrap; }
+  .phone { width: 375px; min-height: 700px; background: var(--bg); border-radius: 24px; border: 2px solid var(--border); overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12); flex-shrink: 0; position: relative; }
+  .phone-header { background: white; padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .phone-header .back { width: 32px; height: 32px; border-radius: 8px; border: none; background: none; display: flex; align-items: center; justify-content: center; cursor: pointer; color: var(--text); }
+  .phone-header .title { font-size: 18px; font-weight: 600; }
+  .phone-body { padding: 0; overflow-y: auto; max-height: 640px; }
+
+  /* Search bar */
+  .search-bar { padding: 12px 16px; background: var(--bg); position: sticky; top: 0; z-index: 5; }
+  .search-input { width: 100%; height: 44px; padding: 0 40px 0 40px; border-radius: 12px; border: 1px solid var(--border); background: white; font-size: 15px; font-family: inherit; color: var(--text); outline: none; }
+  .search-input::placeholder { color: var(--text3); }
+  .search-icon { position: absolute; left: 28px; top: 50%; transform: translateY(-50%); color: var(--text3); }
+  .search-wrap { position: relative; }
+
+  /* Result count */
+  .result-count { padding: 0 16px 8px; font-size: 13px; color: var(--text3); font-weight: 500; }
+
+  /* Customer card */
+  .ccard { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 14px 16px; margin: 0 16px 10px; cursor: pointer; transition: all 0.15s; }
+  .ccard:active { box-shadow: 0 2px 8px rgba(0,0,0,0.1); transform: scale(0.99); }
+  .ccard-top { display: flex; gap: 12px; }
+  .ccard-avatar { width: 36px; height: 36px; border-radius: 50%; background: #F0EBE6; display: flex; align-items: center; justify-content: center; flex-shrink: 0; color: var(--text3); }
+  .ccard-info { flex: 1; min-width: 0; }
+  .ccard-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .ccard-name { font-size: 15px; font-weight: 600; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ccard-orders { font-size: 12px; color: var(--text3); white-space: nowrap; }
+  .ccard-email { font-size: 13px; color: var(--text3); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ccard-spent { font-size: 12px; color: var(--text3); white-space: nowrap; }
+  .ccard-phone { font-size: 13px; color: var(--text3); }
+  .ccard-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 6px; }
+  .ccard-time { font-size: 12px; color: var(--text3); }
+
+  /* Badges row */
+  .badges { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px; }
+  .badge { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 500; white-space: nowrap; }
+  .badge-role { background: #F0EBE6; color: var(--text2); }
+  .badge-role-admin { background: var(--primary-light); color: var(--primary); }
+  .badge-campaign { color: white; }
+
+  /* Loading spinner */
+  .load-more { display: flex; justify-content: center; padding: 16px; }
+  .spinner { width: 24px; height: 24px; border: 3px solid var(--border); border-top-color: var(--primary); border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Skeleton */
+  .skeleton { background: linear-gradient(90deg, #F0EBE6 25%, #E8E2DB 50%, #F0EBE6 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 8px; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .skel-card { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 14px 16px; margin: 0 16px 10px; }
+  .skel-row { display: flex; gap: 12px; align-items: center; }
+  .skel-circle { width: 36px; height: 36px; border-radius: 50%; }
+  .skel-line { height: 14px; border-radius: 4px; }
+  .skel-badge { height: 20px; width: 60px; border-radius: 9999px; }
+
+  /* Detail page */
+  .detail-section { margin: 0 16px 12px; }
+  .profile-card { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 20px 16px; text-align: center; }
+  .profile-avatar { width: 64px; height: 64px; border-radius: 50%; background: #F0EBE6; display: inline-flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; color: var(--text3); margin-bottom: 8px; }
+  .profile-name { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+  .profile-email { font-size: 13px; color: var(--text3); margin-bottom: 10px; }
+  .profile-badges { display: flex; justify-content: center; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+  .profile-divider { height: 1px; background: var(--border); margin: 12px 0; }
+
+  .info-row { display: flex; align-items: center; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .info-row:last-child { border-bottom: none; }
+  .info-left { display: flex; align-items: center; gap: 10px; }
+  .info-icon { width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .info-label { font-size: 12px; color: var(--text3); }
+  .info-value { font-size: 14px; color: var(--text); font-weight: 500; }
+  .info-action { padding: 6px 12px; border-radius: 8px; font-size: 13px; font-weight: 600; border: none; cursor: pointer; }
+
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-card { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 16px; text-align: center; }
+  .stat-value { font-size: 28px; font-weight: 700; color: var(--text); }
+  .stat-label { font-size: 12px; color: var(--text3); margin-top: 2px; }
+
+  .orders-header { display: flex; align-items: center; gap: 8px; padding: 0 16px; margin: 16px 0 10px; }
+  .orders-title { font-size: 16px; font-weight: 600; }
+  .orders-count { background: #F0EBE6; color: var(--text3); font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; }
+
+  .order-card { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 14px 16px; margin: 0 16px 10px; }
+  .order-card.active-order { border-left: 3px solid var(--primary); }
+  .order-row { display: flex; align-items: center; justify-content: space-between; }
+  .order-id { font-size: 14px; font-weight: 600; color: var(--text); }
+  .order-status { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 9999px; }
+  .status-delivered { background: var(--success-light); color: var(--success); }
+  .status-processing { background: var(--warning-light); color: var(--warning); }
+  .status-cancelled { background: var(--error-light); color: var(--error); }
+  .order-detail { font-size: 13px; color: var(--text3); margin-top: 4px; }
+  .order-price { font-size: 13px; color: var(--text); font-weight: 500; margin-top: 2px; }
+
+  /* Annotation boxes */
+  .anno { max-width: 380px; }
+  .label-new { display: inline-block; background: var(--success-light); color: var(--success); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .label-existing { display: inline-block; background: #F0EBE6; color: var(--text3); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .label-spec { display: inline-block; background: var(--info-light); color: var(--info); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .label-change { display: inline-block; background: var(--warning-light); color: var(--warning); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .note-box { background: var(--success-light); border-left: 3px solid var(--success); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.6; margin: 10px 0; }
+  .spec-box { background: var(--info-light); border-left: 3px solid var(--info); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.6; margin: 10px 0; }
+  .change-box { background: var(--warning-light); border-left: 3px solid var(--warning); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.6; margin: 10px 0; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px; margin: 16px 24px 0;
+    background: white; border: 1px solid var(--border);
+    border-radius: 8px; font-family: inherit;
+    font-size: 14px; font-weight: 600; color: var(--primary);
+    text-decoration: none; cursor: pointer;
+  }
+  .back-btn:hover { background: #F5F0EB; }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    html, body { overflow-x: hidden; }
+    .header { padding: 16px 8px 0; }
+    .header h1 { font-size: 22px; }
+    .tabs { padding: 0 4px; margin: 12px auto; gap: 6px; }
+    .tab { padding: 8px 14px; font-size: 12px; }
+    .content { padding: 0 4px 24px; }
+    .phones { gap: 8px; }
+    .phone { width: 100%; min-height: auto; border-radius: 16px; border-width: 1px; }
+    .phone-body { max-height: none; overflow-y: visible; }
+    .anno { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<a class="back-btn" href="/">&#8592; Vissza</a>
+
+<div class="header">
+  <h1>Admin Customer Search Extension</h1>
+  <p>Jira ticket: Admin felhasznalo kereso javitas — alapertelmezett lista, regisztracios ido, kampany/role megjelenes</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab(0)">Lista nezet</div>
+  <div class="tab" onclick="showTab(1)">Reszletes nezet</div>
+</div>
+
+<div class="content">
+
+  <!-- TAB 0: CustomerList -->
+  <div class="feature active" id="tab0">
+    <h2>Felhasznalo lista — bovitett kartya + alapertelmezett nezet</h2>
+    <p class="subtitle">Ures kereso eseten az osszes user megjelenik (legujabb elol), lapozva 10-esevel. A kartyak uj adatokat is mutatnak.</p>
+
+    <div class="scenarios" id="scenarios0">
+      <div class="scenario-btn active" onclick="setScenario(0,'default')">Alapertelmezett lista</div>
+      <div class="scenario-btn" onclick="setScenario(0,'loading')">Betoltes</div>
+      <div class="scenario-btn" onclick="setScenario(0,'scroll')">Infinite scroll</div>
+      <div class="scenario-btn" onclick="setScenario(0,'search')">Kereses</div>
+      <div class="scenario-btn" onclick="setScenario(0,'typing')">Gepeles &lt;3 kar.</div>
+    </div>
+
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <div class="back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </div>
+          <div class="title">Felhasznalok</div>
+        </div>
+        <div class="phone-body" id="list-body">
+          <!-- Dynamically rendered -->
+        </div>
+      </div>
+
+      <div class="anno" id="list-annotations">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 1: CustomerDetail -->
+  <div class="feature" id="tab1">
+    <h2>Felhasznalo reszletek — bovitett profil</h2>
+    <p class="subtitle">Regisztracios ido relativ + abszolut formaban, kampany badge-ek es role badge a profil kartyaban.</p>
+
+    <div class="scenarios" id="scenarios1">
+      <div class="scenario-btn active" onclick="setScenario(1,'detail')">Profil + rendelesek</div>
+      <div class="scenario-btn" onclick="setScenario(1,'admin-user')">Admin user</div>
+      <div class="scenario-btn" onclick="setScenario(1,'no-campaign')">Kampany nelkul</div>
+      <div class="scenario-btn" onclick="setScenario(1,'multi-campaign')">Tobb kampany</div>
+    </div>
+
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <div class="back">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+          </div>
+          <div class="title" id="detail-header-name">Kovacs Janos</div>
+        </div>
+        <div class="phone-body" id="detail-body">
+          <!-- Dynamically rendered -->
+        </div>
+      </div>
+
+      <div class="anno" id="detail-annotations">
+        <!-- Dynamically rendered -->
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="max-width:1200px;margin:32px auto;padding:16px 24px;background:white;border-radius:12px;border:1px solid var(--border);">
+  <h3 style="font-size:14px;margin-bottom:8px;">Changelog</h3>
+  <ul style="font-size:13px;color:var(--text3);padding-left:20px;line-height:1.8;">
+    <li><strong>v1 (2026-04-29)</strong> — Elso verzio: alapertelmezett lista, regisztracios ido (relativ+abszolut), kampany badge-ek, role badge, infinite scroll, bovitett kartya es reszletes nezet.</li>
+  </ul>
+</div>
+
+<script>
+// ---- Tab switching ----
+function showTab(idx) {
+  document.querySelectorAll('.tab').forEach(function(t,i) { t.classList.toggle('active', i===idx); });
+  document.querySelectorAll('.feature').forEach(function(f,i) { f.classList.toggle('active', i===idx); });
+}
+
+// ---- SVG icons ----
+var icons = {
+  search: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>',
+  user: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  phone: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>',
+  mappin: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+  calendar: '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>',
+  clock: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+};
+
+// ---- Customer data ----
+var customers = [
+  { name: 'Kovacs Janos', email: 'kovacs.janos@gmail.com', phone: '0745 123 456', orders: 12, spent: 2340, time: '3 napja', role: 'customer', campaigns: ['Founding 50'] },
+  { name: 'Pop Maria', email: 'pop.maria@yahoo.com', phone: '0722 987 654', orders: 8, spent: 1580, time: '5 napja', role: 'customer', campaigns: ['Founding 50'] },
+  { name: 'Szabo Istvan', email: 'szabo.istvan@gmail.com', phone: '0733 456 789', orders: 3, spent: 620, time: '1 hete', role: 'customer', campaigns: [] },
+  { name: 'Molnar Anna', email: 'molnar.anna@outlook.com', phone: '0755 321 987', orders: 0, spent: 0, time: '2 hete', role: 'customer', campaigns: ['Founding 50'] },
+  { name: 'Deak Peter', email: 'deak.peter@deakhus.ro', phone: '0744 111 222', orders: 0, spent: 0, time: '3 hete', role: 'admin', campaigns: [] },
+];
+
+// ---- Render helpers ----
+function renderSearchBar(value, placeholder) {
+  return '<div class="search-bar"><div class="search-wrap">' +
+    '<div class="search-icon">' + icons.search + '</div>' +
+    '<input class="search-input" type="text" value="' + (value || '') + '" placeholder="' + (placeholder || 'Nev, email, telefon, rendeles...') + '" readonly>' +
+    '</div></div>';
+}
+
+function renderResultCount(count) {
+  return '<div class="result-count">' + count + ' felhasznalo</div>';
+}
+
+function campaignBadge(name) {
+  var colors = { 'Founding 50': '#7B2D8B', 'Husimado 2026': '#B8860B', 'Nyari akció': '#2B6CB0' };
+  var c = colors[name] || '#666';
+  return '<span class="badge badge-campaign" style="background:' + c + '">' + name + '</span>';
+}
+
+function roleBadge(role) {
+  if (role === 'admin') return '<span class="badge badge-role-admin">Admin</span>';
+  return '<span class="badge badge-role">Vasarlo</span>';
+}
+
+function renderCustomerCard(c, highlight) {
+  var nameHtml = c.name;
+  if (highlight) {
+    var re = new RegExp('(' + highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    nameHtml = c.name.replace(re, '<strong style="color:var(--text)">$1</strong>');
+  }
+  var badges = '<div class="badges">' + roleBadge(c.role);
+  c.campaigns.forEach(function(camp) { badges += campaignBadge(camp); });
+  badges += '</div>';
+
+  return '<div class="ccard">' +
+    '<div class="ccard-top">' +
+      '<div class="ccard-avatar">' + icons.user + '</div>' +
+      '<div class="ccard-info">' +
+        '<div class="ccard-row"><span class="ccard-name">' + nameHtml + '</span><span class="ccard-orders">' + c.orders + ' rendeles</span></div>' +
+        '<div class="ccard-row"><span class="ccard-email">' + c.email + '</span><span class="ccard-spent">' + c.spent.toLocaleString() + ' RON</span></div>' +
+        '<div class="ccard-meta">' +
+          '<span class="ccard-phone">' + c.phone + '</span>' +
+          '<span class="ccard-time">' + icons.clock + ' ' + c.time + '</span>' +
+        '</div>' +
+        badges +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderSkeletonCard() {
+  return '<div class="skel-card">' +
+    '<div class="skel-row">' +
+      '<div class="skeleton skel-circle" style="flex-shrink:0"></div>' +
+      '<div style="flex:1;display:flex;flex-direction:column;gap:8px">' +
+        '<div class="skel-row" style="justify-content:space-between"><div class="skeleton skel-line" style="width:55%"></div><div class="skeleton skel-line" style="width:20%"></div></div>' +
+        '<div class="skel-row" style="justify-content:space-between"><div class="skeleton skel-line" style="width:65%"></div><div class="skeleton skel-line" style="width:15%"></div></div>' +
+        '<div class="skeleton skel-line" style="width:40%"></div>' +
+        '<div class="skel-row" style="gap:4px"><div class="skeleton skel-badge"></div><div class="skeleton skel-badge" style="width:80px"></div></div>' +
+      '</div>' +
+    '</div>' +
+  '</div>';
+}
+
+function renderSpinner() {
+  return '<div class="load-more"><div class="spinner"></div></div>';
+}
+
+// ---- List scenarios ----
+function renderList(scenario) {
+  var body = document.getElementById('list-body');
+  var anno = document.getElementById('list-annotations');
+  var html = '';
+  var annoHtml = '';
+
+  if (scenario === 'default') {
+    html += renderSearchBar('');
+    html += renderResultCount(127);
+    customers.forEach(function(c) { html += renderCustomerCard(c); });
+    html += '<div style="padding:0 16px 10px">';
+    for (var i = 0; i < 5; i++) html += '<div class="ccard" style="opacity:0.3;pointer-events:none;margin:0 0 10px"><div style="height:80px"></div></div>';
+    html += '</div>';
+
+    annoHtml =
+      '<span class="label-change">VALTOZAS</span>' +
+      '<div class="change-box">' +
+        '<strong>Alapertelmezett lista (UJ):</strong><br>' +
+        '&#8226; Ures kereso eseten az osszes user megjelenik<br>' +
+        '&#8226; Rendezes: legujabb regisztracio elol (creation DESC)<br>' +
+        '&#8226; Osszesitett szamlalo: "127 felhasznalo"<br>' +
+        '&#8226; Paginacio: 10 user / oldal, infinite scroll<br>' +
+        '&#8226; A kereso mezo a tetején ragad (sticky)' +
+      '</div>' +
+      '<span class="label-new">UJ ELEMEK A KARTYAN</span>' +
+      '<div class="note-box">' +
+        '<strong>1. Regisztracios ido (relativ):</strong><br>' +
+        '&#8226; Jobb also sarokban, ora ikonnal<br>' +
+        '&#8226; Format: "3 napja", "1 hete", "48 perce"<br>' +
+        '&#8226; <code>Intl.RelativeTimeFormat</code> hu/ro/en locale-okkal<br>' +
+        '&#8226; Kuszobertekek: perc &#8594; ora &#8594; nap &#8594; het &#8594; honap<br><br>' +
+        '<strong>2. Role badge:</strong><br>' +
+        '&#8226; "Vasarlo" (HU) / "Client" (RO) / "Customer" (EN)<br>' +
+        '&#8226; "Admin" (mind 3 nyelv)<br>' +
+        '&#8226; Customer: semleges szurke pill (<code>bg-gray-100</code>)<br>' +
+        '&#8226; Admin: primary-light pill (<code>bg-primary-light text-primary</code>)<br><br>' +
+        '<strong>3. Kampany badge-ek:</strong><br>' +
+        '&#8226; Csak <code>enrolled</code> statuszu enrollmentek<br>' +
+        '&#8226; Szoveg: <code>badge_text_hu/ro</code> (locale-resolved)<br>' +
+        '&#8226; Szin: kampany <code>badge_color</code> hatter + feher szoveg<br>' +
+        '&#8226; Pill forma (<code>rounded-full</code>)' +
+      '</div>' +
+      '<span class="label-spec">BACKEND</span>' +
+      '<div class="spec-box">' +
+        '<strong>search_customers API bovites:</strong><br>' +
+        '&#8226; Uj parameterek: <code>page</code>, <code>page_size</code><br>' +
+        '&#8226; Ures query eseten: osszes user, creation DESC<br>' +
+        '&#8226; Uj mezok a valaszban:<br>' +
+        '&nbsp;&nbsp;- <code>registration_date</code> (datetime string)<br>' +
+        '&nbsp;&nbsp;- <code>role</code> ("Admin" | "Customer")<br>' +
+        '&nbsp;&nbsp;- <code>campaigns</code>: [{badge_text, badge_color}]<br>' +
+        '&#8226; Uj mezo: <code>total_count</code> a valasz gyokereben' +
+      '</div>';
+
+  } else if (scenario === 'loading') {
+    html += renderSearchBar('');
+    html += '<div class="result-count"><div class="skeleton skel-line" style="width:80px;height:12px;display:inline-block"></div></div>';
+    for (var j = 0; j < 4; j++) html += renderSkeletonCard();
+
+    annoHtml =
+      '<span class="label-existing">MEGLEVO MINTA</span>' +
+      '<div class="spec-box">' +
+        '<strong>Betoltes allapot:</strong><br>' +
+        '&#8226; Skeleton kartyak (meglevo minta, kiegeszitve badge skeleton-okkal)<br>' +
+        '&#8226; A kereso mezo hasznalhato betoltes kozben<br>' +
+        '&#8226; Jelenlegi 3 skeleton kartya helyett 4 (tobb elem latszik)' +
+      '</div>';
+
+  } else if (scenario === 'scroll') {
+    html += renderSearchBar('');
+    html += renderResultCount(127);
+    customers.slice(0, 3).forEach(function(c) { html += renderCustomerCard(c); });
+    html += renderSpinner();
+
+    annoHtml =
+      '<span class="label-new">UJ</span>' +
+      '<div class="note-box">' +
+        '<strong>Infinite scroll:</strong><br>' +
+        '&#8226; A lista aljan spinner jelenik meg uj oldal betoltesekor<br>' +
+        '&#8226; Trigger: a lista alja kozelebe gorget a user<br>' +
+        '&#8226; 10 elem / oldal (<code>page_size=10</code>)<br>' +
+        '&#8226; Ha nincs tobb eredmeny: a lista egyszeruen veget er, nincs kulon jelzes<br>' +
+        '&#8226; Backend: <code>page</code> + <code>page_size</code> parameterek' +
+      '</div>';
+
+  } else if (scenario === 'search') {
+    html += renderSearchBar('Kovacs');
+    html += renderResultCount(2);
+    html += renderCustomerCard(customers[0], 'Kovacs');
+    html += renderCustomerCard({
+      name: 'Kovacs Eszter', email: 'kovacs.eszter@gmail.com', phone: '0722 555 888',
+      orders: 5, spent: 980, time: '1 honapja', role: 'customer', campaigns: []
+    }, 'Kovacs');
+
+    annoHtml =
+      '<span class="label-change">VALTOZAS</span>' +
+      '<div class="change-box">' +
+        '<strong>Kereses (bovitett kartya):</strong><br>' +
+        '&#8226; A keresesi funkcionalitas nem valtozik (debounce, min 3 kar.)<br>' +
+        '&#8226; A talaltai kartyak az uj adatokat is mutatjak<br>' +
+        '&#8226; Keresesi eredmenyek is paginalt modon jonnek (page + page_size)<br>' +
+        '&#8226; Highlight a meglevo minta szerint mukodik tovabb' +
+      '</div>';
+
+  } else if (scenario === 'typing') {
+    html += renderSearchBar('Ko');
+    html += renderResultCount(127);
+    customers.forEach(function(c) { html += renderCustomerCard(c); });
+
+    annoHtml =
+      '<span class="label-change">VALTOZAS</span>' +
+      '<div class="change-box">' +
+        '<strong>Gepeles &lt;3 karakter:</strong><br>' +
+        '&#8226; <strong>Jelenlegi:</strong> a lista kiurul, "Keressen felhasznalot" uzenetet mutat<br>' +
+        '&#8226; <strong>Uj:</strong> az alapertelmezett lista latszik tovabb<br>' +
+        '&#8226; Amig nincs 3 karakter, a rendszer az alap listat mutatja<br>' +
+        '&#8226; 3+ karakter utan: keresesi eredmenyek valtjak fel' +
+      '</div>';
+  }
+
+  body.innerHTML = html;
+  anno.innerHTML = annoHtml;
+}
+
+// ---- Detail scenarios ----
+function renderDetail(scenario) {
+  var body = document.getElementById('detail-body');
+  var anno = document.getElementById('detail-annotations');
+  var headerName = document.getElementById('detail-header-name');
+  var html = '';
+  var annoHtml = '';
+
+  var isAdmin = scenario === 'admin-user';
+  var noCampaign = scenario === 'no-campaign';
+  var multiCampaign = scenario === 'multi-campaign';
+
+  var name = isAdmin ? 'Deak Peter' : 'Kovacs Janos';
+  var email = isAdmin ? 'deak.peter@deakhus.ro' : 'kovacs.janos@gmail.com';
+  var monogram = isAdmin ? 'DP' : 'KJ';
+  var role = isAdmin ? 'admin' : 'customer';
+  var regAbsolute = isAdmin ? '2024. szept. 15.' : '2026. apr. 26.';
+  var regRelative = isAdmin ? '1 eve' : '3 napja';
+  var phoneNum = isAdmin ? '0744 111 222' : '0745 123 456';
+  var address = isAdmin ? '' : 'Str. Kossuth Lajos 42, Bl. 2, Ap. 5';
+  var orderCount = isAdmin ? 0 : 12;
+  var totalSpent = isAdmin ? 0 : 2340;
+
+  var campaignBadges = '';
+  if (noCampaign || isAdmin) {
+    campaignBadges = '';
+  } else if (multiCampaign) {
+    campaignBadges = campaignBadge('Founding 50') + campaignBadge('Husimado 2026');
+  } else {
+    campaignBadges = campaignBadge('Founding 50');
+  }
+
+  headerName.textContent = name;
+
+  // Profile card
+  html += '<div class="detail-section" style="margin-top:12px">';
+  html += '<div class="profile-card">';
+  html += '<div class="profile-avatar">' + monogram + '</div>';
+  html += '<div class="profile-name">' + name + '</div>';
+  html += '<div class="profile-email">' + email + '</div>';
+  html += '<div class="profile-badges">' + roleBadge(role) + campaignBadges + '</div>';
+  html += '<div class="profile-divider"></div>';
+
+  // Contact rows
+  html += '<div class="info-row">';
+  html += '<div class="info-left"><div class="info-icon" style="background:#E8F5E9;color:#2D7A4F">' + icons.phone + '</div><div><div class="info-label">Telefon</div><div class="info-value">' + phoneNum + '</div></div></div>';
+  html += '<button class="info-action" style="background:#E8F5E9;color:#2D7A4F">Hivas</button>';
+  html += '</div>';
+
+  if (address) {
+    html += '<div class="info-row">';
+    html += '<div class="info-left"><div class="info-icon" style="background:#F0EBE6;color:var(--text3)">' + icons.mappin + '</div><div><div class="info-label">Cim</div><div class="info-value" style="font-size:13px">' + address + '</div></div></div>';
+    html += '</div>';
+  }
+
+  // Registration date row (relative + absolute)
+  html += '<div class="info-row" style="border-bottom:none">';
+  html += '<div class="info-left"><div class="info-icon" style="background:#F0EBE6;color:var(--text3)">' + icons.calendar + '</div><div><div class="info-label">Regisztracio</div><div class="info-value">' + regAbsolute + '</div></div></div>';
+  html += '<span style="font-size:13px;color:var(--text3)">' + regRelative + '</span>';
+  html += '</div>';
+
+  html += '</div></div>';
+
+  // Stats
+  html += '<div class="detail-section"><div class="stats-grid">';
+  html += '<div class="stat-card"><div class="stat-value">' + orderCount + '</div><div class="stat-label">Rendeles</div></div>';
+  html += '<div class="stat-card"><div class="stat-value">' + totalSpent.toLocaleString() + '</div><div class="stat-label">RON osszesen</div></div>';
+  html += '</div></div>';
+
+  // Orders
+  var orders = isAdmin ? [] : [
+    { id: 'DEAK-ORD-00127', status: 'Feldolgozas alatt', statusClass: 'status-processing', date: '2026. apr. 26.', slot: '10:00-12:00', items: 4, price: 280, active: true },
+    { id: 'DEAK-ORD-00098', status: 'Kiszallitva', statusClass: 'status-delivered', date: '2026. apr. 20.', slot: '14:00-16:00', items: 2, price: 165, active: false },
+    { id: 'DEAK-ORD-00071', status: 'Lemondva', statusClass: 'status-cancelled', date: '2026. apr. 12.', slot: '10:00-12:00', items: 1, price: 95, active: false },
+  ];
+
+  html += '<div class="orders-header"><span class="orders-title">Rendelesek</span><span class="orders-count">' + orders.length + '</span></div>';
+
+  if (orders.length === 0) {
+    html += '<div style="text-align:center;padding:24px 16px;color:var(--text3);font-size:14px">Ennek a felhasznalonak meg nincs rendelese.</div>';
+  } else {
+    orders.forEach(function(o) {
+      html += '<div class="order-card' + (o.active ? ' active-order' : '') + '">';
+      html += '<div class="order-row"><span class="order-id">' + o.id + '</span><span class="order-status ' + o.statusClass + '">' + o.status + '</span></div>';
+      html += '<div class="order-detail">' + o.date + ' &middot; ' + o.slot + '</div>';
+      html += '<div class="order-row"><span class="order-detail">' + o.items + ' tetel</span><span class="order-price">' + o.price + ' RON</span></div>';
+      html += '</div>';
+    });
+  }
+
+  html += '<div style="height:24px"></div>';
+
+  // Annotations
+  if (scenario === 'detail' || scenario === 'multi-campaign') {
+    annoHtml =
+      '<span class="label-new">UJ ELEMEK</span>' +
+      '<div class="note-box">' +
+        '<strong>1. Regisztracio (relativ + abszolut):</strong><br>' +
+        '&#8226; Bal oldalon: abszolut datum ("2026. apr. 26.")<br>' +
+        '&#8226; Jobb oldalon: relativ ido ("3 napja")<br>' +
+        '&#8226; Meglevo "Regisztracio" sor bovul a relativ idovel<br>' +
+        '&#8226; <code>Intl.RelativeTimeFormat</code> — nincs uj lib<br><br>' +
+        '<strong>2. Badge-ek a profil kartyaban:</strong><br>' +
+        '&#8226; A nev + email alatt, kozepre igazitva<br>' +
+        '&#8226; Role badge + kampany badge-ek egymas mellett<br>' +
+        '&#8226; Ugyanaz a vizualis stilus mint a lista kartyan' +
+      '</div>';
+    if (multiCampaign) {
+      annoHtml +=
+        '<span class="label-spec">TOBB KAMPANY</span>' +
+        '<div class="spec-box">' +
+          '<strong>Ha tobb aktiv kampanya van:</strong><br>' +
+          '&#8226; A badge-ek egymas mellett jelennek meg<br>' +
+          '&#8226; Tobb sorba tordelodnek ha nem fernek el<br>' +
+          '&#8226; Minden kampany a sajat <code>badge_color</code>-at hasznalja<br>' +
+          '&#8226; A role badge mindig elol van' +
+        '</div>';
+    }
+  } else if (scenario === 'admin-user') {
+    annoHtml =
+      '<span class="label-spec">ADMIN USER</span>' +
+      '<div class="spec-box">' +
+        '<strong>Admin user megjelenese:</strong><br>' +
+        '&#8226; Role badge: "Admin" primary-light szinnel, kiemelt<br>' +
+        '&#8226; Nincs kampany badge (tipikusan)<br>' +
+        '&#8226; Regisztracio: regebb ota ("1 eve")<br>' +
+        '&#8226; Ures rendeles lista: "Ennek a felhasznalonak..."' +
+      '</div>';
+  } else if (scenario === 'no-campaign') {
+    annoHtml =
+      '<span class="label-spec">KAMPANY NELKUL</span>' +
+      '<div class="spec-box">' +
+        '<strong>Ha nincs aktiv kampany:</strong><br>' +
+        '&#8226; Csak a role badge jelenik meg<br>' +
+        '&#8226; Nincs ures hely vagy "nincs kampany" uzenet<br>' +
+        '&#8226; A badges sor egyszeruen rovidebb' +
+      '</div>';
+  }
+
+  body.innerHTML = html;
+  anno.innerHTML = annoHtml;
+}
+
+// ---- Scenario router ----
+function setScenario(tab, scenario) {
+  var container = document.getElementById('scenarios' + tab);
+  var btns = container.querySelectorAll('.scenario-btn');
+  btns.forEach(function(b) { b.classList.remove('active'); });
+  // Find the right button
+  var labels = { 0: { 'default': 0, 'loading': 1, 'scroll': 2, 'search': 3, 'typing': 4 }, 1: { 'detail': 0, 'admin-user': 1, 'no-campaign': 2, 'multi-campaign': 3 } };
+  var idx = labels[tab][scenario];
+  if (idx !== undefined) btns[idx].classList.add('active');
+
+  if (tab === 0) renderList(scenario);
+  if (tab === 1) renderDetail(scenario);
+}
+
+// ---- Init ----
+setScenario(0, 'default');
+setScenario(1, 'detail');
+</script>
+</body>
+</html>

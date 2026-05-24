@@ -1,2 +1,2 @@
-- [ ] Plan next 4 episodes 📅 2025-09-09 
-	- [ ] Write to Miki for approval 📅 2025-09-09 
+- [x] Plan next 4 episodes 📅 2025-09-09
+	- [x] Write to Miki for approval 📅 2025-09-09

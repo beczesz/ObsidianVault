@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kosaram — Deák Húsmíves</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root {
+  --bg: #FFFBF7;
+  --primary: #9B2335;
+  --primary-dark: #842030;
+  --text: #2C2825;
+  --text2: #5C544C;
+  --text3: #8A8078;
+  --text4: #999;
+  --border: #E8E2DB;
+  --card-bg: #FFFFFF;
+  --nav-bg: #FFFFFF;
+  --green-dark: #2E7D32;
+  --green-light: #F2FDF4;
+  --green-text: #137949;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--bg); font-family: Inter, system-ui, -apple-system, sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; }
+body { max-width: 448px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 150px; }
+
+/* Header */
+.header { display: block; height: 56px; background: #FFF; position: sticky; top: 0; z-index: 10;
+  box-shadow: rgba(0,0,0,0.12) 0px 0px 1px 0px, rgba(0,0,0,0.15) 0px 0.5px 2px 0px, rgba(0,0,0,0.16) 0px 2px 3px 0px; }
+.header-inner { max-width: 448px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 16px; }
+.header h1 { font-size: 20px; font-weight: 400; color: var(--primary-dark); letter-spacing: 0.2px; }
+.header-right { display: flex; align-items: center; gap: 8px; }
+.header-count { font-size: 13px; font-weight: 500; color: var(--text3); letter-spacing: 0.26px; }
+.lang-btn { background: none; border: none; cursor: pointer; width: 40px; height: 40px; border-radius: 12px; display: flex; align-items: center; justify-content: center; }
+
+/* Main */
+.main { max-width: 448px; margin: 0 auto; padding: 0 16px 160px; }
+
+/* Cart items */
+.cart-items { display: flex; flex-direction: column; gap: 12px; margin-top: 16px; }
+.cart-item { background: var(--card-bg); border-radius: 16px; box-shadow: rgba(0,0,0,0.1) 0px 1px 2px 0px; border: 1px solid var(--border); padding: 16px; position: relative; }
+.cart-item-inner { display: flex; gap: 12px; }
+.item-img { width: 80px; height: 80px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: #E8E2DB; }
+.item-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.item-details { flex: 1; display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.item-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+.item-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 19.25px; letter-spacing: 0.28px; }
+.trash-btn { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 12px; border: none; background: none; cursor: pointer; color: var(--text3); flex-shrink: 0; }
+.trash-btn svg { width: 16px; height: 16px; }
+.item-unit-price { font-size: 13px; color: var(--text3); letter-spacing: 0.26px; }
+.item-qty-row { display: flex; align-items: center; justify-content: space-between; }
+.qty-controls { display: flex; align-items: center; gap: 4px; }
+.qty-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 12px; border: 1px solid #C5BCB3; background: none; cursor: pointer; color: var(--text); }
+.qty-btn svg { width: 16px; height: 16px; }
+.qty-input { width: 64px; height: 40px; border-radius: 12px; border: 1px solid #C5BCB3; text-align: center; font-size: 14px; font-weight: 600; color: var(--text); font-family: inherit; outline: none; letter-spacing: 0.28px; background: #FFF; }
+.item-line-total { font-size: 14px; font-weight: 500; color: var(--text); white-space: nowrap; letter-spacing: 0.28px; }
+
+/* Disclaimer */
+.disclaimer { display: flex; align-items: flex-start; gap: 8px; margin-top: 16px; padding: 12px; background: rgba(196,132,29,0.05); border: 1px solid rgba(196,132,29,0.2); border-radius: 12px; }
+.disclaimer svg { width: 16px; height: 16px; color: #C4841D; flex-shrink: 0; margin-top: 1px; }
+.disclaimer span { font-size: 13px; color: var(--text2); letter-spacing: 0.26px; }
+
+/* Savings progress */
+.savings-box { background: var(--card-bg); border-radius: 16px; box-shadow: rgba(0,0,0,0.1) 0px 1px 2px 0px; border: 1px solid var(--border); padding: 16px; margin-top: 16px; }
+.progress-track { position: relative; height: 8px; background: var(--border); border-radius: 9999px; margin-bottom: 40px; }
+.progress-fill { height: 100%; border-radius: 9999px; background: var(--green-dark); width: 78%; /* 233/300 */ }
+.progress-marker { position: absolute; top: 50%; transform: translateY(-50%); width: 22px; height: 22px; border-radius: 50%; border: 2px solid white; display: flex; align-items: center; justify-content: center; }
+.progress-marker svg { width: 12px; height: 12px; color: white; }
+.marker-150 { left: 50%; background: var(--green-dark); }
+.marker-300 { left: calc(100% - 0px); background: #E0D8D0; }
+.progress-label { position: absolute; top: 20px; font-size: 11px; white-space: nowrap; }
+.label-0 { left: 0; color: var(--text4); }
+.label-150 { left: 50%; transform: translateX(-50%); color: var(--green-dark); font-weight: 600; }
+.label-150-sub { left: 50%; transform: translateX(-50%); top: 34px; color: var(--green-dark); font-size: 11px; }
+.label-300 { right: 0; color: #6B7280; }
+.label-300-sub { right: 0; top: 34px; color: #6B7280; font-size: 11px; }
+
+/* Savings message */
+.savings-msg { background: var(--green-light); border-radius: 16px; padding: 10px 14px; margin-top: 8px; font-size: 13px; color: var(--green-text); }
+.next-threshold { font-size: 13px; font-weight: 400; color: var(--green-text); margin-top: 4px; padding: 4px 4px 0; letter-spacing: 0.26px; }
+.next-threshold-sub { font-size: 11px; color: var(--text4); margin-top: 0; padding: 4px 4px 0; font-style: italic; }
+
+/* Summary */
+.summary { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 12px; }
+.summary-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+.summary-label { font-size: 11px; color: var(--text4); }
+.summary-value { font-size: 11px; color: var(--text4); }
+.summary-delivery-label { font-size: 11px; color: var(--green-text); }
+.summary-delivery-value { display: flex; align-items: center; gap: 6px; }
+.strike { text-decoration: line-through; font-size: 11px; color: var(--text3); }
+.free-label { font-size: 11px; color: var(--green-text); font-weight: 400; }
+.summary-total-row { display: flex; justify-content: space-between; align-items: baseline; margin-top: 4px; }
+.summary-total-label { font-size: 14px; font-weight: 600; color: var(--text); letter-spacing: 0.28px; }
+.summary-total-value { font-size: 18px; font-weight: 600; color: var(--primary); letter-spacing: 0.18px; }
+.summary-subtitle { font-size: 13px; color: var(--text3); margin-top: 2px; letter-spacing: 0.26px; }
+
+/* Checkout CTA bar */
+.checkout-bar { position: fixed; bottom: 64px; left: 50%; transform: translateX(-50%); width: 100%; max-width: 448px; z-index: 15; padding: 16px; height: 88px; background: rgba(255,255,255,0.95); box-shadow: rgba(0,0,0,0.1) 0px -1px 3px 0px; }
+.checkout-btn { display: block; width: 100%; height: 56px; padding: 0 8px; background: var(--primary); color: white; font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0.28px; line-height: 16.1px; border: none; border-radius: 16px; cursor: pointer; text-align: center; }
+
+/* Bottom nav */
+.bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 448px; background: var(--nav-bg); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; height: 65px; z-index: 20; box-shadow: rgba(0,0,0,0.08) 0px -2px 8px 0px; padding-bottom: env(safe-area-inset-bottom, 0px); }
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; padding: 4px 12px; position: relative; }
+.nav-item svg { width: 24px; height: 24px; }
+.nav-item span { font-size: 12px; font-weight: 500; letter-spacing: 0.24px; }
+.nav-item.active svg { color: var(--primary); }
+.nav-item.active span { color: var(--primary); }
+.nav-item:not(.active) svg { color: var(--text3); }
+.nav-item:not(.active) span { color: var(--text3); }
+.cart-badge { position: absolute; top: 0; right: 4px; min-width: 18px; height: 18px; border-radius: 9px; background: var(--primary); color: white; font-size: 10px; font-weight: 600; display: flex; align-items: center; justify-content: center; padding: 0 4px; }
+
+.static-label { position: fixed; top: 8px; right: 8px; background: rgba(0,0,0,0.5); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; z-index: 100; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="static-label">STATIC COPY — staging.deakhus.ro</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <h1>Kosaram</h1>
+    <div class="header-right">
+      <span class="header-count">3 termék</span>
+      <button class="lang-btn">
+        <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="5.33" fill="#CE2939"/><rect y="5.33" width="22" height="5.33" fill="#FFF"/><rect y="10.66" width="22" height="5.34" fill="#1A8B42"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="main">
+
+  <!-- Cart items -->
+  <div class="cart-items">
+
+    <!-- Item 1: Füstölt Has -->
+    <div class="cart-item">
+      <div class="cart-item-inner">
+        <div class="item-img"><img src="https://staging.deakhus.ro/files/fustolt_has.webp" alt="Füstölt Has"></div>
+        <div class="item-details">
+          <div class="item-header">
+            <span class="item-name">Füstölt Has</span>
+            <button class="trash-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
+          </div>
+          <span class="item-unit-price">47,00 RON / kg</span>
+          <div class="item-qty-row">
+            <div class="qty-controls">
+              <button class="qty-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+              <input class="qty-input" type="text" value="2,00" readonly>
+              <button class="qty-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+            </div>
+            <span class="item-line-total">94,00 RON</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 2: Füstölt Oldalas -->
+    <div class="cart-item">
+      <div class="cart-item-inner">
+        <div class="item-img"><img src="https://staging.deakhus.ro/files/fustolt_oldalas.webp" alt="Füstölt Oldalas"></div>
+        <div class="item-details">
+          <div class="item-header">
+            <span class="item-name">Füstölt Oldalas</span>
+            <button class="trash-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
+          </div>
+          <span class="item-unit-price">47,00 RON / kg</span>
+          <div class="item-qty-row">
+            <div class="qty-controls">
+              <button class="qty-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+              <input class="qty-input" type="text" value="2,00" readonly>
+              <button class="qty-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+            </div>
+            <span class="item-line-total">94,00 RON</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Item 3: Cérna Kolbász -->
+    <div class="cart-item">
+      <div class="cart-item-inner">
+        <div class="item-img"><img src="https://staging.deakhus.ro/files/cerna_kolbasz.webp" alt="Cérna Kolbász"></div>
+        <div class="item-details">
+          <div class="item-header">
+            <span class="item-name">Cérna Kolbász</span>
+            <button class="trash-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg></button>
+          </div>
+          <span class="item-unit-price">45,00 RON / kg</span>
+          <div class="item-qty-row">
+            <div class="qty-controls">
+              <button class="qty-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg></button>
+              <input class="qty-input" type="text" value="1,00" readonly>
+              <button class="qty-btn"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg></button>
+            </div>
+            <span class="item-line-total">45,00 RON</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Weight disclaimer -->
+  <div class="disclaimer">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    <span>A végső súly és ár ±10%-kal eltérhet</span>
+  </div>
+
+  <!-- Savings progress bar -->
+  <div class="savings-box">
+    <div class="progress-track">
+      <div class="progress-fill"></div>
+      <!-- 150 RON marker (reached) -->
+      <div class="progress-marker marker-150">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <!-- 300 RON marker (not reached) -->
+      <div class="progress-marker marker-300"></div>
+      <!-- Labels -->
+      <span class="progress-label label-0">0 RON</span>
+      <span class="progress-label label-150">150 RON</span>
+      <span class="progress-label label-150-sub">Ingy. száll.</span>
+      <span class="progress-label label-300">300 RON</span>
+      <span class="progress-label label-300-sub">2% kedv.</span>
+    </div>
+  </div>
+
+  <!-- Savings message -->
+  <div class="savings-msg">Ingyenes szállítás!</div>
+  <div class="next-threshold">+10 RON (ingyenes szállítás)</div>
+  <div class="next-threshold-sub">Még 67 RON → 2% kedvezmény</div>
+
+  <!-- Summary -->
+  <div class="summary">
+    <div class="summary-row">
+      <span class="summary-label">Becsült részösszeg</span>
+      <span class="summary-value">~233,00 RON</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-delivery-label">Szállítás</span>
+      <div class="summary-delivery-value">
+        <span class="strike">10,00 RON</span>
+        <span class="free-label">Ingyenes</span>
+      </div>
+    </div>
+    <div class="summary-total-row">
+      <span class="summary-total-label">Becsült összesen</span>
+      <span class="summary-total-value">~233,00 RON</span>
+    </div>
+    <div class="summary-subtitle">3 termék · becslés a kiválasztott mennyiségek alapján</div>
+  </div>
+
+
+</div>
+
+<!-- Checkout CTA bar (fixed above nav) -->
+<div class="checkout-bar">
+  <button class="checkout-btn">Tovább a fizetéshez</button>
+</div>
+
+<!-- Bottom navigation -->
+<nav class="bottom-nav">
+  <a href="products.html" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Termékek</span>
+  </a>
+  <a href="#" class="nav-item active">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <span>Kosár</span>
+    <span class="cart-badge">3</span>
+  </a>
+  <a href="#" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Fiók</span>
+  </a>
+</nav>
+
+</body>
+</html>

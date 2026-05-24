@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>Deák Húsmíves — Facebook Poszt 1080×1080</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; background: #E8E2DB;
+  }
+  .canvas {
+    width: 1080px; height: 1080px;
+    background: #FFFBF7;
+    position: relative;
+    overflow: hidden;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: #2C2825;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ── Top section ── */
+  .top {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 80px 20px;
+    text-align: center;
+  }
+
+  .logo {
+    height: 80px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+  }
+
+  .pre-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: #8A8078;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 20px;
+  }
+
+  .main-title {
+    font-size: 64px;
+    font-weight: 900;
+    color: #2C2825;
+    line-height: 1.08;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+  .main-title .accent {
+    color: #9B2335;
+  }
+  .num-50 {
+    font-size: 110px;
+    font-weight: 900;
+    color: #9B2335;
+    line-height: 1;
+    letter-spacing: -3px;
+    display: block;
+    margin: 4px 0 8px;
+  }
+
+  .subtitle {
+    font-size: 30px;
+    font-weight: 500;
+    color: #5C564F;
+    line-height: 1.4;
+    margin-top: 16px;
+    max-width: 700px;
+  }
+  .subtitle strong {
+    color: #2C2825;
+    font-weight: 700;
+  }
+
+  /* ── Counter badge ── */
+  .counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 32px;
+    padding: 14px 32px;
+    background: #FDF6F7;
+    border: 2px solid #E8E2DB;
+    border-radius: 60px;
+  }
+  .counter-dots {
+    display: flex; gap: 5px;
+  }
+  .counter-dot {
+    width: 12px; height: 12px;
+    border-radius: 50%;
+    background: #E8E2DB;
+  }
+  .counter-dot.filled {
+    background: #9B2335;
+  }
+  .counter-text {
+    font-size: 20px;
+    font-weight: 700;
+    color: #8A8078;
+    letter-spacing: 0.5px;
+  }
+  .counter-text strong {
+    color: #9B2335;
+  }
+
+  /* ── CTA bar ── */
+  .cta-bar {
+    background: #9B2335;
+    padding: 36px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    flex-shrink: 0;
+  }
+  .cta-url {
+    font-size: 34px;
+    font-weight: 800;
+    color: white;
+    letter-spacing: 0.5px;
+  }
+  .cta-sep {
+    width: 2px; height: 28px;
+    background: rgba(255,255,255,0.35);
+  }
+  .cta-label {
+    font-size: 26px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.85);
+  }
+</style>
+</head>
+<body>
+
+<div class="canvas">
+  <div class="top">
+    <img class="logo" src="assets/deak-logo-raster.png" alt="Deák Húsmíves">
+
+    <div class="pre-title">Alapító tagság</div>
+
+    <div class="main-title">
+      Legyél az első
+      <span class="num-50">50</span>
+      <span class="accent">alapító tag között</span>
+    </div>
+
+    <div class="subtitle">
+      <strong>3 hónapig ingyenes kiszállítás</strong><br>
+      minden rendelésedre Székelyudvarhelyen
+    </div>
+
+    <div class="counter">
+      <div class="counter-dots">
+        <div class="counter-dot filled"></div>
+        <div class="counter-dot filled"></div>
+        <div class="counter-dot filled"></div>
+        <div class="counter-dot"></div>
+        <div class="counter-dot"></div>
+        <div class="counter-dot"></div>
+        <div class="counter-dot"></div>
+        <div class="counter-dot"></div>
+        <div class="counter-dot"></div>
+        <div class="counter-dot"></div>
+      </div>
+      <div class="counter-text"><strong>&#9634;</strong> / 50 hely</div>
+    </div>
+  </div>
+
+  <div class="cta-bar">
+    <span class="cta-url">deakhus.ro</span>
+    <span class="cta-sep"></span>
+    <span class="cta-label">Regisztrálj most!</span>
+  </div>
+</div>
+
+</body>
+</html>

@@ -19,6 +19,8 @@ status: triaged
 confidence: high
 processed_by: AI Speed‑Reading Agent
 processed_date: 2025-08-31
+id: 358aaf19-8b4a-4332-8e39-fd1b5e213cd8
+index_schema_version: 1
 ---
 
 # A Betenbough Módszer Vezetői kézikönyv – Summary

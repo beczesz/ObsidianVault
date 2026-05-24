@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH v0.5 — Shared Basket v2 (DH-149)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    /* ✅ Corrected staging tokens */
+    --bg: #FAF8F5;
+    --card: #FFFFFF;
+    --primary: #9B2335;
+    --primary-light: #F9E0E3;
+    --primary-pale: #F4E6E8;
+    --text: #2C2825;
+    --text2: #8A8078;
+    --text3: #999999;
+    --border: #E8E2DB;
+    --border-2: #E2E2E2;
+    --green: #2D7A4F;
+    --green-light: #D4EDDA;
+    --green-dark: #1B5E20;
+    --gold: #D4A574;
+    --gold-light: #FFF8E1;
+    --warn: #C4841D;
+    --warn-light: #FEF3C7;
+    --info: #2B6CB0;
+    --info-light: #DBEAFE;
+
+    /* User color coding (for shared basket contribution grouping) */
+    --host: #9B2335;
+    --host-bg: #F9E0E3;
+    --guest-1: #2B6CB0;
+    --guest-1-bg: #DBEAFE;
+    --guest-2: #2D7A4F;
+    --guest-2-bg: #D4EDDA;
+    --cluster: #5E3B9C;
+    --cluster-bg: #E8E0F5;
+  }
+  body { font-family: Inter, 'InterVar', system-ui, -apple-system, sans-serif; background: #F3EFE9; color: var(--text); line-height: 1.4; padding-bottom: 40px; }
+
+  /* Page chrome */
+  .back-btn { display: inline-block; padding: 8px 14px; background: var(--primary); color: white; border-radius: 8px; font-size: 13px; text-decoration: none; font-weight: 600; margin: 16px 24px 0; }
+  .back-btn:hover { background: #7a1a2a; }
+
+  .header { max-width: 1400px; margin: 0 auto; padding: 16px 24px 0; }
+  .header h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.3px; }
+  .header .sub { font-size: 13px; color: var(--text2); margin-top: 4px; max-width: 720px; }
+  .header-meta { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .badge-ticket { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+  .b-dh { background: #E8EAF6; color: #1A237E; }
+  .b-park { background: #FEF3C7; color: #92400E; }
+  .b-sprint { background: #FCE4EC; color: #880E4F; }
+  .b-v { background: var(--primary-pale); color: var(--primary); }
+
+  /* Principle callout */
+  .principle {
+    max-width: 1400px; margin: 16px auto 0; padding: 0 24px;
+  }
+  .principle-inner {
+    background: white; border: 1px solid var(--border); border-left: 3px solid var(--primary);
+    border-radius: 8px; padding: 14px 18px; font-size: 13px; color: var(--text);
+    line-height: 1.6;
+  }
+  .principle-inner strong { color: var(--primary); }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; max-width: 1400px; margin: 16px auto 0; padding: 0 24px; overflow-x: auto; }
+  .tab { padding: 9px 16px; border-radius: 24px; font-size: 12px; border: 1px solid var(--border); background: white; cursor: pointer; white-space: nowrap; transition: all 0.15s; font-weight: 500; }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); color: var(--primary); }
+
+  .content { max-width: 1400px; margin: 0 auto; padding: 20px 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+  .feature > h2 { font-size: 18px; font-weight: 700; margin: 0 0 6px; }
+  .feature > p.desc { font-size: 13px; color: var(--text2); margin-bottom: 16px; max-width: 760px; }
+
+  .phones { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+
+  /* Phone frame */
+  .phone-wrap { display: flex; flex-direction: column; flex-shrink: 0; }
+  .phone-label { text-align: center; font-size: 11px; font-weight: 700; color: var(--text2); margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; max-width: 375px; }
+  .phone {
+    width: 375px; background: var(--bg); border-radius: 24px; border: 2px solid var(--border);
+    overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.10); position: relative;
+    display: flex; flex-direction: column;
+  }
+  .phone-header {
+    background: white; padding: 14px 16px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px; flex-shrink: 0;
+  }
+  .ph-back {
+    width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    color: var(--primary); cursor: pointer;
+  }
+  .ph-back:hover { background: var(--primary-pale); }
+  .ph-title { font-size: 16px; font-weight: 700; flex: 1; color: var(--text); }
+  .ph-right { font-size: 12px; color: var(--text2); }
+
+  .phone-body { padding: 12px 14px 80px; max-height: 640px; overflow-y: auto; flex: 1; }
+
+  /* Bottom nav */
+  .nav {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: white; border-top: 1px solid var(--border);
+    display: flex; padding: 6px 0 10px;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+  }
+  .nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 10px; color: var(--text2); padding: 6px 0; cursor: pointer; }
+  .nav-item.active { color: var(--primary); font-weight: 700; }
+  .nav-item svg { width: 22px; height: 22px; stroke-width: 1.8; fill: none; stroke: currentColor; }
+  .nav-badge { position: absolute; top: -3px; right: -8px; background: var(--primary); color: white; font-size: 9px; font-weight: 700; width: 15px; height: 15px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .nav-icon-wrap { position: relative; }
+
+  /* Generic card */
+  .card { background: white; border-radius: 16px; padding: 14px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .card-title { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+
+  /* ===== CLUSTER CARD (Main homepage component) ===== */
+  .cluster-card {
+    background: linear-gradient(135deg, #EDE4FA 0%, #F4EDFC 100%);
+    border: 1px solid #C4B0E8;
+    border-radius: 16px; padding: 14px;
+    margin-bottom: 10px;
+    position: relative; overflow: hidden;
+  }
+  .cluster-card::before {
+    content: ''; position: absolute; top: -20px; right: -20px;
+    width: 80px; height: 80px; border-radius: 50%;
+    background: rgba(94, 59, 156, 0.08);
+  }
+  .cluster-head { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; color: var(--cluster); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; position: relative; }
+  .cluster-head svg { width: 14px; height: 14px; stroke: var(--cluster); stroke-width: 2; fill: none; }
+  .cluster-title { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; position: relative; }
+  .cluster-sub { font-size: 12px; color: var(--text2); position: relative; line-height: 1.5; }
+  .cluster-sub b { color: var(--cluster); font-weight: 700; }
+  .cluster-avatars { display: flex; margin-top: 10px; margin-bottom: 10px; position: relative; }
+  .cluster-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: white; border: 2px solid #EDE4FA;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: var(--cluster);
+    margin-left: -6px;
+  }
+  .cluster-avatar:first-child { margin-left: 0; }
+  .cluster-avatar.more { background: var(--cluster); color: white; }
+  .cluster-cta {
+    background: var(--cluster); color: white; border: none;
+    border-radius: 10px; padding: 10px 14px; font-size: 13px; font-weight: 700;
+    width: 100%; cursor: pointer; position: relative;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+  }
+  .cluster-cta svg { width: 14px; height: 14px; stroke: white; stroke-width: 2.5; fill: none; }
+
+  /* ===== SHARED BASKET INVITE CARD (secondary) ===== */
+  .share-card {
+    background: white; border: 1px dashed var(--primary);
+    border-radius: 16px; padding: 12px 14px; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .share-card-icon {
+    width: 36px; height: 36px; border-radius: 10px; background: var(--primary-pale);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .share-card-icon svg { width: 18px; height: 18px; stroke: var(--primary); stroke-width: 2; fill: none; }
+  .share-card-body { flex: 1; min-width: 0; }
+  .share-card-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .share-card-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .share-card-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 7px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+
+  /* ===== PROGRESS BAR (savings) ===== */
+  .progress-card { background: white; border-radius: 16px; padding: 14px; border: 1px solid var(--border); margin-bottom: 10px; }
+  .progress-track { position: relative; height: 8px; background: #E8E2DB; border-radius: 8px; margin-bottom: 64px; margin-top: 6px; }
+  .progress-fill { height: 100%; border-radius: 8px; background: var(--primary); transition: width 0.5s ease; }
+  .progress-fill.cluster { background: var(--cluster); }
+  .progress-dot {
+    position: absolute; top: 50%; transform: translate(-50%, -50%);
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+    z-index: 2; display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 700; color: white;
+  }
+  .progress-dot.reached { background: var(--primary); }
+  .progress-dot.reached.cluster { background: var(--cluster); }
+  .progress-dot.unreached { background: #E0D8D0; border-color: #E0D8D0; }
+  .progress-label { position: absolute; top: 24px; transform: translateX(-50%); font-size: 10px; color: var(--text2); white-space: nowrap; text-align: center; }
+  .progress-label b { display: block; color: var(--text); font-weight: 700; margin-bottom: 3px; font-size: 11px; }
+  .progress-hint { padding: 8px 12px; border-radius: 10px; font-size: 12px; margin-top: 6px; }
+  .hint-warn { background: var(--warn-light); color: #92400E; }
+  .hint-green { background: var(--green-light); color: var(--green-dark); }
+  .hint-purple { background: var(--cluster-bg); color: var(--cluster); }
+
+  /* ===== CONTRIBUTOR ROW ===== */
+  .contrib-list { border-radius: 12px; overflow: hidden; border: 1px solid var(--border); background: white; margin-bottom: 10px; }
+  .contrib-row {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .contrib-row:last-child { border-bottom: none; }
+  .contrib-avatar {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px; color: white;
+  }
+  .contrib-avatar.host { background: var(--host); }
+  .contrib-avatar.g1 { background: var(--guest-1); }
+  .contrib-avatar.g2 { background: var(--guest-2); }
+  .contrib-info { flex: 1; min-width: 0; }
+  .contrib-name { font-size: 13px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
+  .host-tag {
+    background: var(--primary); color: white; font-size: 9px; font-weight: 700;
+    padding: 1px 6px; border-radius: 4px; letter-spacing: 0.3px; text-transform: uppercase;
+  }
+  .contrib-meta { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .contrib-right { text-align: right; }
+  .contrib-amount { font-size: 13px; font-weight: 700; color: var(--text); }
+  .contrib-savings { font-size: 10px; font-weight: 700; color: var(--green); }
+  .contrib-status-typing { font-size: 11px; color: var(--info); font-style: italic; }
+  .pulse-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--info); margin-right: 4px; animation: pulse 1.4s infinite; }
+  @keyframes pulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+
+  /* ===== GROUPED CART ITEMS (color coded by owner) ===== */
+  .item-group { margin-bottom: 10px; }
+  .item-group-head {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; color: var(--text2);
+    padding: 0 4px 6px; text-transform: uppercase; letter-spacing: .4px;
+  }
+  .owner-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .od-host { background: var(--host); }
+  .od-g1 { background: var(--guest-1); }
+  .od-g2 { background: var(--guest-2); }
+  .item { display: flex; gap: 10px; padding: 10px; background: white; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 6px; align-items: center; }
+  .item.owner-host { border-left: 3px solid var(--host); }
+  .item.owner-g1 { border-left: 3px solid var(--guest-1); }
+  .item.owner-g2 { border-left: 3px solid var(--guest-2); }
+  .item-thumb { width: 44px; height: 44px; border-radius: 8px; background: #EDE5DA; flex-shrink: 0; }
+  .item-info { flex: 1; min-width: 0; }
+  .item-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .item-qty { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .item-total { font-size: 13px; font-weight: 600; text-align: right; white-space: nowrap; }
+
+  /* ===== TIMER ===== */
+  .timer-card {
+    background: linear-gradient(135deg, #FEF3C7 0%, #FEE8B0 100%);
+    border: 1px solid #F0C97A; border-radius: 12px;
+    padding: 10px 12px; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .timer-icon {
+    width: 34px; height: 34px; border-radius: 50%; background: white;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .timer-icon svg { width: 18px; height: 18px; stroke: #92400E; stroke-width: 2; fill: none; }
+  .timer-body { flex: 1; }
+  .timer-label { font-size: 10px; font-weight: 700; color: #92400E; text-transform: uppercase; letter-spacing: .4px; }
+  .timer-value { font-size: 15px; font-weight: 800; color: #92400E; font-variant-numeric: tabular-nums; }
+  .timer-extend { background: white; border: 1px solid #F0C97A; color: #92400E; font-size: 11px; font-weight: 700; padding: 6px 10px; border-radius: 8px; cursor: pointer; }
+
+  /* ===== HOST BONUS BADGE ===== */
+  .host-bonus {
+    background: linear-gradient(135deg, #FFFDF5 0%, #FFF8E1 100%);
+    border: 1px solid #E8C84A;
+    border-radius: 12px; padding: 10px 12px; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .host-bonus-icon {
+    width: 34px; height: 34px; border-radius: 50%; background: #F0A500;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .host-bonus-icon svg { width: 18px; height: 18px; stroke: white; stroke-width: 2; fill: none; }
+  .host-bonus-body { flex: 1; }
+  .host-bonus-title { font-size: 13px; font-weight: 700; color: #78520B; }
+  .host-bonus-sub { font-size: 11px; color: #92650D; margin-top: 1px; }
+
+  /* ===== BUTTONS ===== */
+  .btn { width: 100%; padding: 13px 16px; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; border: none; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; }
+  .btn + .btn { margin-top: 8px; }
+  .btn-primary { background: var(--primary); color: white; }
+  .btn-primary:disabled { background: #E0D8D0; color: #999; cursor: default; }
+  .btn-secondary { background: transparent; border: 1.5px solid var(--primary); color: var(--primary); }
+  .btn-cluster { background: var(--cluster); color: white; }
+  .btn-ghost { background: transparent; color: var(--text2); font-size: 13px; font-weight: 500; }
+  .btn svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+  /* Divider */
+  .or-divider { display: flex; align-items: center; gap: 10px; margin: 14px 0 10px; color: var(--text2); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; }
+  .or-divider::before, .or-divider::after { content:''; flex:1; height:1px; background: var(--border); }
+
+  /* Invite method picker */
+  .invite-methods { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+  .invite-method {
+    background: white; border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 12px 10px; text-align: center; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .invite-method:hover { border-color: var(--primary); }
+  .invite-method.active { border-color: var(--primary); background: var(--primary-pale); }
+  .invite-method-icon { width: 34px; height: 34px; border-radius: 50%; background: var(--primary-pale); margin: 0 auto 6px; display: flex; align-items: center; justify-content: center; }
+  .invite-method-icon svg { width: 18px; height: 18px; stroke: var(--primary); stroke-width: 2; fill: none; }
+  .invite-method-label { font-size: 12px; font-weight: 700; }
+  .invite-method-sub { font-size: 10px; color: var(--text2); margin-top: 1px; }
+
+  /* Link box */
+  .link-box {
+    background: #F5F0EB; border: 1px dashed var(--border);
+    border-radius: 10px; padding: 10px 12px; margin-bottom: 10px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .link-box-text { flex: 1; font-size: 12px; color: var(--text); font-family: ui-monospace, monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .link-box-btn { background: var(--primary); color: white; border: none; padding: 6px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; }
+  .link-info-row {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--warn-light); color: #92400E;
+    padding: 8px 12px; border-radius: 10px;
+    font-size: 11px; line-height: 1.35;
+  }
+  .link-info-row svg { stroke: #92400E; flex-shrink: 0; }
+  .link-info-row b { font-weight: 700; }
+
+  /* Edge-case callouts */
+  .callout {
+    border-radius: 12px; padding: 12px; margin-bottom: 10px;
+    display: flex; gap: 10px; font-size: 12px;
+  }
+  .callout-warn { background: var(--warn-light); color: #92400E; border: 1px solid #F5D97A; }
+  .callout-info { background: var(--info-light); color: #1e4a7a; border: 1px solid #A7C7E8; }
+  .callout-error { background: #FEE2E2; color: #991B1B; border: 1px solid #FCA5A5; }
+  .callout b { display: block; margin-bottom: 2px; }
+  .callout-icon { width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; }
+  .callout-icon svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2; fill: none; }
+
+  /* Split payment summary */
+  .split-pay {
+    background: white; border-radius: 12px; border: 1px solid var(--border);
+    padding: 12px; margin-bottom: 10px;
+  }
+  .split-pay-row { display: flex; align-items: center; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .split-pay-row:last-child { border-bottom: none; padding-top: 10px; font-weight: 700; color: var(--text); }
+  .split-pay-who { display: flex; align-items: center; gap: 8px; font-size: 13px; }
+  .split-pay-amt { font-size: 13px; font-weight: 600; color: var(--text); text-align: right; }
+  .split-pay-sub { font-size: 10px; color: var(--green); font-weight: 700; }
+  .pay-status { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+  .pay-status.paid { background: var(--green-light); color: var(--green); }
+  .pay-status.pending { background: var(--warn-light); color: var(--warn); }
+
+  /* Accept criteria table */
+  .ac-table { width: 100%; background: white; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); font-size: 13px; border-collapse: separate; border-spacing: 0; }
+  .ac-table th, .ac-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+  .ac-table th { background: #F5F0EB; font-size: 11px; color: var(--text2); text-transform: uppercase; letter-spacing: .4px; font-weight: 700; }
+  .ac-table tr:last-child td { border-bottom: none; }
+  .ac-table td:first-child { font-family: ui-monospace, monospace; font-weight: 700; color: var(--primary); width: 54px; }
+  .tag { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; }
+  .tag-p0 { background: #FEE2E2; color: #991B1B; }
+  .tag-p1 { background: #FEF3C7; color: #92400E; }
+  .tag-p2 { background: #DBEAFE; color: #1E40AF; }
+
+  /* Responsive */
+  @media (max-width: 500px) {
+    .phone { width: 100%; border-radius: 16px; }
+    .tabs { padding: 0 12px; }
+    .content { padding: 12px; }
+    .header { padding: 12px 12px 0; }
+    .header h1 { font-size: 20px; }
+  }
+
+  /* progress-edge-fix: prevent right-edge bubble/dot/label from overflowing */
+  /* Dots/bubbles need Y-centering (they sit on the track) */
+  .progress-bubble[style*="left:100%"], .progress-bubble[style*="left: 100%"],
+  .progress-dot[style*="left:100%"], .progress-dot[style*="left: 100%"] {
+    transform: translate(-100%, -50%) !important;
+  }
+  .progress-bubble[style*="left:0%"], .progress-bubble[style*="left: 0%"],
+  .progress-dot[style*="left:0%"], .progress-dot[style*="left: 0%"],
+  .progress-bubble[style*="left:0;"], .progress-bubble[style*="left: 0;"],
+  .progress-dot[style*="left:0;"], .progress-dot[style*="left: 0;"] {
+    transform: translate(0, -50%) !important;
+  }
+  /* Labels sit *below* the track (top:24px in base style) — only shift X, preserve Y */
+  .progress-label[style*="left:100%"], .progress-label[style*="left: 100%"] {
+    transform: translateX(-100%) !important;
+  }
+  .progress-label[style*="left:0%"], .progress-label[style*="left: 0%"],
+  .progress-label[style*="left:0;"], .progress-label[style*="left: 0;"],
+  .progress-label[style*="left:0px"], .progress-label[style*="left: 0px"] {
+    transform: translateX(0) !important;
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">← Vissza a galériába</a>
+
+<div class="header">
+  <h1>Shared Basket — Redesign v2</h1>
+  <p class="sub">
+    A DH-149 kritikus rizikóira (initiator burden, koordináció, social friction) válasz: a <b>Delivery Cluster</b> modellt
+    előtérbe helyező újratervezés. A Shared Basket mint opt-in „power user" flow marad, de <b>time-boxolt</b>,
+    <b>zero-responsibility split payment</b>-tel és <b>látható host bonusszal</b>.
+  </p>
+  <div class="header-meta">
+    <span class="badge-ticket b-dh">DH-149</span>
+    <span class="badge-ticket b-sprint">Sprint 5</span>
+    <span class="badge-ticket b-park">⏸ Parkolt → Redesign-ra javasolt</span>
+    <span class="badge-ticket b-v">v2 · 2026-04-18</span>
+  <div class="breadcrumb-bar" id="breadcrumb" onclick="copyBreadcrumb()">
+    <span class="bc-text" id="bcText"></span>
+    <span class="bc-copy" id="bcCopy" title="Hivatkozás másolása">📋</span>
+  </div>
+</div>
+</div>
+
+<div class="principle">
+  <div class="principle-inner">
+    <strong>Tervezési tézis:</strong> A ticket saját analízise szerint a legnagyobb rizikó a <em>Delivery Cluster</em>
+    (passzív, zero-coordination) modellben oldódik meg. A v2 ezt teszi a fő felhasználói élménnyé,
+    a teljes Shared Basket-et pedig egy <em>opt-in, 60-perces, költséghatékony</em> power-user flow-vá alakítja.
+    Minden kritikus design elem (host incentive, time-box, zero-responsibility) explicit vizuális elem.
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab(0)">1 · Delivery Cluster (preferált)</div>
+  <div class="tab" onclick="showTab(1)">2 · Shared Basket — invite</div>
+  <div class="tab" onclick="showTab(2)">3 · Shared Basket — aktív</div>
+  <div class="tab" onclick="showTab(3)">4 · Fizetés + Checkout</div>
+  <div class="tab" onclick="showTab(4)">5 · Edge cases</div>
+  <div class="tab" onclick="showTab(5)">6 · Acceptance Criteria</div>
+</div>
+
+<div class="content">
+
+  <!-- ============================================================ -->
+  <!-- TAB 1: DELIVERY CLUSTER (PREFERRED) -->
+  <!-- ============================================================ -->
+  <div class="feature active" id="tab-0">
+    <h2>Delivery Cluster — a preferált, zero-coordination modell</h2>
+    <p class="desc">
+      A user a terméklista tetején látja, hogy „mások is rendelnek" ugyanabba az idősávba + körzetbe.
+      <b>Nincs szervezés, nincs chat, nincs felelősség.</b> A system által alkotott cluster közösen éri el
+      a thresholdokat → a savings mindenki között arányosan elosztódik automatikusan.
+    </p>
+
+    <div class="phones">
+
+      <!-- Phone A: Product list with cluster prompt -->
+      <div class="phone-wrap">
+        <div class="phone-label">A · Főoldal — „csatlakozhatsz"</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-title">Termékek</div>
+            <div class="ph-right">🇭🇺</div>
+          </div>
+          <div class="phone-body">
+
+            <!-- Cluster prompt card -->
+            <div class="cluster-card">
+              <div class="cluster-head">
+                <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                Csoportos szállítás · ma délután
+              </div>
+              <div class="cluster-title">3 szomszéd rendel a környékedre</div>
+              <div class="cluster-sub">
+                Eddig: <b>245 RON / 300 RON</b> → csatlakozz és <b>mindenki</b> megkapja a 2% kedvezményt.<br>
+                <span style="font-size:11px; color:var(--text2)">Szállítási sáv: <b style="color:var(--text)">holnap 14:00–16:00</b> · kb. 8 perc séta-távolság</span>
+              </div>
+              <div class="cluster-avatars">
+                <div class="cluster-avatar">AB</div>
+                <div class="cluster-avatar">MK</div>
+                <div class="cluster-avatar">GT</div>
+              </div>
+              <button class="cluster-cta">
+                <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+                Csatlakozom a szállításhoz
+              </button>
+            </div>
+
+            <!-- Category pills -->
+            <div style="display:flex; gap:6px; overflow-x:auto; margin:10px 0;">
+              <div style="padding:6px 12px; border-radius:18px; background:var(--primary); color:white; font-size:11px; font-weight:700; white-space:nowrap;">Összes</div>
+              <div style="padding:6px 12px; border-radius:18px; border:1px solid var(--border); background:white; font-size:11px; white-space:nowrap; color:var(--text2)">Felvágott</div>
+              <div style="padding:6px 12px; border-radius:18px; border:1px solid var(--border); background:white; font-size:11px; white-space:nowrap; color:var(--text2)">Sertés</div>
+              <div style="padding:6px 12px; border-radius:18px; border:1px solid var(--border); background:white; font-size:11px; white-space:nowrap; color:var(--text2)">Füstölt</div>
+            </div>
+
+            <!-- Product grid placeholder -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div style="background:white; border-radius:12px; border:1px solid var(--border); overflow:hidden;">
+                <div style="height:70px; background:repeating-linear-gradient(135deg, #EDE5DA 0 6px, #E5DDD0 6px 12px);"></div>
+                <div style="padding:8px;"><div style="font-size:12px; font-weight:600;">Füstölt Has</div><div style="font-size:11px; color:var(--primary); font-weight:700; margin-top:2px;">47,00 RON / kg</div></div>
+              </div>
+              <div style="background:white; border-radius:12px; border:1px solid var(--border); overflow:hidden;">
+                <div style="height:70px; background:repeating-linear-gradient(135deg, #EDE5DA 0 6px, #E5DDD0 6px 12px);"></div>
+                <div style="padding:8px;"><div style="font-size:12px; font-weight:600;">Májkrém</div><div style="font-size:11px; color:var(--primary); font-weight:700; margin-top:2px;">32,00 RON / kg</div></div>
+              </div>
+              <div style="background:white; border-radius:12px; border:1px solid var(--border); overflow:hidden; opacity:0.5;">
+                <div style="height:70px; background:#EDE5DA;"></div>
+                <div style="padding:8px;"><div style="font-size:12px; font-weight:600;">…</div></div>
+              </div>
+              <div style="background:white; border-radius:12px; border:1px solid var(--border); overflow:hidden; opacity:0.3;">
+                <div style="height:70px; background:#EDE5DA;"></div>
+                <div style="padding:8px;"><div style="font-size:12px; font-weight:600;">…</div></div>
+              </div>
+            </div>
+
+          </div>
+          <div class="nav">
+            <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Termékek</div>
+            <div class="nav-item"><div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></div>Kosár</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1" ry="1"/></svg>Rendelések</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fiók</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone B: Cart showing cluster savings -->
+      <div class="phone-wrap">
+        <div class="phone-label">B · Kosár — közös haladás</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-title">Kosaram</div>
+            <div class="ph-right" style="font-size:11px;">3 termék</div>
+          </div>
+          <div class="phone-body">
+
+            <!-- Cluster indicator -->
+            <div style="display:flex; align-items:center; gap:10px; background:var(--cluster-bg); border:1px solid #C4B0E8; border-radius:12px; padding:10px 12px; margin-bottom:10px;">
+              <div style="width:34px; height:34px; border-radius:50%; background:white; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#5E3B9C" stroke-width="2"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div style="font-size:11px; font-weight:700; color:var(--cluster); text-transform:uppercase; letter-spacing:.4px;">Csoportos szállítás</div>
+                <div style="font-size:12px; color:var(--text);">Holnap 14:00–16:00 · <b>4 résztvevő</b></div>
+              </div>
+              <div style="font-size:11px; color:var(--cluster); font-weight:700; cursor:pointer;">Részletek ›</div>
+            </div>
+
+            <!-- Progress: cluster total -->
+            <div class="progress-card">
+              <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                <span style="font-size:12px; color:var(--text2);">Csoport összesen</span>
+                <span style="font-size:13px; font-weight:700; color:var(--cluster);">287 / 300 RON</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill cluster" style="width: 95.7%"></div>
+                <div class="progress-dot reached cluster" style="left: 50%"></div>
+                <div class="progress-dot unreached" style="left: 100%"></div>
+                <div class="progress-label" style="left: 0;"><b>0 RON</b>Start</div>
+                <div class="progress-label" style="left: 50%;"><b>150 RON</b>Ingy. száll. ✓</div>
+                <div class="progress-label" style="left: 100%;"><b>300 RON</b>2% kedv.</div>
+              </div>
+              <div class="progress-hint hint-purple">
+                <b>Még 13 RON</b> → mindenki megkapja a 2% kedvezményt
+              </div>
+            </div>
+
+            <!-- My items -->
+            <div class="card">
+              <div class="card-title">Az én termékeim</div>
+              <div class="item owner-host" style="border-left-color: var(--primary);">
+                <div class="item-thumb"></div>
+                <div class="item-info"><div class="item-name">Füstölt Has</div><div class="item-qty">1,2 kg · 47,00 RON/kg</div></div>
+                <div class="item-total">56,40 RON</div>
+              </div>
+              <div class="item owner-host" style="border-left-color: var(--primary);">
+                <div class="item-thumb"></div>
+                <div class="item-info"><div class="item-name">Májkrém</div><div class="item-qty">0,5 kg · 32,00 RON/kg</div></div>
+                <div class="item-total">16,00 RON</div>
+              </div>
+            </div>
+
+            <!-- Your savings share -->
+            <div style="background:var(--green-light); border-radius:12px; padding:12px; margin-bottom:10px; display:flex; align-items:center; gap:10px;">
+              <div style="width:36px; height:36px; border-radius:50%; background:var(--green); display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="white" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M16 8v5a3 3 0 0 1-6 0"/></svg>
+              </div>
+              <div style="flex:1;">
+                <div style="font-size:12px; color:var(--green-dark); font-weight:700;">Veled elérjük a küszöböt</div>
+                <div style="font-size:11px; color:var(--green-dark); margin-top:2px;">Becsült megtakarításod: <b>~12 RON</b> (ingy. száll. + kedvezmény rész)</div>
+              </div>
+            </div>
+
+            <div style="background:white; border-radius:12px; padding:10px 14px; border:1px solid var(--border); margin-bottom:10px;">
+              <div style="display:flex; justify-content:space-between; font-size:13px;"><span>Saját részösszeg</span><span>72,40 RON</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:12px; color:var(--green); margin-top:4px;"><span>Csoportos kedv. (rész)</span><span>−1,45 RON</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:15px; font-weight:700; margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><span>Fizetendő</span><span>~70,95 RON</span></div>
+            </div>
+
+            <button class="btn btn-primary">Tovább a fizetéshez</button>
+
+          </div>
+          <div class="nav">
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Termékek</div>
+            <div class="nav-item active"><div class="nav-icon-wrap"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="nav-badge">3</span></div>Kosár</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1" ry="1"/></svg>Rendelések</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fiók</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone C: Empty state, no cluster available -->
+      <div class="phone-wrap">
+        <div class="phone-label">C · Nincs cluster — fallback</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-title">Termékek</div>
+            <div class="ph-right">🇭🇺</div>
+          </div>
+          <div class="phone-body">
+
+            <!-- Alternative: share with a friend (demoted to secondary) -->
+            <div class="share-card">
+              <div class="share-card-icon">
+                <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              </div>
+              <div class="share-card-body">
+                <div class="share-card-title">Rendelj közösen egy barátoddal</div>
+                <div class="share-card-sub">60 perc · közös szállítás · külön fizetés</div>
+              </div>
+              <button class="share-card-btn">Meghívás</button>
+            </div>
+
+            <div style="display:flex; gap:6px; overflow-x:auto; margin:10px 0;">
+              <div style="padding:6px 12px; border-radius:18px; background:var(--primary); color:white; font-size:11px; font-weight:700; white-space:nowrap;">Összes</div>
+              <div style="padding:6px 12px; border-radius:18px; border:1px solid var(--border); background:white; font-size:11px; white-space:nowrap; color:var(--text2)">Felvágott</div>
+              <div style="padding:6px 12px; border-radius:18px; border:1px solid var(--border); background:white; font-size:11px; white-space:nowrap; color:var(--text2)">Sertés</div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+              <div style="background:white; border-radius:12px; border:1px solid var(--border); overflow:hidden;">
+                <div style="height:70px; background:repeating-linear-gradient(135deg, #EDE5DA 0 6px, #E5DDD0 6px 12px);"></div>
+                <div style="padding:8px;"><div style="font-size:12px; font-weight:600;">Füstölt Has</div><div style="font-size:11px; color:var(--primary); font-weight:700; margin-top:2px;">47,00 RON / kg</div></div>
+              </div>
+              <div style="background:white; border-radius:12px; border:1px solid var(--border); overflow:hidden;">
+                <div style="height:70px; background:repeating-linear-gradient(135deg, #EDE5DA 0 6px, #E5DDD0 6px 12px);"></div>
+                <div style="padding:8px;"><div style="font-size:12px; font-weight:600;">Csülök</div><div style="font-size:11px; color:var(--primary); font-weight:700; margin-top:2px;">38,00 RON / kg</div></div>
+              </div>
+              <div style="background:white; border-radius:12px; border:1px solid var(--border); overflow:hidden; opacity:0.5;">
+                <div style="height:70px; background:#EDE5DA;"></div>
+                <div style="padding:8px;"><div style="font-size:12px;">…</div></div>
+              </div>
+              <div style="background:white; border-radius:12px; border:1px solid var(--border); overflow:hidden; opacity:0.3;">
+                <div style="height:70px; background:#EDE5DA;"></div>
+                <div style="padding:8px;"><div style="font-size:12px;">…</div></div>
+              </div>
+            </div>
+
+            <div class="callout callout-info" style="margin-top:10px;">
+              <div class="callout-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+              <div><b>Nincs elérhető cluster ma</b>Holnap reggel újra megnézzük a közeli szomszédok rendeléseit.</div>
+            </div>
+
+          </div>
+          <div class="nav">
+            <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>Termékek</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>Kosár</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1" ry="1"/></svg>Rendelések</div>
+            <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Fiók</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- phones -->
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 2: SHARED BASKET — INVITE -->
+  <!-- ============================================================ -->
+  <div class="feature" id="tab-1">
+    <h2>Shared Basket · Meghívás flow</h2>
+    <p class="desc">
+      Ha a user nem talál clustert (vagy konkrét barátot szeretne), elindíthat egy <b>60-perces time-boxolt</b>
+      megosztott kosarat. A host egyértelmű kötelezettséget vállal: összehívja a résztvevőket, de <b>mindenki külön fizet</b>.
+    </p>
+
+    <div class="phones">
+
+      <!-- Phone A: Host initiates share -->
+      <div class="phone-wrap">
+        <div class="phone-label">A · Meghívás indítása</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-back"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <div class="ph-title">Közös rendelés</div>
+          </div>
+          <div class="phone-body">
+
+            <div style="text-align:center; padding:8px 0 14px;">
+              <div style="width:56px; height:56px; border-radius:50%; background:var(--primary-pale); margin:0 auto 10px; display:flex; align-items:center; justify-content:center;">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#9B2335" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              </div>
+              <div style="font-size:17px; font-weight:700;">Hívd meg barátaidat</div>
+              <div style="font-size:12px; color:var(--text2); margin-top:4px; padding:0 16px;">
+                Közösen eléritek a megtakarítási küszöböket. <b>Mindenki külön fizet</b>, egy címre kapjátok.
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Meghívás módja</div>
+              <div class="invite-methods">
+                <div class="invite-method active">
+                  <div class="invite-method-icon"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg></div>
+                  <div class="invite-method-label">Link</div>
+                  <div class="invite-method-sub">Bárki megnyithatja</div>
+                </div>
+                <div class="invite-method">
+                  <div class="invite-method-icon"><svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+                  <div class="invite-method-label">Telefonszám</div>
+                  <div class="invite-method-sub">Regisztrált user</div>
+                </div>
+              </div>
+
+              <div class="link-box">
+                <div class="link-box-text">deakhus.ro/s/kT9p2M</div>
+                <button class="link-box-btn">Másolás</button>
+              </div>
+
+              <div class="link-info-row">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                <div><b>60 perc</b> után a kosár automatikusan lezárul</div>
+              </div>
+            </div>
+
+            <!-- Host bonus preview -->
+            <div class="host-bonus">
+              <div class="host-bonus-icon">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="host-bonus-body">
+                <div class="host-bonus-title">Szervezői bónusz: +5 RON</div>
+                <div class="host-bonus-sub">Ha a rendelés sikeres, neked jár extra szervezői credit.</div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary">
+              <svg viewBox="0 0 24 24"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+              Megosztás
+            </button>
+            <button class="btn btn-ghost">Mégse</button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone B: Guest joining -->
+      <div class="phone-wrap">
+        <div class="phone-label">B · Vendég csatlakozik</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-title">Meghívás</div>
+          </div>
+          <div class="phone-body">
+
+            <div class="card" style="text-align:center; padding:18px 14px;">
+              <div class="contrib-avatar host" style="margin: 0 auto 10px; width: 48px; height: 48px; font-size: 16px;">SB</div>
+              <div style="font-size:16px; font-weight:700;">Szabolcs meghívott egy közös rendelésre</div>
+              <div style="font-size:12px; color:var(--text2); margin-top:6px; line-height:1.5;">
+                Add hozzá a termékeidet a következő <b style="color:var(--warn)">59:24</b> percben.
+                Szabolcs már <b>72,40 RON</b>-ért rendelt.
+              </div>
+            </div>
+
+            <div class="progress-card">
+              <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                <span style="font-size:12px; color:var(--text2);">Közös kosár</span>
+                <span style="font-size:13px; font-weight:700; color:var(--primary);">72 / 300 RON</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 24%"></div>
+                <div class="progress-dot unreached" style="left: 50%"></div>
+                <div class="progress-dot unreached" style="left: 100%"></div>
+                <div class="progress-label" style="left: 0;"><b>0 RON</b>Start</div>
+                <div class="progress-label" style="left: 50%;"><b>150 RON</b>Ingy. száll.</div>
+                <div class="progress-label" style="left: 100%;"><b>300 RON</b>2% kedv.</div>
+              </div>
+              <div class="progress-hint hint-warn">
+                Még <b>78 RON</b> az ingyenes szállításig — segíts elérni!
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Mit rendelt már Szabolcs?</div>
+              <div class="item owner-host"><div class="item-thumb"></div><div class="item-info"><div class="item-name">Füstölt Has</div><div class="item-qty">1,2 kg</div></div><div class="item-total">56,40 RON</div></div>
+              <div class="item owner-host"><div class="item-thumb"></div><div class="item-info"><div class="item-name">Májkrém</div><div class="item-qty">0,5 kg</div></div><div class="item-total">16,00 RON</div></div>
+            </div>
+
+            <div class="callout callout-info">
+              <div class="callout-icon"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div><b>Egy címre kapjátok</b>Szabolcs címe: Cluj, Str. Horea 12. A tiéd külön csomagban.</div>
+            </div>
+
+            <button class="btn btn-primary">Csatlakozom — termék hozzáadása</button>
+            <button class="btn btn-ghost">Most nem</button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone C: Preview copy / sanity -->
+      <div class="phone-wrap">
+        <div class="phone-label">C · Megosztott üzenet-preview</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-title">Küldés · WhatsApp</div>
+          </div>
+          <div class="phone-body" style="background:#E5DDD5;">
+
+            <div style="max-width:280px; margin:16px 0 8px 8px; background:white; border-radius:10px 10px 10px 2px; padding:10px 12px; box-shadow:0 1px 2px rgba(0,0,0,0.08); font-size:13px; color:var(--text);">
+              <div style="font-weight:700; margin-bottom:6px;">🥩 Deák Húsmíves</div>
+              <div style="font-size:12px; line-height:1.5;">
+                Szia! Összerakok egy rendelést, csatlakozol?<br>
+                Együtt elérjük az <b>ingyenes szállítás</b> küszöböt.<br><br>
+                <span style="color:var(--primary); text-decoration:underline;">deakhus.ro/s/kT9p2M</span><br>
+                <span style="font-size:10px; color:var(--text2);">⏱ 60 perc · Cluj, Horea 12 · 1 fő már</span>
+              </div>
+              <div style="text-align:right; font-size:10px; color:var(--text2); margin-top:4px;">14:22 ✓✓</div>
+            </div>
+
+            <div style="max-width:280px; margin:8px 0 0 auto 8px 0; background:#D9FDD3; border-radius:10px 10px 2px 10px; padding:10px 12px; margin-left:70px; margin-right:8px; box-shadow:0 1px 2px rgba(0,0,0,0.08); font-size:13px; color:var(--text);">
+              Benne vagyok! 🫡
+              <div style="text-align:right; font-size:10px; color:var(--text2); margin-top:4px;">14:24 ✓✓</div>
+            </div>
+
+            <div style="margin-top:40px; padding:0 6px;">
+              <div class="callout callout-info" style="margin:0; background:white;">
+                <div class="callout-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+                <div><b>Copy design principle</b>Az üzenet rövid, <b>konkrét</b> (küszöb + idő + cím), és az action egyetlen link-klikkre esik. Nincs „trust me" felelősségvállalás.</div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 3: SHARED BASKET — ACTIVE -->
+  <!-- ============================================================ -->
+  <div class="feature" id="tab-2">
+    <h2>Shared Basket · Aktív állapot</h2>
+    <p class="desc">
+      Mindkét user lát mindent real-time. A kosár <b>tulajdonosság szerint csoportosított</b> (bal oldali színes sáv),
+      hogy egyértelmű legyen mit fog kapni ki. A timer folyamatosan látható, de <b>nem agresszív</b>.
+    </p>
+
+    <div class="phones">
+
+      <!-- Phone A: Host view — 2 guests joined -->
+      <div class="phone-wrap">
+        <div class="phone-label">A · Host nézet — 2 vendég csatlakozott</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-back"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <div class="ph-title">Közös kosár</div>
+            <span class="host-tag">Host</span>
+          </div>
+          <div class="phone-body">
+
+            <!-- Timer -->
+            <div class="timer-card">
+              <div class="timer-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="timer-body">
+                <div class="timer-label">Kosár zárul</div>
+                <div class="timer-value">34:12</div>
+              </div>
+              <button class="timer-extend">+15 perc</button>
+            </div>
+
+            <!-- Host bonus -->
+            <div class="host-bonus">
+              <div class="host-bonus-icon">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="host-bonus-body">
+                <div class="host-bonus-title">Szervezői bónusz: +5 RON aktív</div>
+                <div class="host-bonus-sub">Neked jár, ha a rendelés sikeres.</div>
+              </div>
+            </div>
+
+            <!-- Contributors -->
+            <div class="card">
+              <div class="card-title">Résztvevők (3)</div>
+              <div class="contrib-list" style="border:none;">
+                <div class="contrib-row">
+                  <div class="contrib-avatar host">SB</div>
+                  <div class="contrib-info">
+                    <div class="contrib-name">Szabolcs B. <span class="host-tag">Te</span></div>
+                    <div class="contrib-meta">2 termék</div>
+                  </div>
+                  <div class="contrib-right">
+                    <div class="contrib-amount">72,40 RON</div>
+                    <div class="contrib-savings">+8 RON</div>
+                  </div>
+                </div>
+                <div class="contrib-row">
+                  <div class="contrib-avatar g1">AB</div>
+                  <div class="contrib-info">
+                    <div class="contrib-name">Anna B.</div>
+                    <div class="contrib-meta">3 termék · csatlakozott 14:24</div>
+                  </div>
+                  <div class="contrib-right">
+                    <div class="contrib-amount">124,00 RON</div>
+                    <div class="contrib-savings">+7 RON</div>
+                  </div>
+                </div>
+                <div class="contrib-row">
+                  <div class="contrib-avatar g2">GT</div>
+                  <div class="contrib-info">
+                    <div class="contrib-name">Gábor T.</div>
+                    <div class="contrib-status-typing"><span class="pulse-dot"></span>terméket ad hozzá…</div>
+                  </div>
+                  <div class="contrib-right">
+                    <div class="contrib-amount" style="color:var(--text2)">86,50 RON</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Combined progress -->
+            <div class="progress-card">
+              <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                <span style="font-size:12px; color:var(--text2);">Közös összeg</span>
+                <span style="font-size:13px; font-weight:700; color:var(--primary);">282,90 / 300 RON</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 94.3%"></div>
+                <div class="progress-dot reached" style="left: 50%"></div>
+                <div class="progress-dot unreached" style="left: 100%"></div>
+                <div class="progress-label" style="left: 0;"><b>0 RON</b>Start</div>
+                <div class="progress-label" style="left: 50%;"><b>150 RON</b>Ingy. száll. ✓</div>
+                <div class="progress-label" style="left: 100%;"><b>300 RON</b>2% kedv.</div>
+              </div>
+              <div class="progress-hint hint-green">
+                <b>Szinte megvan!</b> Még 17,10 RON a 2% kedvezményig — egy kisebb termék elég.
+              </div>
+            </div>
+
+            <button class="btn btn-primary">Tovább a fizetéshez</button>
+            <button class="btn btn-secondary">Termék hozzáadása</button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone B: Guest view -->
+      <div class="phone-wrap">
+        <div class="phone-label">B · Vendég nézet</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-back"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <div class="ph-title">Közös kosár</div>
+          </div>
+          <div class="phone-body">
+
+            <!-- Owner info -->
+            <div class="card" style="display:flex; align-items:center; gap:10px; padding:10px 12px;">
+              <div class="contrib-avatar host" style="width:34px; height:34px; font-size:12px;">SB</div>
+              <div style="flex:1;">
+                <div style="font-size:12px; color:var(--text2);">Szabolcs megosztott kosara</div>
+                <div style="font-size:13px; font-weight:600; color:var(--text);">Cluj, Str. Horea 12</div>
+              </div>
+              <span class="host-tag" style="background:var(--primary-pale); color:var(--primary);">HOST</span>
+            </div>
+
+            <!-- Timer -->
+            <div class="timer-card">
+              <div class="timer-icon">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="timer-body">
+                <div class="timer-label">Kosár zárul</div>
+                <div class="timer-value">34:12</div>
+              </div>
+            </div>
+
+            <!-- All items grouped -->
+            <div class="item-group">
+              <div class="item-group-head"><span class="owner-dot od-host"></span>Szabolcs (host) · 72,40 RON</div>
+              <div class="item owner-host"><div class="item-thumb"></div><div class="item-info"><div class="item-name">Füstölt Has</div><div class="item-qty">1,2 kg</div></div><div class="item-total">56,40 RON</div></div>
+              <div class="item owner-host"><div class="item-thumb"></div><div class="item-info"><div class="item-name">Májkrém</div><div class="item-qty">0,5 kg</div></div><div class="item-total">16,00 RON</div></div>
+            </div>
+
+            <div class="item-group">
+              <div class="item-group-head"><span class="owner-dot od-g1"></span>Anna · 124,00 RON</div>
+              <div class="item owner-g1"><div class="item-thumb"></div><div class="item-info"><div class="item-name">Csülök</div><div class="item-qty">2 kg</div></div><div class="item-total">76,00 RON</div></div>
+              <div class="item owner-g1"><div class="item-thumb"></div><div class="item-info"><div class="item-name">Kolbász</div><div class="item-qty">1,5 kg</div></div><div class="item-total">48,00 RON</div></div>
+            </div>
+
+            <div class="item-group">
+              <div class="item-group-head"><span class="owner-dot od-g2"></span>Te · 86,50 RON</div>
+              <div class="item owner-g2"><div class="item-thumb"></div><div class="item-info"><div class="item-name">Szalámi</div><div class="item-qty">0,8 kg</div></div><div class="item-total">58,50 RON</div></div>
+              <div class="item owner-g2"><div class="item-thumb"></div><div class="item-info"><div class="item-name">Füstölt szalonna</div><div class="item-qty">0,3 kg</div></div><div class="item-total">28,00 RON</div></div>
+            </div>
+
+            <button class="btn btn-primary">Tovább a fizetéshez</button>
+            <button class="btn btn-secondary">Termék hozzáadása</button>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 4: PAYMENT -->
+  <!-- ============================================================ -->
+  <div class="feature" id="tab-3">
+    <h2>Fizetés + Checkout · Zero-responsibility rule</h2>
+    <p class="desc">
+      <b>Mindenki külön fizet.</b> A host nem terheli előre, nem kér vissza. A rendszer minden résztvevőnek
+      külön fizetési linket generál, és amíg valaki nem fizetett, az ő termékei <b>nem jelennek meg a véglegesített
+      rendelésben</b> — de a többiek megtakarítása nem borul meg (arányos újraszámolás).
+    </p>
+
+    <div class="phones">
+
+      <!-- Phone A: Host's split pay screen -->
+      <div class="phone-wrap">
+        <div class="phone-label">A · Host — fizetési áttekintés</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-back"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></div>
+            <div class="ph-title">Fizetés</div>
+          </div>
+          <div class="phone-body">
+
+            <div class="callout callout-info">
+              <div class="callout-icon"><svg viewBox="0 0 24 24"><path d="M12 22s-8-4.5-8-11.8A8 8 0 0 1 12 2a8 8 0 0 1 8 8.2c0 7.3-8 11.8-8 11.8z"/><circle cx="12" cy="10" r="3"/></svg></div>
+              <div><b>Zero-responsibility</b>Mindenki külön fizet a saját termékeiért. Te csak a sajátodért felelsz.</div>
+            </div>
+
+            <!-- My total -->
+            <div class="progress-card">
+              <div style="font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:.4px; font-weight:700; margin-bottom:6px;">A te részed</div>
+              <div style="display:flex; justify-content:space-between; font-size:13px; padding:4px 0;"><span>Termékek</span><span>72,40 RON</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0; color:var(--green);"><span>Szállítás (ingy. elérve)</span><span><s style="color:var(--text2)">10,00 RON</s> 0,00</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0; color:var(--green);"><span>Csoportos kedv. 2% (rész)</span><span>−1,45 RON</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:12px; padding:4px 0; color:#92650D;"><span>Szervezői bónusz</span><span>−5,00 RON</span></div>
+              <div style="display:flex; justify-content:space-between; font-size:16px; font-weight:800; margin-top:8px; padding-top:8px; border-top:1px solid var(--border);"><span>Fizetendő</span><span>~65,95 RON</span></div>
+            </div>
+
+            <!-- Split breakdown -->
+            <div class="split-pay">
+              <div style="font-size:11px; color:var(--text2); text-transform:uppercase; letter-spacing:.4px; font-weight:700; margin-bottom:6px;">Csoport fizetési állapota</div>
+              <div class="split-pay-row">
+                <div class="split-pay-who">
+                  <div class="contrib-avatar host" style="width:26px; height:26px; font-size:10px;">SB</div>
+                  <span>Te</span>
+                </div>
+                <div>
+                  <div class="split-pay-amt">~65,95 RON</div>
+                  <span class="pay-status pending">Folyamatban</span>
+                </div>
+              </div>
+              <div class="split-pay-row">
+                <div class="split-pay-who">
+                  <div class="contrib-avatar g1" style="width:26px; height:26px; font-size:10px;">AB</div>
+                  <span>Anna</span>
+                </div>
+                <div>
+                  <div class="split-pay-amt">~121,52 RON</div>
+                  <span class="pay-status paid">✓ Fizetett</span>
+                </div>
+              </div>
+              <div class="split-pay-row">
+                <div class="split-pay-who">
+                  <div class="contrib-avatar g2" style="width:26px; height:26px; font-size:10px;">GT</div>
+                  <span>Gábor</span>
+                </div>
+                <div>
+                  <div class="split-pay-amt">~84,77 RON</div>
+                  <span class="pay-status pending">Folyamatban</span>
+                </div>
+              </div>
+              <div class="split-pay-row">
+                <span>Csoport összesen</span>
+                <span>~272,24 RON</span>
+              </div>
+            </div>
+
+            <button class="btn btn-primary">Saját részem fizetése</button>
+            <button class="btn btn-ghost">Emlékeztető küldése</button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone B: Post-order recap -->
+      <div class="phone-wrap">
+        <div class="phone-label">B · Sikeres rendelés</div>
+        <div class="phone">
+          <div class="phone-header">
+            <div class="ph-title">Rendelés visszaigazolás</div>
+          </div>
+          <div class="phone-body" style="text-align:center;">
+
+            <div style="width:72px; height:72px; border-radius:50%; background:var(--green); margin:16px auto 12px; display:flex; align-items:center; justify-content:center;">
+              <svg viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="white" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div style="font-size:18px; font-weight:800;">Rendelés leadva!</div>
+            <div style="font-size:13px; color:var(--text2); margin-top:4px;">DEAK-ORD-00143 · holnap 14:00–16:00</div>
+
+            <div class="host-bonus" style="margin-top:18px; text-align:left;">
+              <div class="host-bonus-icon">
+                <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </div>
+              <div class="host-bonus-body">
+                <div class="host-bonus-title">+5 RON szervezői credit jóváírva</div>
+                <div class="host-bonus-sub">Felhasználható a következő rendelésednél.</div>
+              </div>
+            </div>
+
+            <div style="background:var(--green-light); border-radius:12px; padding:14px; margin-top:10px; text-align:left;">
+              <div style="font-size:11px; color:var(--green-dark); font-weight:700; text-transform:uppercase; letter-spacing:.4px;">Közös megtakarítás</div>
+              <div style="font-size:22px; font-weight:800; color:var(--green-dark); margin-top:4px;">~24,55 RON</div>
+              <div style="font-size:11px; color:var(--green-dark); margin-top:4px;">10 RON ingyenes szállítás + 5,45 RON csoportos kedvezmény + 5 RON szervezői bónusz + 4,10 RON ismételt vásárló kedv.</div>
+            </div>
+
+            <button class="btn btn-primary" style="margin-top:12px;">Rendelésem követése</button>
+            <button class="btn btn-ghost">Vissza a főoldalra</button>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 5: EDGE CASES -->
+  <!-- ============================================================ -->
+  <div class="feature" id="tab-4">
+    <h2>Edge cases · Social friction kezelése</h2>
+    <p class="desc">
+      A ticket kritikus rizikói (user kilép, koordináció szétesik, timer lejár) <b>nem rontják el</b> a flow-t —
+      minden kimenetelnek van egyértelmű visszaútja.
+    </p>
+
+    <div class="phones">
+
+      <!-- Phone A: Timer expires -->
+      <div class="phone-wrap">
+        <div class="phone-label">A · Timer lejárt</div>
+        <div class="phone">
+          <div class="phone-header"><div class="ph-title">Közös kosár</div></div>
+          <div class="phone-body">
+
+            <div class="callout callout-warn">
+              <div class="callout-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div><b>A kosár lezárult</b>A 60 perc letelt. A jelenlegi állapot alapján lezárjuk, vagy hosszabbíts 15 percet.</div>
+            </div>
+
+            <div class="progress-card">
+              <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                <span style="font-size:12px; color:var(--text2);">Közös összeg</span>
+                <span style="font-size:13px; font-weight:700;">187 / 300 RON</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 62%"></div>
+                <div class="progress-dot reached" style="left: 50%"></div>
+                <div class="progress-dot unreached" style="left: 100%"></div>
+                <div class="progress-label" style="left: 0;"><b>0 RON</b>Start</div>
+                <div class="progress-label" style="left: 50%;"><b>150 RON</b>Ingy. száll. ✓</div>
+                <div class="progress-label" style="left: 100%;"><b>300 RON</b>2% kedv.</div>
+              </div>
+              <div class="progress-hint hint-green">Az ingyenes szállítás megvan. Véglegesíthető.</div>
+            </div>
+
+            <button class="btn btn-primary">Véglegesítés (ingy. száll.)</button>
+            <button class="btn btn-secondary">+15 perc hosszabbítás</button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone B: Guest leaves -->
+      <div class="phone-wrap">
+        <div class="phone-label">B · Vendég kilépett</div>
+        <div class="phone">
+          <div class="phone-header"><div class="ph-title">Közös kosár</div></div>
+          <div class="phone-body">
+
+            <div class="callout callout-warn">
+              <div class="callout-icon"><svg viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="M6 6l12 12"/></svg></div>
+              <div><b>Gábor kilépett</b>A termékei eltávolítva. Kedvezmények újraszámolva.</div>
+            </div>
+
+            <div class="contrib-list">
+              <div class="contrib-row">
+                <div class="contrib-avatar host">SB</div>
+                <div class="contrib-info"><div class="contrib-name">Szabolcs <span class="host-tag">Te</span></div><div class="contrib-meta">2 termék</div></div>
+                <div class="contrib-right"><div class="contrib-amount">72,40 RON</div><div class="contrib-savings">+6 RON</div></div>
+              </div>
+              <div class="contrib-row">
+                <div class="contrib-avatar g1">AB</div>
+                <div class="contrib-info"><div class="contrib-name">Anna</div><div class="contrib-meta">3 termék</div></div>
+                <div class="contrib-right"><div class="contrib-amount">124,00 RON</div><div class="contrib-savings">+5 RON</div></div>
+              </div>
+            </div>
+
+            <div class="progress-card">
+              <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+                <span style="font-size:12px; color:var(--text2);">Közös összeg</span>
+                <span style="font-size:13px; font-weight:700;">196 / 300 RON</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" style="width: 65%"></div>
+                <div class="progress-dot reached" style="left: 50%"></div>
+                <div class="progress-dot unreached" style="left: 100%"></div>
+                <div class="progress-label" style="left: 0;"><b>0 RON</b>Start</div>
+                <div class="progress-label" style="left: 50%;"><b>150 RON</b>Ingy. száll. ✓</div>
+                <div class="progress-label" style="left: 100%;"><b>300 RON</b>2%</div>
+              </div>
+              <div class="progress-hint hint-green">Ingyenes szállítás megvan. A 2%-hoz még 104 RON kellene.</div>
+            </div>
+
+            <button class="btn btn-primary">Véglegesítés</button>
+            <button class="btn btn-secondary">Új vendég meghívása</button>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone C: Guest doesn't pay in time -->
+      <div class="phone-wrap">
+        <div class="phone-label">C · Egy résztvevő nem fizet időben</div>
+        <div class="phone">
+          <div class="phone-header"><div class="ph-title">Fizetési figyelmeztetés</div></div>
+          <div class="phone-body">
+
+            <div class="callout callout-error">
+              <div class="callout-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+              <div><b>Gábor nem fizetett 15 percen belül</b>A rendelést le tudjuk adni a te és Anna részével. Gábor termékei kimaradnak.</div>
+            </div>
+
+            <div class="split-pay">
+              <div class="split-pay-row">
+                <div class="split-pay-who"><div class="contrib-avatar host" style="width:26px; height:26px; font-size:10px;">SB</div><span>Te</span></div>
+                <div><span class="pay-status paid">✓ Fizetve</span></div>
+              </div>
+              <div class="split-pay-row">
+                <div class="split-pay-who"><div class="contrib-avatar g1" style="width:26px; height:26px; font-size:10px;">AB</div><span>Anna</span></div>
+                <div><span class="pay-status paid">✓ Fizetve</span></div>
+              </div>
+              <div class="split-pay-row" style="opacity:0.5;">
+                <div class="split-pay-who"><div class="contrib-avatar g2" style="width:26px; height:26px; font-size:10px;">GT</div><span>Gábor</span></div>
+                <div><span class="pay-status pending">Lejárt</span></div>
+              </div>
+            </div>
+
+            <div class="callout callout-info">
+              <div class="callout-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></div>
+              <div><b>A kedvezmény marad</b>A te és Anna összege együtt (196,40 RON) elég az ingyenes szállításhoz. A 2% kedv. újraszámolva.</div>
+            </div>
+
+            <button class="btn btn-primary">Véglegesítés Gábor nélkül</button>
+            <button class="btn btn-ghost">+5 perc várás</button>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ============================================================ -->
+  <!-- TAB 6: ACCEPTANCE CRITERIA -->
+  <!-- ============================================================ -->
+  <div class="feature" id="tab-5">
+    <h2>Acceptance Criteria</h2>
+    <p class="desc">A DH-149 ticket minden kritikus design eleme mérhető feltétellel. P0 = kötelező MVP-hez, P1 = ajánlott, P2 = post-launch.</p>
+
+    <table class="ac-table">
+      <tr><th>#</th><th>Feltétel</th><th>Prio</th><th>Állapot</th></tr>
+      <tr><td>AC-1</td><td>Delivery Cluster az elsődleges modell: a terméklista tetején, a cluster prompt látható ha elérhető; Shared Basket csak opt-in secondary flow-ként érhető el.</td><td><span class="tag tag-p0">P0</span></td><td>✓ Tervezve</td></tr>
+      <tr><td>AC-2</td><td>A Shared Basket kosár <b>60 percig</b> érvényes, a timer folyamatosan látható. +15 perc hosszabbítás 1× engedélyezett.</td><td><span class="tag tag-p0">P0</span></td><td>✓ Tervezve</td></tr>
+      <tr><td>AC-3</td><td><b>Host bónusz</b> (+5 RON szervezői credit) vizuálisan jelen van a invite, az aktív és a post-order recap screen-eken.</td><td><span class="tag tag-p0">P0</span></td><td>✓ Tervezve</td></tr>
+      <tr><td>AC-4</td><td>Minden résztvevő <b>saját fizetést</b> kap (zero-responsibility). A host nem szedi össze előre. Külön payment link per user.</td><td><span class="tag tag-p0">P0</span></td><td>✓ Tervezve</td></tr>
+      <tr><td>AC-5</td><td>A kosár tételek <b>tulajdonos szerint csoportosítva</b> láthatók (bal oldali 3px színsáv + group header) hogy minden user lássa mit kap.</td><td><span class="tag tag-p0">P0</span></td><td>✓ Tervezve</td></tr>
+      <tr><td>AC-6</td><td>Ha egy résztvevő kilép / nem fizet időben, a rendszer <b>arányosan újraszámolja</b> a savings-et és leadja a rendelést a fennmaradó résztvevőkkel.</td><td><span class="tag tag-p0">P0</span></td><td>✓ Tervezve</td></tr>
+      <tr><td>AC-7</td><td>A meghívási link / telefonszám-hívás <b>regisztrált userhez kötött</b>. Nem-regisztrált userek számára először registration gate.</td><td><span class="tag tag-p1">P1</span></td><td>✓ Tervezve</td></tr>
+      <tr><td>AC-8</td><td>Delivery Cluster esetén a cluster <b>min 3 user</b> és a <b>150 RON-hoz ≤50 RON</b> szükséges, hogy megjelenjen a prompt (zajcsökkentés).</td><td><span class="tag tag-p1">P1</span></td><td>— Specifikálandó</td></tr>
+      <tr><td>AC-9</td><td>A savings arányosan elosztva: <b>(user subtotal / group total) × total savings</b>. A képlet látható a rendelés részletezőben.</td><td><span class="tag tag-p1">P1</span></td><td>✓ Tervezve</td></tr>
+      <tr><td>AC-10</td><td>Chat, komment, egyéb social UI <b>nincs</b> az MVP-ben (mental overhead csökk.). Csak real-time status indicator (typing / added).</td><td><span class="tag tag-p0">P0</span></td><td>✓ Tervezve</td></tr>
+      <tr><td>AC-11</td><td>Egy host egyszerre <b>max 1</b> aktív shared basket-et nyithat. Ha már van aktív, a gomb disabled + üzenet.</td><td><span class="tag tag-p1">P1</span></td><td>— Edge case</td></tr>
+      <tr><td>AC-12</td><td>A <b>Delivery Cluster prompt bezárható</b> (× gomb), és 24 óráig nem jelenik meg újra per user (opt-out mem).</td><td><span class="tag tag-p2">P2</span></td><td>— Post-MVP</td></tr>
+      <tr><td>AC-13</td><td>Analytics event-ek: <code>cluster_prompt_shown</code>, <code>cluster_joined</code>, <code>share_initiated</code>, <code>share_completed</code>, <code>share_abandoned_timer</code>, <code>guest_no_payment</code>.</td><td><span class="tag tag-p0">P0</span></td><td>— Specifikálandó</td></tr>
+    </table>
+
+    <div style="margin-top:18px; padding:14px 16px; background: white; border:1px solid var(--border); border-radius:12px;">
+      <div style="font-size:12px; font-weight:700; color:var(--text2); text-transform:uppercase; letter-spacing:.4px; margin-bottom:8px;">Dependencies (from ticket)</div>
+      <ul style="font-size:13px; color:var(--text); padding-left:20px; line-height:1.8;">
+        <li><b>DH-120:</b> Basket Loader engine — multi-user cart merging</li>
+        <li><b>DH-117/118:</b> Savings Counter — közös threshold tracking</li>
+        <li><b>DH-147:</b> Profile page — user azonosítás a megosztáshoz</li>
+        <li><b>Új:</b> Split payment infrastructure (per-user payment link)</li>
+        <li><b>Új:</b> Cluster matching engine (címkódolás, idősáv, min-user küszöb)</li>
+      </ul>
+    </div>
+
+    <div style="margin-top:12px; padding:14px 16px; background: #FEF9EC; border:1px solid #F59E0B; border-radius:12px;">
+      <div style="font-size:12px; font-weight:700; color:#92400E; text-transform:uppercase; letter-spacing:.4px; margin-bottom:6px;">Feloldási javaslat (a parkolás újragondolása)</div>
+      <div style="font-size:13px; color:#78520B; line-height:1.6;">
+        A ticket parkolási oka: „initiator burden" + social friction. Ezt a v2 konkrétan kezeli:
+        (1) a <b>Delivery Cluster</b> teljesen eliminálja a social friction-t,
+        (2) a <b>host bonus</b> kompenzálja a szervezői terhet,
+        (3) a <b>split payment</b> megszünteti a pénzügyi felelősséget.
+        <b>Javaslat:</b> DH-149-et szétbontani két ticketre: <b>DH-149a Delivery Cluster (MVP)</b> és <b>DH-149b Shared Basket (opt-in)</b>,
+        és a Cluster-t már v0.4-ben kiadni, a Shared Basket-et v0.6-ra halasztani.
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+function showTab(n) {
+  document.querySelectorAll('.feature').forEach((f,i) => f.classList.toggle('active', i===n));
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', i===n));
+  try { localStorage.setItem('dh149v2_tab', n); } catch(e){}
+}
+try {
+  const saved = parseInt(localStorage.getItem('dh149v2_tab') || '0', 10);
+  if (!isNaN(saved)) showTab(saved);
+} catch(e){}
+</script>
+
+<script src="breadcrumb.js"></script>
+</body>
+</html>

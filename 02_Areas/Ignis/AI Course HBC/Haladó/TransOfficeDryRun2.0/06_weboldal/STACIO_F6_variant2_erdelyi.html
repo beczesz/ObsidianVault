@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TransOffice — Hazai irodai partner Erdélyben, Székelyudvarhelyről</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Merriweather','Lora',Georgia,serif;color:#3a2a1f;line-height:1.7;background:#fdf6ec}
+  .container{max-width:1100px;margin:0 auto;padding:0 24px}
+  /* Header */
+  header{background:#7a3b1c;color:#fdf6ec;padding:20px 0;border-bottom:6px solid #c89346}
+  .nav{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+  .brand-line{display:flex;align-items:center;gap:14px}
+  .pcs-icon{font-size:36px}
+  .brand-name{font-size:24px;font-weight:bold}
+  .brand-sub{font-size:13px;color:#f7d9a8;font-style:italic}
+  nav ul{display:flex;gap:24px;list-style:none}
+  nav a{color:#fdf6ec;text-decoration:none;font-weight:600;border-bottom:2px solid transparent;padding-bottom:2px}
+  nav a:hover{border-bottom-color:#c89346}
+  /* Hero - tornác kép-érzet */
+  .hero{background:linear-gradient(180deg,#fdf6ec 0%,#f7e6c8 100%);padding:96px 0 72px;text-align:center;position:relative;overflow:hidden}
+  .hero::before{content:'';position:absolute;top:20px;left:50%;transform:translateX(-50%);width:280px;height:6px;background:repeating-linear-gradient(90deg,#7a3b1c 0,#7a3b1c 14px,transparent 14px,transparent 28px)}
+  .greeting{color:#7a3b1c;font-size:14px;font-weight:bold;letter-spacing:3px;text-transform:uppercase;margin-bottom:16px;margin-top:24px}
+  .hero h1{font-size:46px;color:#3a2a1f;margin-bottom:24px;line-height:1.2;font-weight:bold;max-width:760px;margin-left:auto;margin-right:auto}
+  .hero p{max-width:680px;margin:0 auto 32px;font-size:18px;color:#5d4533;font-style:italic}
+  .btn{display:inline-block;padding:14px 32px;background:#7a3b1c;color:#fdf6ec;text-decoration:none;font-weight:600;border-radius:4px;transition:background .2s}
+  .btn:hover{background:#5d2c14}
+  .btn-outline{background:transparent;color:#7a3b1c;border:2px solid #7a3b1c;margin-left:8px}
+  .btn-outline:hover{background:#7a3b1c;color:#fdf6ec}
+  /* Sections */
+  section{padding:80px 0}
+  .sec-title{text-align:center;margin-bottom:48px;position:relative}
+  .sec-title h2{font-size:34px;color:#7a3b1c;margin-bottom:12px}
+  .sec-title .ornament{color:#c89346;font-size:24px;letter-spacing:8px}
+  /* Services */
+  .services{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:24px}
+  .svc{background:#fff;border:2px solid #c89346;border-radius:8px;padding:32px 24px;text-align:center}
+  .svc-icon{font-size:42px;margin-bottom:16px;display:block}
+  .svc h3{color:#7a3b1c;font-size:18px;margin-bottom:10px}
+  .svc p{color:#5d4533;font-size:15px}
+  /* Green - természet motívum */
+  .green-sec{background:#3d5a2c;color:#fdf6ec}
+  .green-sec .sec-title h2{color:#fdf6ec}
+  .green-sec .ornament{color:#a8c87a}
+  .green-text{max-width:720px;margin:0 auto;font-size:18px;text-align:center;line-height:1.9}
+  .green-text em{color:#a8c87a;font-style:normal;font-weight:bold}
+  .impact-row{display:flex;justify-content:center;gap:40px;margin-top:48px;flex-wrap:wrap}
+  .impact{text-align:center;background:rgba(253,246,236,.08);border:1px solid #a8c87a;padding:24px;min-width:160px;border-radius:8px}
+  .impact-big{font-size:42px;font-weight:bold;color:#fdf6ec;line-height:1}
+  .impact-lbl{font-size:13px;color:#a8c87a;margin-top:8px}
+  /* Team — testvér-érzet */
+  .team{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:32px}
+  .person{text-align:center;background:#fff;border-radius:12px;padding:32px;border:1px solid #c89346}
+  .person-circle{width:104px;height:104px;border-radius:50%;background:#7a3b1c;color:#fdf6ec;display:flex;align-items:center;justify-content:center;font-size:36px;font-weight:bold;margin:0 auto 16px;border:4px solid #c89346}
+  .person h4{color:#7a3b1c;font-size:20px;margin-bottom:4px}
+  .person .role{color:#c89346;font-size:14px;font-style:italic;margin-bottom:12px}
+  .person p{color:#5d4533;font-size:14px}
+  /* Contact - levél-érzet */
+  .contact-card{background:#fff;border:2px dashed #c89346;border-radius:12px;padding:40px;max-width:600px;margin:0 auto;text-align:center}
+  .contact-card h3{color:#7a3b1c;font-size:22px;margin-bottom:20px}
+  .contact-card p{margin-bottom:8px;color:#5d4533;font-size:16px}
+  .contact-card strong{color:#7a3b1c}
+  /* Footer */
+  footer{background:#7a3b1c;color:#f7d9a8;padding:32px 0;text-align:center;font-size:14px;font-style:italic}
+  footer strong{color:#fdf6ec}
+  @media (max-width:768px){
+    .hero h1{font-size:30px} nav ul{display:none}
+    .impact-row{gap:20px}
+  }
+</style>
+</head>
+<body>
+
+<header>
+<div class="container">
+<div class="nav">
+<div class="brand-line">
+<span class="pcs-icon">🌾</span>
+<div>
+<div class="brand-name">TransOffice Trade</div>
+<div class="brand-sub">Erdélyi cég · Székelyudvarhely · 2003 óta</div>
+</div>
+</div>
+<nav>
+<ul>
+<li><a href="#szolgaltatasok">Szolgáltatás</a></li>
+<li><a href="#zold">Zöld átállás</a></li>
+<li><a href="#csapat">Mi vagyunk</a></li>
+<li><a href="#kapcsolat">Kapcsolat</a></li>
+</ul>
+</nav>
+</div>
+</div>
+</header>
+
+<section class="hero">
+<div class="container">
+<div class="greeting">★ Adjon Isten, kedves látogató! ★</div>
+<h1>„A papírt mi hozzuk hetente. Megbízhatóan, Hargitába és Kovászna megyébe."</h1>
+<p>Egy családi cég Udvarhelyről. Két generáció, ugyanaz a telefonszám. Aki rendel, az ismerős, és aki szállít, az is.</p>
+<a href="#kapcsolat" class="btn">Rendelni szeretnék</a>
+<a href="#zold" class="btn btn-outline">Az új flotta →</a>
+</div>
+</section>
+
+<section id="szolgaltatasok">
+<div class="container">
+<div class="sec-title">
+<h2>Mit hozunk hetente?</h2>
+<div class="ornament">⚜ ⚜ ⚜</div>
+</div>
+<div class="services">
+<div class="svc">
+<span class="svc-icon">📜</span>
+<h3>Papír &amp; toner</h3>
+<p>A4, A3, speciális — minden hétfőn vagy szerdán a megszokott időben. Sokszor azelőtt, hogy észrevennék hogy elfogyott.</p>
+</div>
+<div class="svc">
+<span class="svc-icon">🖋️</span>
+<h3>Írószer &amp; iroda</h3>
+<p>Mappa, ceruza, post-it, rendezvény-csomag. Iskoláknak külön kedvezmény szeptembertől.</p>
+</div>
+<div class="svc">
+<span class="svc-icon">🪵</span>
+<h3>Bútor &amp; berendezés</h3>
+<p>Polcok, székek, asztalok — helyi mester is van rá, ha valami egyedi kell.</p>
+</div>
+<div class="svc">
+<span class="svc-icon">🚚</span>
+<h3>Saját furgonnal</h3>
+<p>Hargita és Kovászna minden falujába. A sofőrt is ismerni fogja — itt nincs cserélődés.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="zold" class="green-sec">
+<div class="container">
+<div class="sec-title">
+<h2>Zöld átállás — 2025</h2>
+<div class="ornament">🌲 🌲 🌲</div>
+</div>
+<p class="green-text">Hargita megyében <em>kevés</em> az elektromos töltőpont. <em>Egyet építünk</em> mi is — meg veszünk két elektromos furgont. Nemcsak a környezetért: ha kevesebbet költünk benzinre, akkor a hetente jövő papír is olcsóbb maradhat.</p>
+<div class="impact-row">
+<div class="impact"><div class="impact-big">2</div><div class="impact-lbl">elektromos furgon</div></div>
+<div class="impact"><div class="impact-big">1</div><div class="impact-lbl">saját töltőpont</div></div>
+<div class="impact"><div class="impact-big">5,2 t</div><div class="impact-lbl">CO₂ / év (kevesebb)</div></div>
+<div class="impact"><div class="impact-big">80 000</div><div class="impact-lbl">km / év, áramról</div></div>
+</div>
+</div>
+</section>
+
+<section id="csapat">
+<div class="container">
+<div class="sec-title">
+<h2>A mostani csapat</h2>
+<div class="ornament">⚜ ⚜ ⚜</div>
+</div>
+<div class="team">
+<div class="person">
+<div class="person-circle">KM</div>
+<h4>Kovács Márton</h4>
+<div class="role">Az új főnök</div>
+<p>Édesapám alapította a céget 2003-ban. Én Bukarestben tanultam logisztikát, most itthon próbálom továbbvinni — kicsit modernebbül, de a régi értékekkel.</p>
+</div>
+<div class="person">
+<div class="person-circle">SZE</div>
+<h4>Szabó Enikő</h4>
+<div class="role">A „pontos asszony"</div>
+<p>14 éve itt. Aki nálunk dolgozik, tudja: ha pénteken 17:00-kor kell egy számla, az 17:00-kor megérkezik. Nem 17:05-kor.</p>
+</div>
+</div>
+</div>
+</section>
+
+<section id="kapcsolat">
+<div class="container">
+<div class="sec-title">
+<h2>Keressen minket bátran</h2>
+<div class="ornament">📞 ✉️ 🏠</div>
+</div>
+<div class="contact-card">
+<h3>TransOffice Trade SRL</h3>
+<p><strong>Cím:</strong> str. Calea Băieșenilor 22, Székelyudvarhely (Odorheiu Secuiesc), Hargita megye</p>
+<p><strong>Telefon:</strong> 0744-XXX-XXX (Márton)</p>
+<p><strong>Email:</strong> contact@transoffice.ro</p>
+<p><strong>Nyitva:</strong> Hétfőtől péntekig 8-tól 5-ig</p>
+<p style="margin-top:24px;font-style:italic;color:#7a3b1c">„Adjon Isten egészséget, jó munkát és pontos számlákat!"</p>
+</div>
+</div>
+</section>
+
+<footer>
+<div class="container">
+© 2025 <strong>TransOffice Trade SRL</strong> · Készült Erdélyben, Székelyudvarhelyen · Jó szándékkal és bő szóval
+</div>
+</footer>
+
+</body>
+</html>

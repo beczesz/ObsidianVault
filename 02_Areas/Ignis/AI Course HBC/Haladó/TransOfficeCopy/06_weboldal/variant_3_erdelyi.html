@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TransOffice Trade — Helyi cég, helyi szállítás Udvarhelyen</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Lora', 'Cambria', 'Georgia', serif; color: #3a2a1e; background: #fdf7ee; line-height: 1.7; }
+  a { color: #b84e2d; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .container { max-width: 1140px; margin: 0 auto; padding: 0 24px; }
+
+  /* Top */
+  .top-strip { background: #3a4d34; color: #f5e9d4; font-size: 13px; padding: 8px 0; }
+  .top-row { display: flex; justify-content: space-between; }
+  .top-row a { color: #f5e9d4; }
+
+  /* Header */
+  header { background: #fdf7ee; padding: 28px 0 0; position: relative; }
+  header::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 6px; background: repeating-linear-gradient(45deg, #b84e2d 0, #b84e2d 12px, #d9762a 12px, #d9762a 24px, #f0c14a 24px, #f0c14a 36px, #3a4d34 36px, #3a4d34 48px); }
+  .header-row { display: flex; justify-content: space-between; align-items: center; margin-top: 18px; }
+  .logo-wrap { display: flex; align-items: center; gap: 16px; }
+  .logo-mark { width: 56px; height: 56px; background: #b84e2d; color: #fdf7ee; display: flex; align-items: center; justify-content: center; font-size: 28px; border-radius: 6px; box-shadow: 3px 3px 0 #f0c14a; }
+  .logo-text h1 { font-family: 'Lora', 'Georgia', serif; font-size: 28px; color: #3a4d34; font-weight: 700; }
+  .logo-text .sub { font-size: 13px; color: #b84e2d; font-style: italic; }
+  nav { background: #3a4d34; margin-top: 24px; }
+  .nav-links { display: flex; justify-content: center; gap: 40px; padding: 14px 0; flex-wrap: wrap; }
+  .nav-links a { color: #fdf7ee; font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+  .nav-links a:hover { color: #f0c14a; }
+
+  /* Hero */
+  .hero { background: linear-gradient(180deg, #fdf7ee 0%, #f5e9d4 100%); padding: 64px 0 80px; position: relative; }
+  .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 48px; align-items: center; }
+  .hero h2 { font-family: 'Lora', 'Georgia', serif; font-size: 44px; color: #3a4d34; line-height: 1.2; margin-bottom: 20px; font-weight: 700; }
+  .hero .hu { display: inline-block; background: #f0c14a; color: #3a2a1e; padding: 4px 12px; font-size: 13px; border-radius: 4px; margin-bottom: 14px; letter-spacing: 1px; }
+  .hero .lead { font-size: 18px; color: #5a4a3a; margin-bottom: 28px; }
+  .btn-warm { display: inline-block; background: #b84e2d; color: #fdf7ee; padding: 14px 32px; font-weight: 600; letter-spacing: 0.5px; box-shadow: 3px 3px 0 #f0c14a; transition: transform 0.15s, box-shadow 0.15s; }
+  .btn-warm:hover { transform: translate(2px, 2px); box-shadow: 1px 1px 0 #f0c14a; }
+  .hero-img-frame { background: #b84e2d; padding: 18px; border-radius: 8px; box-shadow: 6px 6px 0 #f0c14a; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; color: #fdf7ee; }
+  .hero-img-frame .inner { width: 100%; height: 100%; background: linear-gradient(135deg, #3a4d34 0%, #5d7349 100%); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 80px; }
+
+  /* Local strip */
+  .local-strip { background: #3a4d34; color: #f5e9d4; padding: 32px 0; }
+  .local-strip-row { display: flex; justify-content: space-around; gap: 24px; flex-wrap: wrap; text-align: center; }
+  .local-stat { padding: 0 20px; }
+  .local-stat .n { font-size: 38px; color: #f0c14a; font-weight: 700; font-family: 'Lora', serif; }
+  .local-stat .l { font-size: 13px; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
+
+  /* About */
+  section { padding: 80px 0; }
+  .section-head { text-align: center; margin-bottom: 56px; }
+  .section-head .accent { color: #b84e2d; font-size: 14px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; }
+  .section-head h2 { font-family: 'Lora', serif; font-size: 38px; color: #3a4d34; }
+  .ornate-rule { display: block; width: 60px; height: 3px; background: #f0c14a; margin: 16px auto; }
+
+  .story-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 56px; align-items: center; }
+  .story-card { background: #fff; border: 1px solid #e8d8b8; padding: 36px; border-radius: 8px; position: relative; }
+  .story-card::before { content: ""; position: absolute; top: -8px; left: -8px; right: 24px; bottom: 24px; border: 2px solid #f0c14a; border-radius: 8px; z-index: -1; }
+  .story-card .quote { font-family: 'Lora', serif; font-style: italic; font-size: 22px; color: #3a4d34; line-height: 1.4; margin-bottom: 18px; }
+  .story-card .author { font-size: 13px; color: #b84e2d; letter-spacing: 2px; text-transform: uppercase; }
+
+  /* Services */
+  .services { background: #fbf2e0; padding: 80px 0; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .service { background: #fdf7ee; padding: 32px; border-radius: 6px; border: 1px solid #e8d8b8; position: relative; transition: transform 0.2s; }
+  .service:hover { transform: translateY(-4px); }
+  .service-icon { width: 56px; height: 56px; background: #3a4d34; color: #f0c14a; display: flex; align-items: center; justify-content: center; font-size: 28px; border-radius: 4px; margin-bottom: 18px; box-shadow: 2px 2px 0 #f0c14a; }
+  .service h3 { font-family: 'Lora', serif; font-size: 22px; color: #3a4d34; margin-bottom: 10px; }
+  .service p { font-size: 15px; color: #5a4a3a; }
+
+  /* AFM */
+  .afm-section { background: #fdf7ee; padding: 80px 0; position: relative; }
+  .afm-card { background: linear-gradient(135deg, #3a4d34 0%, #4d6342 100%); color: #fdf7ee; border-radius: 12px; padding: 56px; position: relative; box-shadow: 8px 8px 0 #b84e2d; }
+  .afm-card::before { content: "🌱"; position: absolute; top: -28px; left: 32px; font-size: 56px; background: #f0c14a; width: 76px; height: 76px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .afm-card h3 { font-family: 'Lora', serif; font-size: 32px; margin-bottom: 18px; margin-top: 16px; }
+  .afm-card p { font-size: 17px; line-height: 1.7; margin-bottom: 18px; opacity: 0.95; }
+  .afm-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 28px; }
+  .afm-mini { background: rgba(240,193,74,0.15); border: 1px solid rgba(240,193,74,0.3); padding: 16px; border-radius: 6px; text-align: center; }
+  .afm-mini .n { font-family: 'Lora', serif; font-size: 28px; color: #f0c14a; }
+  .afm-mini .l { font-size: 12px; letter-spacing: 1px; opacity: 0.9; margin-top: 4px; }
+
+  /* Team */
+  .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; max-width: 900px; margin: 0 auto; }
+  .team-card { background: #fff; border: 1px solid #e8d8b8; padding: 24px; border-radius: 6px; display: flex; gap: 18px; align-items: center; }
+  .team-avatar { width: 64px; height: 64px; background: #b84e2d; color: #fdf7ee; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700; box-shadow: 2px 2px 0 #f0c14a; flex-shrink: 0; }
+  .team-card h4 { font-family: 'Lora', serif; font-size: 18px; color: #3a4d34; }
+  .team-card .role { font-size: 14px; color: #5a4a3a; }
+  .team-card .role .hu { color: #b84e2d; font-style: italic; }
+
+  /* Contact */
+  .contact { background: #3a4d34; color: #fdf7ee; padding: 80px 0; }
+  .contact h2 { color: #f0c14a; font-family: 'Lora', serif; font-size: 36px; margin-bottom: 20px; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .contact-item { margin-bottom: 16px; font-size: 16px; }
+  .contact-item .lbl { font-size: 12px; color: #f0c14a; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
+  .contact-item a { color: #fdf7ee; border-bottom: 1px solid rgba(240,193,74,0.4); }
+  .contact .lead { color: #f5e9d4; font-size: 17px; margin-bottom: 28px; }
+
+  footer { background: #2a3a25; color: #f5e9d4; padding: 24px 0; text-align: center; font-size: 13px; border-top: 3px solid #b84e2d; }
+  footer .heart { color: #b84e2d; }
+
+  @media (max-width: 880px) {
+    .hero-grid, .story-grid, .contact-grid { grid-template-columns: 1fr; }
+    .services-grid, .afm-stats { grid-template-columns: 1fr 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .hero h2 { font-size: 30px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-strip">
+  <div class="container top-row">
+    <span>📞 0266-218945</span>
+    <span>📍 Calea Băieșenilor 22, Odorheiu Secuiesc · <a href="mailto:contact@transoffice.ro">contact@transoffice.ro</a></span>
+  </div>
+</div>
+
+<header>
+  <div class="container">
+    <div class="header-row">
+      <div class="logo-wrap">
+        <div class="logo-mark">TO</div>
+        <div class="logo-text">
+          <h1>TransOffice Trade</h1>
+          <div class="sub">Helyi cég · Helyi szállítás · Udvarhely</div>
+        </div>
+      </div>
+      <div style="font-size: 13px; color: #5a4a3a; text-align: right;">Alapítva: <strong style="color: #b84e2d; font-size: 18px;">2003</strong><br><span style="font-style: italic;">Két generáció óta</span></div>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-links">
+      <a href="#rolunk">Rólunk</a>
+      <a href="#szolgaltatasok">Szolgáltatásaink</a>
+      <a href="#mobilitate">Zöld átállás</a>
+      <a href="#csapat">Csapatunk</a>
+      <a href="#contact">Kapcsolat</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="hu">Magyar–román ügyintézés · Udvarhely</span>
+      <h2>Irodai kellékek a Hargita megyei vállalkozásoknak — már 22. éve.</h2>
+      <p class="lead">Papír, toner, írószer, kis bútor. Nálad másnap. Egy telefon, és Attila a sofőr ismeri a címedet. Néha túlságosan is. <em>(De ettől helyi.)</em></p>
+      <a href="#contact" class="btn-warm">Árajánlatot kérnék</a>
+    </div>
+    <div class="hero-img-frame"><div class="inner">📦🌿</div></div>
+  </div>
+</section>
+
+<div class="local-strip">
+  <div class="container local-strip-row">
+    <div class="local-stat"><div class="n">22</div><div class="l">év Udvarhelyen</div></div>
+    <div class="local-stat"><div class="n">28</div><div class="l">aktív partner-cég</div></div>
+    <div class="local-stat"><div class="n">24 ó</div><div class="l">Hargita-szerte</div></div>
+    <div class="local-stat"><div class="n">2</div><div class="l">családi generáció</div></div>
+  </div>
+</div>
+
+<section id="rolunk">
+  <div class="container">
+    <div class="section-head">
+      <div class="accent">Rólunk</div>
+      <h2>A TransOffice egy családi sztori</h2>
+      <span class="ornate-rule"></span>
+    </div>
+    <div class="story-grid">
+      <div class="story-card">
+        <div class="quote">"Apám 22 éve egy Daciaval, egy garázzsal és egy fél lista ügyféllel kezdte. Anyám 20 évig vezette az adminisztrációt — fejből. Most mi visszük tovább: én meg az új ember, aki rendszert épít."</div>
+        <div class="author">— Kovács Márton, ügyvezető</div>
+      </div>
+      <div>
+        <p style="font-size: 17px; color: #5a4a3a; margin-bottom: 16px;">A TransOffice 2003-ban indult Odorheiun, Kovács István garázsában. Két évtized alatt 12 fős cég lett, amely 28 helyi vállalkozást és intézményt szolgál ki naponta: önkormányzatokat (Felsőboldogfalva, Szentkirály), iskolákat (Martinovics Gimnázium), kórházat, ügyvédi és könyvelőirodákat.</p>
+        <p style="font-size: 17px; color: #5a4a3a;">2024-ben Kovács Márton vette át — és vele együtt egy új korszak kezdődött. Megújult logisztika, digitális rendszer, és — 2025-től — <strong style="color: #b84e2d;">elektromos járművek</strong>. De a stílus marad: <em>helyi ember, helyi cégnek.</em></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="szolgaltatasok" class="services">
+  <div class="container">
+    <div class="section-head">
+      <div class="accent">Mit kínálunk</div>
+      <h2>Szolgáltatásaink</h2>
+      <span class="ornate-rule"></span>
+    </div>
+    <div class="services-grid">
+      <div class="service">
+        <div class="service-icon">📃</div>
+        <h3>Papír &amp; tonerek</h3>
+        <p>A4, A3 — eredeti HP, Brother, Canon. Utángyártott is, ha úgy döntenél. 30 standard cikkből készlet, 200+ rendelhető.</p>
+      </div>
+      <div class="service">
+        <div class="service-icon">🚛</div>
+        <h3>24 órás kiszállítás</h3>
+        <p>Udvarhelyről indulunk minden reggel 8-kor. Hargita és Kovászna minden szegletébe eljutunk másnapra.</p>
+      </div>
+      <div class="service">
+        <div class="service-icon">🪑</div>
+        <h3>Irodai bútor</h3>
+        <p>Székek, asztalok, polcok. Nagyobb berendezést? Megrendelésre 1 hét alatt. Szerelést is vállalunk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mobilitate" class="afm-section">
+  <div class="container">
+    <div class="afm-card">
+      <h3>Zöld lépés — a TransOffice 2025-ben</h3>
+      <p>Idén megpályázzuk az AFM Mobilitate Verde IMM 2025 programot: <strong>2 darab elektromos kisteher</strong> és <strong>1 nyilvánosan elérhető töltőpont</strong> a telephelyünknél, a Calea Băieșenilor 22 szám alatt. A töltő reggel 8 és este 6 között <strong>bárki</strong> használhatja — egy "feltöltés és kávé" formula a környékbeli vállalkozóknak.</p>
+      <p>Nem reklámból, hanem mert <strong>itthon vagyunk és itthon is maradunk</strong>. És mert a környékbeli iskolák, önkormányzatok kérdezik egyre gyakrabban: „És ti hogy szállítatok?" — a 2026-os válaszunk büszke lesz.</p>
+      <div class="afm-stats">
+        <div class="afm-mini"><div class="n">2</div><div class="l">e-furgon (N1)</div></div>
+        <div class="afm-mini"><div class="n">22 kW</div><div class="l">töltőteljesítmény</div></div>
+        <div class="afm-mini"><div class="n">5,2 t</div><div class="l">CO₂/év csökkenés</div></div>
+        <div class="afm-mini"><div class="n">2026</div><div class="l">üzemkezdés</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="csapat">
+  <div class="container">
+    <div class="section-head">
+      <div class="accent">Csapatunk</div>
+      <h2>Akik felveszik a telefont</h2>
+      <span class="ornate-rule"></span>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="team-avatar">KM</div>
+        <div><h4>Kovács Márton</h4><div class="role">Ügyvezető — <span class="hu">Apuska, második generáció</span></div></div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">SE</div>
+        <div><h4>Szabó Enikő</h4><div class="role">Könyvelés. <span class="hu">Heti 3 nap, de bármikor visszahív.</span></div></div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">BA</div>
+        <div><h4>Bíró Attila</h4><div class="role">Raktárvezető. <span class="hu">12 éve nem tévedett még a címekben.</span></div></div>
+      </div>
+      <div class="team-card">
+        <div class="team-avatar">OM</div>
+        <div><h4>Operations Manager</h4><div class="role">2025 új belépő. <span class="hu">Rendszert épít a káoszból.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="container contact-grid">
+    <div>
+      <h2>Hívjon, írjon, jöjjön</h2>
+      <p class="lead">Ha egy 5 dobozos rendelésről van szó, vagy egy új cég irodáját kell berendezni — egy telefonhívás, és kitaláljuk együtt. Magyarul vagy románul, ahogy kényelmes.</p>
+      <p style="color: #f5e9d4;"><em>"Nem azért válasszanak minket, mert mi vagyunk a legolcsóbbak. Hanem mert mi vagyunk azok, akik másnap reggel telefonálunk, hogy ott vagyunk-e."</em></p>
+    </div>
+    <div>
+      <div class="contact-item"><div class="lbl">Telephely / sediu</div>Calea Băieșenilor 22<br>535600 Odorheiu Secuiesc, jud. Harghita</div>
+      <div class="contact-item"><div class="lbl">Telefon</div><a href="tel:+40266218945">0266-218 945</a></div>
+      <div class="contact-item"><div class="lbl">Email</div><a href="mailto:contact@transoffice.ro">contact@transoffice.ro</a></div>
+      <div class="contact-item"><div class="lbl">Nyitva tartás / Program</div>H–P 08:00–17:00<br>SZO 09:00–13:00 (csak előzetes egyeztetés)</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © 2003–2025 TransOffice Trade SRL · CUI 15847291 · J19/421/2003 · <span class="heart">♥</span> Udvarhelyen készítve
+</footer>
+
+</body>
+</html>

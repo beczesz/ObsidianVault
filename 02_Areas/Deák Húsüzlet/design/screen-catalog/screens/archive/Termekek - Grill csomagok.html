@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Termékek — Deák Húsmíves</title>
+<link rel="stylesheet" href="colors_and_type.css">
+<script src="assets/icons.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; }
+body { max-width: 448px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 80px; font-family: var(--font-sans); }
+
+button { font-family: inherit; }
+
+/* ================= HEADER (matched to products.html) ================= */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; height: 56px;
+  background: #FFFFFF;
+  position: sticky; top: 0; z-index: 30;
+  box-shadow: rgba(0,0,0,0.12) 0px 0px 1px 0px, rgba(0,0,0,0.15) 0px 0.5px 2px 0px, rgba(0,0,0,0.16) 0px 2px 3px 0px;
+}
+.header h1 { font-size: 20px; font-weight: 400; color: var(--primary-dark); line-height: 23px; }
+.lang-btn {
+  background: none; border: none; cursor: pointer;
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+}
+.lang-btn:active { background: rgba(0,0,0,0.05); }
+.lang-flag { width: 22px; height: 16px; border-radius: 2px; }
+
+/* ================= ACTIVE ORDER BANNER ================= */
+.order-banner {
+  margin: 12px 16px 0;
+  background: linear-gradient(to right bottom, #FFFFFF, #FFFBF7);
+  border-radius: 16px;
+  padding: 10px 12px 10px 18px;
+  display: flex; align-items: center; gap: 12px;
+  border: 1px solid #E8DDD0;
+  height: 60px;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.order-banner::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: #C9A247;
+  border-radius: 16px 0 0 16px;
+}
+.icon-stack { position: relative; width: 36px; height: 36px; flex-shrink: 0; }
+.icon-circle {
+  width: 36px; height: 36px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.icon-circle svg { width: 16px; height: 16px; }
+.icon-secondary {
+  position: absolute; top: -6px; right: -6px; z-index: 0;
+  background: #E8F0EA; color: #3F6B52; opacity: 0.9;
+}
+.icon-primary {
+  position: relative; z-index: 1;
+  background: #FAF1D8; color: #8F6F1F;
+}
+.order-info { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.order-info .title { font-size: 13px; font-weight: 600; color: rgb(44,40,37); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.order-info .subtitle { font-size: 11px; font-weight: 400; color: #999; }
+.order-chevron { color: var(--primary); flex-shrink: 0; }
+.order-chevron svg { width: 16px; height: 16px; }
+
+/* ================= SEASONAL ARTICLE ================= */
+.article-wrap { padding: 12px 16px 0; }
+.article {
+  position: relative;
+  display: flex; flex-direction: column;
+  width: 100%;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 0;
+  text-align: left;
+  background: #2A0E14 center/cover no-repeat url('assets/grillszezon-tarja.png');
+  color: #fff;
+  padding: 20px 20px 20px;
+  height: 230px;
+  transition: transform var(--dur-tap) var(--ease-out);
+}
+.article:active { transform: scale(0.99); }
+/* dark gradient overlay for legibility */
+.article::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(20,8,12,0.05) 0%, rgba(20,8,12,0.45) 50%, rgba(20,8,12,0.85) 100%);
+  pointer-events: none;
+}
+.article-flame {
+  position: absolute; right: -10px; bottom: -20px;
+  color: rgba(255,255,255,0.06);
+  pointer-events: none;
+}
+.article-flame svg { width: 200px; height: 200px; stroke-width: 1.2; }
+.article-content { position: relative; margin-top: auto; }
+.article .kicker {
+  display: block;
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(255,255,255,0.7);
+  margin-bottom: 8px;
+}
+.article .kicker .dot { display: inline-block; margin: 0 6px; opacity: 0.5; }
+.article .title {
+  display: block;
+  font-family: var(--font-display); font-weight: 700;
+  font-size: 22px; line-height: 1.2;
+  letter-spacing: -0.3px;
+  color: #fff;
+  margin-bottom: 8px;
+  text-wrap: pretty;
+}
+.article .meta {
+  display: flex;
+  font-size: 13px; color: rgba(255,255,255,0.78); font-weight: 500;
+  align-items: center; gap: 6px;
+}
+.article-content { display: block; }
+.article .meta .sep { opacity: 0.5; }
+
+.article-corner {
+  position: absolute; top: 14px; right: 14px;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(255,255,255,0.14);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border-radius: 999px;
+  padding: 5px 10px 5px 8px;
+  font-size: 11px; font-weight: 600;
+  color: #fff;
+}
+.article-corner svg { width: 13px; height: 13px; }
+
+/* ================= SAVINGS BAR (compact) ================= */
+.savings-wrap { padding: 12px 16px 0; }
+.savings {
+  display: flex; align-items: center; gap: 12px;
+  background: #E8F5E9;
+  border: 1px solid #C8E6C9;
+  border-radius: 14px;
+  padding: 10px 14px 10px 10px;
+  transition: background var(--dur-ui) var(--ease-out), border-color var(--dur-ui) var(--ease-out);
+}
+.savings.warn { background: #FFF3E0; border-color: #FFE0B2; }
+.savings.gold { background: linear-gradient(90deg, #E8F5E9 0%, #FFF8E1 100%); border-color: #E6D9B0; }
+.savings-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--card); border: 1px solid #C8E6C9;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: #2E7D32; flex-shrink: 0;
+}
+.savings.warn .savings-icon { color: #E65100; border-color: #FFE0B2; }
+.savings.gold .savings-icon { color: #1B5E20; border-color: #E6D9B0; }
+.savings-body { flex: 1; min-width: 0; }
+.savings .head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 8px;
+  margin-bottom: 4px;
+}
+.savings .msg { font-size: 13px; font-weight: 700; color: #1B5E20; line-height: 1.2; }
+.savings.warn .msg { color: #E65100; }
+.savings.gold .msg { color: #1B5E20; }
+.savings .val { font-size: 11px; font-weight: 600; color: #2E7D32; opacity: 0.75; font-variant-numeric: tabular-nums; }
+.savings.warn .val { color: #E65100; opacity: 0.8; }
+.track {
+  position: relative; height: 6px;
+  background: rgba(255,255,255,0.65);
+  border-radius: 999px; overflow: hidden;
+}
+.fill {
+  position: absolute; inset: 0 auto 0 0; border-radius: 999px;
+  background: linear-gradient(90deg, #2E7D32 0%, #D4A574 100%);
+  transition: width 0.6s var(--ease-out);
+}
+
+/* ================= SECTION HEADER ================= */
+.section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 16px 8px;
+}
+.section-title {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 17px; font-weight: 700; color: var(--text);
+  letter-spacing: -0.2px;
+  line-height: 1;
+}
+.section-title > span[data-icon] {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px;
+}
+.section-title svg { width: 18px; height: 18px; color: var(--text); stroke-width: 2; display: block; }
+.section-link {
+  background: none; border: 0; cursor: pointer;
+  font-size: 13px; font-weight: 600; color: var(--primary);
+  display: inline-flex; align-items: center; gap: 2px;
+  padding: 4px;
+}
+.section-link:hover { color: var(--primary-dark); }
+
+/* ================= BUNDLES ================= */
+.bundles-wrap {
+  margin: 0 16px;
+  background: linear-gradient(180deg, #FFF8EC 0%, #FFFBF7 100%);
+  border: 1px solid #F2E6D0;
+  border-radius: 16px;
+  padding: 14px;
+}
+.bundles {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+}
+.bundle {
+  position: relative;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px;
+  cursor: pointer;
+  display: flex; flex-direction: column; gap: 8px;
+  transition: border-color var(--dur-ui) var(--ease-out), box-shadow var(--dur-ui) var(--ease-out), transform var(--dur-tap) var(--ease-out);
+  text-align: left;
+  min-height: 168px;
+}
+.bundle:hover { border-color: var(--primary); box-shadow: var(--shadow-card-hover); }
+.bundle:active { transform: scale(0.99); }
+
+.bundle-saving {
+  position: absolute; top: 10px; right: 10px;
+  background: #E8F5E9; color: #1B5E20;
+  border-radius: 8px; padding: 3px 8px;
+  font-size: 11px; font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.bundle-saving svg { width: 11px; height: 11px; stroke-width: 2.4; }
+
+.bundle-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--secondary-light);
+  color: var(--primary);
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid #F0E2C8;
+}
+.bundle-icon.gold { background: var(--secondary); color: #fff; border: 0; }
+
+.bundle-name { font-size: 15px; font-weight: 700; line-height: 1.2; color: var(--text); letter-spacing: -0.1px; }
+.bundle-meta { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+.bundle-meta b { color: var(--text); font-weight: 600; }
+
+.bundle-badges {
+  display: inline-flex; gap: 5px;
+  margin-top: 2px;
+}
+.tbadge {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 22px; padding: 0 8px;
+  border-radius: 999px;
+  font-size: 10px; font-weight: 700;
+  white-space: nowrap;
+}
+.tbadge.truck { background: var(--primary-light); color: var(--primary); }
+.tbadge.star { background: var(--secondary-light); color: var(--secondary-dark); }
+.tbadge svg { width: 11px; height: 11px; stroke-width: 2.4; }
+
+.bundle-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: auto; padding-top: 4px;
+}
+.bundle-price {
+  display: flex; flex-direction: column; align-items: flex-start;
+  font-size: 15px; font-weight: 700; color: var(--primary);
+  font-variant-numeric: tabular-nums; line-height: 1.1;
+  white-space: nowrap;
+}
+.bundle-price .strike {
+  font-size: 11px; font-weight: 500; color: var(--text-faint);
+  text-decoration: line-through;
+  margin-bottom: 2px;
+}
+
+.bundle-add {
+  width: 30px; height: 30px;
+  border-radius: 999px;
+  background: var(--primary); color: #fff;
+  border: 0; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background var(--dur-ui) var(--ease-out), transform var(--dur-tap) var(--ease-out);
+}
+.bundle-add:hover { background: var(--primary-dark); }
+.bundle-add:active { transform: scale(0.92); }
+.bundle-add svg { width: 16px; height: 16px; stroke-width: 2.4; }
+.bundle-add.added { background: var(--success); }
+.bundle-disclaimer {
+  font-size: 10px; color: var(--text-muted);
+  margin-top: 8px; padding: 0 4px;
+  display: flex; align-items: center; gap: 5px;
+}
+.bundle-disclaimer svg { width: 11px; height: 11px; flex-shrink: 0; }
+
+/* ================= TABS ================= */
+.tabs-wrap { padding: 24px 0 0; }
+.tabs-head { padding: 0 16px 8px; }
+.tabs-head .section-title { padding: 0; }
+.tabs {
+  display: flex; gap: 8px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; padding: 0 16px;
+}
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 0 14px; height: 36px;
+  border-radius: 999px;
+  font-size: 13px; font-weight: 500;
+  white-space: nowrap; border: 1px solid transparent;
+  cursor: pointer; flex-shrink: 0;
+  display: inline-flex; align-items: center;
+  background: rgba(232,226,219,0.5); color: var(--text);
+  transition: background var(--dur-ui) var(--ease-out), color var(--dur-ui) var(--ease-out);
+}
+.tab.active { background: var(--primary); color: #fff; }
+.tab:not(.active):hover { background: var(--primary-pale); }
+
+/* ================= PRODUCT GRID ================= */
+.grid-wrap { padding: 12px 16px 80px; }
+.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.product-card {
+  background: var(--card); border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--border); cursor: pointer;
+  box-shadow: var(--shadow-card);
+  display: flex; flex-direction: column;
+  transition: box-shadow var(--dur-ui) var(--ease-out), transform var(--dur-tap) var(--ease-out);
+}
+.product-card:hover { box-shadow: var(--shadow-card-hover); }
+.product-card:active { transform: scale(0.98); }
+.product-img { width: 100%; height: 130px; object-fit: cover; display: block; background: #f5ede5; }
+.product-info { padding: 12px; display: flex; flex-direction: column; gap: 3px; }
+.product-category { font-size: 11px; font-weight: 600; color: var(--secondary-dark); }
+.product-name { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.25; }
+.product-price { font-size: 13px; font-weight: 700; color: var(--primary); margin-top: 2px; font-variant-numeric: tabular-nums; }
+.product-price .unit { font-weight: 500; color: var(--text-muted); font-size: 12px; }
+
+/* ================= BOTTOM NAV ================= */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 448px; max-width: 100%; background: var(--card);
+  border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around; align-items: center;
+  height: 65px; z-index: 25;
+  box-shadow: var(--shadow-bottom-nav);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  text-decoration: none; padding: 4px 12px;
+  cursor: pointer; background: none; border: 0;
+  position: relative;
+}
+.nav-item svg { width: 24px; height: 24px; }
+.nav-item span:not(.nav-badge) { font-size: 12px; font-weight: 500; }
+.nav-item.active svg, .nav-item.active span { color: var(--primary); }
+.nav-item:not(.active) svg, .nav-item:not(.active) span { color: var(--text3, #8A8078); }
+.nav-item .nav-badge {
+  position: absolute; top: 0; right: 6px;
+  min-width: 16px; height: 16px; padding: 0 4px;
+  background: var(--primary); color: #fff;
+  border-radius: 999px;
+  font-size: 10px; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center;
+  border: 1.5px solid var(--card);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ================= TOAST ================= */
+.toast-zone {
+  position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+  z-index: 50;
+  display: flex; flex-direction: column; gap: 8px;
+  pointer-events: none;
+  width: max-content; max-width: 360px;
+}
+.toast {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--success); color: #fff;
+  padding: 10px 14px; border-radius: 12px;
+  font-size: 13px; font-weight: 600;
+  box-shadow: 0 6px 18px rgba(45,122,79,0.3);
+  animation: toast-in 250ms var(--ease-out) forwards;
+  pointer-events: auto;
+}
+.toast svg { width: 16px; height: 16px; }
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ================= BUNDLE DETAIL SHEET ================= */
+.sheet-backdrop {
+  position: fixed; inset: 0;
+  background: var(--backdrop);
+  z-index: 60;
+  opacity: 0; pointer-events: none;
+  transition: opacity 200ms var(--ease-out);
+}
+.sheet-backdrop.open { opacity: 1; pointer-events: auto; }
+.sheet {
+  position: fixed; left: 50%; bottom: 0;
+  transform: translateX(-50%) translateY(100%);
+  width: 448px; max-width: 100%;
+  background: var(--card);
+  border-radius: 20px 20px 0 0;
+  z-index: 61;
+  transition: transform 280ms var(--ease-out);
+  display: flex; flex-direction: column;
+  max-height: 90vh;
+}
+.sheet.open { transform: translateX(-50%) translateY(0); }
+.sheet-grab {
+  width: 36px; height: 4px; background: var(--border);
+  border-radius: 999px; margin: 10px auto 0;
+}
+.sheet-head {
+  padding: 12px 20px 12px;
+  display: flex; align-items: flex-start; gap: 12px;
+  border-bottom: 1px solid var(--border);
+}
+.sheet-head .bundle-icon { width: 48px; height: 48px; }
+.sheet-head .bundle-icon svg { width: 22px; height: 22px; }
+.sheet-titles { flex: 1; min-width: 0; }
+.sheet-titles h3 { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+.sheet-titles p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.sheet-close {
+  width: 32px; height: 32px; border-radius: 999px;
+  background: var(--cream-dark); border: 0; color: var(--text);
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.sheet-close svg { width: 16px; height: 16px; }
+
+.sheet-body { padding: 14px 20px 8px; overflow-y: auto; flex: 1; }
+.sheet-list {
+  list-style: none;
+  display: flex; flex-direction: column;
+}
+.sheet-list li {
+  display: flex; justify-content: space-between; gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border);
+  font-size: 13px;
+}
+.sheet-list li:last-child { border-bottom: 0; }
+.sheet-list .sl-name { color: var(--text); font-weight: 500; }
+.sheet-list .sl-qty { color: var(--text-muted); font-weight: 500; font-size: 12px; display: block; margin-top: 2px; }
+.sheet-list .sl-price { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+.sheet-totals {
+  margin-top: 12px;
+  background: var(--cream-dark);
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sheet-totals .row {
+  display: flex; justify-content: space-between;
+  font-size: 13px; color: var(--text-muted);
+}
+.sheet-totals .row .v { color: var(--text); font-weight: 600; font-variant-numeric: tabular-nums; }
+.sheet-totals .row.save .v { color: var(--success); }
+.sheet-totals .row.tot {
+  border-top: 1px solid var(--border);
+  padding-top: 8px; margin-top: 2px;
+  font-size: 15px; color: var(--text); font-weight: 700;
+}
+.sheet-totals .row.tot .v { color: var(--primary); font-size: 16px; }
+.sheet-disclaimer {
+  margin-top: 8px;
+  font-size: 11px; color: var(--text-muted);
+  display: flex; align-items: center; gap: 6px;
+  padding: 6px 4px 0;
+}
+.sheet-disclaimer svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+.sheet-foot {
+  padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px));
+  border-top: 1px solid var(--border);
+  background: var(--card);
+}
+.sheet-cta {
+  width: 100%; height: 50px;
+  background: var(--primary); color: #fff;
+  border: 0; border-radius: 12px;
+  font-size: 15px; font-weight: 600;
+  cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+  transition: background var(--dur-ui) var(--ease-out);
+}
+.sheet-cta:hover { background: var(--primary-dark); }
+.sheet-cta.added { background: var(--success); }
+.sheet-cta svg { width: 18px; height: 18px; }
+
+/* Static label */
+.static-label { position: fixed; top: 6px; right: 6px; background: rgba(0,0,0,0.5); color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 4px; z-index: 100; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="static-label">v1 — DH-121/122 simplified</div>
+
+<!-- HEADER (matched to products.html) -->
+<div class="header">
+  <h1>Termékek</h1>
+  <button class="lang-btn" title="Nyelv kiválasztása">
+    <svg width="22" height="16" viewBox="0 0 22 16"><rect width="22" height="5.33" fill="#CE2939"/><rect y="5.33" width="22" height="5.33" fill="#FFF"/><rect y="10.66" width="22" height="5.34" fill="#1A8B42"/></svg>
+  </button>
+</div>
+
+<!-- ACTIVE ORDER BANNER (from products.html) -->
+<div class="order-banner">
+  <div class="icon-stack">
+    <span class="icon-circle icon-secondary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>
+    </span>
+    <span class="icon-circle icon-primary">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+    </span>
+  </div>
+  <div class="order-info">
+    <span class="title">6 aktív rendelés</span>
+    <span class="subtitle">11 termék · ~1361 RON</span>
+  </div>
+  <div class="order-chevron">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+  </div>
+</div>
+
+<!-- SEASONAL ARTICLE -->
+<div class="article-wrap">
+  <button class="article" id="article-card">
+    <span class="article-corner">
+      <span data-icon="lightbulb" data-size="13"></span>
+      Tipp cikk
+    </span>
+    <span class="article-content">
+      <span class="kicker">Szezon<span class="dot">•</span>Április</span>
+      <span class="title">Grillszezon — 5 tipp a tökéletes sertéstarjához</span>
+      <span class="meta">A mesterszakács ajánlja <span class="sep">·</span> 3 perc olvasás</span>
+    </span>
+  </button>
+</div>
+
+<!-- SAVINGS PROGRESS removed per request -->
+
+<!-- BUNDLES SECTION -->
+<div class="section-head">
+  <div class="section-title">
+    <span data-icon="package" data-size="18"></span>
+    Csomagok
+  </div>
+</div>
+
+<div class="bundles-wrap">
+  <div class="bundles" id="bundles">
+    <!-- bundle cards rendered by JS -->
+  </div>
+  <div class="bundle-disclaimer">
+    <span data-icon="info" data-size="11"></span>
+    A végső ár a mérés alapján változhat
+  </div>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="tabs-wrap">
+  <div class="tabs-head">
+    <div class="section-title">
+      Összes termék
+    </div>
+  </div>
+  <div class="tabs">
+    <button class="tab active">Összes</button>
+    <button class="tab">Felvágott & Egyéb</button>
+    <button class="tab">Friss Növendékhús</button>
+    <button class="tab">Friss Sertéshús</button>
+    <button class="tab">Füstölt Áruk</button>
+    <button class="tab">Kolbász & Szalámi</button>
+  </div>
+</div>
+
+<!-- PRODUCT GRID -->
+<div class="grid-wrap">
+<div class="product-grid">
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/fustolt_has_small.webp" alt="Füstölt Has">
+    <div class="product-info">
+      <div class="product-category">Füstölt Áruk</div>
+      <div class="product-name">Füstölt Has</div>
+      <div class="product-price">47,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/fustolt_oldalas_small.webp" alt="Füstölt Oldalas">
+    <div class="product-info">
+      <div class="product-category">Füstölt Áruk</div>
+      <div class="product-name">Füstölt Oldalas</div>
+      <div class="product-price">47,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/sertes_orolt_hus_small.webp" alt="Sertés Őrölt Hús">
+    <div class="product-info">
+      <div class="product-category">Friss Sertéshús</div>
+      <div class="product-name">Sertés Őrölt Hús</div>
+      <div class="product-price">21,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/sertes_feher_karaj_small.webp" alt="Sertés Fehér Karaj">
+    <div class="product-info">
+      <div class="product-category">Friss Sertéshús</div>
+      <div class="product-name">Sertés Fehér Karaj</div>
+      <div class="product-price">33,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/sertes_munka_hus_small.webp" alt="Sertés Apróhús">
+    <div class="product-info">
+      <div class="product-category">Friss Sertéshús</div>
+      <div class="product-name">Sertés Apróhús</div>
+      <div class="product-price">21,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/abalt_szalonna_small.webp" alt="Abált Szalonna">
+    <div class="product-info">
+      <div class="product-category">Felvágott & Egyéb</div>
+      <div class="product-name">Abált Szalonna</div>
+      <div class="product-price">35,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/cerna_kolbasz_small.webp" alt="Cérna Kolbász">
+    <div class="product-info">
+      <div class="product-category">Kolbász & Szalámi</div>
+      <div class="product-name">Cérna Kolbász</div>
+      <div class="product-price">45,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+  <div class="product-card">
+    <img class="product-img" src="https://staging.deakhus.ro/files/diszno_fosajt_small.webp" alt="Disznó Fősajt">
+    <div class="product-info">
+      <div class="product-category">Felvágott & Egyéb</div>
+      <div class="product-name">Disznó Fősajt</div>
+      <div class="product-price">35,00 RON <span class="unit">/ kg</span></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- BUNDLE DETAIL SHEET -->
+<div class="sheet-backdrop" id="sheet-backdrop"></div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true">
+  <div class="sheet-grab"></div>
+  <div class="sheet-head">
+    <div class="bundle-icon gold"><span data-icon="flame" data-size="22"></span></div>
+    <div class="sheet-titles">
+      <h3 id="sheet-title">Családi Grill</h3>
+      <p id="sheet-sub">5 termék · ~150 RON csomagár</p>
+    </div>
+    <button class="sheet-close" id="sheet-close" aria-label="Bezárás">
+      <span data-icon="x" data-size="16"></span>
+    </button>
+  </div>
+  <div class="sheet-body">
+    <ul class="sheet-list" id="sheet-list"></ul>
+    <div class="sheet-totals">
+      <div class="row"><span>Egyedi árak összege</span><span class="v" id="sheet-orig">154,50 RON</span></div>
+      <div class="row save"><span>Csomag megtakarítás</span><span class="v" id="sheet-save">-4,50 RON</span></div>
+      <div class="row tot"><span>Csomagár</span><span class="v" id="sheet-total">150 RON</span></div>
+    </div>
+    <div class="sheet-disclaimer">
+      <span data-icon="info" data-size="13"></span>
+      A végső ár a mérés alapján változhat
+    </div>
+  </div>
+  <div class="sheet-foot">
+    <button class="sheet-cta" id="sheet-cta">
+      <span data-icon="shopping-cart" data-size="18"></span>
+      Kosárba teszem (5 termék)
+    </button>
+  </div>
+</div>
+
+<!-- TOAST ZONE -->
+<div class="toast-zone" id="toast-zone"></div>
+
+<!-- BOTTOM NAV (matched to products.html) -->
+<nav class="bottom-nav">
+  <a href="#" class="nav-item active">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Termékek</span>
+  </a>
+  <a href="#" class="nav-item" id="nav-cart">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <span>Kosár</span>
+    <span class="nav-badge" id="nav-cart-badge" style="display:none">0</span>
+  </a>
+  <a href="#" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <span>Rendelések</span>
+  </a>
+  <a href="#" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Fiók</span>
+  </a>
+</nav>
+
+<script>
+/* ===== icon hydration ===== */
+document.querySelectorAll('[data-icon]').forEach(el => {
+  const name = el.dataset.icon;
+  const size = parseInt(el.dataset.size || '20', 10);
+  el.innerHTML = icon(name, { size });
+});
+
+/* ===== bundle data ===== */
+const BUNDLES = [
+  {
+    id: 'csaladi',
+    name: 'Családi Grill',
+    iconStyle: 'soft',
+    icon: 'flame',
+    bundlePrice: 150,
+    threshold: 'truck',
+    items: [
+      { name: 'Sertés nyakaskaraj', qty: '1 kg', unit: 33, line: 33 },
+      { name: 'Sertés Hasrész',     qty: '1 kg', unit: 24.5, line: 24.5 },
+      { name: 'Deák háziKolbász',   qty: '1 kg', unit: 45, line: 45 },
+      { name: 'Miccs',              qty: '1 kg', unit: 40, line: 40 },
+      { name: 'Sertés Bordacsont',  qty: '1 kg', unit: 12, line: 12 },
+    ],
+  },
+  {
+    id: 'maxi',
+    name: 'Maxi Családi Grill',
+    iconStyle: 'gold',
+    icon: 'flame',
+    bundlePrice: 300,
+    threshold: 'star',
+    items: [
+      { name: 'Sertés nyakaskaraj',     qty: '1.5 kg', unit: 33, line: 49.5 },
+      { name: 'Sertés Hasrész',         qty: '1.5 kg', unit: 24.5, line: 36.75 },
+      { name: 'Deák háziKolbász',       qty: '1 kg',   unit: 45, line: 45 },
+      { name: 'Miccs',                  qty: '1.5 kg', unit: 40, line: 60 },
+      { name: 'Székely Kolbász',        qty: '1 kg',   unit: 45, line: 45 },
+      { name: 'Sertés Bordacsont',      qty: '1 kg',   unit: 12, line: 12 },
+      { name: 'Sertés Egész Bordacsont',qty: '1 kg',   unit: 15, line: 15 },
+      { name: 'Füstölt Szalonna',       qty: '1 kg',   unit: 42, line: 42 },
+    ],
+  },
+];
+
+/* ===== running cart state ===== */
+let cartTotal = 98;        // start: matches mockup screenshot baseline
+let cartItems = 3;
+const addedBundles = new Set();
+
+const fmtRON = v => (Number.isInteger(v) ? v.toString() : v.toFixed(2).replace('.', ',')) + ' RON';
+
+function bundleOriginalSum(b) {
+  return b.items.reduce((s, it) => s + it.line, 0);
+}
+
+/* ===== render bundles ===== */
+function renderBundles() {
+  const root = document.getElementById('bundles');
+  root.innerHTML = '';
+  BUNDLES.forEach(b => {
+    const orig = bundleOriginalSum(b);
+    const saving = +(orig - b.bundlePrice).toFixed(2);
+    const added = addedBundles.has(b.id);
+    const card = document.createElement('div');
+    card.className = 'bundle';
+    card.dataset.id = b.id;
+    card.innerHTML = `
+      <span class="bundle-saving">${icon('coins', { size: 11 })} -${fmtRON(saving)}</span>
+      <div class="bundle-icon ${b.iconStyle === 'gold' ? 'gold' : ''}">
+        ${icon(b.icon, { size: 20 })}
+      </div>
+      <div class="bundle-name">${b.name}</div>
+      <div class="bundle-meta"><b>${b.items.length} term.</b> · ~${b.bundlePrice} RON</div>
+      <div class="bundle-badges">
+        ${b.threshold === 'truck'
+          ? `<span class="tbadge truck">${icon('truck', { size: 11 })} Ingyenes szállítás</span>`
+          : `<span class="tbadge star">${icon('star', { size: 11 })} +2% kedv.</span>`}
+      </div>
+      <div class="bundle-foot">
+        <div class="bundle-price"><span class="strike">${fmtRON(orig)}</span>${b.bundlePrice} RON</div>
+        <button class="bundle-add ${added ? 'added' : ''}" data-add="${b.id}" aria-label="Kosárba">
+          ${icon(added ? 'circle-check' : 'plus', { size: 16 })}
+        </button>
+      </div>
+    `;
+    // tap card → open sheet (but not if hit add button)
+    card.addEventListener('click', e => {
+      if (e.target.closest('[data-add]')) return;
+      openSheet(b.id);
+    });
+    card.querySelector('[data-add]').addEventListener('click', e => {
+      e.stopPropagation();
+      addBundleToCart(b.id);
+    });
+    root.appendChild(card);
+  });
+}
+
+/* ===== savings progress update ===== */
+function updateSavings() { /* savings bar removed */ }
+
+function updateCartCount() {
+  const navB = document.getElementById('nav-cart-badge');
+  if (navB) {
+    navB.textContent = cartItems;
+    navB.style.display = cartItems > 0 ? 'inline-flex' : 'none';
+  }
+}
+
+/* ===== add bundle ===== */
+function addBundleToCart(id) {
+  const b = BUNDLES.find(x => x.id === id);
+  if (!b) return;
+  if (addedBundles.has(id)) {
+    toast(`${b.name} már a kosaradban van`, 'info');
+    return;
+  }
+  addedBundles.add(id);
+  cartTotal += b.bundlePrice;
+  cartItems += b.items.length;
+  updateSavings();
+  updateCartCount();
+  renderBundles();
+  toast(`${b.name} a kosárban (${b.items.length} termék)`, 'success');
+  // sync sheet button if open for this bundle
+  if (openBundleId === id) syncSheetCta();
+}
+
+/* ===== toasts ===== */
+function toast(text, kind = 'success') {
+  const z = document.getElementById('toast-zone');
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.innerHTML = `${icon('circle-check', { size: 16 })} ${text}`;
+  z.appendChild(t);
+  setTimeout(() => {
+    t.style.transition = 'opacity 200ms, transform 200ms';
+    t.style.opacity = '0';
+    t.style.transform = 'translateY(-6px)';
+    setTimeout(() => t.remove(), 220);
+  }, 2400);
+}
+
+/* ===== bundle detail sheet ===== */
+let openBundleId = null;
+function openSheet(id) {
+  const b = BUNDLES.find(x => x.id === id);
+  if (!b) return;
+  openBundleId = id;
+  const orig = bundleOriginalSum(b);
+  const save = +(orig - b.bundlePrice).toFixed(2);
+
+  document.getElementById('sheet-title').textContent = b.name;
+  document.getElementById('sheet-sub').textContent = `${b.items.length} termék · ~${b.bundlePrice} RON csomagár`;
+  document.getElementById('sheet-orig').textContent = fmtRON(orig);
+  document.getElementById('sheet-save').textContent = '-' + fmtRON(save);
+  document.getElementById('sheet-total').textContent = fmtRON(b.bundlePrice);
+
+  const list = document.getElementById('sheet-list');
+  list.innerHTML = b.items.map(it => `
+    <li>
+      <div>
+        <div class="sl-name">${it.name}</div>
+        <div class="sl-qty">${it.qty} · ${fmtRON(it.unit)} / kg</div>
+      </div>
+      <div class="sl-price">${fmtRON(it.line)}</div>
+    </li>
+  `).join('');
+
+  // sheet head icon style
+  const headIcon = document.querySelector('.sheet-head .bundle-icon');
+  headIcon.classList.toggle('gold', b.iconStyle === 'gold');
+
+  syncSheetCta();
+  document.getElementById('sheet').classList.add('open');
+  document.getElementById('sheet-backdrop').classList.add('open');
+}
+
+function syncSheetCta() {
+  if (!openBundleId) return;
+  const b = BUNDLES.find(x => x.id === openBundleId);
+  const cta = document.getElementById('sheet-cta');
+  if (addedBundles.has(openBundleId)) {
+    cta.classList.add('added');
+    cta.innerHTML = `${icon('circle-check', { size: 18 })} A kosárban`;
+  } else {
+    cta.classList.remove('added');
+    cta.innerHTML = `${icon('shopping-cart', { size: 18 })} Kosárba teszem (${b.items.length} termék)`;
+  }
+}
+
+function closeSheet() {
+  document.getElementById('sheet').classList.remove('open');
+  document.getElementById('sheet-backdrop').classList.remove('open');
+  openBundleId = null;
+}
+document.getElementById('sheet-close').addEventListener('click', closeSheet);
+document.getElementById('sheet-backdrop').addEventListener('click', closeSheet);
+document.getElementById('sheet-cta').addEventListener('click', () => {
+  if (openBundleId) addBundleToCart(openBundleId);
+});
+
+document.getElementById('article-card').addEventListener('click', () => {
+  toast('Cikk megnyitása… (deep link a csomagokhoz)');
+  setTimeout(() => {
+    document.querySelector('.bundles-wrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 200);
+});
+
+/* init */
+renderBundles();
+updateSavings();
+updateCartCount();
+</script>
+</body>
+</html>

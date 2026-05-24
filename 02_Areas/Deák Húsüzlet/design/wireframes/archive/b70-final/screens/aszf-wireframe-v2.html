@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<script type="application/json" id="screen-meta">
+{
+  "title": "ÁSZF — Általános Szerződési Feltételek",
+  "feature": "legal",
+  "sprint": "Sprint 3",
+  "status": "approved",
+  "publish": true,
+  "order": 60,
+  "platform": "mobile",
+  "version": "v2",
+  "tags": [
+    "legal",
+    "aszf",
+    "terms"
+  ]
+}
+</script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>ÁSZF / Termeni și Condiții — Deák Húsmíves</title>
+	<meta name="description" content="Termeni și Condiții Generale ale platformei Deák Húsmíves. Terms and Conditions for the Deák Húsmíves online platform.">
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<style>
+		*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+		:root {
+			--primary: #9B2335;
+			--primary-dark: #7A1C2A;
+			--secondary: #D4A574;
+			--gray-50: #FAF8F5;
+			--gray-200: #E8E2DB;
+			--gray-300: #C5BCB3;
+			--gray-400: #8A8078;
+			--gray-600: #5C544C;
+			--gray-900: #2C2825;
+			--white: #FFFFFF;
+		}
+		html {
+			font-family: 'Inter', system-ui, -apple-system, sans-serif;
+			font-size: 16px; line-height: 1.6; color: var(--gray-900);
+			background: var(--gray-50);
+			-webkit-font-smoothing: antialiased;
+		}
+		.hero {
+			background: var(--primary);
+			padding: 3rem 1.5rem 5rem;
+			text-align: center;
+			position: relative;
+		}
+		.hero::after {
+			content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+			background: var(--gray-50); border-radius: 1.5rem 1.5rem 0 0;
+		}
+		.hero-title {
+			font-size: 1.5rem; font-weight: 700; color: var(--white);
+			line-height: 1.25; margin-bottom: 0.375rem;
+		}
+		.hero-subtitle {
+			font-size: 0.875rem; font-weight: 400;
+			color: rgba(255,255,255,0.6); margin-bottom: 1.75rem;
+		}
+		.lang-switcher {
+			display: inline-flex; gap: 0.25rem; padding: 0.25rem;
+			background: rgba(255,255,255,0.15); border-radius: 9999px;
+		}
+		.lang-btn {
+			font-family: inherit; font-size: 0.875rem; font-weight: 400;
+			padding: 0.375rem 1.25rem; border: none; border-radius: 9999px;
+			cursor: pointer; transition: all 150ms ease;
+			background: transparent; color: rgba(255,255,255,0.8);
+		}
+		.lang-btn:hover { background: rgba(255,255,255,0.1); }
+		.lang-btn.active {
+			background: var(--white); color: var(--primary); font-weight: 600;
+			box-shadow: 0 1px 3px rgba(0,0,0,0.12);
+		}
+		.content-card {
+			background: var(--white); border-radius: 1rem;
+			box-shadow: 0 4px 24px rgba(44,40,37,0.08), 0 1px 4px rgba(44,40,37,0.04);
+			max-width: 672px; margin: -2rem auto 0;
+			padding: 2rem 1.5rem 2.5rem;
+			position: relative; z-index: 1;
+			animation: fadeInUp 400ms ease-out;
+		}
+		@keyframes fadeInUp {
+			from { opacity: 0; transform: translateY(16px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+		.meta { font-size: 0.875rem; color: var(--gray-400); margin-bottom: 1.5rem; }
+		.divider { border: none; border-top: 1px solid var(--gray-200); margin: 0 0 2rem; }
+		.toc {
+			background: var(--gray-50); border: 1px solid var(--gray-200);
+			border-radius: 0.75rem; padding: 1.25rem; margin-bottom: 2rem;
+		}
+		.toc-label {
+			font-size: 0.6875rem; font-weight: 700; text-transform: uppercase;
+			letter-spacing: 0.06em; color: var(--gray-400); margin-bottom: 0.75rem;
+		}
+		.toc ol { padding-left: 1.25rem; }
+		.toc li { margin-bottom: 0.25rem; font-size: 0.875rem; }
+		.toc a { color: var(--primary); text-decoration: none; }
+		.toc a:hover { text-decoration: underline; }
+		.policy-section { margin-bottom: 2rem; }
+		.policy-section:last-child { margin-bottom: 0; }
+		.section-heading { scroll-margin-top: 1rem;
+			font-size: 1.125rem; font-weight: 600; color: var(--gray-900);
+			margin-bottom: 0.75rem; line-height: 1.35;
+		}
+		.section-body { font-size: 1rem; color: var(--gray-600); line-height: 1.7; }
+		.section-body p { margin-bottom: 0.75rem; }
+		.section-body p:last-child { margin-bottom: 0; }
+		.section-body ul, .section-body ol { padding-left: 1.25rem; margin: 0.5rem 0 0.75rem; }
+		.section-body ul { list-style: none; padding-left: 0; }
+		.section-body ul li { padding-left: 1.25rem; position: relative; margin-bottom: 0.375rem; }
+		.section-body ul li::before {
+			content: ''; position: absolute; left: 0; top: 0.65em;
+			width: 6px; height: 6px; border-radius: 50%; background: var(--primary);
+		}
+		.section-body ol li { margin-bottom: 0.375rem; }
+		.section-body address {
+			font-style: normal; background: var(--gray-50); border: 1px solid var(--gray-200);
+			border-radius: 0.75rem; padding: 1rem 1.25rem; margin: 0.5rem 0 0.75rem;
+			font-size: 0.9375rem; line-height: 1.7;
+		}
+		.section-body address strong { display: block; color: var(--gray-900); font-size: 1rem; margin-bottom: 0.25rem; }
+		.contact-box {
+			background: var(--gray-50); border: 1px solid var(--gray-200);
+			border-radius: 0.75rem; padding: 1.25rem; text-align: center; margin-top: 0.75rem;
+		}
+		.contact-email {
+			display: inline-flex; align-items: center; gap: 0.5rem;
+			font-size: 1rem; font-weight: 500; color: var(--primary); text-decoration: none;
+		}
+		.contact-email:hover { color: var(--primary-dark); }
+		.contact-entity { font-size: 0.875rem; color: var(--gray-400); margin-top: 0.375rem; }
+		.footer {
+			text-align: center; padding: 2.5rem 1.5rem;
+			font-size: 0.875rem; color: var(--gray-400); line-height: 1.5;
+		}
+		[data-lang="ro"] .lang-en, [data-lang="ro"] .lang-hu,
+		[data-lang="en"] .lang-ro, [data-lang="en"] .lang-hu,
+		[data-lang="hu"] .lang-ro, [data-lang="hu"] .lang-en { display: none; }
+		@media (min-width: 640px) {
+			.hero { padding: 4rem 2rem 6rem; }
+			.hero-title { font-size: 1.75rem; }
+			.content-card { padding: 2.5rem 3rem 3rem; margin-top: -2.5rem; }
+		}
+</style>
+
+  <style>
+  .back-to-catalog {
+    position: fixed; top: 12px; left: 12px; z-index: 9999;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(155,35,53,0.92); color: white;
+    font-family: -apple-system, sans-serif;
+    font-size: 12px; font-weight: 600;
+    padding: 7px 12px 7px 10px; border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    backdrop-filter: blur(4px);
+    transition: opacity .15s;
+  }
+  .back-to-catalog:hover { opacity: .85; }
+  .back-to-catalog svg { width:14px; height:14px; stroke:white; stroke-width:2.5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  </style>
+</head>
+<body data-lang="hu">
+<a class="back-to-catalog" href="../index.html">
+  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  Katalógus
+</a>
+	<header class="hero">
+		<h1 class="hero-title">
+			<span class="lang-hu">Általános Szerződési Feltételek</span>
+			<span class="lang-ro">Termeni și Condiții Generale</span>
+			<span class="lang-en">Terms and Conditions</span>
+		</h1>
+		<p class="hero-subtitle">Deák Húsmíves — deakhus.ro</p>
+		<nav class="lang-switcher" aria-label="Language selector">
+			<button class="lang-btn" data-lang-btn="ro" type="button">RO</button>
+			<button class="lang-btn" data-lang-btn="en" type="button">EN</button>
+			<button class="lang-btn active" data-lang-btn="hu" type="button">HU</button>
+		</nav>
+	</header>
+
+	<main class="content-card">
+		<p class="meta">
+			<span class="lang-hu">Hatályos: 2026. május 1-től · Utolsó frissítés: 2026. április 17.</span>
+			<span class="lang-ro">În vigoare de la: 1 mai 2026 · Ultima actualizare: 17 aprilie 2026</span>
+			<span class="lang-en">Effective from: May 1, 2026 · Last updated: April 17, 2026</span>
+		</p>
+		<hr class="divider">
+
+		<!-- TOC -->
+		<div class="toc">
+			<div class="toc-label">
+				<span class="lang-hu">Tartalomjegyzék</span>
+				<span class="lang-ro">Cuprins</span>
+				<span class="lang-en">Table of Contents</span>
+			</div>
+			<ol>
+				<li><a href="#s1"><span class="lang-hu">Általános rendelkezések</span><span class="lang-ro">Dispoziții generale</span><span class="lang-en">General Provisions</span></a></li>
+				<li><a href="#s2"><span class="lang-hu">A Szolgáltató adatai</span><span class="lang-ro">Datele furnizorului</span><span class="lang-en">Provider Details</span></a></li>
+				<li><a href="#s3"><span class="lang-hu">A megrendelés folyamata</span><span class="lang-ro">Procesul de comandă</span><span class="lang-en">Ordering Process</span></a></li>
+				<li><a href="#s4"><span class="lang-hu">Árak és fizetés</span><span class="lang-ro">Prețuri și plată</span><span class="lang-en">Prices and Payment</span></a></li>
+				<li><a href="#s5"><span class="lang-hu">Szállítás és teljesítés</span><span class="lang-ro">Livrare și executare</span><span class="lang-en">Delivery and Fulfillment</span></a></li>
+				<li><a href="#s6"><span class="lang-hu">Elállási jog</span><span class="lang-ro">Dreptul de retragere</span><span class="lang-en">Right of Withdrawal</span></a></li>
+				<li><a href="#s7"><span class="lang-hu">Szavatosság és jótállás</span><span class="lang-ro">Garanție și conformitate</span><span class="lang-en">Warranty and Conformity</span></a></li>
+				<li><a href="#s8"><span class="lang-hu">Felelősségkorlátozás</span><span class="lang-ro">Limitarea răspunderii</span><span class="lang-en">Limitation of Liability</span></a></li>
+				<li><a href="#s9"><span class="lang-hu">Panaszkezelés</span><span class="lang-ro">Soluționarea reclamațiilor</span><span class="lang-en">Complaints</span></a></li>
+				<li><a href="#s10"><span class="lang-hu">Vegyes rendelkezések</span><span class="lang-ro">Dispoziții diverse</span><span class="lang-en">Miscellaneous</span></a></li>
+				<li><a href="#s11"><span class="lang-hu">Alkalmazandó jog és vitarendezés</span><span class="lang-ro">Legea aplicabilă și soluționarea litigiilor</span><span class="lang-en">Governing Law and Dispute Resolution</span></a></li>
+			</ol>
+		</div>
+
+		<!-- 1 -->
+		<section class="policy-section" id="s1">
+			<h2 class="section-heading">
+				<span class="lang-hu">1. Általános rendelkezések</span>
+				<span class="lang-ro">1. Dispoziții generale</span>
+				<span class="lang-en">1. General Provisions</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p>Jelen Általános Szerződési Feltételek (továbbiakban: ÁSZF) az EXARGROUPS S.R.L. (továbbiakban: Szolgáltató) által üzemeltetett deakhus.ro online platform (továbbiakban: Platform) igénybevételére vonatkozó feltételeket tartalmazzák.</p>
+					<p>A Platform használatával, illetve megrendelés leadásával a Felhasználó elfogadja jelen ÁSZF rendelkezéseit. Az ÁSZF a Felhasználóra és a Szolgáltatóra egyaránt kötelező érvényű.</p>
+					<p>Az ÁSZF-et a Szolgáltató bármikor módosíthatja. A módosítások a Platformon való közzétételkor lépnek hatályba. A módosítás után leadott megrendelések az új ÁSZF szerint kerülnek teljesítésre.</p>
+				</div>
+				<div class="lang-ro">
+					<p>Prezentele Termeni și Condiții Generale (denumite în continuare: TCG) reglementează condițiile de utilizare a platformei online deakhus.ro, operată de EXARGROUPS S.R.L.</p>
+					<p>Prin utilizarea Platformei sau plasarea unei comenzi, Utilizatorul acceptă prevederile prezentelor TCG. TCG sunt obligatorii atât pentru Utilizator, cât și pentru Furnizor.</p>
+					<p>Furnizorul poate modifica TCG în orice moment. Modificările intră în vigoare la publicarea pe Platformă. Comenzile plasate după modificare sunt guvernate de noile TCG.</p>
+				</div>
+				<div class="lang-en">
+					<p>These Terms and Conditions ("T&C") govern the use of the deakhus.ro online platform operated by EXARGROUPS S.R.L. ("Provider").</p>
+					<p>By using the Platform or placing an order, the User accepts these T&C. The T&C are binding on both the User and the Provider.</p>
+					<p>The Provider may update these T&C at any time. Changes take effect upon publication on the Platform. Orders placed after a change are governed by the updated T&C.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 -->
+		<section class="policy-section" id="s2">
+			<h2 class="section-heading">
+				<span class="lang-hu">2. A Szolgáltató adatai</span>
+				<span class="lang-ro">2. Datele furnizorului</span>
+				<span class="lang-en">2. Provider Details</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<address><strong>EXARGROUPS S.R.L.</strong>Székhely: Székelyudvarhely (Odorheiu Secuiesc), Orbán Balázs u. 9.<br>CUI: RO41839221 · J19/789/2019<br>Email: contact@exar.ro · Weboldal: deakhus.ro</address>
+					<p>A Platform termékszállítását és -előkészítését végző partner:</p>
+					<address><strong>DEAK PROD SRL</strong>Székhely: Székelyudvarhely, Solymossy u. 9.<br>CUI: 4845288 · J19/1038/1993</address>
+				</div>
+				<div class="lang-ro">
+					<address><strong>EXARGROUPS S.R.L.</strong>Sediu: Odorheiu Secuiesc, str. Orbán Balázs nr. 9<br>CUI: RO41839221 · J19/789/2019<br>Email: contact@exar.ro · Website: deakhus.ro</address>
+					<p>Partenerul responsabil cu prepararea și livrarea produselor:</p>
+					<address><strong>DEAK PROD SRL</strong>Sediu: Odorheiu Secuiesc, str. Solymossy nr. 9<br>CUI: 4845288 · J19/1038/1993</address>
+				</div>
+				<div class="lang-en">
+					<address><strong>EXARGROUPS S.R.L.</strong>Address: str. Orbán Balázs nr. 9, Odorheiu Secuiesc, Romania<br>CUI: RO41839221 · J19/789/2019<br>Email: contact@exar.ro · Website: deakhus.ro</address>
+					<p>Partner responsible for product preparation and delivery:</p>
+					<address><strong>DEAK PROD SRL</strong>Address: str. Solymossy nr. 9, Odorheiu Secuiesc, Romania<br>CUI: 4845288 · J19/1038/1993</address>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 -->
+		<section class="policy-section" id="s3">
+			<h2 class="section-heading">
+				<span class="lang-hu">3. A megrendelés folyamata</span>
+				<span class="lang-ro">3. Procesul de comandă</span>
+				<span class="lang-en">3. Ordering Process</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p>A megrendelés leadásához regisztráció szükséges. A regisztráció Google-fiókkal vagy email/jelszó párossal lehetséges.</p>
+					<p>A megrendelési folyamat lépései:</p>
+					<ol><li>Termékek kiválasztása és kosárba helyezése</li><li>Szállítási cím és időpont megadása</li><li>Megrendelés megerősítése</li><li>Visszaigazoló email fogadása</li></ol>
+					<p>A szerződés a Felhasználó megrendelésének elküldésével és a Szolgáltató visszaigazolásával jön létre.</p>
+					<p><strong>Minimális rendelési érték:</strong> 80 RON.</p>
+					<p>A Szolgáltató fenntartja a jogot a megrendelés visszautasítására, ha a termék nem áll rendelkezésre.</p>
+				</div>
+				<div class="lang-ro">
+					<p>Plasarea unei comenzi necesită înregistrarea unui cont. Înregistrarea se poate face cu cont Google sau email/parolă.</p>
+					<p>Etapele procesului de comandă:</p>
+					<ol><li>Selectarea produselor și adăugarea în coș</li><li>Specificarea adresei de livrare și intervalului orar</li><li>Confirmarea comenzii</li><li>Primirea emailului de confirmare</li></ol>
+					<p>Contractul se încheie la transmiterea comenzii de către Utilizator și confirmarea acesteia de către Furnizor prin email automat.</p>
+					<p><strong>Valoare minimă a comenzii:</strong> 80 RON.</p>
+					<p>Furnizorul își rezervă dreptul de a refuza o comandă în cazul în care produsele solicitate nu sunt disponibile.</p>
+				</div>
+				<div class="lang-en">
+					<p>Placing an order requires a registered account (Google OAuth or email/password).</p>
+					<ol><li>Select products and add to cart</li><li>Enter delivery address and time slot</li><li>Confirm the order</li><li>Receive email confirmation</li></ol>
+					<p>The contract is formed upon submission of the order and the Provider's email confirmation.</p>
+					<p><strong>Minimum order value:</strong> 80 RON.</p>
+					<p>The Provider reserves the right to cancel an order if requested products are unavailable.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 -->
+		<section class="policy-section" id="s4">
+			<h2 class="section-heading">
+				<span class="lang-hu">4. Árak és fizetés</span>
+				<span class="lang-ro">4. Prețuri și plată</span>
+				<span class="lang-en">4. Prices and Payment</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p>Az árak román lejben (RON) értendők, és tartalmazzák az áfát (TVA). A feltüntetett ár a megrendelés visszaigazolásakor érvényes ár.</p>
+					<p><strong>Fizetési mód:</strong> Készpénz vagy bankkártya a futárnak szállításkor. Online fizetés egy későbbi verzióban kerül bevezetésre.</p>
+					<p>A Szolgáltató az árakat előzetes értesítés nélkül módosíthatja. A megrendelés visszaigazolásakor szereplő ár kötelező érvényű.</p>
+				</div>
+				<div class="lang-ro">
+					<p>Prețurile sunt exprimate în lei românești (RON) și includ TVA. Prețul valabil este cel din momentul confirmării comenzii.</p>
+					<p><strong>Modalitate de plată:</strong> Numerar sau card bancar la livrare. Plata online va fi introdusă într-o versiune ulterioară.</p>
+					<p>Furnizorul poate modifica prețurile fără notificare prealabilă. Prețul din confirmarea comenzii este obligatoriu.</p>
+				</div>
+				<div class="lang-en">
+					<p>All prices are in Romanian lei (RON) and include VAT. The price valid at order confirmation is binding.</p>
+					<p><strong>Payment method:</strong> Cash or card on delivery. Online pre-payment will be introduced in a future version.</p>
+					<p>The Provider may change prices without prior notice. The price at order confirmation is final.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 -->
+		<section class="policy-section" id="s5">
+			<h2 class="section-heading">
+				<span class="lang-hu">5. Szállítás és teljesítés</span>
+				<span class="lang-ro">5. Livrare și executare</span>
+				<span class="lang-en">5. Delivery and Fulfillment</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p><strong>Szállítási terület:</strong> Székelyudvarhely és 10 km-es körzete.</p>
+					<p><strong>Szállítási idő:</strong> A megrendeléskor megjelölt időablakban, általában a leadás napján vagy másnap.</p>
+					<ul><li>A kézbesítés a megadott szállítási cím bejáratáig történik</li><li>Sikertelen szállítás esetén a futár értesítést hagy; 24 órán belül új időpont egyeztethető</li><li>Friss és fagyasztott termékeket egy szállítmányban küldünk; a Felhasználó felelős a megfelelő tárolásért</li></ul>
+					<p><strong>Élelmiszer-higiénia:</strong> A termékek HACCP-előírásoknak megfelelő csomagolásban, hűtött körülmények között (max. +4°C) kerülnek szállításra.</p>
+				</div>
+				<div class="lang-ro">
+					<p><strong>Zonă de livrare:</strong> Odorheiu Secuiesc și o rază de 10 km.</p>
+					<p><strong>Termen de livrare:</strong> În intervalul orar selectat la comandă, de regulă în aceeași zi sau a doua zi.</p>
+					<ul><li>Livrarea se efectuează până la intrarea principală a adresei indicate</li><li>În caz de livrare eșuată, curierul lasă o notificare; se poate programa o nouă livrare în 24 de ore</li><li>Produsele proaspete și congelate sunt livrate împreună; Utilizatorul este responsabil de depozitarea corespunzătoare</li></ul>
+					<p><strong>Igiena alimentară:</strong> Produsele sunt livrate în ambalaje conforme HACCP, în condiții de refrigerare (max. +4°C).</p>
+				</div>
+				<div class="lang-en">
+					<p><strong>Delivery area:</strong> Odorheiu Secuiesc and a 10 km radius.</p>
+					<p><strong>Delivery time:</strong> Within the selected time slot, typically same-day or next-day.</p>
+					<ul><li>Delivery is made to the main entrance of the specified address</li><li>In case of failed delivery, a notice is left; a new slot can be arranged within 24 hours</li><li>Fresh and frozen products are shipped together; the User is responsible for proper storage upon receipt</li></ul>
+					<p><strong>Food safety:</strong> Products are delivered in HACCP-compliant packaging under refrigerated conditions (max. +4°C).</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 6 -->
+		<section class="policy-section" id="s6">
+			<h2 class="section-heading">
+				<span class="lang-hu">6. Elállási jog</span>
+				<span class="lang-ro">6. Dreptul de retragere</span>
+				<span class="lang-en">6. Right of Withdrawal</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p>Élelmiszer-jellegű termékek esetén az EU 2011/83 irányelv 16. cikk (d) pontja alapján <strong>az elállási jog nem érvényesíthető</strong>, mivel a termékek gyorsan romlandók és higiéniai okokból visszavételre alkalmatlanok.</p>
+					<p>Megrendelés <strong>lemondása</strong> — a szállítás megkezdése előtt — a Platformon belül elérhető „Megrendelés lemondása" funkcióval lehetséges, vagy a contact@exar.ro emailen keresztül.</p>
+					<p>Szállítás megkezdése után a lemondás nem lehetséges.</p>
+				</div>
+				<div class="lang-ro">
+					<p>Pentru produse alimentare, în conformitate cu art. 16 lit. (d) din Directiva UE 2011/83, <strong>dreptul de retragere nu este aplicabil</strong>, deoarece produsele sunt perisabile și nu pot fi returnate din motive de igienă.</p>
+					<p><strong>Anularea comenzii</strong> este posibilă înainte de începerea livrării, prin funcția „Anulare comandă" din Platformă sau prin email la contact@exar.ro.</p>
+					<p>După începerea livrării, anularea nu mai este posibilă.</p>
+				</div>
+				<div class="lang-en">
+					<p>For food products, the right of withdrawal does <strong>not apply</strong> under EU Directive 2011/83, Art. 16(d), as the products are perishable and cannot be returned for hygiene reasons.</p>
+					<p>Orders may be <strong>cancelled</strong> before delivery begins via the "Cancel order" option on the Platform or at contact@exar.ro.</p>
+					<p>Cancellation is not possible once delivery has started.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 7 -->
+		<section class="policy-section" id="s7">
+			<h2 class="section-heading">
+				<span class="lang-hu">7. Szavatosság és jótállás</span>
+				<span class="lang-ro">7. Garanție și conformitate</span>
+				<span class="lang-en">7. Warranty and Conformity</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p>A Szolgáltató szavatolja, hogy a kiszállított termékek:</p>
+					<ul><li>Megfelelnek a feltüntetett leírásnak és minőségi előírásoknak</li><li>Rendelkeznek érvényes fogyaszthatósági/minőségmegőrzési dátummal</li><li>Megfelelnek a román élelmiszer-biztonsági előírásoknak (ANSVSA)</li></ul>
+					<p>Minőségi reklamáció esetén az átvételtől számított <strong>24 órán belül</strong> kérjük értesíteni a Szolgáltatót (fotóval dokumentálva) a contact@exar.ro emailen.</p>
+				</div>
+				<div class="lang-ro">
+					<p>Furnizorul garantează că produsele livrate:</p>
+					<ul><li>Corespund descrierii și standardelor de calitate indicate</li><li>Au termen de valabilitate/consum valabil</li><li>Respectă normele române de siguranță alimentară (ANSVSA)</li></ul>
+					<p>Reclamațiile de calitate trebuie transmise în <strong>24 de ore</strong> de la primire (cu documentație foto) la contact@exar.ro.</p>
+				</div>
+				<div class="lang-en">
+					<p>The Provider warrants that delivered products:</p>
+					<ul><li>Match the described specifications and quality standards</li><li>Have a valid use-by / best-before date</li><li>Comply with Romanian food safety regulations (ANSVSA)</li></ul>
+					<p>Quality complaints must be submitted within <strong>24 hours</strong> of receipt (with photo documentation) to contact@exar.ro.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 8 -->
+		<section class="policy-section" id="s8">
+			<h2 class="section-heading">
+				<span class="lang-hu">8. Felelősségkorlátozás</span>
+				<span class="lang-ro">8. Limitarea răspunderii</span>
+				<span class="lang-en">8. Limitation of Liability</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p>A Szolgáltató nem vállal felelősséget:</p>
+					<ul><li>A DEAK PROD SRL készletezési döntéseiből eredő termékhiányért</li><li>Vis maior eseményekből eredő késedelemért vagy nemteljesítésért</li><li>A Felhasználó által megadott hibás szállítási adatokból eredő sikertelenségért</li><li>Internet-kapcsolati problémákból, harmadik fél szolgáltatók leállásából eredő kiesésekért</li></ul>
+					<p>A Szolgáltató felelőssége minden esetben a megrendelés értékére korlátozódik.</p>
+				</div>
+				<div class="lang-ro">
+					<p>Furnizorul nu răspunde pentru:</p>
+					<ul><li>Lipsa de stoc cauzată de deciziile de aprovizionare ale DEAK PROD SRL</li><li>Întârzieri sau neexecutare cauzate de forță majoră</li><li>Eșecul livrării din cauza datelor incorecte furnizate de Utilizator</li><li>Întreruperi ale serviciilor terțe (Google, Firebase)</li></ul>
+					<p>Răspunderea Furnizorului este limitată în orice caz la valoarea comenzii.</p>
+				</div>
+				<div class="lang-en">
+					<p>The Provider is not liable for:</p>
+					<ul><li>Stock shortages due to DEAK PROD SRL's inventory decisions</li><li>Delays or non-performance due to force majeure</li><li>Failed delivery caused by incorrect address data provided by the User</li><li>Outages of third-party services (Google, Firebase)</li></ul>
+					<p>The Provider's liability is in any case limited to the value of the order.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 9 -->
+		<section class="policy-section" id="s9">
+			<h2 class="section-heading">
+				<span class="lang-hu">9. Panaszkezelés</span>
+				<span class="lang-ro">9. Soluționarea reclamațiilor</span>
+				<span class="lang-en">9. Complaints</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p>Panaszt az alábbi csatornákon fogadunk:</p>
+					<ul><li><strong>Email:</strong> contact@exar.ro</li><li><strong>Platform:</strong> a megrendelés részletes oldalán keresztül</li></ul>
+					<p>A panaszokat <strong>5 munkanapon belül</strong> megválaszoljuk. Fogyasztóvédelmi panasz esetén: <a href="https://anpc.ro" target="_blank" style="color:var(--primary)">anpc.ro</a></p>
+					<p>EU online vitarendezés: <a href="https://ec.europa.eu/consumers/odr" target="_blank" style="color:var(--primary)">ec.europa.eu/consumers/odr</a></p>
+				</div>
+				<div class="lang-ro">
+					<p>Reclamațiile pot fi transmise prin:</p>
+					<ul><li><strong>Email:</strong> contact@exar.ro</li><li><strong>Platformă:</strong> prin pagina de detalii a comenzii</li></ul>
+					<p>Reclamațiile vor fi soluționate în <strong>5 zile lucrătoare</strong>. ANPC: <a href="https://anpc.ro" target="_blank" style="color:var(--primary)">anpc.ro</a></p>
+					<p>SOL: <a href="https://ec.europa.eu/consumers/odr" target="_blank" style="color:var(--primary)">ec.europa.eu/consumers/odr</a></p>
+				</div>
+				<div class="lang-en">
+					<p>Complaints may be submitted via:</p>
+					<ul><li><strong>Email:</strong> contact@exar.ro</li><li><strong>Platform:</strong> through the order detail page</li></ul>
+					<p>Complaints will be addressed within <strong>5 business days</strong>. ANPC: <a href="https://anpc.ro" target="_blank" style="color:var(--primary)">anpc.ro</a></p>
+					<p>EU ODR: <a href="https://ec.europa.eu/consumers/odr" target="_blank" style="color:var(--primary)">ec.europa.eu/consumers/odr</a></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 10 -->
+		<section class="policy-section" id="s10">
+			<h2 class="section-heading">
+				<span class="lang-hu">10. Vegyes rendelkezések</span>
+				<span class="lang-ro">10. Dispoziții diverse</span>
+				<span class="lang-en">10. Miscellaneous</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p><strong>Szellemi tulajdon:</strong> A Platform és annak tartalma az EXARGROUPS S.R.L. szellemi tulajdona. Engedély nélküli másolás tilos.</p>
+					<p><strong>Adatvédelem:</strong> A személyes adatok kezelésére vonatkozó részletes tájékoztatót az <a href="privacy-policy-wireframe-v2.html" style="color:var(--primary)">Adatvédelmi Szabályzat</a> tartalmazza.</p>
+					<p><strong>Módosítás:</strong> A Szolgáltató az ÁSZF-et egyoldalúan módosíthatja. A hatályos változat mindig a Platformon érhető el.</p>
+					<p><strong>Részleges érvénytelenség:</strong> Ha jelen ÁSZF valamely rendelkezése érvénytelen, a többi rendelkezés érvényes marad.</p>
+				</div>
+				<div class="lang-ro">
+					<p><strong>Proprietate intelectuală:</strong> Platforma și conținutul acesteia sunt proprietatea intelectuală a EXARGROUPS S.R.L. Copierea neautorizată este interzisă.</p>
+					<p><strong>Confidențialitate:</strong> Prelucrarea datelor cu caracter personal este reglementată de <a href="privacy-policy-wireframe-v2.html" style="color:var(--primary)">Politica de Confidențialitate</a>.</p>
+					<p><strong>Modificare:</strong> Furnizorul poate modifica unilateral TCG. Versiunea în vigoare este disponibilă oricând pe Platformă.</p>
+					<p><strong>Nulitate parțială:</strong> Dacă o prevedere a TCG este invalidă, celelalte prevederi rămân valabile.</p>
+				</div>
+				<div class="lang-en">
+					<p><strong>Intellectual property:</strong> The Platform and its content are the intellectual property of EXARGROUPS S.R.L. Unauthorized copying is prohibited.</p>
+					<p><strong>Privacy:</strong> Personal data processing is governed by our <a href="privacy-policy-wireframe-v2.html" style="color:var(--primary)">Privacy Policy</a>.</p>
+					<p><strong>Amendments:</strong> The Provider may unilaterally amend these T&C. The current version is always available on the Platform.</p>
+					<p><strong>Severability:</strong> If any provision of these T&C is invalid, the remaining provisions remain in force.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 11 -->
+		<section class="policy-section" id="s11">
+			<h2 class="section-heading">
+				<span class="lang-hu">11. Alkalmazandó jog és vitarendezés</span>
+				<span class="lang-ro">11. Legea aplicabilă și soluționarea litigiilor</span>
+				<span class="lang-en">11. Governing Law and Dispute Resolution</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-hu">
+					<p>Jelen ÁSZF-re a <strong>román jog</strong> az irányadó, különösen:</p>
+					<ul><li>Legea nr. 365/2002 az elektronikus kereskedelemről</li><li>OG nr. 34/2014 a fogyasztói szerződésekről (EU 2011/83 átültetése)</li><li>GDPR (EU 2016/679) az adatvédelemről</li></ul>
+					<p>Vitás kérdések rendezésére elsősorban tárgyalásos úton törekszünk. Ennek sikertelensége esetén a székelyudvarhelyi illetékes bírósághoz vagy az EU online vitarendezési platformjához lehet fordulni.</p>
+				</div>
+				<div class="lang-ro">
+					<p>Prezentele TCG sunt guvernate de <strong>legea română</strong>, în special:</p>
+					<ul><li>Legea nr. 365/2002 privind comerțul electronic</li><li>OG nr. 34/2014 privind contractele încheiate cu consumatorii (transpunerea Directivei 2011/83/UE)</li><li>RGPD (UE 2016/679) privind protecția datelor</li></ul>
+					<p>Litigiile vor fi soluționate în primul rând pe cale amiabilă. În caz de eșec, Utilizatorul se poate adresa instanței competente din Odorheiu Secuiesc sau platformei europene SOL.</p>
+				</div>
+				<div class="lang-en">
+					<p>These T&C are governed by <strong>Romanian law</strong>, in particular:</p>
+					<ul><li>Law no. 365/2002 on e-commerce</li><li>Government Ordinance no. 34/2014 on consumer contracts (transposing Directive 2011/83/EU)</li><li>GDPR (EU 2016/679) on data protection</li></ul>
+					<p>Disputes will be resolved amicably where possible. Failing that, the User may approach the competent court in Odorheiu Secuiesc or use the EU ODR platform.</p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<span class="lang-hu">&copy; 2026 EXARGROUPS SRL. Minden jog fenntartva.</span>
+		<span class="lang-ro">&copy; 2026 EXARGROUPS SRL. Toate drepturile rezervate.</span>
+		<span class="lang-en">&copy; 2026 EXARGROUPS SRL. All rights reserved.</span>
+	</footer>
+
+	<script>
+		(function () {
+			var body = document.body;
+			var buttons = document.querySelectorAll("[data-lang-btn]");
+			function switchLang(lang) {
+				body.setAttribute("data-lang", lang);
+				document.documentElement.lang = lang;
+				for (var i = 0; i < buttons.length; i++) {
+					if (buttons[i].getAttribute("data-lang-btn") === lang) {
+						buttons[i].classList.add("active");
+					} else {
+						buttons[i].classList.remove("active");
+					}
+				}
+			}
+			for (var i = 0; i < buttons.length; i++) {
+				buttons[i].addEventListener("click", function () {
+					switchLang(this.getAttribute("data-lang-btn"));
+				});
+			}
+		})();
+	</script>
+<script src="breadcrumb.js"></script>
+
+<!-- Pull-to-refresh -->
+<style>
+.ptr-ind {
+  position: fixed; top: 0; left: 50%;
+  transform: translateX(-50%) translateY(-56px);
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--card, #fff);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s cubic-bezier(.25,.46,.45,.94), opacity .2s;
+  opacity: 0; z-index: 9999; pointer-events: none;
+}
+.ptr-ind.vis { opacity: 1; transform: translateX(-50%) translateY(12px); }
+.ptr-ind svg { width: 18px; height: 18px; stroke: var(--primary, #9B2335); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ptr-ind.spin svg { animation: ptr-r .7s linear infinite; }
+@keyframes ptr-r { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ptr-ind, .ptr-ind svg { animation: none !important; transition: none !important; } }
+</style>
+<script>
+(function(){
+  var el = document.createElement('div');
+  el.className = 'ptr-ind';
+  el.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>';
+  document.body.appendChild(el);
+  var sy = 0, on = false, T = 64;
+  document.addEventListener('touchstart', function(e){ if(window.scrollY===0){ sy=e.touches[0].clientY; on=true; } }, {passive:true});
+  document.addEventListener('touchmove',  function(e){ if(!on) return; if(e.touches[0].clientY - sy > 10) el.classList.add('vis'); }, {passive:true});
+  document.addEventListener('touchend',   function(e){ if(!on) return; var dy=(e.changedTouches[0]||{clientY:sy}).clientY - sy; if(dy >= T){ el.classList.add('spin'); setTimeout(function(){ location.reload(); }, 300); } else { el.classList.remove('vis'); } on=false; }, {passive:true});
+})();
+</script>
+</body>
+</html>

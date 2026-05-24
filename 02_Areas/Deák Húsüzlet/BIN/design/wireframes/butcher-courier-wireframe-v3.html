@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DHOP — Butcher & Courier Interface v2</title>
+<style>
+  /* ─── Design Tokens (from staging.deak.ignis.academy/frontend/showcase) ─── */
+  :root {
+    --primary: #9B2335;
+    --primary-light: #F9E0E3;
+    --success: #2D7A4F;
+    --success-light: #D4EDDA;
+    --warning: #C4841D;
+    --warning-light: #FEF3C7;
+    --info: #2B6CB0;
+    --info-light: #DBEAFE;
+    --secondary: #96724A;
+    --secondary-light: #F5EDDF;
+    --error: #C4302B;
+
+    --bg-app: #FAF7F4;
+    --surface-white: #FFFFFF;
+    --border-default: #E8E2DB;
+    --border-input: #C5BCB3;
+    --text-ink: #2C2825;
+    --text-muted: #999999;
+    --text-muted-dark: #6B6560;
+    --gray-200: #E8E2DB;
+    --gray-300: #EDEAE6;
+
+    --radius-xl: 16px;
+    --radius-lg: 12px;
+    --radius-full: 9999px;
+    --shadow-card: 0 1px 2px rgba(0,0,0,0.10);
+    --shadow-nav: 0 -2px 8px rgba(0,0,0,0.08);
+    --font: 'Inter', system-ui, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: var(--font);
+    background: #D1CBC4;
+    padding: 40px 20px 60px;
+    min-height: 100vh;
+    color: var(--text-ink);
+  }
+
+  /* ─── Layout ─── */
+  .page-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #2C2825;
+    margin-bottom: 6px;
+  }
+  .page-subtitle {
+    text-align: center;
+    font-size: 12px;
+    color: #6B6560;
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #6B6560;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin: 32px 0 16px;
+    text-align: center;
+  }
+
+  .screens-row {
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+  }
+
+  /* ─── Phone Frame ─── */
+  .phone {
+    width: 375px;
+    height: 720px;
+    background: var(--bg-app);
+    border-radius: 40px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.25), 0 0 0 2px #888;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+  }
+  .phone-label {
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: #6B6560;
+    margin-top: 8px;
+    margin-bottom: 2px;
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 44px;
+    background: var(--surface-white);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    font-size: 12px;
+    font-weight: 600;
+    flex-shrink: 0;
+    border-bottom: 1px solid var(--border-default);
+  }
+  .status-bar-time { font-size: 13px; font-weight: 700; }
+  .status-bar-icons { display: flex; gap: 5px; align-items: center; font-size: 11px; }
+
+  /* Screen header */
+  .screen-header {
+    background: var(--surface-white);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px solid var(--border-default);
+    flex-shrink: 0;
+  }
+  .screen-header-back {
+    font-size: 18px;
+    color: var(--primary);
+    cursor: pointer;
+    line-height: 1;
+  }
+  .screen-header-title {
+    font-size: 17px;
+    font-weight: 600;
+    flex: 1;
+    color: var(--text-ink);
+  }
+  .screen-header-badge { margin-left: auto; }
+  .screen-header-date {
+    font-size: 12px;
+    color: var(--text-muted-dark);
+    font-weight: 500;
+  }
+
+  /* Scrollable content */
+  .screen-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* ─── Bottom Tab Bar ─── */
+  .bottom-nav {
+    height: 65px;
+    background: var(--surface-white);
+    border-top: 1px solid var(--border-default);
+    box-shadow: var(--shadow-nav);
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .nav-tab {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 8px 4px;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .nav-tab.active { color: var(--primary); }
+  .nav-tab-icon { font-size: 20px; line-height: 1; }
+
+  /* ─── Status Badge ─── */
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    border-radius: var(--radius-full);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    white-space: nowrap;
+  }
+  .badge-new       { background: var(--info-light);      color: var(--info); }
+  .badge-proc      { background: var(--warning-light);   color: var(--warning); }
+  .badge-ready     { background: var(--secondary-light); color: var(--secondary); }
+  .badge-delivery  { background: var(--primary-light);   color: var(--primary); }
+  .badge-done      { background: var(--success-light);   color: var(--success); }
+  .badge-closed    { background: var(--gray-300);        color: var(--text-muted-dark); }
+
+  /* ─── Card ─── */
+  .card {
+    background: var(--surface-white);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .card-body { padding: 14px; }
+
+  /* Order card with left accent */
+  .order-card {
+    background: var(--surface-white);
+    border: 1px solid var(--border-default);
+    border-left: 3px solid var(--primary);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
+  }
+  .order-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .order-id { font-size: 13px; font-weight: 700; color: var(--text-ink); }
+  .order-meta { font-size: 12px; color: var(--text-muted-dark); }
+  .order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+  }
+  .order-value { font-weight: 600; color: var(--primary); }
+  .order-chevron { color: var(--text-muted); font-size: 14px; }
+
+  /* Courier card (no left accent) */
+  .courier-card {
+    background: var(--surface-white);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-card);
+    padding: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    cursor: pointer;
+  }
+  .courier-name { font-size: 15px; font-weight: 600; }
+  .courier-addr { font-size: 12px; color: var(--text-muted-dark); }
+  .courier-time { font-size: 12px; font-weight: 500; }
+
+  /* ─── Summary strip ─── */
+  .summary-strip {
+    background: var(--secondary-light);
+    border-radius: var(--radius-lg);
+    padding: 10px 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .summary-item { font-size: 12px; font-weight: 500; color: var(--secondary); }
+  .summary-item span { font-weight: 700; color: var(--text-ink); }
+
+  /* ─── Filter chips ─── */
+  .chips {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding-bottom: 2px;
+  }
+  .chip {
+    border-radius: var(--radius-full);
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    cursor: pointer;
+    border: 1px solid var(--border-default);
+    background: var(--surface-white);
+    color: var(--text-muted-dark);
+  }
+  .chip.active {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+  }
+
+  /* ─── Product prep list ─── */
+  .prep-list { display: flex; flex-direction: column; gap: 0; }
+  .prep-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--gray-300);
+    font-size: 14px;
+  }
+  .prep-item:last-child { border-bottom: none; }
+  .prep-qty { font-weight: 700; color: var(--primary); }
+
+  /* ─── Primary button ─── */
+  .btn-primary {
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-xl);
+    padding: 15px;
+    font-size: 15px;
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+  .btn-success {
+    background: var(--success);
+    color: white;
+    border: none;
+    border-radius: var(--radius-xl);
+    padding: 15px;
+    font-size: 15px;
+    font-weight: 700;
+    width: 100%;
+    text-align: center;
+  }
+  .btn-outline {
+    background: white;
+    color: var(--primary);
+    border: 1.5px solid var(--primary);
+    border-radius: var(--radius-xl);
+    padding: 13px;
+    font-size: 14px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+  }
+  .btn-maps {
+    background: var(--info-light);
+    color: var(--info);
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    width: 100%;
+    text-align: center;
+  }
+
+  /* ─── Toggle switch ─── */
+  .toggle-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 13px 0;
+    border-bottom: 1px solid var(--gray-300);
+  }
+  .toggle-row:last-child { border-bottom: none; }
+  .toggle-label { font-size: 14px; font-weight: 500; }
+  .toggle-sub { font-size: 11px; color: var(--text-muted); margin-top: 1px; }
+  .toggle {
+    width: 44px;
+    height: 24px;
+    border-radius: var(--radius-full);
+    position: relative;
+    flex-shrink: 0;
+  }
+  .toggle.on { background: var(--primary); }
+  .toggle.off { background: #D1CBC4; }
+  .toggle-knob {
+    width: 20px;
+    height: 20px;
+    background: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: left 0.2s;
+  }
+  .toggle.on .toggle-knob { left: 22px; }
+  .toggle.off .toggle-knob { left: 2px; }
+
+  .category-header {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted-dark);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 14px;
+    margin-bottom: 4px;
+  }
+
+  /* ─── Courier detail ─── */
+  .contact-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+  }
+  .contact-info { font-size: 14px; }
+  .contact-phone { font-size: 14px; color: var(--info); font-weight: 600; }
+  .call-btn {
+    background: var(--success-light);
+    color: var(--success);
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 8px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  /* ─── Stats ─── */
+  .period-selector {
+    display: flex;
+    background: var(--gray-300);
+    border-radius: var(--radius-lg);
+    padding: 3px;
+    gap: 2px;
+  }
+  .period-btn {
+    flex: 1;
+    padding: 7px;
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+  }
+  .period-btn.active { background: var(--primary); color: white; }
+  .period-btn:not(.active) { background: transparent; color: var(--text-muted-dark); }
+
+  .period-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+  }
+  .period-nav-arrow {
+    font-size: 18px;
+    color: var(--primary);
+    cursor: pointer;
+    padding: 4px 8px;
+  }
+  .period-nav-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-ink);
+  }
+
+  .stats-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+  .stats-card {
+    background: var(--surface-white);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    padding: 14px;
+    box-shadow: var(--shadow-card);
+  }
+  .stats-card.wide {
+    grid-column: 1 / -1;
+  }
+  .stats-card-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .stats-card-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text-ink);
+    line-height: 1;
+  }
+  .stats-card-unit {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-muted-dark);
+    margin-top: 3px;
+  }
+
+  /* Bar chart */
+  .bar-chart-container {
+    background: var(--surface-white);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-xl);
+    padding: 14px;
+    box-shadow: var(--shadow-card);
+  }
+  .bar-chart-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted-dark);
+    margin-bottom: 10px;
+  }
+  .bar-chart {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    height: 80px;
+  }
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    height: 100%;
+    justify-content: flex-end;
+  }
+  .bar {
+    width: 100%;
+    border-radius: 4px 4px 0 0;
+    min-height: 4px;
+  }
+  .bar.active { background: var(--primary); }
+  .bar.inactive { background: var(--primary-light); }
+  .bar-label { font-size: 9px; color: var(--text-muted); font-weight: 500; }
+  /* Monthly bar chart — 31 narrow bars */
+  .bar-chart.monthly {
+    gap: 2px;
+  }
+  .bar-chart.monthly .bar-col {
+    min-width: 0;
+    flex: 1;
+  }
+  .bar-chart.monthly .bar-label {
+    font-size: 7px;
+    min-width: 0;
+    width: 100%;
+    text-align: center;
+    overflow: visible;
+    white-space: nowrap;
+  }
+
+
+  /* Stats order list */
+  .stats-order-card {
+    background: var(--surface-white);
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-lg);
+    padding: 12px 14px;
+    box-shadow: var(--shadow-card);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .stats-order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .stats-order-id { font-size: 12px; font-weight: 700; }
+  .stats-order-meta { font-size: 11px; color: var(--text-muted-dark); }
+  .stats-order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .stats-order-value { font-size: 13px; font-weight: 700; color: var(--primary); }
+
+  /* Section divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 6px 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: var(--gray-300); }
+  .divider-text { font-size: 11px; font-weight: 600; color: var(--text-muted-dark); }
+
+  /* Info row */
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--gray-300);
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .info-content { flex: 1; }
+  .info-label { font-size: 11px; color: var(--text-muted); margin-bottom: 2px; }
+  .info-value { font-size: 14px; font-weight: 500; }
+
+  /* Summary courier strip */
+  .courier-summary {
+    background: var(--primary-light);
+    border-radius: var(--radius-lg);
+    padding: 10px 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 6px;
+  }
+  .courier-summary-item { text-align: center; }
+  .courier-summary-num { font-size: 18px; font-weight: 800; color: var(--primary); }
+  .courier-summary-lbl { font-size: 10px; color: var(--text-muted-dark); font-weight: 500; }
+
+  /* Warning banner */
+  .warning-banner {
+    background: var(--warning-light);
+    border: 1px solid #FBCC55;
+    border-radius: var(--radius-lg);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--warning);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  /* Section label */
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text-muted-dark);
+    margin-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .section-label-count {
+    font-size: 11px;
+    background: var(--gray-300);
+    color: var(--text-muted-dark);
+    border-radius: var(--radius-full);
+    padding: 1px 8px;
+    font-weight: 600;
+  }
+
+  /* Confirm checkbox */
+  .confirm-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--gray-300);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  .confirm-option:last-child { border-bottom: none; }
+  .confirm-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 6px;
+    background: var(--success-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    flex-shrink: 0;
+  }
+
+  /* Tag */
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-muted-dark);
+    background: var(--gray-300);
+    border-radius: var(--radius-full);
+    padding: 2px 8px;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-title">DHOP — Butcher & Courier Interface</div>
+<div class="page-subtitle">Wireframe v2 · 2026-03-22 · Design system alapján (staging.deak.ignis.academy)</div>
+
+<!-- ═══════════ MÉSZÁROS NÉZET ═══════════ -->
+<div class="section-title">🔪 Mészáros (Butcher) View</div>
+
+<div class="screens-row">
+
+  <!-- Screen 1: Napi rendelési lista -->
+  <div>
+    <div class="phone-label">1 · Napi rendelési lista</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-title">Előkészítés</span>
+        <span class="screen-header-date">2026. márc. 22.</span>
+      </div>
+      <div class="screen-content">
+        <!-- Summary strip -->
+        <div class="summary-strip">
+          <div class="summary-item">🐷 Friss sertés <span>12,5 kg</span></div>
+          <div class="summary-item">🥩 Füstölt <span>8,0 kg</span></div>
+          <div class="summary-item">🌭 Kolbász <span>4,5 kg</span></div>
+          <div class="summary-item">🥓 Felvágott <span>3,0 kg</span></div>
+        </div>
+
+        <!-- Filter chips -->
+        <div class="chips">
+          <div class="chip active">Összes (9)</div>
+          <div class="chip">Új (3)</div>
+          <div class="chip">Folyamatban (4)</div>
+          <div class="chip">Kész (2)</div>
+        </div>
+
+        <!-- Order list -->
+        <div class="order-card">
+          <div class="order-card-header">
+            <span class="order-id">DHOP-ORD-1041</span>
+            <span class="badge badge-proc">Előkészítés alatt</span>
+          </div>
+          <div class="order-meta">⏰ 10:00 – 12:00 · 3 termék</div>
+          <div class="order-footer">
+            <span class="order-value">125,50 RON</span>
+            <span class="order-chevron">›</span>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-card-header">
+            <span class="order-id">DHOP-ORD-1042</span>
+            <span class="badge badge-new">Új rendelés</span>
+          </div>
+          <div class="order-meta">⏰ 10:00 – 12:00 · 2 termék</div>
+          <div class="order-footer">
+            <span class="order-value">88,00 RON</span>
+            <span class="order-chevron">›</span>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-card-header">
+            <span class="order-id">DHOP-ORD-1043</span>
+            <span class="badge badge-ready">Kiszállításra kész</span>
+          </div>
+          <div class="order-meta">⏰ 14:00 – 16:00 · 5 termék</div>
+          <div class="order-footer">
+            <span class="order-value">210,00 RON</span>
+            <span class="order-chevron">›</span>
+          </div>
+        </div>
+
+        <div class="order-card">
+          <div class="order-card-header">
+            <span class="order-id">DHOP-ORD-1044</span>
+            <span class="badge badge-new">Új rendelés</span>
+          </div>
+          <div class="order-meta">⏰ 16:00 – 18:00 · 1 termék</div>
+          <div class="order-footer">
+            <span class="order-value">45,50 RON</span>
+            <span class="order-chevron">›</span>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab active"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 2: Rendelés előkészítési nézet -->
+  <div>
+    <div class="phone-label">2 · Rendelés előkészítési nézet</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-back">‹</span>
+        <span class="screen-header-title">Rendelés #1041</span>
+        <span class="badge badge-proc">Folyamatban</span>
+      </div>
+      <div class="screen-content">
+        <!-- Info row -->
+        <div class="card">
+          <div class="card-body">
+            <div class="info-row">
+              <div class="info-icon">⏰</div>
+              <div class="info-content">
+                <div class="info-label">Kiszállítási időablak</div>
+                <div class="info-value">10:00 – 12:00</div>
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">📦</div>
+              <div class="info-content">
+                <div class="info-label">Termékek száma</div>
+                <div class="info-value">3 termék</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Product prep list -->
+        <div class="card">
+          <div class="card-body">
+            <div class="section-label">Termékek</div>
+            <div class="prep-list">
+              <div class="prep-item">
+                <span>Érlelő kolbász</span>
+                <span class="prep-qty">1,0 kg</span>
+              </div>
+              <div class="prep-item">
+                <span>Sertés comb</span>
+                <span class="prep-qty">2,0 kg</span>
+              </div>
+              <div class="prep-item">
+                <span>Tríi szalámi</span>
+                <span class="prep-qty">0,5 kg</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="warning-banner">
+          ⚠️ Ellenőrizd a mennyiségeket előkészítés előtt
+        </div>
+
+        <div style="margin-top: auto; padding-top: 8px;">
+          <div class="btn-primary">✓ Kiszállításra kész</div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab active"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 3: Termék elérhetőség toggle -->
+  <div>
+    <div class="phone-label">3 · Termék elérhetőség toggle</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-back">‹</span>
+        <span class="screen-header-title">Termékek</span>
+      </div>
+      <div class="screen-content">
+        <div class="card">
+          <div class="card-body">
+            <div class="category-header">Friss sertés</div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Sertés comb</div>
+                <div class="toggle-sub">5,00 RON / 100g</div>
+              </div>
+              <div class="toggle on"><div class="toggle-knob"></div></div>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Sertés comb</div>
+                <div class="toggle-sub">4,50 RON / 100g</div>
+              </div>
+              <div class="toggle off"><div class="toggle-knob"></div></div>
+            </div>
+
+            <div class="category-header">Füstölt</div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Füstölt szalonna</div>
+                <div class="toggle-sub">6,25 RON / 100g</div>
+              </div>
+              <div class="toggle on"><div class="toggle-knob"></div></div>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Füstölt oldalas</div>
+                <div class="toggle-sub">5,80 RON / 100g</div>
+              </div>
+              <div class="toggle on"><div class="toggle-knob"></div></div>
+            </div>
+
+            <div class="category-header">Kolbász & Szalámi</div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Érlelő kolbász</div>
+                <div class="toggle-sub">8,50 RON / 100g</div>
+              </div>
+              <div class="toggle on"><div class="toggle-knob"></div></div>
+            </div>
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-label">Tríi szalámi</div>
+                <div class="toggle-sub">9,00 RON / 100g</div>
+              </div>
+              <div class="toggle off"><div class="toggle-knob"></div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab active"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /screens-row mészáros -->
+
+<!-- ═══════════ FUTÁR NÉZET ═══════════ -->
+<div class="section-title">🚚 Futár (Courier) View</div>
+
+<div class="screens-row">
+
+  <!-- Screen 4: Napi kiszállítási lista -->
+  <div>
+    <div class="phone-label">4 · Napi kiszállítási lista</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-title">Kiszállítás</span>
+        <span class="screen-header-date">2026. márc. 22.</span>
+      </div>
+      <div class="screen-content">
+        <!-- Courier summary strip -->
+        <div class="courier-summary">
+          <div class="courier-summary-item">
+            <div class="courier-summary-num" style="color:var(--success)">3</div>
+            <div class="courier-summary-lbl">✅ Kézbesítve</div>
+          </div>
+          <div class="courier-summary-item">
+            <div class="courier-summary-num" style="color:var(--primary)">1</div>
+            <div class="courier-summary-lbl">🚚 Úton</div>
+          </div>
+          <div class="courier-summary-item">
+            <div class="courier-summary-num" style="color:var(--secondary)">5</div>
+            <div class="courier-summary-lbl">⏳ Kész</div>
+          </div>
+        </div>
+
+        <!-- Chips -->
+        <div class="chips">
+          <div class="chip active">Összes (9)</div>
+          <div class="chip">Kiszállításra kész (5)</div>
+          <div class="chip">Úton (1)</div>
+          <div class="chip">Kézbesítve (3)</div>
+        </div>
+
+        <!-- Courier order list -->
+        <div class="courier-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="courier-name">Kovács Péter</div>
+            <span class="badge badge-delivery">Úton van</span>
+          </div>
+          <div class="courier-addr">📍 Széchenyi u. 12.</div>
+          <div class="courier-time">⏰ 10:00 – 12:00 · 3 termék</div>
+        </div>
+
+        <div class="courier-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="courier-name">Nagy Mária</div>
+            <span class="badge badge-ready">Kiszállításra kész</span>
+          </div>
+          <div class="courier-addr">📍 Kossuth utca 8.</div>
+          <div class="courier-time">⏰ 10:00 – 12:00 · 2 termék</div>
+        </div>
+
+        <div class="courier-card">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+            <div class="courier-name">Szabó Anna</div>
+            <span class="badge badge-done">Kézbesítve</span>
+          </div>
+          <div class="courier-addr">📍 Petőfi tér 3.</div>
+          <div class="courier-time">⏰ 10:00 – 12:00 · 4 termék</div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab active"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 5: Kiszállítás részletei -->
+  <div>
+    <div class="phone-label">5 · Kiszállítás részletei</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-back">‹</span>
+        <span class="screen-header-title">Kovács Péter</span>
+        <span class="badge badge-delivery">Úton van</span>
+      </div>
+      <div class="screen-content">
+        <div class="card">
+          <div class="card-body">
+            <div class="info-row">
+              <div class="info-icon">👤</div>
+              <div class="info-content">
+                <div class="info-label">Vásárló</div>
+                <div class="info-value">Kovács Péter</div>
+              </div>
+            </div>
+            <div class="contact-row">
+              <div>
+                <div class="info-label" style="font-size:11px;color:var(--text-muted)">Telefon</div>
+                <div class="contact-phone">+40 742 123 456</div>
+              </div>
+              <button class="call-btn">📞 Hívás</button>
+            </div>
+            <div class="info-row">
+              <div class="info-icon">📍</div>
+              <div class="info-content">
+                <div class="info-label">Kiszállítási cím</div>
+                <div class="info-value">Széchenyi utca 12., Újvárhely</div>
+              </div>
+            </div>
+            <div class="info-row" style="border-bottom:none">
+              <div class="info-icon">⏰</div>
+              <div class="info-content">
+                <div class="info-label">Időablak</div>
+                <div class="info-value">10:00 – 12:00</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-maps">🗺 Megnyitás Google Maps-ben</div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="section-label">
+              Rendelés összesítő
+              <span class="tag">3 termék</span>
+            </div>
+            <div class="prep-list">
+              <div class="prep-item"><span>Érlelő kolbász</span><span class="prep-qty">1,0 kg</span></div>
+              <div class="prep-item"><span>Sertés comb</span><span class="prep-qty">2,0 kg</span></div>
+              <div class="prep-item"><span>Tríi szalámi</span><span style="font-weight:700;color:var(--text-ink)">0,5 kg</span></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;padding-top:10px;border-top:1px solid var(--gray-300);margin-top:4px;">
+              <span style="font-size:13px;font-weight:600;color:var(--text-muted-dark)">Összesen</span>
+              <span style="font-size:15px;font-weight:800;color:var(--primary)">125,50 RON</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="btn-success">✓ Kézbesítve – Megerősítés</div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab active"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 6: Kézbesítés megerősítése -->
+  <div>
+    <div class="phone-label">6 · Kézbesítés megerősítése</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-back">‹</span>
+        <span class="screen-header-title">Kézbesítés megerősítése</span>
+      </div>
+      <div class="screen-content">
+        <div class="card">
+          <div class="card-body">
+            <div class="info-row">
+              <div class="info-icon">👤</div>
+              <div class="info-content">
+                <div class="info-label">Vásárló</div>
+                <div class="info-value">Kovács Péter</div>
+              </div>
+            </div>
+            <div class="info-row" style="border-bottom:none">
+              <div class="info-icon">📦</div>
+              <div class="info-content">
+                <div class="info-label">Rendelés értéke</div>
+                <div class="info-value" style="color:var(--primary);font-weight:700;">125,50 RON</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="section-label">Kézbesítés módja</div>
+            <div class="confirm-option">
+              <div class="confirm-check">✓</div>
+              Személyesen átadva
+            </div>
+            <div class="confirm-option">
+              <div class="confirm-check" style="background:var(--gray-300);color:transparent;">✓</div>
+              Ajtó elé hagyva
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <div class="section-label">Megjegyzés (opcionális)</div>
+            <div style="border:1px solid var(--border-input);border-radius:var(--radius-lg);padding:10px 12px;font-size:13px;color:var(--text-muted);min-height:64px;">
+              Megjegyzés hozzáadása...
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:auto;">
+          <div class="btn-success">✓ Kézbesítve – Befejezés</div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab active"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /screens-row futár -->
+
+<!-- ═══════════ STATISZTIKA NÉZET ═══════════ -->
+<div class="section-title">📊 Statisztika (Stats) View</div>
+
+<div class="screens-row">
+
+  <!-- Screen 7: Statisztika - Heti nézet -->
+  <div>
+    <div class="phone-label">7 · Statisztika – Heti nézet</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-title">Statisztikák</span>
+      </div>
+      <div class="screen-content">
+        <!-- Period selector -->
+        <div class="period-selector">
+          <button class="period-btn">Napi</button>
+          <button class="period-btn active">Heti</button>
+          <button class="period-btn">Havi</button>
+        </div>
+
+        <!-- Period nav -->
+        <div class="period-nav">
+          <span class="period-nav-arrow">‹</span>
+          <span class="period-nav-label">2026. márc. 16 – 22.</span>
+          <span class="period-nav-arrow" style="color:var(--text-muted)">›</span>
+        </div>
+
+        <!-- Summary cards -->
+        <div class="stats-cards">
+          <div class="stats-card">
+            <div class="stats-card-label">Rendelések</div>
+            <div class="stats-card-value">23</div>
+            <div class="stats-card-unit">db</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card-label">Bevétel</div>
+            <div class="stats-card-value">2.840</div>
+            <div class="stats-card-unit">RON</div>
+          </div>
+          <div class="stats-card wide">
+            <div class="stats-card-label">Kiszállított mennyiség</div>
+            <div class="stats-card-value">68,5</div>
+            <div class="stats-card-unit">kg összesen</div>
+          </div>
+        </div>
+
+        <!-- Bar chart -->
+        <div class="bar-chart-container">
+          <div class="bar-chart-title">Napi bontás (RON) – heti nézet</div>
+          <div class="bar-chart">
+            <div class="bar-col">
+              <div class="bar inactive" style="height:45%"></div>
+              <div class="bar-label">H</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar inactive" style="height:60%"></div>
+              <div class="bar-label">K</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar inactive" style="height:30%"></div>
+              <div class="bar-label">Sz</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar inactive" style="height:80%"></div>
+              <div class="bar-label">Cs</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar inactive" style="height:100%"></div>
+              <div class="bar-label">P</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar inactive" style="height:55%"></div>
+              <div class="bar-label">Sz</div>
+            </div>
+            <div class="bar-col">
+              <div class="bar active" style="height:40%"></div>
+              <div class="bar-label">V</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab active"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 8: Statisztika - Rendelés lista -->
+  <div>
+    <div class="phone-label">8 · Statisztika – Rendelés lista</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-title">Rendelések</span>
+        <span class="screen-header-date">márc. 16–22.</span>
+      </div>
+      <div class="screen-content">
+        <!-- Mini summary -->
+        <div class="summary-strip" style="background:var(--primary-light);">
+          <div class="summary-item" style="color:var(--primary)">📦 Rendelések <span style="color:var(--text-ink)">23 db</span></div>
+          <div class="summary-item" style="color:var(--primary)">💰 Összesen <span style="color:var(--text-ink)">2.840 RON</span></div>
+        </div>
+
+        <div class="section-label">
+          Összes rendelés
+          <span class="section-label-count">23</span>
+        </div>
+
+        <div class="stats-order-card">
+          <div class="stats-order-header">
+            <span class="stats-order-id">DHOP-ORD-1041</span>
+            <span class="badge badge-done">Kézbesítve</span>
+          </div>
+          <div class="stats-order-meta">Kovács Péter · márc. 20. · 10:00 – 12:00</div>
+          <div class="stats-order-footer">
+            <span class="stats-order-value">125,50 RON</span>
+            <span style="font-size:11px;color:var(--text-muted)">3 termék · 3,5 kg</span>
+          </div>
+        </div>
+
+        <div class="stats-order-card">
+          <div class="stats-order-header">
+            <span class="stats-order-id">DHOP-ORD-1040</span>
+            <span class="badge badge-done">Kézbesítve</span>
+          </div>
+          <div class="stats-order-meta">Nagy Mária · márc. 20. · 14:00 – 16:00</div>
+          <div class="stats-order-footer">
+            <span class="stats-order-value">88,00 RON</span>
+            <span style="font-size:11px;color:var(--text-muted)">2 termék · 2,0 kg</span>
+          </div>
+        </div>
+
+        <div class="stats-order-card">
+          <div class="stats-order-header">
+            <span class="stats-order-id">DHOP-ORD-1039</span>
+            <span class="badge badge-done">Kézbesítve</span>
+          </div>
+          <div class="stats-order-meta">Szabó Anna · márc. 19. · 10:00 – 12:00</div>
+          <div class="stats-order-footer">
+            <span class="stats-order-value">210,00 RON</span>
+            <span style="font-size:11px;color:var(--text-muted)">5 termék · 7,5 kg</span>
+          </div>
+        </div>
+
+        <div class="stats-order-card">
+          <div class="stats-order-header">
+            <span class="stats-order-id">DHOP-ORD-1038</span>
+            <span class="badge badge-done">Kézbesítve</span>
+          </div>
+          <div class="stats-order-meta">Tóth József · márc. 18. · 16:00 – 18:00</div>
+          <div class="stats-order-footer">
+            <span class="stats-order-value">45,50 RON</span>
+            <span style="font-size:11px;color:var(--text-muted)">1 termék · 1,0 kg</span>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab active"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Screen 9: Statisztika - Havi nézet -->
+  <div>
+    <div class="phone-label">9 · Statisztika – Havi nézet</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-title">Statisztikák</span>
+      </div>
+      <div class="screen-content">
+        <!-- Period selector -->
+        <div class="period-selector">
+          <button class="period-btn">Napi</button>
+          <button class="period-btn">Heti</button>
+          <button class="period-btn active">Havi</button>
+        </div>
+
+        <!-- Period nav -->
+        <div class="period-nav">
+          <span class="period-nav-arrow">‹</span>
+          <span class="period-nav-label">2026. március</span>
+          <span class="period-nav-arrow" style="color:var(--text-muted)">›</span>
+        </div>
+
+        <!-- Summary cards -->
+        <div class="stats-cards">
+          <div class="stats-card">
+            <div class="stats-card-label">Rendelések</div>
+            <div class="stats-card-value">87</div>
+            <div class="stats-card-unit">db</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card-label">Bevétel</div>
+            <div class="stats-card-value">11.240</div>
+            <div class="stats-card-unit">RON</div>
+          </div>
+          <div class="stats-card wide">
+            <div class="stats-card-label">Kiszállított mennyiség</div>
+            <div class="stats-card-value">267,5</div>
+            <div class="stats-card-unit">kg összesen</div>
+          </div>
+        </div>
+
+        <!-- Bar chart (31 daily bars in monthly view) -->
+        <div class="bar-chart-container">
+          <div class="bar-chart-title">Napi bevétel (RON) – március</div>
+          <div class="bar-chart monthly">
+
+            <div class="bar-col"><div class="bar inactive" style="height:35%"></div><div class="bar-label">1</div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:50%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:20%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:60%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:45%"></div><div class="bar-label">5</div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:30%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:70%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:55%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:40%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:80%"></div><div class="bar-label">10</div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:65%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:75%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:90%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:50%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:60%"></div><div class="bar-label">15</div></div>
+            <div class="bar-col"><div class="bar active" style="height:45%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar active" style="height:85%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar active" style="height:70%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar active" style="height:55%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar active" style="height:100%"></div><div class="bar-label">20</div></div>
+            <div class="bar-col"><div class="bar active" style="height:80%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar active" style="height:95%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:88%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:72%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:65%"></div><div class="bar-label">25</div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:40%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:55%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:30%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:20%"></div><div class="bar-label"></div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:15%"></div><div class="bar-label">30</div></div>
+            <div class="bar-col"><div class="bar inactive" style="height:8%"></div><div class="bar-label">31</div></div>
+          </div>
+        </div>
+
+        <!-- Top products mini -->
+        <div class="card">
+          <div class="card-body">
+            <div class="section-label">Top termékek (kg)</div>
+            <div class="prep-list">
+              <div class="prep-item">
+                <span>🥩 Sertés comb</span>
+                <span class="prep-qty">82,5 kg</span>
+              </div>
+              <div class="prep-item">
+                <span>🌭 Érlelő kolbász</span>
+                <span class="prep-qty">61,0 kg</span>
+              </div>
+              <div class="prep-item">
+                <span>🥓 Füstölt szalonna</span>
+                <span style="font-weight:700;color:var(--text-ink)">44,0 kg</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab active"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Screen 10: Statisztika - Napi nézet -->
+  <div>
+    <div class="phone-label">10 · Statisztika – Napi nézet</div>
+    <div class="phone">
+      <div class="status-bar">
+        <span class="status-bar-time">09:41</span>
+        <div class="status-bar-icons">📶 🔋</div>
+      </div>
+      <div class="screen-header">
+        <span class="screen-header-title">Statisztikák</span>
+      </div>
+      <div class="screen-content">
+        <!-- Period selector -->
+        <div class="period-selector">
+          <button class="period-btn active">Napi</button>
+          <button class="period-btn">Heti</button>
+          <button class="period-btn">Havi</button>
+        </div>
+
+        <!-- Period nav -->
+        <div class="period-nav">
+          <span class="period-nav-arrow">‹</span>
+          <span class="period-nav-label">2026. március 22. (V)</span>
+          <span class="period-nav-arrow" style="color:var(--text-muted)">›</span>
+        </div>
+
+        <!-- Summary cards — daily totals -->
+        <div class="stats-cards">
+          <div class="stats-card">
+            <div class="stats-card-label">Rendelések</div>
+            <div class="stats-card-value">3</div>
+            <div class="stats-card-unit">db</div>
+          </div>
+          <div class="stats-card">
+            <div class="stats-card-label">Bevétel</div>
+            <div class="stats-card-value">380</div>
+            <div class="stats-card-unit">RON</div>
+          </div>
+          <div class="stats-card wide">
+            <div class="stats-card-label">Kiszállított mennyiség</div>
+            <div class="stats-card-value">9,5</div>
+            <div class="stats-card-unit">kg összesen</div>
+          </div>
+        </div>
+
+        <!-- No chart in daily view — info note -->
+        <div style="background:var(--info-light);border:1px solid var(--info);border-radius:var(--radius-lg);padding:10px 14px;margin-bottom:8px;font-size:12px;color:var(--info);">
+          ℹ️ Napi nézetben nincs diagram — csak az adott nap rendelései láthatók.
+        </div>
+
+        <!-- Order list for the day -->
+        <div class="section-label">
+          Mai rendelések
+          <span class="section-label-count">3</span>
+        </div>
+
+        <div class="stats-order-card">
+          <div class="stats-order-header">
+            <span class="stats-order-id">DHOP-ORD-1043</span>
+            <span class="badge badge-delivery">Úton van</span>
+          </div>
+          <div class="stats-order-meta">Fekete Tamás · márc. 22. · 10:00 – 12:00</div>
+          <div class="stats-order-footer">
+            <span class="stats-order-value">180,00 RON</span>
+            <span style="font-size:11px;color:var(--text-muted)">4 termék · 5,0 kg</span>
+          </div>
+        </div>
+
+        <div class="stats-order-card">
+          <div class="stats-order-header">
+            <span class="stats-order-id">DHOP-ORD-1042</span>
+            <span class="badge badge-done">Kézbesítve</span>
+          </div>
+          <div class="stats-order-meta">Varga Éva · márc. 22. · 08:00 – 10:00</div>
+          <div class="stats-order-footer">
+            <span class="stats-order-value">125,00 RON</span>
+            <span style="font-size:11px;color:var(--text-muted)">2 termék · 3,0 kg</span>
+          </div>
+        </div>
+
+        <div class="stats-order-card">
+          <div class="stats-order-header">
+            <span class="stats-order-id">DHOP-ORD-1041</span>
+            <span class="badge badge-new">Új rendelés</span>
+          </div>
+          <div class="stats-order-meta">Bíró Zoltán · márc. 22. · 14:00 – 16:00</div>
+          <div class="stats-order-footer">
+            <span class="stats-order-value">75,00 RON</span>
+            <span style="font-size:11px;color:var(--text-muted)">1 termék · 1,5 kg</span>
+          </div>
+        </div>
+      </div>
+      <div class="bottom-nav">
+        <div class="nav-tab"><div class="nav-tab-icon">🔪</div>Előkészítés</div>
+        <div class="nav-tab"><div class="nav-tab-icon">🚚</div>Kiszállítás</div>
+        <div class="nav-tab active"><div class="nav-tab-icon">📊</div>Statisztikák</div>
+      </div>
+    </div>
+  </div>
+</div><!-- /screens-row stats -->
+
+<!-- Legend -->
+<div style="max-width:960px;margin:40px auto 0;background:white;border-radius:16px;padding:20px 24px;border:1px solid #E8E2DB;">
+  <div style="font-size:13px;font-weight:700;color:#6B6560;margin-bottom:12px;">STÁTUSZ FLOW & KOMPONENSEK</div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;">
+    <span class="badge badge-new">Új rendelés</span>
+    <span style="color:#999;align-self:center;">→</span>
+    <span class="badge badge-proc">Előkészítés alatt</span>
+    <span style="color:#999;align-self:center;">→</span>
+    <span class="badge badge-ready">Kiszállításra kész</span>
+    <span style="color:#999;align-self:center;">→</span>
+    <span class="badge badge-delivery">Úton van</span>
+    <span style="color:#999;align-self:center;">→</span>
+    <span class="badge badge-done">Kézbesítve</span>
+    <span style="color:#999;align-self:center;">→</span>
+    <span class="badge badge-closed">Lezárva</span>
+  </div>
+  <div style="font-size:12px;color:#6B6560;line-height:1.8;">
+    <strong>Design system:</strong> InterVar font · Primary: #9B2335 · Background: #FAF7F4 · Border: #E8E2DB<br>
+    <strong>Navigáció:</strong> 3 tab — 🔪 Előkészítés | 🚚 Kiszállítás | 📊 Statisztikák<br>
+    <strong>Képernyők:</strong> 1-3 Mészáros · 4-6 Futár · 7-9 Statisztika<br>
+    <strong>Új (v2):</strong> Statisztika nézet (képernyők 7-9) · Design system tokenek alkalmazva · Havi nézet top termékekkel
+  </div>
+</div>
+
+</body>
+</html>

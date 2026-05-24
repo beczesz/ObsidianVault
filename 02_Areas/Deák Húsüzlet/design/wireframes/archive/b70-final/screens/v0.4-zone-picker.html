@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Kiszállítási kör választó — Deák Húsmíves</title>
+<script type="application/json" id="screen-meta">
+{
+  "id": "v0.4-zone-picker",
+  "title": "Kiszállítási kör választó — hibrid GPS + 2 gomb",
+  "feature": "rural-delivery",
+  "sprint": "Sprint 4",
+  "status": "draft",
+  "version": "v0.4",
+  "platform": "mobile",
+  "publish": true,
+  "order": 5,
+  "tags": ["DH-184", "rural", "zone", "F1.1", "F1.2", "F1.3"],
+  "description": "Kosárban megjelenő hibrid kör-választó — GPS-javaslat (A), 2 gombos választó (B), perzisztens állapot (C), checkout település-mismatch (D)."
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --primary:#9B2335; --primary-800:#7D1A2A; --primary-light:#F9E0E3; --primary-pale:#F4E6E8;
+    --secondary:#D4A574; --secondary-dark:#9C7841;
+    --cream:#FFFBF7; --cream-dark:#F5EDE5; --card:#FFFFFF; --bg:#FAF8F5;
+    --border:#E8E2DB; --border-strong:#C5BCB3;
+    --text:#2C2825; --text-secondary:#5C544C; --text-muted:#8A8078;
+    --success:#2D7A4F; --success-bg:#E8F5E9; --success-border:#C8E6C9;
+    --warning:#C4841D; --warning-bg:#FFF3E0; --warning-border:#FFE0B2;
+    --info:#2B6CB0; --info-bg:#DBEAFE; --info-border:#BFDBFE;
+  }
+  body {
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased; min-height:100vh; padding:32px 16px 64px;
+  }
+  .back-to-catalog {
+    position:fixed; top:12px; left:12px; z-index:100; width:36px; height:36px;
+    border-radius:50%; background:rgba(0,0,0,0.5); color:#fff;
+    display:flex; align-items:center; justify-content:center; text-decoration:none;
+  }
+
+  .page-intro { max-width:1100px; margin:0 auto 28px; }
+  .page-intro h1 { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:var(--primary-800); }
+  .page-intro p { font-size:14px; color:var(--text-secondary); margin-top:6px; max-width:720px; line-height:1.55; }
+  .principle {
+    margin-top:14px; padding:12px 16px;
+    background:var(--cream-dark); border-left:none;
+    border-radius:10px; font-size:13px; color:var(--text-secondary);
+    border:1px solid var(--border);
+  }
+  .principle strong { color:var(--text); font-weight:600; }
+
+  .phones { display:grid; gap:24px; max-width:1100px; margin:0 auto;
+    grid-template-columns:repeat(auto-fit, minmax(380px, 1fr)); align-items:start; }
+  .phone-col { display:flex; flex-direction:column; align-items:center; gap:10px; }
+  .phone-label {
+    font-size:11px; font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--text-muted);
+    display:flex; align-items:center; gap:6px;
+  }
+  .phone-label .num {
+    background:var(--primary); color:#fff; padding:2px 8px; border-radius:999px;
+    font-size:10px; letter-spacing:0;
+  }
+  .phone {
+    width:375px; min-height:680px; background:var(--cream);
+    border-radius:36px; border:8px solid #1F1B17;
+    box-shadow:0 12px 40px rgba(0,0,0,0.15);
+    overflow:hidden; position:relative; display:flex; flex-direction:column;
+  }
+
+  /* Header */
+  .ph-header {
+    height:56px; background:#fff; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; padding:0 16px; gap:12px; flex-shrink:0;
+  }
+  .ph-header h2 { font-size:18px; font-weight:600; color:var(--text); flex:1; }
+  .ph-header .count { font-size:13px; color:var(--text-muted); }
+  .ph-header .back { width:32px; height:32px; display:flex; align-items:center; justify-content:center; color:var(--text); margin-left:-6px; }
+  .ph-header .back svg { width:20px; height:20px; }
+
+  .ph-body { flex:1; overflow-y:auto; padding:14px 16px 24px; }
+
+  /* === ZONE PICKER COMPONENT === */
+  .zone-card {
+    background:#fff; border:1px solid var(--border); border-radius:14px;
+    padding:18px; box-shadow:0 1px 2px rgba(0,0,0,0.04);
+  }
+  .zone-card h3 {
+    font-size:15px; font-weight:600; color:var(--text);
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:6px;
+  }
+  .zone-card h3 svg { width:18px; height:18px; color:var(--primary); }
+  .zone-card .lead {
+    font-size:13px; color:var(--text-secondary); line-height:1.5;
+  }
+
+  /* GPS suggestion variant */
+  .gps-suggest {
+    margin-top:14px; padding:14px;
+    border:2px solid var(--primary); border-radius:12px;
+    background:var(--primary-pale);
+  }
+  .gps-suggest .lab {
+    font-size:11px; font-weight:700; color:var(--primary); text-transform:uppercase; letter-spacing:0.06em;
+    display:flex; align-items:center; gap:6px;
+  }
+  .gps-suggest .lab svg { width:13px; height:13px; }
+  .gps-suggest .name {
+    font-family:'Playfair Display',serif; font-size:20px; font-weight:700;
+    color:var(--primary-800); margin-top:6px; line-height:1.2;
+  }
+  .gps-suggest .meta {
+    font-size:13px; color:var(--text); margin-top:6px; line-height:1.45;
+  }
+  .gps-suggest .meta strong { font-weight:600; color:var(--primary-800); }
+
+  /* Zone option button */
+  .zone-options { margin-top:12px; display:flex; flex-direction:column; gap:10px; }
+  .zone-option {
+    width:100%; text-align:left; cursor:pointer;
+    background:#fff; border:1.5px solid var(--border-strong); border-radius:12px;
+    padding:14px; font-family:inherit; color:var(--text);
+    transition:border-color .12s, background .12s, box-shadow .12s;
+    display:flex; gap:12px; align-items:flex-start;
+  }
+  .zone-option:hover { border-color:var(--primary); background:var(--primary-pale); }
+  .zone-option .ico {
+    width:42px; height:42px; border-radius:10px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--cream-dark); color:var(--primary);
+  }
+  .zone-option .ico svg { width:22px; height:22px; }
+  .zone-option .body { flex:1; min-width:0; }
+  .zone-option .name {
+    font-size:15px; font-weight:600; color:var(--text);
+    display:flex; align-items:center; gap:6px;
+  }
+  .zone-option .schedule {
+    font-size:12px; color:var(--text-muted); margin-top:1px;
+    display:flex; align-items:center; gap:4px;
+  }
+  .zone-option .schedule svg { width:12px; height:12px; }
+  .zone-option .terms {
+    font-size:13px; color:var(--text-secondary); margin-top:6px; line-height:1.4;
+  }
+  .zone-option .terms strong { color:var(--text); font-weight:600; }
+  .zone-option .arrow { color:var(--text-muted); font-size:18px; align-self:center; padding-left:4px; }
+
+  /* primary-style for "Ezt választom" */
+  .btn-primary {
+    width:100%; height:48px; border-radius:10px; border:none;
+    background:var(--primary); color:#fff; font-size:15px; font-weight:600;
+    font-family:inherit; cursor:pointer; margin-top:12px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
+  }
+  .btn-primary svg { width:16px; height:16px; }
+  .btn-primary:hover { background:var(--primary-800); }
+
+  .btn-text {
+    width:100%; height:44px; border:none; background:transparent;
+    color:var(--primary); font-size:14px; font-weight:600; font-family:inherit; cursor:pointer;
+    margin-top:6px;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .btn-text svg { width:14px; height:14px; }
+  .btn-text:hover { background:var(--primary-pale); border-radius:8px; }
+
+  /* Section divider — "vagy" */
+  .or-divider {
+    display:flex; align-items:center; gap:10px;
+    margin:14px 0 4px;
+    font-size:11px; color:var(--text-muted); font-weight:600; letter-spacing:0.08em; text-transform:uppercase;
+  }
+  .or-divider::before, .or-divider::after {
+    content:""; flex:1; height:1px; background:var(--border);
+  }
+
+  /* GPS request button (variant B) */
+  .gps-request {
+    width:100%; padding:12px 14px; cursor:pointer;
+    background:#fff; border:1.5px dashed var(--border-strong); border-radius:12px;
+    font-family:inherit; color:var(--text-secondary);
+    display:flex; gap:10px; align-items:center;
+  }
+  .gps-request:hover { border-color:var(--primary); color:var(--primary); }
+  .gps-request svg.ico { width:18px; height:18px; flex-shrink:0; }
+  .gps-request .body { flex:1; text-align:left; }
+  .gps-request .ttl { font-size:14px; font-weight:600; }
+  .gps-request .sub { font-size:12px; color:var(--text-muted); margin-top:1px; }
+
+  /* === STATE C: persistent zone === */
+  .zone-persistent {
+    background:#fff; border:1px solid var(--border); border-radius:12px;
+    padding:14px; display:flex; gap:12px; align-items:center;
+  }
+  .zone-persistent .ico {
+    width:40px; height:40px; border-radius:10px; flex-shrink:0;
+    background:var(--cream-dark); color:var(--primary);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .zone-persistent .ico svg { width:20px; height:20px; }
+  .zone-persistent .body { flex:1; min-width:0; }
+  .zone-persistent .lab {
+    font-size:11px; color:var(--text-muted); font-weight:600;
+    text-transform:uppercase; letter-spacing:0.06em;
+  }
+  .zone-persistent .name {
+    font-size:15px; font-weight:600; color:var(--text); margin-top:1px;
+  }
+  .zone-persistent .terms {
+    font-size:12px; color:var(--text-secondary); margin-top:2px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .zone-persistent .terms svg { width:12px; height:12px; color:var(--text-muted); }
+  .zone-persistent .terms .sep { color:var(--border-strong); }
+  .zone-persistent a {
+    font-size:13px; font-weight:600; color:var(--primary);
+    text-decoration:none; padding:6px 10px; border-radius:8px;
+  }
+  .zone-persistent a:hover { background:var(--primary-pale); }
+
+  /* === STATE D: mismatch banner === */
+  .mismatch {
+    background:var(--warning-bg); border:1px solid var(--warning-border);
+    border-radius:14px; padding:16px;
+  }
+  .mismatch h3 {
+    font-size:15px; font-weight:600; color:#6E4810;
+    display:flex; align-items:center; gap:8px;
+    margin-bottom:8px;
+  }
+  .mismatch h3 svg { width:18px; height:18px; color:var(--warning); }
+  .mismatch p { font-size:13px; color:#6E4810; line-height:1.5; }
+  .mismatch p strong { color:#4E330A; font-weight:600; }
+  .mismatch .terms-table {
+    margin-top:12px; padding:12px;
+    background:#fff; border-radius:10px; font-size:13px;
+  }
+  .mismatch .terms-table .row {
+    display:flex; justify-content:space-between; padding:5px 0;
+    border-bottom:1px dashed var(--warning-border);
+  }
+  .mismatch .terms-table .row:last-child { border-bottom:none; }
+  .mismatch .terms-table .row .lab { color:var(--text-muted); }
+  .mismatch .terms-table .row .val { color:var(--text); font-weight:600; }
+
+  .mismatch-actions { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+  .btn-mismatch-primary {
+    width:100%; height:46px; border-radius:10px; border:none;
+    background:var(--primary); color:#fff; font-size:14px; font-weight:600;
+    font-family:inherit; cursor:pointer;
+  }
+  .btn-mismatch-secondary {
+    width:100%; height:42px; border-radius:10px;
+    background:transparent; color:var(--text-secondary);
+    border:1px solid var(--border-strong);
+    font-size:13px; font-weight:600; font-family:inherit; cursor:pointer;
+  }
+
+  /* Mock cart items below picker — context */
+  .cart-items-mock { margin-top:18px; opacity:0.55; pointer-events:none; }
+  .cart-items-mock .lab {
+    font-size:11px; color:var(--text-muted); font-weight:600;
+    text-transform:uppercase; letter-spacing:0.06em; margin-bottom:8px;
+  }
+  .mock-item {
+    background:#fff; border:1px solid var(--border); border-radius:10px;
+    height:60px; margin-bottom:8px;
+  }
+
+  /* Notes */
+  .notes { max-width:1100px; margin:24px auto 0; padding:18px;
+    background:var(--card); border:1px solid var(--border); border-radius:12px; }
+  .notes h3 { font-size:13px; font-weight:700; color:var(--text); margin-bottom:10px; }
+  .notes ul { list-style:none; font-size:13px; color:var(--text-secondary); line-height:1.6; }
+  .notes li { padding-left:18px; position:relative; }
+  .notes li::before { content:"·"; position:absolute; left:6px; color:var(--primary); font-weight:700; }
+  .notes li strong { color:var(--text); font-weight:600; }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-to-catalog" title="Vissza">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<div class="page-intro">
+  <h1>Kiszállítási kör választó — hibrid (v1.4)</h1>
+  <p>A 14 falus dropdown elhagyva. Helyette: GPS-javaslat (ha engedélyezve) + 2 gombos választó (Udvarhely / Keresztúri kör) + checkout település-validáció. Spec: F1.1–F1.3.</p>
+  <div class="principle"><strong>Alapelv:</strong> A GPS segítsen, de ne döntsön. A user megerősíti vagy felülírja, a checkout település-alapon validálja.</div>
+</div>
+
+<div class="phones">
+
+  <!-- =============================================
+       A) GPS javaslat — kosár első belépés, GPS engedélyezve
+       ============================================= -->
+  <div class="phone-col">
+    <span class="phone-label"><span class="num">A</span> GPS-javaslat (engedélyezve)</span>
+    <div class="phone">
+      <div class="ph-header">
+        <button class="back" aria-label="Vissza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <h2>Kosaram</h2>
+        <span class="count">3 termék</span>
+      </div>
+
+      <div class="ph-body">
+        <div class="zone-card">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+            Hova kéred a rendelést?
+          </h3>
+          <div class="lead">A szállítási feltételek attól függnek, hova kerül a csomag.</div>
+
+          <div class="gps-suggest">
+            <div class="lab">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+              Helyzeted alapján
+            </div>
+            <div class="name">Udvarhely</div>
+            <div class="meta">Napi kiszállítás · ingyenes <strong>150 RON felett</strong>, egyébként 10 RON.</div>
+          </div>
+
+          <button class="btn-primary">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            Ezt választom
+          </button>
+          <button class="btn-text">
+            Másik kiszállítási kört választok
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </button>
+        </div>
+
+        <div class="cart-items-mock">
+          <div class="lab">Tételek</div>
+          <div class="mock-item"></div>
+          <div class="mock-item"></div>
+          <div class="mock-item"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       B) 2 gombos választó — GPS nem elérhető
+       ============================================= -->
+  <div class="phone-col">
+    <span class="phone-label"><span class="num">B</span> 2 gombos választó (GPS nélkül)</span>
+    <div class="phone">
+      <div class="ph-header">
+        <button class="back" aria-label="Vissza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <h2>Kosaram</h2>
+        <span class="count">3 termék</span>
+      </div>
+
+      <div class="ph-body">
+        <div class="zone-card">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+            Kiszállítási kör
+          </h3>
+          <div class="lead">Válaszd ki, melyik körbe kéred — a szállítási díj és az ingyenes határ ettől függ.</div>
+
+          <div class="zone-options">
+            <button class="zone-option">
+              <div class="ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+              </div>
+              <div class="body">
+                <div class="name">Udvarhely</div>
+                <div class="schedule">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                  Napi kiszállítás
+                </div>
+                <div class="terms">Ingyenes <strong>150 RON</strong> felett · 10 RON alatta</div>
+              </div>
+              <span class="arrow">›</span>
+            </button>
+
+            <button class="zone-option">
+              <div class="ico">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+              </div>
+              <div class="body">
+                <div class="name">Keresztúri kör</div>
+                <div class="schedule">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+                  Csütörtök 14:00–18:00
+                </div>
+                <div class="terms">Ingyenes <strong>200 RON</strong> felett · 15 RON alatta</div>
+              </div>
+              <span class="arrow">›</span>
+            </button>
+          </div>
+
+          <div class="or-divider">vagy</div>
+
+          <button class="gps-request">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div class="body">
+              <div class="ttl">Helyzet alapján javaslat</div>
+              <div class="sub">GPS engedélyezés szükséges</div>
+            </div>
+          </button>
+        </div>
+
+        <div class="cart-items-mock">
+          <div class="lab">Tételek</div>
+          <div class="mock-item"></div>
+          <div class="mock-item"></div>
+          <div class="mock-item"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       C) Perzisztens állapot — zóna kiválasztva
+       ============================================= -->
+  <div class="phone-col">
+    <span class="phone-label"><span class="num">C</span> Perzisztens állapot</span>
+    <div class="phone">
+      <div class="ph-header">
+        <button class="back" aria-label="Vissza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <h2>Kosaram</h2>
+        <span class="count">4 termék</span>
+      </div>
+
+      <div class="ph-body">
+        <div class="zone-persistent">
+          <div class="ico">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+          </div>
+          <div class="body">
+            <div class="lab">Kiszállítás</div>
+            <div class="name">Keresztúri kör</div>
+            <div class="terms">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+              Csütörtök <span class="sep">·</span> Ingyenes 200 RON felett
+            </div>
+          </div>
+          <a href="#">Módosítás</a>
+        </div>
+
+        <div style="margin-top:14px; padding:12px 14px; background:var(--success-bg); border:1px solid var(--success-border); border-radius:12px; display:flex; gap:10px; align-items:center;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+          <div style="font-size:13px; color:#1F5135; line-height:1.45;">
+            <strong style="font-weight:600;">Jegyezve.</strong> Visszatéréskor automatikusan ezt használjuk — nem kell újra választani.
+          </div>
+        </div>
+
+        <div class="cart-items-mock" style="opacity:.7;">
+          <div class="lab" style="margin-top:14px;">Tételek</div>
+          <div class="mock-item"></div>
+          <div class="mock-item"></div>
+          <div class="mock-item"></div>
+          <div class="mock-item"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =============================================
+       D) Checkout mismatch — biztonsági háló
+       ============================================= -->
+  <div class="phone-col">
+    <span class="phone-label"><span class="num">D</span> Checkout település-mismatch</span>
+    <div class="phone">
+      <div class="ph-header">
+        <button class="back" aria-label="Vissza"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <h2>Rendelés véglegesítése</h2>
+      </div>
+
+      <div class="ph-body">
+        <div style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px; margin-bottom:14px;">
+          <div style="font-size:11px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px;">Szállítási cím</div>
+          <div style="font-size:14px; color:var(--text); font-weight:600;">Kovács Anna</div>
+          <div style="font-size:13px; color:var(--text-secondary); margin-top:2px;">Fő utca 12., <strong style="color:var(--text);">Betfalva (Beteşti)</strong></div>
+        </div>
+
+        <div class="mismatch">
+          <h3>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+            Szállítási kör eltérés
+          </h3>
+          <p>A kosárban <strong>Udvarhelyi</strong> kiszállítást választottál, de a megadott település (<strong>Betfalva</strong>) a <strong>Keresztúri körhöz</strong> tartozik.</p>
+
+          <div class="terms-table">
+            <div class="row"><span class="lab">Szállítás</span><span class="val">Csütörtök 14:00–18:00</span></div>
+            <div class="row"><span class="lab">Ingyenes határ</span><span class="val">200 RON</span></div>
+            <div class="row"><span class="lab">Szállítási díj</span><span class="val">15 RON</span></div>
+          </div>
+
+          <div class="mismatch-actions">
+            <button class="btn-mismatch-primary">Frissítés Keresztúri körre</button>
+            <button class="btn-mismatch-secondary">Cím javítása</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="notes">
+  <h3>Tervezési jegyzetek (v1.4)</h3>
+  <ul>
+    <li><strong>Trigger:</strong> A picker a <em>kosárban</em> jelenik meg — nem onboardingban, nem profilban. Akkor, amikor a user kontextusban van (mit fizet és mikor kapja).</li>
+    <li><strong>A) GPS-javaslat</strong> — egy kártya, prefilled. A GPS nem dönt automatikusan; a user megerősíti vagy felülírja.</li>
+    <li><strong>B) 2 gombos választó</strong> — fő nézet GPS nélkül. A „Helyzet alapján javaslat" csak harmadik opció — sose felugró.</li>
+    <li><strong>C) Perzisztens állapot</strong> — visszatérő vásárlónál nem kérdezünk újra. localStorage + (Phase 2) user profil.</li>
+    <li><strong>D) Mismatch</strong> — checkoutnál biztonsági háló. Település → zóna lookup (nem geocode!). 14 keresztúri település egyike → Keresztúri kör; Udvarhely → Városi; egyéb → „még nem szállítunk".</li>
+    <li><strong>Savings Engine:</strong> ha nincs zóna választva, ne mutasson hamis thresholdöt — „Válassz kört, és megmutatjuk, mennyi hiányzik".</li>
+  </ul>
+</div>
+
+</body>
+</html>

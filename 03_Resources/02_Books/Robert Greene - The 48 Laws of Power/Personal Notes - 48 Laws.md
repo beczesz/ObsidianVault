@@ -72,3 +72,40 @@ Ugyan akkor meg kell tanuljam, hogy ne engedjem, hogy a valaki iránt érzett sz
 Az ellenségek valóban segítenek jobban megérteni és megismerni saját magunkat. Volt egy Lincoln volt egy Rick Betenbough, most ők jutnak eszembe, hogy tényleg van lehetőség arra, hogy egy vezető naggyá váljon. 
 
 #idea Az jött fel ma bennem reggel, hogy Jézus tudta előre, hogy mi fog rá várni. Tudta, hogy az emberben ott a kígyó. Tudta, hogy el fogják árulni, meg fogják kínozni, ki fogják gúnyolni. Tudta, hogy az irigység, nárcizmus, szadizmus, áldozatává fog válni. Az emberek éjjenezték amikor bevonult Jeruzsálembe, mint király fogadták, és pár nappal később pedig már Barabást választották helyette. Előre tudta, és mégis az embereket választotta, így is kellett neki. Nem volt naív, és mégis engem és minket választott. Ez a könyv legyen bármennyire is húsbavágóan kemény, cinikus és kijózanító, Jézus ezeket mind tudta, és mégis minket választott. Ha hatalommal élünk azért, hogy Isten tervét beteljesítsük akkor az jó. Jézus nem bízott túlságosan a barátaiban, tudta, hogy mit fognak tenni, és ennek ellenére kedvelte őket. Az ellenségeit pedig "használta". egyszerűen szerette őket.  A leglojálisabb volt ellensége pl. Pál. 
+
+## 5. Rengeteg múlik a hírnéven, úgy vigyázz rá mint az éltedre
+
+Ezzel is egyet értek. Ezek a dinamikák léteznek. De megint keresztény szempontból érdkel a kérdés, vajon Jézus törekedett a hírnévre? Nem.Viszont az is igaz, hogy a mellékterméke a tevékenységének hírnevet adott neki.
+
+Az is igaz, hogy nem törekedett megtartani sem ezt a jó hírnevet. Botrány botrány hátán következett az utolsó nagy héten.
+
+Mondhatnánk azt is, hogy ezzel szerzett hírnvet magának pontosan. De Jézust nem érdekelte a hírnév...
+
+## 6. Mindenáron irányítsd magadra a figyelmet
+
+Ez eddig a legellenszenvesebb törvény: Mindegy, hogy mit de beszéljenek rólad, a szürkeség nem jó.
+
+Habár látom, hogy működik, legalábbis rövid távon nem tartom egy hosszú távon jó stratégiának. Láttam Gálfit ahogy 4 éven keresztül ezt csinálta. Botrány botrány hátán, embereket zavart meg és aztán el is bukott.
+
+Láttam azt a magyar celebet aki ezt tökéletesen meg is testesítette, Berki Krisztiánt, akiről már le is feledkezett a sajtó. A NAvigátor podcastnek van valamicske sikere, de rólam is elfog feledkezni mindenki.
+
+Na de adjuk emg a császárnak ami császáré. A Sonrisán belül abszolút érvényes az, hogy amit csendben csinálsz az láthatatlan marad. Meg van annak a módja, hogy hogyan vonzd a figyelmet magadra.
+
+Itt a bibliai alapelve szerintem az, hogy **Akkor vond magadra a figyelmet, ha van amit mutatni**. Semmi sem létezik addig amíg a fény nem vetül rá, a fény és az anyag találkozásánál jön létre bármi is. Az értelem és az anyag. **Ezért fontos a marketing.** 
+
+Sejtetni valamit, és játszani a másik személlyel vajon mikor morálisan helyes? Az biztos, hogy Ember Attila ellen használni ezeket az eszközöket nem fogom sajnálni használni. Tehát két féle képen is használgatom ezt a könyvet:
+1. Pl. Attila mesterkedéseiben észreveszem a finom trükköket.
+2. Attila ellen fogom felhasználni.
+Igazából Attla helyett mondhatnám bármelyik nárcisztikus nevét.
+
+## 7. Végeztesd másokkal a munkát, de te gyűjtsd be érte az elismerést
+
+Itt sem vagyok benne biztos, hogy mi a helyes. Amit tanultam az az, hogy megadjam az elismerét az embereknek. Megköszönjem a munkájukat. Barabási is azt mondja, hogy az elismerést mindig egy ember kapja, sőt ezt nagyon pontosan előre is lehet jelezni, hogy ki az az ember.
+
+Vajon a feladatom az, hogy én legyek ez az ember, vagy pedig az, hogy direkt szembe menjek ezzel a trenddel és mást engedjek oda?
+
+Peterson pont az ellenkező elvet mondta, legyünk a legkompetensebbek és láthatatlanok. Ennek nagyon sok előnye is van és nem csak hátránya.
+1. A kompetencia biztonságot fog adni nekünk, nem hamis alapra építünk, hanem igazi stabil alapra. Nyugodtan alszunk és nem fogunk megszégyenülni. Sőt, pont az ellenkezője, időről időre rácsodálkoznak emberek arra, hogy valójában mennyire kompetensek vagyunk. És itt nem a csodálat a lényeg, hanem az, hogy előtte láthatatlanok vagyunk.
+2. Furcsa módon pont az előző törvényt tudjuk morálisan helyesen megélni így, mert össze fogja zavarni az embereket. Egyrészt erővel és autoritással lépek fel, ami az igazi kompetenciát sugallja, másrészt viszont más aratja le a babérokat. Ez egy furcsa misztériumot hoz létre körülöttünk amire az emberek figyelni fognak. NEm tudják megfejteni, hogy miért teszem azt amit. Egyrészt építek, motivált vgayok és ambíciós. Másrészt a csillogást meg hagyom másnak. 
+3. Aki learatja a babérokat az nem csak dependenssé válik, hanem folyamatosan kiszolgáltatottá. Sőt azok az emberek akik körbe vettek minket mind látják mi az igazság. Én nemcsak bizalmat építek azokkal akik tudják, hogy mi az igazság, hanem a kapcsolati hálóm még erősebb lesz.
+4. Ha újabb lehetőségek nyílnak ki a másik személy számára akkor valójában nekem nyitja ki azokat, ha pedig én nem akarok benne részt venni akkor ő kell megoldást kapjon, vagy másik személyt keressen.

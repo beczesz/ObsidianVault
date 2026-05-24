@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH Wireframe &#8212; GDPR Consent (DH-132)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #F5F0EB; --card: #FFFFFF; --primary: #7B2D3B; --primary-light: #9B4D5B;
+    --text: #2D2D2D; --text2: #777777; --border: #E8E0D8;
+    --green: #2E7D32; --green-light: #E8F5E9; --green-dark: #1B5E20;
+    --red: #C62828; --red-light: #FFEBEE;
+    --blue: #1565C0; --blue-light: #E3F2FD;
+  }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #F8F5F0; color: var(--text); }
+  .header { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+  .tabs { display: flex; gap: 8px; max-width: 1200px; margin: 16px auto; padding: 0 24px; overflow-x: auto; }
+  .tab { padding: 10px 20px; border-radius: 24px; font-size: 13px; border: 1px solid var(--border); background: white; color: var(--text); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 400; }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+  .content { max-width: 1200px; margin: 0 auto; padding: 0 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+  .feature > h2 { font-size: 18px; font-weight: 700; margin: 0 0 6px; }
+  .feature > .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 16px; }
+  .scenarios { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .scenario-btn { padding: 6px 12px; border-radius: 20px; font-size: 11px; border: 1px solid var(--border); background: white; cursor: pointer; }
+  .scenario-btn.active { border: 2px solid var(--primary); background: var(--primary); color: white; font-weight: 600; }
+  .phones { display: flex; gap: 20px; flex-wrap: wrap; }
+  .phone { width: 375px; min-height: 700px; background: var(--bg); border-radius: 24px; border: 2px solid var(--border); overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12); flex-shrink: 0; position: relative; }
+  .phone-header { background: var(--bg); padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .phone-header span:first-child { font-size: 20px; font-weight: 700; font-family: Georgia, serif; }
+  .phone-body { padding: 0 16px 16px; max-height: 640px; overflow-y: auto; }
+  .card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .btn { width: 100%; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; display: block; }
+  .btn-primary { background: var(--primary); color: #FFF; border: none; }
+  .btn-primary:disabled { background: #CCC; cursor: default; }
+  .btn-ghost { background: transparent; color: var(--primary-light); border: none; text-decoration: underline; font-size: 13px; }
+  .label-bad { display: inline-block; background: var(--red-light); color: var(--red); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .label-good { display: inline-block; background: var(--green-light); color: var(--green); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .label-info { display: inline-block; background: var(--blue-light); color: var(--blue); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .consent-row { display: flex; gap: 10px; align-items: flex-start; margin: 14px 0; }
+  .consent-check { width: 20px; height: 20px; border: 2px solid var(--border); border-radius: 4px; flex-shrink: 0; margin-top: 1px; display: flex; align-items: center; justify-content: center; font-size: 12px; cursor: pointer; }
+  .consent-check.checked { background: var(--primary); border-color: var(--primary); color: white; }
+  .consent-text { font-size: 13px; line-height: 1.5; color: var(--text); }
+  .consent-text a { color: var(--primary); text-decoration: underline; }
+  .overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.4); z-index: 5; border-radius: 24px; }
+  .popup { position: absolute; bottom: 0; left: 0; right: 0; background: white; border-radius: 16px 16px 0 0; padding: 20px; z-index: 10; }
+  .popup h3 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .popup p { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 14px; }
+  .popup-btns { display: flex; gap: 10px; }
+  .popup-btns button { flex: 1; padding: 12px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .popup-btns .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .popup-btns .btn-fill { background: var(--primary); border: none; color: white; }
+  .annotation { background: #FFF3CD; border-left: 3px solid #F9A825; padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+  .annotation strong { color: var(--red); }
+  .note-box { background: var(--green-light); border-left: 3px solid var(--green); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+  .info-box { background: var(--blue-light); border-left: 3px solid var(--blue); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+  .cookie-bar { position: absolute; bottom: 0; left: 0; right: 0; background: white; border-top: 1px solid var(--border); padding: 14px 16px; z-index: 10; box-shadow: 0 -4px 16px rgba(0,0,0,0.08); }
+  .cookie-bar p { font-size: 12px; color: var(--text2); line-height: 1.5; margin-bottom: 10px; }
+  .cookie-bar a { color: var(--primary); text-decoration: underline; }
+  .cookie-btns { display: flex; gap: 8px; }
+  .cookie-btns button { padding: 8px 16px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; }
+  .cookie-accept { background: var(--primary); color: white; border: none; }
+  .cookie-decline { background: transparent; border: 1px solid var(--border); color: var(--text); }
+  .changelog { max-width: 1200px; margin: 32px auto; padding: 16px 24px; background: white; border-radius: 12px; border: 1px solid var(--border); }
+  .changelog h3 { font-size: 14px; margin-bottom: 8px; }
+  .changelog ul { font-size: 13px; color: var(--text2); padding-left: 20px; line-height: 1.8; }
+  @media (max-width: 500px) {
+    html, body { overflow-x: hidden; }
+    .header { padding: 16px 8px 0; }
+    .header h1 { font-size: 22px; }
+    .tabs { padding: 0 4px; margin: 12px auto; gap: 6px; }
+    .tab { padding: 8px 14px; font-size: 12px; }
+    .content { padding: 0 4px 24px; }
+    .phones { gap: 8px; }
+    .phone { width: 100%; min-height: auto; border-radius: 16px; border-width: 1px; }
+    .phone-body { max-height: none; overflow-y: visible; padding: 0 10px 12px; }
+    .phone-header { padding: 12px 14px; }
+    .scenarios { gap: 4px; }
+    .scenario-btn { padding: 5px 10px; font-size: 10px; }
+    .changelog { padding: 12px 8px; }
+  }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px; margin: 16px 24px 0;
+    background: white; border: 1px solid #D8D0C8;
+    border-radius: 8px; font-family: system-ui, sans-serif;
+    font-size: 14px; font-weight: 600; color: #7B2D3B;
+    text-decoration: none; cursor: pointer;
+  }
+  .back-btn:hover { background: #F5F0EB; }
+</style>
+</head>
+<body>
+<a href="index.html" class="back-btn">&#8592; Vissza</a>
+
+<div class="header">
+  <h1>GDPR Consent &amp; &#193;SZF</h1>
+  <p>DH-132 + DH-137 &#183; Felhaszn&#225;l&#225;si felt&#233;telek elfogad&#225;sa + cookie policy</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab(0)">Jelenlegi (t&#246;rl&#233;sre)</div>
+  <div class="tab" onclick="showTab(1)">&#218;j: Regisztr&#225;ci&#243;</div>
+  <div class="tab" onclick="showTab(2)">&#218;j: B&#233;l&#233;ptet&#337; kapu</div>
+  <div class="tab" onclick="showTab(3)">&#218;j: Cookie banner</div>
+</div>
+
+<div class="content">
+
+  <!-- TAB 0: Current bad popup -->
+  <div class="feature active" id="tab0">
+    <h2>Jelenlegi &#225;llapot &#8212; T&#214;RL&#201;SRE</h2>
+    <p class="subtitle">Az &#8222;Analitika&#8221; popup amat&#337;r, zavaros, feleslegesen granularis</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span>De&#225;k H&#250;sm&#237;ves</span>
+          <span style="font-size:14px;color:var(--text2)">El&#337;k&#233;sz&#237;t&#233;s</span>
+        </div>
+        <div class="phone-body">
+          <div style="padding:12px 0;color:var(--text2);font-size:13px">Sz&#225;ll&#237;t&#225;si nap / Rendel&#233;s lista...</div>
+          <div style="height:200px"></div>
+        </div>
+        <div class="overlay"></div>
+        <div class="popup">
+          <h3>Analitika</h3>
+          <p>Seg&#237;ts m&#233;rni a rendel&#233;si folyamatot &#233;s a sz&#369;k keresztmetszeteket. Nevet, telefonsz&#225;mot, c&#237;met vagy email c&#237;met nem k&#252;ld&#252;nk.</p>
+          <div class="popup-btns">
+            <button class="btn-outline">Most nem</button>
+            <button class="btn-fill">Enged&#233;lyezem</button>
+          </div>
+        </div>
+      </div>
+      <div style="max-width:340px">
+        <span class="label-bad">PROBL&#201;M&#193;K</span>
+        <div class="annotation">
+          <strong>1. Amat&#337;r sz&#246;veg</strong> &#8212; Az &#8222;Analitika&#8221; c&#237;m semmitmond&#243;. A user nem &#233;rti, mi&#233;rt kell ez.<br><br>
+          <strong>2. &#8222;Most nem&#8221; &#8212; mi t&#246;rt&#233;nik?</strong> &#8212; Ha nem enged&#233;lyezi, haszn&#225;lhatja az appot? Nem vil&#225;gos.<br><br>
+          <strong>3. Feleslegesen granularis</strong> &#8212; K&#252;l&#246;n analytics consent popup a saj&#225;t appunkban? Ez egy e-commerce compliance k&#233;rd&#233;s, nem k&#252;l&#246;n feature request.<br><br>
+          <strong>4. Menteget&#337;s hangnem</strong> &#8212; &#8222;Nevet, telefonsz&#225;mot nem k&#252;ld&#252;nk&#8221; v&#233;dekez&#233;snek hat, nem profi.
+        </div>
+        <div class="note-box">
+          <strong>Megold&#225;s:</strong> T&#246;r&#246;lni az Analitika popup-ot. Helyette &#193;SZF + Adatv&#233;delmi T&#225;j&#233;koztat&#243; elfogad&#225;sa a regisztr&#225;ci&#243;ban (standard e-commerce megold&#225;s). Az analytics consent a Privacy Policy r&#233;sz&#233;t k&#233;pezi.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 1: New registration consent -->
+  <div class="feature" id="tab1">
+    <h2>&#218;j: Consent a regisztr&#225;ci&#243;ban</h2>
+    <p class="subtitle">Standard megold&#225;s &#8212; checkbox az &#193;SZF-re &#233;s Privacy Policy-ra, reg. gomb el&#337;tt</p>
+    <div class="scenarios" id="scenarios1">
+      <div class="scenario-btn active" onclick="setScenario(1,'unchecked')">&#220;res checkbox</div>
+      <div class="scenario-btn" onclick="setScenario(1,'checked')">Bepip&#225;lt</div>
+    </div>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span>De&#225;k H&#250;sm&#237;ves</span>
+          <span style="font-size:14px;color:var(--text2)">Regisztr&#225;ci&#243;</span>
+        </div>
+        <div class="phone-body" id="phone-reg">
+          <div style="margin:16px 0 8px;font-size:22px;font-weight:800;text-align:center">Fi&#243;k l&#233;trehoz&#225;sa</div>
+          <div style="text-align:center;font-size:13px;color:var(--text2);margin-bottom:20px">Rendelj friss h&#250;s&#225;rut h&#225;zhoz\!</div>
+          <div class="card" style="display:flex;align-items:center;gap:12px;cursor:pointer">
+            <div style="width:28px;height:28px;background:#4285F4;border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-weight:700;font-size:14px">G</div>
+            <span style="font-size:14px;font-weight:600">Tov&#225;bb Google fi&#243;kkal</span>
+          </div>
+          <div style="text-align:center;font-size:12px;color:var(--text2);margin:12px 0">vagy</div>
+          <div style="margin-bottom:10px">
+            <div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text2)">N&#233;v</div>
+            <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:#999">Kov&#225;cs Anna</div>
+          </div>
+          <div style="margin-bottom:10px">
+            <div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text2)">Email</div>
+            <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:#999">anna@pelda.hu</div>
+          </div>
+          <div style="margin-bottom:10px">
+            <div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text2)">Telefon</div>
+            <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:#999">+40 7XX XXX XXX</div>
+          </div>
+          <div style="margin-bottom:14px">
+            <div style="font-size:12px;font-weight:600;margin-bottom:4px;color:var(--text2)">Jelsz&#243;</div>
+            <div style="background:white;border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;color:#999">********</div>
+          </div>
+          <div class="consent-row">
+            <div class="consent-check" id="consent-check" onclick="toggleConsent()"></div>
+            <div class="consent-text">
+              Elfogadom az <a href="#">&#193;ltal&#225;nos Szerz&#337;d&#233;si Felt&#233;teleket</a> &#233;s az <a href="#">Adatv&#233;delmi T&#225;j&#233;koztat&#243;t</a>.
+            </div>
+          </div>
+          <button class="btn btn-primary" id="reg-btn" disabled>Regisztr&#225;ci&#243;</button>
+          <div style="text-align:center;margin-top:14px;font-size:13px;color:var(--text2)">
+            M&#225;r van fi&#243;kod? <a href="#" style="color:var(--primary);font-weight:600;text-decoration:none">Bel&#233;p&#233;s</a>
+          </div>
+        </div>
+      </div>
+      <div style="max-width:340px">
+        <span class="label-good">SPECIFIK&#193;CI&#211;</span>
+        <div class="note-box">
+          <strong>Pontos sz&#246;veg:</strong><br>
+          &#8222;Elfogadom az <u>&#193;ltal&#225;nos Szerz&#337;d&#233;si Felt&#233;teleket</u> &#233;s az <u>Adatv&#233;delmi T&#225;j&#233;koztat&#243;t</u>.&#8221;<br><br>
+          <strong>Szab&#225;lyok:</strong><br>
+          &#8226; Checkbox NEM lehet el&#337;re bepip&#225;lva (GDPR)<br>
+          &#8226; Reg. gomb disabled am&#237;g nincs pipa<br>
+          &#8226; Mindk&#233;t link k&#252;l&#246;n oldalra mutat<br>
+          &#8226; Google/OAuth regisztr&#225;ci&#243;n&#225;l is megjelenik<br>
+          &#8226; Beleegyez&#233;s id&#337;pontj&#225;t menteni kell (timestamp)<br>
+          &#8226; Az analytics consent a Privacy Policy r&#233;sz&#233;t k&#233;pezi &#8212; NEM kell k&#252;l&#246;n popup
+        </div>
+        <div class="info-box">
+          <span class="label-info">K&#201;TNYELV&#368;S&#201;G</span><br>
+          <strong>Dokumentumok k&#233;t nyelven:</strong><br>
+          &#8226; &#193;SZF: magyar + rom&#225;n<br>
+          &#8226; Adatv&#233;delmi T&#225;j&#233;koztat&#243;: magyar + rom&#225;n<br>
+          &#8226; Angol: NEM sz&#252;ks&#233;ges<br>
+          &#8226; App nyelve: magyar (els&#337;dleges)<br>
+          &#8226; L&#225;bl&#233;cben nyelvv&#225;lt&#243;: HU | RO<br><br>
+          <strong>Jogi h&#225;tt&#233;r:</strong><br>
+          &#8226; Rom&#225;n: k&#246;telez&#337; (OG 21/1992 fogyaszt&#243;v&#233;delem)<br>
+          &#8226; Magyar: GDPR &#8222;&#233;rthet&#337; nyelven&#8221; elv &#8212; a c&#233;lk&#246;z&#246;ns&#233;g anyanyelve
+        </div>
+        <div class="annotation">
+          <strong>Mi ker&#252;lj&#246;n az Adatv&#233;delmi T&#225;j&#233;koztat&#243;ba (analytics szekci&#243;):</strong><br>
+          &#8226; Firebase Analytics haszn&#225;lata (anonim esem&#233;nyek)<br>
+          &#8226; Milyen adatokat gy&#369;jt&#252;nk (rendel&#233;s, b&#246;ng&#233;sz&#233;s)<br>
+          &#8226; Nevet/telefonsz&#225;mot/c&#237;met NEM k&#252;ld&#252;nk harmadik f&#233;lnek<br>
+          &#8226; Cookie policy (ha haszn&#225;lunk cookie-t)<br>
+          &#8226; Kapcsolat &#233;s jogok (GDPR Art. 15-17)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 2: Gate for existing users -->
+  <div class="feature" id="tab2">
+    <h2>&#218;j: B&#233;l&#233;ptet&#337; kapu (l&#233;tez&#337; userek)</h2>
+    <p class="subtitle">Egyszer megjelen&#337; elfogad&#225;si k&#233;perny&#337; akik m&#225;r regisztr&#225;ltak az &#193;SZF el&#337;tt</p>
+    <div class="scenarios" id="scenarios2">
+      <div class="scenario-btn active" onclick="setScenario(2,'gate')">B&#233;l&#233;ptet&#337; kapu</div>
+      <div class="scenario-btn" onclick="setScenario(2,'accepted')">Elfogadva</div>
+    </div>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span>De&#225;k H&#250;sm&#237;ves</span>
+          <span style="font-size:14px;color:var(--text2)">Felt&#233;telek</span>
+        </div>
+        <div class="phone-body" id="phone-gate"></div>
+      </div>
+      <div style="max-width:340px">
+        <span class="label-good">SPECIFIK&#193;CI&#211;</span>
+        <div class="note-box">
+          <strong>Mikor jelenik meg:</strong><br>
+          Minden l&#233;tez&#337; usernek egyszer, akik az &#193;SZF bevezet&#233;se el&#337;tt regisztr&#225;ltak.<br><br>
+          <strong>Pontos sz&#246;vegek:</strong><br>
+          C&#237;m: &#8222;Fr&#237;ss&#237;tett felt&#233;telek&#8221;<br>
+          Sz&#246;veg: &#8222;Bevezett&#252;k az &#193;ltal&#225;nos Szerz&#337;d&#233;si Felt&#233;teleket &#233;s fr&#237;ss&#237;tett&#252;k az Adatv&#233;delmi T&#225;j&#233;koztat&#243;nkat. A folytat&#225;shoz k&#233;rlek fogadd el.&#8221;<br>
+          Gomb: &#8222;Elfogadom &#233;s tov&#225;bb&#8221;<br>
+          Link: &#8222;Kijelentkez&#233;s&#8221;<br><br>
+          <strong>Viselked&#233;s:</strong><br>
+          &#8226; Nem lehet &#225;tugrani &#8212; az app nem haszn&#225;lhat&#243; elfogad&#225;s n&#233;lk&#252;l<br>
+          &#8226; Elfogad&#225;s ut&#225;n soha nem jelenik meg &#250;jra<br>
+          &#8226; Az elfogad&#225;s id&#337;pontj&#225;t mentj&#252;k<br>
+          &#8226; Ha nem fogadja el &#8594; Kijelentkez&#233;s (NINCS &#8222;Most nem&#8221;)
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 3: Cookie banner -->
+  <div class="feature" id="tab3">
+    <h2>&#218;j: Cookie banner (minden l&#225;togat&#243;nak)</h2>
+    <p class="subtitle">DH-137 &#183; Nem regisztr&#225;lt userek is t&#225;j&#233;koztat&#225;st kapnak az adatgy&#369;jt&#233;sr&#337;l</p>
+    <div class="scenarios" id="scenarios3">
+      <div class="scenario-btn active" onclick="setScenario(3,'banner')">Banner l&#225;that&#243;</div>
+      <div class="scenario-btn" onclick="setScenario(3,'dismissed')">Elfogadva</div>
+    </div>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span>De&#225;k H&#250;sm&#237;ves</span>
+          <span style="font-size:14px;color:var(--text2)">F&#337;oldal</span>
+        </div>
+        <div class="phone-body">
+          <div style="margin:16px 0 8px;font-size:20px;font-weight:800">&#220;dv&#246;z&#246;lj&#252;k\!</div>
+          <div style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.5">K&#233;zm&#369;ves h&#250;s&#225;ru h&#225;zhozsz&#225;ll&#237;t&#225;ssal Sz&#233;kelyudvarhelyen.</div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:6px">Friss term&#233;kek</div>
+            <div style="font-size:13px;color:var(--text2)">V&#225;logass k&#233;zm&#369;ves h&#250;s&#225;ruink k&#246;z&#252;l...</div>
+          </div>
+          <div class="card">
+            <div style="font-size:14px;font-weight:700;margin-bottom:6px">Csal&#225;di csomagok</div>
+            <div style="font-size:13px;color:var(--text2)">El&#337;re &#246;ssze&#225;ll&#237;tott csomagok...</div>
+          </div>
+          <div style="height:200px"></div>
+        </div>
+        <div class="cookie-bar" id="cookie-bar">
+          <p>Ez az oldal s&#252;tiket &#233;s Firebase Analytics-et haszn&#225;l a szolg&#225;ltat&#225;s jav&#237;t&#225;s&#225;ra. R&#233;szletek az <a href="#">Adatv&#233;delmi T&#225;j&#233;koztat&#243;ban</a>.</p>
+          <div class="cookie-btns">
+            <button class="cookie-decline" onclick="setScenario(3,'dismissed')">Elutas&#237;tom</button>
+            <button class="cookie-accept" onclick="setScenario(3,'dismissed')">Elfogadom</button>
+          </div>
+        </div>
+      </div>
+      <div style="max-width:340px">
+        <span class="label-good">SPECIFIK&#193;CI&#211;</span>
+        <div class="note-box">
+          <strong>Pontos sz&#246;veg:</strong><br>
+          &#8222;Ez az oldal s&#252;tiket &#233;s Firebase Analytics-et haszn&#225;l a szolg&#225;ltat&#225;s jav&#237;t&#225;s&#225;ra. R&#233;szletek az <u>Adatv&#233;delmi T&#225;j&#233;koztat&#243;ban</u>.&#8221;<br><br>
+          <strong>Gombok:</strong><br>
+          &#8226; &#8222;Elfogadom&#8221; &#8594; banner elt&#369;nik, analytics betlt&#246;dik<br>
+          &#8226; &#8222;Elutas&#237;tom&#8221; &#8594; banner elt&#369;nik, analytics NEM t&#246;lt&#337;dik be<br><br>
+          <strong>Viselked&#233;s:</strong><br>
+          &#8226; MINDEN l&#225;togat&#243;nak megjelenik (regisztr&#225;lt &#233;s nem regisztr&#225;lt)<br>
+          &#8226; Csak egyszer jelenik meg (localStorage / cookie alapon megjegyezz&#252;k)<br>
+          &#8226; Elutast&#237;s eset&#233;n NEM gy&#369;jt&#252;nk Firebase adatot<br>
+          &#8226; A banner NEM blokkolja az oldalt &#8212; a felhaszn&#225;l&#243; g&#246;rgethet m&#246;g&#246;tte
+        </div>
+        <div class="info-box">
+          <span class="label-info">MI&#201;RT KELL EZ?</span><br>
+          <strong>Nem regisztr&#225;lt userek &#233;s analitika:</strong><br>
+          &#8226; A regisztr&#225;ci&#243;s consent az &#193;SZF + PP elfogad&#225;s&#225;ra vonatkozik<br>
+          &#8226; A cookie banner a nem regisztr&#225;lt l&#225;togat&#243;kat is lefedi<br>
+          &#8226; Firebase Analytics = anonim adat &#8594; GDPR 6(1)(f) jogos &#233;rdek<br>
+          &#8226; De t&#225;j&#233;koztatni KELL + opt-out lehet&#337;s&#233;get KELL adni<br>
+          &#8226; Ha elutast&#237;ja: az app tov&#225;bbra is haszn&#225;lhat&#243;, csak analytics nincs
+        </div>
+        <div class="info-box">
+          <span class="label-info">K&#201;TNYELV&#368;</span><br>
+          <strong>Cookie banner nyelve:</strong><br>
+          &#8226; Alapb&#243;l magyarul jelenik meg<br>
+          &#8226; Rom&#225;n verzi&#243; el&#233;rhet&#337; a l&#225;bl&#233;c nyelvv&#225;lt&#243;j&#225;n kereszt&#252;l<br>
+          &#8226; Az Adatv&#233;delmi T&#225;j&#233;koztat&#243; link mindk&#233;t nyelven el&#233;rhet&#337;
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="changelog">
+  <h3>Changelog</h3>
+  <ul>
+    <li><strong>v2 (2026-04-16)</strong> &#8212; Cookie banner tab hozz&#225;adva (DH-137), k&#233;tnyelv&#369;s&#233;g (HU+RO) jel&#246;lve minden tabon, nem regisztr&#225;lt userek analytics kezel&#233;se dokument&#225;lva</li>
+    <li><strong>v1 (2026-04-16)</strong> &#8212; Els&#337; verzi&#243;: jelenlegi popup anal&#237;zis &#8594; &#250;j consent checkbox a regisztr&#225;ci&#243;ban + b&#233;l&#233;ptet&#337; kapu l&#233;tez&#337; usereknek</li>
+  </ul>
+</div>
+
+<script>
+function showTab(idx) {
+  document.querySelectorAll('.tab').forEach(function(t,i) { t.classList.toggle('active', i===idx); });
+  document.querySelectorAll('.feature').forEach(function(f,i) { f.classList.toggle('active', i===idx); });
+}
+
+function toggleConsent() {
+  var check = document.getElementById('consent-check');
+  var btn = document.getElementById('reg-btn');
+  if (check.classList.contains('checked')) {
+    check.classList.remove('checked');
+    check.innerHTML = '';
+    btn.disabled = true;
+  } else {
+    check.classList.add('checked');
+    check.innerHTML = '\u2713';
+    btn.disabled = false;
+  }
+}
+
+function setScenario(tab, scenario) {
+  var container = document.getElementById('scenarios'+tab);
+  var btns = container.querySelectorAll('.scenario-btn');
+  btns.forEach(function(b) { b.classList.remove('active'); });
+  if (scenario === 'unchecked' || scenario === 'gate' || scenario === 'banner') btns[0].classList.add('active');
+  else btns[1].classList.add('active');
+
+  if (tab === 1) {
+    var check = document.getElementById('consent-check');
+    var btn = document.getElementById('reg-btn');
+    if (scenario === 'checked') {
+      check.classList.add('checked');
+      check.innerHTML = '\u2713';
+      btn.disabled = false;
+    } else {
+      check.classList.remove('checked');
+      check.innerHTML = '';
+      btn.disabled = true;
+    }
+  }
+
+  if (tab === 2) {
+    var body = document.getElementById('phone-gate');
+    if (scenario === 'gate') {
+      body.innerHTML = '<div style="margin:24px 0 12px;text-align:center">' +
+        '<div style="font-size:40px;margin-bottom:12px">&#128220;</div>' +
+        '<div style="font-size:20px;font-weight:800;margin-bottom:6px">Fr\u00edss\u00edtett felt\u00e9telek</div>' +
+        '<div style="font-size:13px;color:var(--text2);line-height:1.5;padding:0 8px">Bevezett\u00fck az \u00c1ltal\u00e1nos Szerz\u0151d\u00e9si Felt\u00e9teleket \u00e9s fr\u00edss\u00edtett\u00fck az Adatv\u00e9delmi T\u00e1j\u00e9koztat\u00f3nkat. A folytat\u00e1shoz k\u00e9rlek fogadd el.</div>' +
+        '</div>' +
+        '<div class="card" style="margin:16px 0">' +
+        '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' +
+        '<span style="font-size:18px">&#128196;</span>' +
+        '<a href="#" style="color:var(--primary);font-size:14px;font-weight:600">\u00c1ltal\u00e1nos Szerz\u0151d\u00e9si Felt\u00e9telek</a>' +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:10px">' +
+        '<span style="font-size:18px">&#128274;</span>' +
+        '<a href="#" style="color:var(--primary);font-size:14px;font-weight:600">Adatv\u00e9delmi T\u00e1j\u00e9koztat\u00f3</a>' +
+        '</div>' +
+        '</div>' +
+        '<button class="btn btn-primary" onclick="setScenario(2,\'accepted\')" style="margin-bottom:10px">Elfogadom \u00e9s tov\u00e1bb</button>' +
+        '<button class="btn btn-ghost" style="width:100%;text-align:center">Kijelentkez\u00e9s</button>';
+    } else {
+      body.innerHTML = '<div style="margin:24px 0 12px;text-align:center">' +
+        '<div style="font-size:48px;margin-bottom:8px;color:var(--green)">\u2713</div>' +
+        '<div style="font-size:18px;font-weight:700;margin-bottom:6px">K\u00f6sz\u00f6nj\u00fck\!</div>' +
+        '<div style="font-size:13px;color:var(--text2)">A felt\u00e9telek elfogadva. Tov\u00e1bb az alkalmaz\u00e1sba...</div>' +
+        '</div>' +
+        '<div style="height:16px"></div>' +
+        '<div style="text-align:center;color:var(--text2);font-size:12px">\u00c1tir\u00e1ny\u00edt\u00e1s 2 m\u00e1sodperc m\u00falva...</div>';
+    }
+  }
+
+  if (tab === 3) {
+    var bar = document.getElementById('cookie-bar');
+    if (scenario === 'banner') {
+      bar.style.display = 'block';
+    } else {
+      bar.style.display = 'none';
+    }
+  }
+}
+setScenario(2, 'gate');
+</script>
+</body>
+</html>

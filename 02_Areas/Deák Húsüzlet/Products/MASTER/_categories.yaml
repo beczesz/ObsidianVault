@@ -1,0 +1,26 @@
+# Deák Húsmíves termékkategóriák
+# Maps to schema's `categories` array (Deak Product Category doctype)
+
+- category_id: friss_serteshus
+  category_name_hu: Friss Sertéshús
+  category_name_ro: Carne proaspătă de porc
+
+- category_id: friss_novendekhus
+  category_name_hu: Friss Növendékhús
+  category_name_ro: Carne proaspătă de vițel
+
+- category_id: friss_csirkehus
+  category_name_hu: Friss Csirkehús
+  category_name_ro: Carne proaspătă de pui
+
+- category_id: fustolt_aruk
+  category_name_hu: Füstölt Áruk
+  category_name_ro: Produse afumate
+
+- category_id: kolbasz_szalami
+  category_name_hu: Kolbász & Szalámi
+  category_name_ro: Cârnați & Salam
+
+- category_id: felvagott_egyeb
+  category_name_hu: Felvágott & Egyéb
+  category_name_ro: Mezeluri & Altele

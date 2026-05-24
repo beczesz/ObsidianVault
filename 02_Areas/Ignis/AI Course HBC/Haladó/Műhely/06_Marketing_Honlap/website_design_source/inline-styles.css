@@ -1,0 +1,127 @@
+
+
+/* --- new <style> block --- */
+
+
+@media print {
+	header[role=banner] {
+		display: none;
+	}
+	footer[role=contentinfo] {
+		display: none;
+	}
+	@page {
+		size: auto; /* auto is the current printer page size */
+		margin-left: 0mm;
+		/* this affects the margin in the printer settings */
+	}
+}
+
+
+/* --- new <style> block --- */
+
+
+	.bannerFlags{
+width:108px;
+
+}
+.headerButtons {
+    width: 155px;
+}
+.buttonsViolet{
+margin : 0px ;
+height : 39px;
+line-height : 10px;
+margin-left: 2px;
+vertical-align:middle;
+
+}
+*{margin : 1px;
+}
+
+
+/* --- new <style> block --- */
+
+a:link {text-decoration: none;}.button2 {  background-color: rgba(67,68,128,1);   border: none;  color: white;  padding: 15px 32px;  text-align: center;  text-decoration: none;  display: inline-block;  font-size: 16px;}.button2:hover {  box-shadow: 0 12px 16px 0 rgba(67,68,128,1),0 17px 50px 0 rgba(67,68,128,1); /* box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);*/}
+
+/* --- new <style> block --- */
+
+	a:link {	text-decoration: none;	}	.button2 {  	  border: none;	  color: white;	  padding: 15px 32px;	  text-align: center;	  text-decoration: none;	  display: inline-block;	  font-size: 16px;	}	.button2:hover {	  box-shadow: 0 12px 16px 0 rgba(67,68,128,1),0 17px 50px 0 rgba(67,68,128,1);	 /* box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);	*/	}					
+
+/* --- new <style> block --- */
+
+  a:link {  text-decoration: none;  }  .button2 {	background-color: rgba(67,68,128,1); 	border: none;	color: white;	padding: 15px 32px;	text-align: center;	text-decoration: none;	display: inline-block;	font-size: 16px;  }  .button2:hover {	box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.3);   /* box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);  */  }          
+
+/* --- new <style> block --- */
+
+	  	     @import url(https://fonts.googleapis.com/css?family=Josefin+Sans:400,700);  @import url(https://fonts.googleapis.com/css?family=Josefin+Sans:400,700);  .cardi{	 margin-top: 617px;	  padding:0;	  font-family:"Josefin Sans",sans-serif;	  background-color:#eee	  color:#fff;  text-decoration:none;    	  }  a{  color:#fff;  text-decoration:none    }    .card{position:absolute;    top:57%;  left:12%;  height:342px;  width:255px;  transform:translate(-50%,-50%);  transform-style:preserve-3d;  perspective:600px;  transition:.5s}  .card:hover .card-front{transform:rotateY(-180deg)}  .card:hover .card-back{transform:rotateY(0deg)}  .card-front{height:100%;width:100%;    background-position:50% 50%;  background-size:cover;  position:absolute;  top:0;  left:0;  background-image: url(https://static.anaf.ro/static/10/Anaf/imagini/imageedit_8_2366553018.png), linear-gradient(to right, #38396B, #38396B);  backface-visibility:hidden;  transform:rotateY(0deg);  transition:.5s}  .card-back{	font-family: Trebuchet MS, Verdana,Arial,Helvetica,sans-serif;	  height:100%;width:100%;  position:absolute;  top:0;  left:0;  background-color: rgb(87, 88, 151);   backface-visibility:hidden;  transform:rotateY(180deg);  transition:.5s;color:#fff;  text-align:center}  .card-back h2{margin:60% auto 35%;font-size:26px}  .card-back h2 span{font-size:20px}  .card-back a{  padding:5px;  line-height:20px}  .card-back a:hover{color:white;}            .card2{ position:absolute;  top:57%;  left:37%;  height:342px;  width:255px;  transform:translate(-50%,-50%);  transform-style:preserve-3d;  perspective:600px;  transition:.5s}  .card2:hover .card-front2{transform:rotateY(-180deg)}  .card2:hover .card-back2{transform:rotateY(0deg)}  .card-front2{height:100%;width:100%;    background-position:50% 50%;  background-size:cover;  position:absolute;  top:0;  left:0;  background-image: url(https://static.anaf.ro/static/10/Anaf/imagini/imageedit_12_6209589365.png), linear-gradient(to right, #38396B, #38396B);  backface-visibility:hidden;  transform:rotateY(0deg);  transition:.5s}        .card-back2{	font-family: Trebuchet MS, Verdana,Arial,Helvetica,sans-serif; height:100%;width:100%;  padding-top: 1px;  top: 0px;  left:0;  background-color: rgb(87, 88, 151);   backface-visibility:hidden;  transform:rotateY(180deg);  transition:.5s;color:#fff;  text-align:center}  .card-back2 h2{margin:60% auto 35%;font-size:26px}  .card-back2 h2 span{font-size:20px}  .card-back2 a{	 	  padding:5px;	  line-height:20px}  .card-back2 a:hover{color:white;}        /*  --*/  .card3{ position:absolute;  top:57%;  left:62%;  height:342px;  width:255px;transform:translate(-50%,-50%);transform-style:preserve-3d;perspective:600px;transition:.5s}.card3:hover .card-front3{transform:rotateY(-180deg)}.card3:hover .card-back3{transform:rotateY(0deg)}.card-front3{height:100%;width:100%;background-position:50% 50%;background-size:cover;position:absolute;top:0;left:0;background-image: url(https://static.anaf.ro/static/10/Anaf/imagini/imageedit_nerezidenti.png), linear-gradient(to right, #38396B, #38396B);backface-visibility:hidden;transform:rotateY(0deg);transition:.5s}.card-back3{  font-family: Trebuchet MS, Verdana,Arial,Helvetica,sans-serif;    height:100%;width:100%;padding-top: 1px;top: 0px;left:0;background-color: rgb(87, 88, 151); backface-visibility:hidden;transform:rotateY(180deg);transition:.5s;color:#fff;text-align:center}.card-back3 h2{margin:60% auto 35%;font-size:26px}.card-back3 h2 span{font-size:20px}.card-back3 a{       padding:5px;    line-height:20px}.card-back3 a:hover{color:white;}  /*  --*/    /*  --*/  .card4{ position:absolute;  top:57%;  left:87%;  height:342px;  width:255px;transform:translate(-50%,-50%);transform-style:preserve-3d;perspective:600px;transition:.5s}.card4:hover .card-front4{transform:rotateY(-180deg)}.card4:hover .card-back4{transform:rotateY(0deg)}.card-front4{height:100%;width:100%;background-position:42% 50%;background-size:cover;position:absolute;top:0;left:0;background-image: url(https://static.anaf.ro/static/10/Anaf/imagini/nerezidenti.png), linear-gradient(to right, #38396B, #38396B);backface-visibility:hidden;transform:rotateY(0deg);transition:.5s}.card-back4{  font-family: Trebuchet MS, Verdana,Arial,Helvetica,sans-serif;    height:100%;width:100%;padding-top: 1px;top: 0px;left:0;background-color: rgb(87, 88, 151); backface-visibility:hidden;transform:rotateY(180deg);transition:.5s;color:#fff;text-align:center}.card-back4 h2{margin:60% auto 35%;font-size:26px}.card-back4 h2 span{font-size:20px}.card-back4 a{       padding:5px;    line-height:20px}.card-back4 a:hover{color:white;}  /*  --*/                  .element:hover{  background: transparent;  -ms-filter: "progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000)"; /* IE8 */	  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#7F000000,endColorstr=#7F000000);   /* IE6 & 7 */		zoom: 1;  }  .container {	  width: 450px;	position: relative;  	margin: 0 auto;  }    .container img {vertical-align: middle;}    .container .content {	position: absolute;	text-align: center;	bottom: 0;	padding-left: 20px;	background-image: linear-gradient(to right, #38396B, #bdbece);  color: #f1f1f1;	width: 245px;	padding: 5px;  }    .btn {  	background-color: rgb(87, 88, 151);     display: inline-flex;  align-content: center;  padding: 1em 2em;    color: white;  font-size: 16px;  margin: 0.5em;  cursor: pointer;  }    .btn.brighten:hover {  box-shadow: inset 0 0 0 10em rgba(255, 255, 255, 0.3);  }    .btn.darken:hover {	background-color: #38396B;  }  		  /* Adding some basic styling to button */		  		  .btn77 {		position: relative;		text-transform: uppercase;		padding-right: 500px;		padding-top: 1900px;			  text-decoration: none;			  border: none;		margin-top: 0px;			  padding: 12px 425px;			  font-size: 16px;			  background-image: linear-gradient(to right, #38396B, #bdbece); 			  color: #fff;			  border-radius: 5px;			  box-shadow: 7px 6px 28px 1px rgba(0, 0, 0, 0.24);			  cursor: pointer;			  outline: none;			  transition: 0.2s all;		  }		  /* Adding transformation when the button is active */		  		  .btn77:active {	  			  transform: scale(0.98);			  /* Scaling button to 0.98 to its original size */			  box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);			  /* Lowering the shadow */		  }    	.alin{		}			
+
+/* --- new <style> block --- */
+
+
+
+        /* Slideshow container */
+        .slideshow-containeri {
+          margin: auto;
+          bottom: 10px;
+          text-align: center;
+          height: 40px;
+        }
+        
+        /* Next & previous buttons */
+        .previ, .nexti {
+          cursor: pointer;
+          top: 50%;
+          width: auto;
+          color: white;
+          font-weight: bold;
+          font-size: 18px;
+          transition: 0.6s ease;
+          border-radius: 0 3px 3px 0;
+          user-select: none;
+        }
+        
+        /* Position the "next button" to the right */
+        .nexti {
+          right: 0;
+          border-radius: 3px 0 0 3px;
+        }
+        
+        /* On hover, add a black background color with a little bit see-through */
+        .previ:hover, .nexti:hover {
+          background-color: rgba(0,0,0,0.8);
+        }
+        
+
+        
+        /* The dots/bullets/indicators */
+        .doti {
+          float: center;
+        height: 10px;
+        width: 10px;
+		    border-radius: 50%;
+        background-color: #bbb;
+        display: inline-block;
+        transition: background-color 0.6s ease;
+        }
+        
+        .active, .doti:hover {
+          background-color: #717171;
+        }
+        
+        /* Fading animation */
+        .fadei {
+          -webkit-animation-name: fade;
+          -webkit-animation-duration: 1.5s;
+          animation-name: fade;
+          animation-duration: 1.5s;
+        }
+        
+
+        @keyframes fadei {
+          from {opacity: .4} 
+          to {opacity: 1}
+        }
+        
+        
+        

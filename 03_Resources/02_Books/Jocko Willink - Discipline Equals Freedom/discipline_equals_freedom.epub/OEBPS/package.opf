@@ -1,0 +1,78 @@
+<package xmlns="http://www.idpf.org/2007/opf" prefix="rendition: http://www.idpf.org/vocab/rendition/# schema: http://schema.org/" unique-identifier="uid" version="3.0" xml:lang="en">
+<metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+<dc:title id="title">Discipline Equals Freedom</dc:title>
+<dc:identifier id="uid">9781250276186</dc:identifier>
+<meta property="identifier-type" refines="#uid" scheme="onix:codelist5">15</meta>
+<dc:language>en-US</dc:language>
+<dc:creator id="creator">Jocko Willink</dc:creator>
+<dc:publisher>St. Martin's Publishing Group</dc:publisher>
+<dc:source id="src-id">urn:isbn:9781250274434</dc:source>
+<meta property="identifier-type" refines="#src-id" scheme="onix:codelist5">15</meta>
+<dc:rights>All rights reserved</dc:rights>
+<meta property="title-type" refines="#title">main</meta>
+<meta property="dcterms:modified">2020-09-09T22:22:16Z</meta>
+<meta id="auth" property="dcterms:creator">Jocko Willink</meta>
+<meta property="dcterms:date">2020</meta>
+<meta property="rendition:orientation">auto</meta>
+<meta property="rendition:spread">auto</meta>
+<meta content="cover-image" name="cover"/>
+<meta property="schema:accessMode">textual</meta>
+<meta property="schema:accessModeSufficient">textual,visual</meta>
+<meta property="schema:accessibilityFeature">structuralNavigation</meta>
+<meta property="schema:accessibilitySummary">This publication conforms to the EPUB Accessibility specification at WCAG Level A.</meta>
+<meta property="schema:accessibilityHazard">none</meta>
+<description xmlns="http://purl.org/dc/elements/1.1/">&lt;p&gt;&lt;b&gt;In this expanded edition of the 2017 mega-bestseller, updated with brand new sections like DO WHAT MAKES YOU HAPPY, SUGAR COATED LIES and DON'T NEGOTIATE WITH WEAKNESS, readers will discover new ways to become stronger, smarter, and healthier.&lt;br&gt;&lt;/b&gt;Jocko Willink's methods for success were born in the SEAL Teams, where he spent most of his adult life, enlisting after high school and rising through the ranks to become the commander of the most highly decorated special operations unit of the war in Iraq. In Discipline Equals Freedom, the #1 New York Times bestselling coauthor of Extreme Ownership describes how he lives that mantra: the mental and physical disciplines he imposes on himself in order to achieve freedom in all aspects of life. Many books offer advice on how to overcome obstacles and reach your goals?but that advice often misses the most critical ingredient: discipline. Without discipline, there will be no real progress. Discipline Equals Freedom covers it all,...</description>
+</metadata>
+<manifest>
+<item href="nav.xhtml" id="nav" media-type="application/xhtml+xml" properties="nav"/>
+<item href="toc.ncx" id="toc" media-type="application/x-dtbncx+xml"/>
+<item href="xhtml/cover.xhtml" id="html-cover-page" media-type="application/xhtml+xml"/>
+<item href="xhtml/title.xhtml" id="tit" media-type="application/xhtml+xml"/>
+<item href="xhtml/mini_toc.xhtml" id="mini_toc" media-type="application/xhtml+xml"/>
+<item href="xhtml/copyrightnotice.xhtml" id="copyrightnotice" media-type="application/xhtml+xml"/>
+<item href="xhtml/dedication.xhtml" id="dedication" media-type="application/xhtml+xml"/>
+<item href="xhtml/part1.xhtml" id="part1" media-type="application/xhtml+xml"/>
+<item href="xhtml/part2.xhtml" id="part2" media-type="application/xhtml+xml"/>
+<item href="xhtml/chapter1.xhtml" id="chapter1" media-type="application/xhtml+xml"/>
+<item href="xhtml/chapter2.xhtml" id="chapter2" media-type="application/xhtml+xml"/>
+<item href="xhtml/chapter3.xhtml" id="chapter3" media-type="application/xhtml+xml"/>
+<item href="xhtml/abouttheauthor.xhtml" id="abouttheauthor" media-type="application/xhtml+xml"/>
+<item href="xhtml/newsletter.xhtml" id="newsletter" media-type="application/xhtml+xml"/>
+<item href="xhtml/contents.xhtml" id="contents" media-type="application/xhtml+xml"/>
+<item href="xhtml/copyright.xhtml" id="copyright" media-type="application/xhtml+xml"/>
+<item href="images/9781250276186.jpg" id="cover-image" media-type="image/jpeg"/>
+<item href="styles/stylesheet.css" id="css" media-type="text/css"/>
+<item href="images/asterisks.jpg" id="asterik-hr" media-type="image/jpeg"/>
+<item href="images/NewsletterSignup.jpg" id="image-0002" media-type="image/jpeg"/>
+<item href="images/twitter_logo.png" id="image-0003" media-type="image/png"/>
+<item href="images/fb-logo.png" id="image-0004" media-type="image/png"/>
+<item href="images/author.jpg" id="image-0005" media-type="image/jpeg"/>
+<item href="images/title.jpg" id="image-0006" media-type="image/jpeg"/>
+<item href="images/pg1.jpg" id="image-0007" media-type="image/jpeg"/>
+<item href="images/pg138.jpg" id="image-0008" media-type="image/jpeg"/>
+<item href="images/pg186-187.jpg" id="image-0009" media-type="image/jpeg"/>
+<item href="images/pg202-203.jpg" id="image-0010" media-type="image/jpeg"/>
+<item href="images/pg208-209.jpg" id="image-0011" media-type="image/jpeg"/>
+</manifest>
+<spine page-progression-direction="ltr" toc="toc">
+<itemref idref="html-cover-page"/>
+<itemref idref="tit"/>
+<itemref idref="mini_toc"/>
+<itemref idref="copyrightnotice"/>
+<itemref idref="dedication"/>
+<itemref idref="part1"/>
+<itemref idref="part2"/>
+<itemref idref="chapter1"/>
+<itemref idref="chapter2"/>
+<itemref idref="chapter3"/>
+<itemref idref="abouttheauthor"/>
+<itemref idref="newsletter"/>
+<itemref idref="contents" linear="no"/>
+<itemref idref="copyright"/>
+</spine>
+<guide>
+<reference href="xhtml/cover.xhtml" title="Begining" type="start"/>
+<reference href="xhtml/cover.xhtml" title="Cover Image" type="cover"/>
+<reference href="xhtml/contents.xhtml" title="Contents" type="toc"/>
+</guide>
+</package>

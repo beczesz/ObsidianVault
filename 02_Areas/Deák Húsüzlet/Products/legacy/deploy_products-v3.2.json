@@ -1,0 +1,183 @@
+{
+  "meta": {
+    "version": "3.2",
+    "schema_version": "1.0",
+    "date": "2026-05-07",
+    "author": "Becze Szabolcs / Exar Labs",
+    "description": "Deák Húsmíves termékkatalógus — 1 termék, 5 kategória. Generated from MASTER/products/*.md.",
+    "supported_languages": [
+      "hu",
+      "ro"
+    ],
+    "default_language": "hu"
+  },
+  "categories": [
+    {
+      "id": "friss_serteshus",
+      "name": {
+        "hu": "Friss Sertéshús",
+        "ro": "Carne proaspătă de porc"
+      },
+      "icon": "🥩",
+      "product_count": 1
+    },
+    {
+      "id": "friss_novendekhus",
+      "name": {
+        "hu": "Friss Növendékhús",
+        "ro": "Carne proaspătă de vițel"
+      },
+      "icon": "🐄",
+      "product_count": 0
+    },
+    {
+      "id": "fustolt_aruk",
+      "name": {
+        "hu": "Füstölt Áruk",
+        "ro": "Produse afumate"
+      },
+      "icon": "🔥",
+      "product_count": 0
+    },
+    {
+      "id": "kolbasz_szalami",
+      "name": {
+        "hu": "Kolbász & Szalámi",
+        "ro": "Cârnați & Salam"
+      },
+      "icon": "🌭",
+      "product_count": 0
+    },
+    {
+      "id": "felvagott_egyeb",
+      "name": {
+        "hu": "Felvágott & Egyéb",
+        "ro": "Mezeluri & Altele"
+      },
+      "icon": "🍖",
+      "product_count": 0
+    }
+  ],
+  "products": [
+    {
+      "id": "sertes_csulok",
+      "image": "sertes_csulok.webp",
+      "product_type": "hybrid",
+      "price_per_kg": 19.0,
+      "estimated_weight_per_piece": 1.5,
+      "weight_range_min": 1.2,
+      "weight_range_max": 1.8,
+      "available": true,
+      "seasonal": "year_round",
+      "sources": [
+        "meeting-2026-05-07",
+        "DH-183",
+        "DH-173"
+      ],
+      "last_updated": "2026-05-07",
+      "category_id": "friss_serteshus",
+      "name": {
+        "hu": "Sertés Csülök",
+        "ro": "Ciolan porc"
+      },
+      "description": {
+        "hu": "Kollagénben gazdag friss csülök, párolt fogásokhoz és húsleveshez ideális.",
+        "ro": "Ciolan proaspăt bogat în colagen, ideal pentru mâncăruri înăbușite și supă de carne."
+      },
+      "usage": {
+        "hu": "Lerbe sült csülök, Pörkölt",
+        "ro": "Ciolan la cuptor, Tocană"
+      },
+      "options": [
+        {
+          "id": "pacolas",
+          "name": {
+            "hu": "Pácolás",
+            "ro": ""
+          },
+          "type": "single_select",
+          "required": false,
+          "default": "nem_pacolt",
+          "values": [
+            {
+              "id": "nem_pacolt",
+              "name": {
+                "hu": "Pácolatlan",
+                "ro": "Nemarinate"
+              }
+            },
+            {
+              "id": "pacolt",
+              "name": {
+                "hu": "Pácolt",
+                "ro": "Marinate"
+              },
+              "producer_note": "24h előrendelés szükséges"
+            }
+          ]
+        },
+        {
+          "id": "meret",
+          "name": {
+            "hu": "Méret",
+            "ro": ""
+          },
+          "type": "single_select",
+          "required": false,
+          "default": "kozepes",
+          "values": [
+            {
+              "id": "kisebb",
+              "name": {
+                "hu": "Kisebb",
+                "ro": "Mai mic"
+              },
+              "weight_range": [
+                1.0,
+                1.3
+              ]
+            },
+            {
+              "id": "kozepes",
+              "name": {
+                "hu": "Közepes",
+                "ro": "Mediu"
+              },
+              "weight_range": [
+                1.3,
+                1.6
+              ]
+            },
+            {
+              "id": "nagyobb",
+              "name": {
+                "hu": "Nagyobb",
+                "ro": "Mai mare"
+              },
+              "weight_range": [
+                1.6,
+                1.8
+              ]
+            }
+          ]
+        }
+      ],
+      "producer_notes": "> **2026-05-07 — termelői meeting (PROBA SAMPLE):**\n> A csülök súlya termelőnként és vágási batchenként változik, jellemzően 1.2–1.8 kg között. A pácolt verziót külön kell előrendelni 24 órával előtte. A méret-kategória opció azt szolgálja, hogy a mészáros pontosan tudja, melyik darabot vegye ki a vitrinből — a kisebb gyorsabban elkészül, a nagyobb ünnepi alkalmakra ideális.",
+      "history": [
+        {
+          "date": "2026-05-07",
+          "change": "Pácolás + Méret opciók rögzítve, Option C MD formátum próba (sample, transcript előtti placeholder)"
+        },
+        {
+          "date": "2026-04-30",
+          "change": "DH-183: hybrid típus bevezetve (becsült 1.5 kg, ±10% korrekció, 1.2–1.8 kg tartomány)"
+        },
+        {
+          "date": "2026-04-01",
+          "change": "products_v3.1.json: kategória friss_serteshus, ár 19 RON/kg"
+        }
+      ],
+      "min_order_gramm": null
+    }
+  ]
+}

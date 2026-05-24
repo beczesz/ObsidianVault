@@ -1,0 +1,2291 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formular de depunere — Programul Mobilitate Verde pentru IMM-uri 2026</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Roboto', -apple-system, system-ui, 'Helvetica Neue', sans-serif;
+            font-size: 14px;
+            line-height: 1.7;
+            color: #1a1a18;
+            background: #fff;
+        }
+
+        /* === HEADER === */
+        .site-header {
+            background: #fff;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 12px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .site-header .logos {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .site-header .logo-text {
+            font-size: 11px;
+            color: #0f2890;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+        }
+        .site-header .logo-text span {
+            display: block;
+            font-size: 9px;
+            font-weight: 400;
+            color: #666;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .eu-logos {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .eu-badge {
+            background: #0f2890;
+            color: #fff;
+            font-size: 8px;
+            padding: 4px 8px;
+            border-radius: 2px;
+            font-weight: 500;
+        }
+        .ro-badge {
+            background: #003399;
+            color: #FFD700;
+            font-size: 8px;
+            padding: 4px 8px;
+            border-radius: 2px;
+            font-weight: 700;
+        }
+
+        /* === NAV BAR === */
+        .nav-bar {
+            background: #0f2890;
+            padding: 0 40px;
+            display: flex;
+            gap: 0;
+        }
+        .nav-bar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 500;
+            padding: 14px 18px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            border-right: 1px solid rgba(255,255,255,0.15);
+            transition: background 0.2s;
+        }
+        .nav-bar a:hover, .nav-bar a.active {
+            background: rgba(255,255,255,0.12);
+        }
+
+        /* === HERO BANNER === */
+        .hero-banner {
+            background: linear-gradient(135deg, #0f2890 0%, #1a3cb5 50%, #0c4da2 100%);
+            padding: 45px 40px;
+            color: #fff;
+        }
+        .hero-banner .breadcrumb {
+            font-size: 12px;
+            opacity: 0.7;
+            margin-bottom: 12px;
+        }
+        .hero-banner .breadcrumb a { color: #fff; text-decoration: none; }
+        .hero-banner h1 {
+            font-size: 32px;
+            font-weight: 400;
+            line-height: 1.2;
+        }
+
+        /* === CONTENT AREA === */
+        .content-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 40px;
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 40px;
+        }
+
+        /* === FORM SECTIONS === */
+        .form-section {
+            background: #fff;
+            border: 1px solid #dde3ed;
+            border-radius: 3px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        .form-section-header {
+            background: #ebf0f8;
+            padding: 14px 20px;
+            border-bottom: 2px solid #0f2890;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .form-section-header .section-number {
+            background: #0f2890;
+            color: #fff;
+            font-size: 13px;
+            font-weight: 700;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .form-section-header h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #0f2890;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .form-section-body {
+            padding: 20px;
+        }
+
+        /* === ALERT BOXES === */
+        .alert-box {
+            padding: 12px 16px;
+            border-radius: 3px;
+            margin-bottom: 18px;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        .alert-box.warning {
+            background: #fff8e1;
+            border-left: 4px solid #ffa000;
+            color: #5d4037;
+        }
+        .alert-box.info {
+            background: #e3f2fd;
+            border-left: 4px solid #1565c0;
+            color: #1a237e;
+        }
+        .alert-box.danger {
+            background: #fce4ec;
+            border-left: 4px solid #c62828;
+            color: #b71c1c;
+        }
+        .alert-box.legal {
+            background: #f3e5f5;
+            border-left: 4px solid #6a1b9a;
+            color: #4a148c;
+        }
+        .alert-box strong {
+            display: block;
+            margin-bottom: 4px;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        /* === FORM ELEMENTS === */
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .form-group label .required {
+            color: #c62828;
+            font-weight: 700;
+        }
+        .form-group label .field-code {
+            color: #888;
+            font-size: 11px;
+            font-weight: 400;
+        }
+        .form-group .help-text {
+            font-size: 11px;
+            color: #777;
+            margin-top: 4px;
+            line-height: 1.5;
+        }
+        .form-group .help-text.legal-ref {
+            color: #6a1b9a;
+            font-style: italic;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        input[type="email"],
+        input[type="tel"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 9px 12px;
+            border: 1px solid #c0c8d8;
+            border-radius: 3px;
+            font-family: inherit;
+            font-size: 13px;
+            color: #333;
+            background: #fafbfc;
+            transition: border 0.2s;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #0f2890;
+            background: #fff;
+            box-shadow: 0 0 0 3px rgba(15,40,144,0.08);
+        }
+        textarea { resize: vertical; min-height: 80px; }
+        select { appearance: auto; }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .form-row-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+            margin-top: 3px;
+        }
+        .checkbox-group label {
+            font-size: 12px;
+            font-weight: 400;
+            margin-bottom: 0;
+        }
+
+        /* === FILE UPLOAD === */
+        .file-upload-area {
+            border: 2px dashed #c0c8d8;
+            border-radius: 3px;
+            padding: 20px;
+            text-align: center;
+            background: #f8f9fb;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+        .file-upload-area:hover {
+            border-color: #0f2890;
+        }
+        .file-upload-area .upload-icon {
+            font-size: 28px;
+            color: #888;
+            margin-bottom: 6px;
+        }
+        .file-upload-area p {
+            font-size: 12px;
+            color: #666;
+        }
+        .file-upload-area .formats {
+            font-size: 10px;
+            color: #999;
+            margin-top: 4px;
+        }
+
+        /* === SIDEBAR === */
+        .sidebar {
+            position: sticky;
+            top: 80px;
+            align-self: start;
+            max-height: calc(100vh - 100px);
+            overflow-y: auto;
+            scrollbar-width: thin;
+        }
+        .sidebar::-webkit-scrollbar { width: 4px; }
+        .sidebar::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
+        .sidebar .widget {
+            background: #f5f7fa;
+            border: 1px solid #dde3ed;
+            border-radius: 3px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .sidebar .widget h3 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #0f2890;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #0f2890;
+        }
+        .sidebar .widget ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar .widget ul li {
+            font-size: 12px;
+            padding: 6px 0;
+            border-bottom: 1px solid #e8ecf2;
+            color: #444;
+        }
+        .sidebar .widget ul li:last-child { border: none; }
+        .sidebar .widget ul li .status {
+            float: right;
+            font-weight: 700;
+        }
+        .sidebar .widget ul li .status.done { color: #2e7d32; }
+        .sidebar .widget ul li .status.pending { color: #e65100; }
+        .sidebar .widget ul li .status.empty { color: #c62828; }
+
+        .sidebar .cta-card {
+            background: linear-gradient(135deg, #216073, #1a4c5c);
+            color: #fff;
+            border-radius: 3px;
+            padding: 24px 20px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .sidebar .cta-card h3 {
+            color: #fff;
+            border: none;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+        .sidebar .cta-card p {
+            font-size: 12px;
+            opacity: 0.85;
+            margin-bottom: 14px;
+        }
+        .sidebar .cta-card .btn {
+            display: inline-block;
+            background: #fff;
+            color: #216073;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 10px 24px;
+            border-radius: 3px;
+            text-decoration: none;
+        }
+
+        /* === TABLE (for vehicle specs) === */
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+        .data-table th {
+            background: #ebf0f8;
+            color: #0f2890;
+            font-weight: 600;
+            text-align: left;
+            padding: 8px 12px;
+            border: 1px solid #dde3ed;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .data-table td {
+            padding: 8px 12px;
+            border: 1px solid #dde3ed;
+            background: #fafbfc;
+        }
+        .data-table td input, .data-table td select {
+            border: none;
+            background: transparent;
+            padding: 4px;
+            width: 100%;
+        }
+
+        /* === PROGRESS BAR === */
+        .progress-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 12px;
+            margin: 8px 0 4px 0;
+            overflow: hidden;
+        }
+        .progress-bar .fill,
+        .progress-bar .progress-fill {
+            background: linear-gradient(90deg, #0f2890, #1a6bc4);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .progress-text {
+            font-size: 13px;
+            color: #444;
+            text-align: right;
+            font-weight: 600;
+            margin-top: 6px;
+            transition: all 0.3s;
+        }
+        .progress-text.complete {
+            color: #2e7d32;
+            font-size: 14px;
+        }
+
+
+        /* === UPLOADED FILE STATE === */
+        .file-upload-area.uploaded {
+            border-color: #2e7d32 !important;
+            border-style: solid !important;
+            background: #e8f5e9 !important;
+            padding: 12px 16px !important;
+            text-align: left !important;
+        }
+        .file-upload-area.uploaded .upload-placeholder { display: none; }
+        .file-uploaded-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .file-uploaded-info .file-icon {
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+        .file-uploaded-info .file-details {
+            flex: 1;
+        }
+        .file-uploaded-info .file-name {
+            font-weight: 700;
+            font-size: 13px;
+            color: #1a237e;
+        }
+        .file-uploaded-info .file-meta {
+            font-size: 11px;
+            color: #666;
+            margin-top: 2px;
+        }
+        .file-uploaded-info .file-status {
+            color: #2e7d32;
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        @keyframes fileAppear {
+            0% { opacity: 0; transform: translateY(-8px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .file-upload-area.uploaded {
+            animation: fileAppear 0.4s ease-out;
+        }
+        /* === CELEBRATION EFFECT === */
+        @keyframes celebratePulse {
+            0% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0.4); }
+            70% { box-shadow: 0 0 0 12px rgba(46, 125, 50, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(46, 125, 50, 0); }
+        }
+        @keyframes confettiDrop {
+            0% { opacity: 1; transform: translateY(0) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(40px) rotate(360deg); }
+        }
+        .widget.celebrate {
+            animation: celebratePulse 1.5s ease-in-out 3;
+            border-color: #2e7d32 !important;
+            background: linear-gradient(135deg, #e8f5e9, #f5f7fa) !important;
+        }
+        .widget.celebrate h3 {
+            color: #2e7d32 !important;
+        }
+        .progress-bar.complete .progress-fill {
+            background: linear-gradient(90deg, #2e7d32, #43a047, #66bb6a) !important;
+            box-shadow: 0 0 8px rgba(46, 125, 50, 0.5);
+        }
+        .confetti-container {
+            position: relative;
+            height: 0;
+            overflow: visible;
+        }
+        .confetti {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 2px;
+            animation: confettiDrop 1.5s ease-out forwards;
+        }
+
+        /* === SEPARATOR === */
+        .section-separator {
+            border: none;
+            border-top: 1px dashed #ccc;
+            margin: 16px 0;
+        }
+
+        /* === FOOTER === */
+        .site-footer {
+            background: #1a1a18;
+            color: #aaa;
+            padding: 30px 40px;
+            font-size: 11px;
+            margin-top: 40px;
+            text-align: center;
+        }
+        .site-footer a { color: #7eb8da; text-decoration: none; }
+
+        /* === SUBMIT AREA === */
+        .submit-area {
+            background: #ebf0f8;
+            border: 2px solid #0f2890;
+            border-radius: 3px;
+            padding: 24px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        .submit-area .btn-submit {
+            background: #0f2890;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 700;
+            padding: 14px 48px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s;
+        }
+        .submit-area .btn-submit:hover {
+            background: #0a1d6e;
+        }
+        .submit-area .btn-draft {
+            background: #fff;
+            color: #0f2890;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 10px 32px;
+            border: 1px solid #0f2890;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-left: 12px;
+            transition: background 0.2s;
+        }
+        .submit-area .btn-draft:hover {
+            background: #f0f4ff;
+        }
+        .submit-area p {
+            font-size: 11px;
+            color: #666;
+            margin-top: 12px;
+        }
+
+
+        /* === VALIDATION HIGHLIGHTS === */
+        .field-missing {
+            border: 2px solid #c62828 !important;
+            background: #ffebee !important;
+            animation: shakeMissing 0.5s ease;
+        }
+        @keyframes shakeMissing {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px); }
+            40% { transform: translateX(6px); }
+            60% { transform: translateX(-4px); }
+            80% { transform: translateX(4px); }
+        }
+        .field-missing-label {
+            color: #c62828 !important;
+            font-weight: 700 !important;
+        }
+        .validation-toast {
+            position: fixed;
+            top: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #c62828;
+            color: #fff;
+            padding: 14px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 10001;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: toastSlide 0.4s ease-out;
+        }
+        @keyframes toastSlide {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+        }
+
+        /* === SUCCESS OVERLAY === */
+        .success-overlay {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: rgba(0, 20, 60, 0.95) !important;
+            z-index: 99999 !important;
+            display: flex !important;
+            justify-content: center !important;
+            align-items: center !important;
+        }
+        @keyframes overlayFadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .success-card {
+            background: #fff !important;
+            border-radius: 20px;
+            padding: 50px 60px;
+            max-width: 640px;
+            width: 90%;
+            text-align: center;
+            color: #1a1a18 !important;
+            box-shadow: 0 25px 80px rgba(0,0,0,0.4);
+            position: relative;
+            overflow: hidden;
+            animation: popIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes cardPopIn {
+            0% { opacity: 0; transform: scale(0.7) translateY(30px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .success-card .success-icon {
+            width: 90px;
+            height: 90px;
+            background: linear-gradient(135deg, #2e7d32, #43a047);
+            border-radius: 50%;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 48px;
+            color: #fff;
+            animation: iconBounce 0.6s ease 0.8s both;
+        }
+        @keyframes iconBounce {
+            0% { transform: scale(0); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+        .success-card h2 {
+            color: #2e7d32;
+            font-size: 26px;
+            margin-bottom: 8px;
+            animation: textFadeUp 0.4s ease 1s both;
+        }
+        .success-card .subtitle {
+            color: #666;
+            font-size: 15px;
+            margin-bottom: 28px;
+            animation: textFadeUp 0.4s ease 1.1s both;
+        }
+        @keyframes textFadeUp {
+            0% { opacity: 0; transform: translateY(10px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        .success-card .reg-box {
+            background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+            border: 2px solid #2e7d32;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 24px;
+            animation: textFadeUp 0.4s ease 1.2s both;
+        }
+        .success-card .reg-label {
+            font-size: 12px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+        .success-card .reg-number {
+            font-size: 36px;
+            font-weight: 900;
+            color: #1a237e;
+            font-family: 'Roboto Mono', monospace;
+            letter-spacing: 3px;
+        }
+        .success-card .details-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            text-align: left;
+            margin-bottom: 24px;
+            animation: textFadeUp 0.4s ease 1.3s both;
+        }
+        .success-card .detail-item {
+            background: #f5f7fa;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 12px;
+        }
+        .success-card .detail-item .label {
+            color: #888;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .success-card .detail-item .value {
+            color: #333;
+            font-weight: 700;
+            margin-top: 2px;
+        }
+        .success-card .stamp {
+            position: absolute;
+            top: 30px;
+            right: -15px;
+            transform: rotate(15deg);
+            border: 4px solid #2e7d32;
+            border-radius: 8px;
+            padding: 6px 18px;
+            color: #2e7d32;
+            font-weight: 900;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.3;
+            animation: stampAppear 0.3s ease 1.6s both;
+        }
+        @keyframes stampAppear {
+            0% { opacity: 0; transform: rotate(15deg) scale(2); }
+            100% { opacity: 0.3; transform: rotate(15deg) scale(1); }
+        }
+        .success-card .footer-note {
+            font-size: 11px;
+            color: #999;
+            border-top: 1px solid #eee;
+            padding-top: 16px;
+            animation: textFadeUp 0.4s ease 1.5s both;
+        }
+        .success-confetti {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 20001;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        .success-confetti .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-radius: 2px;
+            animation: confettiFall linear forwards;
+        }
+        @keyframes confettiFall {
+            0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        /* === PRINT FRIENDLY === */
+        @media print {
+            .nav-bar, .sidebar, .site-footer { display: none; }
+            .content-wrapper { grid-template-columns: 1fr; }
+        }
+        /* === COUNTDOWN TIMER === */
+        .countdown-sticky {
+            position: sticky;
+            top: 0;
+            z-index: 9999;
+            background: linear-gradient(135deg, #b71c1c 0%, #c62828 50%, #d32f2f 100%);
+            color: #fff;
+            padding: 10px 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            font-family: 'Roboto', sans-serif;
+            box-shadow: 0 2px 8px rgba(183,28,28,0.4);
+            border-bottom: 2px solid #7f0000;
+        }
+        .countdown-sticky.urgent {
+            animation: urgentPulse 1s ease-in-out infinite;
+        }
+        @keyframes urgentPulse {
+            0%, 100% { background: linear-gradient(135deg, #b71c1c 0%, #c62828 50%, #d32f2f 100%); }
+            50% { background: linear-gradient(135deg, #d50000 0%, #ff1744 50%, #d50000 100%); }
+        }
+        .countdown-sticky .timer-icon {
+            font-size: 22px;
+            animation: timerShake 2s ease-in-out infinite;
+        }
+        @keyframes timerShake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+        .countdown-sticky .timer-label {
+            font-size: 12px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.9;
+        }
+        .countdown-sticky .timer-digits {
+            font-size: 28px;
+            font-weight: 700;
+            font-family: 'Roboto Mono', 'Courier New', monospace;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        .countdown-sticky .timer-deadline {
+            font-size: 11px;
+            opacity: 0.8;
+            border-left: 1px solid rgba(255,255,255,0.3);
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- COUNTDOWN TIMER BAR -->
+<div class="countdown-sticky" id="countdownBar">
+    <span class="timer-icon">⏰</span>
+    <span class="timer-label">Termen limită depunere:</span>
+    <span class="timer-digits" id="countdownDigits">--:--:--</span>
+    <span class="timer-deadline" id="deadlineText">Se calculează...</span>
+</div>
+
+<!-- HEADER -->
+<div class="site-header">
+    <div class="logos">
+        <div class="logo-text">
+            Administrația Fondului<br>pentru Mediu
+            <span>Ministerul Mediului, Apelor și Pădurilor</span>
+        </div>
+    </div>
+    <div class="eu-logos">
+        <span class="eu-badge">Cofinanțat de Uniunea Europeană</span>
+        <span class="ro-badge">GUVERNUL ROMÂNIEI</span>
+        <span class="eu-badge">NextGenerationEU</span>
+    </div>
+</div>
+
+<!-- NAV -->
+<div class="nav-bar">
+    <a href="#">Acasă</a>
+    <a href="#">Despre program</a>
+    <a href="#" class="active">Depunere cerere</a>
+    <a href="#">Ghidul solicitantului</a>
+    <a href="#">Întrebări frecvente</a>
+    <a href="#">Verificare status</a>
+    <a href="#">Contact</a>
+</div>
+
+<!-- HERO -->
+<div class="hero-banner">
+    <div class="breadcrumb">
+        <a href="#">Acasă</a> » <a href="#">Programul Mobilitate Verde IMM</a> » Formular de depunere
+    </div>
+    <h1>Cerere de finanțare — Mobilitate Verde pentru IMM-uri</h1>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="content-wrapper">
+<div class="main-content">
+
+    <div class="alert-box warning" id="deadlineWarning">
+        <strong>⚠ ATENȚIE — Depunere în curs!</strong>
+        <span id="warningText">Sesiunea curentă de depunere se închide în curând. Cererile incomplete sau depuse după termen <b>nu vor fi evaluate</b>. Vă recomandăm să completați și să trimiteți formularul cât mai rapid.</span>
+    </div>
+
+    <div class="alert-box info">
+        <strong>ℹ Instrucțiuni de completare</strong>
+        Toate câmpurile marcate cu <span style="color:#c62828;font-weight:700">*</span> sunt obligatorii. Datele introduse trebuie să corespundă documentelor justificative atașate. Orice neconcordanță poate duce la respingerea cererii. Consultați <a href="#">Ghidul Solicitantului</a> (capitolele 4-6) pentru detalii privind criteriile de eligibilitate și evaluare.
+    </div>
+
+    <!-- ==================== SECTION 1 ==================== -->
+    <div class="form-section">
+        <div class="form-section-header">
+            <span class="section-number">1</span>
+            <h2>Date de identificare solicitant</h2>
+        </div>
+        <div class="form-section-body">
+            <div class="alert-box legal">
+                <strong>📋 Bază legală</strong>
+                Datele din această secțiune trebuie să corespundă cu cele din Certificatul constatator ONRC (max. 30 zile de la data depunerii) și din Actul constitutiv al societății (forma consolidată).
+                <br><em>Ref: Ghidul Solicitantului, cap. 4.1, pct. 1-3</em>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Denumire completă societate <span class="required">*</span> <span class="field-code">[F1.01]</span></label>
+                    <input type="text" placeholder="ex: TransOffice Trade SRL">
+                    <div class="help-text">Conform certificat constatator ONRC. Se va completa denumirea exactă, inclusiv forma juridică (SRL, SA, etc.)</div>
+                </div>
+                <div class="form-group">
+                    <label>Cod unic de înregistrare (CUI) <span class="required">*</span> <span class="field-code">[F1.02]</span></label>
+                    <input type="text" placeholder="ex: 15847291">
+                    <div class="help-text">Fără prefixul „RO". Prefixul se selectează separat mai jos.</div>
+                </div>
+            </div>
+
+            <div class="form-row-3">
+                <div class="form-group">
+                    <label>Nr. Registrul Comerțului <span class="required">*</span> <span class="field-code">[F1.03]</span></label>
+                    <input type="text" placeholder="ex: J19/421/2003">
+                </div>
+                <div class="form-group">
+                    <label>Plătitor de TVA <span class="required">*</span> <span class="field-code">[F1.04]</span></label>
+                    <select>
+                        <option value="">— Selectați —</option>
+                        <option>Da — plătitor de TVA</option>
+                        <option>Nu — neplătitor de TVA</option>
+                        <option>Impozit pe venitul microîntreprinderilor</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Cod CAEN principal <span class="required">*</span> <span class="field-code">[F1.05]</span></label>
+                    <input type="text" placeholder="ex: 4676">
+                    <div class="help-text">Activitatea principală autorizată la data depunerii</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Descrierea activității principale <span class="required">*</span> <span class="field-code">[F1.06]</span></label>
+                <textarea rows="3" placeholder="Descrieți pe scurt activitatea principală a societății (max. 500 caractere)"></textarea>
+                <div class="help-text">Maximum 500 de caractere. Descrierea trebuie să corespundă codului CAEN declarat.</div>
+            </div>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#666; font-weight:500; margin-bottom:12px;">ADRESA SEDIU SOCIAL</p>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Județul <span class="required">*</span> <span class="field-code">[F1.07]</span></label>
+                    <select>
+                        <option value="">— Selectați județul —</option>
+                        <option>Alba</option><option>Brașov</option><option>Covasna</option>
+                        <option>Harghita</option><option>Mureș</option><option>Sibiu</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Localitatea <span class="required">*</span> <span class="field-code">[F1.08]</span></label>
+                    <input type="text" placeholder="ex: Odorheiu Secuiesc">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Strada <span class="required">*</span> <span class="field-code">[F1.09]</span></label>
+                    <input type="text" placeholder="ex: Calea Băieșenilor">
+                </div>
+                <div class="form-group">
+                    <label>Număr <span class="required">*</span> <span class="field-code">[F1.10]</span></label>
+                    <input type="text" placeholder="ex: 22">
+                </div>
+            </div>
+            <div class="form-row-3">
+                <div class="form-group">
+                    <label>Cod poștal <span class="field-code">[F1.11]</span></label>
+                    <input type="text" placeholder="ex: 535600">
+                </div>
+                <div class="form-group">
+                    <label>Telefon <span class="required">*</span> <span class="field-code">[F1.12]</span></label>
+                    <input type="tel" placeholder="ex: 0266-218493">
+                </div>
+                <div class="form-group">
+                    <label>Email <span class="required">*</span> <span class="field-code">[F1.13]</span></label>
+                    <input type="email" placeholder="ex: contact@transoffice.ro">
+                </div>
+            </div>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#666; font-weight:500; margin-bottom:12px;">REPREZENTANT LEGAL</p>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nume și prenume <span class="required">*</span> <span class="field-code">[F1.14]</span></label>
+                    <input type="text" placeholder="ex: Kovács Márton">
+                </div>
+                <div class="form-group">
+                    <label>Funcția <span class="required">*</span> <span class="field-code">[F1.15]</span></label>
+                    <input type="text" placeholder="ex: Administrator">
+                </div>
+            </div>
+            <div class="form-row-3">
+                <div class="form-group">
+                    <label>CNP <span class="required">*</span> <span class="field-code">[F1.16]</span></label>
+                    <input type="text" placeholder="13 cifre">
+                    <div class="help-text legal-ref">Conform Legii 677/2001 privind protecția datelor personale, prelucrat exclusiv în scopul evaluării cererii.</div>
+                </div>
+                <div class="form-group">
+                    <label>Seria și nr. CI <span class="required">*</span> <span class="field-code">[F1.17]</span></label>
+                    <input type="text" placeholder="ex: HR 123456">
+                </div>
+                <div class="form-group">
+                    <label>Email reprezentant <span class="field-code">[F1.18]</span></label>
+                    <input type="email" placeholder="">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 2 ==================== -->
+    <div class="form-section">
+        <div class="form-section-header">
+            <span class="section-number">2</span>
+            <h2>Încadrare IMM și eligibilitate</h2>
+        </div>
+        <div class="form-section-body">
+            <div class="alert-box danger">
+                <strong>🚫 Criterii eliminatorii</strong>
+                Neîndeplinirea oricăruia dintre criteriile de mai jos conduce la <b>respingerea automată</b> a cererii, fără posibilitate de contestație în această etapă. Verificați cu atenție datele înainte de depunere.
+                <br><em>Ref: Ghidul Solicitantului, cap. 5.1 — Criterii de eligibilitate, art. 5.1.1.1 – 5.1.1.12</em>
+            </div>
+
+            <div class="form-group">
+                <label>Categoria IMM <span class="required">*</span> <span class="field-code">[F2.01]</span></label>
+                <select>
+                    <option value="">— Selectați categoria —</option>
+                    <option>Microîntreprindere (< 10 salariați, CA < 2M EUR)</option>
+                    <option>Întreprindere mică (< 50 salariați, CA < 10M EUR)</option>
+                    <option>Întreprindere mijlocie (< 250 salariați, CA < 50M EUR)</option>
+                </select>
+                <div class="help-text">Conform Recomandării CE 2003/361/CE și OG 27/2006. Încadrarea se face pe baza datelor din ultimul exercițiu financiar încheiat.</div>
+            </div>
+
+            <div class="form-row-3">
+                <div class="form-group">
+                    <label>Nr. mediu salariați (ultimul an) <span class="required">*</span> <span class="field-code">[F2.02]</span></label>
+                    <input type="number" placeholder="ex: 12">
+                    <div class="help-text">Media aritmetică a nr. salariați pe 12 luni</div>
+                </div>
+                <div class="form-group">
+                    <label>Cifra de afaceri netă (RON) <span class="required">*</span> <span class="field-code">[F2.03]</span></label>
+                    <input type="number" placeholder="ex: 2015000">
+                    <div class="help-text">Conform bilanț depus la ANAF</div>
+                </div>
+                <div class="form-group">
+                    <label>Total active (RON) <span class="required">*</span> <span class="field-code">[F2.04]</span></label>
+                    <input type="number" placeholder="ex: 858000">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Cifra de afaceri netă în EUR <span class="required">*</span> <span class="field-code">[F2.05]</span></label>
+                    <input type="number" placeholder="ex: 405000">
+                    <div class="help-text">Cursul BNR din ultima zi a exercițiului financiar. Indicați cursul utilizat în câmpul [F2.06].</div>
+                </div>
+                <div class="form-group">
+                    <label>Curs BNR EUR/RON utilizat <span class="required">*</span> <span class="field-code">[F2.06]</span></label>
+                    <input type="text" placeholder="ex: 4.9746">
+                    <div class="help-text">Cursul din 31.12 al ultimului exercițiu financiar încheiat</div>
+                </div>
+            </div>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#666; font-weight:500; margin-bottom:12px;">DECLARAȚII DE ELIGIBILITATE</p>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="el1">
+                <label for="el1">Solicitantul este înregistrat conform Legii 31/1990 și funcționează pe teritoriul României <span class="required">*</span> <span class="field-code">[F2.07]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="el2">
+                <label for="el2">Solicitantul nu se află în procedură de insolvență, faliment, lichidare, dizolvare sau administrare specială <span class="required">*</span> <span class="field-code">[F2.08]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="el3">
+                <label for="el3">Solicitantul nu are datorii restante la bugetul de stat sau la bugetele locale <span class="required">*</span> <span class="field-code">[F2.09]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="el4">
+                <label for="el4">Solicitantul nu a fost subiectul unei decizii de recuperare a ajutorului de stat care nu a fost executată <span class="required">*</span> <span class="field-code">[F2.10]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="el5">
+                <label for="el5">Solicitantul dispune de drept de proprietate/folosință asupra imobilului unde se va amplasa stația de reîncărcare, pe o perioadă de minimum 5 ani de la data depunerii <span class="required">*</span> <span class="field-code">[F2.11]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="el6">
+                <label for="el6">Solicitantul se angajează să mențină investiția pe o perioadă de minimum 3 ani de la finalizarea proiectului <span class="required">*</span> <span class="field-code">[F2.12]</span></label>
+            </div>
+
+            <div class="alert-box warning">
+                <strong>⚠ Ajutor de minimis</strong>
+                Declarați valoarea totală a ajutoarelor de minimis primite în ultimii 3 ani fiscali (anul curent + 2 ani anteriori). Plafonul maxim este de <b>300.000 EUR</b> (Regulamentul UE 2023/2831).
+                <br><em>Ref: Ghidul Solicitantului, cap. 5.1.1.11</em>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Total ajutoare de minimis primite (EUR) <span class="required">*</span> <span class="field-code">[F2.13]</span></label>
+                    <input type="number" placeholder="ex: 0">
+                    <div class="help-text">Suma tuturor ajutoarelor de minimis din ultimii 3 ani fiscali. Dacă nu ați primit, completați cu 0.</div>
+                </div>
+                <div class="form-group">
+                    <label>Valoare ajutor solicitat prin prezenta cerere (EUR) <span class="required">*</span> <span class="field-code">[F2.14]</span></label>
+                    <input type="number" placeholder="ex: 48500">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 3 ==================== -->
+    <div class="form-section">
+        <div class="form-section-header">
+            <span class="section-number">3</span>
+            <h2>Descrierea investiției propuse</h2>
+        </div>
+        <div class="form-section-body">
+            <div class="alert-box info">
+                <strong>ℹ Instrucțiuni</strong>
+                Descrieți investiția în mod clar și concis. Datele tehnice trebuie să corespundă cu ofertele de preț atașate (minim 3 oferte de la furnizori diferiți). Vehiculele trebuie să fie <b>noi</b>, categoria <b>N1</b> (sub 3,5 tone), <b>100% electrice</b> (BEV).
+                <br><em>Ref: Ghidul Solicitantului, cap. 5.2 — Cheltuieli eligibile</em>
+            </div>
+
+            <div class="form-group">
+                <label>Titlul proiectului <span class="required">*</span> <span class="field-code">[F3.01]</span></label>
+                <input type="text" placeholder="ex: Achiziție vehicule electrice pentru flota de distribuție TransOffice Trade SRL">
+                <div class="help-text">Maximum 200 caractere. Titlul trebuie să reflecte obiectul investiției.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Rezumatul proiectului <span class="required">*</span> <span class="field-code">[F3.02]</span></label>
+                <textarea rows="5" placeholder="Descrieți pe scurt: ce achiziționați, de ce, ce impact va avea asupra activității companiei (max. 2000 caractere)"></textarea>
+                <div class="help-text">Maximum 2000 de caractere. Acest rezumat va fi utilizat în comunicarea publică a rezultatelor.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Justificarea necesității investiției <span class="required">*</span> <span class="field-code">[F3.03]</span></label>
+                <textarea rows="5" placeholder="Explicați de ce este necesară investiția: context, problemă identificată, soluția propusă, beneficii așteptate (max. 3000 caractere)"></textarea>
+                <div class="help-text legal-ref">Maximum 3000 de caractere. Evaluatorii vor acorda punctaj suplimentar pentru justificări care demonstrează impactul economic și de mediu concret, cuantificabil. (Grila de evaluare, Criteriul C3, max. 15 pct.)</div>
+            </div>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#666; font-weight:500; margin-bottom:12px;">VEHICULE SOLICITATE</p>
+
+            <div class="form-group">
+                <label>Număr total vehicule electrice solicitate <span class="required">*</span> <span class="field-code">[F3.04]</span></label>
+                <select>
+                    <option value="">— Selectați —</option>
+                    <option>1 vehicul</option>
+                    <option>2 vehicule</option>
+                    <option>3 vehicule</option>
+                    <option>4 vehicule</option>
+                    <option>5 vehicule</option>
+                </select>
+            </div>
+
+            <p style="font-size:12px; color:#0f2890; font-weight:700; margin:16px 0 8px 0;">VEHICUL NR. 1</p>
+            <table class="data-table">
+                <tr><th style="width:40%">Specificație</th><th>Valoare</th></tr>
+                <tr><td>Marca și modelul <span class="field-code">[F3.05a]</span></td><td><input type="text" placeholder="ex: Renault Kangoo E-Tech Electric"></td></tr>
+                <tr><td>Categorie vehicul <span class="field-code">[F3.06a]</span></td><td><select><option>N1 (< 3,5 tone)</option><option>M1</option></select></td></tr>
+                <tr><td>Tip propulsie <span class="field-code">[F3.07a]</span></td><td><select><option>BEV (100% electric)</option><option>PHEV</option></select></td></tr>
+                <tr><td>Autonomie WLTP (km) <span class="field-code">[F3.08a]</span></td><td><input type="number" placeholder="ex: 300"></td></tr>
+                <tr><td>Capacitate baterie (kWh) <span class="field-code">[F3.09a]</span></td><td><input type="number" placeholder="ex: 45"></td></tr>
+                <tr><td>Putere motor (kW) <span class="field-code">[F3.10a]</span></td><td><input type="number" placeholder="ex: 90"></td></tr>
+                <tr><td>Sarcină utilă maximă (kg) <span class="field-code">[F3.11a]</span></td><td><input type="number" placeholder="ex: 600"></td></tr>
+                <tr><td>Volum de încărcare (m³) <span class="field-code">[F3.12a]</span></td><td><input type="number" placeholder="ex: 3.9" step="0.1"></td></tr>
+                <tr><td>Preț catalog fără TVA (RON) <span class="field-code">[F3.13a]</span></td><td><input type="number" placeholder="ex: 142000"></td></tr>
+                <tr><td>Dealer / Furnizor <span class="field-code">[F3.14a]</span></td><td><input type="text" placeholder="ex: Renault Brașov"></td></tr>
+                <tr><td>Nr. ofertă de preț <span class="field-code">[F3.15a]</span></td><td><input type="text" placeholder="ex: OF-2026-0412"></td></tr>
+            </table>
+
+            <p style="font-size:12px; color:#0f2890; font-weight:700; margin:16px 0 8px 0;">VEHICUL NR. 2</p>
+            <table class="data-table">
+                <tr><th style="width:40%">Specificație</th><th>Valoare</th></tr>
+                <tr><td>Marca și modelul <span class="field-code">[F3.05b]</span></td><td><input type="text" placeholder="ex: Citroën ë-Berlingo Van"></td></tr>
+                <tr><td>Categorie vehicul <span class="field-code">[F3.06b]</span></td><td><select><option>N1 (< 3,5 tone)</option><option>M1</option></select></td></tr>
+                <tr><td>Tip propulsie <span class="field-code">[F3.07b]</span></td><td><select><option>BEV (100% electric)</option><option>PHEV</option></select></td></tr>
+                <tr><td>Autonomie WLTP (km) <span class="field-code">[F3.08b]</span></td><td><input type="number" placeholder=""></td></tr>
+                <tr><td>Capacitate baterie (kWh) <span class="field-code">[F3.09b]</span></td><td><input type="number" placeholder=""></td></tr>
+                <tr><td>Putere motor (kW) <span class="field-code">[F3.10b]</span></td><td><input type="number" placeholder=""></td></tr>
+                <tr><td>Sarcină utilă maximă (kg) <span class="field-code">[F3.11b]</span></td><td><input type="number" placeholder=""></td></tr>
+                <tr><td>Volum de încărcare (m³) <span class="field-code">[F3.12b]</span></td><td><input type="number" placeholder="" step="0.1"></td></tr>
+                <tr><td>Preț catalog fără TVA (RON) <span class="field-code">[F3.13b]</span></td><td><input type="number" placeholder=""></td></tr>
+                <tr><td>Dealer / Furnizor <span class="field-code">[F3.14b]</span></td><td><input type="text" placeholder=""></td></tr>
+                <tr><td>Nr. ofertă de preț <span class="field-code">[F3.15b]</span></td><td><input type="text" placeholder=""></td></tr>
+            </table>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#666; font-weight:500; margin-bottom:12px;">STAȚIE DE REÎNCĂRCARE</p>
+
+            <div class="form-row-3">
+                <div class="form-group">
+                    <label>Tip stație <span class="required">*</span> <span class="field-code">[F3.16]</span></label>
+                    <select>
+                        <option value="">— Selectați —</option>
+                        <option>AC wallbox (≤ 22 kW)</option>
+                        <option>AC stație de sine stătătoare (≤ 22 kW)</option>
+                        <option>DC fast charger (> 22 kW)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Putere nominală (kW) <span class="required">*</span> <span class="field-code">[F3.17]</span></label>
+                    <input type="number" placeholder="ex: 11">
+                </div>
+                <div class="form-group">
+                    <label>Nr. puncte de încărcare <span class="required">*</span> <span class="field-code">[F3.18]</span></label>
+                    <input type="number" placeholder="ex: 1">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Locație amplasare <span class="required">*</span> <span class="field-code">[F3.19]</span></label>
+                    <input type="text" placeholder="ex: Parcare sediu, Calea Băieșenilor 22, Odorheiu Secuiesc">
+                </div>
+                <div class="form-group">
+                    <label>Preț stație cu instalare, fără TVA (RON) <span class="required">*</span> <span class="field-code">[F3.20]</span></label>
+                    <input type="number" placeholder="ex: 12000">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Accesibilitate publică <span class="required">*</span> <span class="field-code">[F3.21]</span></label>
+                <select>
+                    <option value="">— Selectați —</option>
+                    <option>Stație privată — doar pentru vehiculele companiei</option>
+                    <option>Stație semi-publică — acces controlat pentru terți</option>
+                    <option>Stație publică — acces liber</option>
+                </select>
+                <div class="help-text legal-ref">Conform HG 1222/2023 și Directivei AFIR 2014/94/UE. Stațiile publice necesită înregistrare suplimentară la ANRE.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 4 ==================== -->
+    <div class="form-section">
+        <div class="form-section-header">
+            <span class="section-number">4</span>
+            <h2>Buget și plan financiar</h2>
+        </div>
+        <div class="form-section-body">
+            <div class="alert-box info">
+                <strong>ℹ Reguli privind cheltuielile eligibile</strong>
+                Intensitatea maximă a ajutorului este de <b>80%</b> din valoarea eligibilă fără TVA. TVA nu este cheltuială eligibilă dacă solicitantul este plătitor de TVA. Contribuția proprie (min. 20%) trebuie demonstrată prin extras de cont bancar.
+                <br><em>Ref: Ghidul Solicitantului, cap. 5.2, art. 5.2.1 – 5.2.4</em>
+            </div>
+
+            <table class="data-table">
+                <tr>
+                    <th>Element de cost</th>
+                    <th>Valoare fără TVA (RON)</th>
+                    <th>Finanțare AFM (80%)</th>
+                    <th>Contribuție proprie (20%)</th>
+                </tr>
+                <tr>
+                    <td>Vehicul electric nr. 1 <span class="field-code">[F4.01]</span></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><input type="number" placeholder="" style="background:#ebf0f8"></td>
+                    <td><input type="number" placeholder="" style="background:#ebf0f8"></td>
+                </tr>
+                <tr>
+                    <td>Vehicul electric nr. 2 <span class="field-code">[F4.02]</span></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><input type="number" placeholder="" style="background:#ebf0f8"></td>
+                    <td><input type="number" placeholder="" style="background:#ebf0f8"></td>
+                </tr>
+                <tr>
+                    <td>Stație de reîncărcare (inclusiv instalare) <span class="field-code">[F4.03]</span></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><input type="number" placeholder="" style="background:#ebf0f8"></td>
+                    <td><input type="number" placeholder="" style="background:#ebf0f8"></td>
+                </tr>
+                <tr style="background:#ebf0f8; font-weight:700">
+                    <td><b>TOTAL PROIECT</b> <span class="field-code">[F4.04]</span></td>
+                    <td><input type="number" placeholder="" style="font-weight:700; background:#dde6f5"></td>
+                    <td><input type="number" placeholder="" style="font-weight:700; background:#dde6f5"></td>
+                    <td><input type="number" placeholder="" style="font-weight:700; background:#dde6f5"></td>
+                </tr>
+            </table>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Sold cont bancar la data depunerii (RON) <span class="required">*</span> <span class="field-code">[F4.05]</span></label>
+                    <input type="number" placeholder="">
+                    <div class="help-text">Trebuie să acopere minim contribuția proprie (20%). Conform extrasului de cont atașat.</div>
+                </div>
+                <div class="form-group">
+                    <label>Sursa co-finanțării <span class="required">*</span> <span class="field-code">[F4.06]</span></label>
+                    <select>
+                        <option value="">— Selectați —</option>
+                        <option>Surse proprii (disponibilități bănești)</option>
+                        <option>Credit bancar aprobat</option>
+                        <option>Combinație surse proprii + credit</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 5 ==================== -->
+    <div class="form-section">
+        <div class="form-section-header">
+            <span class="section-number">5</span>
+            <h2>Parcul auto existent și indicatori de referință</h2>
+        </div>
+        <div class="form-section-body">
+            <div class="alert-box info">
+                <strong>ℹ De ce este necesară această secțiune</strong>
+                Punctajul de evaluare ia în considerare situația actuală a parcului auto al solicitantului. Completați datele pentru <b>toate vehiculele</b> deținute sau utilizate de societate la data depunerii cererii.
+                <br><em>Ref: Grila de evaluare, Criteriul C4 (max. 10 pct.) și C5 (max. 10 pct.)</em>
+            </div>
+
+            <div class="form-group">
+                <label>Număr total vehicule în parcul auto <span class="required">*</span> <span class="field-code">[F5.01]</span></label>
+                <input type="number" placeholder="ex: 4">
+            </div>
+
+            <table class="data-table">
+                <tr>
+                    <th>Nr.</th>
+                    <th>Marca/Model</th>
+                    <th>An fabricație</th>
+                    <th>Combustibil</th>
+                    <th>Nr. înmatriculare</th>
+                    <th>Km parcurși/an</th>
+                    <th>Stare</th>
+                </tr>
+                <tr>
+                    <td>1 <span class="field-code">[F5.02a]</span></td>
+                    <td><input type="text" placeholder=""></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><select><option>Diesel</option><option>Benzină</option><option>GPL</option><option>Hybrid</option><option>Electric</option></select></td>
+                    <td><input type="text" placeholder=""></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><select><option>Operațional</option><option>În service</option><option>Casat</option></select></td>
+                </tr>
+                <tr>
+                    <td>2 <span class="field-code">[F5.02b]</span></td>
+                    <td><input type="text" placeholder=""></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><select><option>Diesel</option><option>Benzină</option><option>GPL</option><option>Hybrid</option><option>Electric</option></select></td>
+                    <td><input type="text" placeholder=""></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><select><option>Operațional</option><option>În service</option><option>Casat</option></select></td>
+                </tr>
+                <tr>
+                    <td>3 <span class="field-code">[F5.02c]</span></td>
+                    <td><input type="text" placeholder=""></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><select><option>Diesel</option><option>Benzină</option><option>GPL</option><option>Hybrid</option><option>Electric</option></select></td>
+                    <td><input type="text" placeholder=""></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><select><option>Operațional</option><option>În service</option><option>Casat</option></select></td>
+                </tr>
+                <tr>
+                    <td>4 <span class="field-code">[F5.02d]</span></td>
+                    <td><input type="text" placeholder=""></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><select><option>Diesel</option><option>Benzină</option><option>GPL</option><option>Hybrid</option><option>Electric</option></select></td>
+                    <td><input type="text" placeholder=""></td>
+                    <td><input type="number" placeholder=""></td>
+                    <td><select><option>Operațional</option><option>În service</option><option>Casat</option></select></td>
+                </tr>
+            </table>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#666; font-weight:500; margin-bottom:12px;">INDICATORI DE MEDIU (REFERINȚĂ)</p>
+
+            <div class="form-row-3">
+                <div class="form-group">
+                    <label>Consum total motorină/an (litri) <span class="required">*</span> <span class="field-code">[F5.03]</span></label>
+                    <input type="number" placeholder="ex: 7875">
+                    <div class="help-text">Total litri motorină consumați de toate vehiculele în ultimul an calendaristic.</div>
+                </div>
+                <div class="form-group">
+                    <label>Emisii CO₂ estimate (tone/an) <span class="required">*</span> <span class="field-code">[F5.04]</span></label>
+                    <input type="number" placeholder="ex: 19.5" step="0.1">
+                    <div class="help-text">1 litru motorină = 2.68 kg CO₂. Calculul: [F5.03] × 2.68 / 1000</div>
+                </div>
+                <div class="form-group">
+                    <label>Cost total combustibil/an (RON) <span class="required">*</span> <span class="field-code">[F5.05]</span></label>
+                    <input type="number" placeholder="ex: 56700">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 6 ==================== -->
+    <div class="form-section">
+        <div class="form-section-header">
+            <span class="section-number">6</span>
+            <h2>Locul de implementare și dreptul asupra imobilului</h2>
+        </div>
+        <div class="form-section-body">
+            <div class="alert-box danger">
+                <strong>🚫 Criteriu eliminatoriu — Stabilitate imobil</strong>
+                Solicitantul trebuie să demonstreze drept de proprietate sau de folosință asupra imobilului unde se va amplasa stația de reîncărcare pentru o perioadă de <b>minimum 5 ani</b> de la data depunerii cererii.
+                <br><em>Ref: Ghidul Solicitantului, cap. 5.1.1.7</em>
+            </div>
+
+            <div class="form-group">
+                <label>Tipul dreptului asupra imobilului <span class="required">*</span> <span class="field-code">[F6.01]</span></label>
+                <select>
+                    <option value="">— Selectați —</option>
+                    <option>Proprietate — extras CF</option>
+                    <option>Închiriere (contract valabil min. 5 ani de la depunere)</option>
+                    <option>Comodat (contract valabil min. 5 ani de la depunere)</option>
+                    <option>Concesiune</option>
+                    <option>Drept de superficie</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nr. contract / act juridic <span class="required">*</span> <span class="field-code">[F6.02]</span></label>
+                    <input type="text" placeholder="ex: Nr. 47/26.04.2018">
+                </div>
+                <div class="form-group">
+                    <label>Data expirării <span class="required">*</span> <span class="field-code">[F6.03]</span></label>
+                    <input type="date">
+                    <div class="help-text">Trebuie să fie min. 5 ani de la data depunerii (28.02.2025 + 5 ani = 28.02.2030 sau mai târziu)</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Proprietar imobil <span class="required">*</span> <span class="field-code">[F6.04]</span></label>
+                <input type="text" placeholder="ex: Iosif Béla, CNP ...">
+            </div>
+
+            <div class="form-group">
+                <label>Adresa completă imobil implementare <span class="required">*</span> <span class="field-code">[F6.05]</span></label>
+                <textarea rows="2" placeholder="Strada, număr, localitate, județ, cod poștal"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Nr. cadastral / Nr. carte funciară <span class="field-code">[F6.06]</span></label>
+                <input type="text" placeholder="">
+                <div class="help-text">Dacă imobilul este înscris în cartea funciară, completați numărul CF. Extras CF trebuie atașat.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Suprafață totală imobil (m²) <span class="required">*</span> <span class="field-code">[F6.07]</span></label>
+                <input type="number" placeholder="ex: 735">
+            </div>
+
+            <div class="form-group">
+                <label>Observații privind stabilitatea dreptului <span class="field-code">[F6.08]</span></label>
+                <textarea rows="3" placeholder="Notați aici orice informații relevante: act adițional de prelungire, declarație notarială de neînstrăinare, situație juridică specială etc. (max. 1000 caractere)"></textarea>
+                <div class="help-text legal-ref">Recomandăm atașarea oricăror documente suplimentare care demonstrează stabilitatea dreptului de folosință (act adițional, declarație notarială etc.). Aceste documente nu sunt obligatorii dar pot influența pozitiv evaluarea.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 7 ==================== -->
+    <div class="form-section">
+        <div class="form-section-header">
+            <span class="section-number">7</span>
+            <h2>Impact și indicatori de performanță</h2>
+        </div>
+        <div class="form-section-body">
+            <div class="alert-box info">
+                <strong>ℹ Sistem de punctare</strong>
+                Această secțiune contribuie semnificativ la punctajul final. Punctajul minim pentru finanțare este <b>60 puncte din 100</b>. Completați cu atenție — evaluatorii verifică coerența între datele declarate și documentele justificative.
+                <br><em>Ref: Ghidul Solicitantului, cap. 7 — Grila de evaluare tehnică și financiară</em>
+            </div>
+
+            <p style="font-size:12px; color:#0f2890; font-weight:700; margin:0 0 12px 0;">INDICATORI DE REZULTAT (obligatoriu)</p>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Reducere emisii CO₂ (tone/an) <span class="required">*</span> <span class="field-code">[F7.01]</span></label>
+                    <input type="number" placeholder="ex: 12.8" step="0.1">
+                    <div class="help-text">Diferența între emisiile actuale [F5.04] și emisiile estimate post-investiție. Vehiculele electrice = 0 emisii directe.</div>
+                </div>
+                <div class="form-group">
+                    <label>Reducere consum combustibil fosil (litri/an) <span class="required">*</span> <span class="field-code">[F7.02]</span></label>
+                    <input type="number" placeholder="ex: 4770">
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Economie anuală estimată (RON) <span class="required">*</span> <span class="field-code">[F7.03]</span></label>
+                    <input type="number" placeholder="ex: 60100">
+                    <div class="help-text">Diferența între costurile actuale de operare (combustibil + service) și costurile estimate cu vehiculele electrice.</div>
+                </div>
+                <div class="form-group">
+                    <label>Perioada de recuperare a investiției proprii (luni) <span class="required">*</span> <span class="field-code">[F7.04]</span></label>
+                    <input type="number" placeholder="ex: 12">
+                </div>
+            </div>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#0f2890; font-weight:700; margin:0 0 12px 0;">INDICATORI DE DURABILITATE</p>
+
+            <div class="form-group">
+                <label>Km parcurși anual estimat cu vehiculele electrice <span class="required">*</span> <span class="field-code">[F7.05]</span></label>
+                <input type="number" placeholder="ex: 53000">
+            </div>
+
+            <div class="form-group">
+                <label>Descrieți măsurile de durabilitate a investiției (min. 3 ani) <span class="required">*</span> <span class="field-code">[F7.06]</span></label>
+                <textarea rows="5" placeholder="Cum veți asigura mentenanța vehiculelor, instruirea personalului, monitorizarea consumului de energie, continuitatea operațională etc. (max. 2000 caractere)"></textarea>
+                <div class="help-text legal-ref">Evaluatorii acordă max. 10 puncte pentru Criteriul C7 (Durabilitate). Descrieți concret: contract service, telematică, backup operațional, stabilitate sediu.</div>
+            </div>
+
+            <div class="form-group">
+                <label>Contribuția proiectului la obiectivele strategice locale/regionale <span class="field-code">[F7.07]</span></label>
+                <textarea rows="3" placeholder="Descrieți cum se integrează proiectul în strategia locală de dezvoltare durabilă, planul de mobilitate urbană sau alte documente strategice (opțional, max. 1000 caractere)"></textarea>
+                <div class="help-text">Opțional, dar recomandat. Poate aduce punctaj suplimentar la Criteriul C8.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 8 ==================== -->
+    <div class="form-section">
+        <div class="form-section-header">
+            <span class="section-number">8</span>
+            <h2>Documente atașate</h2>
+        </div>
+        <div class="form-section-body">
+            <div class="alert-box warning">
+                <strong>⚠ Atenție la format</strong>
+                Toate documentele trebuie încărcate în format <b>PDF</b> (max. 10 MB/fișier). Documentele scanate trebuie să fie lizibile. Documentele în alte formate (Word, Excel, JPG) nu sunt acceptate.
+                <br><em>Ref: Ghidul Solicitantului, cap. 4.3 — Cerințe tehnice depunere</em>
+            </div>
+
+            <p style="font-size:12px; color:#0f2890; font-weight:700; margin:0 0 12px 0;">A. DOCUMENTE JURIDICE ȘI FISCALE</p>
+            
+            <div class="form-group">
+                <label>A-01. Certificat constatator ONRC <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 10 MB | Max. 30 zile de la emitere</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>A-02. Act constitutiv (forma consolidată) <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 10 MB</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>A-03. CI administrator <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 5 MB</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>A-04. Declarație beneficiar real (UBO) — notarială <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 10 MB | Document notarial original</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>A-05. Certificat atestare fiscală ANAF <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 10 MB | Max. 30 zile de la emitere!</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>A-06. Certificat atestare fiscală LOCAL <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 10 MB | Max. 30 zile de la emitere!</div>
+                </div>
+            </div>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#0f2890; font-weight:700; margin:0 0 12px 0;">B. DOCUMENTE FINANCIARE</p>
+
+            <div class="form-group">
+                <label>B-01. Bilanț contabil 2023 (depus ANAF) <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Semnat și ștampilat</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>B-02. Bilanț contabil 2024 (depus ANAF) <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Semnat și ștampilat</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>B-03. Extras de cont bancar — ultimele 3 luni <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 10 MB</div>
+                </div>
+            </div>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#0f2890; font-weight:700; margin:0 0 12px 0;">C. OFERTE ȘI SPECIFICAȚII TEHNICE</p>
+
+            <div class="form-group">
+                <label>C-01. Ofertă dealer nr. 1 <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 10 MB | Ofertă de preț detaliată</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>C-02. Ofertă dealer nr. 2 <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 10 MB</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>C-03. Ofertă dealer nr. 3 (al treilea furnizor, obligatoriu) <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Min. 3 oferte de la furnizori diferiți</div>
+                </div>
+            </div>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#0f2890; font-weight:700; margin:0 0 12px 0;">D. DOCUMENTE SEDIU ȘI LOCAȚIE</p>
+
+            <div class="form-group">
+                <label>D-01. Contract de închiriere / act proprietate <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Copie conformă cu originalul</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>D-02. Extras carte funciară (dacă există) </label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Opțional dar recomandat</div>
+                </div>
+            </div>
+
+            <hr class="section-separator">
+            <p style="font-size:12px; color:#0f2890; font-weight:700; margin:0 0 12px 0;">E. PLAN DE AFACERI ȘI DECLARAȚII</p>
+
+            <div class="form-group">
+                <label>E-01. Plan de afaceri (Anexa 6 completată) <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Format acceptat: PDF | Max. 20 MB | Conform structura Anexa 6</div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>E-02. Declarație IMM (Anexa 1) <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Semnat + ștampilat</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>E-03. Declarație de minimis (Anexa 2) <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Semnat + ștampilat</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>E-04. Declarație menținere investiție 3 ani <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Semnat + ștampilat</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>E-05. Declarație menținere locuri de muncă <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Semnat + ștampilat</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>E-06. Declarație impact mediu <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Semnat + ștampilat</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>E-07. Declarație incompatibilitate și conflict de interese <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Semnat + ștampilat</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>E-08. Acord GDPR <span class="required">*</span></label>
+                <div class="file-upload-area">
+                    <div class="upload-icon">📎</div>
+                    <p>Trageți fișierul aici sau <b>click pentru a selecta</b></p>
+                    <div class="formats">Semnat</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== SECTION 9 ==================== -->
+    <div class="form-section">
+        <div class="form-section-header">
+            <span class="section-number">9</span>
+            <h2>Declarație finală și angajamente</h2>
+        </div>
+        <div class="form-section-body">
+            <div class="alert-box danger">
+                <strong>🚫 Atenție — Declarație pe propria răspundere</strong>
+                Prin bifarea căsuțelor de mai jos și prin depunerea prezentei cereri, reprezentantul legal al solicitantului declară pe propria răspundere, sub sancțiunile prevăzute de Codul Penal pentru declarații false (art. 326), că toate datele și informațiile prezentate sunt conforme cu realitatea.
+            </div>
+
+            <div class="checkbox-group">
+                <input type="checkbox" id="d1">
+                <label for="d1">Declar că toate informațiile furnizate în prezenta cerere și în documentele anexate sunt complete, corecte și conforme cu realitatea. <span class="required">*</span> <span class="field-code">[F9.01]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="d2">
+                <label for="d2">Declar că societatea nu se află în dificultate, în sensul definiției din Orientările privind ajutoarele de stat pentru salvarea și restructurarea întreprinderilor aflate în dificultate (2014/C 249/01). <span class="required">*</span> <span class="field-code">[F9.02]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="d3">
+                <label for="d3">Mă angajez să mențin investiția finanțată prin prezentul program pentru o perioadă de minimum 3 ani de la data finalizării proiectului și să nu înstrăinez vehiculele achiziționate în această perioadă. <span class="required">*</span> <span class="field-code">[F9.03]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="d4">
+                <label for="d4">Mă angajez să mențin cel puțin numărul de locuri de muncă existent la data depunerii cererii pentru o perioadă de minimum 3 ani de la finalizarea proiectului. <span class="required">*</span> <span class="field-code">[F9.04]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="d5">
+                <label for="d5">Am luat cunoștință de prevederile Ghidului Solicitantului și mă angajez să respect toate obligațiile care îmi revin în calitate de beneficiar al finanțării. <span class="required">*</span> <span class="field-code">[F9.05]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="d6">
+                <label for="d6">Sunt de acord cu prelucrarea datelor cu caracter personal furnizate, în conformitate cu Regulamentul (UE) 2016/679 (GDPR), exclusiv în scopul evaluării și gestionării prezentei cereri de finanțare. <span class="required">*</span> <span class="field-code">[F9.06]</span></label>
+            </div>
+            <div class="checkbox-group">
+                <input type="checkbox" id="d7">
+                <label for="d7">Declar că nu am solicitat și nu voi solicita alte finanțări din fonduri publice pentru aceleași cheltuieli eligibile care fac obiectul prezentei cereri. <span class="required">*</span> <span class="field-code">[F9.07]</span></label>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Nume și prenume reprezentant legal <span class="required">*</span> <span class="field-code">[F9.08]</span></label>
+                    <input type="text" placeholder="">
+                </div>
+                <div class="form-group">
+                    <label>Data completării <span class="required">*</span> <span class="field-code">[F9.09]</span></label>
+                    <input type="date">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-area">
+        <button class="btn-submit">DEPUNE CEREREA DE FINANȚARE</button>
+        <button class="btn-draft">Salvează ciornă</button>
+        <p>Prin apăsarea butonului „Depune cererea" confirmați că ați verificat toate datele și documentele.<br>
+        După depunere, cererea <b>nu mai poate fi modificată</b>.</p>
+    </div>
+
+</div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="cta-card">
+        <h3>Asistență tehnică</h3>
+        <p>Aveți întrebări? Contactați echipa de suport.</p>
+        <a href="#" class="btn">☎ 021-318.0722</a>
+    </div>
+
+    <div class="widget">
+        <h3>Progres completare</h3>
+        <div class="progress-bar"><div class="progress-fill" style="width: 0%"></div></div>
+        <div class="progress-text">0 din 75 câmpuri completate</div>
+        <div class="confetti-container" id="confettiBox"></div>
+    </div>
+
+    <div class="widget">
+        <h3>Secțiuni formular</h3>
+        <ul>
+            <li>1. Date identificare <span class="status empty" id="status-s1">○ Necompletat</span></li>
+            <li>2. Încadrare IMM <span class="status empty" id="status-s2">○ Necompletat</span></li>
+            <li>3. Descriere investiție <span class="status empty" id="status-s3">○ Necompletat</span></li>
+            <li>4. Buget și plan financiar <span class="status empty" id="status-s4">○ Necompletat</span></li>
+            <li>5. Parc auto existent <span class="status empty" id="status-s5">○ Necompletat</span></li>
+            <li>6. Locul de implementare <span class="status empty" id="status-s6">○ Necompletat</span></li>
+            <li>7. Impact și indicatori <span class="status empty" id="status-s7">○ Necompletat</span></li>
+            <li>8. Documente atașate <span class="status empty" id="status-s8">○ Necompletat</span></li>
+            <li>9. Declarații finale <span class="status empty" id="status-s9">○ Necompletat</span></li>
+        </ul>
+    </div>
+
+    <div class="widget">
+        <h3>Documente obligatorii</h3>
+        <ul>
+            <li>Certificat ONRC <span class="status empty">✗</span></li>
+            <li>Act constitutiv <span class="status empty">✗</span></li>
+            <li>CI administrator <span class="status empty">✗</span></li>
+            <li>Declarație UBO <span class="status empty">✗</span></li>
+            <li>Certificat fiscal ANAF <span class="status empty">✗</span></li>
+            <li>Certificat fiscal local <span class="status empty">✗</span></li>
+            <li>Bilanț 2023 <span class="status empty">✗</span></li>
+            <li>Bilanț 2024 <span class="status empty">✗</span></li>
+            <li>Extras cont bancar <span class="status empty">✗</span></li>
+            <li>Ofertă dealer 1 <span class="status empty">✗</span></li>
+            <li>Ofertă dealer 2 <span class="status empty">✗</span></li>
+            <li>Ofertă dealer 3 <span class="status empty">✗</span></li>
+            <li>Contract sediu <span class="status empty">✗</span></li>
+            <li>Plan de afaceri <span class="status empty">✗</span></li>
+            <li>7× Declarații <span class="status empty">✗</span></li>
+        </ul>
+    </div>
+
+    <div class="widget">
+        <h3>Informații utile</h3>
+        <ul>
+            <li><a href="#" style="color:#0c4da2; text-decoration:none;">📄 Ghidul Solicitantului (PDF)</a></li>
+            <li><a href="#" style="color:#0c4da2; text-decoration:none;">📋 Anexa 1 — Declarație IMM</a></li>
+            <li><a href="#" style="color:#0c4da2; text-decoration:none;">📋 Anexa 2 — Declarație minimis</a></li>
+            <li><a href="#" style="color:#0c4da2; text-decoration:none;">📋 Anexa 6 — Plan de afaceri</a></li>
+            <li><a href="#" style="color:#0c4da2; text-decoration:none;">❓ Întrebări frecvente</a></li>
+        </ul>
+    </div>
+</div>
+
+</div>
+
+<!-- FOOTER -->
+<div class="site-footer">
+    <p>© 2025 Administrația Fondului pentru Mediu | Programul Mobilitate Verde pentru IMM-uri — Intervenția 1.4.1</p>
+    <p>Cofinanțat de Uniunea Europeană prin <a href="#">Fondul pentru Modernizare</a> | <a href="#">Protecția datelor</a> | <a href="#">Termeni și condiții</a></p>
+</div>
+
+
+<script>
+(function() {
+    // Calculate deadline: next full hour, minimum 30 minutes from now
+    const now = new Date();
+    let deadline = new Date(now);
+    deadline.setMinutes(0, 0, 0);
+    deadline.setHours(deadline.getHours() + 1);
+    
+    // If less than 30 min away, go to the next full hour
+    const diffMs = deadline - now;
+    if (diffMs < 30 * 60 * 1000) {
+        deadline.setHours(deadline.getHours() + 1);
+    }
+    
+    // Format deadline for display
+    const deadlineStr = deadline.toLocaleDateString('ro-RO', { 
+        day: '2-digit', month: '2-digit', year: 'numeric' 
+    }) + ', ora ' + deadline.toLocaleTimeString('ro-RO', { 
+        hour: '2-digit', minute: '2-digit' 
+    });
+    
+    document.getElementById('deadlineText').innerHTML = 
+        'Termen: <b>' + deadlineStr + '</b>';
+    document.getElementById('warningText').innerHTML = 
+        'Sesiunea curentă de depunere se închide la <b>' + deadlineStr + 
+        '</b>. Cererile incomplete sau depuse după termen <b>nu vor fi evaluate</b>. ' +
+        'Vă recomandăm să completați și să trimiteți formularul cât mai rapid.';
+    
+    function updateCountdown() {
+        const now = new Date();
+        const remaining = deadline - now;
+        
+        if (remaining <= 0) {
+            document.getElementById('countdownDigits').textContent = '00:00:00';
+            document.getElementById('countdownBar').style.background = '#333';
+            document.getElementById('deadlineText').innerHTML = '<b>TERMEN EXPIRAT</b>';
+            document.getElementById('deadlineWarning').innerHTML = 
+                '<strong>🚫 TERMENUL DE DEPUNERE A EXPIRAT</strong> ' +
+                'Formularul nu mai poate fi trimis. Contactați Autoritatea de Management.';
+            return;
+        }
+        
+        const hours = Math.floor(remaining / (1000 * 60 * 60));
+        const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+        
+        const pad = n => String(n).padStart(2, '0');
+        document.getElementById('countdownDigits').textContent = 
+            pad(hours) + ':' + pad(minutes) + ':' + pad(seconds);
+        
+        // Urgent mode when < 10 minutes
+        const bar = document.getElementById('countdownBar');
+        if (remaining < 10 * 60 * 1000) {
+            bar.classList.add('urgent');
+        } else {
+            bar.classList.remove('urgent');
+        }
+    }
+    
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+})();
+</script>
+
+
+<script>
+// === PROGRESS TRACKER v2 — WOW EDITION ===
+(function() {
+    let prevPct = 0;
+    let celebrated = false;
+    
+    function isFieldFilled(el) {
+        if (el.type === 'checkbox') return el.checked;
+        if (el.tagName === 'SELECT') {
+            // All selects with selectedIndex===0 are considered empty
+            if (el.selectedIndex === 0) return false;
+            return true;
+        }
+        return el.value && el.value.trim().length > 0;
+    }
+    
+    function spawnConfetti() {
+        const box = document.getElementById('confettiBox');
+        if (!box) return;
+        const colors = ['#2e7d32','#f57f17','#0f2890','#c62828','#1a6bc4','#ff6f00','#6a1b9a'];
+        for (let i = 0; i < 20; i++) {
+            const c = document.createElement('div');
+            c.className = 'confetti';
+            c.style.left = Math.random() * 280 + 'px';
+            c.style.top = '-10px';
+            c.style.background = colors[Math.floor(Math.random() * colors.length)];
+            c.style.animationDelay = (Math.random() * 0.8) + 's';
+            c.style.animationDuration = (1 + Math.random()) + 's';
+            c.style.width = (5 + Math.random() * 6) + 'px';
+            c.style.height = (5 + Math.random() * 6) + 'px';
+            box.appendChild(c);
+        }
+        setTimeout(() => { box.innerHTML = ''; }, 2500);
+    }
+    
+    function updateProgress() {
+        // Count ALL form fields
+        const allFields = document.querySelectorAll(
+            'input[type="text"], input[type="email"], input[type="tel"], input[type="number"], ' +
+            'input[type="date"], textarea, select, input[type="checkbox"]'
+        );
+        
+        let filled = 0;
+        let total = allFields.length;
+        allFields.forEach(el => { if (isFieldFilled(el)) filled++; });
+        
+        const pct = total > 0 ? Math.round((filled / total) * 100) : 0;
+        
+        // Update progress bar
+        const progressFill = document.querySelector('.progress-fill');
+        const progressText = document.querySelector('.progress-text');
+        const progressBar = document.querySelector('.progress-bar');
+        
+        if (progressFill && progressText) {
+            progressFill.style.width = pct + '%';
+            progressText.textContent = filled + ' din ' + total + ' câmpuri completate';
+            
+            // Color transitions
+            if (pct >= 95) {
+                progressBar.classList.add('complete');
+                progressText.classList.add('complete');
+                progressText.textContent = '\u2713 ' + filled + ' din ' + total + ' — Formular complet!';
+            } else {
+                progressBar.classList.remove('complete');
+                progressText.classList.remove('complete');
+            }
+            
+            // Celebration at 95%+ (first time)
+            if (pct >= 95 && !celebrated) {
+                celebrated = true;
+                const widget = progressFill.closest('.widget');
+                if (widget) widget.classList.add('celebrate');
+                spawnConfetti();
+                // Second confetti wave
+                setTimeout(spawnConfetti, 800);
+            }
+            
+            if (pct < 90) celebrated = false; // Reset if dropped back
+        }
+        
+        // Update section statuses
+        const formSections = document.querySelectorAll('.form-section');
+        formSections.forEach(function(sec, idx) {
+            const fields = sec.querySelectorAll(
+                'input[type="text"], input[type="email"], input[type="tel"], input[type="number"], ' +
+                'input[type="date"], textarea, select, input[type="checkbox"]'
+            );
+            let secFilled = 0, secTotal = fields.length;
+            fields.forEach(el => { if (isFieldFilled(el)) secFilled++; });
+            
+            const statusEl = document.getElementById('status-s' + (idx + 1));
+            if (statusEl) {
+                if (secTotal === 0) {
+                    // Section 8 (docs) — no fillable fields
+                    if (window._uploadsSimulated) {
+                        statusEl.className = 'status done';
+                        statusEl.innerHTML = '<span style="color:#2e7d32">&#10003; Completat</span>';
+                    } else {
+                        statusEl.innerHTML = '<span style="color:#888">&#128206; Manual</span>';
+                    }
+                } else {
+                    const secPct = secFilled / secTotal;
+                    if (secPct >= 0.8) {
+                        statusEl.className = 'status done';
+                        statusEl.innerHTML = '<span style="color:#2e7d32">&#10003; Completat</span>';
+                    } else if (secPct > 0) {
+                        statusEl.className = 'status pending';
+                        statusEl.innerHTML = '<span style="color:#f57f17">&#9679; Parțial</span>';
+                    } else {
+                        statusEl.className = 'status empty';
+                        statusEl.innerHTML = '&#9675; Necompletat';
+                    }
+                }
+            }
+        });
+        
+        prevPct = pct;
+    }
+    
+
+    // === DOCUMENT ATTACHMENT SIMULATION ===
+    window._uploadsSimulated = false;
+    window.simulateUploads = function() {
+        var uploadAreas = document.querySelectorAll('.file-upload-area');
+        var fileData = [
+            {name: 'Certificat_ONRC_TransOffice_2025.pdf', size: '1.2 MB', icon: '\uD83D\uDCC4'},
+            {name: 'Act_constitutiv_TransOffice_consolidat.pdf', size: '3.8 MB', icon: '\uD83D\uDCC4'},
+            {name: 'CI_Kovacs_Marton_HR847291.pdf', size: '0.8 MB', icon: '\uD83D\uDCCB'},
+            {name: 'Declaratie_UBO_TransOffice_2025.pdf', size: '0.5 MB', icon: '\uD83D\uDCCB'},
+            {name: 'Certificat_fiscal_ANAF_aprilie2025.pdf', size: '0.9 MB', icon: '\uD83D\uDCC4'},
+            {name: 'Certificat_fiscal_local_Miercurea_Ciuc.pdf', size: '0.7 MB', icon: '\uD83D\uDCC4'},
+            {name: 'Bilant_2023_TransOffice_Trade.pdf', size: '4.2 MB', icon: '\uD83D\uDCCA'},
+            {name: 'Bilant_2024_TransOffice_Trade.pdf', size: '3.9 MB', icon: '\uD83D\uDCCA'},
+            {name: 'Extras_cont_BT_mai2025.pdf', size: '0.3 MB', icon: '\uD83C\uDFE6'},
+            {name: 'Oferta_Renault_Kangoo_ETech_OF-2026-0412.pdf', size: '2.1 MB', icon: '\uD83D\uDE97'},
+            {name: 'Oferta_Citroen_eBerlingo_OF-2025-0398.pdf', size: '1.8 MB', icon: '\uD83D\uDE97'},
+            {name: 'Oferta_Mercedes_eVito_OF-2025-0425.pdf', size: '2.4 MB', icon: '\uD83D\uDE97'},
+            {name: 'Contract_sediu_Baiesenilor14_Nr47-2018.pdf', size: '1.1 MB', icon: '\uD83C\uDFE0'},
+            {name: 'Plan_afaceri_TransOffice_2025-2028.pdf', size: '5.6 MB', icon: '\uD83D\uDCBC'},
+            {name: 'Declaratie_IMM_Anexa1_semnat.pdf', size: '0.4 MB', icon: '\u270D\uFE0F'},
+            {name: 'Declaratie_minimis_Anexa2_semnat.pdf', size: '0.4 MB', icon: '\u270D\uFE0F'},
+            {name: 'Declaratie_mentinere_investitie_semnat.pdf', size: '0.3 MB', icon: '\u270D\uFE0F'},
+            {name: 'Declaratie_locuri_munca_semnat.pdf', size: '0.3 MB', icon: '\u270D\uFE0F'},
+            {name: 'Declaratie_conform_realitate_semnat.pdf', size: '0.3 MB', icon: '\u270D\uFE0F'},
+            {name: 'Declaratie_GDPR_semnat.pdf', size: '0.3 MB', icon: '\u270D\uFE0F'},
+            {name: 'Declaratie_ajutor_stat_semnat.pdf', size: '0.3 MB', icon: '\u270D\uFE0F'}
+        ];
+        
+        var delay = 0;
+        uploadAreas.forEach(function(area, i) {
+            if(i >= fileData.length) return;
+            var fd = fileData[i];
+            setTimeout(function() {
+                area.classList.add('uploaded');
+                area.innerHTML = '<div class="file-uploaded-info">' +
+                    '<span class="file-icon">' + fd.icon + '</span>' +
+                    '<div class="file-details">' +
+                        '<div class="file-name">' + fd.name + '</div>' +
+                        '<div class="file-meta">' + fd.size + ' \u2022 PDF \u2022 Încărcat acum</div>' +
+                    '</div>' +
+                    '<span class="file-status">\u2713 Încărcat</span>' +
+                '</div>';
+                
+                // Update S8 status after all uploads
+                if(i === uploadAreas.length - 1 || i === fileData.length - 1) {
+                    var s8 = document.getElementById('status-s8');
+                    if(s8) s8.innerHTML = '<span style="color:#2e7d32">\u2713 Completat</span>';
+                }
+            }, delay);
+            delay += 150; // Staggered animation — each file appears 150ms after the previous
+        });
+        
+        window._uploadsSimulated = true;
+        // Update sidebar doc list too
+        setTimeout(function() {
+            var docWidget = document.querySelectorAll('.sidebar .widget')[2]; // 3rd widget = Documente obligatorii
+            if(docWidget) {
+                var items = docWidget.querySelectorAll('li .status');
+                items.forEach(function(s) {
+                    s.className = 'status done';
+                    s.style.color = '#2e7d32';
+                    s.textContent = '\u2713';
+                });
+            }
+        }, delay + 200);
+    };
+    document.addEventListener('input', updateProgress);
+    document.addEventListener('change', updateProgress);
+    updateProgress();
+    setInterval(updateProgress, 500);
+})();
+</script>
+
+
+<script>
+// === SUBMIT VALIDATION + SUCCESS SCREEN ===
+(function() {
+    var submitBtn = document.querySelector('.btn-submit');
+    if (!submitBtn) return;
+    
+    submitBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Remove previous highlights
+        document.querySelectorAll('.field-missing').forEach(function(el) {
+            el.classList.remove('field-missing');
+        });
+        document.querySelectorAll('.validation-toast').forEach(function(el) { el.remove(); });
+        
+        // Simple validation: find EMPTY fields (not filled at all)
+        var missing = [];
+        
+        // Check text/email/tel/number inputs that are empty
+        document.querySelectorAll(
+            'input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="date"]'
+        ).forEach(function(el) {
+            if (!el.value || !el.value.trim()) missing.push(el);
+        });
+        
+        // Check empty textareas
+        document.querySelectorAll('textarea').forEach(function(el) {
+            if (!el.value || !el.value.trim()) missing.push(el);
+        });
+        
+        // Check unchecked checkboxes
+        document.querySelectorAll('input[type="checkbox"]').forEach(function(el) {
+            if (!el.checked) missing.push(el);
+        });
+        
+        if (missing.length > 0) {
+            // Highlight missing fields
+            missing.forEach(function(el) {
+                el.classList.add('field-missing');
+                var label = el.closest('div');
+                if (label) {
+                    var labelEl = label.querySelector('label');
+                    if (labelEl) labelEl.classList.add('field-missing-label');
+                }
+            });
+            
+            // Show toast
+            var toast = document.createElement('div');
+            toast.className = 'validation-toast';
+            toast.innerHTML = '\u26A0\uFE0F ' + missing.length + ' câmpuri obligatorii necompletate — vă rugăm verificați';
+            document.body.appendChild(toast);
+            setTimeout(function() { toast.remove(); }, 5000);
+            
+            // Scroll to first missing field
+            missing[0].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            missing[0].focus();
+            
+            return;
+        }
+        
+        // === ALL VALID — SHOW SUCCESS ===
+        showSuccessScreen();
+    });
+    
+    function showSuccessScreen() {
+        // Spawn confetti
+        var confettiDiv = document.createElement('div');
+        confettiDiv.className = 'success-confetti';
+        var colors = ['#2e7d32','#f57f17','#0f2890','#c62828','#1a6bc4','#ff6f00','#6a1b9a','#00695c','#e65100'];
+        for (var i = 0; i < 80; i++) {
+            var p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.background = colors[Math.floor(Math.random() * colors.length)];
+            p.style.animationDuration = (2 + Math.random() * 3) + 's';
+            p.style.animationDelay = Math.random() * 1.5 + 's';
+            p.style.width = (6 + Math.random() * 10) + 'px';
+            p.style.height = (6 + Math.random() * 10) + 'px';
+            if (Math.random() > 0.5) p.style.borderRadius = '50%';
+            confettiDiv.appendChild(p);
+        }
+        document.body.appendChild(confettiDiv);
+        
+        // Build success card
+        var now = new Date();
+        var dateStr = now.toLocaleDateString('ro-RO', {day:'2-digit', month:'2-digit', year:'numeric'});
+        var timeStr = now.toLocaleTimeString('ro-RO', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+        
+        var overlay = document.createElement('div');
+        overlay.className = 'success-overlay';
+        overlay.innerHTML = 
+            '<div class="success-card">' +
+                '<div class="stamp">ÎNREGISTRAT</div>' +
+                '<div class="success-icon">\u2713</div>' +
+                '<h2>Cerere depusă cu succes!</h2>' +
+                '<p class="subtitle">Cererea dumneavoastră de finanțare a fost înregistrată în sistemul AFM</p>' +
+                '<div class="reg-box">' +
+                    '<div class="reg-label">Număr de înregistrare</div>' +
+                    '<div class="reg-number">MV-2025-167456</div>' +
+                '</div>' +
+                '<div class="details-grid">' +
+                    '<div class="detail-item">' +
+                        '<div class="label">Solicitant</div>' +
+                        '<div class="value">TransOffice Trade SRL</div>' +
+                    '</div>' +
+                    '<div class="detail-item">' +
+                        '<div class="label">CUI</div>' +
+                        '<div class="value">RO24681357</div>' +
+                    '</div>' +
+                    '<div class="detail-item">' +
+                        '<div class="label">Data depunerii</div>' +
+                        '<div class="value">' + dateStr + ', ' + timeStr + '</div>' +
+                    '</div>' +
+                    '<div class="detail-item">' +
+                        '<div class="label">Valoare solicitată</div>' +
+                        '<div class="value">432.800 RON (80%)</div>' +
+                    '</div>' +
+                    '<div class="detail-item">' +
+                        '<div class="label">Program</div>' +
+                        '<div class="value">Mobilitate Verde IMM 2025</div>' +
+                    '</div>' +
+                    '<div class="detail-item">' +
+                        '<div class="label">Status</div>' +
+                        '<div class="value" style="color:#2e7d32">\u2713 Depusă — în evaluare</div>' +
+                    '</div>' +
+                '</div>' +
+                '<p class="footer-note">' +
+                    'Confirmarea a fost trimisă la <b>office@transoffice.ro</b><br>' +
+                    'Evaluarea administrativă va fi finalizată în max. 30 zile lucrătoare.<br>' +
+                    'Puteți verifica statusul cererii pe <b>afm.ro/verificare-status</b> folosind numărul de înregistrare.' +
+                '</p>' +
+            '</div>';
+        document.body.appendChild(overlay);
+        
+        // Stop the countdown timer
+        var countdownBar = document.getElementById('countdownBar');
+        if (countdownBar) {
+            countdownBar.style.background = '#2e7d32';
+            document.getElementById('countdownDigits').textContent = '\u2713 DEPUS';
+            document.getElementById('deadlineText').innerHTML = '<b>Cerere depusă cu succes</b>';
+        }
+    }
+})();
+</script>
+</body>
+</html>

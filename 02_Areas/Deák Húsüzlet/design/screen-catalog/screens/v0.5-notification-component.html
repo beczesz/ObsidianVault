@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script type="application/json" id="screen-meta">
+{
+  "title": "Notification Component — Products oldal",
+  "feature": "notifications",
+  "sprint": "Sprint 5",
+  "status": "draft",
+  "publish": true,
+  "order": 30,
+  "platform": "mobile",
+  "version": "v1",
+  "tags": ["DH-159", "notification", "banner", "products"]
+}
+</script>
+<title>DH-159 — Notification Component</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --primary: #9B2335;
+  --primary-dark: #7D1A2A;
+  --primary-light: #F9E0E3;
+  --bg: #FFFBF7;
+  --card: #FFFFFF;
+  --text: #2C2825;
+  --text2: #5C544C;
+  --text3: #8A8078;
+  --border: #E8E2DB;
+  --success: #2D7A4F;
+  --success-bg: #D4EDDA;
+  --gold: #9C7841;
+  --gold-bg: #FFF8E1;
+  --info: #1E40AF;
+  --info-bg: #DBEAFE;
+  --amber: #92400E;
+  --amber-bg: #FEF3C7;
+  --gold-icon: #D4A574;
+  --category-color: #D4A574;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body {
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  -webkit-font-smoothing: antialiased;
+}
+body { max-width: 390px; margin: 0 auto; min-height: 100vh; padding-bottom: 80px; }
+
+/* ── Back button ── */
+.back-to-catalog {
+  position: fixed; top: 12px; left: 12px; z-index: 9999;
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(155,35,53,0.92); color: white;
+  font-size: 12px; font-weight: 600;
+  padding: 7px 12px 7px 10px; border-radius: 999px;
+  text-decoration: none; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+/* ── Scenario switcher ── */
+.switcher {
+  position: fixed; top: 12px; right: 12px; z-index: 9998;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+}
+.switcher-label { font-size: 9px; font-weight: 700; color: var(--text3); text-transform: uppercase; letter-spacing: .06em; }
+.switcher-btns { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; max-width: 200px; }
+.sw-btn {
+  background: rgba(255,255,255,0.92); border: 1.5px solid var(--border);
+  border-radius: 8px; font-size: 9px; font-weight: 700;
+  color: var(--text2); padding: 3px 7px; cursor: pointer; font-family: inherit;
+}
+.sw-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+/* ── Header ── */
+.header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 16px; height: 56px; background: var(--card);
+  position: sticky; top: 0; z-index: 10;
+  box-shadow: 0 0 1px rgba(0,0,0,0.1), 0 1px 3px rgba(0,0,0,0.08);
+}
+.header h1 { font-size: 20px; font-weight: 600; color: var(--primary-dark); }
+.lang-btn {
+  background: none; border: none; cursor: pointer;
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+}
+.lang-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* ── NOTIFICATION ZONE ── */
+.notif-zone { display: flex; flex-direction: column; gap: 6px; padding: 8px 12px; }
+
+/* Base notification card — no side-stripe, full border carries the type */
+.notif {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 11px 12px; border-radius: 12px;
+  border: 1px solid transparent;
+  position: relative;
+  animation: slideIn 0.22s ease-out;
+}
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Icon container */
+.notif-icon {
+  width: 32px; height: 32px; flex-shrink: 0; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+}
+.notif-icon svg {
+  width: 16px; height: 16px; stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+}
+
+/* Text */
+.notif-body { flex: 1; min-width: 0; }
+.notif-title { font-size: 13px; font-weight: 700; line-height: 1.3; margin-bottom: 2px; }
+.notif-sub { font-size: 11px; font-weight: 400; line-height: 1.4; }
+.notif-cta {
+  display: inline-block; margin-top: 6px;
+  font-size: 11px; font-weight: 700;
+  text-decoration: underline; cursor: pointer;
+}
+
+/* Dismiss — 44×44px touch target, icon visually 24px */
+.notif-close {
+  background: none; border: none; cursor: pointer;
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 8px; opacity: 0.55; padding: 0;
+  margin: -10px -10px -10px 0;
+}
+.notif-close:hover { opacity: 1; }
+.notif-close:focus-visible { outline: 2px solid currentColor; outline-offset: 2px; opacity: 1; }
+.notif-close svg { width: 14px; height: 14px; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+/* ── Severity: Error (red) ── */
+.notif-error { background: var(--primary-light); border-color: #F0C4CB; }
+.notif-error .notif-icon { background: rgba(155,35,53,0.12); }
+.notif-error .notif-icon svg { stroke: var(--primary); }
+.notif-error .notif-title { color: var(--primary-dark); }
+.notif-error .notif-sub { color: var(--primary); }
+.notif-error .notif-cta { color: var(--primary); }
+.notif-error .notif-close svg { stroke: var(--primary); }
+
+/* ── Severity: Success (green) ── */
+.notif-success { background: var(--success-bg); border-color: #A7D9BC; }
+.notif-success .notif-icon { background: rgba(45,122,79,0.15); }
+.notif-success .notif-icon svg { stroke: var(--success); }
+.notif-success .notif-title { color: #1A5C37; }
+.notif-success .notif-sub { color: #2D7A4F; }
+.notif-success .notif-cta { color: var(--success); }
+.notif-success .notif-close svg { stroke: var(--success); }
+
+/* ── Severity: Warning (amber) ── */
+.notif-warning { background: var(--amber-bg); border-color: #FCD68A; }
+.notif-warning .notif-icon { background: rgba(146,64,14,0.12); }
+.notif-warning .notif-icon svg { stroke: var(--amber); }
+.notif-warning .notif-title { color: #5C2E08; }
+.notif-warning .notif-sub { color: var(--amber); }
+.notif-warning .notif-cta { color: var(--amber); }
+.notif-warning .notif-close svg { stroke: var(--amber); }
+
+/* ── Severity: Info (blue) ── */
+.notif-info { background: var(--info-bg); border-color: #BFDBFE; }
+.notif-info .notif-icon { background: rgba(30,64,175,0.10); }
+.notif-info .notif-icon svg { stroke: var(--info); }
+.notif-info .notif-title { color: #1E3A8A; }
+.notif-info .notif-sub { color: var(--info); }
+.notif-info .notif-cta { color: var(--info); }
+.notif-info .notif-close svg { stroke: var(--info); }
+
+/* ── Severity: Neutral (colorless — tájékoztatás, nem sürgős) ── */
+.notif-neutral { background: var(--card); border-color: var(--border); }
+.notif-neutral .notif-icon { background: rgba(138,128,120,0.10); }
+.notif-neutral .notif-icon svg { stroke: var(--text3); }
+.notif-neutral .notif-title { color: var(--text); }
+.notif-neutral .notif-sub { color: var(--text2); }
+.notif-neutral .notif-cta { color: var(--text2); }
+.notif-neutral .notif-close svg { stroke: var(--text3); }
+
+/* ── Compact variant ── */
+.notif-compact { padding: 9px 10px; border-radius: 10px; }
+.notif-compact .notif-icon { width: 26px; height: 26px; border-radius: 7px; }
+.notif-compact .notif-icon svg { width: 14px; height: 14px; }
+.notif-compact .notif-title { font-size: 12px; }
+
+/* ── Category tabs ── */
+.tabs-wrap { padding: 8px 16px 0; }
+.tabs { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
+.tab {
+  padding: 0 14px; border-radius: 999px; font-size: 13px; font-weight: 500;
+  white-space: nowrap; border: none; cursor: pointer; flex-shrink: 0;
+  height: 44px; display: inline-flex; align-items: center; font-family: inherit;
+}
+.tab:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.tab.active { background: var(--primary); color: white; }
+.tab.inactive { background: rgba(232,226,219,0.7); color: var(--text2); }
+
+/* ── Product grid ── */
+.grid-wrap { padding: 12px 16px 0; }
+.product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.product-card {
+  background: var(--card); border-radius: 14px; overflow: hidden;
+  border: 1px solid var(--border); box-shadow: 0 1px 2px rgba(0,0,0,0.06);
+}
+.product-img { width: 100%; height: 100px; object-fit: cover; background: #EDE5DC; display: block; }
+.product-info { padding: 9px 10px 11px; }
+.product-cat {
+  font-size: 10px; font-weight: 600; color: var(--category-color);
+  margin-bottom: 3px; letter-spacing: .03em;
+}
+.product-name { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.3; margin-bottom: 4px; }
+.product-price { font-size: 13px; font-weight: 700; color: var(--primary); }
+.product-price .unit { font-weight: 400; color: var(--text3); font-size: 11px; }
+.disc-badge {
+  position: absolute; top: 8px; right: 8px;
+  background: var(--success); color: white;
+  font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 6px;
+}
+
+/* ── Bottom nav ── */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 390px; background: var(--card); border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around; align-items: center;
+  height: 65px; z-index: 20;
+  box-shadow: 0 -2px 8px rgba(0,0,0,0.06);
+}
+.nav-item {
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
+  text-decoration: none; padding: 4px 12px;
+  min-width: 44px; min-height: 44px; justify-content: center;
+}
+.nav-item svg { width: 22px; height: 22px; stroke-width: 1.8; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.nav-item span { font-size: 11px; font-weight: 500; }
+.nav-item.active svg, .nav-item.active span { color: var(--primary); stroke: var(--primary); }
+.nav-item:not(.active) svg, .nav-item:not(.active) span { color: var(--text3); stroke: var(--text3); }
+.nav-item:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 8px; }
+
+/* ── Scenario label ── */
+.scenario-badge {
+  margin: 8px 12px 0;
+  background: rgba(44,40,37,0.06); border-radius: 8px;
+  padding: 5px 10px; font-size: 10px; font-weight: 700;
+  color: var(--text3); text-transform: uppercase; letter-spacing: .07em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+</style>
+</head>
+<body>
+
+<a class="back-to-catalog" href="../index.html" aria-label="Vissza a katalógushoz">
+  <svg viewBox="0 0 24 24" width="14" height="14" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+  Katalógus
+</a>
+
+<div class="switcher" role="group" aria-label="Scenario választó">
+  <div class="switcher-label" aria-hidden="true">Scenario</div>
+  <div class="switcher-btns">
+    <button class="sw-btn active" onclick="setS('A')" aria-pressed="true">A · Error</button>
+    <button class="sw-btn" onclick="setS('B')" aria-pressed="false">B · Success</button>
+    <button class="sw-btn" onclick="setS('C')" aria-pressed="false">C · Warning</button>
+    <button class="sw-btn" onclick="setS('D')" aria-pressed="false">D · Info</button>
+    <button class="sw-btn" onclick="setS('E')" aria-pressed="false">E · Neutral</button>
+    <button class="sw-btn" onclick="setS('F')" aria-pressed="false">F · Stack</button>
+    <button class="sw-btn" onclick="setS('G')" aria-pressed="false">G · Üres</button>
+  </div>
+</div>
+
+<header class="header">
+  <h1>Termékek</h1>
+  <button class="lang-btn" aria-label="Nyelv váltása">
+    <svg width="22" height="16" viewBox="0 0 22 16" aria-hidden="true"><rect width="22" height="5.33" fill="#CE2939"/><rect y="5.33" width="22" height="5.33" fill="#FFF"/><rect y="10.66" width="22" height="5.34" fill="#1A8B42"/></svg>
+  </button>
+</header>
+
+<div class="scenario-badge" id="scenarioLabel" aria-live="polite">A · Error — kritikus hiba, azonnali beavatkozás szükséges</div>
+
+<!-- NOTIFICATION ZONE — aria-live for screen reader announcements -->
+<div class="notif-zone" id="notifZone" aria-live="polite" aria-atomic="false" aria-label="Értesítések"></div>
+
+<!-- Category tabs -->
+<div class="tabs-wrap">
+  <div class="tabs" role="tablist" aria-label="Termékkategóriák">
+    <button class="tab active" role="tab" aria-selected="true">Összes</button>
+    <button class="tab inactive" role="tab" aria-selected="false">Felvágott &amp; Egyéb</button>
+    <button class="tab inactive" role="tab" aria-selected="false">Friss Sertéshús</button>
+    <button class="tab inactive" role="tab" aria-selected="false">Füstölt</button>
+    <button class="tab inactive" role="tab" aria-selected="false">Kolbász</button>
+  </div>
+</div>
+
+<!-- Product grid -->
+<div class="grid-wrap">
+  <div class="product-grid">
+    <div class="product-card">
+      <div style="position:relative">
+        <img class="product-img" src="https://staging.deakhus.ro/files/fustolt_has_small.webp" alt="Füstölt Has" onerror="this.style.background='#EDE5DC'">
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Füstölt áruk</div>
+        <div class="product-name">Füstölt Has</div>
+        <div class="product-price">47 RON <span class="unit">/ kg</span></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div style="position:relative">
+        <img class="product-img" src="https://staging.deakhus.ro/files/sertes_orolt_hus_small.webp" alt="Sertés Őrölt Hús" onerror="this.style.background='#EDE5DC'">
+        <span class="disc-badge" aria-label="10 RON kedvezmény">-10 RON</span>
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Friss sertéshús</div>
+        <div class="product-name">Sertés Őrölt Hús</div>
+        <div class="product-price">11 RON <span class="unit">/ kg</span></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div style="position:relative">
+        <img class="product-img" src="https://staging.deakhus.ro/files/erdelyi_kolbasz_small.webp" alt="Erdélyi Kolbász" onerror="this.style.background='#EDE5DC'">
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Kolbász &amp; szalámi</div>
+        <div class="product-name">Erdélyi Kolbász</div>
+        <div class="product-price">45 RON <span class="unit">/ kg</span></div>
+      </div>
+    </div>
+    <div class="product-card">
+      <div style="position:relative">
+        <img class="product-img" src="https://staging.deakhus.ro/files/fustolt_csulok_small.webp" alt="Füstölt Csülök" onerror="this.style.background='#EDE5DC'">
+      </div>
+      <div class="product-info">
+        <div class="product-cat">Füstölt áruk</div>
+        <div class="product-name">Füstölt Csülök</div>
+        <div class="product-price">34 RON <span class="unit">/ kg</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="bottom-nav" aria-label="Navigáció">
+  <a href="#" class="nav-item active" aria-current="page" aria-label="Termékek">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Termékek</span>
+  </a>
+  <a href="#" class="nav-item" aria-label="Kosár">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <span>Kosár</span>
+  </a>
+  <a href="#" class="nav-item" aria-label="Rendelések">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    <span>Rendelések</span>
+  </a>
+  <a href="#" class="nav-item" aria-label="Fiók">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Fiók</span>
+  </a>
+</nav>
+
+<script>
+const ICONS = {
+  truck:   '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="1" y="3" width="15" height="13" rx="1"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>',
+  package: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>',
+  coins:   '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>',
+  alert:   '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  info:    '<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>',
+  x:       '<svg viewBox="0 0 24 24" aria-hidden="true"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  star:    '<svg viewBox="0 0 24 24" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+};
+
+function notif(type, icon, title, sub, cta, compact) {
+  const cls = compact ? 'notif notif-' + type + ' notif-compact' : 'notif notif-' + type;
+  return `<div class="${cls}" role="alert">
+    <div class="notif-icon">${ICONS[icon]}</div>
+    <div class="notif-body">
+      <div class="notif-title">${title}</div>
+      ${sub ? `<div class="notif-sub">${sub}</div>` : ''}
+      ${cta ? `<div class="notif-cta" role="button" tabindex="0">${cta}</div>` : ''}
+    </div>
+    <button class="notif-close" aria-label="Értesítés bezárása: ${title}" onclick="this.closest('.notif').remove()">${ICONS.x}</button>
+  </div>`;
+}
+
+const SCENARIOS = {
+  A: {
+    label: 'A · Error — kritikus hiba, azonnali beavatkozás szükséges',
+    html: () => notif('error','alert',
+      'A rendelés feldolgozása sikertelen',
+      'Fizetési hiba: a bankkártya terhelése nem sikerült. Kérjük ellenőrizd az adatokat.',
+      'Fizetés ismétlése →')
+  },
+  B: {
+    label: 'B · Success — sikeres művelet, pozitív visszajelzés',
+    html: () => notif('success','package',
+      'Rendelés visszaigazolva',
+      'DEAK-ORD-00035 · A rendelést megkaptuk, pénteken kiszállítjuk.',
+      'Rendelés megtekintése →')
+  },
+  C: {
+    label: 'C · Warning — figyelmeztetés, beavatkozás javasolt',
+    html: () => notif('warning','alert',
+      'Egy termék hamarosan elfogy',
+      'Erdélyi Kolbász: az utolsó néhány adag elérhető a kiválasztott napra.',
+      'Kosár ellenőrzése →')
+  },
+  D: {
+    label: 'D · Info — tájékoztatás, cselekvés nem szükséges',
+    html: () => notif('info','info',
+      'Új kiszállítási napok érhetők el',
+      'Mostantól szerdán is szállítunk Székelyudvarhely belvárosába.')
+  },
+  E: {
+    label: 'E · Neutral — semleges értesítés, nincs sürgősség',
+    html: () => notif('neutral','info',
+      'Rendszer karbantartás csütörtökön',
+      'Csütörtök éjjel 02:00–04:00 között az oldal nem lesz elérhető.')
+  },
+  F: {
+    label: 'F · Stack — kombinált severity (max 2 ajánlott)',
+    html: () =>
+      notif('error','alert', 'Fizetési hiba', 'A bankkártya terhelése sikertelen.', 'Újrapróbálás →') +
+      notif('info','info', 'Szállítási idők frissültek', 'Pénteki rendelési határidő: csütörtök 18:00.', null, true)
+  },
+  G: {
+    label: 'G · Üres — alap products oldal, értesítés nélkül',
+    html: () => ''
+  },
+};
+
+function setS(key) {
+  const s = SCENARIOS[key];
+  document.querySelectorAll('.sw-btn').forEach(b => {
+    const isActive = b.textContent.startsWith(key);
+    b.classList.toggle('active', isActive);
+    b.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+  });
+  document.getElementById('scenarioLabel').textContent = s.label;
+  document.getElementById('notifZone').innerHTML = s.html();
+}
+
+setS('A');
+
+// Keyboard: scenario switcher
+document.addEventListener('keydown', e => {
+  const keys = {'1':'A','2':'B','3':'C','4':'D','5':'E','6':'F','7':'G'};
+  if (keys[e.key]) setS(keys[e.key]);
+});
+</script>
+
+<!-- Pull-to-refresh -->
+<style>
+.ptr-ind {
+  position: fixed; top: 0; left: 50%;
+  transform: translateX(-50%) translateY(-56px);
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--card, #fff);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s cubic-bezier(.25,.46,.45,.94), opacity .2s;
+  opacity: 0; z-index: 9999; pointer-events: none;
+}
+.ptr-ind.vis { opacity: 1; transform: translateX(-50%) translateY(12px); }
+.ptr-ind svg { width: 18px; height: 18px; stroke: var(--primary, #9B2335); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ptr-ind.spin svg { animation: ptr-r .7s linear infinite; }
+@keyframes ptr-r { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ptr-ind, .ptr-ind svg { animation: none !important; transition: none !important; } }
+</style>
+<script>
+(function(){
+  var el = document.createElement('div');
+  el.className = 'ptr-ind';
+  el.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>';
+  document.body.appendChild(el);
+  var sy = 0, on = false, T = 64;
+  document.addEventListener('touchstart', function(e){ if(window.scrollY===0){ sy=e.touches[0].clientY; on=true; } }, {passive:true});
+  document.addEventListener('touchmove',  function(e){ if(!on) return; if(e.touches[0].clientY - sy > 10) el.classList.add('vis'); }, {passive:true});
+  document.addEventListener('touchend',   function(e){ if(!on) return; var dy=(e.changedTouches[0]||{clientY:sy}).clientY - sy; if(dy >= T){ el.classList.add('spin'); setTimeout(function(){ location.reload(); }, 300); } else { el.classList.remove('vis'); } on=false; }, {passive:true});
+})();
+</script>
+</body>
+</html>

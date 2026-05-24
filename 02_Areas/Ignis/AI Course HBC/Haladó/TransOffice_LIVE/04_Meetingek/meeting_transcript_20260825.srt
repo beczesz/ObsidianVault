@@ -1,0 +1,291 @@
+1
+00:00:02,000 --> 00:00:06,500
+Speaker A: Oké, köszönöm hogy be tudtál ugrani ilyen gyorsan.
+
+2
+00:00:07,000 --> 00:00:16,000
+Speaker A: Nem akarom túl bonyolítani, de van egy helyzet — vagy inkább már elég régóta van, csak senki nem ért rá rendesen ránézni.
+
+3
+00:00:16,500 --> 00:00:23,500
+Speaker A: Az az AFM-es elektromos autós pályázat… emlékszel, decemberben dobta be az ismerősöm.
+
+4
+00:00:24,300 --> 00:00:28,300
+Speaker B: Az amit a karácsonyi szünet előtt küldtél át emailben?
+
+5
+00:00:29,100 --> 00:00:30,900
+Speaker A: Igen, az.
+
+6
+00:00:31,400 --> 00:00:39,900
+Speaker A: És tudom, tudom — már 2 hónapja megnyitva ott áll a gépemen az a PDF, és senki nem ért rá végigolvasni.
+
+7
+00:00:40,400 --> 00:00:47,400
+Speaker A: Most viszont szóltak hogy a forrás kifut, és vagy ezen a héten beadjuk, vagy lemaradunk.
+
+8
+00:00:48,200 --> 00:00:51,200
+Speaker B: Ez a héten?? Ma kedd van.
+
+9
+00:00:52,000 --> 00:00:56,200
+Speaker A: Igen, kedd. Péntekig kéne minden összeállni.
+
+10
+00:00:56,700 --> 00:01:06,200
+Speaker A: Tudom hogy ez nagyon szoros, de 70-80% támogatás 2 elektromos autóra — ezt nem hagyhatjuk veszni csak azért mert lusták voltunk.
+
+11
+00:01:09,000 --> 00:01:15,000
+Speaker B: Oké… és mit kérnek pontosan? Mert ezeknél mindig van egy hosszú lista.
+
+12
+00:01:15,800 --> 00:01:22,300
+Speaker A: Van egy dokumentum… elküldték PDF-ben. Nagyon hosszú. Valami 100 oldal körül.
+
+13
+00:01:23,100 --> 00:01:25,600
+Speaker B: Persze… klasszikus.
+
+14
+00:01:26,400 --> 00:01:32,400
+Speaker A: Átfutottam, de őszintén… nem értettem sokat belőle. Jogias az egész.
+
+15
+00:01:33,200 --> 00:01:37,400
+Speaker B: Oké, akkor első kérdés: pályázhatunk-e egyáltalán.
+
+16
+00:01:38,200 --> 00:01:42,200
+Speaker A: Igen, pontosan. Ezt kellene gyorsan kideríteni.
+
+17
+00:01:43,000 --> 00:01:52,000
+Speaker B: Ehhez kelleni fog árbevétel, alkalmazotti létszám, tevékenységi kör, és hogy van-e már meglévő járműpark.
+
+18
+00:01:54,300 --> 00:01:59,300
+Speaker A: Na igen… a járműpark… hát van pár autónk.
+
+19
+00:02:00,100 --> 00:02:01,300
+Speaker B: Pár?
+
+20
+00:02:02,100 --> 00:02:07,100
+Speaker A: Igen… három? Négy? Nem tudom pontosan.
+
+21
+00:02:07,900 --> 00:02:13,400
+Speaker B: Ez már probléma… mert ezt pontosan kell majd leírni.
+
+22
+00:02:14,200 --> 00:02:20,700
+Speaker A: Igen, tudom… valahol megvan Excelben. A raktárnál vagy a logisztikánál.
+
+23
+00:02:21,500 --> 00:02:25,500
+Speaker B: Melyik Excelben? Mert van vagy öt verzió…
+
+24
+00:02:26,300 --> 00:02:32,300
+Speaker A: Igen… ez az… ezért is lenne jó, ha végre lenne valami rendszer.
+
+25
+00:02:34,600 --> 00:02:41,100
+Speaker B: Oké, akkor első körben ezek kellenek: járművek, pénzügyi adatok, cégadatok.
+
+26
+00:02:41,900 --> 00:02:45,400
+Speaker A: Igen. A pénzügyi adatokat te tudod, nem?
+
+27
+00:02:46,200 --> 00:02:51,700
+Speaker B: Részben. De a legfrissebb számok még nincsenek összerakva teljesen.
+
+28
+00:02:52,200 --> 00:02:56,200
+Speaker B: A tavalyi megvan, de az idei… hát…
+
+29
+00:02:57,000 --> 00:02:58,800
+Speaker A: Az elég lehet?
+
+30
+00:02:59,600 --> 00:03:07,100
+Speaker B: Attól függ, mit kérnek. Általában az utolsó lezárt év kell, de néha kérnek aktuális adatokat is.
+
+31
+00:03:07,900 --> 00:03:10,900
+Speaker A: Oké… és a tevékenységi kör?
+
+32
+00:03:11,700 --> 00:03:14,200
+Speaker B: Az benne van a cégkivonatban.
+
+33
+00:03:14,700 --> 00:03:20,700
+Speaker B: De az sincs egy helyen normálisan… van egy régi PDF, meg egy Word fájl…
+
+34
+00:03:23,000 --> 00:03:26,000
+Speaker A: És az ügyfelek? Kell az is?
+
+35
+00:03:26,800 --> 00:03:30,800
+Speaker B: Valószínű. Legalább valamilyen referencia vagy lista.
+
+36
+00:03:31,600 --> 00:03:37,600
+Speaker A: Az… hát… az e-mailekben van főleg. Meg az a régi Excel…
+
+37
+00:03:38,400 --> 00:03:41,400
+Speaker B: Az, amiben fél ügyfél van duplikálva?
+
+38
+00:03:42,200 --> 00:03:44,000
+Speaker A: Igen… az.
+
+39
+00:03:44,800 --> 00:03:54,300
+Speaker B: Oké, szóval nincs egy tiszta ügyféllista, nincs egy tiszta járműlista, pénzügy részben van, cégadatok szétszórva.
+
+40
+00:03:57,600 --> 00:04:00,100
+Speaker A: Igen… jól hangzik.
+
+41
+00:04:00,600 --> 00:04:12,600
+Speaker A: Á, és még valami: Béla bácsi szilveszterkor mondott valamit, hogy gondolkodik egy-két ingatlana eladásán — utána kéne nézni nehogy a miénk legyen, ahol a raktár van.
+
+42
+00:04:13,400 --> 00:04:15,900
+Speaker B: És mennyi időnk van?
+
+43
+00:04:16,700 --> 00:04:22,700
+Speaker A: Hát… ezt nem akarom mondani… de szerintem már tegnap kellett volna.
+
+44
+00:04:23,500 --> 00:04:24,700
+Speaker B: Szuper.
+
+45
+00:04:25,500 --> 00:04:31,000
+Speaker A: De reálisan… ezen a héten még talán össze lehet rakni valamit.
+
+46
+00:04:33,600 --> 00:04:37,800
+Speaker B: Oké. Akkor két dolgot kell csinálni gyorsan.
+
+47
+00:04:38,300 --> 00:04:45,300
+Speaker B: Egy: megnézni a pályázati kiírást rendesen. Kettő: összeszedni, hogy mi hiányzik.
+
+48
+00:04:46,100 --> 00:04:50,300
+Speaker A: Igen. A kiírásban benne van minden, csak… hát…
+
+49
+00:04:51,100 --> 00:04:52,900
+Speaker B: Csak 100 oldal.
+
+50
+00:04:53,700 --> 00:04:54,600
+Speaker A: Igen.
+
+51
+00:04:55,400 --> 00:04:58,400
+Speaker B: Oké, és ha kiderül, hogy pályázhatunk?
+
+52
+00:04:59,200 --> 00:05:01,700
+Speaker A: Akkor meg kell írni az anyagot.
+
+53
+00:05:02,200 --> 00:05:08,700
+Speaker A: Kell majd egy leírás a cégről, tevékenységről, meg hogy mire kérjük a támogatást.
+
+54
+00:05:09,500 --> 00:05:12,000
+Speaker B: Akkor az elektromos autók…
+
+55
+00:05:12,800 --> 00:05:15,300
+Speaker A: Igen, két darab. Legalább.
+
+56
+00:05:16,100 --> 00:05:18,600
+Speaker B: És ezt indokolni kell majd.
+
+57
+00:05:19,400 --> 00:05:24,400
+Speaker A: Igen… például környezetvédelem, költségcsökkentés, ilyesmi.
+
+58
+00:05:25,200 --> 00:05:31,700
+Speaker B: Oké… ehhez lehet, hogy kellene valami piaci adat is… hogy mennyire éri meg.
+
+59
+00:05:32,500 --> 00:05:39,000
+Speaker A: Igen, mondták is, hogy van valami tanulmány vagy elemzés… de nem tudom hol.
+
+60
+00:05:39,800 --> 00:05:43,300
+Speaker B: Valószínű online… vagy a pályázati oldalon.
+
+61
+00:05:46,100 --> 00:05:46,900
+Speaker A: Lehet.
+
+62
+00:05:47,700 --> 00:05:55,200
+Speaker B: És a könyvelőt… mármint a külsős könyvelőt, Mihaelát… őt is meg kell kérdezni pár dologról.
+
+63
+00:05:56,000 --> 00:06:00,000
+Speaker A: Igen, de őt nehéz elérni. E-mailben talán.
+
+64
+00:06:00,800 --> 00:06:03,300
+Speaker B: Oké, akkor írni kell neki.
+
+65
+00:06:04,100 --> 00:06:09,600
+Speaker A: Meg lehet, hogy a hatóságnak is… hogy pontosan mit kérnek.
+
+66
+00:06:10,400 --> 00:06:16,900
+Speaker B: Igen, mert ezeknél mindig van valami apró feltétel, amin elcsúszik az egész.
+
+67
+00:06:19,200 --> 00:06:20,400
+Speaker A: Pontosan.
+
+68
+00:06:21,200 --> 00:06:30,700
+Speaker B: Oké… akkor szerintem nézzük meg a kiírást, szedjük össze az adatokat, és írjunk azoknak, akiktől hiányzik valami.
+
+69
+00:06:31,500 --> 00:06:34,000
+Speaker A: Igen. Csináljuk ezt.
+
+70
+00:06:34,800 --> 00:06:39,800
+Speaker B: És… valaki koordinálja ezt, mert különben szétesik.
+
+71
+00:06:40,600 --> 00:06:49,100
+Speaker A: Igen… ezért is vettük fel a most kezdő Operations Manager kollégánkat. Ő fogja összerakni.
+
+72
+00:06:49,900 --> 00:06:51,700
+Speaker B: Akkor jó.
+
+73
+00:06:52,500 --> 00:07:00,000
+Speaker A: Oké, akkor induljunk el ezen az irányon, és nézzük meg, hogy egyáltalán van-e esélyünk.

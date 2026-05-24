@@ -1,0 +1,56 @@
+field_id,category,label,value,format,mandatory
+denumire_societate,Cégadatok,Denumire societate,TransOffice Trade SRL,szöveg,YES
+cui_cif,Cégadatok,CUI / CIF,15847291,szám,YES
+nr_inreg_onrc,Cégadatok,Nr. înregistrare ONRC,J19/421/2003,szöveg,YES
+adresa_sediu,Cégadatok,Adresă sediu social,"str. Calea Băieșenilor nr. 22, Odorheiu Secuiesc, jud. Harghita",szöveg,YES
+adresa_punct_lucru,Cégadatok,Adresă punct de lucru,"str. Calea Băieșenilor nr. 22, Odorheiu Secuiesc",szöveg,YES
+judet,Cégadatok,Județ,Harghita,dropdown,YES
+caen_principal,Cégadatok,Cod CAEN principal,4649,szám,YES
+forma_juridica,Cégadatok,Forma juridică,SRL,dropdown,YES
+telefon,Cégadatok,Telefon contact,0744-XXX-XXX,szám,YES
+email,Cégadatok,Email contact,contact@transoffice.ro,szöveg,YES
+repr_nume,Reprezentant,Nume reprezentant,Kovács,szöveg,YES
+repr_prenume,Reprezentant,Prenume reprezentant,Márton,szöveg,YES
+repr_cnp,Reprezentant,CNP,1920XXXXXXXXX,szám,YES
+repr_functie,Reprezentant,Funcție,Administrator,szöveg,YES
+repr_telefon,Reprezentant,Telefon personal,0744-XXX-XXX,szám,YES
+ca_2023,Pénzügy,Cifra de afaceri 2023,1842300,szám,YES
+ca_2024,Pénzügy,Cifra de afaceri 2024,1985700,szám,YES
+ebitda_2023,Pénzügy,EBITDA 2023,128500,szám,YES
+ebitda_2024,Pénzügy,EBITDA 2024,91200,szám,YES
+salariati_2023,Pénzügy,Număr mediu salariați 2023,12,szám,YES
+salariati_2024,Pénzügy,Număr mediu salariați 2024,12,szám,YES
+capit_propr_2024,Pénzügy,Capitaluri proprii 31.12.2024,485000,szám,YES
+datorii_2024,Pénzügy,Datorii totale 31.12.2024,392000,szám,YES
+proj_titlu,Projekt,Titlu proiect,Tranziția flotei B2B la mobilitate verde — TransOffice Harghita,szöveg,YES
+proj_descriere,Projekt,Descriere proiect (rezumat),"Achiziția a 2 autoutilitare electrice N1 (categorie ≤ 3,5 t) și instalarea 1 punct de reîncărcare AC dublu-port 22 kW la sediul operațional din Calea Băieșenilor 22, Odorheiu Secuiesc. Proiectul înlocuiește integral componenta de transport rutier al companiei TransOffice Trade SRL pentru livrările zilnice în județele Harghita și Covasna, generând economii de combustibil estimate la 6500 litri/an și reducere CO2 estimată la 5,2 tone/an. Vehiculele vor fi utilizate exclusiv pentru deservirea clienților B2B locali (cca 40 clienți recurenți), cu o distanță anuală estimată de 80.000 km. Punctul de reîncărcare instalat la sediu va susține alimentarea zilnică a flotei, având totodată acord proprietar și autorizație ANRE.",szöveg,YES
+proj_obiective,Projekt,Obiective specifice,"1. Decarbonizarea totală a flotei comerciale a TransOffice până în luna august 2026. 2. Realizarea unei reduceri demonstrabile de minim 5 t CO2/an conform metodologiei AFM. 3. Crearea/menținerea de minim 12 locuri de muncă în zona Harghita (zonă cu deficit infrastructural). 4. Demonstrarea unui model replicabil de tranziție electrică pentru KKV-uri B2B din regiunea Harghita-Covasna. 5. Instalarea unui punct public-privat de reîncărcare disponibil opțional pentru parteneri (model de complementaritate).",szöveg,YES
+nr_vehicule,Projekt,Număr vehicule electrice solicitate,2,szám,YES
+tip_vehicule,Projekt,Tip vehicule,N1,dropdown,YES
+nr_puncte_reincarcare,Projekt,Număr puncte de reîncărcare,1,szám,YES
+putere_kw,Projekt,Putere instalată totală (kW),22,szám,YES
+buget_total,Projekt,Buget total (RON),520000,szám,YES
+cofinantare_pct,Projekt,Cofinanțare solicitată (%),70,szám,YES
+co2_red,Impact,Reducere CO2 (t/an),5.2,szám,YES
+combustibil_red,Impact,Reducere combustibil (l/an),6500,szám,YES
+distanta_anuala,Impact,Distanță anuală cu flota nouă (km),80000,szám,YES
+locuri_munca,Impact,Locuri muncă create/menținute,12,szám,YES
+categ_impact,Impact,Categoria de impact regional,Harghita - deficit infrastructural,dropdown,YES
+file_bilant_2023,Mellékletek,Bilanț 2023,Mihaela_bilant_2023.pdf,fájl,YES
+file_bilant_2024,Mellékletek,Bilanț 2024,Mihaela_bilant_2024.pdf,fájl,YES
+file_cert_constatator,Mellékletek,Certificat constatator,ONRC_constatator_2025-02-25.pdf,fájl,YES
+file_cert_anaf,Mellékletek,Certificat fiscal ANAF,ANAF_cert_fiscal_2025-02-26.pdf,fájl,YES
+file_plan_afaceri,Mellékletek,Plan de afaceri,Plan_de_afaceri_TransOffice_AFM_2025.pdf,fájl,YES
+file_macheta_fin,Mellékletek,Macheta financiară,Macheta_financiara_AFM_2025.xlsx,fájl,YES
+file_plan_innoire,Mellékletek,Plan de înnoire parc auto,Plan_innoire_parc_auto.pdf,fájl,YES
+file_m11_parc,Mellékletek,M-11 park auto existent,M11_parc_auto_existent.xlsx,fájl,YES
+file_oferte_vehicule,Mellékletek,3 oferte furnizori vehicule,Oferte_vehicule_3x.zip,fájl,YES
+file_oferte_punct,Mellékletek,Ofertă furnizor punct reîncărcare,Oferta_ABB_punct_reincarcare.pdf,fájl,YES
+file_imobil,Mellékletek,Document drept asupra imobilului,Contract_chirie_Bela_Iosif_2018_+_act_aditional_2025.pdf,fájl,YES
+file_acord_propr,Mellékletek,Acord proprietar,Bela_Iosif_acord_proprietar_+_declaratie_notariala.pdf,fájl,YES
+file_cv,Mellékletek,CV-uri echipa managerială,CV_Kovacs_Marton_+_CV_Ops_Manager.pdf,fájl,YES
+decl_elig,Declarații,Declarație eligibilitate,TRUE,checkbox,YES
+decl_minimis,Declarații,Declarație de minimis,TRUE,checkbox,YES
+decl_gdpr,Declarații,Declarație confidențialitate GDPR,TRUE,checkbox,YES
+acord_date,Declarații,Acord prelucrare date,TRUE,checkbox,YES
+acord_termeni,Declarații,Acord termeni și condiții,TRUE,checkbox,YES

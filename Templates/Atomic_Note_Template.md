@@ -1,4 +1,3 @@
-# {{idea-title}}
 Tags: #atomic  #{{topic}}
 
 ## Definition

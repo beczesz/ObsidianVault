@@ -1,0 +1,2769 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH v0.3 Wireframes — Savings Engine</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #F5F0EB; --card: #FFFFFF; --primary: #7B2D3B; --primary-light: #9B4D5B;
+    --text: #2D2D2D; --text2: #777777; --border: #E8E0D8;
+    --green: #2E7D32; --green-light: #E8F5E9; --green-dark: #1B5E20;
+    --gold-light: #FFF8E1; --warn: #E65100; --warn-bg: #FFF3E0;
+  }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #F8F5F0; color: var(--text); }
+
+  .header { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; max-width: 1200px; margin: 16px auto; padding: 0 24px; overflow-x: auto; }
+  .tab { padding: 10px 20px; border-radius: 24px; font-size: 13px; border: 1px solid var(--border); background: white; color: var(--text); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 400; }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+
+  .content { max-width: 1200px; margin: 0 auto; padding: 0 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+  .feature > h2 { font-size: 18px; font-weight: 700; margin: 0 0 12px; }
+
+  /* Scenario buttons */
+  .scenarios { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .scenario-btn { padding: 6px 12px; border-radius: 20px; font-size: 11px; border: 1px solid var(--border); background: white; cursor: pointer; }
+  .scenario-btn.active { border: 2px solid var(--primary); background: var(--primary); color: white; font-weight: 600; }
+
+  .phones { display: flex; gap: 20px; flex-wrap: wrap; }
+
+  /* ── Dev docs block (technical spec per scenario) ── */
+  .doc-block {
+    width: 100%; margin-top: 20px;
+    border: 1px solid #D4CCC3; border-radius: 10px;
+    background: #FAF7F2;
+    font-family: 'SF Mono', 'Monaco', 'Consolas', 'Menlo', monospace;
+    overflow: hidden;
+  }
+  .doc-trigger {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 12px 16px;
+    background: transparent; border: none; cursor: pointer;
+    font-family: inherit; font-size: 12px; font-weight: 600;
+    color: #2C2825; text-align: left;
+    transition: background 0.15s;
+  }
+  .doc-trigger:hover { background: #F2EDE5; }
+  .doc-trigger-left { display: inline-flex; align-items: center; gap: 10px; min-width: 0; }
+  .doc-trigger-chev {
+    display: inline-block; transition: transform 0.2s;
+    color: #8B7D6F; font-size: 10px;
+  }
+  .doc-block.open .doc-trigger-chev { transform: rotate(90deg); }
+  .doc-trigger-title { font-weight: 700; letter-spacing: 0.3px; }
+  .doc-ticket {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #E7EEF8; color: #1F4E8C;
+    padding: 2px 7px; border-radius: 4px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.4px;
+    text-decoration: none;
+  }
+  .doc-ticket:hover { background: #D6E3F3; }
+  .doc-trigger-right { display: inline-flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .doc-copy-btn {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: white; color: #4A3F37; border: 1px solid #D4CCC3;
+    padding: 4px 8px; border-radius: 4px; cursor: pointer;
+    font-family: inherit; font-size: 10px; font-weight: 600;
+    transition: all 0.15s;
+  }
+  .doc-copy-btn:hover { background: #F2EDE5; border-color: #B5ABA0; }
+  .doc-copy-btn.copied { background: #E8F5E9; border-color: #2D7A4F; color: #2D7A4F; }
+
+  .doc-content {
+    display: none;
+    padding: 4px 16px 16px;
+    border-top: 1px solid #E8DDD0;
+  }
+  .doc-block.open .doc-content { display: block; }
+
+  .doc-section { margin-top: 14px; }
+  .doc-section:first-child { margin-top: 10px; }
+  .doc-section h4 {
+    margin: 0 0 6px; font-size: 10px; font-weight: 700;
+    color: #8B7D6F; letter-spacing: 0.8px; text-transform: uppercase;
+  }
+  .doc-section p {
+    margin: 0; font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13px; color: #2C2825; line-height: 1.5;
+  }
+  .doc-section ul {
+    margin: 0; padding-left: 18px; list-style: none;
+  }
+  .doc-section ul li {
+    position: relative; font-size: 11.5px; color: #3A3028;
+    line-height: 1.55; padding: 2px 0;
+  }
+  .doc-section ul li::before {
+    content: '›'; position: absolute; left: -14px; top: 2px;
+    color: #8B7D6F; font-weight: 700;
+  }
+  .doc-section code, .doc-inline {
+    background: #F2EDE5; padding: 1px 5px; border-radius: 3px;
+    font-size: 10.5px; color: #7D4E1F; border: 1px solid #E8DDD0;
+  }
+  .doc-state-list li { padding: 3px 0; }
+  .doc-state-tag {
+    display: inline-block; background: #2C2825; color: #F5EFE7;
+    padding: 1px 6px; border-radius: 3px;
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px;
+    margin-right: 6px; text-transform: uppercase;
+  }
+  .doc-state-tag.ok { background: #2D7A4F; }
+  .doc-state-tag.warn { background: #C96A2E; }
+  .doc-state-tag.err { background: #9B2335; }
+  .doc-state-tag.info { background: #4A5B7B; }
+
+  /* Phone frame */
+  .phone { width: 375px; min-height: 700px; background: var(--bg); border-radius: 24px; border: 2px solid var(--border); overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12); flex-shrink: 0; }
+  .phone-header { background: var(--bg); padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .phone-header span:first-child { font-size: 20px; font-weight: 700; font-family: Georgia, serif; }
+  .phone-body { padding: 0 16px 16px; max-height: 640px; overflow-y: auto; }
+
+  /* Cards */
+  .card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .card-highlight { border: 2px solid var(--primary); }
+
+  /* Badge */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-green { color: var(--green); background: var(--green-light); }
+  .badge-gold { color: var(--green-dark); background: var(--gold-light); }
+  .badge-warn { color: var(--warn); background: var(--warn-bg); }
+  .badge-status { color: var(--green); background: var(--green-light); }
+
+  /* Buttons */
+  .btn { width: 100%; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; }
+  .btn-primary { background: var(--primary); color: #FFF; border: none; }
+  .btn-primary:disabled { background: #CCC; cursor: default; }
+  .btn-secondary { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+  .btn-ghost { background: transparent; color: var(--primary-light); border: none; text-decoration: underline; }
+  .btn + .btn { margin-top: 10px; }
+
+  /* Progress bar */
+  .progress-wrap { position: relative; height: 8px; background: #E0D8D0; border-radius: 4px; margin-bottom: 18px; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .progress-marker { position: absolute; top: 50%; transform: translateY(-50%); width: 2px; height: 16px; }
+  .progress-bubble { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; z-index: 2; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+  .progress-bubble.reached { background: var(--green); color: white; }
+  .progress-bubble.not-reached { background: #E0D8D0; color: #AAA; border-color: #E0D8D0; }
+  .progress-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-top: 0; }
+  .progress-sublabels { display: flex; justify-content: space-between; font-size: 9px; color: var(--text2); margin-top: 1px; margin-bottom: 4px; }
+  .progress-sublabels span { text-align: center; }
+
+  /* Cart item */
+  .cart-item {
+    display: flex; gap: 10px; padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+  }
+  .cart-item-remove {
+    flex-shrink: 0;
+    width: 28px; height: 28px; border-radius: 50%;
+    border: 1px solid var(--border); background: white;
+    display: inline-flex; align-items: center; justify-content: center;
+    color: #B8A898; cursor: pointer;
+    transition: all 0.15s;
+    padding: 0;
+  }
+  .cart-item-remove:hover {
+    background: #FEE2E2; border-color: #FCA5A5; color: #B91C1C;
+  }
+  .cart-item-remove svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; }
+  .cart-item-img {
+    width: 48px; height: 48px; border-radius: 10px; background: #E8D5C0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; flex-shrink: 0;
+  }
+  .cart-item-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; gap: 2px; }
+  .cart-item-name {
+    font-size: 14px; font-weight: 600; line-height: 1.25;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .cart-item-price { font-size: 12px; color: var(--text2); line-height: 1.3; }
+  .cart-item-qty { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text2); flex-shrink: 0; }
+  .cart-item-qty span.qty { padding: 3px 8px; border: 1px solid var(--border); border-radius: 6px; font-size: 12px; color: var(--text); min-width: 36px; text-align: center; }
+  .cart-item-total {
+    font-size: 14px; font-weight: 700; min-width: 54px; text-align: right;
+    flex-shrink: 0; align-self: center;
+  }
+
+  .nudge { padding: 10px 14px; border-radius: 12px; font-size: 13px; }
+  .nudge-warn { background: var(--warn-bg); color: var(--warn); }
+  .nudge-green { background: var(--green-light); color: var(--green); }
+  .nudge-gold { background: linear-gradient(135deg, var(--green-light), var(--gold-light)); color: var(--green-dark); font-weight: 600; }
+
+  .breakdown { font-size: 12px; color: var(--green); padding: 4px 4px 0; }
+  .breakdown-hint { font-size: 11px; color: var(--text2); font-style: italic; padding: 4px 4px 0; }
+
+  .total-row { display: flex; justify-content: space-between; padding: 4px 0; }
+  .total-main { font-size: 16px; font-weight: 700; margin-top: 8px; }
+
+  .category-filters { display: flex; gap: 8px; margin: 12px 0; overflow-x: auto; }
+  .cat-pill { padding: 6px 14px; border-radius: 20px; font-size: 12px; border: 1px solid var(--border); background: white; white-space: nowrap; }
+  .cat-pill.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  .placeholder-card { background: #E8D5C0; height: 80px; border-radius: 12px; margin-bottom: 10px; opacity: 0.3; }
+
+  /* Bundle grid */
+  .bundle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .bundle-card { background: var(--card); border-radius: 16px; padding: 16px; border: 1px solid var(--border); cursor: pointer; position: relative; overflow: hidden; }
+  .bundle-card:hover { border-color: var(--primary); }
+  .bundle-icon { font-size: 32px; margin-bottom: 8px; }
+  .bundle-name { font-size: 16px; font-weight: 700; }
+  .bundle-meta { font-size: 12px; color: var(--text2); margin-bottom: 8px; }
+  .bundle-price { font-size: 15px; font-weight: 700; color: var(--primary); }
+  .bundle-badges { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
+  .bundle-saving { position: absolute; top: 10px; right: 10px; }
+  .bundle-saving-tag { display: inline-block; padding: 2px 8px; border-radius: 8px; font-size: 11px; font-weight: 700; color: var(--green-dark); background: var(--green-light); }
+
+  /* Icon badges for bundles — v3: with text labels */
+  .icon-badges { display: flex; gap: 8px; margin-top: 8px; }
+  .icon-badge-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .icon-badge-item .ib-label { font-size: 8px; color: var(--green); font-weight: 600; white-space: nowrap; }
+  .icon-badge { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .icon-badge-truck { background: var(--green-light); color: var(--green); }
+  .icon-badge-pct { position: relative; width: 30px; height: 30px; background: var(--gold-light); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+  .icon-badge-pct::before { content: ''; position: absolute; inset: -3px; background: var(--gold-light); clip-path: polygon(50% 0%,61% 11%,75% 3%,73% 18%,90% 18%,82% 31%,95% 40%,82% 49%,90% 62%,75% 60%,73% 75%,61% 66%,50% 78%,39% 66%,27% 75%,25% 60%,10% 62%,18% 49%,5% 40%,18% 31%,10% 18%,27% 18%,25% 3%,39% 11%); z-index: 0; }
+  .icon-badge-pct span { position: relative; z-index: 1; font-size: 9px; font-weight: 800; color: var(--green-dark); }
+
+  /* Modal overlay — proper darkened full-phone backdrop */
+  .modal-overlay { position: absolute; inset: 0; background: rgba(20, 14, 10, 0.55); display: flex; align-items: flex-start; justify-content: center; padding: 16px; z-index: 10; overflow-y: auto; }
+  .modal-inner { background: var(--card); border-radius: 16px; padding: 20px; width: 100%; max-height: 100%; overflow-y: auto; box-shadow: 0 8px 32px rgba(0,0,0,0.35); }
+  .modal-inner h3 { font-size: 17px; font-weight: 700; margin-bottom: 6px; color: var(--text); }
+  .modal-inner p { font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.45; }
+  .modal-warn-row { display: flex; gap: 8px; align-items: flex-start; background: var(--warn-bg); color: var(--warn); padding: 10px 12px; border-radius: 10px; font-size: 12px; margin-bottom: 14px; line-height: 1.4; }
+  .modal-warn-row svg { flex-shrink: 0; stroke: var(--warn); margin-top: 1px; }
+  .modal-destructive-hint { font-size: 11px; color: var(--text2); text-align: center; margin-top: 8px; margin-bottom: 12px; }
+  /* Tighter spacing on modal buttons so they don't stretch the modal on mobile */
+  .modal-inner .btn + .btn { margin-top: 8px; }
+  /* Phone-body becomes positioning context so absolute modal fills it */
+  .phone-body { position: relative; }
+  /* Taller phone variant for screens with modal / lots of content */
+  .phone--tall { min-height: 820px; }
+  .phone--tall .phone-body { max-height: 760px; min-height: 760px; }
+
+  .return-banner { background: var(--card); border-radius: 16px; padding: 14px 16px; margin: 12px 0; border: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .return-banner-btn { padding: 10px 16px; border-radius: 10px; background: var(--primary); color: white; border: none; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+  .success-icon { font-size: 56px; margin-bottom: 8px; }
+  .savings-big { font-size: 24px; font-weight: 800; color: var(--green-dark); margin: 8px 0 4px; }
+  .savings-row { display: flex; justify-content: space-between; padding: 4px 0; font-size: 12px; color: var(--text2); }
+  .savings-row .val { color: var(--green); }
+
+  /* Admin */
+  .admin-item { display: flex; justify-content: space-between; align-items: center; background: var(--card); border-radius: 12px; padding: 14px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .toggle { width: 36px; height: 20px; border-radius: 10px; background: var(--green); position: relative; display: inline-block; }
+  .toggle-knob { width: 16px; height: 16px; border-radius: 8px; background: white; position: absolute; right: 2px; top: 2px; }
+
+  .form-field { margin-bottom: 12px; }
+  .form-label { font-size: 11px; color: var(--text2); margin-bottom: 4px; }
+  .form-input { padding: 10px 12px; border-radius: 8px; border: 1px solid var(--border); font-size: 13px; width: 100%; }
+  .form-chip { display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; background: #F9F6F2; border-radius: 8px; margin-bottom: 4px; font-size: 13px; }
+  .form-chip .remove { color: var(--primary-light); cursor: pointer; }
+
+  .unavailable { background: #FAF7F3; border-radius: 10px; padding: 10px 12px; border: 1px dashed #E8D5C0; }
+  .unavailable .cart-item-name { text-decoration: line-through; color: #999; }
+  .unavailable .cart-item-img { opacity: 0.5; background: #F0EAE3; }
+  .similar-chip { display: inline-flex; align-items: center; gap: 4px; padding: 6px 10px; border-radius: 999px; background: white; border: 1px solid var(--primary-light); color: var(--primary); font-size: 11px; font-weight: 600; cursor: pointer; margin-top: 6px; }
+  .similar-chip svg { stroke: var(--primary); }
+  .unavailable-remove { background: none; border: none; cursor: pointer; padding: 8px; color: #999; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .unavailable-remove:hover { color: var(--warn); }
+
+  .loaded-msg { font-size: 12px; color: var(--green-dark); background: var(--green-light); padding: 10px 12px; border-radius: 10px; margin: 12px 0 4px; display: flex; align-items: center; gap: 8px; border: 1px solid #C8E6C9; position: relative; }
+  .loaded-msg svg { flex-shrink: 0; stroke: var(--green-dark); }
+  .loaded-msg strong { font-weight: 700; }
+
+  /* Cart undo toast (inside phone-body) */
+  .cart-undo-toast {
+    position: absolute; left: 12px; right: 12px; bottom: 12px;
+    background: var(--primary); color: #FFF;
+    border-radius: 12px; padding: 16px 16px;
+    min-height: 50px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 13px; font-weight: 500;
+    box-shadow: 0 6px 20px rgba(123, 45, 59, 0.28);
+    opacity: 0; transform: translateY(8px);
+    transition: opacity 0.22s, transform 0.22s;
+    z-index: 20; overflow: hidden;
+  }
+  .cart-undo-toast.show { opacity: 1; transform: translateY(0); }
+  .cart-undo-toast svg { flex-shrink: 0; color: #F5D4DA; }
+  .cart-undo-msg { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: rgba(255,255,255,0.92); }
+  .cart-undo-msg strong { font-weight: 700; color: #FFF; }
+  .cart-undo-btn {
+    flex-shrink: 0; background: rgba(255,255,255,0.14); border: none; color: #FFF;
+    font-weight: 700; font-size: 11.5px; cursor: pointer; padding: 5px 10px;
+    border-radius: 999px; letter-spacing: 0.3px;
+    transition: background 0.15s;
+  }
+  .cart-undo-btn:hover { background: rgba(255,255,255,0.24); }
+  .cart-undo-progress {
+    position: absolute; left: 0; bottom: 0; height: 2px;
+    background: rgba(255,255,255,0.45); width: 100%;
+    transform-origin: left; animation: cart-undo-shrink 4.2s linear forwards;
+  }
+  @keyframes cart-undo-shrink { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+
+  /* Merge modal — leaderline product lists */
+  .mm-section { margin-bottom: 14px; }
+  .mm-section-head {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; color: var(--text2);
+    text-transform: uppercase; letter-spacing: 0.4px;
+    margin-bottom: 6px;
+  }
+  .mm-section-head .mm-count { color: var(--primary); font-weight: 700; }
+  .mm-list { list-style: none; padding: 0; margin: 0; }
+  .mm-row {
+    display: flex; align-items: baseline; gap: 4px;
+    padding: 4px 0; font-size: 13px; color: var(--text);
+    font-family: Georgia, serif;
+  }
+  .mm-name { flex-shrink: 0; }
+  .mm-dots {
+    flex: 1; min-width: 12px;
+    border-bottom: 1px dotted #C9BDB1;
+    margin: 0 4px; transform: translateY(-3px);
+  }
+  .mm-amount { flex-shrink: 0; font-variant-numeric: tabular-nums; color: var(--text2); font-weight: 600; font-family: 'Segoe UI', system-ui, sans-serif; font-size: 12px; }
+  .mm-row.unavailable .mm-name { text-decoration: line-through; color: #A89B90; }
+  .mm-row.unavailable .mm-amount { color: var(--warn); font-style: italic; font-weight: 700; font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .mm-row.unavailable .mm-dots { border-bottom-color: #E8D5C0; }
+  .mm-cta-meta { display: block; font-size: 10.5px; font-weight: 500; opacity: 0.85; margin-top: 2px; letter-spacing: 0.2px; }
+  .loaded-msg-close { margin-left: auto; background: none; border: none; color: var(--green-dark); opacity: 0.6; cursor: pointer; padding: 2px 6px; font-size: 16px; line-height: 1; }
+
+  /* v3: Success toast */
+  .toast { background: var(--green); color: white; padding: 12px 16px; border-radius: 12px; font-size: 13px; font-weight: 600; text-align: center; margin: 12px 0; display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+  /* v3: Delivery ETA */
+  .eta-card { background: var(--card); border-radius: 12px; padding: 12px 16px; margin: 12px 0; border: 1px solid var(--border); display: flex; align-items: center; gap: 12px; }
+  .eta-icon { font-size: 24px; }
+  .eta-text { font-size: 13px; }
+  .eta-text strong { display: block; font-size: 14px; }
+
+  /* v3 changelog */
+  .changelog { max-width: 1200px; margin: 0 auto; padding: 16px 24px; }
+  .changelog summary { font-size: 13px; color: var(--text2); cursor: pointer; }
+  .changelog ul { font-size: 12px; color: var(--text2); margin: 8px 0 0 20px; line-height: 1.8; }
+
+  /* === MOBILE RESPONSIVE === */
+  @media (max-width: 500px) {
+    html, body { overflow-x: hidden; }
+    .header { padding: 16px 8px 0; }
+    .header h1 { font-size: 22px; }
+    .tabs { padding: 0 4px; margin: 12px auto; gap: 6px; }
+    .tab { padding: 8px 14px; font-size: 12px; }
+    .content { padding: 0 4px 24px; }
+    .phones { gap: 8px; }
+    .phone { width: 100%; min-height: auto; border-radius: 16px; border-width: 1px; }
+    .phone-body { max-height: none; overflow-y: visible; padding: 0 10px 12px; }
+    /* Modal-bearing screens keep a hard min-height on mobile so the modal overlay has room */
+    .phone--tall { min-height: 640px; }
+    .phone--tall .phone-body { min-height: 560px; max-height: 560px; overflow-y: auto; }
+    .phone-header { padding: 12px 14px; }
+    .scenarios { gap: 4px; }
+    .scenario-btn { padding: 5px 10px; font-size: 10px; }
+    .changelog { padding: 12px 8px; }
+  }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px; margin: 16px 24px 0;
+    background: white; border: 1px solid #D8D0C8;
+    border-radius: 8px; font-family: system-ui, sans-serif;
+    font-size: 14px; font-weight: 600; color: #7B2D3B;
+    text-decoration: none; cursor: pointer;
+  }
+  .back-btn:hover { background: #F5F0EB; }
+
+  /* ── Order Card v3 ─────────────────────────────── */
+  .order-card-v3 {
+    background: white; border: 1px solid #E8E2DB; border-radius: 16px;
+    padding: 14px; margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+  .ocv3-top { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 4px; }
+  .ocv3-date { font-size: 12px; color: #8A8078; font-weight: 500; }
+  .ocv3-summary { font-size: 13px; color: var(--text); margin-bottom: 0; font-weight: 500; line-height: 1.35; }
+  .ocv3-summary .extra { color: #AAA; font-weight: 400; white-space: nowrap; }
+  .ocv3-body-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; gap: 10px; }
+  .ocv3-body-left { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+  .ocv3-price { font-size: 16px; font-weight: 700; color: #2C2825; }
+  .ocv3-id { font-size: 10px; color: #bbb; text-align: center; margin-bottom: 10px; letter-spacing: 0.3px; text-transform: uppercase; }
+
+  /* Extra top breathing room for the first card in a phone-body list */
+  .phone-body > .order-card-v3:first-child,
+  .phone-body > .order-row:first-child,
+  .phone-body > .order-row-stack:first-child { margin-top: 14px; }
+
+  /* ── Compact Order Row (alt variant) ─────────────── */
+  .order-row {
+    display: flex; align-items: stretch; gap: 10px;
+    background: white; border: 1px solid #E8E2DB; border-radius: 14px;
+    padding: 12px 12px 12px 14px; margin-bottom: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .ocr-main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+  .ocr-top { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .ocr-date { font-size: 11px; color: #8A8078; font-weight: 500; }
+  .ocr-price { font-size: 15px; font-weight: 700; color: #2C2825; white-space: nowrap; }
+  .ocr-products { font-size: 12px; color: var(--text); font-weight: 500; line-height: 1.3;
+    overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+  .ocr-products .extra { color: #AAA; font-weight: 400; }
+  .ocr-meta { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 2px; }
+  .ocr-id { font-size: 10px; color: #BBB; letter-spacing: 0.3px; text-transform: uppercase; }
+  .ocr-saving { display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; color: #2D7A4F; background: #E8F5E9; padding: 2px 7px; border-radius: 999px; }
+  .ocr-saving svg { stroke: #2D7A4F; }
+  .ocr-reorder-btn {
+    flex-shrink: 0; width: auto; padding: 0 12px; align-self: stretch;
+    background: var(--primary); color: white; border: none; border-radius: 10px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1px;
+    cursor: pointer; transition: background 0.15s;
+    min-width: 48px;
+  }
+  .ocr-reorder-btn:hover { background: var(--primary-light); }
+
+  /* B2 variant: compact row with reorder pill BELOW instead of side */
+  .order-row-stack {
+    background: white; border: 1px solid #E8E2DB; border-radius: 14px;
+    padding: 10px 12px 12px; margin-bottom: 8px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .order-row-stack .ocr-top,
+  .order-row-stack .ocr-products,
+  .order-row-stack .ocr-meta { /* inherits from .ocr-* rules above */ }
+  .ors-actions { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 8px; }
+  .ors-actions .ocr-saving { font-size: 12px; padding: 6px 12px; gap: 4px; }
+  .ors-actions .ocr-saving svg { width: 14px; height: 14px; }
+
+  /* ── D: Receipt-style variant ── */
+  .receipt-card {
+    background: white; border: 1px solid #E8E2DB; border-radius: 14px;
+    padding: 14px 14px 12px; margin-bottom: 10px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
+  .rc-head { display: flex; justify-content: space-between; align-items: baseline; padding-bottom: 8px; border-bottom: 1px solid #E8E2DB; margin-bottom: 10px; }
+  .rc-date { font-size: 12px; font-weight: 700; color: #2C2825; }
+  .rc-id { font-size: 10px; color: #B5ABA0; letter-spacing: 0.3px; text-transform: uppercase; font-weight: 500; }
+  .rc-items { display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px; }
+  .rc-item { display: flex; align-items: baseline; gap: 6px; font-size: 12px; color: #2C2825; }
+  .rc-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 50%; }
+  .rc-dots { flex: 1; border-bottom: 1px dotted #D5CCBE; position: relative; top: -3px; }
+  .rc-qty { font-size: 11px; color: #8A8078; white-space: nowrap; }
+  .rc-price { font-weight: 600; white-space: nowrap; min-width: 52px; text-align: right; }
+  .rc-total { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid #E8E2DB; margin-bottom: 4px; }
+  .rc-total-label { font-size: 11px; font-weight: 700; color: #5A5048; text-transform: uppercase; letter-spacing: 0.4px; }
+  .rc-total-amt { font-size: 14px; font-weight: 700; color: #2C2825; }
+  .phone-body > .receipt-card:first-child { margin-top: 14px; }
+  .ors-reorder {
+    align-self: flex-start;
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--primary); color: white; border: none;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.1px;
+    padding: 6px 12px 6px 10px; border-radius: 999px;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .ors-reorder:hover { background: var(--primary-light); }
+  .ors-reorder:active { transform: scale(0.97); }
+
+  /* Phone label above the phone frame, for A/B variant comparison */
+  .phone-wrap { display: flex; flex-direction: column; gap: 8px; width: 360px; max-width: 100%; }
+  .phone-variant-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; color: var(--text2);
+    letter-spacing: 0.4px; text-transform: uppercase;
+    padding: 4px 10px; background: white; border: 1px solid var(--border); border-radius: 999px;
+    align-self: flex-start;
+  }
+  .phone-variant-label .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--primary); }
+  .phone-variant-label.alt .dot { background: #5E3B9C; }
+  .phone-variant-label.new .dot { background: #C96A2E; }
+
+  /* ── Timeline variant (C) ─────────────── */
+  .ot-row { display: flex; gap: 10px; padding: 10px 0 2px; }
+  .ot-row.first { padding-top: 14px; }
+  .ot-rail { position: relative; width: 16px; flex-shrink: 0; display: flex; justify-content: center; padding-top: 4px; }
+  .ot-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--primary); border: 2px solid var(--bg); z-index: 1; box-shadow: 0 0 0 1px var(--border); }
+  .ot-line { position: absolute; top: 16px; bottom: -10px; left: 50%; width: 1.5px; background: #E4DED6; transform: translateX(-50%); }
+  .ot-row.last .ot-line { display: none; }
+  .ot-body {
+    flex: 1; min-width: 0;
+    background: white; border: 1px solid #E8E2DB; border-radius: 14px;
+    padding: 10px 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .ot-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin-bottom: 8px; }
+  .ot-date { font-size: 11px; font-weight: 600; color: #5A5048; letter-spacing: 0.2px; }
+  .ot-right { display: inline-flex; align-items: center; gap: 6px; }
+  .ot-price { font-size: 14px; font-weight: 700; color: #2C2825; }
+  .ot-saving { display: inline-flex; align-items: center; gap: 2px; font-size: 10px; font-weight: 700; color: #2D7A4F; background: #E8F5E9; padding: 2px 6px; border-radius: 999px; line-height: 1; }
+  .ot-saving svg { stroke: #2D7A4F; }
+
+  .ot-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+  .ot-chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 11px; color: #4A3F37; font-weight: 500;
+    background: #F5F0EA; border: 1px solid #E8E0D5; border-radius: 999px;
+    padding: 3px 8px 3px 4px;
+    max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .ot-chip-ico { font-size: 13px; line-height: 1; }
+
+  .ot-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .ot-reorder {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: var(--primary); color: white; border: none;
+    font-size: 12px; font-weight: 600; letter-spacing: 0.1px;
+    padding: 6px 12px 6px 10px; border-radius: 999px;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .ot-reorder:hover { background: var(--primary-light); }
+  .ot-reorder:active { transform: scale(0.97); }
+  .ot-id { font-size: 10px; color: #B5ABA0; letter-spacing: 0.3px; text-transform: uppercase; font-weight: 500; }
+
+  /* ── C+ : chosen variant enhancements ── */
+  .ot-head { align-items: center; }
+  #chosen-phone-body .ot-date { font-size: 13px; font-weight: 700; color: #2C2825; }
+  #chosen-phone-body .ot-chips { padding-top: 8px; }
+
+  /* Hero chips: product name + quantity side-by-side */
+  #chosen-phone-body .ot-chip-hero {
+    display: inline-flex; align-items: baseline; gap: 6px;
+    background: #F5EFE7; border: 1px solid #E8DDD0;
+    padding: 4px 9px; border-radius: 6px;
+    max-width: none;
+  }
+  #chosen-phone-body .ot-chip-hero .ot-chip-name {
+    font-size: 11px; font-weight: 600; color: #2C2825;
+  }
+  #chosen-phone-body .ot-chip-hero .ot-chip-qty {
+    font-size: 10px; font-weight: 500; color: #8B7D6F;
+    letter-spacing: 0.2px; font-variant-numeric: tabular-nums;
+  }
+  #chosen-phone-body .ot-chip-more {
+    background: transparent; border: 1px dashed #C9BFB3;
+    color: #8B7D6F; font-size: 11px; font-weight: 500;
+    padding: 4px 8px;
+  }
+
+  .ot-order-id {
+    text-align: right; font-size: 9px; color: #C8BFB5;
+    letter-spacing: 0.4px; text-transform: uppercase;
+    margin-top: 8px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* CTA grid: primary fills, fav is icon-only square */
+  .ot-actions-full {
+    display: grid; grid-template-columns: 1fr 40px; gap: 8px;
+    margin-top: 10px;
+  }
+  .ot-actions-full button {
+    display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+    border: none; font-size: 12px; font-weight: 600;
+    padding: 9px 10px; border-radius: 10px; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .ot-cta-primary { background: var(--primary); color: white; }
+  .ot-cta-primary:hover { background: var(--primary-light); }
+  .ot-cta-primary:active { transform: scale(0.98); }
+  .ot-cta-fav {
+    background: white; color: var(--primary);
+    border: 1.5px solid var(--primary) !important;
+    padding: 8px !important;
+  }
+  .ot-cta-fav:hover { background: #FDF5F7; }
+  .ot-cta-fav.saved {
+    background: var(--primary); color: white;
+    border-color: var(--primary) !important;
+  }
+  .ot-cta-fav svg { width: 16px; height: 16px; stroke: currentColor; fill: none; stroke-width: 2; }
+  .ot-cta-fav.saved svg { fill: currentColor; }
+
+  /* Saving next to total line — pill style matching B2 */
+  .ot-total-block {
+    display: flex; flex-direction: row; align-items: center; gap: 8px;
+  }
+  .ot-total-block .ot-price { font-size: 15px; font-weight: 700; color: #2C2825; line-height: 1.2; }
+  .ot-total-block .ot-saving-small {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 12px; font-weight: 700; color: #2D7A4F;
+    background: #E8F5E9; padding: 2px 8px; border-radius: 999px;
+    line-height: 1.3; white-space: nowrap;
+  }
+  .ot-total-block .ot-saving-small svg { width: 15px; height: 15px; stroke: #2D7A4F; fill: none; stroke-width: 2; }
+
+  /* ── C1: Active order banner (in-progress orders) ── */
+  .active-order {
+    position: relative;
+    padding: 14px 16px 14px 18px;
+    margin: 0 0 14px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #FFFFFF 0%, #FAF5ED 100%);
+    border: 1.5px solid #E8DDD0;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    overflow: hidden;
+  }
+  .active-order:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.06); transform: translateY(-1px); }
+  .active-order:active { transform: translateY(0); }
+
+  /* Left accent rail — colors by status */
+  .active-order::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+    width: 4px; background: #8B7D6F;
+  }
+  .active-order.confirmed::before { background: #5A8A6B; }
+  .active-order.preparing::before { background: #C9A247; }
+  .active-order.in_transit::before { background: #2D7A4F; }
+  .active-order.arriving_soon::before { background: #C96A2E; }
+
+  .ao-head {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+  }
+  .ao-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    background: #F2EDE5; color: #5A5048; flex-shrink: 0;
+  }
+  .active-order.confirmed .ao-icon { background: #E8F0EA; color: #3F6B52; }
+  .active-order.preparing .ao-icon { background: #FAF1D8; color: #8F6F1F; }
+  .active-order.in_transit .ao-icon { background: #E8F5E9; color: #2D7A4F; }
+  .active-order.arriving_soon .ao-icon { background: #FCEBD8; color: #9B4B1B; }
+  .ao-icon svg { width: 16px; height: 16px; stroke-width: 2.2; }
+
+  .ao-status {
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.8px; text-transform: uppercase;
+    color: #8B7D6F;
+  }
+  .active-order.confirmed .ao-status { color: #3F6B52; }
+  .active-order.preparing .ao-status { color: #8F6F1F; }
+  .active-order.in_transit .ao-status { color: #2D7A4F; }
+  .active-order.arriving_soon .ao-status { color: #9B4B1B; }
+
+  /* Pulse dot for arriving_soon */
+  .ao-pulse {
+    display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+    background: #C96A2E; margin-left: 4px;
+    box-shadow: 0 0 0 0 rgba(201, 106, 46, 0.6);
+    animation: ao-pulse 1.6s infinite;
+  }
+  @keyframes ao-pulse {
+    0% { box-shadow: 0 0 0 0 rgba(201, 106, 46, 0.6); }
+    70% { box-shadow: 0 0 0 8px rgba(201, 106, 46, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(201, 106, 46, 0); }
+  }
+
+  .ao-title {
+    font-size: 15px; font-weight: 700; color: #2C2825;
+    margin-bottom: 2px; line-height: 1.3;
+  }
+  .ao-sub {
+    font-size: 11.5px; color: #5A5048; line-height: 1.45;
+  }
+  .ao-sub strong { color: #2C2825; font-weight: 700; }
+  .ao-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 10px;
+  }
+  .ao-orderid {
+    font-size: 9px; color: #A89F95; letter-spacing: 0.4px;
+    text-transform: uppercase; font-variant-numeric: tabular-nums;
+  }
+  .ao-track {
+    display: inline-flex; align-items: center; gap: 3px;
+    font-size: 11px; font-weight: 700; color: var(--primary);
+    text-decoration: none;
+  }
+  .ao-track svg { width: 11px; height: 11px; stroke-width: 2.5; }
+
+  /* Section title between active + past */
+  .past-orders-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 13px; font-weight: 600; color: #5A5048;
+    letter-spacing: 0.3px;
+    margin: 18px 0 10px; padding: 0 4px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .past-orders-title::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, #D4CCC3 0%, transparent 100%);
+  }
+
+  /* C1 variant status cycler control */
+  .c1-cycler {
+    display: flex; gap: 4px; flex-wrap: wrap;
+    margin: 8px 0 14px; padding: 6px 8px;
+    background: #F5EFE7; border: 1px dashed #C9BFB3; border-radius: 6px;
+    font-family: 'SF Mono', Monaco, Consolas, monospace;
+  }
+  .c1-cycler-label {
+    font-size: 9px; color: #8B7D6F; font-weight: 700;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    align-self: center; margin-right: 4px;
+  }
+  .c1-cycler button {
+    padding: 3px 8px; border-radius: 4px; border: 1px solid transparent;
+    background: white; color: #5A5048;
+    font-family: inherit; font-size: 10px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .c1-cycler button:hover { border-color: #B5ABA0; }
+  .c1-cycler button.active {
+    background: #2C2825; color: white; border-color: #2C2825;
+  }
+
+  /* Separator between chosen and archive variants */
+  .variants-separator {
+    flex-basis: 100%; width: 100%;
+    display: flex; flex-direction: column; gap: 6px;
+    margin: 32px 0 12px; padding: 0 6px;
+  }
+  .variants-separator hr {
+    width: 100%; border: none; border-top: 1px dashed #CEC4B7;
+    margin: 0;
+  }
+  .variants-separator-label {
+    font-size: 11px; font-weight: 700; color: #8A8078;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    padding-top: 6px;
+  }
+  .variants-separator-label .tag {
+    display: inline-block; font-size: 10px; padding: 2px 8px;
+    background: #EDE4DA; color: #6B5D50; border-radius: 999px;
+    margin-left: 6px; text-transform: none; letter-spacing: 0.2px; font-weight: 600;
+  }
+
+  /* Chosen variant emphasis */
+  .phone-wrap--chosen {
+    flex-basis: 100%; max-width: 400px;
+    align-self: flex-start;
+  }
+  .phone-wrap--chosen .phone-variant-label {
+    background: linear-gradient(90deg, var(--primary), #7E1C2B);
+    color: white; border-color: var(--primary);
+    font-size: 12px; padding: 4px 12px;
+  }
+  .phone-wrap--chosen .phone-variant-label .dot { background: white; }
+  .phone-wrap--chosen .phone {
+    box-shadow: 0 4px 20px rgba(155, 35, 53, 0.18);
+    border-color: var(--primary);
+  }
+  .phone-variant-label .tag-chosen {
+    display: inline-block; font-size: 9px; padding: 2px 7px;
+    background: white; color: var(--primary); border-radius: 999px;
+    margin-left: 4px; font-weight: 700; letter-spacing: 0.4px;
+    text-transform: uppercase;
+  }
+  .chosen-hint {
+    display: flex; align-items: flex-start; gap: 6px;
+    background: #FFF8F0; border: 1px dashed #E8C4A0; border-radius: 10px;
+    padding: 8px 12px; font-size: 11px; color: #5C4B3E;
+    margin-top: 4px; line-height: 1.4;
+  }
+  .chosen-hint svg { stroke: var(--primary); flex-shrink: 0; margin-top: 1px; }
+  .chosen-hint strong { color: var(--primary); }
+
+  /* Favorites section (top of chosen phone body) */
+  .fav-section {
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFF 100%);
+    border: 1px solid #E8D5C0; border-radius: 14px;
+    padding: 12px; margin: 12px 0 14px;
+  }
+  .fav-section-head {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 700; color: #8B4513;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 10px;
+  }
+  .fav-section-head svg { width: 13px; height: 13px; stroke: var(--primary); fill: var(--primary); }
+  .fav-section-head .fav-count {
+    margin-left: auto; background: var(--primary); color: white;
+    font-size: 10px; padding: 1px 7px; border-radius: 999px;
+    letter-spacing: 0.2px;
+  }
+  .fav-card {
+    background: white; border: 1px solid #F0E4D4; border-radius: 10px;
+    padding: 10px; margin-bottom: 6px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .fav-card:last-child { margin-bottom: 0; }
+  .fav-card-body { flex: 1; min-width: 0; }
+  .fav-card-name {
+    font-size: 13px; font-weight: 700; color: #2C2825;
+    line-height: 1.25; margin-bottom: 2px;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .fav-card-meta {
+    font-size: 10.5px; color: #8A8078; line-height: 1.3;
+    letter-spacing: 0.1px;
+  }
+  .fav-card-meta strong { color: #2C2825; font-weight: 700; }
+  .fav-card-go {
+    flex-shrink: 0; background: var(--primary); color: white;
+    border: none; border-radius: 8px; padding: 7px 11px;
+    font-size: 11.5px; font-weight: 700; cursor: pointer;
+    display: inline-flex; align-items: center; gap: 4px;
+    transition: background 0.15s;
+  }
+  .fav-card-go:hover { background: var(--primary-light); }
+  .fav-card-go svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.5; }
+  .fav-card-remove {
+    flex-shrink: 0; background: transparent; border: none;
+    width: 24px; height: 24px; border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; color: #B8A898; transition: all 0.15s;
+  }
+  .fav-card-remove:hover { background: #F5EDE3; color: #7A5A40; }
+  .fav-card-remove svg { width: 12px; height: 12px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+
+  /* Name-input modal — uses .modal-overlay/.modal-inner pattern (phone-local) */
+  .fav-modal-input {
+    width: 100%; box-sizing: border-box;
+    padding: 10px 12px; border: 1.5px solid #E0D4C4; border-radius: 10px;
+    font-size: 14px; font-family: inherit; color: #2C2825;
+    transition: border-color 0.15s;
+    margin-bottom: 12px;
+  }
+  .fav-modal-input:focus { outline: none; border-color: var(--primary); }
+  .fav-modal-suggest {
+    display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px;
+  }
+  .fav-modal-suggest-chip {
+    font-size: 11px; padding: 4px 9px; border-radius: 999px;
+    background: #F5EDE3; color: #6A5E54; border: 1px solid #E8DACA;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .fav-modal-suggest-chip:hover { background: var(--primary); color: white; border-color: var(--primary); }
+  .fav-modal-actions {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+  }
+
+  /* Saved-favorites chip bar (demo header) */
+  .fav-bar {
+    background: linear-gradient(135deg, #FFF8F0 0%, #FFF 100%);
+    border: 1px solid #E8D5C0; border-radius: 12px;
+    padding: 10px 12px; margin: 12px 0 6px;
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px;
+  }
+  .fav-bar-icon {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--primary); color: white;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .fav-bar-icon svg { width: 12px; height: 12px; stroke: white; fill: white; stroke-width: 2; }
+  .fav-bar-text { flex: 1; color: #4A3F37; }
+  .fav-bar-text strong { color: var(--primary); }
+  .fav-bar-chips {
+    display: flex; gap: 4px; flex-wrap: wrap;
+  }
+  .fav-bar-chip {
+    font-size: 10px; font-weight: 700; color: var(--primary);
+    background: white; border: 1px solid #E8C4CC;
+    padding: 2px 8px; border-radius: 999px; letter-spacing: 0.2px;
+  }
+  .fav-bar.empty { background: #FAF5EF; border-style: dashed; }
+  .fav-bar.empty .fav-bar-text { color: #8A8078; font-style: italic; }
+
+  /* Toast */
+  .fav-toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--primary); color: white;
+    padding: 10px 18px; border-radius: 999px;
+    font-size: 13px; font-weight: 600;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+    opacity: 0; pointer-events: none; transition: all 0.25s;
+    z-index: 100;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .fav-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .fav-toast svg { width: 14px; height: 14px; stroke: white; fill: white; }
+
+  /* Extra variant label colors */
+  .phone-variant-label.d .dot { background: #2D7A4F; }
+  .phone-variant-label.e .dot { background: #C96A2E; }
+  .phone-variant-label.f .dot { background: #0F8EC9; }
+  .phone-variant-label.g .dot { background: #9B2335; }
+  .phone-variant-label.h .dot { background: #3A3028; }
+
+  /* ── D: Buy it again grid ── */
+  .pt-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding-top: 14px; }
+  .pt-card { background: white; border: 1px solid #E8E2DB; border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; }
+  .pt-img { height: 72px; background: linear-gradient(135deg, #F5EFE8, #ECE3D6); display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .pt-meta { padding: 8px 10px 10px; display: flex; flex-direction: column; gap: 2px; }
+  .pt-freq { font-size: 9.5px; font-weight: 700; color: #2D7A4F; background: #E8F5E9; padding: 1.5px 6px; border-radius: 999px; align-self: flex-start; letter-spacing: 0.2px; text-transform: uppercase; margin-bottom: 2px; }
+  .pt-name { font-size: 12px; font-weight: 600; color: #2C2825; line-height: 1.25; }
+  .pt-size { font-size: 10px; color: #8A8078; }
+  .pt-bottom { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; }
+  .pt-price { font-size: 13px; font-weight: 700; color: #2C2825; }
+  .pt-add { width: 30px; height: 30px; background: var(--primary); border: none; border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+  .pt-add:hover { background: var(--primary-light); }
+
+  /* ── E: Smart bundle ── */
+  .bundle-list { padding-top: 14px; }
+  .bundle-card { background: white; border: 1px solid #E8E2DB; border-radius: 14px; padding: 14px; margin-bottom: 10px; }
+  .bundle-card.highlight { border-color: var(--primary); background: linear-gradient(180deg, #FDF8F4, white); box-shadow: 0 2px 6px rgba(155, 35, 53, 0.06); }
+  .bundle-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+  .bundle-ai-pill { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 700; color: #5E3B9C; background: #F1EBF9; padding: 3px 8px; border-radius: 999px; letter-spacing: 0.2px; }
+  .bundle-confidence { font-size: 10px; color: #8A8078; font-weight: 600; }
+  .bundle-name { font-size: 14.5px; font-weight: 700; color: #2C2825; margin-bottom: 8px; font-family: Georgia, serif; }
+  .bundle-items { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 12px; }
+  .bundle-item { font-size: 11px; color: #4A3F37; background: #F5F0EA; border: 1px solid #E8E0D5; border-radius: 999px; padding: 3px 9px; }
+  .bundle-footer { display: flex; justify-content: space-between; align-items: center; }
+  .bundle-price { font-size: 15px; font-weight: 700; color: #2C2825; }
+  .bundle-saving { font-size: 10.5px; font-weight: 600; color: #2D7A4F; }
+  .bundle-add { display: inline-flex; align-items: center; gap: 5px; background: var(--primary); color: white; border: none; font-size: 12px; font-weight: 600; padding: 7px 12px; border-radius: 8px; cursor: pointer; }
+  .bundle-add:hover { background: var(--primary-light); }
+
+  .bundle-section-title { font-size: 11px; font-weight: 700; color: #8A8078; text-transform: uppercase; letter-spacing: 0.5px; padding: 6px 2px; margin-top: 6px; }
+
+  /* ── F: Chat timeline ── */
+  .chat-wrap { padding-top: 14px; display: flex; flex-direction: column; gap: 10px; }
+  .chat-bubble { background: white; border: 1px solid #E8E2DB; border-radius: 16px 16px 16px 4px; padding: 10px 12px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); position: relative; }
+  .chat-meta { font-size: 10px; color: #8A8078; font-weight: 500; margin-bottom: 6px; letter-spacing: 0.2px; }
+  .chat-text { font-size: 12.5px; color: #2C2825; margin-bottom: 8px; }
+  .chat-chips-scroll { display: flex; gap: 4px; overflow-x: auto; padding-bottom: 4px; margin-bottom: 8px; }
+  .chat-chips-scroll::-webkit-scrollbar { display: none; }
+  .chat-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; color: #4A3F37; background: #F5F0EA; border-radius: 999px; padding: 4px 9px 4px 6px; flex-shrink: 0; }
+  .chat-chip span { font-size: 13px; }
+  .chat-reply { display: inline-flex; align-items: center; gap: 5px; background: var(--primary); color: white; border: none; font-size: 11.5px; font-weight: 600; padding: 6px 12px; border-radius: 999px; cursor: pointer; }
+  .chat-reply:hover { background: var(--primary-light); }
+
+  /* ── G: Calendar heatmap ── */
+  .cal-card { background: white; border: 1px solid #E8E2DB; border-radius: 14px; padding: 14px 12px; margin-top: 14px; margin-bottom: 12px; }
+  .cal-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+  .cal-month { font-size: 12px; font-weight: 700; color: #2C2825; font-family: Georgia, serif; }
+  .cal-stat { font-size: 10px; color: #8A8078; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-cell { aspect-ratio: 1; border-radius: 4px; position: relative; }
+  .cal-cell.lv-0 { background: #F2ECE4; }
+  .cal-cell.lv-1 { background: #D9B8BE; }
+  .cal-cell.lv-2 { background: #B8656F; }
+  .cal-cell.lv-3 { background: #9B2335; }
+  .cal-today { position: absolute; inset: -2px; border: 1.5px solid #2C2825; border-radius: 6px; }
+  .cal-legend { display: flex; align-items: center; gap: 3px; margin-top: 10px; justify-content: flex-end; font-size: 9.5px; color: #8A8078; }
+  .cal-legend .cal-cell { width: 10px; height: 10px; aspect-ratio: auto; }
+
+  .top-section-title { font-size: 11px; font-weight: 700; color: #8A8078; text-transform: uppercase; letter-spacing: 0.5px; padding: 2px 2px 8px; }
+  .top-pill { display: flex; align-items: center; gap: 10px; background: white; border: 1px solid #E8E2DB; border-radius: 12px; padding: 10px 12px; margin-bottom: 6px; }
+  .top-rank { font-size: 18px; font-weight: 800; color: var(--primary); font-family: Georgia, serif; width: 26px; flex-shrink: 0; }
+  .top-body { flex: 1; min-width: 0; }
+  .top-name { font-size: 12.5px; font-weight: 600; color: #2C2825; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .top-meta { font-size: 10.5px; color: #8A8078; }
+  .top-reorder { width: 34px; height: 34px; background: var(--primary); color: white; border: none; border-radius: 50%; font-size: 16px; cursor: pointer; flex-shrink: 0; }
+  .top-reorder:hover { background: var(--primary-light); }
+
+  /* ── H: Hero + horizontal scroll ── */
+  .hero-card { background: linear-gradient(135deg, var(--primary), #7E1C2B); border-radius: 18px; padding: 18px; margin-top: 14px; color: white; }
+  .hero-label { font-size: 10px; font-weight: 700; letter-spacing: 0.8px; opacity: 0.85; margin-bottom: 10px; }
+  .hero-chips { display: flex; gap: 6px; margin-bottom: 10px; }
+  .hero-chip { width: 44px; height: 44px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; }
+  .hero-summary { font-size: 13px; font-weight: 500; opacity: 0.95; margin-bottom: 12px; }
+  .hero-cta { display: inline-flex; align-items: center; gap: 6px; background: white; color: var(--primary); border: none; font-size: 13.5px; font-weight: 700; padding: 10px 18px; border-radius: 999px; cursor: pointer; width: 100%; justify-content: center; }
+
+  .hscroll-row { display: flex; gap: 8px; overflow-x: auto; padding: 4px 2px 4px 2px; margin: 14px -4px 0; scroll-padding: 4px; }
+  .hscroll-row::-webkit-scrollbar { display: none; }
+  .hscroll-card { flex: 0 0 130px; background: white; border: 1px solid #E8E2DB; border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 4px; position: relative; }
+  .hscroll-chips { display: flex; gap: 3px; font-size: 18px; margin-bottom: 4px; }
+  .hscroll-date { font-size: 10px; color: #8A8078; font-weight: 500; }
+  .hscroll-price { font-size: 12.5px; font-weight: 700; color: #2C2825; }
+  .hscroll-btn { position: absolute; top: 8px; right: 8px; width: 26px; height: 26px; background: var(--primary); color: white; border: none; border-radius: 50%; font-size: 13px; cursor: pointer; }
+  .hscroll-section-title { font-size: 11px; font-weight: 700; color: #8A8078; text-transform: uppercase; letter-spacing: 0.5px; padding: 14px 2px 4px; }
+  /* Piggy bank savings badge — Lucide piggy-bank icon */
+  .savings-pig-wrap {
+    display: inline-flex; flex-direction: column; align-items: center;
+    background: #2D7A4F; border-radius: 14px;
+    padding: 8px 12px; gap: 4px; min-width: 64px;
+  }
+  .pig-icon { display: flex; align-items: center; justify-content: center; line-height: 1; }
+  .pig-amount { font-size: 12px; font-weight: 800; color: white; line-height: 1.1; white-space: nowrap; }
+
+  /* progress-edge-fix: prevent right-edge bubble/dot/label from overflowing */
+  .progress-bubble[style*="left:100%"], .progress-bubble[style*="left: 100%"],
+  .progress-dot[style*="left:100%"], .progress-dot[style*="left: 100%"],
+  .progress-label[style*="left:100%"], .progress-label[style*="left: 100%"] {
+    transform: translate(-100%, -50%) !important;
+  }
+  .progress-bubble[style*="left:0%"], .progress-bubble[style*="left: 0%"],
+  .progress-dot[style*="left:0%"], .progress-dot[style*="left: 0%"],
+  .progress-label[style*="left:0%"], .progress-label[style*="left: 0%"] {
+    transform: translate(0, -50%) !important;
+  }
+</style>
+
+<style>
+  .feature { display: none !important; }
+  .feature#reorder { display: block !important; }
+  .changelog { display: none; }
+</style>
+</head>
+<body>
+<a href="index.html" class="back-btn">&#8592; Vissza</a>
+
+<div class="header">
+  <h1>Reorder · Újrarendelés</h1>
+  <p>Deák Húsmíves · v0.3 · Reorder</p>
+</div>
+
+
+
+<div class="content">
+
+<!-- ============================================================ -->
+<!-- FEATURE 1: SAVINGS COUNTER                                    -->
+<!-- ============================================================ -->
+<div class="feature" id="savings">
+  <h2>NEW-1: Running Savings Counter</h2>
+  <div class="scenarios" id="savings-scenarios">
+    <button class="scenario-btn" data-amount="0">Üres kosár</button>
+    <button class="scenario-btn active" data-amount="120">120 RON (alap)</button>
+    <button class="scenario-btn" data-amount="145">145 RON (near)</button>
+    <button class="scenario-btn" data-amount="180">180 RON (ingyenes száll.)</button>
+    <button class="scenario-btn" data-amount="350">350 RON (teljes kedv.)</button>
+  </div>
+  <div class="phones">
+    <div class="phone">
+      <div class="phone-header"><span>Kosaram</span><span>🇭🇺</span></div>
+      <div class="phone-body" id="savings-phone"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FEATURE 2: POST-ORDER RECAP                                   -->
+<!-- ============================================================ -->
+<div class="feature" id="recap">
+  <h2>NEW-3: Post-order Recap</h2>
+  <div class="scenarios" id="recap-scenarios">
+    <button class="scenario-btn" data-amount="120">120 RON (nincs spórolás)</button>
+    <button class="scenario-btn active" data-amount="180">180 RON (szállítás)</button>
+    <button class="scenario-btn" data-amount="350">350 RON (teljes kedv.)</button>
+  </div>
+  <div class="phones">
+    <div class="phone">
+      <div class="phone-header"><span>Rendelés leadva ✓</span><span>🇭🇺</span></div>
+      <div class="phone-body" id="recap-phone"></div>
+    </div>
+    <div class="phone">
+      <div class="phone-header"><span>Termékek</span><span>🇭🇺</span></div>
+      <div class="phone-body" id="recap-home"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FEATURE 3: REORDER                                            -->
+<!-- ============================================================ -->
+<div class="feature active" id="reorder">
+  <h2>NEW-4: Reorder (Újrarendelés)</h2>
+  <div class="scenarios" id="reorder-scenarios">
+    <button class="scenario-btn active" data-view="list">Rendeléseim</button>
+    <button class="scenario-btn" data-view="empty-load">Üres kosár → betöltés</button>
+    <button class="scenario-btn" data-view="merge">Merge modal</button>
+    <button class="scenario-btn" data-view="loaded">Betöltött kosár</button>
+  </div>
+  <div class="phones" id="reorder-phones"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FEATURE 4: FAMILY BUNDLES                                     -->
+<!-- ============================================================ -->
+<div class="feature" id="bundles">
+  <h2>NEW-5: Családi csomagok</h2>
+  <div class="scenarios" id="bundle-scenarios">
+    <button class="scenario-btn active" data-view="grid">Vásárlói nézet</button>
+    <button class="scenario-btn" data-view="detail">Csomag részletező</button>
+    <button class="scenario-btn" data-view="admin">Admin nézet</button>
+  </div>
+  <div class="phones" id="bundle-phones"></div>
+</div>
+
+<!-- ============================================================ -->
+<!-- FEATURE 5: ORDERS + SAVINGS BADGE                             -->
+<!-- ============================================================ -->
+<div class="feature" id="orders">
+  <h2>Rendeléseim + Spórolás badge</h2>
+  <div class="phones">
+    <div class="phone">
+      <div class="phone-header"><span>Rendeléseim</span><span>🇭🇺</span></div>
+      <div class="phone-body" id="orders-phone"></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /content -->
+
+<div class="changelog">
+  <details>
+    <summary>v3 changelog (design review javítások)</summary>
+    <ul>
+      <li>Progress bar: szöveges label a küszöbök alatt ("Ingy. szállítás" / "2% kedv.")</li>
+      <li>Bundle icon badge-ek: szöveges label az ikonok alatt (mobilon is egyértelmű)</li>
+      <li>Min. rendelés: pozitívabb hangnem ("Még X RON és leadhatod a rendelést!")</li>
+      <li>Üres kosár: CTA gomb ("Böngéssz a termékeink között →")</li>
+      <li>Merge modal: dátum + rendelésszám kontextus</li>
+      <li>Bundle subtitle: "Válassz kényelmes csomagot" (konkrétabb)</li>
+      <li>Becsült ár: magyarázat ("a végső ár a mérés alapján változhat")</li>
+      <li>Post-order recap: szállítási idő becslés kártya</li>
+      <li>Admin: success toast a mentés után</li>
+      <li>Reorder gomb: minden kiszállított rendelésen (nem csak az elsőn)</li>
+    </ul>
+  </details>
+</div>
+
+<script>
+// ============================================================
+// TAB SWITCHING
+// ============================================================
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.feature').forEach(f => f.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+
+// ============================================================
+// HELPERS
+// ============================================================
+function calcSavings(amount) {
+  const delivery = amount >= 150 ? 10 : 0;
+  const volume = amount >= 300 ? Math.round(amount * 0.02) : 0;
+  return { delivery, volume, total: delivery + volume };
+}
+
+// v3: progress bar with sublabels under thresholds
+function progressBar(amount) {
+  const pct = Math.min((amount / 300) * 100, 100);
+  const r1 = amount >= 150, r2 = amount >= 300;
+  const color = r2 ? 'var(--green-dark)' : r1 ? 'var(--green)' : 'var(--primary)';
+  return `
+    <div class="card">
+      <div class="progress-wrap">
+        <div class="progress-fill" style="width:${pct}%;background:${color}"></div>
+        <div class="progress-bubble ${r1 ? 'reached' : 'not-reached'}" style="left:50%">${r1 ? '✓' : ''}</div>
+        <div class="progress-bubble ${r2 ? 'reached' : 'not-reached'}" style="left:100%">${r2 ? '✓' : ''}</div>
+      </div>
+      <div class="progress-labels">
+        <span>0 RON</span>
+        <span style="color:${r1?'var(--green)':'var(--text2)'};font-weight:${r1?600:400}">150 RON</span>
+        <span style="color:${r2?'var(--green-dark)':'var(--text2)'};font-weight:${r2?600:400}">300 RON</span>
+      </div>
+      <div class="progress-sublabels">
+        <span></span>
+        <span style="color:${r1?'var(--green)':'var(--text2)'}">Ingy. szállítás</span>
+        <span style="color:${r2?'var(--green-dark)':'var(--text2)'}">2% kedv.</span>
+      </div>
+    </div>`;
+}
+
+function decisionConfidence(amount) {
+  const s = calcSavings(amount);
+  if (amount === 0)
+    return '<div class="nudge nudge-warn">Adj hozzá termékeket → 150 RON-tól ingyenes szállítás!</div>';
+  if (amount < 10)
+    return '<div class="nudge nudge-warn">Adj hozzá termékeket → 150 RON-tól ingyenes szállítás!</div>';
+  if (amount < 150) {
+    const gap = 150 - amount;
+    const txt = gap <= 15
+      ? `<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--warn)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:2px"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg> Már csak ${gap} RON → Ingyenes szállítás!`
+      : `Még ${gap} RON → ingyenes szállítás`;
+    return `<div class="nudge nudge-warn">${txt}</div>`;
+  }
+  if (amount < 300) {
+    const gap2 = 300 - amount;
+    return `
+      <div class="nudge nudge-green" style="display:flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Ingyenes szállítás!</div>
+      <div class="breakdown">-10 RON megtakarítás (ingyenes szállítás)</div>
+      <div class="breakdown-hint">Még ${gap2} RON → 2% kedvezmény a teljes rendelésből</div>`;
+  }
+  return `
+    <div class="nudge nudge-gold" style="display:flex;align-items:center;gap:4px"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Teljes kedvezmény!</div>
+    <div class="breakdown" style="color:var(--green-dark)">+${s.delivery} RON szállítás + ${s.volume} RON kedvezmény (2%) = <strong>+${s.total} RON megtakarítás</strong></div>`;
+}
+
+function cartItem(name, price, qty, emoji) {
+  return `
+    <div class="cart-item">
+      <div class="cart-item-img">${emoji}</div>
+      <div class="cart-item-info">
+        <div class="cart-item-name">${name}</div>
+        <div class="cart-item-price">${price} RON / kg</div>
+      </div>
+      <div class="cart-item-qty"><span>−</span><span class="qty">${qty.toFixed(2).replace('.',',')}</span><span>+</span></div>
+      <div class="cart-item-total">${Math.round(price * qty)} RON</div>
+      <button class="cart-item-remove" data-cart-remove="${encodeURIComponent(name)}" aria-label="Eltávolítás" title="Eltávolítás a kosárból">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>`;
+}
+
+const cartItems120 = [
+  ['Deák háziKolbász', 45, 1, '🌭'], ['Füstölt Szalonna', 42, 0.5, '🥓'], ['Abált Szalonna', 35, 1.5, '🥩']
+];
+const cartItems145 = [
+  ['Deák háziKolbász', 45, 1.5, '🌭'], ['Füstölt Szalonna', 42, 1, '🥓'], ['Abált Szalonna', 35, 1.5, '🥩']
+];
+const cartItems180 = [
+  ['Deák háziKolbász', 45, 2, '🌭'], ['Füstölt Szalonna', 42, 1, '🥓'], ['Abált Szalonna', 35, 1, '🥩'], ['Füstölt Csülök', 34, 0.5, '🍖']
+];
+const cartItems350 = [
+  ['Deák háziKolbász', 45, 2, '🌭'], ['Füstölt Fehér Karaj', 49, 2, '🥩'], ['Füstölt Egész Sonka', 55, 2, '🍖'], ['Cérna Kolbász', 48, 1, '🌭'], ['Abált Szalonna', 35, 1, '🥓']
+];
+
+function getItems(amount) {
+  if (amount === 0) return [];
+  if (amount <= 120) return cartItems120;
+  if (amount <= 145) return cartItems145;
+  if (amount <= 180) return cartItems180;
+  return cartItems350;
+}
+
+// ============================================================
+// SAVINGS COUNTER
+// ============================================================
+function renderSavings(amount) {
+  const el = document.getElementById('savings-phone');
+  const items = getItems(amount);
+  const s = calcSavings(amount);
+
+  // v3: Empty cart with CTA
+  if (amount === 0) {
+    el.innerHTML = `
+      <div style="text-align:center;padding:40px 20px;color:var(--text2)">
+        <div style="margin-bottom:12px"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#CCC" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div>
+        <div style="font-size:15px;margin-bottom:8px">A kosarad üres</div>
+        <div style="font-size:13px;margin-bottom:16px;color:var(--text2)">Nézd meg a kínálatunkat és válassz!</div>
+        <button class="btn btn-secondary" style="width:auto;display:inline-block;padding:10px 20px;font-size:13px">Böngéssz a termékeink között →</button>
+      </div>
+      <div style="margin-top:16px">${progressBar(0)}</div>
+      ${decisionConfidence(0)}
+      <div style="margin-top:16px"><button class="btn btn-primary" disabled>Tovább a fizetéshez</button></div>`;
+    return;
+  }
+
+  let html = `<div style="font-size:13px;color:var(--text2);text-align:right;padding:8px 0">${items.length} termék</div>`;
+  items.forEach(i => html += cartItem(...i));
+  html += `<div style="margin-top:16px">${progressBar(amount)}${decisionConfidence(amount)}</div>`;
+
+  // Total section
+  html += `<div style="margin-top:16px;padding:12px 0;border-top:1px solid var(--border)">`;
+  html += `<div class="total-row" style="font-size:11px;color:var(--text2)"><span>Becsült összeg</span><span>~${amount},00 RON</span></div>`;
+  if (amount >= 150)
+    html += `<div class="total-row" style="font-size:11px;color:var(--green)"><span>Szállítás</span><span><s style="color:var(--text2);margin-right:4px">10 RON</s> Ingyenes</span></div>`;
+  if (amount >= 300)
+    html += `<div class="total-row" style="font-size:11px;color:var(--green-dark)"><span>2% kedvezmény</span><span>-${s.volume} RON</span></div>`;
+  html += `<div class="total-row total-main"><span>Összesen</span><span>~${amount - s.volume},00 RON</span></div>`;
+  html += `</div>`;
+
+  // v3: Minimum order — positive framing
+  if (amount < 80)
+    html += `<div class="nudge nudge-warn" style="font-size:12px;margin-top:8px">Még ${80-amount} RON és leadhatod a rendelést!</div>`;
+
+  html += `<div style="margin-top:16px"><button class="btn btn-primary" ${amount<80?'disabled':''}>Tovább a fizetéshez</button></div>`;
+  el.innerHTML = html;
+}
+
+document.querySelectorAll('#savings-scenarios .scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#savings-scenarios .scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderSavings(parseInt(btn.dataset.amount));
+  });
+});
+renderSavings(120);
+
+// ============================================================
+// POST-ORDER RECAP
+// ============================================================
+function renderRecap(amount) {
+  const s = calcSavings(amount);
+  const el = document.getElementById('recap-phone');
+  const home = document.getElementById('recap-home');
+
+  let html = `
+    <div style="text-align:center;padding:24px 0 16px">
+      <div class="success-icon"><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg></div>
+      <div style="font-size:20px;font-weight:700;margin-bottom:4px">Köszönjük a rendelést!</div>
+      <div style="font-size:13px;color:var(--text2)">DEAK-ORD-00044 · ${amount},00 RON</div>
+    </div>`;
+
+  // v3: Delivery ETA card
+  html += `
+    <div class="eta-card">
+      <div class="eta-icon"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#9B2335" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg></div>
+      <div class="eta-text">
+        <strong>Szállítás holnap, 14:00–16:00</strong>
+        <span style="font-size:12px;color:var(--text2)">SMS-ben értesítünk a pontos időről</span>
+      </div>
+    </div>`;
+
+  html += `<div class="card">`;
+
+  if (s.total > 0) {
+    const cls = amount >= 300 ? 'nudge-gold' : 'nudge-green';
+    const label = amount >= 300 ? 'Teljes kedvezmény!' : 'Ingyenes szállítás!';
+    html += `
+      <div class="nudge ${cls}" style="text-align:center;margin-bottom:12px">
+        <div style="font-size:15px;font-weight:600">${label}</div>
+        <div class="savings-big">+${s.total} RON megtakarítás</div>
+      </div>`;
+    if (s.delivery > 0)
+      html += `<div class="savings-row"><span>Ingyenes szállítás</span><span class="val">+${s.delivery} RON</span></div>`;
+    if (s.volume > 0)
+      html += `<div class="savings-row"><span>2% kedvezmény</span><span class="val">+${s.volume} RON</span></div>`;
+  } else {
+    html += `<div style="text-align:center;padding:8px 0;color:var(--text2);font-size:13px;font-style:italic"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:middle;margin-right:3px"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg> Legközelebb 150 RON felett ingyenes a szállítás!</div>`;
+  }
+  html += `</div>`;
+  html += `
+    <button class="btn btn-primary">Újrarendelem legközelebb →</button>
+    <button class="btn btn-secondary">Rendelés részletei</button>
+    <button class="btn btn-ghost">Később is folytathatod → Rendeléseim</button>`;
+  el.innerHTML = html;
+
+  // Home banner
+  home.innerHTML = `
+    <div class="return-banner">
+      <div>
+        <div style="font-size:12px;color:var(--text2)">Utolsó rendelésed</div>
+        <div style="font-size:14px;font-weight:600">3 termék · ~${amount} RON</div>
+        ${s.total > 0 ? `<div style="font-size:11px;color:var(--green)">+${s.total} RON megtakarítás</div>` : ''}
+      </div>
+      <button class="return-banner-btn">Újrarendelem →</button>
+    </div>
+    <div class="category-filters">
+      <span class="cat-pill active">Összes</span>
+      <span class="cat-pill">Felvágott</span>
+      <span class="cat-pill">Friss</span>
+    </div>
+    <div class="placeholder-card"></div>
+    <div class="placeholder-card"></div>
+    <div class="placeholder-card"></div>
+    <div class="placeholder-card"></div>`;
+}
+
+document.querySelectorAll('#recap-scenarios .scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#recap-scenarios .scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderRecap(parseInt(btn.dataset.amount));
+  });
+});
+renderRecap(180);
+
+// ============================================================
+// REORDER
+// ============================================================
+// ============================================================
+// SHARED HELPERS — ORDER CARD v3
+// ============================================================
+const ORDER_PRODUCTS = {
+  '00042': 'Házikolbász, Füstölt szalonna <span class="extra">+1 termék</span>',
+  '00038': 'Csirkecomb, Darált hús',
+  '00035': 'Karaj, Kolbász, Szalonna <span class="extra">+2 termék</span>',
+  '00028': 'Karaj, Kolbász, Sonka <span class="extra">+7 termék</span>',
+};
+
+// Date format: "Ápr 3., szombat" (short month + day + weekday in Hungarian)
+function formatDate(short) {
+  // short comes as "3 ápr." or "28 márc." — normalize
+  const parts = short.trim().replace('.', '').split(' ');
+  const day = parseInt(parts[0], 10);
+  const monthAbbr = parts[1]; // "ápr", "márc", "feb", etc.
+
+  // Map Hungarian month abbreviations to month index (0-based)
+  const monthMap = { 'jan': 0, 'feb': 1, 'márc': 2, 'ápr': 3, 'máj': 4, 'jún': 5, 'júl': 6, 'aug': 7, 'szept': 8, 'okt': 9, 'nov': 10, 'dec': 11 };
+  const monthIdx = monthMap[monthAbbr.toLowerCase()];
+
+  // Capitalize month: "Ápr", "Márc"
+  const monthCap = monthAbbr.charAt(0).toUpperCase() + monthAbbr.slice(1);
+
+  // Compute weekday (2026)
+  const weekdays = ['vasárnap', 'hétfő', 'kedd', 'szerda', 'csütörtök', 'péntek', 'szombat'];
+  let weekday = '';
+  if (monthIdx !== undefined) {
+    const d = new Date(2026, monthIdx, day);
+    weekday = weekdays[d.getDay()];
+  }
+
+  return weekday
+    ? `${monthCap} ${day}., ${weekday}`
+    : `${monthCap} ${day}.`;
+}
+
+function savingsPig(amount) {
+  return `<div class="savings-pig-wrap">
+    <span class="pig-icon"><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"/><path d="M15 6h1v4"/><path d="m6.134 14.768.866-.5 2 3.464"/><circle cx="16" cy="8" r="6"/></svg></span>
+    <div class="pig-amount">-${amount} RON</div>
+  </div>`;
+}
+
+const svgReorderIcon = `<svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right:6px;flex-shrink:0"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
+
+function orderCard(o) {
+  const products = ORDER_PRODUCTS[o.id] || (o.items + ' termék');
+  return `<div class="order-card-v3">
+    <div class="ocv3-top">
+      <span class="ocv3-date">${formatDate(o.date)}</span>
+    </div>
+    <div class="ocv3-body-row">
+      <div class="ocv3-body-left">
+        <div class="ocv3-summary">${products}</div>
+        <div class="ocv3-price">${o.amount},00 RON</div>
+      </div>
+      <span style="${o.saving > 0 ? '' : 'visibility:hidden'}">${savingsPig(o.saving || 10)}</span>
+    </div>
+    <div class="ocv3-id">DEAK-ORD-${o.id}</div>
+    <button class="btn btn-primary" style="width:100%;display:flex;align-items:center;justify-content:center">
+      ${svgReorderIcon}Újrarendelem
+    </button>
+  </div>`;
+}
+
+// Compact row variant: denser, more orders visible at once.
+// Single row per order: date column · products ellipsed · price · piggy · icon-only reorder button.
+function orderRowCompact(o) {
+  const products = ORDER_PRODUCTS[o.id] || (o.items + ' termék');
+  const savingHtml = o.saving > 0
+    ? `<span class="ocr-saving" title="Megtakarítás"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"/><path d="M15 6h1v4"/><path d="m6.134 14.768.866-.5 2 3.464"/><circle cx="16" cy="8" r="6"/></svg>-${o.saving} RON</span>`
+    : '';
+  return `<div class="order-row">
+    <div class="ocr-main">
+      <div class="ocr-top">
+        <span class="ocr-date">${formatDate(o.date)}</span>
+        <span class="ocr-price">${o.amount},00 RON</span>
+      </div>
+      <div class="ocr-products">${products}</div>
+      <div class="ocr-meta">
+        <span class="ocr-id">DEAK-ORD-${o.id}</span>
+        ${savingHtml}
+      </div>
+    </div>
+    <button class="ocr-reorder-btn" aria-label="Újrarendelem">
+      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      <span>Újra</span>
+    </button>
+  </div>`;
+}
+
+// Compact B2: same info block but reorder pill BELOW (not side).
+// Pattern borrowed from C — bottom-aligned "Mégegyszer" action.
+function orderRowCompactBottomBtn(o) {
+  const products = ORDER_PRODUCTS[o.id] || (o.items + ' termék');
+  const savingHtml = o.saving > 0
+    ? `<span class="ocr-saving" title="Megtakarítás"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"/><path d="M15 6h1v4"/><path d="m6.134 14.768.866-.5 2 3.464"/><circle cx="16" cy="8" r="6"/></svg>-${o.saving} RON</span>`
+    : '';
+  return `<div class="order-row-stack">
+    <div class="ocr-top">
+      <span class="ocr-date">${formatDate(o.date)}</span>
+      <span class="ocr-price">${o.amount},00 RON</span>
+    </div>
+    <div class="ocr-products">${products}</div>
+    <div class="ocr-meta">
+      <span class="ocr-id">DEAK-ORD-${o.id}</span>
+    </div>
+    <div class="ors-actions">
+      <button class="ors-reorder">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Mégegyszer
+      </button>
+      ${savingHtml}
+    </div>
+  </div>`;
+}
+
+// Receipt-style variant (D): products listed vertically, qty + price aligned right.
+// Designed to mimic a paper receipt a customer gets from the shop — fast scan of "what was in this order".
+const ORDER_RECEIPT = {
+  '00042': [
+    { n: 'Házikolbász',        qty: '500g', price: 45 },
+    { n: 'Füstölt szalonna',   qty: '400g', price: 38 },
+    { n: 'Abált szalonna',     qty: '350g', price: 27 },
+  ],
+  '00038': [
+    { n: 'Csirkecomb',         qty: '800g', price: 32 },
+    { n: 'Darált hús',         qty: '500g', price: 53 },
+  ],
+  '00035': [
+    { n: 'Karaj',              qty: '1 kg', price: 65 },
+    { n: 'Kolbász',            qty: '500g', price: 45 },
+    { n: 'Szalonna',           qty: '400g', price: 38 },
+    { n: 'Sonka',              qty: '300g', price: 52 },
+    { n: 'Csirke',             qty: '1,2 kg', price: 110 },
+  ],
+  '00028': [
+    { n: 'Karaj',              qty: '1 kg',  price: 65 },
+    { n: 'Kolbász',            qty: '500g',  price: 45 },
+    { n: 'Sonka',              qty: '300g',  price: 52 },
+    { n: 'Szalonna',           qty: '400g',  price: 38 },
+    { n: 'Csirkecomb',         qty: '800g',  price: 32 },
+    { n: 'Darált marha',       qty: '500g',  price: 48 },
+    { n: 'Virsli',             qty: '6 db',  price: 25 },
+    { n: 'Abált szalonna',     qty: '350g',  price: 42 },
+    { n: 'Füstölt tarja',      qty: '600g',  price: 78 },
+    { n: 'Csirkemell',         qty: '900g',  price: 215 },
+  ],
+};
+
+function orderReceipt(o) {
+  const items = ORDER_RECEIPT[o.id] || [];
+  const savingHtml = o.saving > 0
+    ? `<span class="ocr-saving"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13.744 17.736a6 6 0 1 1-7.48-7.48"/><path d="M15 6h1v4"/><path d="m6.134 14.768.866-.5 2 3.464"/><circle cx="16" cy="8" r="6"/></svg>-${o.saving} RON</span>`
+    : '';
+  return `<div class="receipt-card">
+    <div class="rc-head">
+      <span class="rc-date">${formatDate(o.date)}</span>
+      <span class="rc-id">DEAK-ORD-${o.id}</span>
+    </div>
+    <div class="rc-items">
+      ${items.map(it => `
+        <div class="rc-item">
+          <span class="rc-name">${it.n}</span>
+          <span class="rc-dots"></span>
+          <span class="rc-qty">${it.qty}</span>
+          <span class="rc-price">${it.price} RON</span>
+        </div>
+      `).join('')}
+    </div>
+    <div class="rc-total">
+      <span class="rc-total-label">Összesen</span>
+      <span class="rc-total-amt">${o.amount},00 RON</span>
+    </div>
+    <div class="ors-actions">
+      <button class="ors-reorder">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Mégegyszer
+      </button>
+      ${savingHtml}
+    </div>
+  </div>`;
+}
+
+// Timeline variant (C): vertical date-rail + visual product chips + inline "Mégegyszer" action.
+// Each chip: { n: name, q: quantity } — hero items (first 2) shown with quantity, rest aggregated.
+const PRODUCT_CHIPS = {
+  '00042': [{n:'Házikolbász', q:'1 kg'}, {n:'Füst. szalonna', q:'50 dkg'}, {n:'Abált szal.', q:'30 dkg'}],
+  '00038': [{n:'Csirkecomb', q:'1,5 kg'}, {n:'Darált hús', q:'80 dkg'}],
+  '00035': [{n:'Karaj', q:'1 kg'}, {n:'Kolbász', q:'50 dkg'}, {n:'Szalonna', q:'40 dkg'}, {n:'Sonka', q:'30 dkg'}, {n:'Csirke', q:'1,2 kg'}],
+  '00028': [{n:'Karaj', q:'2 kg'}, {n:'Kolbász', q:'1,5 kg'}, {n:'Sonka', q:'80 dkg'}, {n:'Szalonna', q:'60 dkg'}, {n:'Csirkecomb', q:'1 kg'}, {n:'Darált marha', q:'1 kg'}, {n:'Virsli', q:'50 dkg'}, {n:'Abált szal.', q:'30 dkg'}, {n:'Füst. tarja', q:'40 dkg'}, {n:'Csirkemell', q:'1 kg'}],
+};
+
+// C2: same as C but shows ALL chips (no "+N" truncation)
+function orderTimelineFull(o, opts = {}) {
+  const chips = PRODUCT_CHIPS[o.id] || [];
+  const chipsHtml = chips.map(c => `<span class="ot-chip">${c.n}</span>`).join('');
+  const saving = o.saving > 0
+    ? `<span class="ot-saving"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z"/><path d="M16 10h.01"/><path d="M2 8v1a2 2 0 0 0 2 2h1"/></svg>-${o.saving} RON</span>`
+    : '';
+  return `<div class="ot-row">
+    <div class="ot-body">
+      <div class="ot-head">
+        <span class="ot-date">${formatDate(o.date)}</span>
+        <span class="ot-right">
+          <span class="ot-price">${o.amount} RON</span>
+          ${saving}
+        </span>
+      </div>
+      <div class="ot-chips ot-chips-full">${chipsHtml}</div>
+      <div class="ot-actions">
+        <button class="ot-reorder">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Mégegyszer
+        </button>
+        <span class="ot-id">${o.id}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+function orderTimeline(o, opts = {}) {
+  const chips = PRODUCT_CHIPS[o.id] || [];
+  const chipsHtml = chips.map(c =>
+    `<span class="ot-chip">${c.n}</span>`
+  ).join('');
+  const saving = o.saving > 0
+    ? `<span class="ot-saving"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 5c-1.5 0-2.8 1.4-3 2-3.5-1.5-11-.3-11 5 0 1.8 0 3 2 4.5V20h4v-2h3v2h4v-4c1-.5 1.7-1 2-2h2v-4h-2c0-1-.5-1.5-1-2V5z"/><path d="M16 10h.01"/><path d="M2 8v1a2 2 0 0 0 2 2h1"/></svg>-${o.saving} RON</span>`
+    : '';
+  const first = opts.first ? 'first' : '';
+  const last = opts.last ? 'last' : '';
+  return `<div class="ot-row ${first} ${last}">
+    <div class="ot-body">
+      <div class="ot-head">
+        <span class="ot-date">${formatDate(o.date)}</span>
+        <span class="ot-right">
+          <span class="ot-price">${o.amount} RON</span>
+          ${saving}
+        </span>
+      </div>
+      <div class="ot-chips">${chipsHtml}</div>
+      <div class="ot-actions">
+        <button class="ot-reorder">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Mégegyszer
+        </button>
+        <span class="ot-id">${o.id}</span>
+      </div>
+    </div>
+  </div>`;
+}
+
+// ── C+ : chosen variant ── interactive favorites demo
+// - saving moved UNDER the total price (smaller font)
+// - two CTA buttons: "Mégegyszer" (primary) + "♥ Kedvencbe" (outline)
+// - favorites state tracked in window.__favOrderIds
+function orderTimelineChosen(o, opts = {}) {
+  const chips = PRODUCT_CHIPS[o.id] || [];
+  // Show ALL chips with quantity (no truncation)
+  const chipsHtml = chips.map(c =>
+    `<span class="ot-chip ot-chip-hero"><span class="ot-chip-name">${c.n}</span><span class="ot-chip-qty">${c.q}</span></span>`
+  ).join('');
+  const isFav = isFavorite(o.id);
+  // Coins icon (lucide 'coins'); placed LEFT of total price
+  const savingUnderTotal = o.saving > 0
+    ? `<span class="ot-saving-small" title="Csomag kedvezmény">
+         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>
+         -${o.saving} RON
+       </span>`
+    : '';
+  const first = opts.first ? 'first' : '';
+  const last = opts.last ? 'last' : '';
+  const heartSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+  return `<div class="ot-row ${first} ${last}">
+    <div class="ot-body">
+      <div class="ot-head">
+        <span class="ot-date">${formatDate(o.date)}</span>
+        <span class="ot-total-block">
+          ${savingUnderTotal}
+          <span class="ot-price">${o.amount} RON</span>
+        </span>
+      </div>
+      <div class="ot-chips">${chipsHtml}</div>
+      <div class="ot-actions-full">
+        <button class="ot-cta-primary" data-reorder="${o.id}">
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+          Mégegyszer
+        </button>
+        <button class="ot-cta-fav ${isFav ? 'saved' : ''}" data-fav="${o.id}" aria-label="${isFav ? 'Eltávolítás a kedvencekből' : 'Hozzáadás a kedvencekhez'}" title="${isFav ? 'Eltávolítás a kedvencekből' : 'Hozzáadás a kedvencekhez'}">
+          ${heartSvg}
+        </button>
+      </div>
+      <div class="ot-order-id">DEAK-ORD-${o.id}</div>
+    </div>
+  </div>`;
+}
+
+// Favorites state + rendering
+window.__favOrders = window.__favOrders || new Map(); // id -> { name, order }
+function isFavorite(id) { return window.__favOrders.has(id); }
+function renderFavBar() {
+  const bar = document.getElementById('fav-bar');
+  if (!bar) return;
+  const favs = Array.from(window.__favOrders.values());
+  if (favs.length === 0) {
+    bar.className = 'fav-bar empty';
+    bar.innerHTML = `
+      <span style="font-size: 16px; opacity: 0.5;">♡</span>
+      <span class="fav-bar-text">Még nincs kedvenc rendelésed — koppints a ♥-re, hogy gyors elérést kapj.</span>
+    `;
+    return;
+  }
+  bar.className = 'fav-bar';
+  bar.innerHTML = `
+    <span class="fav-bar-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    </span>
+    <span class="fav-bar-text"><strong>${favs.length} kedvenc</strong> rendelés — 1 koppintás és indul</span>
+    <span class="fav-bar-chips">
+      ${favs.map(f => `<span class="fav-bar-chip">${f.name}</span>`).join('')}
+    </span>
+  `;
+}
+
+// Favorites section (top of chosen phone body)
+function renderFavSection() {
+  const favs = Array.from(window.__favOrders.values());
+  if (favs.length === 0) return '';
+  const heartSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`;
+  const refreshSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>`;
+  const xSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>`;
+  return `<div class="fav-section">
+    <div class="fav-section-head">
+      ${heartSvg}
+      <span>Kedvenceim</span>
+      <span class="fav-count">${favs.length}</span>
+    </div>
+    ${favs.map(f => `<div class="fav-card">
+      <div class="fav-card-body">
+        <div class="fav-card-name">${f.name}</div>
+        <div class="fav-card-meta"><strong>${f.order.amount} RON</strong> · ${f.order.items} termék · ${formatDate(f.order.date)}</div>
+      </div>
+      <button class="fav-card-go" data-reorder="${f.order.id}">${refreshSvg}Újra</button>
+      <button class="fav-card-remove" data-fav-remove="${f.order.id}" aria-label="Eltávolítás">${xSvg}</button>
+    </div>`).join('')}
+  </div>`;
+}
+
+function showFavToast(message, saved) {
+  let toast = document.getElementById('fav-toast');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'fav-toast';
+    toast.className = 'fav-toast';
+    document.body.appendChild(toast);
+  }
+  const icon = saved
+    ? `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>`
+    : `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5"><path d="M6 18L18 6M6 6l12 12"/></svg>`;
+  toast.innerHTML = icon + '<span>' + message + '</span>';
+  toast.classList.add('show');
+  clearTimeout(window.__favToastTimer);
+  window.__favToastTimer = setTimeout(() => toast.classList.remove('show'), 1800);
+}
+
+// Re-render chosen phone only (preserve scroll)
+function rerenderChosen() {
+  const chosen = document.getElementById('chosen-phone-body');
+  if (!chosen) return;
+  const orders = window.__reorderOrders || [];
+  // Rebuild in full C1 order: active banner → favorites section → past-orders title → timeline
+  const bannerHtml = renderActiveOrderBanner(window.__c1State || 'in_transit', '00045');
+  const favsHtml = renderFavSection();
+  const pastTitleHtml = '<div class="past-orders-title">Korábbi rendelések</div>';
+  const ordersHtml = orders.map((o, i) =>
+    orderTimelineChosen(o, { first: i === 0, last: i === orders.length - 1 })
+  ).join('');
+  chosen.innerHTML = bannerHtml + favsHtml + pastTitleHtml + ordersHtml;
+  renderFavBar();
+}
+
+// =====================================================
+// DEV DOCS — per-scenario technical documentation
+// Each block: { ticket, description, interactions, states, edgeCases }
+// Renders as collapsible block under each scenario.
+// Pattern reused for future screens (Cart, Onboarding, etc.)
+// =====================================================
+const REORDER_DOCS = {
+  'list': {
+    ticket: 'DH-120',
+    title: 'Rendeléseim lista',
+    description: 'A vásárló rendeléseinek 3-szintű hierarchiája: (1) aktív rendelés sáv a tetején ha van folyamatban levő, (2) kedvencek gyors-elérési csík, (3) kiszállított rendelések kronologikus listája. Minden korábbi kártya önállóan indítható újrarendelés + kedvencbe mentés akciókkal.',
+    interactions: [
+      '**Aktív rendelés sáv** — Tap bárhol a sávon vagy a `Követés` linken → navigate `/orders/:id/tracking` (live státusz + térkép)',
+      'Aktív rendelés sáv 4 állapota: `confirmed` (szürke-zöld) / `preparing` (sárga) / `in_transit` (zöld) / `arriving_soon` (narancs, pulse animáció)',
+      'Tap `Mégegyszer` egy korábbi rendelésen → POST /reorder/:id → átnavigál `Betöltött kosár` view-ra (üres kosár esetén) vagy megnyitja a `Merge modal`-t (ha a kosárban van tartalom)',
+      'Tap `♥` (ikon-only) → megnyitja a `Mentsük el kedvencbe` modal-t (input + suggestion chipek)',
+      'Tap kedvenc csík egy mentett kedvencen → ugyanaz mint Mégegyszer (közvetlen betöltés)',
+      'Swipe kedvencen (jobbra→balra) → ×-törlés gomb revealed',
+      'Scroll → phone-body scrollable; header sticky-nek tűnhet',
+    ],
+    states: [
+      { tag: 'default', label: 'Legalább 1 korábbi rendelés, nincs aktív (csak kedvencek + lista)' },
+      { tag: 'active-order', label: 'Egy vagy több aktív rendelés → aktív sáv a tetején (GET /orders?status=active)' },
+      { tag: 'confirmed', label: 'Aktív: megerősítve, csomagolás még nem kezdődött — szürke-zöld accent' },
+      { tag: 'preparing', label: 'Aktív: csomagolás alatt, indulás ~2h múlva — sárga accent' },
+      { tag: 'in_transit', label: 'Aktív: szállítás alatt, becsült érkezés intervallum — zöld accent' },
+      { tag: 'arriving_soon', label: 'Aktív: futár a közelben, ~30 perc — narancs + pulse animáció' },
+      { tag: 'empty', label: 'Nincs korábbi rendelés → empty-state illusztráció + "Első rendelés" CTA (DH-122)' },
+      { tag: 'loading', label: 'Lista skeleton (3 kártya shimmer), max 800ms' },
+      { tag: 'error', label: 'GET /orders fail → retry banner + cached lista ha van' },
+      { tag: 'no-favs', label: '`fav-bar.empty` szöveg: "Még nincs kedvenc rendelésed…"' },
+    ],
+    edgeCases: [
+      '**Több aktív rendelés egyszerre** (ritka): stackelve, szállítás-alatti felül kiemelve, `confirmed` alatta összehúzva — max 2 sáv látható, 3+ esetén "további N aktív" link',
+      '**Aktív rendelés lezárul** (delivered vagy cancelled) → sáv automatikusan eltűnik (WebSocket vagy polling 30s), a rendelés lecsúszik a `Korábbi rendelések` listájába',
+      'Polling intervallum: `in_transit` és `arriving_soon` esetén **30s**, `confirmed` és `preparing` esetén **2 perc** (csökkentett szerver-load)',
+      'Ha egy korábbi rendelésben minden termék `unavailable` → a `Mégegyszer` gomb disabled, tooltip: "A termékek már nem elérhetők"',
+      'Rendelés id > 99999 → ID formázás marad `DEAK-ORD-XXXXX` (zero-pad)',
+      'Megtakarítás = 0 → `-X RON` pill nem jelenik meg (ne legyen `-0 RON`)',
+      '10+ kedvenc → `fav-bar` vízszintesen scrollable',
+      'Offline → Mégegyszer gomb toast: "Internet szükséges az újrarendeléshez"; aktív sáv: utolsó ismert státusz + "offline" jelző',
+      'Árváltozás jelzése a korábbi kártyákon: ha a termékek ára > 5%-kal változott → subtle tag "Ár módosult" (DH-124)',
+    ],
+  },
+  'empty-load': {
+    ticket: 'DH-121',
+    title: 'Üres kosár → betöltés',
+    description: 'A vásárló üres kosárral érkezett a `Rendeléseim` listáról. Nincs döntési konfliktus, így modal nélkül közvetlenül a kosárba töltjük a rendelés tételeit. A siker-üzenet (toast) emlékezteti melyik rendelést töltötte be.',
+    interactions: [
+      'Első render: `loaded-msg` banner a kosár tetején ("Betöltve: DEAK-ORD-00042 · 2026. ápr. 3.")',
+      'Tap `×` (close) a banneren → fade out 250ms, banner eltűnik (state persistál, ne térjen vissza scrollnál)',
+      'Tap `Tovább a fizetéshez` → navigate `/checkout`',
+      'Tap cart item qty `−` / `+` → PATCH /cart/item (megfelelő érvényesítéssel)',
+    ],
+    states: [
+      { tag: 'default', label: 'Banner látható, minden termék elérhető, progress bar és confidence látszik' },
+      { tag: 'banner-dismissed', label: 'User bezárta a bannert — csak a kosár lista marad' },
+      { tag: 'partial-unavailable', label: 'Egy vagy több termék `Nem elérhető` — lásd `Betöltött kosár` (DH-123)' },
+      { tag: 'loading', label: 'Betöltés közben skeleton item-ek (200-500ms)' },
+    ],
+    edgeCases: [
+      'Ha a reorder endpoint azt jelzi hogy az ÖSSZES termék nem elérhető → ne navigáljon ide, helyette error screen',
+      'Ha a user közben (másik tabban) hozzáadott valamit a kosárhoz → automatikus merge + toast "3 termék hozzáadva a kosaradhoz"',
+      'Banner auto-dismiss 10s után? → **NEM**, user döntés (dokumentálva)',
+      'Ha a dátum formázás nem sikerül (nyelvi fallback) → ISO format pl. `2026-04-03`',
+    ],
+  },
+  'merge': {
+    ticket: 'DH-121',
+    title: 'Merge modal',
+    description: 'A vásárló kosarában már vannak termékek, amikor újrarendelést indít. A modal megmutatja a jelenlegi vs. új rendelés tartalmát, és felajánl 3 akciót: hozzáadás, csere, mégse. A nem elérhető termékek inline jelezve a listán.',
+    interactions: [
+      'Modal render: backdrop-click DEAKTIVÁLVA (destructive döntés, csak gomb-zárás)',
+      'Tap `Hozzáadás a kosárhoz` → POST /cart/merge {mode:"add"} → navigate `Betöltött kosár`',
+      'Tap `Kosár cseréje` → confirmation: "Biztos?" (secondary modal) → POST /cart/merge {mode:"replace"}',
+      'Tap `Mégse` → modal close, user visszatér a `Rendeléseim` listára',
+      'Hardware back (Android) / swipe-down (iOS) → ugyanaz mint Mégse',
+    ],
+    states: [
+      { tag: 'default', label: 'Minden új termék elérhető — primary CTA: "Hozzáadás a kosárhoz +N elérhető"' },
+      { tag: 'partial-unavailable', label: '1+ termék `nem elérhető` → subline frissül: "+2 elérhető termék"' },
+      { tag: 'all-unavailable', label: 'Minden új termék nem elérhető → primary disabled, szöveg: "Nincs elérhető termék"' },
+      { tag: 'confirm-replace', label: 'Secondary konfirmációs modal: "Elveszíted a jelenlegi 2 terméket"' },
+    ],
+    edgeCases: [
+      'Ha a jelenlegi kosár = új rendelés tartalma (duplikátum) → modal kihagyva, közvetlen toast: "Már benne van"',
+      'Ha új rendelés > kosár max (50 tétel) → replace opció disabled + info-tag',
+      'Ha a user authentikációja lejárt → modal close + redirect /login',
+      'Árváltozás a legutóbbi rendelés óta → a merge után toast: "3 termék ára frissült a mai árakra"',
+      'A `mm-dots` leader-line responsive — a termék név `text-overflow: ellipsis` ha túl hosszú',
+    ],
+  },
+  'loaded': {
+    ticket: 'DH-120',
+    title: 'Betöltött kosár (partial unavailable)',
+    description: 'A rendelés betöltött, de egy vagy több termék jelenleg nem elérhető. A vásárló manuálisan dönt: eltávolítja a nem elérhetőket, vagy hasonló termékekre navigál. A checkout CTA aktív marad az elérhető termékekre.',
+    interactions: [
+      'Tap `×` (unavailable-remove) → row fade out + toast "Eltávolítva" + Undo gomb (5s)',
+      'Tap `Hasonló termékek` chip → navigate `/similar?for=:productId`',
+      'Tap cart item qty `−` / `+` elérhető tételeken → PATCH /cart/item',
+      'Tap `Tovább a fizetéshez` → `/checkout` — de csak az elérhető termékekkel',
+      'Tap banner `×` → banner fade out 250ms',
+    ],
+    states: [
+      { tag: 'default', label: '3+ elérhető termék, 1+ nem elérhető, progress bar látható' },
+      { tag: 'only-unavailable-removed', label: 'User eltávolította az unavailable-t → csak elérhető termékek maradnak (lásd `Üres kosár → betöltés` state)' },
+      { tag: 'undo-active', label: '5s window aktív — toast látható Undo gombbal' },
+      { tag: 'empty-after-remove', label: 'Ha user mindent eltávolít → üres kosár view (külön screen)' },
+    ],
+    edgeCases: [
+      'Ha Undo lejár és user visszakoppint → row nem tér vissza (non-destructive UX, de a toast elhalványul)',
+      'Ha a `Hasonló termékek` endpoint 0 eredményt ad → navigate `/category/:parentCategory` fallback',
+      'Ha user qty = 0-ra csökkenti → ugyanaz a remove toast + undo viselkedés',
+      'Árváltozás `loadedMsg` után → subtle tag "Ár módosult" a sorokon (másik ticket: DH-124)',
+      'Progress bar: az unavailable termékek NEM számítanak bele',
+    ],
+  },
+};
+
+function renderDocBlock(viewKey) {
+  const doc = REORDER_DOCS[viewKey];
+  if (!doc) return '';
+  const statesHtml = doc.states.map(s =>
+    `<li><span class="doc-state-tag ${s.tag === 'error' || s.tag === 'err' ? 'err' : s.tag === 'warn' || s.tag === 'partial-unavailable' || s.tag === 'all-unavailable' || s.tag === 'banner-dismissed' ? 'warn' : s.tag === 'default' || s.tag === 'ok' ? 'ok' : 'info'}">${s.tag}</span>${s.label}</li>`
+  ).join('');
+  const interactionsHtml = doc.interactions.map(i => `<li>${i}</li>`).join('');
+  const edgesHtml = doc.edgeCases.map(e => `<li>${e}</li>`).join('');
+
+  return `
+    <div class="doc-block" data-doc-view="${viewKey}">
+      <button class="doc-trigger" data-doc-toggle>
+        <span class="doc-trigger-left">
+          <span class="doc-trigger-chev">▶</span>
+          <span class="doc-trigger-title">📄 Dokumentáció — ${doc.title}</span>
+        </span>
+        <span class="doc-trigger-right">
+          <a class="doc-ticket" href="#${doc.ticket}" onclick="event.stopPropagation()">${doc.ticket}</a>
+          <span class="doc-copy-btn" data-doc-copy="${viewKey}">📋 Copy MD</span>
+        </span>
+      </button>
+      <div class="doc-content">
+        <div class="doc-section">
+          <h4>// Leírás / cél</h4>
+          <p>${doc.description}</p>
+        </div>
+        <div class="doc-section">
+          <h4>// Interakciók / események</h4>
+          <ul>${interactionsHtml}</ul>
+        </div>
+        <div class="doc-section">
+          <h4>// State-ek</h4>
+          <ul class="doc-state-list">${statesHtml}</ul>
+        </div>
+        <div class="doc-section">
+          <h4>// Edge case-ek</h4>
+          <ul>${edgesHtml}</ul>
+        </div>
+      </div>
+    </div>`;
+}
+
+// Build markdown version of a doc block for clipboard
+function docToMarkdown(viewKey) {
+  const doc = REORDER_DOCS[viewKey];
+  if (!doc) return '';
+  const lines = [];
+  lines.push(`## [${doc.ticket}] ${doc.title}`);
+  lines.push('');
+  lines.push(`**Leírás / cél**`);
+  lines.push('');
+  lines.push(doc.description);
+  lines.push('');
+  lines.push(`**Interakciók / események**`);
+  lines.push('');
+  doc.interactions.forEach(i => lines.push(`- ${i.replace(/<[^>]+>/g, '')}`));
+  lines.push('');
+  lines.push(`**State-ek**`);
+  lines.push('');
+  doc.states.forEach(s => lines.push(`- \`${s.tag}\` — ${s.label}`));
+  lines.push('');
+  lines.push(`**Edge case-ek**`);
+  lines.push('');
+  doc.edgeCases.forEach(e => lines.push(`- ${e}`));
+  lines.push('');
+  return lines.join('\n');
+}
+
+// =====================================================
+// C1 VARIANT — Active order banner (in-progress orders)
+// 4 state flavors: confirmed, preparing, in_transit, arriving_soon
+// =====================================================
+const ACTIVE_ORDER_STATES = {
+  confirmed: {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>',
+    status: 'Megerősítve',
+    title: 'Csomagolás hamarosan indul',
+    sub: 'Megerősítve <strong>ma 9:12</strong>-kor · Csomagolás várhatóan <strong>holnap 8h</strong> után',
+  },
+  preparing: {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
+    status: 'Csomagolás alatt',
+    title: 'A rendelésed most készül',
+    sub: 'Csomagolás megkezdve <strong>10:48</strong>-kor · Indulás várható <strong>~2 óra múlva</strong>',
+  },
+  in_transit: {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M5 18H3c-.6 0-1-.4-1-1V7c0-.6.4-1 1-1h10c.6 0 1 .4 1 1v11"/><path d="M14 9h4l4 4v4c0 .6-.4 1-1 1h-2"/><circle cx="7" cy="18" r="2"/><circle cx="17" cy="18" r="2"/></svg>',
+    status: 'Szállítás alatt',
+    title: 'Úton van hozzád',
+    sub: 'Elindult <strong>13:20</strong>-kor · Érkezés várható <strong>ma 15–17h</strong> között',
+  },
+  arriving_soon: {
+    icon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+    status: 'Hamarosan érkezik',
+    title: 'A futár a közelben',
+    sub: 'Érkezés várható <strong>~30 perc múlva</strong> · Kérjük készülj fel a csomag átvételére',
+    pulse: true,
+  },
+};
+
+function renderActiveOrderBanner(state, orderId) {
+  const s = ACTIVE_ORDER_STATES[state];
+  if (!s) return '';
+  return `
+    <div class="active-order ${state}" role="button" tabindex="0" data-active-order="${orderId}">
+      <div class="ao-head">
+        <span class="ao-icon">${s.icon}</span>
+        <span class="ao-status">${s.status}${s.pulse ? '<span class="ao-pulse" aria-hidden="true"></span>' : ''}</span>
+      </div>
+      <div class="ao-title">${s.title}</div>
+      <div class="ao-sub">${s.sub}</div>
+      <div class="ao-footer">
+        <span class="ao-orderid">DEAK-ORD-${orderId}</span>
+        <span class="ao-track">
+          Követés
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </span>
+      </div>
+    </div>`;
+}
+
+function renderC1Cycler(current) {
+  const states = ['confirmed', 'preparing', 'in_transit', 'arriving_soon'];
+  return `
+    <div class="c1-cycler">
+      <span class="c1-cycler-label">Állapot:</span>
+      ${states.map(s =>
+        `<button data-c1-state="${s}" class="${s === current ? 'active' : ''}">${s}</button>`
+      ).join('')}
+    </div>`;
+}
+
+function renderReorder(view) {
+  const el = document.getElementById('reorder-phones');
+
+
+// =====================================================
+// VARIANT D — "Buy it again" product grid
+// Product-centric, not order-centric. Frequency badge.
+// =====================================================
+const BUY_AGAIN = [
+  { e: '🌭', n: 'Házikolbász', price: 45, freq: 8, size: '500g' },
+  { e: '🥓', n: 'Füstölt szalonna', price: 38, freq: 6, size: '400g' },
+  { e: '🥩', n: 'Abált szalonna', price: 42, freq: 5, size: '350g' },
+  { e: '🍖', n: 'Karaj', price: 65, freq: 4, size: '1 kg' },
+  { e: '🍗', n: 'Csirkecomb', price: 32, freq: 4, size: '800g' },
+  { e: '🥩', n: 'Darált marha', price: 48, freq: 3, size: '500g' },
+];
+function productTile(p) {
+  return `<div class="pt-card">
+    <div class="pt-img">${p.e}</div>
+    <div class="pt-meta">
+      <div class="pt-freq">${p.freq}× vetted</div>
+      <div class="pt-name">${p.n}</div>
+      <div class="pt-size">${p.size}</div>
+      <div class="pt-bottom">
+        <span class="pt-price">${p.price} RON</span>
+        <button class="pt-add" aria-label="Kosárba">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5v14"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>`;
+}
+
+// =====================================================
+// VARIANT E — Smart bundle cards
+// Algorithm-detected frequent combos as single-tap reorders.
+// =====================================================
+const BUNDLES = [
+  { name: 'Hétvégi grillcsomag', items: ['Házikolbász', 'Füst. szalonna', 'Karaj'], count: 3, price: 148, savings: 12, confidence: 92 },
+  { name: 'Heti alapok', items: ['Darált marha', 'Csirkecomb', 'Abált szalonna', '+1'], count: 4, price: 185, savings: 16, confidence: 87 },
+];
+function bundleCard(b, highlight) {
+  return `<div class="bundle-card ${highlight ? 'highlight' : ''}">
+    <div class="bundle-head">
+      <div class="bundle-ai-pill"><svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.9 5.8a2 2 0 0 1-1.287 1.288L3 12l5.8 1.9a2 2 0 0 1 1.288 1.287L12 21l1.9-5.8a2 2 0 0 1 1.287-1.288L21 12l-5.8-1.9a2 2 0 0 1-1.288-1.287Z"/></svg>Gyakran együtt rendeled</div>
+      <span class="bundle-confidence">${b.confidence}%</span>
+    </div>
+    <h4 class="bundle-name">${b.name}</h4>
+    <div class="bundle-items">
+      ${b.items.map(i => `<span class="bundle-item">${i}</span>`).join('')}
+    </div>
+    <div class="bundle-footer">
+      <div>
+        <div class="bundle-price">${b.price} RON</div>
+        <div class="bundle-saving">-${b.savings} RON csomagban</div>
+      </div>
+      <button class="bundle-add">
+        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+        Mind kosárba
+      </button>
+    </div>
+  </div>`;
+}
+
+// =====================================================
+// VARIANT F — Chat-style conversational timeline
+// Orders feel like messages in a conversation.
+// =====================================================
+function chatBubble(o) {
+  const chips = (PRODUCT_CHIPS[o.id] || []).slice(0, 3);
+  return `<div class="chat-bubble">
+    <div class="chat-meta">Szállítva · ${formatDate(o.date)}</div>
+    <div class="chat-body">
+      <div class="chat-text">Rendelésed megérkezett · <strong>${o.amount} RON</strong></div>
+      <div class="chat-chips-scroll">
+        ${chips.map(c => `<span class="chat-chip"><span>${c.e}</span>${c.n}</span>`).join('')}
+      </div>
+    </div>
+    <button class="chat-reply">
+      <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      Újrarendelem
+    </button>
+  </div>`;
+}
+
+// =====================================================
+// VARIANT G — Calendar heatmap + top 3
+// Habit-tracker style density view.
+// =====================================================
+function calendarHeatmap() {
+  // Static demo: 30 days, some with orders (intensity 0-3)
+  const days = [0,0,1,0,2,0,0, 0,1,0,0,0,2,0, 1,0,0,3,0,0,1, 0,0,2,0,0,0,1, 0,0,1,0];
+  const cells = days.map((d, i) => `<span class="cal-cell lv-${d}" title="${d} rendelés">${i+1 === 18 ? '<span class="cal-today"></span>' : ''}</span>`).join('');
+  return `<div class="cal-card">
+    <div class="cal-head">
+      <span class="cal-month">Április · rendelési ritmus</span>
+      <span class="cal-stat">12 rendelés 30 nap alatt</span>
+    </div>
+    <div class="cal-grid">${cells}</div>
+    <div class="cal-legend">
+      <span>Ritkábban</span>
+      <span class="cal-cell lv-0"></span>
+      <span class="cal-cell lv-1"></span>
+      <span class="cal-cell lv-2"></span>
+      <span class="cal-cell lv-3"></span>
+      <span>Gyakrabban</span>
+    </div>
+  </div>`;
+}
+function topOrderPill(o, rank) {
+  const products = ORDER_PRODUCTS[o.id] || '';
+  return `<div class="top-pill">
+    <div class="top-rank">#${rank}</div>
+    <div class="top-body">
+      <div class="top-name">${products.split(',')[0]} + ${o.items - 1} más</div>
+      <div class="top-meta">${o.amount} RON · ${rank === 1 ? '5× rendelted' : rank === 2 ? '3×' : '2×'}</div>
+    </div>
+    <button class="top-reorder">↻</button>
+  </div>`;
+}
+
+// =====================================================
+// VARIANT H — Hero "Order Again" + horizontal scroll
+// Doordash/Chipotle pattern: one dominant CTA, rest scrolls.
+// =====================================================
+function heroOrderCard(o) {
+  const chips = (PRODUCT_CHIPS[o.id] || []).slice(0, 3);
+  return `<div class="hero-card">
+    <div class="hero-label">LEGUTÓBBI · ${formatDate(o.date)}</div>
+    <div class="hero-chips">
+      ${chips.map(c => `<span class="hero-chip">${c.e}</span>`).join('')}
+    </div>
+    <div class="hero-summary">${o.items} termék · ${o.amount} RON</div>
+    <button class="hero-cta">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
+      Ugyanezt még egyszer
+    </button>
+  </div>`;
+}
+function heroScrollCard(o) {
+  const chips = (PRODUCT_CHIPS[o.id] || []).slice(0, 2);
+  return `<div class="hscroll-card">
+    <div class="hscroll-chips">${chips.map(c => `<span>${c.e}</span>`).join('')}</div>
+    <div class="hscroll-date">${formatDate(o.date)}</div>
+    <div class="hscroll-price">${o.amount} RON</div>
+    <button class="hscroll-btn">↻</button>
+  </div>`;
+}
+
+
+  // Header label reused
+  const phoneHeader = (title) => `<div class="phone-header"><span>${title}</span><span>🇭🇺</span></div>`;
+
+  // Success msg with SVG check + close
+  const loadedMsg = (orderId, date) => `
+    <div class="loaded-msg">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+      <span>Betöltve: <strong>DEAK-ORD-${orderId}</strong> · ${date}</span>
+      <button class="loaded-msg-close" aria-label="Bezár">×</button>
+    </div>`;
+
+  if (view === 'list') {
+    // v4: Status-badge removed (header communicates "Kiszállított rendelések"),
+    //     card-highlight removed (spec: minden kártya egyenrangú),
+    //     date in Hungarian format, "+1" dimmed
+    const reorderOrders = [
+      { id: '00042', date: '3 ápr.',  items: 3, amount: 110, saving: 10 },
+      { id: '00038', date: '28 márc.', items: 2, amount: 85,  saving: 0 },
+      { id: '00035', date: '14 márc.', items: 5, amount: 310, saving: 16 },
+      { id: '00028', date: '1 márc.',  items: 10, amount: 640, saving: 32 },
+    ];
+    window.__reorderOrders = reorderOrders;
+    el.innerHTML = `
+      <!-- CHOSEN VARIANT: C1 — Aktív rendelés sáv + kedvencek + timeline -->
+      <div class="phone-wrap phone-wrap--chosen">
+        <span class="phone-variant-label new"><span class="dot"></span>C1 · Aktív + kedvencek + timeline <span class="tag tag-chosen">választott</span></span>
+        ${renderC1Cycler(window.__c1State || 'in_transit')}
+        <div class="phone">
+          ${phoneHeader('Kiszállított rendelések')}
+          <div class="phone-body" id="chosen-phone-body">
+            ${renderActiveOrderBanner(window.__c1State || 'in_transit', '00045')}
+            ${renderFavSection()}
+            <div class="past-orders-title">Korábbi rendelések</div>
+            ${reorderOrders.map((o, i) => orderTimelineChosen(o, { first: i === 0, last: i === reorderOrders.length - 1 })).join('')}
+          </div>
+        </div>
+        <div class="fav-bar empty" id="fav-bar" style="margin-top:12px;"></div>
+        <div class="chosen-hint">
+          <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 12 2 2 4-4"/><circle cx="12" cy="12" r="10"/></svg>
+          Aktív rendelés <strong>kiemelve a tetején</strong> · <strong>♥ Kedvencbe</strong> gomb a gyors eléréshez
+        </div>
+      </div>
+
+      <!-- SEPARATOR -->
+      <div class="variants-separator">
+        <hr>
+        <span class="variants-separator-label">Korábbi variánsok <span class="tag">archívum</span></span>
+      </div>
+
+      <!-- ARCHIVED VARIANTS -->
+      <div class="phone-wrap">
+        <span class="phone-variant-label alt"><span class="dot"></span>C · Timeline + kedvencek (aktív sáv nélkül)</span>
+        <div class="phone">
+          ${phoneHeader('Kiszállított rendelések')}
+          <div class="phone-body">
+            ${reorderOrders.map((o, i) => orderTimelineChosen(o, { first: i === 0, last: i === reorderOrders.length - 1 })).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="phone-wrap">
+        <span class="phone-variant-label alt"><span class="dot"></span>B2 · Kompakt sor (alsó gomb)</span>
+        <div class="phone">
+          ${phoneHeader('Kiszállított rendelések')}
+          <div class="phone-body">
+            ${reorderOrders.map(o => orderRowCompactBottomBtn(o)).join('')}
+            ${reorderOrders.map(o => orderRowCompactBottomBtn({...o, id: '00' + (30 - parseInt(o.id.slice(3))), date: o.date})).join('')}
+          </div>
+        </div>
+      </div>
+
+      <div class="phone-wrap">
+        <span class="phone-variant-label d"><span class="dot"></span>D · Számla-stílus</span>
+        <div class="phone">
+          ${phoneHeader('Kiszállított rendelések')}
+          <div class="phone-body">
+            ${reorderOrders.map(o => orderReceipt(o)).join('')}
+          </div>
+        </div>
+      </div>`;
+    renderFavBar();
+  } else if (view === 'empty-load') {
+    // New scenario: empty cart → direct load, no modal needed
+    el.innerHTML = `
+      <div class="phone">
+        ${phoneHeader('Kosaram')}
+        <div class="phone-body">
+          ${loadedMsg('00042', '2026. ápr. 3.')}
+          ${cartItem('Deák háziKolbász', 45, 1, '🌭')}
+          ${cartItem('Füstölt Szalonna', 42, 0.5, '🥓')}
+          ${cartItem('Abált Szalonna', 35, 1, '🥩')}
+          <div style="margin-top:12px">${progressBar(110)}${decisionConfidence(110)}</div>
+          <div style="margin-top:16px"><button class="btn btn-primary">Tovább a fizetéshez</button></div>
+        </div>
+      </div>`;
+  } else if (view === 'merge') {
+    // v4: Dark overlay fills phone, richer context (current cart count + partial-availability warning),
+    //     destructive hint under "Kosár cseréje"
+    el.innerHTML = `
+      <div class="phone phone--tall">
+        ${phoneHeader('Kosaram')}
+        <div class="phone-body">
+          <!-- peek of existing cart behind modal -->
+          ${cartItem('Csirkemell filé', 48, 0.8, '🍗')}
+          ${cartItem('Házi tojás', 25, 1, '🥚')}
+
+          <div class="modal-overlay">
+            <div class="modal-inner">
+              <h3>Hozzáadás vagy csere?</h3>
+              <p style="margin-bottom: 16px;"><strong>DEAK-ORD-00042</strong> · 2026. ápr. 3.</p>
+
+              <div class="mm-section">
+                <div class="mm-section-head">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+                  <span>Jelenlegi kosarad</span>
+                  <span class="mm-count">· 2 termék</span>
+                </div>
+                <ul class="mm-list">
+                  <li class="mm-row"><span class="mm-name">Csirkemell filé</span><span class="mm-dots"></span><span class="mm-amount">0,8 kg</span></li>
+                  <li class="mm-row"><span class="mm-name">Házi tojás</span><span class="mm-dots"></span><span class="mm-amount">1 db</span></li>
+                </ul>
+              </div>
+
+              <div class="mm-section">
+                <div class="mm-section-head">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+                  <span>Új rendelés</span>
+                  <span class="mm-count">· 3 termék</span>
+                </div>
+                <ul class="mm-list">
+                  <li class="mm-row"><span class="mm-name">Deák háziKolbász</span><span class="mm-dots"></span><span class="mm-amount">1 kg</span></li>
+                  <li class="mm-row"><span class="mm-name">Füstölt szalonna</span><span class="mm-dots"></span><span class="mm-amount">0,5 kg</span></li>
+                  <li class="mm-row unavailable"><span class="mm-name">Füstölt csülök</span><span class="mm-dots"></span><span class="mm-amount">nem elérhető</span></li>
+                </ul>
+              </div>
+
+              <button class="btn btn-primary">
+                Hozzáadás a kosárhoz
+                <span class="mm-cta-meta">+2 elérhető termék</span>
+              </button>
+              <button class="btn btn-secondary">
+                Kosár cseréje
+                <span class="mm-cta-meta">2 jelenlegi termék elveszik</span>
+              </button>
+              <button class="btn btn-ghost">Mégse</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  } else {
+    // loaded: SVG check, equal-size ban image, larger "Hasonló termékek" chip, ×-remove on unavailable
+    el.innerHTML = `
+      <div class="phone">
+        ${phoneHeader('Kosaram')}
+        <div class="phone-body">
+          ${loadedMsg('00042', '2026. ápr. 3.')}
+          ${cartItem('Deák háziKolbász', 45, 1, '🌭')}
+          ${cartItem('Füstölt Szalonna', 42, 0.5, '🥓')}
+          ${cartItem('Abált Szalonna', 35, 1, '🥩')}
+
+          <div class="cart-item unavailable">
+            <div class="cart-item-img">
+              <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#BBB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M4.929 4.929 19.07 19.071"/></svg>
+            </div>
+            <div class="cart-item-info">
+              <div class="cart-item-name">Füstölt Csülök</div>
+              <span class="badge badge-warn" style="margin-top:4px;display:inline-block">Nem elérhető</span>
+              <div>
+                <button class="similar-chip">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3h4v4"/><path d="m21 3-7 7"/><path d="M8 21H3v-5"/><path d="m3 21 7-7"/></svg>
+                  Hasonló termékek
+                </button>
+              </div>
+            </div>
+            <button class="unavailable-remove" aria-label="Eltávolítás">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>
+
+          <div style="margin-top:12px">${progressBar(110)}${decisionConfidence(110)}</div>
+          <div style="margin-top:16px"><button class="btn btn-primary">Tovább a fizetéshez</button></div>
+        </div>
+      </div>`;
+  }
+
+  // Wire up close button on loaded-msg (for demo: fade out)
+  el.querySelectorAll('.loaded-msg-close').forEach(b => b.addEventListener('click', (e) => {
+    const msg = e.target.closest('.loaded-msg');
+    msg.style.transition = 'opacity 0.25s, height 0.25s, margin 0.25s, padding 0.25s';
+    msg.style.opacity = '0';
+    setTimeout(() => msg.remove(), 260);
+  }));
+
+  // C1 state cycler — swap active-order banner + cycler active state
+  el.querySelectorAll('[data-c1-state]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const state = btn.getAttribute('data-c1-state');
+      window.__c1State = state;
+      // Re-render just the banner (inside chosen-phone-body)
+      const body = document.getElementById('chosen-phone-body');
+      if (!body) return;
+      const oldBanner = body.querySelector('.active-order');
+      if (oldBanner) {
+        oldBanner.outerHTML = renderActiveOrderBanner(state, '00045');
+      }
+      // Update cycler active state
+      btn.closest('.c1-cycler').querySelectorAll('[data-c1-state]').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Append per-scenario developer documentation block
+  el.insertAdjacentHTML('beforeend', renderDocBlock(view));
+
+  // Doc toggle + copy-to-clipboard wiring (event delegation on parent)
+  el.querySelectorAll('.doc-trigger[data-doc-toggle]').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      if (e.target.closest('[data-doc-copy]') || e.target.closest('.doc-ticket')) return;
+      btn.closest('.doc-block').classList.toggle('open');
+    });
+  });
+  el.querySelectorAll('[data-doc-copy]').forEach(btn => {
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      const key = btn.getAttribute('data-doc-copy');
+      const md = docToMarkdown(key);
+      try {
+        await navigator.clipboard.writeText(md);
+      } catch (err) {
+        // Fallback: textarea select
+        const ta = document.createElement('textarea');
+        ta.value = md; document.body.appendChild(ta); ta.select();
+        document.execCommand('copy'); ta.remove();
+      }
+      btn.classList.add('copied');
+      const prev = btn.textContent;
+      btn.textContent = '✓ Másolva';
+      setTimeout(() => { btn.classList.remove('copied'); btn.textContent = prev; }, 1800);
+    });
+  });
+}
+
+document.querySelectorAll('#reorder-scenarios .scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#reorder-scenarios .scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderReorder(btn.dataset.view);
+    // Scroll the phone-body to top so modal / content is visible
+    const pb = document.querySelector('#reorder-phones .phone-body');
+    if (pb) pb.scrollTop = 0;
+  });
+});
+renderReorder('list');
+
+// ============================================================
+// FAVORITES — Click handlers + name-input modal
+// ============================================================
+function openFavModal(order) {
+  // Remove any existing fav modal
+  const existing = document.querySelector('#chosen-phone-body .modal-overlay[data-fav-modal]');
+  if (existing) existing.remove();
+
+  const chips = (PRODUCT_CHIPS[order.id] || []).map(c => c.n);
+  const suggestions = [];
+  if (chips.length > 0) suggestions.push(chips[0] + ' csomag');
+  if (order.items >= 5) suggestions.push('Heti bevásárlás');
+  if (order.amount >= 300) suggestions.push('Nagy családi');
+  suggestions.push('Hétvégi grill');
+
+  const phoneBody = document.getElementById('chosen-phone-body');
+  if (!phoneBody) return;
+  const modal = document.createElement('div');
+  modal.className = 'modal-overlay';
+  modal.setAttribute('data-fav-modal', '');
+  modal.innerHTML = `<div class="modal-inner">
+    <h3>Mentsük el kedvencbe</h3>
+    <p>Adj nevet ennek a rendelésnek — <strong>${order.amount} RON · ${order.items} termék</strong></p>
+    <input type="text" class="fav-modal-input" id="fav-modal-input" placeholder="pl. Hétvégi grill" maxlength="28" autocomplete="off">
+    <div class="fav-modal-suggest">
+      ${suggestions.map(s => `<span class="fav-modal-suggest-chip" data-suggest="${s}">${s}</span>`).join('')}
+    </div>
+    <button class="btn btn-primary" data-fav-save="${order.id}" disabled>Mentés</button>
+    <button class="btn btn-ghost" data-fav-cancel>Mégse</button>
+  </div>`;
+  phoneBody.appendChild(modal);
+
+  const input = modal.querySelector('#fav-modal-input');
+  const saveBtn = modal.querySelector('[data-fav-save]');
+  setTimeout(() => input.focus(), 50);
+  input.addEventListener('input', () => {
+    saveBtn.disabled = input.value.trim().length === 0;
+  });
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && !saveBtn.disabled) saveBtn.click();
+    if (e.key === 'Escape') closeFavModal();
+  });
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeFavModal();
+  });
+}
+function closeFavModal() {
+  const modal = document.querySelector('#chosen-phone-body .modal-overlay[data-fav-modal]');
+  if (modal) modal.remove();
+}
+
+// Cart item remove — toast + undo pattern (non-destructive)
+function openCartRemoveModal(btn) {
+  const row = btn.closest('.cart-item');
+  if (!row) return;
+  const phoneBody = row.closest('.phone-body');
+  if (!phoneBody) return;
+  const name = decodeURIComponent(btn.getAttribute('data-cart-remove'));
+
+  // Capture row placeholder data for undo
+  const prevHTML = row.outerHTML;
+  const prevIndex = [...phoneBody.children].indexOf(row);
+
+  // Animate row out (collapse height + fade)
+  row.style.transition = 'opacity 0.22s, transform 0.22s, max-height 0.28s, margin 0.28s, padding 0.28s, border-width 0.28s';
+  row.style.maxHeight = row.offsetHeight + 'px';
+  requestAnimationFrame(() => {
+    row.style.opacity = '0';
+    row.style.transform = 'translateX(18px)';
+    row.style.maxHeight = '0';
+    row.style.marginTop = '0';
+    row.style.marginBottom = '0';
+    row.style.paddingTop = '0';
+    row.style.paddingBottom = '0';
+    row.style.borderWidth = '0';
+  });
+  setTimeout(() => row.remove(), 300);
+
+  showCartUndoToast(phoneBody, name, () => {
+    // Undo: re-insert at original position
+    const tmp = document.createElement('div');
+    tmp.innerHTML = prevHTML.trim();
+    const restored = tmp.firstChild;
+    // Reset any inline collapse styles
+    restored.style.cssText = '';
+    const children = [...phoneBody.children];
+    if (prevIndex >= children.length) phoneBody.appendChild(restored);
+    else phoneBody.insertBefore(restored, children[prevIndex]);
+    // Slide-in effect
+    restored.style.opacity = '0';
+    restored.style.transform = 'translateX(-10px)';
+    restored.style.transition = 'opacity 0.2s, transform 0.2s';
+    requestAnimationFrame(() => {
+      restored.style.opacity = '';
+      restored.style.transform = '';
+    });
+  });
+}
+
+function showCartUndoToast(phoneBody, name, onUndo) {
+  // Remove any existing cart-undo toast in this phone
+  phoneBody.querySelectorAll('.cart-undo-toast').forEach(t => t.remove());
+
+  const toast = document.createElement('div');
+  toast.className = 'cart-undo-toast';
+  toast.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+    <span class="cart-undo-msg"><strong>${name}</strong> eltávolítva</span>
+    <button class="cart-undo-btn" type="button">Visszavonás</button>
+    <div class="cart-undo-progress"></div>
+  `;
+  phoneBody.appendChild(toast);
+  // Fade in
+  requestAnimationFrame(() => toast.classList.add('show'));
+
+  let undone = false;
+  const undoBtn = toast.querySelector('.cart-undo-btn');
+  undoBtn.addEventListener('click', () => {
+    if (undone) return;
+    undone = true;
+    onUndo();
+    dismissToast();
+  });
+
+  const timer = setTimeout(() => {
+    if (!undone) dismissToast();
+  }, 4200);
+
+  function dismissToast() {
+    clearTimeout(timer);
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 250);
+  }
+}
+function closeCartRemoveModal() {
+  document.querySelectorAll('.cart-undo-toast').forEach(t => t.remove());
+}
+
+document.addEventListener('click', (e) => {
+  // Cart item remove (× button) — animate out + toast with undo
+  const cartRemBtn = e.target.closest('[data-cart-remove]');
+  if (cartRemBtn) {
+    openCartRemoveModal(cartRemBtn);
+    return;
+  }
+  // Suggestion chip in modal
+  const suggest = e.target.closest('[data-suggest]');
+  if (suggest) {
+    const input = document.getElementById('fav-modal-input');
+    if (input) {
+      input.value = suggest.getAttribute('data-suggest');
+      input.dispatchEvent(new Event('input'));
+      input.focus();
+    }
+    return;
+  }
+  // Modal cancel
+  if (e.target.closest('[data-fav-cancel]')) { closeFavModal(); return; }
+  // Modal save
+  const saveBtn = e.target.closest('[data-fav-save]');
+  if (saveBtn) {
+    const id = saveBtn.getAttribute('data-fav-save');
+    const input = document.getElementById('fav-modal-input');
+    const name = (input && input.value.trim()) || ('Rendelés #' + id);
+    const order = (window.__reorderOrders || []).find(o => o.id === id);
+    if (order) {
+      window.__favOrders.set(id, { name, order });
+      showFavToast('Mentve: ' + name, true);
+      closeFavModal();
+      rerenderChosen();
+    }
+    return;
+  }
+  // Favorite heart toggle
+  const favBtn = e.target.closest('[data-fav]');
+  if (favBtn) {
+    const id = favBtn.getAttribute('data-fav');
+    if (window.__favOrders.has(id)) {
+      window.__favOrders.delete(id);
+      showFavToast('Eltávolítva a kedvencekből', false);
+      rerenderChosen();
+    } else {
+      const order = (window.__reorderOrders || []).find(o => o.id === id);
+      if (order) openFavModal(order);
+    }
+    return;
+  }
+  // Remove from favorites section (x button)
+  const remBtn = e.target.closest('[data-fav-remove]');
+  if (remBtn) {
+    const id = remBtn.getAttribute('data-fav-remove');
+    window.__favOrders.delete(id);
+    showFavToast('Eltávolítva a kedvencekből', false);
+    rerenderChosen();
+    return;
+  }
+  // Reorder primary CTA
+  const reBtn = e.target.closest('[data-reorder]');
+  if (reBtn) {
+    const id = reBtn.getAttribute('data-reorder');
+    showFavToast('Kosárba töltve: #' + id, true);
+    return;
+  }
+});
+
+// ============================================================
+// FAMILY BUNDLES
+// ============================================================
+const bundles = [
+  { name: 'Páros csomag', size: '2 fős · ~2-3 kg', price: 150, items: 4, icon: '👫' },
+  { name: 'Családi csomag', size: '4 fős · ~4-5 kg', price: 250, items: 6, icon: '👨‍👩‍👧‍👦' },
+  { name: 'Nagy családi', size: '6 fős · ~6-8 kg', price: 350, items: 8, icon: '🏠' },
+  { name: 'Grillezős csomag', size: '4-6 fős · grill', price: 180, items: 5, icon: '_flame' },
+];
+
+function bundleSaving(price) {
+  return price >= 300 ? 10 + Math.round(price * 0.02) : price >= 150 ? 10 : 0;
+}
+
+function renderBundles(view) {
+  const el = document.getElementById('bundle-phones');
+
+  if (view === 'grid') {
+    // v3: Icon badges with text labels underneath
+    let cards = bundles.map(b => {
+      const sv = bundleSaving(b.price);
+      return `
+        <div class="bundle-card">
+          ${sv > 0 ? `<div class="bundle-saving"><span class="bundle-saving-tag">-${sv} RON</span></div>` : ''}
+          <div class="bundle-icon">${b.icon === '_flame' ? '<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#E65100" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3q1 4 4 6.5t3 5.5a1 1 0 0 1-14 0 5 5 0 0 1 1-3 1 1 0 0 0 5 0c0-2-1.5-3-1.5-5q0-2 2.5-4"/></svg>' : b.icon}</div>
+          <div class="bundle-name">${b.name}</div>
+          <div class="bundle-meta">${b.size} · ${b.items} termék</div>
+          <div class="bundle-price">~${b.price} RON</div>
+          <div class="icon-badges">
+            ${b.price >= 150 ? `<div class="icon-badge-item"><div class="icon-badge icon-badge-truck"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg></div><span class="ib-label">Ingyenes</span></div>` : ''}
+            ${b.price >= 300 ? `<div class="icon-badge-item"><div class="icon-badge-pct"><span>2%</span></div><span class="ib-label">Kedvezm.</span></div>` : ''}
+          </div>
+        </div>`;
+    }).join('');
+
+    el.innerHTML = `
+      <div class="phone">
+        <div class="phone-header"><span>Termékek</span><span>🇭🇺</span></div>
+        <div class="phone-body">
+          <div style="margin:12px 0">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+              <div style="font-size:16px;font-weight:700;display:flex;align-items:center;gap:6px"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--text)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/><path d="m7.5 4.27 9 5.15"/></svg>Csomagok</div>
+              <span style="font-size:12px;color:var(--primary-light)">Válassz kényelmes csomagot</span>
+            </div>
+            <div class="bundle-grid">${cards}</div>
+          </div>
+          <div class="category-filters">
+            <span class="cat-pill active">Összes</span><span class="cat-pill">Felvágott</span><span class="cat-pill">Friss</span><span class="cat-pill">Füstölt</span>
+          </div>
+          <div class="placeholder-card"></div><div class="placeholder-card"></div>
+        </div>
+      </div>`;
+  } else if (view === 'detail') {
+    const b = bundles[1]; // Családi
+    const sv = bundleSaving(b.price);
+    const prodList = ['Csirkecomb 1kg', 'Sertéskaraj 800g', 'Deák háziKolbász 600g', 'Darált hús 800g', 'Szalonna 400g'].map((p, i, arr) => {
+      const parts = p.split(' ');
+      const wt = parts.pop();
+      const nm = parts.join(' ');
+      return `<div style="display:flex;justify-content:space-between;padding:6px 0;${i<arr.length-1?'border-bottom:1px solid var(--border);':''}font-size:13px"><span>${nm}</span><span style="color:var(--text2)">${wt}</span></div>`;
+    }).join('');
+
+    // v3: icon badges with labels in detail view + price explanation
+    el.innerHTML = `
+      <div class="phone">
+        <div class="phone-header"><span>← ${b.name}</span><span>🇭🇺</span></div>
+        <div class="phone-body">
+          <div style="text-align:center;padding:20px 0"><div style="font-size:64px">${b.icon}</div></div>
+          <div class="card">
+            <div style="font-size:20px;font-weight:700;margin-bottom:4px">${b.name}</div>
+            <div style="font-size:13px;color:var(--text2);margin-bottom:12px">${b.size}</div>
+            <div class="icon-badges" style="margin-bottom:16px">
+              <div class="icon-badge-item"><div class="icon-badge icon-badge-truck"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg></div><span class="ib-label">Ingyenes</span></div>
+              ${b.price >= 300 ? '<div class="icon-badge-item"><div class="icon-badge-pct"><span>2%</span></div><span class="ib-label">Kedvezm.</span></div>' : ''}
+            </div>
+            <div style="font-size:14px;font-weight:600;margin-bottom:8px">Tartalom:</div>
+            ${prodList}
+          </div>
+          <div class="card" style="text-align:center">
+            <div style="font-size:12px;color:var(--text2)">Becsült ár</div>
+            <div style="font-size:24px;font-weight:800;color:var(--primary)">~${b.price} RON</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px;font-style:italic">A végső ár a mérés alapján változhat</div>
+            <div style="font-size:12px;color:var(--green);margin-top:8px;display:flex;align-items:center;gap:4px;justify-content:center"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>${b.price >= 300 ? 'Ingyenes szállítás + 2% kedvezmény' : 'Ingyenes szállítás'}</div>
+          </div>
+          <button class="btn btn-primary">Kosárba teszem</button>
+        </div>
+      </div>`;
+  } else {
+    // Admin — v3: success toast added
+    let adminList = bundles.map(b => `
+      <div class="admin-item">
+        <div>
+          <div style="font-size:14px;font-weight:600">${b.icon} ${b.name}</div>
+          <div style="font-size:11px;color:var(--text2)">${b.items} termék · ~${b.price} RON</div>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <div class="toggle"><div class="toggle-knob"></div></div>
+          <span style="cursor:pointer;display:flex;align-items:center"><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary-light)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg></span>
+        </div>
+      </div>`).join('');
+
+    const formChips = ['Csirkecomb 1kg', 'Sertéskaraj 800g', 'Kolbász 600g', 'Darált hús 800g'].map(p =>
+      `<div class="form-chip"><span>${p}</span><span class="remove">✕</span></div>`
+    ).join('');
+
+    el.innerHTML = `
+      <div class="phone">
+        <div class="phone-header"><span>Admin: Csomagok</span><span>🇭🇺</span></div>
+        <div class="phone-body">
+          <div style="margin:12px 0">
+            <div class="toast" style="display:flex;align-items:center;gap:6px"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg> Csomag sikeresen mentve!</div>
+            ${adminList}
+            <div style="margin-top:16px"><button class="btn btn-secondary">+ Új csomag létrehozása</button></div>
+            <div class="card card-highlight" style="margin-top:16px">
+              <div style="font-size:14px;font-weight:700;margin-bottom:12px">Csomag szerkesztése</div>
+              <div class="form-field"><div class="form-label">Név</div><div class="form-input">Családi csomag</div></div>
+              <div class="form-field"><div class="form-label">Leírás</div><div class="form-input">4 fős, ~4-5 kg vegyes húscsomag</div></div>
+              <div class="form-label">Termékek</div>
+              ${formChips}
+              <div style="margin-top:8px;font-size:12px;color:var(--primary-light);cursor:pointer">+ Termék hozzáadása</div>
+              <div style="margin-top:16px;display:flex;gap:8px">
+                <button class="btn btn-primary" style="flex:1">Mentés</button>
+                <button class="btn btn-secondary" style="flex:1">Deaktiválás</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+}
+
+document.querySelectorAll('#bundle-scenarios .scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#bundle-scenarios .scenario-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    renderBundles(btn.dataset.view);
+  });
+});
+renderBundles('grid');
+
+// ============================================================
+// ORDERS + SAVINGS BADGE
+// ============================================================
+(function() {
+  const orders = [
+    { id: '00042', date: '3 ápr.', items: 3, amount: 110, saving: 10 },
+    { id: '00038', date: '28 márc.', items: 2, amount: 85, saving: 0 },
+    { id: '00035', date: '21 márc.', items: 5, amount: 320, saving: 16 },
+  ];
+  const el = document.getElementById('orders-phone');
+  // v3: Unified orderCard helper — consistent btn-primary, savingsPig badge, SVG icon
+  el.innerHTML = orders.map((o, i) => orderCard(o, i === 0)).join('');
+})();
+</script>
+</body>
+</html>

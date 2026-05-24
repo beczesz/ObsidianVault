@@ -1,0 +1,1 @@
+- [ ] [Introduction to FinOps](https://learn.finops.org/introduction-to-finops)

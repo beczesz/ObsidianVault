@@ -1,0 +1,3 @@
+Benkő Ilona - Benkő Ilona, humánerőforrás szakértő, jelenleg a Zenitech szoftverfejlesztő cég L&D (Learning & Development) vezetője
+
+A kompetencia alapú HR szemlélet képviselője, a felnőttkori tanulás és oktatás elkötelezett gyakorlója. Munkája és közösségi szerepvállalása során arra törekszik, hogy ne csupán népszerűsítse az élethosszig tartó tanulás jelentőségét, hanem gyakorlati módszereket és eszközöket adjon mindazok kezébe, akik a személyes és szervezeti fejlődést fontosnak tartják

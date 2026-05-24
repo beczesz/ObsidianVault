@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Microsite Factory — Marketing Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='3' y='3' width='26' height='26' rx='6' fill='%23faf9f5' stroke='%23D97757' stroke-width='2'/%3E%3Cpath d='M8 21V11M16 21v-6M24 21v-9' stroke='%23D97757' stroke-width='2.5' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg-primary: #faf9f5; --bg-secondary: #F5F4EF; --bg-card: #ffffff;
+    --text-primary: #141413; --text-secondary: #5c5c5a; --text-muted: #8c8c8a;
+    --accent: #D97757; --accent-soft: #fbeee8; --accent-hover: #c4684a;
+    --border: #e5e4df; --border-light: #eeeee9;
+    --shadow: rgba(20,20,19,0.04); --shadow-hover: rgba(20,20,19,0.08);
+    --awareness: #6b8ab5; --lead: #c79a3e; --sales: #5f9c6f;
+    --r: 14px;
+  }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-primary); color: var(--text-primary);
+    line-height: 1.5; padding: 28px clamp(16px, 4vw, 48px) 64px;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1200px; margin: 0 auto; }
+
+  /* Header */
+  header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 28px; }
+  .title-block h1 { font-size: 1.55rem; font-weight: 700; letter-spacing: -0.02em; }
+  .title-block p { color: var(--text-secondary); font-size: 0.92rem; margin-top: 4px; }
+  .title-block .crumb { color: var(--accent); font-weight: 600; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .meta { text-align: right; font-size: 0.78rem; color: var(--text-muted); }
+  .meta button { font: inherit; font-size: 0.74rem; margin-top: 6px; cursor: pointer; background: var(--bg-card); border: 1px solid var(--border); color: var(--text-secondary); padding: 5px 11px; border-radius: 8px; transition: all .15s; }
+  .meta button:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* North star */
+  .northstar { background: linear-gradient(115deg, #2a2622 0%, #3a342d 100%); color: #fff; border-radius: var(--r); padding: 24px 28px; margin-bottom: 26px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+  .northstar .label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); font-weight: 600; }
+  .northstar .metric { font-size: 1.5rem; font-weight: 700; letter-spacing: -0.02em; margin-top: 6px; max-width: 620px; }
+  .northstar .why { font-size: 0.85rem; color: #cfc9c1; margin-top: 8px; max-width: 620px; }
+  .northstar .goal { text-align: center; flex-shrink: 0; }
+  .northstar .goal .num { font-size: 2.6rem; font-weight: 700; color: #fff; line-height: 1; }
+  .northstar .goal .cap { font-size: 0.74rem; color: #cfc9c1; margin-top: 6px; }
+
+  /* Section */
+  section { margin-bottom: 32px; }
+  .sec-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+  .sec-head h2 { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+  .sec-head .hint { font-size: 0.78rem; color: var(--text-muted); }
+
+  /* KPI grid */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(264px, 1fr)); gap: 12px; }
+  .kpi { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r); padding: 16px 16px 14px; box-shadow: 0 1px 2px var(--shadow); }
+  .kpi .top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+  .kpi .name { font-weight: 600; font-size: 0.9rem; }
+  .badge { font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; padding: 3px 7px; border-radius: 999px; white-space: nowrap; }
+  .badge.awareness { background: #eaf0f7; color: var(--awareness); }
+  .badge.lead { background: #f8f0db; color: var(--lead); }
+  .badge.sales { background: #e7f2ea; color: var(--sales); }
+  .kpi .note { font-size: 0.74rem; color: var(--text-muted); margin-top: 6px; min-height: 2.1em; }
+  .kpi .row { display: flex; align-items: baseline; justify-content: space-between; margin-top: 12px; }
+  .kpi .target { font-size: 0.76rem; color: var(--text-secondary); }
+  .kpi .target b { color: var(--text-primary); font-weight: 700; }
+  .kpi .cur { display: flex; align-items: center; gap: 5px; }
+  .kpi .cur input { width: 64px; font: inherit; font-size: 0.84rem; font-weight: 600; text-align: right; padding: 4px 7px; border: 1px solid var(--border); border-radius: 7px; background: var(--bg-secondary); color: var(--accent); }
+  .kpi .cur input:focus { outline: none; border-color: var(--accent); background: #fff; }
+  .kpi .cur span { font-size: 0.72rem; color: var(--text-muted); }
+  .bar { height: 6px; background: var(--border-light); border-radius: 999px; margin-top: 11px; overflow: hidden; }
+  .bar > i { display: block; height: 100%; background: var(--accent); border-radius: 999px; width: 0; transition: width .5s cubic-bezier(.22,1,.36,1); }
+  .cadence-note { font-size: 0.66rem; color: var(--text-muted); margin-top: 7px; text-align: right; }
+
+  /* Funnel */
+  .funnel { display: flex; flex-direction: column; gap: 8px; }
+  .fstage { background: var(--bg-card); border: 1px solid var(--border); border-radius: 11px; padding: 13px 16px; display: flex; align-items: center; gap: 16px; box-shadow: 0 1px 2px var(--shadow); }
+  .fstage .fbar { height: 30px; background: var(--accent-soft); border-radius: 8px; display: flex; align-items: center; padding: 0 12px; font-weight: 700; color: var(--accent-hover); font-size: 0.84rem; min-width: 90px; }
+  .fstage .fmeta { flex: 1; }
+  .fstage .fmeta .s { font-weight: 600; font-size: 0.9rem; }
+  .fstage .fmeta .m { font-size: 0.76rem; color: var(--text-muted); }
+  .fstage .ftarget { font-weight: 700; font-size: 0.9rem; color: var(--text-primary); text-align: right; white-space: nowrap; }
+
+  /* two-col */
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
+  @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+
+  /* pillars */
+  .pillar { margin-bottom: 13px; }
+  .pillar .ph { display: flex; justify-content: space-between; align-items: baseline; font-size: 0.84rem; }
+  .pillar .ph .pn { font-weight: 600; }
+  .pillar .ph .pp { font-weight: 700; color: var(--accent); }
+  .pillar .pbar { height: 8px; background: var(--border-light); border-radius: 999px; margin-top: 5px; overflow: hidden; }
+  .pillar .pbar > i { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), #e8a989); border-radius: 999px; }
+  .pillar .pex { font-size: 0.72rem; color: var(--text-muted); margin-top: 4px; }
+
+  /* cadence chips */
+  .chips { display: flex; flex-direction: column; gap: 9px; }
+  .chip { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 10px 13px; display: flex; align-items: center; gap: 12px; box-shadow: 0 1px 2px var(--shadow); }
+  .chip .pw { background: var(--accent); color: #fff; font-weight: 700; font-size: 0.84rem; width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center; flex-shrink: 0; }
+  .chip .ct { font-weight: 600; font-size: 0.86rem; }
+  .chip .cf { font-size: 0.74rem; color: var(--text-muted); }
+
+  /* channels */
+  .chan-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px,1fr)); gap: 11px; }
+  .chan { background: var(--bg-card); border: 1px solid var(--border); border-radius: 11px; padding: 13px 14px; box-shadow: 0 1px 2px var(--shadow); }
+  .chan .cn { font-weight: 600; font-size: 0.88rem; display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .chan .cr { font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; }
+  .pin { font-size: 0.6rem; font-weight: 700; padding: 2px 7px; border-radius: 999px; background: var(--bg-secondary); color: var(--text-secondary); white-space: nowrap; }
+  .pin.active { background: #e7f2ea; color: var(--sales); }
+  .pin.planned { background: #f3eee8; color: var(--accent-hover); }
+  .phase-tag { font-size: 0.6rem; font-weight: 700; color: var(--text-muted); }
+
+  /* roadmap */
+  .road { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  @media (max-width: 860px) { .road { grid-template-columns: 1fr; } }
+  .phase { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--r); padding: 16px; box-shadow: 0 1px 2px var(--shadow); }
+  .phase h3 { font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--accent); font-weight: 700; }
+  .phase .th { font-size: 0.95rem; font-weight: 600; margin: 4px 0 12px; }
+  .phase ul { list-style: none; display: flex; flex-direction: column; gap: 9px; }
+  .phase li { display: flex; gap: 9px; align-items: flex-start; font-size: 0.82rem; cursor: pointer; }
+  .phase li .ck { width: 17px; height: 17px; border: 1.6px solid var(--border); border-radius: 5px; flex-shrink: 0; margin-top: 1px; display: grid; place-items: center; transition: all .15s; }
+  .phase li.done .ck { background: var(--sales); border-color: var(--sales); }
+  .phase li.done .ck::after { content: "✓"; color: #fff; font-size: 0.7rem; font-weight: 700; }
+  .phase li.done .tx { color: var(--text-muted); text-decoration: line-through; }
+
+  footer { margin-top: 36px; padding-top: 18px; border-top: 1px solid var(--border); font-size: 0.76rem; color: var(--text-muted); display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: space-between; }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="title-block">
+      <div class="crumb">ExarLabs · Microsite Factory</div>
+      <h1>Marketing Dashboard</h1>
+      <p>Facebook-first go-to-market · 90 napos követés · HU + RO</p>
+    </div>
+    <div class="meta">
+      <div id="updated">—</div>
+      <button id="reset">Adatok törlése</button>
+    </div>
+  </header>
+
+  <div class="northstar">
+    <div>
+      <div class="label">North-star metrika</div>
+      <div class="metric" id="ns-metric"></div>
+      <div class="why" id="ns-why"></div>
+    </div>
+    <div class="goal">
+      <div class="num">3–5</div>
+      <div class="cap">új fizető előfizető<br>/ hó (3. hónapra)</div>
+    </div>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>KPI-k</h2><span class="hint">írd be az aktuális számot — a sáv a 90 napos célhoz méri</span></div>
+    <div class="kpi-grid" id="kpis"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>Tölcsér</h2><span class="hint">awareness → előfizetés, 90 napos célokkal</span></div>
+    <div class="funnel" id="funnel"></div>
+  </section>
+
+  <div class="cols">
+    <section>
+      <div class="sec-head"><h2>Tartalom-pillérek</h2></div>
+      <div id="pillars"></div>
+    </section>
+    <section>
+      <div class="sec-head"><h2>Heti kadencia</h2></div>
+      <div class="chips" id="cadence"></div>
+    </section>
+  </div>
+
+  <section>
+    <div class="sec-head"><h2>Csatornák</h2><span class="hint">fázis szerint</span></div>
+    <div class="chan-grid" id="channels"></div>
+  </section>
+
+  <section>
+    <div class="sec-head"><h2>90 napos roadmap</h2><span class="hint">kattints egy akcióra a kipipáláshoz</span></div>
+    <div class="road" id="roadmap"></div>
+  </section>
+
+  <footer>
+    <span>Társstratéga: ChatGPT (GPT-5) · think-agent-orchestrator</span>
+    <span>Stratégia: <a href="01_STRATEGIA_microsite-factory.md">01_STRATEGIA_microsite-factory.md</a> · Site: <a href="https://sites.exarlabs.com">sites.exarlabs.com</a></span>
+  </footer>
+</div>
+
+<script>
+const DATA = {
+  "north_star": {"metric":"Havi nettó új Microsite Factory előfizetés","why":"Közvetlenül tükrözi a bevételnövekedést és validálja a termék-piac illeszkedést a helyi KKV-szegmensben."},
+  "kpis": [
+    {"name":"FB oldal-követők","stage":"awareness","target":600,"unit":"fő","cadence":"heti","note":"Minőség > mennyiség; helyi közönség"},
+    {"name":"Átlag poszt-elérés","stage":"awareness","target":1200,"unit":"/poszt","cadence":"heti","note":"Karusszel + rövid videó mix"},
+    {"name":"Csoport-poszt engagement","stage":"awareness","target":30,"unit":"/poszt","cadence":"heti","note":"Érték-első; nincs link a törzsben"},
+    {"name":"Bejövő DM-ek (HU+RO)","stage":"lead","target":65,"unit":"db","cadence":"heti","note":"Oldal + csoportok + hirdetés"},
+    {"name":"Kalkulátor-kattintás","stage":"lead","target":90,"unit":"db","cadence":"heti","note":"DM-kézbesítés a súrlódás ellen"},
+    {"name":"Lead email / form","stage":"lead","target":55,"unit":"db","cadence":"heti","note":"Elsődleges CTA: Messenger/WhatsApp"},
+    {"name":"Foglalt hívások","stage":"sales","target":28,"unit":"db","cadence":"heti","note":"Calendly; 2 órás SLA"},
+    {"name":"Elküldött ajánlatok","stage":"sales","target":24,"unit":"db","cadence":"heti","note":"1 oldalas HU/RO sablon"},
+    {"name":"Új fizető ügyfelek","stage":"sales","target":12,"unit":"db","cadence":"havi","note":"Zárás 25–35% a hívásokból"},
+    {"name":"Hívás CPL","stage":"lead","target":5,"unit":"EUR","cadence":"heti","note":"Cél ≤5 EUR; gyenge ad set leáll","invert":true},
+    {"name":"CAC (vegyes)","stage":"sales","target":70,"unit":"EUR","cadence":"havi","note":"Hirdetési költés / új ügyfél","invert":true},
+    {"name":"Válaszidő","stage":"lead","target":2,"unit":"óra","cadence":"heti","note":"Napi 2x inbox","invert":true}
+  ],
+  "funnel": [
+    {"stage":"Awareness","metric":"Poszt-elérés & csoport-engagement","target":">25k kumulált elérés"},
+    {"stage":"Consideration","metric":"DM-ek + kalkulátor-kattintás","target":">100 interakció"},
+    {"stage":"Evaluation","metric":"Foglalt hívások & ajánlatok","target":"20–28 hívás; 18–24 ajánlat"},
+    {"stage":"Purchase","metric":"Új fizető előfizetés","target":"8–12"},
+    {"stage":"Retention","metric":"1. havi megtartás","target":">90%"}
+  ],
+  "pillars": [
+    {"name":"Bizonyíték (Előtte/Utána, esettan., referencia)","pct":35,"ex":"Fogorvos mini-eset: 0→live 7 nap + 2 hívás/hét"},
+    {"name":"Érték/Edukáció (checklist, tipp, GDPR)","pct":30,"ex":"3 hiba, ami megöli a hívásokat + 1 perces checklist"},
+    {"name":"Folyamat / Burden-lifting (7 napos terv, BTS)","pct":20,"ex":"Képernyő-felvétel: hogyan migrálunk 3 lépésben"},
+    {"name":"Ajánlat/Promó (ingyen migráció, ár-magyarázat)","pct":15,"ex":"Ingyenes Migráció Hónap — 5 hely"}
+  ],
+  "cadence": [
+    {"type":"Bizonyíték-poszt","per":1,"format":"Karusszel (Előtte/Utána vagy mini-eset)"},
+    {"type":"Érték/Edukáció","per":1,"format":"Karusszel vagy szöveg + grafika"},
+    {"type":"Folyamat/Founder/Ajánlat","per":1,"format":"Rövid telefonos videó vagy fotó"},
+    {"type":"Story/BTS","per":1,"format":"Story"},
+    {"type":"Csoport érték-poszt","per":1,"format":"Szöveg + kép; DM-kulcsszó; HU/RO rotáció"}
+  ],
+  "channels": [
+    {"name":"Facebook oldal","phase":"1","role":"Tartalom-hub, DM-ek, social proof","status":"active"},
+    {"name":"FB csoportok (HU)","phase":"1","role":"Érték-első posztok → DM","status":"active"},
+    {"name":"FB csoportok (RO)","phase":"2","role":"Érték-első + mini-esetek","status":"active"},
+    {"name":"FB/IG hirdetés","phase":"2","role":"Kiszámítható lead-flow","status":"planned"},
+    {"name":"Messenger/WhatsApp","phase":"1","role":"Elsődleges lead-rögzítés & minősítés","status":"active"},
+    {"name":"Ár-kalkulátor microsite","phase":"1","role":"Önkiszolgáló ár; backup CTA","status":"active"},
+    {"name":"Retargeting hirdetés","phase":"3","role":"Engagerek konvertálása proof-fal","status":"planned"},
+    {"name":"Google Business Profile","phase":"3","role":"Helyi felfedezés; bizalom","status":"planned"}
+  ],
+  "roadmap": [
+    {"phase":"1. fázis · 1–4. hét","theme":"Helyi bizonyítás + alapok","actions":["Oldal-setup, kitűzött poszt, Szolgáltatások, WhatsApp","8–10 HU poszt (proof/érték/folyamat)","Heti 1 HU csoport-poszt; minden kommentelőnek DM","Ajánlat + intake form + sablonválaszok"]},
+    {"phase":"2. fázis · 5–8. hét","theme":"Kis fizetett + social proof","actions":["5–10 EUR/nap hirdetés (Messages vs Leads)","HU esettan. + RO verzió; Ingyenes Migráció ajánlat","Heti HU + RO csoport-poszt; DM-flow finomítás"]},
+    {"phase":"3. fázis · 9–12. hét","theme":"Optimalizálás + retargeting + ajánlás","actions":["Nyertes ad set skálázása; 1–2 EUR/nap retargeting","3 referencia begyűjtése; karusszellé újrahasznosítás","Ajánlási program: 1 hónap ingyen / aláíró ajánlás"]}
+  ]
+};
+
+const KEY = "mf-mkt-dash-v1";
+const store = JSON.parse(localStorage.getItem(KEY) || "{}");
+function save(){ store._t = Date.now(); localStorage.setItem(KEY, JSON.stringify(store)); paintUpdated(); }
+function paintUpdated(){
+  document.getElementById("updated").textContent = store._t
+    ? "Frissítve: " + new Date(store._t).toLocaleString("hu-HU", {dateStyle:"medium", timeStyle:"short"})
+    : "Még nincs adat rögzítve";
+}
+
+// North star
+document.getElementById("ns-metric").textContent = DATA.north_star.metric;
+document.getElementById("ns-why").textContent = DATA.north_star.why;
+
+// KPIs
+const stLabel = {awareness:"Awareness", lead:"Lead", sales:"Sales"};
+document.getElementById("kpis").innerHTML = DATA.kpis.map((k,i) => {
+  const cur = store["kpi"+i] ?? "";
+  return `<div class="kpi">
+    <div class="top"><span class="name">${k.name}</span><span class="badge ${k.stage}">${stLabel[k.stage]}</span></div>
+    <div class="note">${k.note}</div>
+    <div class="row">
+      <span class="target">Cél: <b>${k.invert?"≤":""}${k.target} ${k.unit}</b></span>
+      <span class="cur"><input type="number" inputmode="decimal" data-i="${i}" value="${cur}" placeholder="0"><span>${k.unit}</span></span>
+    </div>
+    <div class="bar"><i data-bar="${i}"></i></div>
+    <div class="cadence-note">${k.cadence} követés</div>
+  </div>`;
+}).join("");
+
+function pct(k, val){
+  if (val === "" || val == null || isNaN(val)) return 0;
+  val = +val;
+  let p = k.invert ? (val <= 0 ? 100 : Math.min(100, (k.target/val)*100)) : (val/k.target)*100;
+  return Math.max(0, Math.min(100, p));
+}
+function paintBars(){
+  DATA.kpis.forEach((k,i) => {
+    const bar = document.querySelector(`[data-bar="${i}"]`);
+    if (bar) bar.style.width = pct(k, store["kpi"+i] ?? "") + "%";
+  });
+}
+document.getElementById("kpis").addEventListener("input", e => {
+  if (e.target.dataset.i == null) return;
+  const i = e.target.dataset.i;
+  store["kpi"+i] = e.target.value === "" ? "" : +e.target.value;
+  save(); paintBars();
+});
+
+// Funnel
+document.getElementById("funnel").innerHTML = DATA.funnel.map((f,idx) => {
+  const w = 100 - idx*13;
+  return `<div class="fstage">
+    <div class="fbar" style="width:${w}%">${f.stage}</div>
+    <div class="fmeta"><div class="s">${f.stage}</div><div class="m">${f.metric}</div></div>
+    <div class="ftarget">${f.target}</div>
+  </div>`;
+}).join("");
+
+// Pillars
+document.getElementById("pillars").innerHTML = DATA.pillars.map(p => `
+  <div class="pillar">
+    <div class="ph"><span class="pn">${p.name}</span><span class="pp">${p.pct}%</span></div>
+    <div class="pbar"><i style="width:${p.pct}%"></i></div>
+    <div class="pex">${p.ex}</div>
+  </div>`).join("");
+
+// Cadence
+document.getElementById("cadence").innerHTML = DATA.cadence.map(c => `
+  <div class="chip"><div class="pw">${c.per}×</div><div><div class="ct">${c.type}</div><div class="cf">${c.format}</div></div></div>`).join("");
+
+// Channels
+const phaseOrder = {"1":1,"2":2,"3":3};
+document.getElementById("channels").innerHTML = DATA.channels.slice().sort((a,b)=>phaseOrder[a.phase]-phaseOrder[b.phase]).map(c => `
+  <div class="chan">
+    <div class="cn"><span>${c.name}</span><span class="pin ${c.status}">${c.status==="active"?"aktív":"tervezett"}</span></div>
+    <div class="cr">${c.role}</div>
+    <div class="phase-tag">FÁZIS ${c.phase}</div>
+  </div>`).join("");
+
+// Roadmap (checkable, persisted)
+document.getElementById("roadmap").innerHTML = DATA.roadmap.map((ph,pi) => `
+  <div class="phase">
+    <h3>${ph.phase}</h3>
+    <div class="th">${ph.theme}</div>
+    <ul>${ph.actions.map((a,ai) => {
+      const done = store[`rm-${pi}-${ai}`] ? "done" : "";
+      return `<li class="${done}" data-rm="${pi}-${ai}"><span class="ck"></span><span class="tx">${a}</span></li>`;
+    }).join("")}</ul>
+  </div>`).join("");
+document.getElementById("roadmap").addEventListener("click", e => {
+  const li = e.target.closest("[data-rm]"); if (!li) return;
+  const k = "rm-" + li.dataset.rm;
+  store[k] = !store[k]; li.classList.toggle("done", store[k]); save();
+});
+
+// Reset
+document.getElementById("reset").addEventListener("click", () => {
+  if (confirm("Biztosan törlöd az összes rögzített számot és kipipálást?")) {
+    localStorage.removeItem(KEY);
+    for (const k in store) delete store[k];
+    location.reload();
+  }
+});
+
+paintUpdated();
+paintBars();
+</script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+{
+ "$schema": "http://json-schema.org/draft-07/schema#",
+ "$id": "https://deakhus.netlify.app/data/_schema-v1.0.json",
+ "title": "Deák Húsmíves Product Catalog",
+ "version": "1.0",
+ "description": "Schema for the Deák Húsmíves product catalog. Covers Deak Product, Deak Product Category, Deak Product Settings, Deak Product Quantity Override, and Deak Unit Option doctypes.",
+ "type": "object",
+ "required": [
+  "meta",
+  "categories",
+  "products",
+  "settings"
+ ],
+ "properties": {
+  "meta": {
+   "$ref": "#/definitions/meta"
+  },
+  "categories": {
+   "type": "array",
+   "items": {
+    "$ref": "#/definitions/category"
+   }
+  },
+  "products": {
+   "type": "array",
+   "items": {
+    "$ref": "#/definitions/product"
+   }
+  },
+  "settings": {
+   "$ref": "#/definitions/settings"
+  }
+ },
+ "additionalProperties": false,
+ "definitions": {
+  "meta": {
+   "type": "object",
+   "required": [
+    "version",
+    "schema_version",
+    "date"
+   ],
+   "properties": {
+    "version": {
+     "type": "string",
+     "pattern": "^\\d+\\.\\d+$",
+     "description": "Data version — must match the filename (e.g. products-v1.0.json → \"1.0\")"
+    },
+    "schema_version": {
+     "type": "string",
+     "pattern": "^\\d+\\.\\d+$",
+     "description": "Schema version this data conforms to (e.g. \"1.0\" → _schema-v1.0.json)"
+    },
+    "date": {
+     "type": "string",
+     "format": "date",
+     "description": "ISO 8601 date when this data file was created/updated"
+    },
+    "author": {
+     "type": "string"
+    },
+    "description": {
+     "type": "string"
+    }
+   },
+   "additionalProperties": false
+  },
+  "category": {
+   "type": "object",
+   "required": [
+    "category_id",
+    "category_name_ro",
+    "category_name_hu"
+   ],
+   "properties": {
+    "category_id": {
+     "type": "string",
+     "pattern": "^[a-z][a-z0-9_]*$",
+     "description": "Stable identifier — becomes the Frappe document name"
+    },
+    "category_name_ro": {
+     "type": "string"
+    },
+    "category_name_hu": {
+     "type": "string"
+    }
+   },
+   "additionalProperties": false
+  },
+  "product": {
+   "type": "object",
+   "required": [
+    "id",
+    "product_name_ro",
+    "product_name_hu",
+    "image",
+    "price",
+    "unit",
+    "product_type",
+    "category",
+    "is_available"
+   ],
+   "properties": {
+    "id": {
+     "type": "string",
+     "pattern": "^[a-z][a-z0-9_]*$",
+     "description": "Stable identifier — becomes the Frappe document name"
+    },
+    "product_name_ro": {
+     "type": "string"
+    },
+    "product_name_hu": {
+     "type": "string"
+    },
+    "description_ro": {
+     "type": ["string", "null"],
+     "default": null
+    },
+    "description_hu": {
+     "type": ["string", "null"],
+     "default": null
+    },
+    "note_ro": {
+     "type": ["string", "null"],
+     "default": null
+    },
+    "note_hu": {
+     "type": ["string", "null"],
+     "default": null
+    },
+    "image": {
+     "type": "string",
+     "pattern": "^[a-z0-9_]+\\.(webp|jpg|png)$",
+     "description": "Filename relative to the photos directory"
+    },
+    "price": {
+     "type": "number",
+     "exclusiveMinimum": 0,
+     "description": "Price per unit (unit defined by the 'unit' field)"
+    },
+    "unit": {
+     "type": "string",
+     "description": "Measurement unit (e.g. 'kg', 'pcs')"
+    },
+    "product_type": {
+     "type": "string",
+     "enum": ["weight", "piece", "hybrid"]
+    },
+    "estimated_weight_per_piece": {
+     "type": ["number", "null"],
+     "exclusiveMinimum": 0,
+     "default": null,
+     "description": "Required for hybrid products — estimated kg per piece"
+    },
+    "weight_range_min": {
+     "type": ["number", "null"],
+     "exclusiveMinimum": 0,
+     "default": null,
+     "description": "Required for hybrid products — minimum weight in kg"
+    },
+    "weight_range_max": {
+     "type": ["number", "null"],
+     "exclusiveMinimum": 0,
+     "default": null,
+     "description": "Required for hybrid products — maximum weight in kg"
+    },
+    "category": {
+     "type": "string",
+     "pattern": "^[a-z][a-z0-9_]*$",
+     "description": "References a category_id from the categories array"
+    },
+    "is_available": {
+     "type": "boolean"
+    },
+    "popularity_score": {
+     "type": "number",
+     "minimum": 0,
+     "maximum": 1000,
+     "default": 0,
+     "description": "0–1000. Higher scores appear first in the product listing."
+    },
+    "quantity_override": {
+     "oneOf": [
+      { "$ref": "#/definitions/quantity_override" },
+      { "type": "null" }
+     ],
+     "default": null,
+     "description": "Per-product quantity settings override. If null, global defaults from settings apply."
+    }
+   },
+   "additionalProperties": false,
+   "allOf": [
+    {
+     "if": {
+      "properties": {
+       "product_type": { "const": "hybrid" }
+      }
+     },
+     "then": {
+      "required": [
+       "estimated_weight_per_piece",
+       "weight_range_min",
+       "weight_range_max"
+      ],
+      "properties": {
+       "estimated_weight_per_piece": {
+        "type": "number",
+        "exclusiveMinimum": 0
+       },
+       "weight_range_min": {
+        "type": "number",
+        "exclusiveMinimum": 0
+       },
+       "weight_range_max": {
+        "type": "number",
+        "exclusiveMinimum": 0
+       }
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "product_type": { "const": "weight" }
+      }
+     },
+     "then": {
+      "properties": {
+       "estimated_weight_per_piece": { "type": "null" },
+       "weight_range_min": { "type": "null" },
+       "weight_range_max": { "type": "null" }
+      }
+     }
+    },
+    {
+     "if": {
+      "properties": {
+       "product_type": { "const": "piece" }
+      }
+     },
+     "then": {
+      "properties": {
+       "estimated_weight_per_piece": { "type": "null" },
+       "weight_range_min": { "type": "null" },
+       "weight_range_max": { "type": "null" }
+      }
+     }
+    }
+   ]
+  },
+  "quantity_override": {
+   "type": "object",
+   "properties": {
+    "min_quantity": {
+     "type": ["number", "null"],
+     "exclusiveMinimum": 0,
+     "default": null
+    },
+    "max_quantity": {
+     "type": ["number", "null"],
+     "exclusiveMinimum": 0,
+     "default": null
+    },
+    "step": {
+     "type": ["number", "null"],
+     "exclusiveMinimum": 0,
+     "default": null
+    },
+    "hot_amounts": {
+     "type": ["array", "null"],
+     "items": {
+      "type": "number",
+      "exclusiveMinimum": 0
+     },
+     "default": null,
+     "description": "Quick-select amounts. Seed script converts to comma-separated string for the doctype."
+    }
+   },
+   "additionalProperties": false
+  },
+  "unit_option": {
+   "type": "object",
+   "required": [
+    "unit_id",
+    "unit_label_ro",
+    "unit_label_hu"
+   ],
+   "properties": {
+    "unit_id": {
+     "type": "string"
+    },
+    "unit_label_ro": {
+     "type": "string"
+    },
+    "unit_label_hu": {
+     "type": "string"
+    }
+   },
+   "additionalProperties": false
+  },
+  "settings": {
+   "type": "object",
+   "required": [
+    "default_min_quantity",
+    "default_max_quantity",
+    "default_step",
+    "default_hot_amounts",
+    "weight_range_percent",
+    "unit_options"
+   ],
+   "properties": {
+    "default_min_quantity": {
+     "type": "number",
+     "exclusiveMinimum": 0
+    },
+    "default_max_quantity": {
+     "type": "number",
+     "exclusiveMinimum": 0
+    },
+    "default_step": {
+     "type": "number",
+     "exclusiveMinimum": 0
+    },
+    "default_hot_amounts": {
+     "type": "array",
+     "items": {
+      "type": "number",
+      "exclusiveMinimum": 0
+     },
+     "description": "Global default quick-select amounts. Seed script converts to comma-separated string."
+    },
+    "weight_range_percent": {
+     "type": "number",
+     "exclusiveMinimum": 0,
+     "description": "Global default weight range percentage for hybrid products."
+    },
+    "unit_options": {
+     "type": "array",
+     "items": {
+      "$ref": "#/definitions/unit_option"
+     }
+    }
+   },
+   "additionalProperties": false
+  }
+ }
+}

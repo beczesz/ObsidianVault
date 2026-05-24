@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Futár — Route kiszállítás — Deák Húsmíves</title>
+<script type="application/json" id="screen-meta">
+{
+  "id": "v0.4-courier-route",
+  "title": "Futár — Route kiszállítási lista",
+  "feature": "rural-delivery",
+  "sprint": "Sprint 4",
+  "status": "draft",
+  "version": "v0.4",
+  "platform": "mobile",
+  "publish": true,
+  "order": 50,
+  "tags": ["DH-184", "rural", "courier", "F9.2"],
+  "description": "Futár interfész — települések route-sorrendben (nem ABC), csomagonként telefon és kézbesítve gomb, alul haladás-sáv."
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --primary:#9B2335; --primary-800:#7D1A2A; --primary-light:#F9E0E3; --primary-pale:#F4E6E8;
+    --cream:#FFFBF7; --cream-dark:#F5EDE5; --card:#FFFFFF; --bg:#FAF8F5;
+    --border:#E8E2DB; --border-strong:#C5BCB3;
+    --text:#2C2825; --text-secondary:#5C544C; --text-muted:#8A8078;
+    --success:#2D7A4F; --success-bg:#E8F5E9; --success-border:#C8E6C9;
+    --info:#2B6CB0; --info-bg:#DBEAFE;
+    --warning:#C4841D; --warning-bg:#FFF3E0;
+  }
+  body {
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--cream); color:var(--text);
+    -webkit-font-smoothing:antialiased; min-height:100vh;
+  }
+  .back-to-catalog {
+    position:fixed; top:12px; left:12px; z-index:100; width:36px; height:36px;
+    border-radius:50%; background:rgba(0,0,0,0.5); color:#fff;
+    display:flex; align-items:center; justify-content:center; text-decoration:none;
+  }
+
+  /* Header */
+  .header {
+    position:sticky; top:0; z-index:40; background:#fff;
+    border-bottom:1px solid var(--border);
+    box-shadow:0 1px 3px rgba(0,0,0,0.04);
+  }
+  .header-inner {
+    max-width:448px; margin:0 auto; padding:12px 16px;
+  }
+  .header-top {
+    display:flex; align-items:center; gap:10px; margin-bottom:6px;
+  }
+  .header-top h1 { font-size:17px; font-weight:600; flex:1; }
+  .header-top .count-pill {
+    font-size:12px; font-weight:700; padding:3px 9px; border-radius:999px;
+    background:var(--primary-pale); color:var(--primary);
+  }
+  .header-meta {
+    display:flex; align-items:center; gap:10px; font-size:12px; color:var(--text-muted);
+  }
+  .header-meta svg { width:13px; height:13px; }
+  .header-meta span { display:inline-flex; align-items:center; gap:4px; }
+
+  /* Content */
+  .content { max-width:448px; margin:0 auto; padding:14px 16px 110px; }
+
+  /* Settlement group */
+  .settlement {
+    margin-bottom:16px;
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+    overflow:hidden;
+  }
+  .settlement.done { background:var(--success-bg); border-color:var(--success-border); }
+
+  .settlement-head {
+    display:flex; align-items:center; gap:10px; padding:12px 14px;
+    border-bottom:1px solid var(--border);
+  }
+  .settlement.done .settlement-head { border-bottom-color:var(--success-border); }
+  .order-num {
+    width:28px; height:28px; border-radius:50%; flex-shrink:0;
+    background:var(--primary); color:#fff;
+    display:flex; align-items:center; justify-content:center;
+    font-weight:700; font-size:13px; font-variant-numeric:tabular-nums;
+  }
+  .settlement.done .order-num { background:var(--success); }
+  .settlement-name { flex:1; }
+  .settlement-name .top {
+    font-size:15px; font-weight:600; color:var(--text);
+    display:flex; align-items:center; gap:6px;
+  }
+  .settlement-name .top svg { width:14px; height:14px; color:var(--text-muted); }
+  .settlement-name .meta { font-size:12px; color:var(--text-muted); margin-top:2px; }
+  .settlement-status {
+    font-size:11px; font-weight:700; padding:4px 8px; border-radius:999px;
+    text-transform:uppercase; letter-spacing:0.04em;
+  }
+  .settlement-status.upcoming { background:var(--info-bg); color:var(--info); }
+  .settlement-status.current { background:var(--warning-bg); color:#6E4810; }
+  .settlement-status.done { background:#fff; color:var(--success); border:1px solid var(--success-border); }
+
+  /* Package */
+  .pkg { padding:12px 14px; border-bottom:1px dashed var(--border); }
+  .pkg:last-child { border-bottom:none; }
+  .pkg.delivered { opacity:0.65; }
+
+  .pkg-top {
+    display:flex; align-items:flex-start; gap:10px;
+  }
+  .pkg-check {
+    width:22px; height:22px; border-radius:50%; flex-shrink:0;
+    border:1.5px solid var(--border-strong); background:#fff;
+    display:flex; align-items:center; justify-content:center;
+    margin-top:2px;
+  }
+  .pkg.delivered .pkg-check { background:var(--success); border-color:var(--success); }
+  .pkg.delivered .pkg-check svg { width:12px; height:12px; color:#fff; display:block; }
+  .pkg-check svg { display:none; }
+
+  .pkg-info { flex:1; min-width:0; }
+  .pkg-name {
+    font-size:15px; font-weight:600; color:var(--text);
+  }
+  .pkg.delivered .pkg-name { text-decoration:line-through; color:var(--text-muted); }
+  .pkg-addr {
+    font-size:13px; color:var(--text-secondary); margin-top:3px;
+    display:flex; align-items:flex-start; gap:4px;
+  }
+  .pkg-addr svg { width:13px; height:13px; color:var(--text-muted); flex-shrink:0; margin-top:2px; }
+  .pkg-amount {
+    font-size:14px; font-weight:700; color:var(--primary);
+    font-variant-numeric:tabular-nums;
+    white-space:nowrap;
+  }
+  .pkg-amount-meta {
+    font-size:11px; color:var(--text-muted); font-weight:500; margin-top:2px;
+  }
+  .pkg-amount-col { text-align:right; flex-shrink:0; }
+
+  .pkg-actions {
+    display:flex; gap:8px; margin-top:10px;
+  }
+  .btn-call {
+    flex:0 0 44%; height:42px; border-radius:8px;
+    background:#fff; border:1.5px solid var(--border-strong); color:var(--text);
+    font-size:13px; font-weight:600; font-family:inherit; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .btn-call svg { width:14px; height:14px; color:var(--text-secondary); }
+  .btn-call:hover { border-color:var(--primary); color:var(--primary); }
+  .btn-call:hover svg { color:var(--primary); }
+  .btn-deliver {
+    flex:1; height:42px; border-radius:8px;
+    background:var(--primary); color:#fff;
+    border:none; font-size:13px; font-weight:600; font-family:inherit; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .btn-deliver svg { width:14px; height:14px; }
+  .btn-deliver:hover { background:var(--primary-800); }
+  .btn-deliver.done {
+    background:var(--success-bg); color:var(--success); cursor:default;
+    border:1px solid var(--success-border);
+  }
+
+  .pkg-ambassador {
+    margin-top:6px; display:inline-flex; align-items:center; gap:4px;
+    font-size:11px; color:var(--secondary-dark, #9C7841);
+    background:#F5EDDF; padding:2px 8px; border-radius:999px; font-weight:600;
+  }
+  .pkg-ambassador svg { width:11px; height:11px; }
+
+  .pkg-note {
+    margin-top:6px; padding:6px 10px;
+    background:var(--cream-dark); border-radius:6px;
+    font-size:12px; color:var(--text-secondary); line-height:1.4;
+  }
+
+  /* Bottom progress bar */
+  .progress-bar {
+    position:fixed; bottom:0; left:0; right:0; z-index:50;
+    background:#fff; border-top:1px solid var(--border);
+    padding:12px 16px calc(12px + env(safe-area-inset-bottom));
+    box-shadow:0 -2px 12px rgba(0,0,0,0.06);
+  }
+  .progress-inner { max-width:448px; margin:0 auto; }
+  .progress-top {
+    display:flex; align-items:center; justify-content:space-between; margin-bottom:8px;
+  }
+  .progress-label {
+    font-size:13px; color:var(--text); font-weight:600;
+  }
+  .progress-pct {
+    font-size:14px; font-weight:700; color:var(--primary); font-variant-numeric:tabular-nums;
+  }
+  .progress-track {
+    height:8px; background:var(--cream-dark); border-radius:999px; overflow:hidden;
+  }
+  .progress-fill {
+    height:100%; background:var(--success); border-radius:999px;
+    transition:width 300ms ease-out;
+  }
+  .progress-meta {
+    display:flex; align-items:center; gap:12px; font-size:12px; color:var(--text-muted);
+    margin-top:6px;
+  }
+  .progress-meta strong { color:var(--text); font-weight:600; }
+  .progress-meta .sep { color:var(--border-strong); }
+
+  /* Header back button */
+  .back-btn {
+    width:32px; height:32px; display:flex; align-items:center; justify-content:center;
+    background:transparent; border:none; cursor:pointer; color:var(--text);
+    margin-left:-6px;
+  }
+  .back-btn svg { width:20px; height:20px; }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-to-catalog" title="Vissza">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-top">
+      <button class="back-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+      <h1>Csüt. route — Bögöz kör</h1>
+      <span class="count-pill">3 / 12</span>
+    </div>
+    <div class="header-meta">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg> Máj. 8.</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 14:00 indulás</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg> 1.460 RON</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- 1. Felsőboldogfalva — DONE -->
+  <div class="settlement done">
+    <div class="settlement-head">
+      <div class="order-num">1</div>
+      <div class="settlement-name">
+        <div class="top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Felsőboldogfalva (Feliceni)
+        </div>
+        <div class="meta">1 csomag · 120 RON</div>
+      </div>
+      <div class="settlement-status done">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="width:11px;height:11px;display:inline-block;vertical-align:-1px"><polyline points="20 6 9 17 4 12"/></svg>
+        Kész
+      </div>
+    </div>
+    <div class="pkg delivered">
+      <div class="pkg-top">
+        <div class="pkg-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="pkg-info">
+          <div class="pkg-name">Kovács Péter</div>
+          <div class="pkg-addr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Fő utca 12.
+          </div>
+        </div>
+        <div class="pkg-amount-col">
+          <div class="pkg-amount">120 RON</div>
+          <div class="pkg-amount-meta">14:18 átvéve</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. Bögöz — IN PROGRESS -->
+  <div class="settlement">
+    <div class="settlement-head">
+      <div class="order-num">2</div>
+      <div class="settlement-name">
+        <div class="top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Bögöz (Mugeni)
+        </div>
+        <div class="meta">3 csomag · 420 RON</div>
+      </div>
+      <div class="settlement-status current">Most</div>
+    </div>
+
+    <div class="pkg delivered">
+      <div class="pkg-top">
+        <div class="pkg-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="pkg-info">
+          <div class="pkg-name">Kovács Anna</div>
+          <div class="pkg-addr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Fő utca 42.
+          </div>
+        </div>
+        <div class="pkg-amount-col">
+          <div class="pkg-amount">150 RON</div>
+          <div class="pkg-amount-meta">14:36 átvéve</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pkg">
+      <div class="pkg-top">
+        <div class="pkg-check"></div>
+        <div class="pkg-info">
+          <div class="pkg-name">Nagy Béla</div>
+          <div class="pkg-addr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Kis Boltja előtt
+          </div>
+          <div class="pkg-ambassador">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+            Ambassador: Kis Mária
+          </div>
+        </div>
+        <div class="pkg-amount-col">
+          <div class="pkg-amount">120 RON</div>
+          <div class="pkg-amount-meta">Készpénz</div>
+        </div>
+      </div>
+      <div class="pkg-actions">
+        <button class="btn-call">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Hívás
+        </button>
+        <button class="btn-deliver">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Kézbesítve
+        </button>
+      </div>
+    </div>
+
+    <div class="pkg">
+      <div class="pkg-top">
+        <div class="pkg-check"></div>
+        <div class="pkg-info">
+          <div class="pkg-name">Szabó Mária</div>
+          <div class="pkg-addr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Iskola melletti ház, kék kapu
+          </div>
+          <div class="pkg-note">„Csengess kétszer — a nagymama otthon van."</div>
+        </div>
+        <div class="pkg-amount-col">
+          <div class="pkg-amount">130 RON</div>
+          <div class="pkg-amount-meta">115 + 15 száll.</div>
+        </div>
+      </div>
+      <div class="pkg-actions">
+        <button class="btn-call">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Hívás
+        </button>
+        <button class="btn-deliver">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Kézbesítve
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. Székelykeresztúr — UPCOMING -->
+  <div class="settlement">
+    <div class="settlement-head">
+      <div class="order-num">3</div>
+      <div class="settlement-name">
+        <div class="top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/></svg>
+          Székelykeresztúr (Cristuru Sec.)
+        </div>
+        <div class="meta">5 csomag · 680 RON · ~22 km</div>
+      </div>
+      <div class="settlement-status upcoming">Következő</div>
+    </div>
+
+    <div class="pkg">
+      <div class="pkg-top">
+        <div class="pkg-check"></div>
+        <div class="pkg-info">
+          <div class="pkg-name">Tóth Júlia</div>
+          <div class="pkg-addr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Petőfi utca 7., 2. emelet
+          </div>
+        </div>
+        <div class="pkg-amount-col">
+          <div class="pkg-amount">155 RON</div>
+          <div class="pkg-amount-meta">Készpénz</div>
+        </div>
+      </div>
+      <div class="pkg-actions">
+        <button class="btn-call">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Hívás
+        </button>
+        <button class="btn-deliver">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Kézbesítve
+        </button>
+      </div>
+    </div>
+
+    <div class="pkg">
+      <div class="pkg-top">
+        <div class="pkg-check"></div>
+        <div class="pkg-info">
+          <div class="pkg-name">Bíró László</div>
+          <div class="pkg-addr">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            Kossuth tér 3.
+          </div>
+        </div>
+        <div class="pkg-amount-col">
+          <div class="pkg-amount">140 RON</div>
+          <div class="pkg-amount-meta">Készpénz</div>
+        </div>
+      </div>
+      <div class="pkg-actions">
+        <button class="btn-call">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+          Hívás
+        </button>
+        <button class="btn-deliver">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          Kézbesítve
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Siménfalva — collapsed preview -->
+  <div class="settlement">
+    <div class="settlement-head">
+      <div class="order-num">4</div>
+      <div class="settlement-name">
+        <div class="top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Siménfalva (Şimoneşti)
+        </div>
+        <div class="meta">2 csomag · 190 RON · ~9 km</div>
+      </div>
+      <div class="settlement-status upcoming">Hátra</div>
+    </div>
+  </div>
+
+  <!-- 5. Csíkszentmihály — collapsed preview -->
+  <div class="settlement">
+    <div class="settlement-head">
+      <div class="order-num">5</div>
+      <div class="settlement-name">
+        <div class="top">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 7-8 12-8 12s-8-5-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          Csíkszentmihály (Mihăileni)
+        </div>
+        <div class="meta">1 csomag · 150 RON · ~6 km</div>
+      </div>
+      <div class="settlement-status upcoming">Hátra</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Bottom progress -->
+<div class="progress-bar">
+  <div class="progress-inner">
+    <div class="progress-top">
+      <span class="progress-label">Haladás</span>
+      <span class="progress-pct">25%</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" style="width:25%"></div></div>
+    <div class="progress-meta">
+      <strong>3 / 12 kézbesítve</strong>
+      <span class="sep">·</span>
+      <span>Becsült visszaérkezés: 17:40</span>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

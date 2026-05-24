@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Produse — TransOffice Trade SRL | Catalog complet</title>
+<meta name="description" content="Catalog complet TransOffice Trade SRL — peste 2000 de produse de birou, papetărie, consumabile IT, mobilier și echipamente. Comandă online.">
+<link rel="stylesheet" href="design-system/anaf-style.css">
+<style>
+  .search-bar { background: var(--off-white); border: 1px solid #ddd; padding: 16px; margin: 18px 0; display: table; width: 100%; border-spacing: 8px 0; }
+  .search-bar > div { display: table-cell; vertical-align: middle; }
+  .search-bar input[type="text"], .search-bar select { padding: 9px 12px; border: 1px solid #ccc; font-size: 13px; width: 100%; font-family: inherit; }
+  .search-bar input:focus, .search-bar select:focus { border-color: var(--anaf-indigo); outline: none; }
+  .cat-grid-large { margin: 24px 0; }
+  .cat-row { display: table; width: 100%; margin-bottom: 16px; border-spacing: 14px 0; }
+  .cat-tile {
+    display: table-cell;
+    width: 25%;
+    vertical-align: top;
+    background: var(--anaf-indigo);
+    color: white;
+    padding: 24px 18px;
+    text-decoration: none;
+    position: relative;
+  }
+  .cat-tile:hover { background: var(--anaf-indigo-hover); color: white; }
+  .cat-tile .cat-icon { font-size: 42px; display: block; text-align: center; margin-bottom: 10px; }
+  .cat-tile .cat-title { font-size: 15px; font-weight: bold; text-align: center; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .cat-tile .cat-count { text-align: center; font-size: 11px; color: rgba(255,255,255,0.85); }
+  .cat-tile .cat-list { margin-top: 12px; font-size: 11px; line-height: 1.6; }
+  .cat-tile .cat-list a { color: rgba(255,255,255,0.85); text-decoration: none; display: block; padding: 2px 0; }
+  .cat-tile .cat-list a:hover { color: white; text-decoration: underline; }
+  .product-card-grid { display: table; width: 100%; margin: 16px 0; border-spacing: 12px 0; }
+  .product-card { display: table-cell; background: white; border: 1px solid #ddd; padding: 14px; vertical-align: top; width: 25%; }
+  .product-card .pc-img { background: var(--off-white); height: 110px; display: flex; align-items: center; justify-content: center; font-size: 50px; margin-bottom: 10px; }
+  .product-card .pc-name { font-weight: bold; font-size: 13px; color: var(--text); min-height: 36px; }
+  .product-card .pc-code { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+  .product-card .pc-price { color: var(--red-accent); font-weight: bold; font-size: 16px; margin-top: 8px; }
+  .product-card .pc-price-old { color: #999; text-decoration: line-through; font-size: 11px; margin-left: 4px; }
+  .product-card .pc-action { margin-top: 8px; }
+  .promo-banner { background: linear-gradient(90deg, var(--red-accent) 0%, var(--red-accent-dark) 100%); color: white; padding: 18px 24px; margin: 18px 0; display: table; width: 100%; }
+  .promo-banner .pb-left { display: table-cell; vertical-align: middle; }
+  .promo-banner .pb-right { display: table-cell; vertical-align: middle; text-align: right; }
+  .promo-banner .pb-title { font-size: 22px; font-weight: bold; }
+  .promo-banner .pb-sub { font-size: 13px; margin-top: 4px; }
+  .promo-banner .pb-btn { background: white; color: var(--red-accent); padding: 10px 24px; font-weight: bold; text-decoration: none; display: inline-block; }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <header class="site-header">
+    <div class="logo-cell">
+      <a href="index.html" class="logo">
+        <div class="logo-shield">TO</div>
+        <div class="logo-text">
+          <div class="brand">TransOffice</div>
+          <div class="tagline">Echipamente de birou și papetărie — din 2003</div>
+        </div>
+      </a>
+    </div>
+    <div class="auth-cell">
+      <div class="flag-bar">
+        <a href="index.html" class="flag-ro">RO</a>
+        <a href="index_en.html" class="flag-en">EN</a>
+        <a href="harta-site.html" class="flag-sitemap">SITE</a>
+      </div>
+      <div class="auth-grid">
+        <span class="search-icon">🔍</span>
+        <a href="comanda-rapida.html" class="auth-btn">Comandă rapidă<br><small style="font-weight:normal; font-size:9px;">cu validare CUI</small></a>
+        <a href="catalog.pdf" class="auth-btn">Catalog produse 2024<br><small style="font-weight:normal; font-size:9px;">PDF · 5,8 MB</small></a>
+        <br>
+        <a href="login.html" class="auth-btn">Autentificare client B2B</a>
+        <a href="cerere-oferta.html" class="auth-btn red">Cerere ofertă personalizată<br><small style="font-weight:normal; font-size:9px;">pentru cantități mari</small></a>
+      </div>
+    </div>
+  </header>
+
+  <div class="breadcrumb-wrap">
+    <div class="breadcrumb">
+      <a href="index.html">TransOffice</a>
+      <span class="separator">&gt;</span>
+      <a href="index.html">Acasă</a>
+      <span class="separator">&gt;</span>
+      Produse
+    </div>
+  </div>
+
+  <nav class="top-nav">
+    <a href="index.html" class="top-nav-cell">Acasă</a>
+    <a href="despre.html" class="top-nav-cell">Despre noi</a>
+    <a href="produse.html" class="top-nav-cell active">Produse</a>
+    <a href="servicii.html" class="top-nav-cell">Servicii</a>
+    <a href="parteneri.html" class="top-nav-cell">Parteneri</a>
+    <a href="cariere.html" class="top-nav-cell">Cariere</a>
+    <a href="galerie.html" class="top-nav-cell">Galerie foto</a>
+    <a href="contact.html" class="top-nav-cell">Contact</a>
+    <a href="carte-oaspeti.html" class="top-nav-cell">Carte de oaspeți</a>
+  </nav>
+
+  <div class="section-title">Catalog produse — peste 2.000 de articole</div>
+
+  <aside class="floating-left">
+    <a href="contact.html" class="floating-icon"><span class="ico">📧</span>Formular contact</a>
+    <a href="tel:0266371058" class="floating-icon"><span class="ico">📞</span>Call Center</a>
+    <a href="calendar.html" class="floating-icon"><span class="ico">📅</span>Calendar livrări</a>
+    <a href="catalog.pdf" class="floating-icon"><span class="ico">📄</span>Catalog PDF</a>
+    <a href="login.html" class="floating-icon"><span class="ico">🔑</span>Login B2B</a>
+    <a href="rss.xml" class="floating-icon"><span class="ico">📡</span>RSS</a>
+    <a href="gdpr.html" class="floating-icon"><span class="ico">🇪🇺</span>GDPR</a>
+    <a href="share.html" class="floating-icon"><span class="ico">🔗</span>Share</a>
+  </aside>
+
+  <aside class="floating-right">
+    <a href="accesibilitate.html" class="floating-icon"><span class="ico">♿</span></a>
+  </aside>
+
+  <main class="content-area">
+
+    <h1>Catalog complet</h1>
+
+    <p>
+      Peste <strong>2.000 de produse</strong> împărțite în 8 categorii principale. Toate produsele sunt disponibile pe stoc sau prin comandă specială (livrare 2-5 zile pentru produse non-stoc). Prețurile includ TVA 19%, livrare gratuită pentru comenzi peste 200 Lei în Odorheiu Secuiesc.
+    </p>
+
+    <!-- Search bar -->
+    <div class="search-bar">
+      <div style="width: 50%;">
+        <input type="text" placeholder="🔍 Caută după nume, cod produs sau brand (ex: HP 305, Bic Cristal, A4 80g)...">
+      </div>
+      <div style="width: 25%;">
+        <select>
+          <option>Toate categoriile</option>
+          <option>Cartușe &amp; Tonere</option>
+          <option>Hârtie &amp; Papetărie</option>
+          <option>Mobilier de birou</option>
+          <option>Echipamente IT</option>
+          <option>Rechizite școlare</option>
+          <option>Consumabile IT</option>
+          <option>Echipamente de prezentare</option>
+          <option>Distrugătoare documente</option>
+        </select>
+      </div>
+      <div style="width: 25%;">
+        <a href="cautare.html" class="btn" style="display: block; text-align: center;">Caută produse</a>
+      </div>
+    </div>
+
+    <!-- Promo banner -->
+    <div class="promo-banner">
+      <div class="pb-left">
+        <div class="pb-title">🔥 PROMOȚIE ACTUALĂ: La 10 topuri de hârtie A4, primiți 1 GRATIS!</div>
+        <div class="pb-sub">Valabil până la 31.03.2024 sau epuizarea stocului · Cod promo: <strong>HARTIE10+1</strong></div>
+      </div>
+      <div class="pb-right">
+        <a href="promotii.html" class="pb-btn">Vezi toate promoțiile →</a>
+      </div>
+    </div>
+
+    <h2>Categorii principale</h2>
+
+    <p>Selectează categoria dorită pentru a explora produsele:</p>
+
+    <div class="cat-grid-large">
+      <div class="cat-row">
+        <a href="cat/cartuse.html" class="cat-tile">
+          <div class="cat-icon">🖨️</div>
+          <div class="cat-title">Cartușe &amp; Tonere</div>
+          <div class="cat-count">412 produse</div>
+          <div class="cat-list">
+            <a href="cat/cartuse-hp.html">→ HP (138 modele)</a>
+            <a href="cat/cartuse-canon.html">→ Canon (96)</a>
+            <a href="cat/cartuse-epson.html">→ Epson (72)</a>
+            <a href="cat/cartuse-brother.html">→ Brother (54)</a>
+            <a href="cat/cartuse-compatibil.html">→ Compatibile (52)</a>
+          </div>
+        </a>
+        <a href="cat/hartie.html" class="cat-tile">
+          <div class="cat-icon">📄</div>
+          <div class="cat-title">Hârtie &amp; Papetărie</div>
+          <div class="cat-count">368 produse</div>
+          <div class="cat-list">
+            <a href="cat/hartie-a4.html">→ Hârtie A4 (8 mărci)</a>
+            <a href="cat/hartie-a3.html">→ Hârtie A3 (12 modele)</a>
+            <a href="cat/hartie-color.html">→ Hârtie color</a>
+            <a href="cat/hartie-foto.html">→ Hârtie fotografică</a>
+            <a href="cat/hartie-eco.html">→ Hârtie reciclată</a>
+          </div>
+        </a>
+        <a href="cat/mobilier.html" class="cat-tile">
+          <div class="cat-icon">🪑</div>
+          <div class="cat-title">Mobilier de birou</div>
+          <div class="cat-count">187 produse</div>
+          <div class="cat-list">
+            <a href="cat/scaune.html">→ Scaune ergonomice</a>
+            <a href="cat/birouri.html">→ Birouri și mese</a>
+            <a href="cat/dulapuri.html">→ Dulapuri și fișiere</a>
+            <a href="cat/rafturi.html">→ Rafturi metalice</a>
+            <a href="cat/separatoare.html">→ Separatoare birou</a>
+          </div>
+        </a>
+        <a href="cat/echipamente-it.html" class="cat-tile">
+          <div class="cat-icon">💻</div>
+          <div class="cat-title">Echipamente IT</div>
+          <div class="cat-count">156 produse</div>
+          <div class="cat-list">
+            <a href="cat/imprimante.html">→ Imprimante</a>
+            <a href="cat/multifunctionale.html">→ Multifuncționale</a>
+            <a href="cat/scanere.html">→ Scanere</a>
+            <a href="cat/distrugatoare.html">→ Distrugătoare</a>
+            <a href="cat/calculatoare.html">→ Calculatoare de birou</a>
+          </div>
+        </a>
+      </div>
+
+      <div class="cat-row">
+        <a href="cat/rechizite-scolare.html" class="cat-tile">
+          <div class="cat-icon">✏️</div>
+          <div class="cat-title">Rechizite școlare</div>
+          <div class="cat-count">524 produse</div>
+          <div class="cat-list">
+            <a href="cat/caiete.html">→ Caiete și agende</a>
+            <a href="cat/instrumente-scris.html">→ Instrumente de scris</a>
+            <a href="cat/ghiozdane.html">→ Ghiozdane</a>
+            <a href="cat/articole-creative.html">→ Articole creative</a>
+            <a href="cat/manuale-aux.html">→ Manuale auxiliare</a>
+          </div>
+        </a>
+        <a href="cat/consumabile-it.html" class="cat-tile">
+          <div class="cat-icon">🔌</div>
+          <div class="cat-title">Consumabile IT</div>
+          <div class="cat-count">213 produse</div>
+          <div class="cat-list">
+            <a href="cat/cabluri.html">→ Cabluri și adaptoare</a>
+            <a href="cat/usb-storage.html">→ USB-uri și HDD</a>
+            <a href="cat/baterii.html">→ Baterii și acumulatori</a>
+            <a href="cat/curatare.html">→ Produse de curățare</a>
+            <a href="cat/mouse-tastatura.html">→ Mouse, tastaturi</a>
+          </div>
+        </a>
+        <a href="cat/echipamente-prezentare.html" class="cat-tile">
+          <div class="cat-icon">📊</div>
+          <div class="cat-title">Echipamente prezentare</div>
+          <div class="cat-count">68 produse</div>
+          <div class="cat-list">
+            <a href="cat/proiectoare.html">→ Proiectoare BenQ, Epson</a>
+            <a href="cat/ecrane.html">→ Ecrane proiecție</a>
+            <a href="cat/whiteboard.html">→ Whiteboard, flipchart</a>
+            <a href="cat/audio.html">→ Sisteme audio mobile</a>
+            <a href="cat/pointere.html">→ Telecomenzi, pointere</a>
+          </div>
+        </a>
+        <a href="cat/birotica.html" class="cat-tile">
+          <div class="cat-icon">📎</div>
+          <div class="cat-title">Birotică &amp; Accesorii</div>
+          <div class="cat-count">142 produse</div>
+          <div class="cat-list">
+            <a href="cat/bibliorafturi.html">→ Bibliorafturi, mape</a>
+            <a href="cat/folii.html">→ Folii protecție</a>
+            <a href="cat/capse.html">→ Capse, agrafe</a>
+            <a href="cat/etichete.html">→ Etichete autoadezive</a>
+            <a href="cat/plicuri.html">→ Plicuri și colete</a>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <h2>Produse top vânzări — Martie 2024</h2>
+
+    <div class="product-card-grid">
+      <div class="product-card">
+        <div class="pc-img">🖨️</div>
+        <div class="pc-name">Cartuș HP 305 Black</div>
+        <div class="pc-code">Cod: TO-1001 · HP</div>
+        <div class="pc-price">75 Lei <span class="pc-price-old">89 Lei</span></div>
+        <div class="pc-action"><a href="produs/cartus-hp-305.html" class="btn" style="display:block; text-align:center;">Vezi detalii</a></div>
+      </div>
+      <div class="product-card">
+        <div class="pc-img">📄</div>
+        <div class="pc-name">Hârtie A4 Navigator 80g (5 topuri)</div>
+        <div class="pc-code">Cod: TO-1002 · Navigator</div>
+        <div class="pc-price">119 Lei <span class="pc-price-old">145 Lei</span></div>
+        <div class="pc-action"><a href="produs/hartie-a4-navigator.html" class="btn" style="display:block; text-align:center;">Vezi detalii</a></div>
+      </div>
+      <div class="product-card">
+        <div class="pc-img">🖨️</div>
+        <div class="pc-name">Imprimantă HP LaserJet M110we</div>
+        <div class="pc-code">Cod: TO-1003 · HP</div>
+        <div class="pc-price">749 Lei <span class="pc-price-old">890 Lei</span></div>
+        <div class="pc-action"><a href="produs/hp-laserjet.html" class="btn" style="display:block; text-align:center;">Vezi detalii</a></div>
+      </div>
+      <div class="product-card">
+        <div class="pc-img">🪑</div>
+        <div class="pc-name">Scaun ergonomic „Confort Plus"</div>
+        <div class="pc-code">Cod: TO-1004 · Producător RO</div>
+        <div class="pc-price">999 Lei <span class="pc-price-old">1.250 Lei</span></div>
+        <div class="pc-action"><a href="produs/scaun-confort.html" class="btn" style="display:block; text-align:center;">Vezi detalii</a></div>
+      </div>
+    </div>
+
+    <div class="product-card-grid">
+      <div class="product-card">
+        <div class="pc-img">✏️</div>
+        <div class="pc-name">Set pixuri Bic Cristal (50 buc)</div>
+        <div class="pc-code">Cod: TO-1005 · Bic</div>
+        <div class="pc-price">49 Lei <span class="pc-price-old">65 Lei</span></div>
+        <div class="pc-action"><a href="produs/bic-cristal.html" class="btn" style="display:block; text-align:center;">Vezi detalii</a></div>
+      </div>
+      <div class="product-card">
+        <div class="pc-img">📎</div>
+        <div class="pc-name">Biblioraft plastifiat A4 (10 buc)</div>
+        <div class="pc-code">Cod: TO-1006</div>
+        <div class="pc-price">85 Lei <span class="pc-price-old">110 Lei</span></div>
+        <div class="pc-action"><a href="produs/biblioraft.html" class="btn" style="display:block; text-align:center;">Vezi detalii</a></div>
+      </div>
+      <div class="product-card">
+        <div class="pc-img">🖨️</div>
+        <div class="pc-name">Toner Brother TN-2420 (compatibil)</div>
+        <div class="pc-code">Cod: TO-1007 · Compatibil</div>
+        <div class="pc-price">129 Lei <span class="pc-price-old">155 Lei</span></div>
+        <div class="pc-action"><a href="produs/toner-tn2420.html" class="btn" style="display:block; text-align:center;">Vezi detalii</a></div>
+      </div>
+      <div class="product-card">
+        <div class="pc-img">🧮</div>
+        <div class="pc-name">Calculator Casio MS-20F (de birou)</div>
+        <div class="pc-code">Cod: TO-1009 · Casio</div>
+        <div class="pc-price">79 Lei <span class="pc-price-old">95 Lei</span></div>
+        <div class="pc-action"><a href="produs/casio-ms20.html" class="btn" style="display:block; text-align:center;">Vezi detalii</a></div>
+      </div>
+    </div>
+
+    <p style="text-align: center; margin: 20px 0;">
+      <a href="top-vanzari.html" class="btn">📊 Vezi întreg top 100 (2024)</a>
+      <a href="produse-noi.html" class="btn">✨ Produse adăugate recent</a>
+      <a href="lichidari.html" class="btn red">🔥 Stoc limitat / Lichidări</a>
+    </p>
+
+    <h2>Mărci principale</h2>
+
+    <p>Distribuim cu drepturi oficiale produsele următoarelor mărci:</p>
+
+    <div class="partner-grid" style="margin: 14px 0;">
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">HP Inc.</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">Canon</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">Epson</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">Brother</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">Mondi</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">Navigator</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">Bic</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">Stabilo</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">Edding</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">Casio</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">BenQ</span>
+      <span class="partner" style="background: var(--off-white); border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; display: inline-block;">PaperWorld</span>
+    </div>
+
+    <h2>Listă completă de prețuri</h2>
+
+    <p>
+      Pentru lista completă a celor 2.000+ produse din catalog, descărcați documentul PDF (actualizat lunar):
+    </p>
+
+    <p style="text-align: center; margin: 18px 0;">
+      <a href="lista-preturi-2024.pdf" class="btn">📄 Lista de prețuri 2024 (PDF, 2,4 MB)</a>
+      <a href="catalog.pdf" class="btn">📊 Catalog vizual cu fotografii (PDF, 5,8 MB)</a>
+    </p>
+
+    <div class="info-box">
+      <strong>ℹ Pentru cantități mari:</strong> Pentru comenzi peste 1.000 Lei sau pentru contracte cadru anuale, vă rugăm să solicitați o <strong>ofertă personalizată</strong>. Putem oferi prețuri cu 5-15% sub catalog pentru clienții B2B cu volume mari.
+    </div>
+
+  </main>
+
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>Despre TransOffice</h4>
+      <ul>
+        <li><a href="despre.html">Cine suntem</a></li>
+        <li><a href="echipa.html">Echipa noastră</a></li>
+        <li><a href="istorie.html">Istoricul firmei</a></li>
+        <li><a href="cariere.html">Cariere</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Servicii</h4>
+      <ul>
+        <li><a href="livrare.html">Livrare la sediu</a></li>
+        <li><a href="contracte.html">Contracte de furnizare</a></li>
+        <li><a href="oferta.html">Oferte personalizate</a></li>
+        <li><a href="seap.html">SEAP / Achiziții publice</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Suport clienți</h4>
+      <ul>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="reclamatii.html">Reclamații</a></li>
+        <li><a href="garantie.html">Garanție</a></li>
+        <li><a href="retur.html">Politica de retur</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Informații legale</h4>
+      <ul>
+        <li><a href="confidentialitate.html">Confidențialitate</a></li>
+        <li><a href="termeni.html">Termeni și condiții</a></li>
+        <li><a href="cookie.html">Politica de cookies</a></li>
+        <li><a href="anpc.html">ANPC</a></li>
+        <li><a href="sol.html">SOL — Soluționare online</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    © 2003–2024 <strong>TransOffice Trade SRL</strong> · CUI: 15847291 · J19/421/2003 · Sediul: Calea Băieșenilor 22, Odorheiu Secuiesc, jud. Harghita<br>
+    Ultima actualizare: 15.03.2024 · WebDesign: Gábor IT Solutions
+  </div>
+</footer>
+
+<a href="chat.html" class="chatbot-btn">Asistent online</a>
+
+</body>
+</html>

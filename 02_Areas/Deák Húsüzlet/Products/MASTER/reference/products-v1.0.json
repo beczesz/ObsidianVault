@@ -1,0 +1,112 @@
+{
+ "meta": {
+  "version": "1.0",
+  "schema_version": "1.0",
+  "date": "2026-05-07",
+  "author": "Exar Labs",
+  "description": "Dummy product catalog for schema validation testing"
+ },
+ "categories": [
+  {
+   "category_id": "friss_serteshus",
+   "category_name_ro": "Carne proaspătă de porc",
+   "category_name_hu": "Friss Sertéshús"
+  },
+  {
+   "category_id": "fustolt_aruk",
+   "category_name_ro": "Produse afumate",
+   "category_name_hu": "Füstölt Áruk"
+  }
+ ],
+ "products": [
+  {
+   "id": "nyakas_karaj",
+   "product_name_ro": "Ceafă porc",
+   "product_name_hu": "Sertés nyakaskaraj",
+   "description_ro": "Bucată marmorată între gât și cotlet, excelentă la prăjit și înăbușit.",
+   "description_hu": "A nyak és a karaj közötti márványos rész, kiváló sütéshez és pároláshoz.",
+   "note_ro": null,
+   "note_hu": null,
+   "image": "nyakas_karaj.webp",
+   "price": 33.0,
+   "unit": "kg",
+   "product_type": "weight",
+   "estimated_weight_per_piece": null,
+   "weight_range_min": null,
+   "weight_range_max": null,
+   "category": "friss_serteshus",
+   "is_available": true,
+   "popularity_score": 100,
+   "quantity_override": null
+  },
+  {
+   "id": "pastetom",
+   "product_name_ro": "Pate porc de casă",
+   "product_name_hu": "Pástétom",
+   "description_ro": "Pate de carne cremos, fin prelucrat.",
+   "description_hu": "Krémes, finomra dolgozott húspástétom.",
+   "note_ro": "Bucată",
+   "note_hu": "Darab",
+   "image": "pastetom.webp",
+   "price": 22.0,
+   "unit": "pcs",
+   "product_type": "piece",
+   "estimated_weight_per_piece": null,
+   "weight_range_min": null,
+   "weight_range_max": null,
+   "category": "fustolt_aruk",
+   "is_available": true,
+   "popularity_score": 50,
+   "quantity_override": {
+    "min_quantity": 1,
+    "max_quantity": 10,
+    "step": 1,
+    "hot_amounts": [1, 2, 3, 5]
+   }
+  },
+  {
+   "id": "sertes_belszin",
+   "product_name_ro": "Mușchuleți porc",
+   "product_name_hu": "Sertés Bélszín",
+   "description_ro": "Cea mai fragedă și nobilă parte a porcului.",
+   "description_hu": "A sertés legpuhább, legnemesebb része, omlós állagú.",
+   "note_ro": "Bucată - aprox. 0.50 kg",
+   "note_hu": "Darab - kb. 0.50 kg-os",
+   "image": "sertes_belszin.webp",
+   "price": 40.0,
+   "unit": "kg",
+   "product_type": "hybrid",
+   "estimated_weight_per_piece": 0.5,
+   "weight_range_min": 0.4,
+   "weight_range_max": 0.6,
+   "category": "friss_serteshus",
+   "is_available": true,
+   "popularity_score": 200,
+   "quantity_override": {
+    "min_quantity": 1,
+    "max_quantity": 5,
+    "step": 1,
+    "hot_amounts": [1, 2, 3]
+   }
+  }
+ ],
+ "settings": {
+  "default_min_quantity": 0.5,
+  "default_max_quantity": 5.0,
+  "default_step": 0.05,
+  "default_hot_amounts": [0.5, 1, 2, 3, 5],
+  "weight_range_percent": 20.0,
+  "unit_options": [
+   {
+    "unit_id": "kg",
+    "unit_label_ro": "kg",
+    "unit_label_hu": "kg"
+   },
+   {
+    "unit_id": "pcs",
+    "unit_label_ro": "buc",
+    "unit_label_hu": "db"
+   }
+  ]
+ }
+}

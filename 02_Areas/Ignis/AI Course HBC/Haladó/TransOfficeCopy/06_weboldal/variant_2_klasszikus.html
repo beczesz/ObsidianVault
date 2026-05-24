@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TransOffice Trade SRL — Partener de încredere de peste 22 de ani</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', 'Cambria', serif; color: #2d2418; background: #fbf9f3; line-height: 1.7; }
+  a { color: #2c4870; text-decoration: none; border-bottom: 1px solid transparent; }
+  a:hover { border-bottom-color: #2c4870; }
+  .container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+
+  /* Top bar */
+  .topbar { background: #2c4870; color: #e7e0cc; font-size: 13px; padding: 8px 0; }
+  .topbar-row { display: flex; justify-content: space-between; }
+  .topbar a { color: #e7e0cc; border-bottom: none; }
+
+  /* Header */
+  header { background: #fbf9f3; border-bottom: 3px solid #6b4d28; padding: 32px 0 0; }
+  .header-row { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
+  .logo h1 { font-size: 36px; font-family: 'Palatino', 'Georgia', serif; color: #6b4d28; letter-spacing: 1px; font-weight: normal; }
+  .logo .tag { font-size: 13px; color: #2c4870; font-style: italic; letter-spacing: 2px; text-transform: uppercase; margin-top: 4px; }
+  .est { text-align: right; }
+  .est .est-line { font-size: 13px; color: #6b4d28; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 4px; }
+  .est .est-year { font-size: 28px; font-family: 'Palatino', 'Georgia', serif; color: #6b4d28; }
+  nav { background: #6b4d28; }
+  .nav-links { display: flex; justify-content: center; gap: 48px; padding: 14px 0; }
+  .nav-links a { color: #f7f1de; border-bottom: none; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; font-family: 'Georgia', serif; }
+  .nav-links a:hover { color: #fff; }
+
+  /* Hero */
+  .hero { padding: 80px 0; text-align: center; background: linear-gradient(180deg, #fbf9f3 0%, #f3eada 100%); }
+  .hero h2 { font-size: 44px; font-family: 'Palatino', 'Georgia', serif; color: #2d2418; margin-bottom: 20px; font-weight: normal; line-height: 1.25; max-width: 800px; margin-left: auto; margin-right: auto; }
+  .hero .lead { font-size: 19px; color: #4a3c28; max-width: 680px; margin: 0 auto 32px; font-style: italic; }
+  .ornament { width: 80px; height: 2px; background: #6b4d28; margin: 32px auto; position: relative; }
+  .ornament::before, .ornament::after { content: "❦"; position: absolute; top: -12px; color: #6b4d28; font-size: 18px; }
+  .ornament::before { left: -28px; }
+  .ornament::after { right: -28px; }
+  .btn { display: inline-block; padding: 14px 36px; background: #6b4d28; color: #fbf9f3; font-family: 'Georgia', serif; font-size: 15px; letter-spacing: 1px; text-transform: uppercase; border: 2px solid #6b4d28; }
+  .btn:hover { background: #fbf9f3; color: #6b4d28; border-bottom: 2px solid #6b4d28; }
+
+  /* Story */
+  .story { padding: 80px 0; background: #fff; }
+  .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .story h3 { font-family: 'Palatino', serif; font-size: 32px; color: #2c4870; margin-bottom: 24px; font-weight: normal; }
+  .story p { font-size: 16px; color: #4a3c28; margin-bottom: 18px; }
+  .story p:first-letter { font-size: 32px; font-family: 'Palatino', serif; color: #6b4d28; float: left; line-height: 1; padding-right: 6px; padding-top: 2px; }
+  .story-quote { background: #f3eada; border-left: 4px solid #6b4d28; padding: 24px 28px; font-style: italic; font-size: 17px; color: #4a3c28; line-height: 1.6; }
+  .story-quote .author { font-size: 13px; color: #6b4d28; margin-top: 12px; font-style: normal; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* Services */
+  .services { padding: 80px 0; background: #fbf9f3; }
+  .section-title { text-align: center; margin-bottom: 56px; }
+  .section-title h3 { font-family: 'Palatino', serif; font-size: 32px; color: #2c4870; margin-bottom: 10px; font-weight: normal; }
+  .section-title .sub { font-size: 14px; color: #6b4d28; letter-spacing: 2px; text-transform: uppercase; }
+  .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 36px; }
+  .service { text-align: center; padding: 32px 24px; background: #fff; border: 1px solid #e3d8b8; }
+  .service-num { font-family: 'Palatino', serif; font-size: 36px; color: #6b4d28; margin-bottom: 12px; }
+  .service h4 { font-family: 'Georgia', serif; font-size: 19px; color: #2c4870; margin-bottom: 12px; }
+  .service p { font-size: 14px; color: #4a3c28; line-height: 1.7; }
+
+  /* AFM */
+  .afm { padding: 80px 0; background: #2c4870; color: #f3eada; text-align: center; }
+  .afm h3 { font-family: 'Palatino', serif; font-size: 34px; color: #fff; margin-bottom: 20px; font-weight: normal; }
+  .afm .sub { font-style: italic; color: #c4d4e8; font-size: 17px; max-width: 720px; margin: 0 auto 36px; }
+  .afm-stats { display: flex; justify-content: center; gap: 56px; flex-wrap: wrap; margin-top: 40px; }
+  .afm-stat { text-align: center; }
+  .afm-stat .n { font-family: 'Palatino', serif; font-size: 44px; color: #fff; }
+  .afm-stat .l { font-size: 13px; color: #c4d4e8; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 4px; }
+  .afm a { color: #fff; border-bottom-color: #fff; }
+
+  /* Values */
+  .values { padding: 80px 0; background: #fff; }
+  .values-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 48px; max-width: 880px; margin: 0 auto; }
+  .value { display: flex; gap: 20px; }
+  .value-num { font-family: 'Palatino', serif; font-size: 56px; color: #e7d6b0; line-height: 0.8; flex-shrink: 0; width: 60px; }
+  .value h4 { font-family: 'Palatino', serif; font-size: 22px; color: #2c4870; margin-bottom: 6px; font-weight: normal; }
+  .value p { font-size: 15px; color: #4a3c28; }
+
+  /* Contact */
+  .contact { padding: 80px 0; background: #f3eada; border-top: 3px solid #6b4d28; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; }
+  .contact h3 { font-family: 'Palatino', serif; font-size: 32px; color: #2c4870; margin-bottom: 24px; font-weight: normal; }
+  .contact-item { margin-bottom: 16px; font-size: 16px; }
+  .contact-item .lbl { font-size: 12px; color: #6b4d28; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 2px; }
+
+  footer { background: #2d2418; color: #c4b89c; padding: 32px 0; text-align: center; font-size: 13px; font-family: 'Georgia', serif; }
+  footer a { color: #c4b89c; border-bottom: none; }
+
+  @media (max-width: 880px) {
+    .story-grid, .contact-grid, .values-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .hero h2 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="container topbar-row">
+    <span>Telefon: 0266-218945</span>
+    <a href="mailto:contact@transoffice.ro">contact@transoffice.ro</a>
+  </div>
+</div>
+
+<header>
+  <div class="container header-row">
+    <div class="logo">
+      <h1>TransOffice Trade</h1>
+      <div class="tag">— Furnizor de încredere —</div>
+    </div>
+    <div class="est">
+      <div class="est-line">Înființată în</div>
+      <div class="est-year">MMIII</div>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-links">
+      <a href="#povestea">Povestea noastră</a>
+      <a href="#servicii">Servicii</a>
+      <a href="#valori">Valori</a>
+      <a href="#mobilitate">Mobilitate verde</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="container">
+    <div class="ornament"></div>
+    <h2>"O cutie de hârtie, livrată la timp,<br>e o promisiune ținută."</h2>
+    <p class="lead">Furnizăm consumabile și mobilier de birou pentru instituții și companii din Hargita și Covasna de peste două decenii. Cu fiecare comandă onorată, am construit ceva mai durabil decât o tranzacție — relații.</p>
+    <a href="#contact" class="btn">Solicitați o ofertă</a>
+  </div>
+</section>
+
+<section id="povestea" class="story">
+  <div class="container story-grid">
+    <div>
+      <h3>Povestea TransOffice</h3>
+      <p>În anul 2003, Kovács István a deschis în Odorheiu Secuiesc un mic depozit de consumabile de birou. La început, un singur autoturism Dacia, o garajă închiriată și o listă scurtă de clienți pe o foaie de hârtie.</p>
+      <p>Astăzi, după 22 de ani, deservim 28 de clienți activi în mod constant — instituții publice, școli, cabinete medicale, firme private. Direcția zilnică a trecut din 2024 în mâinile lui Kovács Márton, fiul fondatorului, dar valorile au rămas neschimbate.</p>
+    </div>
+    <div class="story-quote">
+      „Anyu mondta mindig: a kliens akkor lesz hűséges, ha ott vagy, amikor szüksége van rád. Nem akkor, amikor neked van időd."
+      <div class="author">— Kovács Márton, Administrator</div>
+    </div>
+  </div>
+</section>
+
+<section id="servicii" class="services">
+  <div class="container">
+    <div class="section-title">
+      <div class="sub">Ce oferim</div>
+      <h3>Servicii pentru sediul dumneavoastră</h3>
+    </div>
+    <div class="services-grid">
+      <div class="service">
+        <div class="service-num">I.</div>
+        <h4>Papetărie & Consumabile</h4>
+        <p>Hârtie, tonere originale și echivalent, rechizite. Stoc constant pentru cele 30 de referințe cele mai cerute.</p>
+      </div>
+      <div class="service">
+        <div class="service-num">II.</div>
+        <h4>Livrare locală</h4>
+        <p>În 24 de ore în Hargita și Covasna. Pentru clienții cu contract anual: livrare săptămânală programată.</p>
+      </div>
+      <div class="service">
+        <div class="service-num">III.</div>
+        <h4>Mobilier de birou</h4>
+        <p>Birouri, scaune ergonomice, dulapuri. Pentru spații de la 5 la 50 de persoane. Cu instalare, dacă e nevoie.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mobilitate" class="afm">
+  <div class="container">
+    <div class="ornament" style="background: rgba(255,255,255,0.4);"></div>
+    <h3>Un pas înainte. Cu măsură.</h3>
+    <p class="sub">Pentru anul 2025, am decis să modernizăm flota de livrare cu vehicule electrice. Depunem cerere la Programul AFM Mobilitate Verde IMM 2025 pentru două autoutilitare electrice N1 și un punct de reîncărcare semi-rapidă la sediul nostru, accesibil publicului între 8:00–18:00.</p>
+    <p class="sub" style="margin-top: 16px;">Nu schimbăm felul în care lucrăm. Doar vehiculele cu care ajungem la dumneavoastră.</p>
+    <div class="afm-stats">
+      <div class="afm-stat"><div class="n">2</div><div class="l">Vehicule electrice N1</div></div>
+      <div class="afm-stat"><div class="n">22 kW</div><div class="l">Punct de reîncărcare</div></div>
+      <div class="afm-stat"><div class="n">5,2t</div><div class="l">CO₂ reduse anual</div></div>
+      <div class="afm-stat"><div class="n">2026</div><div class="l">Flotă operațională</div></div>
+    </div>
+  </div>
+</section>
+
+<section id="valori" class="values">
+  <div class="container">
+    <div class="section-title">
+      <div class="sub">De ce ne aleg</div>
+      <h3>Patru valori, neschimbate de 22 de ani</h3>
+    </div>
+    <div class="values-grid">
+      <div class="value">
+        <div class="value-num">01</div>
+        <div><h4>Cuvântul dat</h4><p>Dacă spunem mâine, e mâine. Dacă nu reușim, sunăm înainte — nu după.</p></div>
+      </div>
+      <div class="value">
+        <div class="value-num">02</div>
+        <div><h4>Plată corectă</h4><p>Discount-uri pentru parteneri pe termen lung. Termen extins de plată pentru instituțiile publice (60 zile).</p></div>
+      </div>
+      <div class="value">
+        <div class="value-num">03</div>
+        <div><h4>Răspundem la telefon</h4><p>Pentru o reclamație validă (cum a fost cu tonerul defect din septembrie 2024) — înlocuire în 24 de ore. Fără birocrație.</p></div>
+      </div>
+      <div class="value">
+        <div class="value-num">04</div>
+        <div><h4>Local pentru local</h4><p>Cunoaștem fiecare client. Știm că la liceul Martinovics, septembrie e luna de top. Planificăm împreună.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="contact">
+  <div class="container">
+    <div class="contact-grid">
+      <div>
+        <h3>Vă așteptăm</h3>
+        <p style="font-size: 16px; color: #4a3c28; margin-bottom: 24px;">Pentru cereri de ofertă, contracte-cadru anuale sau orice întrebare — răspundem în 24 de ore lucrătoare. Vă rugăm să nu ezitați.</p>
+      </div>
+      <div>
+        <div class="contact-item"><div class="lbl">Sediu</div>Calea Băieșenilor 22<br>Odorheiu Secuiesc, jud. Harghita</div>
+        <div class="contact-item"><div class="lbl">Telefon</div>0266-218945</div>
+        <div class="contact-item"><div class="lbl">Email</div>contact@transoffice.ro</div>
+        <div class="contact-item"><div class="lbl">Date juridice</div>CUI 15847291 · J19/421/2003</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  © MMIII–MMXXV  ·  TransOffice Trade SRL  ·  Odorheiu Secuiesc  ·  <a href="mailto:contact@transoffice.ro">contact@transoffice.ro</a>
+</footer>
+
+</body>
+</html>

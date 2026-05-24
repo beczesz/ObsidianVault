@@ -1,1 +1,1 @@
-- [ ] Milyen árajánlat volt? CEntralize this as well 📅 2025-09-09 
+- [ ] Milyen árajánlat volt? Centralize this as well 

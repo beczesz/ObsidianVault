@@ -1,0 +1,694 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH v0.4 — Termékek oldal — Explorations</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #F5F0EB; --card: #FFFFFF; --primary: #7B2D3B; --primary-light: #9B4D5B;
+    --text: #2D2D2D; --text2: #777777; --border: #E8E0D8;
+    --green: #2E7D32; --green-light: #E8F5E9; --green-dark: #1B5E20;
+    --gold-light: #FFF8E1; --warn: #E65100; --warn-bg: #FFF3E0;
+    --red: #C62828;
+  }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #F8F5F0; color: var(--text); }
+
+  .header { max-width: 1400px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+  .tabs { display: flex; gap: 8px; max-width: 1400px; margin: 16px auto; padding: 0 24px; overflow-x: auto; flex-wrap: wrap; }
+  .tab {
+    padding: 10px 18px; border-radius: 24px; font-size: 13px;
+    border: 1px solid var(--border); background: white; color: var(--text);
+    cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 400;
+  }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+
+  .content { max-width: 1400px; margin: 0 auto; padding: 0 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+
+  /* Approach card */
+  .approach {
+    background: white; border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px 24px; margin-bottom: 20px;
+    display: grid; grid-template-columns: 1fr auto; gap: 24px;
+    align-items: start;
+  }
+  .approach-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; }
+  .approach-sub { font-size: 13px; color: var(--text2); margin-bottom: 12px; }
+  .approach-section { margin-bottom: 10px; }
+  .approach-label { font-size: 10px; font-weight: 700; color: var(--primary); text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 4px; }
+  .approach-text { font-size: 13px; line-height: 1.5; color: var(--text); }
+  .approach-text strong { color: var(--primary); }
+  .approach-meta { display: flex; flex-direction: column; gap: 8px; }
+  .approach-pill {
+    padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+    white-space: nowrap; text-align: center;
+  }
+  .approach-pill.risk-low { background: var(--green-light); color: var(--green-dark); }
+  .approach-pill.risk-med { background: var(--gold-light); color: #B8651D; }
+  .approach-pill.risk-high { background: var(--warn-bg); color: var(--warn); }
+  .approach-pill.novel { background: #F0E7EC; color: var(--primary); }
+
+  /* Phone frame — mobile-first, we stage 1 phone centered */
+  .phones {
+    display: flex; gap: 24px; justify-content: center; flex-wrap: wrap;
+    padding-top: 4px;
+  }
+  .phone {
+    width: 375px; min-height: 720px; max-height: 780px;
+    background: var(--bg); border-radius: 32px; border: 10px solid #2C2825;
+    overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.16);
+    flex-shrink: 0; display: flex; flex-direction: column;
+  }
+  .phone-status {
+    height: 28px; background: var(--bg); display: flex; justify-content: space-between;
+    align-items: center; padding: 0 16px; font-size: 10px; font-weight: 700; color: var(--text);
+    flex-shrink: 0;
+  }
+  .phone-header {
+    background: var(--bg); padding: 10px 16px 12px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    border-bottom: 1px solid rgba(232,224,216,0.6);
+  }
+  .phone-header .ph-title {
+    font-size: 18px; font-weight: 800; font-family: Georgia, serif;
+    color: var(--text);
+  }
+  .phone-header .ph-right { display: flex; gap: 10px; align-items: center; }
+  .phone-header .ph-icon {
+    width: 34px; height: 34px; border-radius: 10px; background: white;
+    display: flex; align-items: center; justify-content: center;
+    border: 1px solid var(--border); cursor: pointer; position: relative;
+  }
+  .phone-header .ph-icon .dot {
+    position: absolute; top: 5px; right: 5px; width: 7px; height: 7px;
+    border-radius: 50%; background: var(--primary); border: 1.5px solid white;
+  }
+  .phone-body { flex: 1; overflow-y: auto; padding: 0 12px 12px; scroll-behavior: smooth; }
+  .phone-body::-webkit-scrollbar { width: 0; }
+
+  /* Tab bar (bottom) */
+  .tabbar {
+    background: white; border-top: 1px solid var(--border);
+    display: flex; justify-content: space-around; padding: 8px 0 10px;
+    flex-shrink: 0;
+  }
+  .tabbar-item {
+    display: flex; flex-direction: column; align-items: center; gap: 2px;
+    font-size: 10px; color: var(--text2); cursor: pointer;
+    min-width: 60px;
+  }
+  .tabbar-item.active { color: var(--primary); font-weight: 700; }
+  .tabbar-item svg { opacity: 0.7; }
+  .tabbar-item.active svg { opacity: 1; }
+  .tabbar-item .badge-dot {
+    position: absolute; margin-left: 14px; margin-top: -4px;
+    width: 8px; height: 8px; border-radius: 50%; background: var(--primary); border: 1.5px solid white;
+  }
+
+  /* ==== Shared UI ==== */
+
+  /* Search input */
+  .search-bar {
+    display: flex; align-items: center; gap: 8px;
+    background: white; border: 1px solid var(--border); border-radius: 12px;
+    padding: 10px 12px; margin: 10px 0 12px;
+  }
+  .search-bar input {
+    flex: 1; border: none; background: transparent; outline: none;
+    font-size: 14px; color: var(--text);
+  }
+  .search-bar input::placeholder { color: var(--text2); }
+
+  /* Category pills */
+  .cat-pills {
+    display: flex; gap: 6px; overflow-x: auto; padding: 4px 4px 8px;
+    margin: 0 -12px 8px; padding-left: 12px; padding-right: 12px;
+    scrollbar-width: none;
+  }
+  .cat-pills::-webkit-scrollbar { display: none; }
+  .cat-pill {
+    padding: 7px 14px; border-radius: 20px; font-size: 12px; font-weight: 500;
+    border: 1px solid var(--border); background: white; white-space: nowrap;
+    cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+  }
+  .cat-pill:hover { border-color: var(--primary); }
+  .cat-pill.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .cat-pill-count {
+    display: inline-block; margin-left: 4px; font-size: 10px; opacity: 0.7;
+  }
+
+  /* Filter + sort bar */
+  .filter-bar {
+    display: flex; justify-content: space-between; gap: 8px; margin: 2px 0 10px;
+  }
+  .filter-btn {
+    display: flex; align-items: center; gap: 6px;
+    background: white; border: 1px solid var(--border); border-radius: 10px;
+    padding: 7px 12px; font-size: 12px; font-weight: 500; color: var(--text);
+    cursor: pointer;
+  }
+  .filter-btn .filter-dot {
+    background: var(--primary); color: white; font-size: 10px; font-weight: 700;
+    padding: 0 5px; border-radius: 8px; min-width: 14px; text-align: center;
+  }
+  .result-count { font-size: 12px; color: var(--text2); align-self: center; }
+
+  /* === Product card — grid (2-col) === */
+  .prod-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;
+  }
+  .prod-card {
+    background: white; border-radius: 14px; border: 1px solid var(--border);
+    overflow: hidden; position: relative; display: flex; flex-direction: column;
+  }
+  .prod-card .pc-img {
+    aspect-ratio: 1 / 1; position: relative;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .prod-card .pc-img .pc-fav {
+    position: absolute; top: 8px; right: 8px;
+    width: 30px; height: 30px; border-radius: 50%;
+    background: rgba(255,255,255,0.9); backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; border: none;
+  }
+  .prod-card .pc-img .pc-badge {
+    position: absolute; top: 8px; left: 8px;
+    background: var(--primary); color: white;
+    padding: 3px 8px; border-radius: 8px; font-size: 10px; font-weight: 700;
+  }
+  .prod-card .pc-img .pc-badge.new { background: var(--green); }
+  .prod-card .pc-img .pc-badge.sale { background: var(--red); }
+  .prod-card .pc-body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 3px; flex: 1; }
+  .prod-card .pc-cat { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
+  .prod-card .pc-name { font-size: 13px; font-weight: 700; line-height: 1.25; color: var(--text); }
+  .prod-card .pc-meta { font-size: 11px; color: var(--text2); }
+  .prod-card .pc-price-row {
+    display: flex; align-items: flex-end; justify-content: space-between; margin-top: auto; padding-top: 8px; gap: 6px;
+  }
+  .prod-card .pc-price { font-size: 15px; font-weight: 800; color: var(--primary); line-height: 1; }
+  .prod-card .pc-price-unit { font-size: 10px; color: var(--text2); font-weight: 500; line-height: 1.1; }
+  .prod-card .pc-price-old { font-size: 11px; color: var(--text2); text-decoration: line-through; }
+  .prod-card .pc-add {
+    width: 32px; height: 32px; border-radius: 10px; background: var(--primary);
+    color: white; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .prod-card .pc-oos-ov {
+    position: absolute; inset: 0; background: rgba(255,255,255,0.85);
+    backdrop-filter: blur(2px); display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700; color: var(--text2);
+  }
+
+  /* === Product list (1-col, horizontal) === */
+  .prod-list { display: flex; flex-direction: column; gap: 10px; margin-bottom: 12px; }
+  .prod-list-item {
+    background: white; border: 1px solid var(--border); border-radius: 14px;
+    padding: 10px; display: flex; gap: 12px; align-items: center;
+  }
+  .prod-list-item .pli-img {
+    width: 80px; height: 80px; border-radius: 10px; overflow: hidden;
+    background: #F5EFE8; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative;
+  }
+  .prod-list-item .pli-body { flex: 1; min-width: 0; }
+  .prod-list-item .pli-cat { font-size: 10px; color: var(--text2); text-transform: uppercase; letter-spacing: 0.4px; font-weight: 600; }
+  .prod-list-item .pli-name { font-size: 14px; font-weight: 700; line-height: 1.2; margin: 2px 0; }
+  .prod-list-item .pli-meta { font-size: 11px; color: var(--text2); }
+  .prod-list-item .pli-price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 6px; gap: 8px; }
+  .prod-list-item .pli-price { font-size: 15px; font-weight: 800; color: var(--primary); }
+  .prod-list-item .pli-price-unit { font-size: 10px; color: var(--text2); font-weight: 500; }
+
+  /* Qty stepper */
+  .qty-step {
+    display: inline-flex; align-items: center; background: #F5F0EB;
+    border-radius: 10px; padding: 3px; gap: 0;
+  }
+  .qty-step button {
+    width: 28px; height: 28px; border: none; background: white; border-radius: 7px;
+    cursor: pointer; font-size: 16px; font-weight: 700; color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .qty-step .qval { font-size: 12px; font-weight: 700; color: var(--text); min-width: 40px; text-align: center; }
+
+  /* Section heading */
+  .sec-head {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin: 12px 2px 8px;
+  }
+  .sec-head .sh-title {
+    font-size: 16px; font-weight: 800; display: flex; align-items: center; gap: 6px;
+    letter-spacing: -0.2px;
+  }
+  .sec-head .sh-link {
+    font-size: 12px; font-weight: 600; color: var(--primary); cursor: pointer;
+  }
+  .sec-sub { font-size: 11px; color: var(--text2); margin: -6px 2px 10px; }
+
+  /* === Image placeholders (stylized meat illustrations) === */
+  .meat-img {
+    width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+    font-family: Georgia, serif; font-size: 10px; color: white; text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+    background-size: cover; background-position: center; position: relative;
+  }
+  /* per-category gradient + emojiless illustration wrapper */
+  .meat-img.friss    { background: linear-gradient(135deg, #C86B5C 0%, #8F3A2E 100%); }
+  .meat-img.fustolt  { background: linear-gradient(135deg, #A0522D 0%, #5C2F1A 100%); }
+  .meat-img.felvagott{ background: linear-gradient(135deg, #D4917A 0%, #8E4E38 100%); }
+  .meat-img.kolbasz  { background: linear-gradient(135deg, #8B3A2E 0%, #4E1D15 100%); }
+  .meat-img.fuszer   { background: linear-gradient(135deg, #A68B5B 0%, #6B5130 100%); }
+  .meat-img .mi-label {
+    position: absolute; bottom: 6px; left: 8px; font-size: 10px; font-weight: 600; color: rgba(255,255,255,0.85); letter-spacing: 0.5px;
+  }
+
+  /* === Category hero tiles (Layout 2) === */
+  .cat-carousel {
+    display: flex; gap: 10px; overflow-x: auto; padding: 8px 4px 12px;
+    margin: 0 -12px; padding-left: 12px; padding-right: 12px;
+    scrollbar-width: none;
+  }
+  .cat-carousel::-webkit-scrollbar { display: none; }
+  .cat-hero {
+    flex-shrink: 0; width: 110px; height: 130px; border-radius: 14px;
+    position: relative; overflow: hidden; cursor: pointer;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 10px 12px; color: white;
+  }
+  .cat-hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0) 60%);
+  }
+  .cat-hero > * { position: relative; z-index: 1; }
+  .cat-hero.active { box-shadow: 0 0 0 3px var(--primary); }
+  .cat-hero .ch-name { font-size: 14px; font-weight: 800; }
+  .cat-hero .ch-count { font-size: 10px; opacity: 0.85; }
+
+  /* === Large category tile (Layout 5) === */
+  .cat-tile-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;
+  }
+  .cat-tile {
+    aspect-ratio: 1.3 / 1; border-radius: 14px; position: relative; overflow: hidden;
+    display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 10px 12px; color: white; cursor: pointer;
+  }
+  .cat-tile::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.05) 70%);
+  }
+  .cat-tile > * { position: relative; z-index: 1; }
+  .cat-tile .ct-name { font-size: 15px; font-weight: 800; }
+  .cat-tile .ct-count { font-size: 10px; opacity: 0.85; }
+  .cat-tile.large { grid-column: span 2; aspect-ratio: 2.6 / 1; }
+
+  /* === Hero banner (swipable) === */
+  .hero-swipe {
+    display: flex; gap: 10px; overflow-x: auto; padding: 4px 4px 12px;
+    margin: 0 -12px 4px; padding-left: 12px; padding-right: 12px;
+    scroll-snap-type: x mandatory; scrollbar-width: none;
+  }
+  .hero-swipe::-webkit-scrollbar { display: none; }
+  .hero-slide {
+    flex-shrink: 0; width: 290px; border-radius: 16px;
+    padding: 20px; color: white; position: relative; overflow: hidden;
+    scroll-snap-align: start; cursor: pointer;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 150px;
+  }
+  .hero-slide.s1 { background: linear-gradient(135deg, #8B3A2E 0%, #4E1D15 100%); }
+  .hero-slide.s2 { background: linear-gradient(135deg, #2D5A3F 0%, #1B3524 100%); }
+  .hero-slide.s3 { background: linear-gradient(135deg, #A0522D 0%, #6B3418 100%); }
+  .hero-slide::after {
+    content: ''; position: absolute; right: -20px; top: -20px;
+    width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%);
+  }
+  .hero-slide .hs-eyebrow { font-size: 10px; font-weight: 800; letter-spacing: 1px; opacity: 0.85; text-transform: uppercase; }
+  .hero-slide .hs-title { font-size: 20px; font-weight: 800; line-height: 1.1; margin: 4px 0 2px; position: relative; z-index: 1; }
+  .hero-slide .hs-sub { font-size: 12px; opacity: 0.85; margin-bottom: 12px; }
+  .hero-slide .hs-cta {
+    display: inline-flex; align-self: flex-start; align-items: center; gap: 4px;
+    padding: 6px 12px; background: rgba(255,255,255,0.2); border-radius: 8px;
+    font-size: 12px; font-weight: 700; border: 1px solid rgba(255,255,255,0.3);
+  }
+  .hero-dots { display: flex; justify-content: center; gap: 4px; margin-top: -4px; margin-bottom: 8px; }
+  .hero-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border); }
+  .hero-dot.active { background: var(--primary); width: 16px; border-radius: 3px; }
+
+  /* === Savings mini-nudge === */
+  .savings-nudge {
+    background: linear-gradient(135deg, var(--green-light) 0%, #D8ECD9 100%);
+    border-radius: 14px; padding: 12px 14px; margin-bottom: 12px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .savings-nudge .sn-icon {
+    width: 38px; height: 38px; border-radius: 10px; background: white;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .savings-nudge .sn-body { flex: 1; min-width: 0; }
+  .savings-nudge .sn-title { font-size: 13px; font-weight: 700; color: var(--green-dark); }
+  .savings-nudge .sn-sub { font-size: 11px; color: var(--green-dark); opacity: 0.8; }
+  .savings-nudge .sn-bar {
+    height: 4px; background: rgba(27,94,32,0.15); border-radius: 2px; margin-top: 6px;
+    position: relative; overflow: hidden;
+  }
+  .savings-nudge .sn-bar > div {
+    position: absolute; left: 0; top: 0; bottom: 0; background: var(--green);
+    border-radius: 2px;
+  }
+
+  /* === Bundle strip (compact) === */
+  .bundle-strip {
+    background: linear-gradient(135deg, #FFF8E1 0%, #F5E4D0 100%);
+    border-radius: 14px; padding: 12px; margin-bottom: 12px;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  }
+  .bundle-chip {
+    background: white; border-radius: 10px; padding: 8px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .bundle-chip .bc-dot {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, #E8C99A, #C99858);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .bundle-chip .bc-txt { min-width: 0; flex: 1; }
+  .bundle-chip .bc-t1 { font-size: 12px; font-weight: 700; line-height: 1.1; }
+  .bundle-chip .bc-t2 { font-size: 10px; color: var(--text2); margin-top: 2px; }
+
+  /* === Magazine editorial card === */
+  .edit-card {
+    border-radius: 16px; overflow: hidden; position: relative;
+    height: 180px; margin-bottom: 12px; display: flex; flex-direction: column; justify-content: flex-end;
+    padding: 14px; color: white;
+    background: linear-gradient(135deg, #4A1B12 0%, #8B3A2E 100%);
+  }
+  .edit-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0) 70%);
+  }
+  .edit-card > * { position: relative; z-index: 1; }
+  .edit-card .ec-tag { font-size: 10px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; opacity: 0.85; }
+  .edit-card .ec-title { font-family: Georgia, serif; font-size: 19px; font-weight: 700; line-height: 1.15; margin-top: 4px; }
+  .edit-card .ec-sub { font-size: 12px; opacity: 0.85; margin-top: 3px; }
+
+  /* === Density: large feature card + small quick-tile === */
+  .feat-card {
+    background: white; border: 1px solid var(--border); border-radius: 16px;
+    overflow: hidden; margin-bottom: 12px; display: flex; flex-direction: column;
+  }
+  .feat-card .fc-img {
+    aspect-ratio: 1.8 / 1; position: relative;
+  }
+  .feat-card .fc-img .fc-tag {
+    position: absolute; top: 10px; left: 10px; background: var(--primary);
+    color: white; padding: 4px 10px; border-radius: 10px;
+    font-size: 11px; font-weight: 700;
+  }
+  .feat-card .fc-body { padding: 14px; }
+  .feat-card .fc-name { font-size: 17px; font-weight: 800; line-height: 1.2; }
+  .feat-card .fc-meta { font-size: 12px; color: var(--text2); margin-top: 3px; }
+  .feat-card .fc-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; gap: 10px; }
+  .feat-card .fc-price { font-size: 20px; font-weight: 800; color: var(--primary); }
+  .feat-card .fc-price-unit { font-size: 11px; color: var(--text2); display: block; font-weight: 500; }
+  .feat-card .fc-btn {
+    padding: 10px 18px; border-radius: 12px; background: var(--primary);
+    color: white; border: none; font-size: 13px; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 4px; cursor: pointer;
+  }
+
+  /* Quick-tile grid (4-col small) */
+  .quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .quick-tile {
+    background: white; border: 1px solid var(--border); border-radius: 10px;
+    padding: 8px 6px; text-align: center; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .quick-tile .qt-img {
+    width: 48px; height: 48px; border-radius: 10px; overflow: hidden;
+    background: #F5EFE8;
+  }
+  .quick-tile .qt-name { font-size: 10px; font-weight: 600; line-height: 1.1; }
+
+  /* Small horizontal scroller (3-ish visible) */
+  .h-scroll {
+    display: flex; gap: 10px; overflow-x: auto; padding: 4px 4px 12px;
+    margin: 0 -12px; padding-left: 12px; padding-right: 12px;
+    scrollbar-width: none;
+  }
+  .h-scroll::-webkit-scrollbar { display: none; }
+  .h-scroll .prod-card { width: 145px; flex-shrink: 0; }
+
+  /* Sticky filter drawer (bottom sheet mock) */
+  .bottom-sheet {
+    position: sticky; bottom: 0; background: white; border-top: 1px solid var(--border);
+    padding: 10px 12px; display: flex; justify-content: space-between; align-items: center;
+    z-index: 2;
+  }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px; margin: 16px 24px 0;
+    background: white; border: 1px solid #D8D0C8;
+    border-radius: 8px; font-family: system-ui, sans-serif;
+    font-size: 14px; font-weight: 600; color: #7B2D3B;
+    text-decoration: none; cursor: pointer;
+  }
+  .back-btn:hover { background: #F5F0EB; }
+
+  /* Design rationale block */
+  .rationale {
+    max-width: 1400px; margin: 40px auto 0; padding: 0 24px 60px;
+  }
+  .rationale h2 {
+    font-size: 22px; font-weight: 800; margin-bottom: 8px;
+  }
+  .rationale-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px;
+    margin-top: 16px;
+  }
+  .rationale-card {
+    background: white; border: 1px solid var(--border); border-radius: 14px; padding: 16px;
+  }
+  .rationale-card h3 { font-size: 14px; font-weight: 800; margin-bottom: 6px; color: var(--primary); }
+  .rationale-card p { font-size: 12px; color: var(--text); line-height: 1.5; }
+  .rationale-card .src { font-size: 10px; color: var(--text2); margin-top: 8px; font-style: italic; }
+
+  @media (max-width: 500px) {
+    html, body { overflow-x: hidden; }
+    .header { padding: 16px 12px 0; }
+    .header h1 { font-size: 22px; }
+    .tabs { padding: 0 12px; margin: 12px auto; gap: 6px; }
+    .tab { padding: 8px 14px; font-size: 12px; }
+    .content { padding: 0 12px 24px; }
+    .approach { grid-template-columns: 1fr; padding: 16px; }
+    .approach-meta { flex-direction: row; flex-wrap: wrap; }
+    .phone { width: 100%; max-width: 375px; }
+  }
+</style>
+</head>
+<body>
+<a href="index.html" class="back-btn">← Vissza</a>
+
+<div class="header">
+  <h1>Termékek oldal — Explorations</h1>
+  <p>Deák Húsmíves · v0.4 · 5 megközelítés · Mobile-first · Friss / Füstölt / Felvágott / Kolbász / Fűszer</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="a1">1 · Klasszikus 2-col grid</button>
+  <button class="tab" data-tab="a2">2 · Kategória carousel + lista</button>
+  <button class="tab" data-tab="a3">3 · Magazine mix (bundles + savings)</button>
+  <button class="tab" data-tab="a4">4 · Density-varied</button>
+  <button class="tab" data-tab="a5">5 · Hero swipe + tile-ek</button>
+  <button class="tab" data-tab="compare">↔ Összehasonlítás</button>
+</div>
+
+<div class="content">
+  <!-- ========== APPROACH 1: CLASSIC 2-COL GRID ========== -->
+  <div class="feature active" id="a1">
+    <div class="approach">
+      <div>
+        <div class="approach-title">1 · Klasszikus 2-col grid</div>
+        <div class="approach-sub">Biztonságos, jól ismert minta — mint a Carrefour, Lidl, Tesco mobil appok.</div>
+        <div class="approach-section">
+          <div class="approach-label">Kulcsdöntések</div>
+          <div class="approach-text">
+            Fent <strong>savings nudge</strong> (ha kosárban van már termék) · <strong>Kereső</strong> · <strong>Bundles szekció</strong> · <strong>horizontális kategória pill-ek</strong> · <strong>filter + sort bar</strong> · 2-oszlopos termék grid, fotó felül, ár + "+" gomb alul. Minden kártyán kedvenc ikon, akció/új badge.
+          </div>
+        </div>
+        <div class="approach-section">
+          <div class="approach-label">Miért ez működik</div>
+          <div class="approach-text">A grocery felhasználók <strong>fele sem nyitja meg a termékoldalt</strong> — egyenesen a listából adnak kosárba. Ezért a kártyán van minden: fotó, név, ár/kg, + gomb. Baymard: „3+ thumbnail per grid 70% don't provide" — mi teljesen vizuális lista lettünk.</div>
+        </div>
+      </div>
+      <div class="approach-meta">
+        <span class="approach-pill risk-low">Kockázat: alacsony</span>
+        <span class="approach-pill">Fidelity: hi</span>
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-a1"></div></div>
+  </div>
+
+  <!-- ========== APPROACH 2: CATEGORY CAROUSEL ========== -->
+  <div class="feature" id="a2">
+    <div class="approach">
+      <div>
+        <div class="approach-title">2 · Kategória carousel + vertikális lista</div>
+        <div class="approach-sub">A kategóriák nagyméretű vizuális hero-tile-ek — felül scrollozható sor.</div>
+        <div class="approach-section">
+          <div class="approach-label">Kulcsdöntések</div>
+          <div class="approach-text">
+            Felül <strong>vízszintes kategória carousel</strong> (5 nagy fotós tile, Friss/Füstölt/Felvágott/Kolbász/Fűszer) · Kiválasztás után <strong>1-oszlopos lista</strong> (fotó bal, info jobb, qty stepper). Első töltés: mind az 5 kategória egy-egy termékkel mutatva (preview).
+          </div>
+        </div>
+        <div class="approach-section">
+          <div class="approach-label">Miért ez működik</div>
+          <div class="approach-text">A vizuális kategória-tile-ek sokkal gyorsabban navigálhatók mobilon mint szöveges pill-ek. Az 1-oszlopos lista <strong>nagyobb thumbnail-t</strong> enged, ami könnyebbé teszi a felismerést — különösen idősebb felhasználóknak. Smart default: belépéskor „Friss" kategória nyitva.</div>
+        </div>
+      </div>
+      <div class="approach-meta">
+        <span class="approach-pill risk-low">Kockázat: alacsony</span>
+        <span class="approach-pill">Fidelity: hi</span>
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-a2"></div></div>
+  </div>
+
+  <!-- ========== APPROACH 3: MAGAZINE MIX ========== -->
+  <div class="feature" id="a3">
+    <div class="approach">
+      <div>
+        <div class="approach-title">3 · Magazine-style mix</div>
+        <div class="approach-sub">Keveredés: editorial hero + bundles + savings + termék-sorok. Mint egy magazin kezdőlap.</div>
+        <div class="approach-section">
+          <div class="approach-label">Kulcsdöntések</div>
+          <div class="approach-text">
+            <strong>Editorial hero kártya</strong> (pl. „Grillszezon — 5 tipp a tökéletes sertéstarjához") · <strong>Bundles csík</strong> (2 csomag mini kártyákkal) · <strong>Savings progress</strong> nudge (ha van kosár) · <strong>H-scroll „Ajánljuk"</strong> szekció · <strong>H-scroll „Újdonságok"</strong> · legalul <strong>teljes lista</strong> kategória pillekkel.
+          </div>
+        </div>
+        <div class="approach-section">
+          <div class="approach-label">Miért ez működik</div>
+          <div class="approach-text">Deák prémium brand — editorial tartalom erősíti a <strong>craftsman story-t</strong> (Harrods Meat / boutique butcher vibe). A savings nudge és bundles egy „find your meal" flow-t ad. Több visszatérő contact pont-ja van az admin-nak.</div>
+        </div>
+      </div>
+      <div class="approach-meta">
+        <span class="approach-pill risk-med">Kockázat: közepes</span>
+        <span class="approach-pill novel">+ editorial</span>
+        <span class="approach-pill">Fidelity: hi</span>
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-a3"></div></div>
+  </div>
+
+  <!-- ========== APPROACH 4: DENSITY-VARIED ========== -->
+  <div class="feature" id="a4">
+    <div class="approach">
+      <div>
+        <div class="approach-title">4 · Density-varied</div>
+        <div class="approach-sub">Különböző fontosságú elemek eltérő méretben: ajánlás NAGY, kategória kicsi.</div>
+        <div class="approach-section">
+          <div class="approach-label">Kulcsdöntések</div>
+          <div class="approach-text">
+            Fent <strong>1 kiemelt "termék a hét"</strong> nagy feature kártya (2:1 arány) · alatta <strong>4-col mini quick-tile grid</strong> (Friss/Füstölt/Felvágott/Kolbász/Fűszer szűrő kiscsempék) · utána <strong>bundles (wide)</strong> · <strong>h-scroll ajánlások</strong> · vizsgálás alatt <strong>2-col grid</strong>. Minden elem a figyelmének arányosan kap helyet.
+          </div>
+        </div>
+        <div class="approach-section">
+          <div class="approach-label">Miért ez működik</div>
+          <div class="approach-text">A homogén grid nehezen vezeti a szemet. Vizuális hierarchiával megmondjuk a felhasználónak: <strong>„ezt nézd először, ez a legfontosabb ma".</strong> Admin szerkeszti a feature-t és a termékek sorrendjét, ami egy admin-driven merchandising tool-t ad.</div>
+        </div>
+      </div>
+      <div class="approach-meta">
+        <span class="approach-pill risk-med">Kockázat: közepes</span>
+        <span class="approach-pill">Fidelity: hi</span>
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-a4"></div></div>
+  </div>
+
+  <!-- ========== APPROACH 5: HERO SWIPE ========== -->
+  <div class="feature" id="a5">
+    <div class="approach">
+      <div>
+        <div class="approach-title">5 · Hero swipe + kategória tile-ek</div>
+        <div class="approach-sub">Instagram/Spotify-inspirált: swipable promo kártyák + nagy kategória tile-ek.</div>
+        <div class="approach-section">
+          <div class="approach-label">Kulcsdöntések</div>
+          <div class="approach-text">
+            Fent <strong>3 swipable hero kártya</strong> (akció, új termék, ünnepi ajánlat) dot indikátorral · <strong>2-col kategória tile grid</strong> (5 tile, az egyik teljes széles) fotóval · <strong>„Népszerűek most"</strong> h-scroll · <strong>bundles</strong> fent kiemelve.
+          </div>
+        </div>
+        <div class="approach-section">
+          <div class="approach-label">Miért ez működik</div>
+          <div class="approach-text">A hero-swipe <strong>promotional real estate</strong>-t ad az admin-nak minden héten / ünnepen. A kategória-tile-ek vizuálisan erősebbek mint pill-ek, és mobilon 2-kezes használattal is elérhetőek. Ez a legtöbb vizuális „brand feel"-t adó opció.</div>
+        </div>
+      </div>
+      <div class="approach-meta">
+        <span class="approach-pill risk-med">Kockázat: közepes</span>
+        <span class="approach-pill novel">+ promo-slot</span>
+        <span class="approach-pill">Fidelity: hi</span>
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-a5"></div></div>
+  </div>
+
+  <!-- ========== COMPARISON ========== -->
+  <div class="feature" id="compare">
+    <div class="approach">
+      <div>
+        <div class="approach-title">↔ 5 megközelítés egymás mellett</div>
+        <div class="approach-sub">Döntési segéd — válaszd ki melyikre menjünk rá.</div>
+      </div>
+    </div>
+    <div class="phones" id="compare-phones" style="justify-content: flex-start; overflow-x: auto; padding-bottom: 16px;"></div>
+  </div>
+</div>
+
+<!-- ========== RATIONALE / RESEARCH ========== -->
+<div class="rationale">
+  <h2>Miért így — kutatási összefoglaló</h2>
+  <p style="font-size: 13px; color: var(--text2); margin-bottom: 16px;">5 grocery / e-commerce UX forrás, amik a döntéseinket alakították.</p>
+  <div class="rationale-grid">
+    <div class="rationale-card">
+      <h3>🛒 „Half of users never open the PDP"</h3>
+      <p>Baymard 1100+ óra grocery user teszt: a felhasználóknak csak a fele nyitja meg a termék részletezőt — a többi közvetlenül a listából ad kosárba. Ezért a <strong>lista-kártyán minden infó és CTA legyen</strong>.</p>
+      <div class="src">Baymard — Online Grocery UX (5 takeaways)</div>
+    </div>
+    <div class="rationale-card">
+      <h3>📱 Mobile UX pitfalls</h3>
+      <p>9 gyakori hiba — amit elkerülünk: (1) 3+ thumbnail minden listán, (2) kategória scope világos navigációban, (3) product type-ok mint külön filterek, (4) view-all az összes kategória szinten.</p>
+      <div class="src">Baymard Institute — Mobile UX Trends 2025</div>
+    </div>
+    <div class="rationale-card">
+      <h3>⚡ Cognitive load reduction</h3>
+      <p>A grocery user multitaskol, döntési fáradtsággal (több ezer SKU) és időnyomás alatt dönt. Technikák: smart defaults, progressive disclosure (pl. default kategória), kontextuális help, error prevention.</p>
+      <div class="src">Savvy Apps — Grocery UX methodology (via Chop Dawg)</div>
+    </div>
+    <div class="rationale-card">
+      <h3>🎯 Top sections strategy</h3>
+      <p>„Discounted products should be the first thing shoppers see. It should list most popular products first." — Kategóriákat neatly drop-downban helyezd el, fent a legerősebb content kerül.</p>
+      <div class="src">Onix Systems — Grocery app dev tips</div>
+    </div>
+    <div class="rationale-card">
+      <h3>🥩 Butcher shop feeling</h3>
+      <p>Harrods Meat / Heritage Meats templates: <strong>refined, elegant layouts</strong> — a „klasszikus grocery grid" alternatívája. Sötét tónusok, wooden/craft feeling, editorial tartalom erősíti a prémium brand-et.</p>
+      <div class="src">Toast POS — Butcher shop design 2025 · Squarespace — Heritage Meats template</div>
+    </div>
+    <div class="rationale-card">
+      <h3>🔍 Filter strategy</h3>
+      <p>Shared attributes → separate filters (75% nem csinálja). Mi: <strong>top-level kategória pill-ek</strong> + <strong>filter gomb bottom sheet-tel</strong> (ár, elérhetőség, súly) — a komplexitást a user kezelhető darabokban kapja.</p>
+      <div class="src">Baymard — Mobile UX Trends 2025</div>
+    </div>
+  </div>
+</div>
+
+<script src="product-listing-data.js"></script>
+<script src="product-listing-render.js"></script>
+
+</body>
+</html>

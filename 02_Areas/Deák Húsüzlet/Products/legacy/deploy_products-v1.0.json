@@ -1,0 +1,92 @@
+{
+  "meta": {
+    "version": "1.0",
+    "schema_version": "1.0",
+    "date": "2026-05-07",
+    "author": "Becze Szabolcs / Exar Labs",
+    "description": "Deák Húsmíves termékkatalógus — 1 termék, 5 kategória. Generated from MASTER/products/*.md."
+  },
+  "categories": [
+    {
+      "category_id": "friss_serteshus",
+      "category_name_hu": "Friss Sertéshús",
+      "category_name_ro": "Carne proaspătă de porc"
+    },
+    {
+      "category_id": "friss_novendekhus",
+      "category_name_hu": "Friss Növendékhús",
+      "category_name_ro": "Carne proaspătă de vițel"
+    },
+    {
+      "category_id": "fustolt_aruk",
+      "category_name_hu": "Füstölt Áruk",
+      "category_name_ro": "Produse afumate"
+    },
+    {
+      "category_id": "kolbasz_szalami",
+      "category_name_hu": "Kolbász & Szalámi",
+      "category_name_ro": "Cârnați & Salam"
+    },
+    {
+      "category_id": "felvagott_egyeb",
+      "category_name_hu": "Felvágott & Egyéb",
+      "category_name_ro": "Mezeluri & Altele"
+    }
+  ],
+  "products": [
+    {
+      "id": "sertes_csulok",
+      "category": "friss_serteshus",
+      "image": "sertes_csulok.webp",
+      "product_type": "hybrid",
+      "unit": "kg",
+      "price": 19.0,
+      "estimated_weight_per_piece": 1.5,
+      "weight_range_min": 1.2,
+      "weight_range_max": 1.8,
+      "is_available": true,
+      "popularity_score": 100,
+      "quantity_override": {
+        "min_quantity": 1,
+        "max_quantity": 5,
+        "step": 1,
+        "hot_amounts": [
+          1,
+          2,
+          3
+        ]
+      },
+      "product_name_hu": "Sertés Csülök",
+      "product_name_ro": "Ciolan porc",
+      "description_hu": "Kollagénben gazdag friss csülök, párolt fogásokhoz és húsleveshez ideális.",
+      "description_ro": "Ciolan proaspăt bogat în colagen, ideal pentru mâncăruri înăbușite și supă de carne.",
+      "note_hu": "Darab — kb. 1.5 kg-os, ±10% utólagos súlykorrekció lehetséges",
+      "note_ro": "Bucată — aprox. 1.5 kg, posibilă corecție de greutate ±10%"
+    }
+  ],
+  "settings": {
+    "default_min_quantity": 0.5,
+    "default_max_quantity": 5.0,
+    "default_step": 0.05,
+    "default_hot_amounts": [
+      0.5,
+      1,
+      2,
+      3,
+      5
+    ],
+    "weight_range_percent": 20.0,
+    "unit_options": [
+      {
+        "unit_id": "kg",
+        "unit_label_ro": "kg",
+        "unit_label_hu": "kg"
+      },
+      {
+        "unit_id": "pcs",
+        "unit_label_ro": "buc",
+        "unit_label_hu": "db"
+      }
+    ]
+  }
+}

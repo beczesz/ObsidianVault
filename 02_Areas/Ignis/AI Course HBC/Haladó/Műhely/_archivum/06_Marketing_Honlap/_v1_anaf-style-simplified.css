@@ -1,0 +1,582 @@
+/* ============================================================
+   ANAF SPV — EGYSZERŰSÍTETT DESIGN SYSTEM CSS
+   Készült a TransOffice régi weboldalához
+   2026-05-12
+   ============================================================ */
+
+/* ====== CSS Custom Properties (tokens) ====== */
+
+:root {
+  --white: #ffffff;
+  --off-white: #fafafa;
+  --bg-light: #f4f4f4;
+  --bg-lighter: #ededed;
+  --border-light: #e1e1e1;
+  --border: #cccccc;
+  --text-muted: #666666;
+  --text: #222222;
+  --text-strong: #111111;
+  
+  --brand-blue: #0a4a8f;
+  --brand-blue-dark: #062e5c;
+  --brand-blue-light: #e1f4f9;
+  --brand-blue-border: #b8d9e8;
+  
+  --accent-red: #cc0000;
+  --accent-red-dark: #990000;
+  
+  --warning-yellow: #fffabc;
+  --warning-yellow-border: #e6d670;
+  
+  --visited: #663399;
+}
+
+/* ====== Reset & body ====== */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  color: var(--text);
+  background: var(--white);
+  line-height: 1.4;
+}
+
+/* ====== Layout ====== */
+
+.page-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: var(--white);
+}
+
+/* ====== Header ====== */
+
+.site-header {
+  background: var(--white);
+  border-bottom: 3px solid var(--brand-blue);
+  height: 124px;
+  padding: 0 20px;
+  position: relative;
+  display: table;
+  width: calc(100% - 40px);
+}
+
+.site-header .logo-area {
+  display: table-cell;
+  vertical-align: middle;
+  width: 60%;
+}
+
+.site-header .logo-area img {
+  height: 80px;
+}
+
+.site-header .logo-text {
+  margin-left: 18px;
+}
+
+.site-header .logo-text .brand {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--brand-blue);
+  letter-spacing: 0.5px;
+}
+
+.site-header .logo-text .tagline {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 3px;
+}
+
+.site-header .header-right {
+  text-align: right;
+  display: table-cell;
+  vertical-align: middle;
+  width: 40%;
+}
+
+.site-header .flag-bar {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.site-header .flag-bar a {
+  display: inline-block;
+  margin: 0 3px;
+  padding: 2px 8px;
+  background: var(--bg-light);
+  border: 1px solid var(--border);
+  color: var(--text);
+  text-decoration: none;
+}
+
+.site-header .flag-bar a.active {
+  background: var(--brand-blue);
+  color: var(--white);
+}
+
+.site-header .header-buttons {
+  display: inline-block;
+}
+
+.site-header .header-buttons a {
+  margin-left: 4px;
+}
+
+.site-header .btn-red {
+  background: var(--accent-red);
+  border: 1px solid var(--accent-red-dark);
+  color: white;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.site-header .btn-red:hover {
+  background: var(--accent-red-dark);
+}
+
+/* ====== Marquee / Hirdetés-szalag ====== */
+
+.announce-bar {
+  background: var(--warning-yellow);
+  border-top: 1px solid var(--warning-yellow-border);
+  border-bottom: 1px solid var(--warning-yellow-border);
+  padding: 6px 16px;
+  font-size: 11px;
+  color: var(--text);
+  font-weight: bold;
+}
+
+.announce-bar strong {
+  color: var(--accent-red);
+}
+
+/* ====== Top navigation (sub-header strip) ====== */
+
+.top-nav {
+  background: var(--brand-blue);
+  padding: 0;
+}
+
+.top-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: table;
+  width: 100%;
+}
+
+.top-nav li {
+  display: table-cell;
+}
+
+.top-nav a {
+  display: block;
+  padding: 8px 16px;
+  color: white;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: bold;
+  border-right: 1px solid var(--brand-blue-dark);
+}
+
+.top-nav a:hover {
+  background: var(--brand-blue-dark);
+  color: #ffc83d;
+}
+
+.top-nav a.active {
+  background: var(--brand-blue-dark);
+}
+
+/* ====== Breadcrumb ====== */
+
+.breadcrumb {
+  padding: 8px 16px;
+  background: var(--bg-light);
+  font-size: 11px;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.breadcrumb a {
+  color: var(--brand-blue);
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* ====== Main layout: sidebar + content ====== */
+
+.main-layout {
+  display: table;
+  width: 100%;
+  min-height: 600px;
+}
+
+.sidebar {
+  width: 220px;
+  background: var(--brand-blue);
+  color: white;
+  display: table-cell;
+  vertical-align: top;
+}
+
+.sidebar h3 {
+  font-size: 13px;
+  padding: 10px 14px;
+  background: var(--brand-blue-dark);
+  border-bottom: 1px solid var(--brand-blue-dark);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sidebar ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.sidebar ul li {
+  border-bottom: 1px solid var(--brand-blue-dark);
+}
+
+.sidebar ul a {
+  display: block;
+  padding: 7px 14px;
+  color: white;
+  font-size: 12px;
+  text-decoration: none;
+  border-left: 3px solid transparent;
+}
+
+.sidebar ul a:hover {
+  background: var(--brand-blue-dark);
+  border-left-color: #ffc83d;
+  color: #ffc83d;
+}
+
+.sidebar ul a.active {
+  background: var(--brand-blue-dark);
+  border-left-color: #ffc83d;
+  font-weight: bold;
+}
+
+.sidebar .sub-item {
+  padding-left: 26px !important;
+  font-size: 11px !important;
+  background: rgba(0,0,0,0.1);
+}
+
+.content-area {
+  padding: 16px 20px;
+  background: var(--white);
+  display: table-cell;
+  vertical-align: top;
+}
+
+/* ====== Content typography ====== */
+
+.content-area h1 {
+  font-size: 20px;
+  color: var(--brand-blue);
+  font-weight: bold;
+  margin-bottom: 12px;
+  padding-bottom: 6px;
+  border-bottom: 2px solid var(--brand-blue);
+}
+
+.content-area h2 {
+  font-size: 16px;
+  color: var(--brand-blue);
+  font-weight: bold;
+  margin-top: 18px;
+  margin-bottom: 8px;
+  padding-bottom: 3px;
+  border-bottom: 1px solid var(--border);
+}
+
+.content-area h3 {
+  font-size: 13px;
+  color: var(--text-strong);
+  font-weight: bold;
+  margin-top: 14px;
+  margin-bottom: 6px;
+}
+
+.content-area p {
+  margin-bottom: 10px;
+}
+
+.content-area a {
+  color: var(--brand-blue);
+  text-decoration: none;
+}
+
+.content-area a:hover {
+  text-decoration: underline;
+  color: var(--accent-red);
+}
+
+.content-area a:visited {
+  color: var(--visited);
+}
+
+.content-area ul, .content-area ol {
+  margin: 8px 0 12px 22px;
+}
+
+.content-area li {
+  margin-bottom: 4px;
+}
+
+/* ====== Tables ====== */
+
+table.data {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  margin: 10px 0;
+}
+
+table.data th {
+  background: var(--bg-lighter);
+  border: 1px solid var(--border);
+  padding: 5px 8px;
+  text-align: left;
+  font-weight: bold;
+  color: var(--text-strong);
+}
+
+table.data td {
+  border: 1px solid var(--border);
+  padding: 4px 8px;
+  color: var(--text);
+  vertical-align: top;
+}
+
+table.data tr:nth-child(even) td {
+  background: var(--off-white);
+}
+
+table.data tr:hover td {
+  background: var(--brand-blue-light);
+}
+
+/* ====== Info boxes ====== */
+
+.warning-box {
+  background: var(--warning-yellow);
+  border: 1px solid var(--warning-yellow-border);
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 12px;
+  color: var(--text);
+}
+
+.warning-box strong {
+  color: var(--accent-red);
+}
+
+.info-box {
+  background: var(--brand-blue-light);
+  border: 1px solid var(--brand-blue-border);
+  padding: 8px 12px;
+  margin: 10px 0;
+  font-size: 12px;
+}
+
+.info-box strong {
+  color: var(--brand-blue);
+}
+
+/* ====== PDF/DOC ikonok ====== */
+
+.file-link {
+  background-image: linear-gradient(transparent, transparent);
+  padding-left: 18px;
+  font-size: 12px;
+}
+
+.file-link.pdf::before {
+  content: "📄";
+  margin-right: 4px;
+}
+
+.file-link.doc::before {
+  content: "📋";
+  margin-right: 4px;
+}
+
+.file-link.xls::before {
+  content: "📊";
+  margin-right: 4px;
+}
+
+/* ====== Buttons general ====== */
+
+.btn {
+  display: inline-block;
+  padding: 6px 14px;
+  background: var(--brand-blue);
+  color: white;
+  border: 1px solid var(--brand-blue-dark);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 12px;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: var(--brand-blue-dark);
+  text-decoration: none;
+}
+
+.btn-red {
+  background: var(--accent-red);
+  border-color: var(--accent-red-dark);
+}
+
+.btn-red:hover {
+  background: var(--accent-red-dark);
+}
+
+/* ====== Footer ====== */
+
+.site-footer {
+  background: var(--bg-light);
+  border-top: 3px solid var(--brand-blue);
+  padding: 16px 20px;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 30px;
+}
+
+.site-footer .footer-columns {
+  display: table;
+  width: 100%;
+  margin-bottom: 12px;
+  border-spacing: 15px 0;
+}
+
+.site-footer .footer-col {
+  display: table-cell;
+  vertical-align: top;
+  width: 25%;
+}
+
+.site-footer .footer-col h4 {
+  font-size: 12px;
+  color: var(--brand-blue);
+  font-weight: bold;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.site-footer ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.site-footer ul li {
+  margin-bottom: 3px;
+}
+
+.site-footer a {
+  color: var(--text-muted);
+  text-decoration: none;
+}
+
+.site-footer a:hover {
+  color: var(--brand-blue);
+  text-decoration: underline;
+}
+
+.site-footer .footer-bottom {
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  font-size: 10px;
+}
+
+.site-footer .footer-bottom > div:first-child {
+  display: inline-block;
+  width: 65%;
+  vertical-align: top;
+}
+
+.site-footer .footer-bottom > div.last-update {
+  display: inline-block;
+  width: 33%;
+  text-align: right;
+  vertical-align: top;
+}
+
+.site-footer .last-update {
+  font-style: italic;
+}
+
+/* ====== Cookie bar ====== */
+
+.cookie-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--warning-yellow);
+  border-top: 1px solid var(--warning-yellow-border);
+  padding: 8px 16px;
+  font-size: 11px;
+  z-index: 999;
+}
+
+.cookie-bar > div {
+  display: inline-block;
+  width: 70%;
+  vertical-align: middle;
+}
+
+.cookie-bar .accept {
+  float: right;
+  margin-top: 2px;
+}
+
+.cookie-bar .accept {
+  background: var(--brand-blue);
+  color: white;
+  padding: 4px 12px;
+  border: 1px solid var(--brand-blue-dark);
+  cursor: pointer;
+  font-size: 11px;
+  font-weight: bold;
+}
+
+/* ====== Visitor counter (klasszikus retro elem!) ====== */
+
+.visitor-counter {
+  text-align: center;
+  margin: 16px 0;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.visitor-counter .number {
+  display: inline-block;
+  background: #000;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+  padding: 2px 6px;
+  letter-spacing: 2px;
+  margin: 0 4px;
+}

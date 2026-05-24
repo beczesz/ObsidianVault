@@ -1,0 +1,345 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://deakhus.netlify.app/data/_schema-v1.2.json",
+  "title": "Deák Húsmíves Product Catalog",
+  "version": "1.2",
+  "description": "Schema for the Deák Húsmíves product catalog. v1.2: added options[] array on products (DH-173 VG = Variation Group). Each product can have multiple options, each with values that may carry price modifiers, modal info content, and per-product overrides. Covers Deak Product, Deak Product Category, Deak Product Settings, Deak Product Quantity Override, Deak Unit Option, Deak Product Option, and Deak Product Option Value doctypes.",
+  "type": "object",
+  "required": [
+    "meta",
+    "categories",
+    "products",
+    "settings"
+  ],
+  "properties": {
+    "meta": { "$ref": "#/definitions/meta" },
+    "categories": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/category" }
+    },
+    "products": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/product" }
+    },
+    "settings": { "$ref": "#/definitions/settings" }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "meta": {
+      "type": "object",
+      "required": ["version", "schema_version", "date"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$",
+          "description": "Data version — must match the filename (e.g. products-v1.2.json → \"1.2\")"
+        },
+        "schema_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$",
+          "description": "Schema version this data conforms to (e.g. \"1.2\" → _schema-v1.2.json)"
+        },
+        "date": { "type": "string", "format": "date" },
+        "author": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "category": {
+      "type": "object",
+      "required": ["category_id", "category_name_ro", "category_name_hu"],
+      "properties": {
+        "category_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "category_name_ro": { "type": "string" },
+        "category_name_hu": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "product": {
+      "type": "object",
+      "required": [
+        "id",
+        "product_name_ro",
+        "product_name_hu",
+        "image",
+        "price",
+        "unit",
+        "product_type",
+        "category",
+        "is_available"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "internal_code": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Z0-9]{3,7}(\\.[0-9]+)?$",
+          "default": null
+        },
+        "product_name_ro": { "type": "string" },
+        "product_name_hu": { "type": "string" },
+        "description_ro": { "type": ["string", "null"], "default": null },
+        "description_hu": { "type": ["string", "null"], "default": null },
+        "note_ro": { "type": ["string", "null"], "default": null },
+        "note_hu": { "type": ["string", "null"], "default": null },
+        "image": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+\\.(webp|jpg|png)$"
+        },
+        "price": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": { "type": "string" },
+        "product_type": {
+          "type": "string",
+          "enum": ["weight", "piece", "hybrid"]
+        },
+        "estimated_weight_per_piece": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null
+        },
+        "weight_range_min": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null
+        },
+        "weight_range_max": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null
+        },
+        "category": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "is_available": { "type": "boolean" },
+        "popularity_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000,
+          "default": 0
+        },
+        "quantity_override": {
+          "oneOf": [
+            { "$ref": "#/definitions/quantity_override" },
+            { "type": "null" }
+          ],
+          "default": null
+        },
+        "options": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/product_option" },
+          "default": [],
+          "description": "DH-173 VG (Variation Group) — termék-szintű opciók. Üres array = nincs opció (csak alap kosár-flow)."
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "product_type": { "const": "hybrid" } } },
+          "then": {
+            "required": ["estimated_weight_per_piece", "weight_range_min", "weight_range_max"],
+            "properties": {
+              "estimated_weight_per_piece": { "type": "number", "exclusiveMinimum": 0 },
+              "weight_range_min": { "type": "number", "exclusiveMinimum": 0 },
+              "weight_range_max": { "type": "number", "exclusiveMinimum": 0 }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "product_type": { "const": "weight" } } },
+          "then": {
+            "properties": {
+              "estimated_weight_per_piece": { "type": "null" },
+              "weight_range_min": { "type": "null" },
+              "weight_range_max": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "product_type": { "const": "piece" } } },
+          "then": {
+            "properties": {
+              "estimated_weight_per_piece": { "type": "null" },
+              "weight_range_min": { "type": "null" },
+              "weight_range_max": { "type": "null" }
+            }
+          }
+        }
+      ]
+    },
+    "product_option": {
+      "type": "object",
+      "required": [
+        "option_id",
+        "option_name_hu",
+        "option_name_ro",
+        "option_type",
+        "kind",
+        "values"
+      ],
+      "properties": {
+        "option_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "Stable identifier (e.g. 'pacolas', 'szeletes', 'meret')."
+        },
+        "option_name_hu": { "type": "string" },
+        "option_name_ro": { "type": "string" },
+        "option_type": {
+          "type": "string",
+          "enum": ["single_select", "multi_level", "text"],
+          "description": "Phase 1: csak single_select. multi_level és text későbbi phase-re fenntartva."
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["optional", "mandatory"],
+          "description": "OPTIONAL: checkbox + opt-in. MANDATORY: nincs checkbox, default mindig kiválasztva."
+        },
+        "default_value": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "MANDATORY VG-knél: a default érték value_id-ja (kötelező). OPTIONAL VG-knél: fallback javaslat (UI nem applikálja automatikusan), lehet null."
+        },
+        "vg_off_hint_hu": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "OPTIONAL VG OFF-állapotában megjelenő hint (HU). Pl. 'Pácolatlan'. MANDATORY-nál null."
+        },
+        "vg_off_hint_ro": {
+          "type": ["string", "null"],
+          "default": null
+        },
+        "display_order": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0,
+          "description": "Megjelenítési sorrend a termékdetail oldalon."
+        },
+        "values": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/option_value" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "mandatory" } } },
+          "then": {
+            "required": ["default_value"],
+            "properties": {
+              "default_value": { "type": "string" },
+              "vg_off_hint_hu": { "type": "null" },
+              "vg_off_hint_ro": { "type": "null" }
+            }
+          }
+        }
+      ]
+    },
+    "option_value": {
+      "type": "object",
+      "required": ["value_id", "value_label_hu", "value_label_ro"],
+      "properties": {
+        "value_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "value_label_hu": { "type": "string" },
+        "value_label_ro": { "type": "string" },
+        "meta_hint_hu": {
+          "type": ["string", "null"],
+          "maxLength": 60,
+          "default": null,
+          "description": "Rövid másodlagos hint a radio mellett (max 60 char). Pl. 'Só, bors, fokhagyma'."
+        },
+        "meta_hint_ro": {
+          "type": ["string", "null"],
+          "maxLength": 60,
+          "default": null
+        },
+        "image_url": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Modal info kép útvonala (pl. '/files/options/pacolas-hagyomanyos.webp'). Null = placeholder."
+        },
+        "image_alt_hu": { "type": ["string", "null"], "default": null },
+        "image_alt_ro": { "type": ["string", "null"], "default": null },
+        "description_hu": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Modal info description (HU). Markdown / HTML tartalmaz."
+        },
+        "description_ro": { "type": ["string", "null"], "default": null },
+        "price_modifier": {
+          "type": "number",
+          "default": 0,
+          "description": "Felár ami a termék alapárához hozzáadódik. 0 = ingyenes opció."
+        },
+        "price_modifier_unit": {
+          "type": ["string", "null"],
+          "enum": ["per_kg", "per_unit", "flat", null],
+          "default": null,
+          "description": "per_kg: tétel kg-jával szorzódik. per_unit: db-számmal. flat: egyszeri felár. null: ingyenes opció."
+        },
+        "weight_range_min": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null,
+          "description": "Méret-VG hibrid termékeinél a kg-tartomány alja (override mező)."
+        },
+        "weight_range_max": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "quantity_override": {
+      "type": "object",
+      "properties": {
+        "min_quantity": { "type": ["number", "null"], "exclusiveMinimum": 0, "default": null },
+        "max_quantity": { "type": ["number", "null"], "exclusiveMinimum": 0, "default": null },
+        "step": { "type": ["number", "null"], "exclusiveMinimum": 0, "default": null },
+        "hot_amounts": {
+          "type": ["array", "null"],
+          "items": { "type": "number", "exclusiveMinimum": 0 },
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "unit_option": {
+      "type": "object",
+      "required": ["unit_id", "unit_label_ro", "unit_label_hu"],
+      "properties": {
+        "unit_id": { "type": "string" },
+        "unit_label_ro": { "type": "string" },
+        "unit_label_hu": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "settings": {
+      "type": "object",
+      "required": [
+        "default_min_quantity",
+        "default_max_quantity",
+        "default_step",
+        "default_hot_amounts",
+        "weight_range_percent",
+        "unit_options"
+      ],
+      "properties": {
+        "default_min_quantity": { "type": "number", "exclusiveMinimum": 0 },
+        "default_max_quantity": { "type": "number", "exclusiveMinimum": 0 },
+        "default_step": { "type": "number", "exclusiveMinimum": 0 },
+        "default_hot_amounts": {
+          "type": "array",
+          "items": { "type": "number", "exclusiveMinimum": 0 }
+        },
+        "weight_range_percent": { "type": "number", "exclusiveMinimum": 0 },
+        "unit_options": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/unit_option" }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

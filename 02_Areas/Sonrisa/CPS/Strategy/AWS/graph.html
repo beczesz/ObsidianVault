@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AWS Partner Program Dependencies - CPS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: #fff;
+        }
+        
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+            color: #fff;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #8892b0;
+            margin-bottom: 40px;
+            font-size: 14px;
+        }
+        
+        .graph-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+        }
+        
+        .level {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .level-label {
+            position: absolute;
+            left: 0;
+            font-size: 11px;
+            color: #5a6a8a;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+        
+        .node {
+            background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+            border: 2px solid #4a5568;
+            border-radius: 12px;
+            padding: 20px 24px;
+            min-width: 200px;
+            max-width: 280px;
+            text-align: center;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .node:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .node.achieved {
+            border-color: #48bb78;
+            background: linear-gradient(135deg, #1a3a2a 0%, #1a202c 100%);
+        }
+        
+        .node.achieved::after {
+            content: "✓";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #48bb78;
+            color: #fff;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .node.in-progress {
+            border-color: #ecc94b;
+            background: linear-gradient(135deg, #3a3520 0%, #1a202c 100%);
+        }
+        
+        .node.in-progress::after {
+            content: "◐";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #ecc94b;
+            color: #1a202c;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .node.blocked {
+            border-color: #fc8181;
+            background: linear-gradient(135deg, #3a1a1a 0%, #1a202c 100%);
+        }
+        
+        .node.goal {
+            border-color: #9f7aea;
+            background: linear-gradient(135deg, #2d2a4a 0%, #1a202c 100%);
+            border-width: 3px;
+        }
+        
+        .node.ultimate {
+            border-color: #f6ad55;
+            background: linear-gradient(135deg, #3a2a1a 0%, #1a202c 100%);
+            border-width: 3px;
+            min-width: 280px;
+        }
+        
+        .node-title {
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+        
+        .node-desc {
+            font-size: 12px;
+            color: #a0aec0;
+            line-height: 1.4;
+        }
+        
+        .node-requirements {
+            margin-top: 12px;
+            padding-top: 12px;
+            border-top: 1px solid #4a5568;
+            font-size: 11px;
+            color: #718096;
+            text-align: left;
+        }
+        
+        .node-requirements strong {
+            color: #a0aec0;
+        }
+        
+        .arrows-container {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+            gap: 100px;
+        }
+        
+        .arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #4a5568;
+        }
+        
+        .arrow-line {
+            width: 2px;
+            height: 30px;
+            background: linear-gradient(to bottom, #4a5568, #6b7a9a);
+        }
+        
+        .arrow-head {
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 10px solid #6b7a9a;
+        }
+        
+        .connector-horizontal {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+        }
+        
+        .connector-line {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #4a5568, #4a5568, transparent);
+            flex: 1;
+            max-width: 600px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: #a0aec0;
+        }
+        
+        .legend-dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            border: 2px solid;
+        }
+        
+        .legend-dot.achieved { border-color: #48bb78; background: #1a3a2a; }
+        .legend-dot.in-progress { border-color: #ecc94b; background: #3a3520; }
+        .legend-dot.blocked { border-color: #fc8181; background: #3a1a1a; }
+        .legend-dot.goal { border-color: #9f7aea; background: #2d2a4a; }
+        .legend-dot.ultimate { border-color: #f6ad55; background: #3a2a1a; }
+        
+        .section-label {
+            text-align: center;
+            color: #5a6a8a;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin: 30px 0 15px 0;
+        }
+        
+        .horizon-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+        
+        .horizon-1 { background: #2b6cb0; color: #fff; }
+        .horizon-2 { background: #6b46c1; color: #fff; }
+        .horizon-3 { background: #c05621; color: #fff; }
+        
+        .flow-label {
+            text-align: center;
+            font-size: 13px;
+            color: #6b7a9a;
+            margin: 5px 0;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <h1>AWS Partner Program Dependencies</h1>
+    <p class="subtitle">What Builds On What — Sonrisa CPS Roadmap</p>
+    
+    <div class="graph-container">
+        
+        <!-- Level 0: Foundation -->
+        <div class="section-label">Foundation Layer</div>
+        <div class="level">
+            <div class="node achieved">
+                <div class="node-title">Services Path</div>
+                <div class="node-desc">Your identity as an AWS Partner</div>
+                <div class="node-requirements">
+                    <strong>Status:</strong> Validated ✓
+                </div>
+            </div>
+            <div class="node achieved">
+                <div class="node-title">Solution Profile</div>
+                <div class="node-desc">Partner Solutions Finder listing</div>
+                <div class="node-requirements">
+                    <strong>Status:</strong> Exists (needs optimization)
+                </div>
+            </div>
+            <div class="node achieved">
+                <div class="node-title">Your Offerings</div>
+                <div class="node-desc">CPS packages, migrations, add-ons</div>
+                <div class="node-requirements">
+                    <strong>Status:</strong> Defined ✓
+                </div>
+            </div>
+        </div>
+        
+        <div class="arrows-container">
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        </div>
+        
+        <!-- Level 1: Immediate Needs -->
+        <div class="section-label">Immediate Actions (Horizon 1)</div>
+        <div class="level">
+            <div class="node blocked">
+                <div class="node-title">Service Delivery Designation</div>
+                <div class="node-desc">EC2, EKS, or RDS certification</div>
+                <div class="node-requirements">
+                    <strong>Requires:</strong> 2-3 customer references, case study, certifications, AWS spend attribution
+                </div>
+                <span class="horizon-badge horizon-1">Priority: Now</span>
+            </div>
+            <div class="node in-progress">
+                <div class="node-title">10 ACE Opportunities</div>
+                <div class="node-desc">Validated partner-originated deals</div>
+                <div class="node-requirements">
+                    <strong>Status:</strong> 3/10 registered<br>
+                    <strong>Requires:</strong> Register every prospect conversation
+                </div>
+                <span class="horizon-badge horizon-1">Priority: Now</span>
+            </div>
+            <div class="node in-progress">
+                <div class="node-title">Marketplace Listings</div>
+                <div class="node-desc">Transactable offers on AWS Marketplace</div>
+                <div class="node-requirements">
+                    <strong>Requires:</strong> Seller Prime admission
+                </div>
+                <span class="horizon-badge horizon-1">Priority: Now</span>
+            </div>
+        </div>
+        
+        <div class="connector-horizontal"><div class="connector-line"></div></div>
+        <div class="flow-label">↓ unlocks ↓</div>
+        
+        <!-- Level 2: Key Unlock -->
+        <div class="section-label">Key Milestone</div>
+        <div class="level">
+            <div class="node goal">
+                <div class="node-title">ACE Eligibility</div>
+                <div class="node-desc">Receive inbound leads from AWS</div>
+                <div class="node-requirements">
+                    <strong>Requires:</strong><br>
+                    • At least 1 Designation ❌<br>
+                    • 10 validated opportunities (3/10) ❌
+                </div>
+                <span class="horizon-badge horizon-2">Target: Month 6</span>
+            </div>
+            <div class="node goal">
+                <div class="node-title">Marketplace Transactions</div>
+                <div class="node-desc">Revenue flowing through AWS billing</div>
+                <div class="node-requirements">
+                    <strong>Requires:</strong><br>
+                    • Seller Prime admission ⏳<br>
+                    • Listings created
+                </div>
+                <span class="horizon-badge horizon-1">Target: Month 3</span>
+            </div>
+        </div>
+        
+        <div class="arrows-container">
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        </div>
+        
+        <!-- Level 3: Growth -->
+        <div class="section-label">Growth Phase (Horizon 2-3)</div>
+        <div class="level">
+            <div class="node">
+                <div class="node-title">Inbound AWS Leads</div>
+                <div class="node-desc">AWS reps send you qualified opportunities</div>
+                <div class="node-requirements">
+                    <strong>Requires:</strong><br>
+                    • Solution profile ✓<br>
+                    • Designation(s) ❌<br>
+                    • ACE eligible ❌
+                </div>
+                <span class="horizon-badge horizon-2">Unlocks: Month 6</span>
+            </div>
+            <div class="node">
+                <div class="node-title">DevOps Competency</div>
+                <div class="node-desc">Expert-level domain recognition</div>
+                <div class="node-requirements">
+                    <strong>Requires:</strong><br>
+                    • 2 published case studies<br>
+                    • 5 AWS certifications<br>
+                    • Customer references
+                </div>
+                <span class="horizon-badge horizon-2">Target: Month 9</span>
+            </div>
+            <div class="node">
+                <div class="node-title">MAP Funding</div>
+                <div class="node-desc">AWS funding for migration projects</div>
+                <div class="node-requirements">
+                    <strong>Requires:</strong><br>
+                    • Migration Competency (higher tiers)<br>
+                    • Or partner with MAP-qualified partner
+                </div>
+                <span class="horizon-badge horizon-3">Explore: Month 7+</span>
+            </div>
+        </div>
+        
+        <div class="arrows-container">
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        </div>
+        
+        <!-- Level 4: Major Goals -->
+        <div class="section-label">Major Goals (Horizon 3)</div>
+        <div class="level">
+            <div class="node goal">
+                <div class="node-title">AWS Advanced Tier</div>
+                <div class="node-desc">Dedicated AWS SA, MDF, co-sell incentives</div>
+                <div class="node-requirements">
+                    <strong>Requires:</strong><br>
+                    • $100K AWS attributed revenue<br>
+                    • 8+ certifications<br>
+                    • Designation(s) or Competency
+                </div>
+                <span class="horizon-badge horizon-3">Target: Month 12</span>
+            </div>
+        </div>
+        
+        <div class="arrows-container">
+            <div class="arrow"><div class="arrow-line"></div><div class="arrow-head"></div></div>
+        </div>
+        
+        <!-- Level 5: Ultimate Goal -->
+        <div class="section-label">Transformation (12-18 Months)</div>
+        <div class="level">
+            <div class="node ultimate">
+                <div class="node-title">🏆 AWS MSP Program</div>
+                <div class="node-desc">Certified Managed Service Provider — changes market position entirely</div>
+                <div class="node-requirements">
+                    <strong>Requires:</strong><br>
+                    • ITIL-aligned runbooks (Incident, Change, Problem, Release)<br>
+                    • Centralized monitoring stack<br>
+                    • Audit readiness + pass MSP audit<br>
+                    • Competency (typically)<br>
+                    • Standardized operations
+                </div>
+                <span class="horizon-badge horizon-3">Target: Month 12-18</span>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="legend">
+        <div class="legend-item">
+            <div class="legend-dot achieved"></div>
+            <span>Achieved</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot in-progress"></div>
+            <span>In Progress</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot blocked"></div>
+            <span>Blocked / Not Started</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot goal"></div>
+            <span>Key Goal</span>
+        </div>
+        <div class="legend-item">
+            <div class="legend-dot ultimate"></div>
+            <span>Ultimate Goal</span>
+        </div>
+    </div>
+    
+</body>
+</html>

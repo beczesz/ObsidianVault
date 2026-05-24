@@ -3,6 +3,8 @@ significance:
   - Elekes Isti elkezdte a szervezetfejlesztési pályafutását
   - Az Ignis szervezetfejlesztési ága elindult
   - Sokan így ismertek meg minket
+id: f258fa48-e3ca-481f-af08-810a07183db0
+index_schema_version: 1
 ---
 
 ## Hogyan jött létre

@@ -1,0 +1,1231 @@
+{
+  "adaos": {
+    "kategoriak": [
+      {
+        "kategoria": "TIGARI",
+        "forgalom": 622981.59,
+        "tva": 121914.31,
+        "adaos": 30736.16,
+        "arres_pct": 4.93,
+        "tva_pct": 19.57,
+        "dokumentum": 1047
+      },
+      {
+        "kategoria": "LEGUME",
+        "forgalom": 407982.39,
+        "tva": 39943.83,
+        "adaos": 89386.81,
+        "arres_pct": 21.91,
+        "tva_pct": 9.79,
+        "dokumentum": 1339
+      },
+      {
+        "kategoria": "PRODUSE PAINE,PANIFICATIE",
+        "forgalom": 397344.49,
+        "tva": 42799.4,
+        "adaos": 87782.66,
+        "arres_pct": 22.09,
+        "tva_pct": 10.77,
+        "dokumentum": 1337
+      },
+      {
+        "kategoria": "BERE",
+        "forgalom": 331334.17,
+        "tva": 66120.43,
+        "adaos": 96136.26,
+        "arres_pct": 29.01,
+        "tva_pct": 19.96,
+        "dokumentum": 1341
+      },
+      {
+        "kategoria": "FRUCTE",
+        "forgalom": 305555.92,
+        "tva": 30450.88,
+        "adaos": 87491.89,
+        "arres_pct": 28.63,
+        "tva_pct": 9.97,
+        "dokumentum": 1339
+      },
+      {
+        "kategoria": "DULCIURI",
+        "forgalom": 283421.91,
+        "tva": 53331.94,
+        "adaos": 76838.21,
+        "arres_pct": 27.11,
+        "tva_pct": 18.82,
+        "dokumentum": 1339
+      },
+      {
+        "kategoria": "PRODUSE LACTATE",
+        "forgalom": 243528.88,
+        "tva": 26912.78,
+        "adaos": 60747.21,
+        "arres_pct": 24.94,
+        "tva_pct": 11.05,
+        "dokumentum": 1339
+      },
+      {
+        "kategoria": "PRODUSE INDUSTRIALE",
+        "forgalom": 243317.74,
+        "tva": 48809.63,
+        "adaos": 57501.22,
+        "arres_pct": 23.63,
+        "tva_pct": 20.06,
+        "dokumentum": 1339
+      },
+      {
+        "kategoria": "PRODUSE MEZELURI",
+        "forgalom": 225838.06,
+        "tva": 22592.74,
+        "adaos": 55259.78,
+        "arres_pct": 24.47,
+        "tva_pct": 10.0,
+        "dokumentum": 1335
+      },
+      {
+        "kategoria": "RACORITOARE",
+        "forgalom": 167485.05,
+        "tva": 31896.84,
+        "adaos": 44152.01,
+        "arres_pct": 26.36,
+        "tva_pct": 19.04,
+        "dokumentum": 1338
+      },
+      {
+        "kategoria": "BAUT ALCOOLICE",
+        "forgalom": 121463.84,
+        "tva": 24312.26,
+        "adaos": 30778.59,
+        "arres_pct": 25.34,
+        "tva_pct": 20.02,
+        "dokumentum": 1335
+      },
+      {
+        "kategoria": "CAFEA",
+        "forgalom": 102136.48,
+        "tva": 14868.32,
+        "adaos": 28301.2,
+        "arres_pct": 27.71,
+        "tva_pct": 14.56,
+        "dokumentum": 1309
+      },
+      {
+        "kategoria": "CARTELE TELEFONICE",
+        "forgalom": 101693.35,
+        "tva": 20134.15,
+        "adaos": 25208.72,
+        "arres_pct": 24.79,
+        "tva_pct": 19.8,
+        "dokumentum": 972
+      },
+      {
+        "kategoria": "PRODUSE CONGELATE",
+        "forgalom": 97935.3,
+        "tva": 9803.47,
+        "adaos": 24541.74,
+        "arres_pct": 25.06,
+        "tva_pct": 10.01,
+        "dokumentum": 994
+      },
+      {
+        "kategoria": "DETERGENT",
+        "forgalom": 90511.4,
+        "tva": 18061.4,
+        "adaos": 24698.18,
+        "arres_pct": 27.29,
+        "tva_pct": 19.95,
+        "dokumentum": 1295
+      },
+      {
+        "kategoria": "...",
+        "forgalom": 90231.07,
+        "tva": 5040.52,
+        "adaos": 63326.22,
+        "arres_pct": 70.18,
+        "tva_pct": 5.59,
+        "dokumentum": 1341
+      },
+      {
+        "kategoria": "CONSERVE",
+        "forgalom": 86970.83,
+        "tva": 9458.14,
+        "adaos": 22123.6,
+        "arres_pct": 25.44,
+        "tva_pct": 10.88,
+        "dokumentum": 1325
+      },
+      {
+        "kategoria": "PRODUSE COSMETICE",
+        "forgalom": 82331.33,
+        "tva": 16431.67,
+        "adaos": 22436.52,
+        "arres_pct": 27.25,
+        "tva_pct": 19.96,
+        "dokumentum": 1305
+      },
+      {
+        "kategoria": "INGHETATA",
+        "forgalom": 80513.15,
+        "tva": 15842.45,
+        "adaos": 19692.59,
+        "arres_pct": 24.46,
+        "tva_pct": 19.68,
+        "dokumentum": 872
+      },
+      {
+        "kategoria": "APA MINERALA",
+        "forgalom": 79865.73,
+        "tva": 7927.27,
+        "adaos": 22512.99,
+        "arres_pct": 28.19,
+        "tva_pct": 9.93,
+        "dokumentum": 1331
+      },
+      {
+        "kategoria": "PRODUSE SARATE",
+        "forgalom": 75103.61,
+        "tva": 7625.88,
+        "adaos": 19797.45,
+        "arres_pct": 26.36,
+        "tva_pct": 10.15,
+        "dokumentum": 1334
+      },
+      {
+        "kategoria": "CONDIMENTE",
+        "forgalom": 65538.93,
+        "tva": 8218.07,
+        "adaos": 18522.8,
+        "arres_pct": 28.26,
+        "tva_pct": 12.54,
+        "dokumentum": 1321
+      },
+      {
+        "kategoria": "PRODUSE HARTIE",
+        "forgalom": 56964.42,
+        "tva": 10738.14,
+        "adaos": 14505.32,
+        "arres_pct": 25.46,
+        "tva_pct": 18.85,
+        "dokumentum": 1319
+      },
+      {
+        "kategoria": "VIN",
+        "forgalom": 53422.25,
+        "tva": 10670.55,
+        "adaos": 16104.38,
+        "arres_pct": 30.15,
+        "tva_pct": 19.97,
+        "dokumentum": 1110
+      },
+      {
+        "kategoria": "ALTE ALIMENTE",
+        "forgalom": 45056.34,
+        "tva": 5589.66,
+        "adaos": 12303.06,
+        "arres_pct": 27.31,
+        "tva_pct": 12.41,
+        "dokumentum": 1281
+      },
+      {
+        "kategoria": "BISCUITI",
+        "forgalom": 43601.61,
+        "tva": 6124.05,
+        "adaos": 12278.31,
+        "arres_pct": 28.16,
+        "tva_pct": 14.05,
+        "dokumentum": 1289
+      },
+      {
+        "kategoria": "CHIPSURI",
+        "forgalom": 42476.86,
+        "tva": 4236.04,
+        "adaos": 10543.41,
+        "arres_pct": 24.82,
+        "tva_pct": 9.97,
+        "dokumentum": 1267
+      },
+      {
+        "kategoria": "LEGUME RO",
+        "forgalom": 42080.53,
+        "tva": 4304.8,
+        "adaos": 8667.56,
+        "arres_pct": 20.6,
+        "tva_pct": 10.23,
+        "dokumentum": 1127
+      },
+      {
+        "kategoria": "HRANA ANIMALE",
+        "forgalom": 41966.63,
+        "tva": 4187.77,
+        "adaos": 12256.44,
+        "arres_pct": 29.21,
+        "tva_pct": 9.98,
+        "dokumentum": 1108
+      },
+      {
+        "kategoria": "ULEI",
+        "forgalom": 35322.88,
+        "tva": 3512.27,
+        "adaos": 5576.46,
+        "arres_pct": 15.79,
+        "tva_pct": 9.94,
+        "dokumentum": 1147
+      },
+      {
+        "kategoria": "PRAJITURI",
+        "forgalom": 32017.01,
+        "tva": 6213.78,
+        "adaos": 8792.15,
+        "arres_pct": 27.46,
+        "tva_pct": 19.41,
+        "dokumentum": 1097
+      },
+      {
+        "kategoria": "PASTE FAINOASE",
+        "forgalom": 26207.13,
+        "tva": 2608.87,
+        "adaos": 6982.5,
+        "arres_pct": 26.64,
+        "tva_pct": 9.95,
+        "dokumentum": 1174
+      },
+      {
+        "kategoria": "PASTE TOMATE",
+        "forgalom": 23410.22,
+        "tva": 2936.08,
+        "adaos": 5974.07,
+        "arres_pct": 25.52,
+        "tva_pct": 12.54,
+        "dokumentum": 1140
+      },
+      {
+        "kategoria": "FAINA",
+        "forgalom": 21725.54,
+        "tva": 2142.57,
+        "adaos": 4631.65,
+        "arres_pct": 21.32,
+        "tva_pct": 9.86,
+        "dokumentum": 1239
+      },
+      {
+        "kategoria": "MARGARINE",
+        "forgalom": 21518.25,
+        "tva": 2140.45,
+        "adaos": 5503.1,
+        "arres_pct": 25.57,
+        "tva_pct": 9.95,
+        "dokumentum": 1123
+      },
+      {
+        "kategoria": "PRODUSE DIN PLASTIC",
+        "forgalom": 19879.86,
+        "tva": 3985.94,
+        "adaos": 6545.21,
+        "arres_pct": 32.92,
+        "tva_pct": 20.05,
+        "dokumentum": 1287
+      },
+      {
+        "kategoria": "ZAHAR",
+        "forgalom": 19386.89,
+        "tva": 1949.71,
+        "adaos": 3934.75,
+        "arres_pct": 20.3,
+        "tva_pct": 10.06,
+        "dokumentum": 1146
+      },
+      {
+        "kategoria": "BAUTURI FARA ALCOOL",
+        "forgalom": 17923.8,
+        "tva": 3577.88,
+        "adaos": 5117.2,
+        "arres_pct": 28.55,
+        "tva_pct": 19.96,
+        "dokumentum": 1181
+      },
+      {
+        "kategoria": "OTET",
+        "forgalom": 9871.6,
+        "tva": 993.1,
+        "adaos": 2571.84,
+        "arres_pct": 26.05,
+        "tva_pct": 10.06,
+        "dokumentum": 919
+      },
+      {
+        "kategoria": "OREZ",
+        "forgalom": 9051.69,
+        "tva": 907.91,
+        "adaos": 2263.11,
+        "arres_pct": 25.0,
+        "tva_pct": 10.03,
+        "dokumentum": 690
+      },
+      {
+        "kategoria": "SEMINTE",
+        "forgalom": 8988.29,
+        "tva": 852.61,
+        "adaos": 2317.56,
+        "arres_pct": 25.78,
+        "tva_pct": 9.49,
+        "dokumentum": 596
+      },
+      {
+        "kategoria": "PRODUSE DIABETICE",
+        "forgalom": 8783.41,
+        "tva": 988.79,
+        "adaos": 2233.4,
+        "arres_pct": 25.43,
+        "tva_pct": 11.26,
+        "dokumentum": 685
+      },
+      {
+        "kategoria": "GRADINA",
+        "forgalom": 7543.62,
+        "tva": 1208.88,
+        "adaos": 1986.11,
+        "arres_pct": 26.33,
+        "tva_pct": 16.03,
+        "dokumentum": 286
+      },
+      {
+        "kategoria": "MURATURA",
+        "forgalom": 6746.32,
+        "tva": 653.69,
+        "adaos": 1596.58,
+        "arres_pct": 23.67,
+        "tva_pct": 9.69,
+        "dokumentum": 430
+      },
+      {
+        "kategoria": "LEGUME FRUCTE",
+        "forgalom": 5808.59,
+        "tva": 528.01,
+        "adaos": 1736.45,
+        "arres_pct": 29.89,
+        "tva_pct": 9.09,
+        "dokumentum": 239
+      },
+      {
+        "kategoria": "CEAI",
+        "forgalom": 5649.16,
+        "tva": 824.44,
+        "adaos": 1578.66,
+        "arres_pct": 27.95,
+        "tva_pct": 14.59,
+        "dokumentum": 602
+      },
+      {
+        "kategoria": "GEM",
+        "forgalom": 4450.35,
+        "tva": 874.45,
+        "adaos": 1079.12,
+        "arres_pct": 24.25,
+        "tva_pct": 19.65,
+        "dokumentum": 296
+      },
+      {
+        "kategoria": "PROMO",
+        "forgalom": 4062.92,
+        "tva": 822.71,
+        "adaos": 1518.34,
+        "arres_pct": 37.37,
+        "tva_pct": 20.25,
+        "dokumentum": 797
+      },
+      {
+        "kategoria": "RECHIZITE SCOLARE",
+        "forgalom": 2807.79,
+        "tva": 575.21,
+        "adaos": 1038.49,
+        "arres_pct": 36.99,
+        "tva_pct": 20.49,
+        "dokumentum": 417
+      },
+      {
+        "kategoria": "CEREALE",
+        "forgalom": 2335.52,
+        "tva": 394.18,
+        "adaos": 638.18,
+        "arres_pct": 27.32,
+        "tva_pct": 16.88,
+        "dokumentum": 342
+      },
+      {
+        "kategoria": "CIORAPI",
+        "forgalom": 2124.12,
+        "tva": 420.08,
+        "adaos": 530.35,
+        "arres_pct": 24.97,
+        "tva_pct": 19.78,
+        "dokumentum": 205
+      },
+      {
+        "kategoria": "SIROP",
+        "forgalom": 2118.3,
+        "tva": 205,
+        "adaos": 528.54,
+        "arres_pct": 24.95,
+        "tva_pct": 9.68,
+        "dokumentum": 245
+      },
+      {
+        "kategoria": "PRODUSE VEG",
+        "forgalom": 1044.08,
+        "tva": 160.52,
+        "adaos": 250.38,
+        "arres_pct": 23.98,
+        "tva_pct": 15.37,
+        "dokumentum": 82
+      },
+      {
+        "kategoria": "OUA",
+        "forgalom": 858.58,
+        "tva": 77.42,
+        "adaos": 395.1,
+        "arres_pct": 46.02,
+        "tva_pct": 9.02,
+        "dokumentum": 17
+      },
+      {
+        "kategoria": "DISCOUNT",
+        "forgalom": 172.74,
+        "tva": 34.26,
+        "adaos": 45.54,
+        "arres_pct": 26.36,
+        "tva_pct": 19.83,
+        "dokumentum": 43
+      }
+    ],
+    "osszesen": {
+      "forgalom": 4928462.53,
+      "tva": 727936.2,
+      "adaos": 1169996.15,
+      "dokumentum": 53753,
+      "arres_pct": 23.74
+    }
+  },
+  "afa_szerkezet": {
+    "kedvezmenyes_9": 2447273.26,
+    "standard_19_21": 2318878.79,
+    "vegyes": 162310.47
+  },
+  "partnerek": {
+    "lista": [
+      {
+        "partner": "EAST COMERCIAL COMPANY SRL",
+        "telepules": "SUB CETATE",
+        "ertek": 90941.1,
+        "reszesedes_pct": 13.07,
+        "kumulativ_pct": 13.07
+      },
+      {
+        "partner": "JAZZ-SERV-COM SRL",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 90591.92,
+        "reszesedes_pct": 13.02,
+        "kumulativ_pct": 26.1
+      },
+      {
+        "partner": "LORD KING SRL",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 70102.45,
+        "reszesedes_pct": 10.08,
+        "kumulativ_pct": 36.17
+      },
+      {
+        "partner": "PARK REST CATERING SRL",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 65662.48,
+        "reszesedes_pct": 9.44,
+        "kumulativ_pct": 45.61
+      },
+      {
+        "partner": "DESAGTOURS SRL",
+        "telepules": "SUB CETATE",
+        "ertek": 54437.47,
+        "reszesedes_pct": 7.83,
+        "kumulativ_pct": 53.44
+      },
+      {
+        "partner": "LARICI ABC S.R.L.",
+        "telepules": "VARSAG",
+        "ertek": 44932.95,
+        "reszesedes_pct": 6.46,
+        "kumulativ_pct": 59.9
+      },
+      {
+        "partner": "LAPROLEM S.R.L.",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 44012.63,
+        "reszesedes_pct": 6.33,
+        "kumulativ_pct": 66.23
+      },
+      {
+        "partner": "FUNDATIA CASA DE BATRANI REF.OD.SEC.",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 34774.2,
+        "reszesedes_pct": 5.0,
+        "kumulativ_pct": 71.23
+      },
+      {
+        "partner": "LUKY-IMPEX S.R.L.",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 32927.16,
+        "reszesedes_pct": 4.73,
+        "kumulativ_pct": 75.96
+      },
+      {
+        "partner": "PENSIUNEA SUGO SRL",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 29106.31,
+        "reszesedes_pct": 4.18,
+        "kumulativ_pct": 80.14
+      },
+      {
+        "partner": "NORTH.C.-ROM SRL",
+        "telepules": "ZETEA",
+        "ertek": 26542.96,
+        "reszesedes_pct": 3.82,
+        "kumulativ_pct": 83.96
+      },
+      {
+        "partner": "NATUR AIR SRL",
+        "telepules": "DANESTI",
+        "ertek": 26348.5,
+        "reszesedes_pct": 3.79,
+        "kumulativ_pct": 87.75
+      },
+      {
+        "partner": "ASOCIATIA VOLUNTARILOR DIN ZETEA - ZETELAKI ONKENTESEK EGYESULETE",
+        "telepules": "ZETEA",
+        "ertek": 11053.86,
+        "reszesedes_pct": 1.59,
+        "kumulativ_pct": 89.34
+      },
+      {
+        "partner": "ABEL TOURS SRL",
+        "telepules": "CAPILNITA",
+        "ertek": 10998.36,
+        "reszesedes_pct": 1.58,
+        "kumulativ_pct": 90.92
+      },
+      {
+        "partner": "SELECT CAZINO SRL",
+        "telepules": "TIRGU MURES",
+        "ertek": 10125.67,
+        "reszesedes_pct": 1.46,
+        "kumulativ_pct": 92.37
+      },
+      {
+        "partner": "MAGYARI ESZTER II",
+        "telepules": "ZETEA",
+        "ertek": 7884.35,
+        "reszesedes_pct": 1.13,
+        "kumulativ_pct": 93.51
+      },
+      {
+        "partner": "SEVEN-MILE SHOE STORE SRL",
+        "telepules": "SICASAU",
+        "ertek": 7130.35,
+        "reszesedes_pct": 1.03,
+        "kumulativ_pct": 94.53
+      },
+      {
+        "partner": "SANDULY TEREZIA INTREPRINDERE INDIVIDUALA",
+        "telepules": "SICASAU",
+        "ertek": 6701.2,
+        "reszesedes_pct": 0.96,
+        "kumulativ_pct": 95.49
+      },
+      {
+        "partner": "CSORGOKO PANZIO SRL",
+        "telepules": "VARSAG",
+        "ertek": 6564.13,
+        "reszesedes_pct": 0.94,
+        "kumulativ_pct": 96.44
+      },
+      {
+        "partner": "KOVATOS LAKACS SRL",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 4447.16,
+        "reszesedes_pct": 0.64,
+        "kumulativ_pct": 97.08
+      },
+      {
+        "partner": "MARKET TUR SRL",
+        "telepules": "IZVOARE",
+        "ertek": 3870.79,
+        "reszesedes_pct": 0.56,
+        "kumulativ_pct": 97.63
+      },
+      {
+        "partner": "ASOCIATIA MICROREGIONALA SOVIDEK",
+        "telepules": "PRAID",
+        "ertek": 3442.19,
+        "reszesedes_pct": 0.49,
+        "kumulativ_pct": 98.13
+      },
+      {
+        "partner": "HAZIJO SRL",
+        "telepules": "ZETEA",
+        "ertek": 2583.61,
+        "reszesedes_pct": 0.37,
+        "kumulativ_pct": 98.5
+      },
+      {
+        "partner": "FUNDATIA DR BOROS FORTUNAT DIN ZETEA",
+        "telepules": "ZETEA",
+        "ertek": 2346.43,
+        "reszesedes_pct": 0.34,
+        "kumulativ_pct": 98.84
+      },
+      {
+        "partner": "BALAZS-INTERCOM SRL",
+        "telepules": "SUB CETATE",
+        "ertek": 1748.8,
+        "reszesedes_pct": 0.25,
+        "kumulativ_pct": 99.09
+      },
+      {
+        "partner": "ASOCIATIA \"PRO ZETEA\"",
+        "telepules": "ZETEA",
+        "ertek": 1380.89,
+        "reszesedes_pct": 0.2,
+        "kumulativ_pct": 99.29
+      },
+      {
+        "partner": "SAFRANEK SRL",
+        "telepules": "ZETEA",
+        "ertek": 902.59,
+        "reszesedes_pct": 0.13,
+        "kumulativ_pct": 99.42
+      },
+      {
+        "partner": "SEPTIMIA RESORT S.R.L.",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 847.58,
+        "reszesedes_pct": 0.12,
+        "kumulativ_pct": 99.54
+      },
+      {
+        "partner": "PAROHIA ROMANO-CATOLICA ZETEA",
+        "telepules": "ZETEA",
+        "ertek": 601.6,
+        "reszesedes_pct": 0.09,
+        "kumulativ_pct": 99.63
+      },
+      {
+        "partner": "SZEGEDI D. KLARA INTREPRINDERE INDIVIDUALA",
+        "telepules": "ZETEA",
+        "ertek": 546.07,
+        "reszesedes_pct": 0.08,
+        "kumulativ_pct": 99.7
+      },
+      {
+        "partner": "SZABO KATALIN II",
+        "telepules": "ZETEA",
+        "ertek": 534.49,
+        "reszesedes_pct": 0.08,
+        "kumulativ_pct": 99.78
+      },
+      {
+        "partner": "CLUB SPORTIV FEEL GOOD",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 496.18,
+        "reszesedes_pct": 0.07,
+        "kumulativ_pct": 99.85
+      },
+      {
+        "partner": "DEAK-PROD SRL",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 487.54,
+        "reszesedes_pct": 0.07,
+        "kumulativ_pct": 99.92
+      },
+      {
+        "partner": "INTERTOURISM SRL",
+        "telepules": "ODORHEIU SECUIESC",
+        "ertek": 283.1,
+        "reszesedes_pct": 0.04,
+        "kumulativ_pct": 99.96
+      },
+      {
+        "partner": "LUKACS F. ENIKO INTREPRINDERE INDIVIDUALA",
+        "telepules": "ZETEA",
+        "ertek": 254.47,
+        "reszesedes_pct": 0.04,
+        "kumulativ_pct": 100.0
+      }
+    ],
+    "osszesen": 695611.54,
+    "darab": 35,
+    "hhi": 780.7,
+    "top5_pct": 53.4,
+    "top10_pct": 80.1
+  },
+  "szamlas_havi": [
+    {
+      "honap": "01",
+      "ertek": 55899.96,
+      "koltseg": 41838.83,
+      "profit": 14061.12,
+      "profit_pct": 25.15,
+      "szamlak": 235
+    },
+    {
+      "honap": "02",
+      "ertek": 62323.27,
+      "koltseg": 46771.83,
+      "profit": 15551.44,
+      "profit_pct": 24.95,
+      "szamlak": 313
+    },
+    {
+      "honap": "03",
+      "ertek": 55128.61,
+      "koltseg": 39945.9,
+      "profit": 15182.71,
+      "profit_pct": 27.54,
+      "szamlak": 278
+    },
+    {
+      "honap": "04",
+      "ertek": 61047.0,
+      "koltseg": 45265.69,
+      "profit": 15781.31,
+      "profit_pct": 25.85,
+      "szamlak": 290
+    },
+    {
+      "honap": "05",
+      "ertek": 63373.31,
+      "koltseg": 49000.77,
+      "profit": 14372.54,
+      "profit_pct": 22.68,
+      "szamlak": 249
+    },
+    {
+      "honap": "06",
+      "ertek": 68078.58,
+      "koltseg": 53934.25,
+      "profit": 14144.33,
+      "profit_pct": 20.78,
+      "szamlak": 298
+    },
+    {
+      "honap": "07",
+      "ertek": 67462.7,
+      "koltseg": 52055.16,
+      "profit": 15407.54,
+      "profit_pct": 22.84,
+      "szamlak": 355
+    },
+    {
+      "honap": "08",
+      "ertek": 70865.74,
+      "koltseg": 54323.05,
+      "profit": 16542.69,
+      "profit_pct": 23.34,
+      "szamlak": 380
+    },
+    {
+      "honap": "09",
+      "ertek": 69947.46,
+      "koltseg": 53458.81,
+      "profit": 16488.65,
+      "profit_pct": 23.57,
+      "szamlak": 313
+    },
+    {
+      "honap": "10",
+      "ertek": 45719.15,
+      "koltseg": 34089.57,
+      "profit": 11629.58,
+      "profit_pct": 25.44,
+      "szamlak": 301
+    },
+    {
+      "honap": "11",
+      "ertek": 27227.31,
+      "koltseg": 20153.64,
+      "profit": 7073.67,
+      "profit_pct": 25.98,
+      "szamlak": 192
+    },
+    {
+      "honap": "12",
+      "ertek": 49104.04,
+      "koltseg": 36488.62,
+      "profit": 12615.42,
+      "profit_pct": 25.69,
+      "szamlak": 295
+    }
+  ],
+  "szamlas_ossz": {
+    "ertek": 696177.12,
+    "koltseg": 527326.13,
+    "profit": 168851.0,
+    "profit_pct": 24.25,
+    "szamlak": 3499
+  },
+  "gestiune": [
+    {
+      "nev": "MUSKATLI",
+      "szamlak": 414,
+      "arbevetel": 1491778.41,
+      "arbevetel_afaval": 1703931.82,
+      "atlag_szamla": 3603.33,
+      "reszesedes_pct": 26.53
+    },
+    {
+      "nev": "BIRGITA",
+      "szamlak": 399,
+      "arbevetel": 1375801.67,
+      "arbevetel_afaval": 1579000.53,
+      "atlag_szamla": 3448.12,
+      "reszesedes_pct": 24.46
+    },
+    {
+      "nev": "SZEGEDI",
+      "szamlak": 389,
+      "arbevetel": 925532.59,
+      "arbevetel_afaval": 1061249.15,
+      "atlag_szamla": 2379.26,
+      "reszesedes_pct": 16.46
+    },
+    {
+      "nev": "VEGYESKE",
+      "szamlak": 366,
+      "arbevetel": 891325.38,
+      "arbevetel_afaval": 1026921.64,
+      "atlag_szamla": 2435.32,
+      "reszesedes_pct": 15.85
+    },
+    {
+      "nev": "NAGYKERESKEDES",
+      "szamlak": 1341,
+      "arbevetel": 660272.17,
+      "arbevetel_afaval": 725014.49,
+      "atlag_szamla": 492.37,
+      "reszesedes_pct": 11.74
+    },
+    {
+      "nev": "ZETEKINCSE",
+      "szamlak": 139,
+      "arbevetel": 278952.37,
+      "arbevetel_afaval": 324186.44,
+      "atlag_szamla": 2006.85,
+      "reszesedes_pct": 4.96
+    }
+  ],
+  "gerdit_havi": [
+    {
+      "honap": "01",
+      "arbevetel": 384025.7
+    },
+    {
+      "honap": "02",
+      "arbevetel": 380771.79
+    },
+    {
+      "honap": "03",
+      "arbevetel": 405797.07
+    },
+    {
+      "honap": "04",
+      "arbevetel": 438549.27
+    },
+    {
+      "honap": "05",
+      "arbevetel": 497267.99
+    },
+    {
+      "honap": "06",
+      "arbevetel": 504743.88
+    },
+    {
+      "honap": "07",
+      "arbevetel": 581529.2
+    },
+    {
+      "honap": "08",
+      "arbevetel": 559284.27
+    },
+    {
+      "honap": "09",
+      "arbevetel": 487399.31
+    },
+    {
+      "honap": "10",
+      "arbevetel": 495939.1
+    },
+    {
+      "honap": "11",
+      "arbevetel": 405292.53
+    },
+    {
+      "honap": "12",
+      "arbevetel": 483062.49
+    }
+  ],
+  "gestiune_havi": {
+    "BIRGITA": {
+      "01": 110224.95,
+      "02": 98939.39,
+      "03": 113065.39,
+      "04": 113738.27,
+      "05": 131607.16,
+      "06": 130354.26,
+      "07": 149726.64,
+      "08": 127247.41,
+      "09": 93328.16,
+      "10": 108731.76,
+      "11": 89937.2,
+      "12": 108901.05
+    },
+    "MUSKATLI": {
+      "01": 105638.72,
+      "02": 99213.93,
+      "03": 108595.95,
+      "04": 120197.48,
+      "05": 139317.95,
+      "06": 137481.66,
+      "07": 164777.92,
+      "08": 138331.59,
+      "09": 123016.09,
+      "10": 124780.32,
+      "11": 108239.35,
+      "12": 122187.44
+    },
+    "NAGYKERESKEDES": {
+      "01": 52293.57,
+      "02": 60066.87,
+      "03": 52061.47,
+      "04": 58362.3,
+      "05": 62041.62,
+      "06": 62658.11,
+      "07": 62724.87,
+      "08": 69464.35,
+      "09": 67365.36,
+      "10": 43213.23,
+      "11": 26066.63,
+      "12": 43953.81
+    },
+    "SZEGEDI": {
+      "01": 54430.79,
+      "02": 56344.09,
+      "03": 64799.42,
+      "04": 73834.98,
+      "05": 83440.85,
+      "06": 95081.87,
+      "07": 112753.05,
+      "08": 92904.94,
+      "09": 73737.45,
+      "10": 78552.39,
+      "11": 63654.18,
+      "12": 75998.57
+    },
+    "VEGYESKE": {
+      "01": 61437.67,
+      "02": 66207.51,
+      "03": 67274.83,
+      "04": 72416.24,
+      "05": 80860.4,
+      "06": 79167.98,
+      "07": 91546.71,
+      "08": 87326.34,
+      "09": 71469.53,
+      "10": 76600.55,
+      "11": 62318.42,
+      "12": 74699.19
+    },
+    "ZETEKINCSE": {
+      "08": 44009.64,
+      "09": 58482.73,
+      "10": 64060.83,
+      "11": 55076.74,
+      "12": 57322.43
+    }
+  },
+  "keszlet_egeszseg": {
+    "osszes_cikksor": 17413,
+    "negativ_db": 267,
+    "holt_db": 1159,
+    "mozdulatlan_db": 1022,
+    "gestiune_keszlet": {
+      "BIRGITA": {
+        "cikk": 3516,
+        "si": 14546.3,
+        "intr": 316172.7,
+        "ie": 319645.8,
+        "sf": 11073.2,
+        "forgas": 24.95
+      },
+      "MUSKATLI": {
+        "cikk": 4426,
+        "si": 18244.9,
+        "intr": 287300.5,
+        "ie": 289119.1,
+        "sf": 16426.4,
+        "forgas": 16.68
+      },
+      "NAGYKERESKEDES": {
+        "cikk": 278,
+        "si": 20364.8,
+        "intr": 499087.1,
+        "ie": 494625.7,
+        "sf": 24826.3,
+        "forgas": 21.89
+      },
+      "SZEGEDI": {
+        "cikk": 3250,
+        "si": 12607.2,
+        "intr": 165090.2,
+        "ie": 164968.9,
+        "sf": 12728.5,
+        "forgas": 13.02
+      },
+      "VEGYESKE": {
+        "cikk": 3323,
+        "si": 10072.3,
+        "intr": 154214.6,
+        "ie": 154546.8,
+        "sf": 9740.1,
+        "forgas": 15.6
+      },
+      "ZETEKINCSE": {
+        "cikk": 2620,
+        "si": 0.0,
+        "intr": 61904.9,
+        "ie": 52061.0,
+        "sf": 9843.9,
+        "forgas": 10.58
+      }
+    }
+  },
+  "top_mozgok": [
+    {
+      "cikk": "OUA CONS.CAT.L",
+      "mennyiseg": 228790.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "PUNGI AMBALAT",
+      "mennyiseg": 112402.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "CARTOFI RO",
+      "mennyiseg": 65523.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "BERE BUCEGI DOZA 0.5 SGR",
+      "mennyiseg": 64731.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "VARZA ROMANIA",
+      "mennyiseg": 31141.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "CARAMELE DAMLA",
+      "mennyiseg": 29188.0,
+      "egysegek": 5
+    },
+    {
+      "cikk": "CARTOFI ROSU RO",
+      "mennyiseg": 18316.0,
+      "egysegek": 5
+    },
+    {
+      "cikk": "ROSII RO",
+      "mennyiseg": 16311.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "BANANE ECUADOR",
+      "mennyiseg": 13917.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "CAFEA 3IN1 JACOBS ORIGINAL 12.6 G",
+      "mennyiseg": 13897.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "PAINE ALBA 1 KG",
+      "mennyiseg": 12508.0,
+      "egysegek": 5
+    },
+    {
+      "cikk": "PRUNE R",
+      "mennyiseg": 11727.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "CAFEA 3IN1 MOKATE BC",
+      "mennyiseg": 11448.0,
+      "egysegek": 5
+    },
+    {
+      "cikk": "PAINE DE CASA",
+      "mennyiseg": 11199.0,
+      "egysegek": 5
+    },
+    {
+      "cikk": "APA MINERALA TUSNAD 2 L SGR",
+      "mennyiseg": 10592.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "PUNGI GERDIT",
+      "mennyiseg": 10056.0,
+      "egysegek": 5
+    },
+    {
+      "cikk": "APA CARBO TIVA 2.25 SGR N",
+      "mennyiseg": 10037.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "BERE BUCEGI 2.5 L SGR",
+      "mennyiseg": 9621.0,
+      "egysegek": 6
+    },
+    {
+      "cikk": "BERE HARGHITA 0,5L ST",
+      "mennyiseg": 8440.0,
+      "egysegek": 5
+    },
+    {
+      "cikk": "CAFEA NESS BRASERO PLIC 1,8G",
+      "mennyiseg": 7966.0,
+      "egysegek": 5
+    }
+  ],
+  "szortiment_atfedes": {
+    "1": 2496,
+    "2": 1391,
+    "3": 1018,
+    "4": 898,
+    "5": 876,
+    "6": 140
+  },
+  "kpi": {
+    "teljes_arbevetel": 5623662.58,
+    "kassza_arbevetel": 4928462.53,
+    "b2b_arbevetel": 696177.12,
+    "kassza_pct": 87.6,
+    "b2b_pct": 12.4,
+    "kassza_arres": 1169996.15,
+    "kassza_arres_pct": 23.74,
+    "b2b_profit": 168851.0,
+    "b2b_profit_pct": 24.25,
+    "egyseg_db": 6,
+    "partner_db": 35,
+    "rekonciliacio_elteres": -977.07
+  }
+}

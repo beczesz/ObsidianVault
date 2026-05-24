@@ -1,12 +1,9 @@
 ---
-copilot-command-context-menu-enabled: false
-copilot-command-slash-enabled: false
-copilot-command-context-menu-order: 1110
+copilot-command-context-menu-enabled: true
+copilot-command-slash-enabled: true
+copilot-command-context-menu-order: 130
 copilot-command-model-key: ""
 copilot-command-last-used: 0
+id: edd86c55-45c8-4992-8359-2291cb364d98
+index_schema_version: 1
 ---
-Rewrite {} as a single tweet with these requirements:
-    1. Maximum 280 characters
-    2. Use concise, impactful language
-    3. Maintain the core message
-    Return only the tweet text.

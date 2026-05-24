@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH v0.5 – Kedvenc Termékek Wireframe v1</title>
+<style>
+  /* ── Design tokens ──────────────────────────────────────── */
+  :root {
+    --primary:    #9B2335;
+    --primary-dk: #7a1b28;
+    --bg:         #F5F0EB;
+    --card-bg:    #FFFFFF;
+    --border:     #E8E2DB;
+    --text:       #2C2825;
+    --muted:      #9B8E84;
+    --star-off:   rgba(180,170,160,0.55);
+    --star-on:    #F0A500;
+    --fav-bg:     #FFF8EC;
+    --fav-border: #F0C060;
+    --green:      #2D7A4F;
+    --tag-bg:     #F5F0EB;
+  }
+
+  /* ── Layout ─────────────────────────────────────────────── */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #E8E3DC;
+    min-height: 100vh;
+    padding: 32px 20px 60px;
+  }
+  .page-title {
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .page-sub {
+    text-align: center;
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 32px;
+  }
+  .back-btn {
+    display: inline-block;
+    margin-bottom: 24px;
+    font-size: 12px;
+    color: var(--primary);
+    text-decoration: none;
+    border: 1px solid var(--primary);
+    border-radius: 6px;
+    padding: 4px 10px;
+  }
+
+  /* ── Section labels ─────────────────────────────────────── */
+  .section-wrap {
+    max-width: 960px;
+    margin: 0 auto 48px;
+  }
+  .section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #888;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    padding-left: 4px;
+    border-left: 3px solid var(--primary);
+    padding-left: 8px;
+  }
+  .screens-row {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .screen-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+  }
+  .screen-label {
+    font-size: 11px;
+    color: #666;
+    text-align: center;
+    font-weight: 600;
+  }
+  .screen-note {
+    font-size: 10px;
+    color: #999;
+    text-align: center;
+    max-width: 200px;
+    line-height: 1.4;
+  }
+
+  /* ── Phone frame ─────────────────────────────────────────── */
+  .phone {
+    width: 220px;
+    background: var(--bg);
+    border-radius: 32px;
+    border: 8px solid #1a1a1a;
+    overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.22);
+    position: relative;
+  }
+  .phone::before {
+    content: '';
+    display: block;
+    width: 60px; height: 14px;
+    background: #1a1a1a;
+    border-radius: 0 0 10px 10px;
+    margin: 0 auto 0;
+  }
+  .phone-header {
+    background: white;
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .phone-header-title {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .phone-header-icon {
+    width: 28px; height: 28px;
+    background: var(--bg);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .phone-body {
+    height: 460px;
+    overflow-y: auto;
+    padding: 10px 8px 16px;
+  }
+  .phone-body::-webkit-scrollbar { display: none; }
+
+  /* ── Category chips ──────────────────────────────────────── */
+  .cat-chips {
+    display: flex;
+    gap: 6px;
+    overflow-x: auto;
+    padding: 0 0 8px;
+    scrollbar-width: none;
+  }
+  .cat-chips::-webkit-scrollbar { display: none; }
+  .chip {
+    flex-shrink: 0;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: white;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+  }
+
+  /* ── Section header (Kedvencek / Összes termék) ─────────── */
+  .list-section-head {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 2px 4px;
+    margin-bottom: 4px;
+  }
+  .list-section-head span {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.3px;
+  }
+  .list-section-head .count-badge {
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--tag-bg);
+    border-radius: 10px;
+    padding: 1px 6px;
+  }
+  .list-section-head .star-icon-sm {
+    display: flex;
+    align-items: center;
+  }
+  .section-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 6px 0 8px;
+  }
+
+  /* ── Product grid ────────────────────────────────────────── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  /* ── Product card ────────────────────────────────────────── */
+  .prod-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+  .prod-card.is-fav {
+    border-color: var(--fav-border);
+    background: var(--fav-bg);
+    box-shadow: 0 1px 6px rgba(240,165,0,0.15);
+  }
+  .prod-img {
+    height: 72px;
+    background: linear-gradient(135deg, #f0ebe4 0%, #e8e0d6 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+  }
+  .prod-img.kolbasz  { background: linear-gradient(135deg, #fde8d8, #f5d4c0); }
+  .prod-img.hus      { background: linear-gradient(135deg, #fde0e0, #f5c8c8); }
+  .prod-img.szalonna { background: linear-gradient(135deg, #fde8d0, #f5d0b0); }
+  .prod-img.csirke   { background: linear-gradient(135deg, #fdf5e0, #f5e8c0); }
+  .prod-img.sonka    { background: linear-gradient(135deg, #fde0ec, #f5c8d8); }
+
+  .prod-body {
+    padding: 7px 8px 8px;
+  }
+  .prod-name {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .prod-sub {
+    font-size: 9px;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .prod-price {
+    font-size: 11px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .prod-unit {
+    font-size: 9px;
+    color: var(--muted);
+    font-weight: 400;
+  }
+
+  /* Add to cart button */
+  .prod-add-btn {
+    position: absolute;
+    bottom: 7px;
+    right: 7px;
+    width: 22px; height: 22px;
+    background: var(--primary);
+    border-radius: 7px;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── STAR BUTTON ──────────────────────────────────────────── */
+  .star-btn {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 26px; height: 26px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 50%;
+    /* Subtle dark tint so it's visible on any product image */
+    background: rgba(0,0,0,0.18);
+    backdrop-filter: blur(2px);
+    cursor: pointer;
+    z-index: 2;
+    transition: transform 0.15s;
+  }
+  .star-btn.off svg { fill: none; stroke: rgba(255,255,255,0.8); }
+  .star-btn.on  svg { fill: var(--star-on); stroke: var(--star-on); }
+
+  /* ── Interactive demo star ───────────────────────────────── */
+  .star-btn.interactive {
+    cursor: pointer;
+  }
+  .star-btn.interactive:active { transform: scale(1.25); }
+
+  /* ── Empty state ─────────────────────────────────────────── */
+  .empty-fav {
+    background: white;
+    border: 1.5px dashed var(--border);
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+    grid-column: 1 / -1;
+  }
+  .empty-fav svg { opacity: 0.25; margin-bottom: 6px; }
+  .empty-fav p { font-size: 10px; color: var(--muted); line-height: 1.4; }
+
+  /* ── Annotation arrows ───────────────────────────────────── */
+  .annotation-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .annotation {
+    position: absolute;
+    font-size: 9px;
+    color: #555;
+    background: #FFFDE7;
+    border: 1px solid #F0C060;
+    border-radius: 6px;
+    padding: 3px 7px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 20;
+  }
+  .ann-star-off  { top: 22px; right: -90px; }
+  .ann-star-on   { top: 22px; right: -90px; }
+  .ann-section   { top: -18px; left: 0; }
+
+  /* ── Interaction detail panel ────────────────────────────── */
+  .detail-panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    width: 260px;
+  }
+  .detail-panel h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .state-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .state-row:last-of-type { border-bottom: none; }
+  .state-star-demo {
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--bg);
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+  .state-info { flex: 1; }
+  .state-info strong { display: block; font-size: 11px; font-weight: 700; color: var(--text); }
+  .state-info span   { font-size: 10px; color: var(--muted); }
+
+  /* ── Logic panel ─────────────────────────────────────────── */
+  .logic-panel {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    width: 260px;
+  }
+  .logic-panel h3 {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+  .logic-row {
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+    padding: 7px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 10px;
+    color: var(--text);
+    line-height: 1.4;
+  }
+  .logic-row:last-child { border-bottom: none; }
+  .logic-num {
+    flex-shrink: 0;
+    width: 18px; height: 18px;
+    background: var(--primary);
+    color: white;
+    border-radius: 50%;
+    font-size: 9px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    margin-top: 1px;
+  }
+
+  /* ── Interactive note ────────────────────────────────────── */
+  .interact-note {
+    background: #E8F5E9;
+    border: 1px solid #A5D6A7;
+    border-radius: 8px;
+    font-size: 10px;
+    color: #2E7D32;
+    padding: 6px 10px;
+    text-align: center;
+    margin-top: 6px;
+  }
+
+  /* ── DB schema panel ─────────────────────────────────────── */
+  .schema-panel {
+    background: #1e1e2e;
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    color: #cdd6f4;
+    line-height: 1.7;
+    min-width: 240px;
+  }
+  .schema-panel .kw   { color: #cba6f7; }
+  .schema-panel .str  { color: #a6e3a1; }
+  .schema-panel .cmt  { color: #6c7086; }
+  .schema-panel .fn   { color: #89b4fa; }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">← Vissza a galériába</a>
+
+<div class="page-title">Deák Húsmíves · Sprint 5</div>
+<div class="page-sub">Kedvenc Termékek — Wireframe v1 &nbsp;·&nbsp; 3 screen + interakció + logika</div>
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 1 – ALAP LISTA (nincs kedvenc)                    -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="section-wrap">
+  <div class="section-label">Screen 1 — Alap termék lista (nincs kedvenc még)</div>
+  <div class="screens-row">
+
+    <!-- Phone 1A: lista csillagokkal -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="phone-header-title">Termékek</span>
+          <div class="phone-header-icon">
+            <!-- cart icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B2335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          </div>
+        </div>
+        <div class="phone-body" id="screen1-body">
+          <!-- chips -->
+          <div class="cat-chips">
+            <div class="chip active">Összes</div>
+            <div class="chip">Kolbász</div>
+            <div class="chip">Szalonna</div>
+            <div class="chip">Hús</div>
+            <div class="chip">Sonka</div>
+          </div>
+          <!-- product grid – no favs yet -->
+          <div class="product-grid" id="grid-no-fav"></div>
+        </div>
+      </div>
+      <div class="screen-label">Alapállapot</div>
+      <div class="screen-note">Minden kártyán szürke, félig átlátszó csillag. Nincs "Kedvencek" szekció.</div>
+    </div>
+
+    <!-- Detail: star button close-up -->
+    <div class="screen-col">
+      <div class="detail-panel">
+        <h3>Csillag gomb — állapotok</h3>
+        <div class="state-row">
+          <div class="state-star-demo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="rgba(160,150,140,0.7)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="state-info">
+            <strong>Alapállapot (off)</strong>
+            <span>Szürke, ~55% opacitás, fekete glyph. Nem zavaró, de látható.</span>
+          </div>
+        </div>
+        <div class="state-row">
+          <div class="state-star-demo" style="background:#FFF8EC">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#F0A500" stroke="#F0A500" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="state-info">
+            <strong>Kedvenc (on)</strong>
+            <span>Arany, teli kitöltés. Azonnal felismerhető.</span>
+          </div>
+        </div>
+        <div class="state-row">
+          <div class="state-star-demo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="rgba(240,165,0,0.4)" stroke="rgba(240,165,0,0.8)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="state-info">
+            <strong>Pressed / animáció</strong>
+            <span>scale(1.3) + fill fade, 150ms ease-out.</span>
+          </div>
+        </div>
+
+        <div style="height:12px"></div>
+
+        <!-- Placement diagram -->
+        <h3>Elhelyezés a kártyán</h3>
+        <div style="position:relative; background:#f0ebe4; border-radius:10px; height:80px; overflow:hidden; margin-bottom:4px;">
+          <!-- fake product card top portion -->
+          <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:22px;">🌭</div>
+          <!-- star position marker -->
+          <div style="position:absolute; top:6px; right:6px; width:26px; height:26px; background:rgba(0,0,0,0.18); border-radius:50%; display:flex; align-items:center; justify-content:center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <!-- arrow annotation -->
+          <div style="position:absolute; top:6px; right:36px; font-size:9px; color:#333; background:rgba(255,255,240,0.9); border:1px solid #ccc; border-radius:4px; padding:2px 5px; white-space:nowrap;">top:6px right:6px</div>
+        </div>
+        <div style="font-size:9px; color:#888; text-align:center;">Mindig a termékképen, jobb felső sarok</div>
+      </div>
+    </div>
+
+    <!-- Logic panel -->
+    <div class="screen-col">
+      <div class="logic-panel">
+        <h3>Rendezési logika</h3>
+        <div class="logic-row">
+          <div class="logic-num">1</div>
+          <div>User rákattint a csillagra → <strong>item_id</strong> bekerül a <code>user_favorites[]</code> tömbbe (Frappe user doctype vagy localStorage fallback).</div>
+        </div>
+        <div class="logic-row">
+          <div class="logic-num">2</div>
+          <div>A terméklistát rendereléskor <strong>két csoportra bontjuk:</strong><br>① Kedvencek (arany csillag, sárgás kártya)<br>② Többi termék (alapállapot)</div>
+        </div>
+        <div class="logic-row">
+          <div class="logic-num">3</div>
+          <div>A kedvencek a lista <strong>tetején jelennek meg</strong>, kategóriaszűrőn belül is elsők maradnak.</div>
+        </div>
+        <div class="logic-row">
+          <div class="logic-num">4</div>
+          <div>Ha egy kategóriában nincs kedvenc → a "Kedvencek" szekció el van rejtve, csak az "Összes termék" látszik.</div>
+        </div>
+        <div class="logic-row">
+          <div class="logic-num">5</div>
+          <div><strong>Perzisztálás:</strong> Bejelentkezett usernél szerver oldal (user doctype). Nem bejelentkezett vendégnél localStorage, de vendég nem tud kedvencet menteni (login gate).</div>
+        </div>
+      </div>
+
+      <div style="height:12px"></div>
+
+      <!-- DB schema -->
+      <div class="schema-panel">
+        <span class="cmt">-- Frappe User Doctype extension</span><br>
+        <span class="kw">field</span>: <span class="str">favorite_items</span><br>
+        <span class="kw">type</span>: <span class="fn">JSON Array</span><br>
+        <span class="cmt">["item-001", "item-007", ...]</span><br>
+        <br>
+        <span class="cmt">-- API endpoint</span><br>
+        <span class="fn">POST</span> /api/favorites/toggle<br>
+        <span class="str">{ item_id, user_id }</span><br>
+        <span class="cmt">→ returns { is_fav: true|false }</span>
+      </div>
+    </div>
+
+  </div><!-- /screens-row -->
+</div><!-- /section 1 -->
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 2 – 1 KEDVENC JELÖLVE                             -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="section-wrap">
+  <div class="section-label">Screen 2 — 1 termék kedvencnek jelölve → a lista tetejére kerül</div>
+  <div class="screens-row">
+
+    <div class="screen-col">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="phone-header-title">Termékek</span>
+          <div class="phone-header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B2335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          </div>
+        </div>
+        <div class="phone-body">
+          <div class="cat-chips">
+            <div class="chip active">Összes</div>
+            <div class="chip">Kolbász</div>
+            <div class="chip">Szalonna</div>
+            <div class="chip">Hús</div>
+            <div class="chip">Sonka</div>
+          </div>
+
+          <!-- Kedvencek szekció -->
+          <div class="list-section-head">
+            <span class="star-icon-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#F0A500" stroke="#F0A500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </span>
+            <span>Kedvenceim</span>
+            <span class="count-badge">1</span>
+          </div>
+          <div class="product-grid" id="grid-one-fav-top"></div>
+
+          <div class="section-divider"></div>
+
+          <!-- Összes termék szekció -->
+          <div class="list-section-head">
+            <span>Összes termék</span>
+            <span class="count-badge">6</span>
+          </div>
+          <div class="product-grid" id="grid-one-fav-rest"></div>
+        </div>
+      </div>
+      <div class="screen-label">1 kedvenc, lista tetején</div>
+      <div class="screen-note">A "Házikolbász" arany csillaggal, sárgás kártyán, a "Kedvenceim" szekció első eleme.</div>
+    </div>
+
+    <!-- Phone 2B: több kedvenc -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="phone-header-title">Termékek</span>
+          <div class="phone-header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B2335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          </div>
+        </div>
+        <div class="phone-body">
+          <div class="cat-chips">
+            <div class="chip active">Összes</div>
+            <div class="chip">Kolbász</div>
+            <div class="chip">Szalonna</div>
+            <div class="chip">Hús</div>
+            <div class="chip">Sonka</div>
+          </div>
+
+          <div class="list-section-head">
+            <span class="star-icon-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#F0A500" stroke="#F0A500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </span>
+            <span>Kedvenceim</span>
+            <span class="count-badge">3</span>
+          </div>
+          <div class="product-grid" id="grid-multi-fav"></div>
+
+          <div class="section-divider"></div>
+
+          <div class="list-section-head">
+            <span>Összes termék</span>
+            <span class="count-badge">4</span>
+          </div>
+          <div class="product-grid" id="grid-multi-rest"></div>
+        </div>
+      </div>
+      <div class="screen-label">3 kedvenc eset</div>
+      <div class="screen-note">Több kedvenc esetén a szekció 2 oszlopos grid marad, sorrendben ahogy jelölték.</div>
+    </div>
+
+    <!-- Phone 2C: category filter + fav -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="phone-header-title">Termékek</span>
+          <div class="phone-header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B2335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          </div>
+        </div>
+        <div class="phone-body">
+          <div class="cat-chips">
+            <div class="chip">Összes</div>
+            <div class="chip active">Kolbász</div>
+            <div class="chip">Szalonna</div>
+            <div class="chip">Hús</div>
+            <div class="chip">Sonka</div>
+          </div>
+
+          <!-- Kolbász kategória + 1 kedvenc benne -->
+          <div class="list-section-head">
+            <span class="star-icon-sm">
+              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#F0A500" stroke="#F0A500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </span>
+            <span>Kedvenceim</span>
+            <span class="count-badge">1</span>
+          </div>
+          <div class="product-grid" id="grid-cat-fav"></div>
+
+          <div class="section-divider"></div>
+
+          <div class="list-section-head">
+            <span>Kolbász termékek</span>
+            <span class="count-badge">3</span>
+          </div>
+          <div class="product-grid" id="grid-cat-rest"></div>
+        </div>
+      </div>
+      <div class="screen-label">Kategóriaszűrőn belül is</div>
+      <div class="screen-note">Ha az adott kategóriában van kedvenc, ott is a tetején jelenik meg.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════ -->
+<!-- SECTION 3 – EDGE CASES                                    -->
+<!-- ══════════════════════════════════════════════════════════ -->
+<div class="section-wrap">
+  <div class="section-label">Screen 3 — Edge cases</div>
+  <div class="screens-row">
+
+    <!-- 3A: Empty state (minden kedvenc eltávolítva) -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="phone-header-title">Termékek</span>
+          <div class="phone-header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B2335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          </div>
+        </div>
+        <div class="phone-body">
+          <div class="cat-chips">
+            <div class="chip active">Összes</div>
+            <div class="chip">Kolbász</div>
+            <div class="chip">Szalonna</div>
+            <div class="chip">Hús</div>
+            <div class="chip">Sonka</div>
+          </div>
+          <!-- no kedvencek section, just all products -->
+          <div class="list-section-head" style="margin-top:4px">
+            <span>Összes termék</span>
+            <span class="count-badge">7</span>
+          </div>
+          <div class="product-grid" id="grid-empty-state"></div>
+        </div>
+      </div>
+      <div class="screen-label">Nincs kedvenc (empty)</div>
+      <div class="screen-note">Ha nincs kedvenc, a "Kedvenceim" szekció teljesen el van rejtve. Tiszta lista.</div>
+    </div>
+
+    <!-- 3B: Vendég user (nem bejelentkezett) -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="phone-header-title">Termékek</span>
+          <div class="phone-header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B2335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          </div>
+        </div>
+        <div class="phone-body" id="guest-body">
+          <div class="cat-chips">
+            <div class="chip active">Összes</div>
+            <div class="chip">Kolbász</div>
+            <div class="chip">Szalonna</div>
+          </div>
+          <!-- guest: star visible but tapping shows login nudge -->
+          <div class="list-section-head" style="margin-top:4px">
+            <span>Összes termék</span>
+          </div>
+          <div class="product-grid" id="grid-guest"></div>
+
+          <!-- Login nudge toast (appears after star tap) -->
+          <div style="background:#fff; border:1px solid var(--border); border-radius:12px; padding:10px 12px; margin-top:8px; display:flex; gap:8px; align-items:flex-start; box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#F0A500" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;margin-top:1px"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            <div>
+              <div style="font-size:11px; font-weight:700; color:var(--text); margin-bottom:2px">Kedvencek mentéséhez be kell jelentkezned</div>
+              <div style="font-size:10px; color:var(--muted);">Regisztráció után a kedvenceid minden eszközön elérhetők.</div>
+              <button style="margin-top:6px; background:var(--primary); color:white; border:none; border-radius:7px; font-size:10px; font-weight:700; padding:5px 12px; cursor:pointer;">Bejelentkezés</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="screen-label">Vendég user → login nudge</div>
+      <div class="screen-note">A csillag tap után megjelenik egy kis toast: "Kedvencek mentéséhez be kell jelentkezned."</div>
+    </div>
+
+    <!-- Interactive demo phone -->
+    <div class="screen-col">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="phone-header-title">Termékek</span>
+          <div class="phone-header-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9B2335" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
+          </div>
+        </div>
+        <div class="phone-body">
+          <div class="cat-chips">
+            <div class="chip active">Összes</div>
+            <div class="chip">Kolbász</div>
+            <div class="chip">Szalonna</div>
+            <div class="chip">Hús</div>
+          </div>
+          <div style="padding: 6px 2px 4px; font-size:10px; color:var(--primary); font-weight:700;">
+            ← Kattints a csillagokra!
+          </div>
+          <div id="interactive-list"></div>
+        </div>
+      </div>
+      <div class="screen-label">Interaktív demo</div>
+      <div class="interact-note">Kattints bármelyik csillagra a togglehoz!</div>
+      <div class="screen-note">A csillag tap azonnal átrendezi a listát — kedvencek felülre kerülnek.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<script>
+// ── Product data ─────────────────────────────────────────────
+const PRODUCTS = [
+  { id: 'p1', name: 'Házikolbász', sub: 'Füstölt, 45 dkg', price: 45, cat: 'kolbasz', img: 'kolbasz', emoji: '🌭' },
+  { id: 'p2', name: 'Füstölt Szalonna', sub: 'Szeletelt, 1 kg', price: 42, cat: 'szalonna', img: 'szalonna', emoji: '🥓' },
+  { id: 'p3', name: 'Csirkecomb', sub: 'Friss, kg', price: 28, cat: 'hus', img: 'csirke', emoji: '🍗' },
+  { id: 'p4', name: 'Cérna Kolbász', sub: 'Friss, 30 dkg', price: 48, cat: 'kolbasz', img: 'kolbasz', emoji: '🌭' },
+  { id: 'p5', name: 'Füstölt Sonka', sub: 'Egész, kg', price: 55, cat: 'sonka', img: 'sonka', emoji: '🍖' },
+  { id: 'p6', name: 'Darált Sertés', sub: 'Friss, kg', price: 32, cat: 'hus', img: 'hus', emoji: '🥩' },
+  { id: 'p7', name: 'Abált Szalonna', sub: 'Főtt, 50 dkg', price: 35, cat: 'szalonna', img: 'szalonna', emoji: '🥓' },
+];
+
+// ── Star SVG helpers ─────────────────────────────────────────
+const starOff = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.85)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+const starOn  = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="#F0A500" stroke="#F0A500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
+
+const plusSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>`;
+
+// ── Render product card ──────────────────────────────────────
+function prodCard(p, isFav, interactive = false) {
+  const starSvg = isFav ? starOn : starOff;
+  const starClass = 'star-btn ' + (isFav ? 'on' : 'off') + (interactive ? ' interactive' : '');
+  const cardClass = 'prod-card' + (isFav ? ' is-fav' : '');
+  const dataAttr  = interactive ? ` data-id="${p.id}" onclick="toggleFav('${p.id}')"` : '';
+  return `
+    <div class="${cardClass}">
+      <div class="prod-img ${p.img}">${p.emoji}</div>
+      <div class="prod-body">
+        <div class="prod-name">${p.name}</div>
+        <div class="prod-sub">${p.sub}</div>
+        <div class="prod-price">${p.price} <span class="prod-unit">RON/kg</span></div>
+      </div>
+      <div class="${starClass}"${dataAttr}>${starSvg}</div>
+      <div class="prod-add-btn">${plusSvg}</div>
+    </div>`;
+}
+
+// ── Static screens ────────────────────────────────────────────
+
+// Screen 1: no favs
+document.getElementById('grid-no-fav').innerHTML =
+  PRODUCTS.slice(0, 6).map(p => prodCard(p, false)).join('');
+
+// Screen 2A: 1 fav (p1 = Házikolbász)
+document.getElementById('grid-one-fav-top').innerHTML  = prodCard(PRODUCTS[0], true);
+document.getElementById('grid-one-fav-rest').innerHTML = PRODUCTS.slice(1, 7).map(p => prodCard(p, false)).join('');
+
+// Screen 2B: 3 favs (p1, p3, p5)
+const favIds3 = ['p1','p3','p5'];
+document.getElementById('grid-multi-fav').innerHTML  = PRODUCTS.filter(p => favIds3.includes(p.id)).map(p => prodCard(p, true)).join('');
+document.getElementById('grid-multi-rest').innerHTML = PRODUCTS.filter(p => !favIds3.includes(p.id)).map(p => prodCard(p, false)).join('');
+
+// Screen 2C: category filter (Kolbász), 1 fav
+const kolbasz = PRODUCTS.filter(p => p.cat === 'kolbasz');
+document.getElementById('grid-cat-fav').innerHTML  = prodCard(kolbasz[0], true);
+document.getElementById('grid-cat-rest').innerHTML = kolbasz.slice(1).map(p => prodCard(p, false)).join('');
+
+// Screen 3A: empty (no favs, same as Screen 1)
+document.getElementById('grid-empty-state').innerHTML = PRODUCTS.slice(0, 6).map(p => prodCard(p, false)).join('');
+
+// Screen 3B: guest (star visible, but no fav state)
+document.getElementById('grid-guest').innerHTML = PRODUCTS.slice(0, 4).map(p => prodCard(p, false)).join('');
+
+// ── Interactive demo ──────────────────────────────────────────
+let favSet = new Set();
+
+function renderInteractive() {
+  const favs = PRODUCTS.filter(p => favSet.has(p.id));
+  const rest  = PRODUCTS.filter(p => !favSet.has(p.id));
+  let html = '';
+
+  if (favs.length > 0) {
+    html += `<div class="list-section-head">
+      <span class="star-icon-sm"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="#F0A500" stroke="#F0A500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+      <span>Kedvenceim</span>
+      <span class="count-badge">${favs.length}</span>
+    </div>
+    <div class="product-grid">${favs.map(p => prodCard(p, true, true)).join('')}</div>
+    <div class="section-divider"></div>`;
+  }
+
+  if (rest.length > 0) {
+    html += `<div class="list-section-head"><span>${favs.length > 0 ? 'Többi termék' : 'Összes termék'}</span><span class="count-badge">${rest.length}</span></div>
+    <div class="product-grid">${rest.map(p => prodCard(p, false, true)).join('')}</div>`;
+  }
+
+  document.getElementById('interactive-list').innerHTML = html;
+}
+
+function toggleFav(id) {
+  if (favSet.has(id)) {
+    favSet.delete(id);
+  } else {
+    favSet.add(id);
+  }
+  renderInteractive();
+}
+
+renderInteractive();
+</script>
+
+</body>
+</html>

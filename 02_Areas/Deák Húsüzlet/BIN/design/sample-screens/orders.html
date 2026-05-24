@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Rendeléseim — Deák Húsmíves</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root {
+  --bg: #F5F0EB;
+  --primary: #9B2335;
+  --primary-dark: #842030;
+  --text: #2C2825;
+  --text2: #5C544C;
+  --text3: #8A8078;
+  --border: #E8E2DB;
+  --card-bg: #FFFFFF;
+  --nav-bg: #FFFFFF;
+  --success: #2D7A4F;
+  --success-light: #D4EDDA;
+  --chip-bg: #F5EDE5;
+  --chip-border: #E8DDD0;
+  --gold: #C9A247;
+  --gold-text: #8F6F1F;
+  --gold-bg: #FAF1D8;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: var(--bg); font-family: Inter, system-ui, -apple-system, sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; }
+body { max-width: 448px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 80px; }
+
+/* Header */
+.header {
+  display: block; height: 56px; background: #FFFFFF;
+  position: sticky; top: 0; z-index: 10;
+  box-shadow: rgba(0,0,0,0.12) 0px 0px 1px 0px, rgba(0,0,0,0.15) 0px 0.5px 2px 0px, rgba(0,0,0,0.16) 0px 2px 3px 0px;
+}
+.header-inner {
+  max-width: 448px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;
+  height: 100%; padding: 0 16px;
+}
+.header h1 { font-size: 20px; font-weight: 400; color: var(--primary-dark); line-height: 23px; }
+
+/* Main content */
+.main { max-width: 448px; margin: 0 auto; padding: 16px 16px 80px; }
+
+/* Active order card */
+.active-card {
+  position: relative; overflow: hidden;
+  background: linear-gradient(to right bottom, #FFFFFF, #FFFBF7);
+  border: 1.5px solid var(--chip-border); border-radius: 16px;
+  padding: 12px 16px 12px 18px;
+  cursor: pointer; margin-bottom: 24px;
+}
+.active-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+  width: 4px; background: var(--gold); border-radius: 16px 0 0 16px;
+}
+.active-card .status-row { display: flex; align-items: center; gap: 8px; }
+.active-card .status-icon {
+  width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--gold-bg); color: var(--gold-text);
+}
+.active-card .status-icon svg { width: 16px; height: 16px; }
+.active-card .status-label {
+  font-size: 10px; font-weight: 700; color: var(--gold-text);
+  text-transform: uppercase; letter-spacing: 0.5px;
+}
+.active-card .order-title { font-size: 14px; font-weight: 700; color: var(--text); margin-top: 8px; }
+.active-card .order-meta { display: flex; align-items: center; gap: 4px; margin-top: 4px; font-size: 12px; }
+.active-card .order-meta strong { font-weight: 700; color: var(--text); }
+.active-card .order-meta .sep { color: var(--text2); }
+.active-card .bottom-row { display: flex; align-items: center; justify-content: space-between; margin-top: 8px; }
+.active-card .order-id { font-size: 9px; color: var(--text3); font-family: monospace; text-transform: uppercase; letter-spacing: 0.5px; }
+.active-card .track-link { font-size: 12px; font-weight: 700; color: var(--primary); display: flex; align-items: center; gap: 2px; }
+.active-card .track-link svg { width: 14px; height: 14px; }
+
+/* Section header */
+.section-header { font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 12px; }
+
+/* Delivered order cards */
+.orders-list { display: flex; flex-direction: column; gap: 12px; }
+
+.order-card {
+  background: var(--card-bg); border-radius: 12px;
+  box-shadow: rgba(0,0,0,0.1) 0px 1px 2px 0px;
+  border: 1px solid var(--border);
+  padding: 10px 12px; display: flex; flex-direction: column; gap: 12px;
+  cursor: pointer; transition: all 0.15s;
+}
+.order-card:active { transform: scale(0.99); box-shadow: rgba(0,0,0,0.15) 0px 2px 4px 0px; }
+
+/* Top row: date + price/savings */
+.order-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.order-date { font-size: 13px; font-weight: 700; color: var(--text); }
+.order-price-area { display: flex; align-items: center; gap: 8px; }
+.savings-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 8px; border-radius: 9999px;
+  background: var(--success-light); color: var(--success);
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.savings-badge svg { width: 14px; height: 14px; }
+.order-total { font-size: 16px; font-weight: 600; color: var(--text); white-space: nowrap; }
+
+/* Product chips */
+.product-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.product-chip {
+  display: inline-flex; align-items: baseline; gap: 6px;
+  padding: 4px 8px; border-radius: 6px;
+  background: var(--chip-bg); border: 1px solid var(--chip-border);
+}
+.chip-name { font-size: 11px; font-weight: 600; color: var(--text); }
+.chip-qty { font-size: 10px; color: var(--text3); font-variant-numeric: tabular-nums; }
+
+/* Bottom row: reorder + heart + order id */
+.order-bottom { display: flex; align-items: center; justify-content: space-between; }
+.order-actions { display: flex; align-items: center; gap: 8px; flex: 1; }
+.reorder-btn {
+  flex: 1; height: 40px; background: var(--primary); color: white;
+  border: none; border-radius: 10px; font-size: 12px; font-weight: 600;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: background 0.15s;
+}
+.reorder-btn:active { background: #7a1c2b; }
+.reorder-btn svg { width: 14px; height: 14px; }
+.heart-btn {
+  width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--border);
+  background: white; cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text3); flex-shrink: 0;
+}
+.heart-btn svg { width: 16px; height: 16px; }
+.order-card .order-id {
+  font-size: 9px; color: var(--text3); font-family: monospace;
+  text-transform: uppercase; letter-spacing: 0.5px; text-align: right;
+}
+
+/* Bottom nav */
+.bottom-nav {
+  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+  width: 448px; background: var(--nav-bg); border-top: 1px solid var(--border);
+  display: flex; justify-content: space-around; align-items: center;
+  height: 65px; z-index: 20;
+  box-shadow: rgba(0,0,0,0.08) 0px -2px 8px 0px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.nav-item { display: flex; flex-direction: column; align-items: center; gap: 2px; text-decoration: none; padding: 4px 12px; position: relative; }
+.nav-item svg { width: 24px; height: 24px; }
+.nav-item span { font-size: 12px; font-weight: 500; }
+.nav-item.active svg { color: var(--primary); }
+.nav-item.active span { color: var(--primary); }
+.nav-item:not(.active) svg { color: var(--text3); }
+.nav-item:not(.active) span { color: var(--text3); }
+.cart-badge {
+  position: absolute; top: 0; right: 4px;
+  min-width: 18px; height: 18px; border-radius: 9px;
+  background: var(--primary); color: white;
+  font-size: 11px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  padding: 0 4px;
+}
+
+.static-label { position: fixed; top: 8px; right: 8px; background: rgba(0,0,0,0.5); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; z-index: 100; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="static-label">STATIC COPY — staging.deakhus.ro</div>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <h1>Rendeléseim</h1>
+  </div>
+</div>
+
+<!-- Main content -->
+<div class="main">
+
+  <!-- Active order card -->
+  <div class="active-card">
+    <div class="status-row">
+      <span class="status-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>
+      </span>
+      <span class="status-label">Csomagolás alatt</span>
+    </div>
+    <div class="order-title">A rendelésed most készül</div>
+    <div class="order-meta">
+      <strong>31 márc.</strong>
+      <span class="sep">·</span>
+      <strong>13:00-15:00</strong>
+    </div>
+    <div class="bottom-row">
+      <span class="order-id">DEAK-ORD-00002</span>
+      <span class="track-link">Követés <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+    </div>
+  </div>
+
+  <!-- Delivered section -->
+  <h2 class="section-header">Kiszállított rendelések</h2>
+
+  <div class="orders-list">
+
+    <!-- Order 1: no savings -->
+    <article class="order-card">
+      <div class="order-top">
+        <span class="order-date">30 márc. 2026</span>
+        <div class="order-price-area">
+          <span class="order-total">23,50 RON</span>
+        </div>
+      </div>
+      <div class="product-chips">
+        <span class="product-chip"><span class="chip-name">Füstölt Has</span><span class="chip-qty">0,5 kg</span></span>
+      </div>
+      <div class="order-bottom">
+        <div class="order-actions">
+          <button class="reorder-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+            Mégegyszer
+          </button>
+          <button class="heart-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="order-id">DEAK-ORD-00002</div>
+    </article>
+
+    <!-- Order 2: with savings -->
+    <article class="order-card">
+      <div class="order-top">
+        <span class="order-date">21 ápr. 2026</span>
+        <div class="order-price-area">
+          <span class="savings-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>
+            -20,10 RON
+          </span>
+          <span class="order-total">494,90 RON</span>
+        </div>
+      </div>
+      <div class="product-chips">
+        <span class="product-chip"><span class="chip-name">Füstölt Has</span><span class="chip-qty">5 kg</span></span>
+        <span class="product-chip"><span class="chip-name">Sertés Őrölt Hús</span><span class="chip-qty">5 kg</span></span>
+        <span class="product-chip"><span class="chip-name">Füstölt Bélszín</span><span class="chip-qty">3 kg</span></span>
+      </div>
+      <div class="order-bottom">
+        <div class="order-actions">
+          <button class="reorder-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+            Mégegyszer
+          </button>
+          <button class="heart-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="order-id">DEAK-ORD-00034</div>
+    </article>
+
+    <!-- Order 3: with savings -->
+    <article class="order-card">
+      <div class="order-top">
+        <span class="order-date">21 ápr. 2026</span>
+        <div class="order-price-area">
+          <span class="savings-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>
+            -16,80 RON
+          </span>
+          <span class="order-total">333,20 RON</span>
+        </div>
+      </div>
+      <div class="product-chips">
+        <span class="product-chip"><span class="chip-name">Füstölt Has</span><span class="chip-qty">5 kg</span></span>
+        <span class="product-chip"><span class="chip-name">Sertés Őrölt Hús</span><span class="chip-qty">5 kg</span></span>
+      </div>
+      <div class="order-bottom">
+        <div class="order-actions">
+          <button class="reorder-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+            Mégegyszer
+          </button>
+          <button class="heart-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="order-id">DEAK-ORD-00031</div>
+    </article>
+
+    <!-- Order 4: with savings -->
+    <article class="order-card">
+      <div class="order-top">
+        <span class="order-date">20 ápr. 2026</span>
+        <div class="order-price-area">
+          <span class="savings-badge">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>
+            -16,80 RON
+          </span>
+          <span class="order-total">333,20 RON</span>
+        </div>
+      </div>
+      <div class="product-chips">
+        <span class="product-chip"><span class="chip-name">Füstölt Has</span><span class="chip-qty">5 kg</span></span>
+        <span class="product-chip"><span class="chip-name">Sertés Őrölt Hús</span><span class="chip-qty">5 kg</span></span>
+      </div>
+      <div class="order-bottom">
+        <div class="order-actions">
+          <button class="reorder-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+            Mégegyszer
+          </button>
+          <button class="heart-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="order-id">DEAK-ORD-00028</div>
+    </article>
+
+    <!-- Order 5: no savings -->
+    <article class="order-card">
+      <div class="order-top">
+        <span class="order-date">10 ápr. 2026</span>
+        <div class="order-price-area">
+          <span class="order-total">158,50 RON</span>
+        </div>
+      </div>
+      <div class="product-chips">
+        <span class="product-chip"><span class="chip-name">Abált Szalonna</span><span class="chip-qty">0,5 kg</span></span>
+        <span class="product-chip"><span class="chip-name">Füstölt Has</span><span class="chip-qty">3 kg</span></span>
+      </div>
+      <div class="order-bottom">
+        <div class="order-actions">
+          <button class="reorder-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+            Mégegyszer
+          </button>
+          <button class="heart-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="order-id">DEAK-ORD-00015</div>
+    </article>
+
+    <!-- Order 6: no savings -->
+    <article class="order-card">
+      <div class="order-top">
+        <span class="order-date">1 ápr. 2026</span>
+        <div class="order-price-area">
+          <span class="order-total">141,00 RON</span>
+        </div>
+      </div>
+      <div class="product-chips">
+        <span class="product-chip"><span class="chip-name">Füstölt Oldalas</span><span class="chip-qty">3 kg</span></span>
+      </div>
+      <div class="order-bottom">
+        <div class="order-actions">
+          <button class="reorder-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+            Mégegyszer
+          </button>
+          <button class="heart-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="order-id">DEAK-ORD-00006</div>
+    </article>
+
+    <!-- Order 7: no savings -->
+    <article class="order-card">
+      <div class="order-top">
+        <span class="order-date">31 márc. 2026</span>
+        <div class="order-price-area">
+          <span class="order-total">17,50 RON</span>
+        </div>
+      </div>
+      <div class="product-chips">
+        <span class="product-chip"><span class="chip-name">Abált Szalonna</span><span class="chip-qty">0,5 kg</span></span>
+      </div>
+      <div class="order-bottom">
+        <div class="order-actions">
+          <button class="reorder-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>
+            Mégegyszer
+          </button>
+          <button class="heart-btn">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="order-id">DEAK-ORD-00005</div>
+    </article>
+
+  </div>
+</div>
+
+<!-- Bottom navigation -->
+<nav class="bottom-nav">
+  <a href="products.html" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span>Termékek</span>
+  </a>
+  <a href="#" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+    <span>Kosár</span>
+    <span class="cart-badge">3</span>
+  </a>
+  <a href="#" class="nav-item active">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    <span>Rendelések</span>
+  </a>
+  <a href="#" class="nav-item">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span>Fiók</span>
+  </a>
+</nav>
+
+</body>
+</html>

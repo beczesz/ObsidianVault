@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPS Services Hub — Wireframe</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --dark-green: #1a2e1a;
+    --mid-green: #3d5a3d;
+    --light-green: #e8ede4;
+    --pale-green: #f0f4ec;
+    --accent-green: #c5d4b8;
+    --mint: #d4f0d4;
+    --orange: #e8956a;
+    --white: #ffffff;
+    --text-dark: #1a2e1a;
+    --text-medium: #4a5a4a;
+    --text-light: #6b7b6b;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    color: var(--text-dark);
+    background: var(--pale-green);
+    line-height: 1.6;
+  }
+
+  /* ── NAV (mimics Sonrisa) ── */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 60px;
+    background: var(--pale-green);
+  }
+  .logo {
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--text-dark);
+    letter-spacing: -0.5px;
+  }
+  .logo span { font-weight: 400; }
+  .menu-btn {
+    font-size: 16px;
+    color: var(--text-dark);
+    cursor: pointer;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 520px;
+    background: var(--dark-green);
+    overflow: hidden;
+  }
+  .hero-visual {
+    background: linear-gradient(135deg, #2a4a2a 0%, #1a3a2a 50%, #0d2518 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-visual::after {
+    content: '';
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    background: rgba(197, 212, 184, 0.08);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .hero-content {
+    padding: 80px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    color: var(--accent-green);
+    width: fit-content;
+    margin-bottom: 28px;
+    font-weight: 500;
+  }
+  .hero h1 {
+    font-size: 48px;
+    font-weight: 900;
+    line-height: 1.1;
+    color: var(--white);
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent-green);
+  }
+  .hero p {
+    font-size: 17px;
+    color: rgba(255,255,255,0.75);
+    max-width: 440px;
+    line-height: 1.7;
+    margin-bottom: 36px;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 16px;
+  }
+  .btn-primary {
+    background: var(--white);
+    color: var(--dark-green);
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { background: var(--accent-green); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--white);
+    padding: 14px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    border: 1px solid rgba(255,255,255,0.3);
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: var(--white); }
+
+  /* ── TRUST BAR ── */
+  .trust-bar {
+    background: var(--dark-green);
+    padding: 30px 60px;
+    display: flex;
+    align-items: center;
+    gap: 50px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .trust-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    white-space: nowrap;
+    max-width: 120px;
+    line-height: 1.4;
+  }
+  .trust-logos {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  .trust-logos span {
+    font-size: 15px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── INTRO SECTION ── */
+  .intro {
+    padding: 80px 60px;
+    max-width: 900px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .intro h2 {
+    font-size: 36px;
+    font-weight: 900;
+    margin-bottom: 20px;
+    letter-spacing: -0.5px;
+  }
+  .intro p {
+    font-size: 17px;
+    color: var(--text-medium);
+    line-height: 1.8;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* ── SERVICES GRID ── */
+  .services-section {
+    padding: 0 60px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .services-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  /* ── FEATURED CARD (full-width) ── */
+  .service-card.featured {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: linear-gradient(135deg, #1a2e1a 0%, #2a4a2a 100%);
+    color: var(--white);
+    border: none;
+  }
+  .service-card.featured:hover {
+    box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+  }
+  .featured .card-left {
+    padding: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .featured .card-right {
+    padding: 44px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+  .featured .card-header {
+    padding: 0;
+    margin-bottom: 20px;
+  }
+  .featured .card-body {
+    padding: 0;
+  }
+  .featured .card-body h3 {
+    color: var(--white);
+    font-size: 28px;
+  }
+  .featured .card-subtitle {
+    color: var(--accent-green);
+  }
+  .featured .card-body p {
+    color: rgba(255,255,255,0.7);
+  }
+  .featured .highlight {
+    color: rgba(255,255,255,0.65);
+  }
+  .featured .highlight .dot {
+    background: var(--accent-green);
+  }
+  .featured .card-cta {
+    color: var(--white);
+    border-bottom-color: var(--accent-green);
+  }
+  .featured .card-cta:hover {
+    color: var(--accent-green);
+  }
+  .tag-live {
+    background: rgba(197, 212, 184, 0.15);
+    color: var(--accent-green);
+    border: 1px solid rgba(197, 212, 184, 0.3);
+  }
+  .featured-stat {
+    text-align: center;
+    padding: 16px 0;
+  }
+  .featured-stat .stat-number {
+    font-size: 36px;
+    font-weight: 900;
+    color: var(--accent-green);
+    line-height: 1.1;
+  }
+  .featured-stat .stat-label {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 4px;
+  }
+  .stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 28px;
+    padding: 20px 0;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .model-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .model-tag {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 3px;
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.7);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  @media (max-width: 900px) {
+    .service-card.featured { grid-template-columns: 1fr; }
+  }
+
+  .service-card {
+    background: var(--white);
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 1px solid rgba(0,0,0,0.06);
+  }
+  .service-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+  .card-header {
+    padding: 36px 36px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  .card-tag {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 5px 12px;
+    border-radius: 3px;
+  }
+  .tag-free {
+    background: var(--mint);
+    color: #1a6a1a;
+  }
+  .tag-subscription {
+    background: var(--light-green);
+    color: var(--mid-green);
+  }
+  .tag-new {
+    background: #fff3e0;
+    color: #b56a20;
+  }
+  .card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+  }
+  .icon-cost { background: var(--mint); }
+  .icon-devops { background: var(--light-green); }
+  .icon-llm { background: #e8e0f0; }
+  .icon-migration { background: #e0ecf0; }
+  .icon-cicd { background: #f0ece0; }
+  .icon-architecture { background: #e0f0e8; }
+
+  .card-body {
+    padding: 24px 36px 36px;
+  }
+  .card-body h3 {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 12px;
+    letter-spacing: -0.3px;
+  }
+  .card-subtitle {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--mid-green);
+    margin-bottom: 16px;
+  }
+  .card-body p {
+    font-size: 15px;
+    color: var(--text-medium);
+    line-height: 1.7;
+    margin-bottom: 24px;
+  }
+  .card-highlights {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+  .highlight {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-medium);
+  }
+  .highlight .dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--mid-green);
+  }
+  .card-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--dark-green);
+    text-decoration: none;
+    padding: 12px 0;
+    border-bottom: 2px solid var(--dark-green);
+    transition: all 0.2s;
+  }
+  .card-cta:hover {
+    gap: 12px;
+  }
+  .card-cta .arrow { transition: transform 0.2s; }
+  .card-cta:hover .arrow { transform: translateX(4px); }
+
+  /* ── COMING SOON SECTION ── */
+  .coming-soon {
+    padding: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .coming-soon h3 {
+    font-size: 14px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--text-light);
+    margin-bottom: 28px;
+  }
+  .coming-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .coming-card {
+    background: var(--white);
+    border: 1px dashed rgba(0,0,0,0.12);
+    border-radius: 4px;
+    padding: 28px;
+    opacity: 0.6;
+  }
+  .coming-card h4 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--text-medium);
+  }
+  .coming-card p {
+    font-size: 13px;
+    color: var(--text-light);
+    line-height: 1.6;
+  }
+
+  /* ── WHY CPS SECTION ── */
+  .why-section {
+    background: var(--dark-green);
+    padding: 80px 60px;
+    margin-top: 40px;
+  }
+  .why-content {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .why-content h2 {
+    font-size: 40px;
+    font-weight: 900;
+    color: var(--white);
+    margin-bottom: 48px;
+    letter-spacing: -0.5px;
+  }
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+  }
+  .why-item h4 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .why-item p {
+    font-size: 15px;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.7;
+  }
+  .why-number {
+    font-size: 48px;
+    font-weight: 900;
+    color: var(--accent-green);
+    opacity: 0.3;
+    margin-bottom: 8px;
+    line-height: 1;
+  }
+
+  /* ── BOTTOM CTA ── */
+  .bottom-cta {
+    background: var(--mint);
+    padding: 80px 60px;
+    text-align: center;
+  }
+  .bottom-cta h2 {
+    font-size: 40px;
+    font-weight: 900;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+  }
+  .bottom-cta p {
+    font-size: 17px;
+    color: var(--text-medium);
+    margin-bottom: 32px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.7;
+  }
+  .bottom-cta .btn-dark {
+    background: var(--dark-green);
+    color: var(--white);
+    padding: 16px 36px;
+    font-size: 16px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+  }
+  .bottom-cta .btn-dark:hover { background: var(--mid-green); }
+
+  /* ── WIREFRAME NOTE ── */
+  .wireframe-note {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: #1a1a2e;
+    color: #a0a0c0;
+    padding: 10px 20px;
+    font-size: 12px;
+    text-align: center;
+    z-index: 1000;
+    font-family: monospace;
+  }
+  .wireframe-note strong { color: #e0e0ff; }
+  body { padding-top: 36px; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .coming-grid { grid-template-columns: 1fr 1fr; }
+    .why-grid { grid-template-columns: 1fr; }
+    .hero h1 { font-size: 36px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wireframe-note">
+  <strong>WIREFRAME</strong> — CPS Services Hub Page (intermediary between "Our Services" and individual service pages)
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">sonrisa <span>☻</span></div>
+  <div class="menu-btn">Menu</div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-visual"></div>
+  <div class="hero-content">
+    <div class="hero-badge">☁ AWS Select Tier Partner</div>
+    <h1>Cloud Platform<br>Services by <em>Sonrisa</em></h1>
+    <p>We design, optimize, and operate your cloud infrastructure — so your team can focus on building what matters. From cost optimization to 24/7 managed operations.</p>
+    <div class="hero-ctas">
+      <a href="#services" class="btn-primary">Explore Services</a>
+      <a href="#" class="btn-secondary">Talk to an Expert</a>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+  <div class="trust-label">Trusted by global clients</div>
+  <div class="trust-logos">
+    <span>ORACLE</span>
+    <span>Yettel</span>
+    <span>SYNLAB</span>
+    <span>Magyar Államkincstár</span>
+    <span>Global Blue</span>
+    <span>Lufthansa Systems</span>
+    <span>Diligent</span>
+  </div>
+</div>
+
+<!-- INTRO -->
+<section class="intro">
+  <h2>Your Cloud. Our Expertise.</h2>
+  <p>Whether you need a quick health check on your AWS costs or a fully managed DevOps team on subscription, CPS has a service that fits. Start small, scale as you grow.</p>
+</section>
+
+<!-- SERVICES -->
+<section class="services-section" id="services">
+  <div class="services-grid">
+
+    <!-- CARD 1: AWS Cost Health Check -->
+    <div class="service-card">
+      <div class="card-header">
+        <div class="card-icon icon-cost">💰</div>
+        <div class="card-tag tag-free">FREE</div>
+      </div>
+      <div class="card-body">
+        <h3>AWS Cost Health Check</h3>
+        <div class="card-subtitle">Uncover 10–30% savings in your AWS spend</div>
+        <p>A free, no-commitment assessment of your AWS environment. Our engineers combine AI-driven analysis with human expertise to surface where money is leaking — and why. Takes less than 15 minutes of your team's time.</p>
+        <div class="card-highlights">
+          <div class="highlight"><span class="dot"></span> Read-only access, zero risk</div>
+          <div class="highlight"><span class="dot"></span> AI + human review</div>
+          <div class="highlight"><span class="dot"></span> Executive-ready report</div>
+        </div>
+        <a href="/en/cps-services/article/aws-cost-health-check/13" class="card-cta">
+          Get Your Free Assessment <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- CARD 2: DevOps as a Service -->
+    <div class="service-card">
+      <div class="card-header">
+        <div class="card-icon icon-devops">⚙️</div>
+        <div class="card-tag tag-subscription">SUBSCRIPTION</div>
+      </div>
+      <div class="card-body">
+        <h3>DevOps as a Service</h3>
+        <div class="card-subtitle">From €2,000/month — your dedicated cloud team</div>
+        <p>Access senior-level DevOps, SRE, and FinOps expertise on subscription. We keep your platform fast, secure, and cost-efficient with SLA-backed operations, proactive monitoring, and automation from CI/CD to Infrastructure-as-Code.</p>
+        <div class="card-highlights">
+          <div class="highlight"><span class="dot"></span> Packages from 40h to 120h/month</div>
+          <div class="highlight"><span class="dot"></span> Dedicated delivery team</div>
+          <div class="highlight"><span class="dot"></span> Predictable monthly cost</div>
+        </div>
+        <a href="/en/our-services/article/cloud-platform-services/4" class="card-cta">
+          View Plans & Pricing <span class="arrow">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- CARD 3: LLM as a Service (FEATURED — full width) -->
+    <div class="service-card featured">
+      <div class="card-left">
+        <div class="card-header">
+          <div style="display:flex; gap:10px; align-items:center;">
+            <div class="card-tag tag-live">LIVE</div>
+            <div class="card-tag tag-new">NEW</div>
+          </div>
+        </div>
+        <div class="card-body">
+          <h3>LLM as a Service</h3>
+          <div class="card-subtitle">Enterprise AI without sending your data outside</div>
+          <p>Run powerful open-source language models on dedicated EU-based GPU infrastructure. Your code, documents, and business data never leave controlled infrastructure — while your team gets ChatGPT-level capabilities at a fraction of the cost.</p>
+          <div class="model-tags">
+            <span class="model-tag">Qwen 32B</span>
+            <span class="model-tag">DeepSeek Coder</span>
+            <span class="model-tag">Llama 3.1</span>
+            <span class="model-tag">Custom Fine-tuned</span>
+          </div>
+          <div class="card-highlights">
+            <div class="highlight"><span class="dot"></span> OpenAI-compatible API</div>
+            <div class="highlight"><span class="dot"></span> Web UI + IDE plugins</div>
+            <div class="highlight"><span class="dot"></span> EU data residency</div>
+            <div class="highlight"><span class="dot"></span> No vendor lock-in</div>
+          </div>
+          <a href="#" class="card-cta">
+            Explore LLMaaS <span class="arrow">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="card-right">
+        <div class="stats-row">
+          <div class="featured-stat">
+            <div class="stat-number">40-60%</div>
+            <div class="stat-label">cheaper than<br>public APIs</div>
+          </div>
+          <div class="featured-stat">
+            <div class="stat-number">0</div>
+            <div class="stat-label">data sent to<br>external providers</div>
+          </div>
+          <div class="featured-stat">
+            <div class="stat-number">99.5%</div>
+            <div class="stat-label">uptime<br>SLA</div>
+          </div>
+        </div>
+        <div style="margin-bottom: 20px;">
+          <div style="font-size:14px; font-weight:700; color:rgba(255,255,255,0.85); margin-bottom:16px; text-transform:uppercase; letter-spacing:1px;">Token-based packages</div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:16px; border-radius:4px;">
+              <div style="font-size:11px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Starter</div>
+              <div style="font-size:22px; font-weight:800; color:var(--accent-green);">€500<span style="font-size:13px; font-weight:400; color:rgba(255,255,255,0.4);">/mo</span></div>
+              <div style="font-size:12px; color:rgba(255,255,255,0.45); margin-top:4px;">10M tokens</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:16px; border-radius:4px;">
+              <div style="font-size:11px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Professional</div>
+              <div style="font-size:22px; font-weight:800; color:var(--accent-green);">€2,000<span style="font-size:13px; font-weight:400; color:rgba(255,255,255,0.4);">/mo</span></div>
+              <div style="font-size:12px; color:rgba(255,255,255,0.45); margin-top:4px;">50M tokens</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:16px; border-radius:4px;">
+              <div style="font-size:11px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Enterprise</div>
+              <div style="font-size:22px; font-weight:800; color:var(--accent-green);">€5,000<span style="font-size:13px; font-weight:400; color:rgba(255,255,255,0.4);">/mo</span></div>
+              <div style="font-size:12px; color:rgba(255,255,255,0.45); margin-top:4px;">150M tokens · 24/7 SLA</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:16px; border-radius:4px;">
+              <div style="font-size:11px; color:rgba(255,255,255,0.4); text-transform:uppercase; letter-spacing:1px; margin-bottom:4px;">Dedicated</div>
+              <div style="font-size:22px; font-weight:800; color:var(--accent-green);">Custom</div>
+              <div style="font-size:12px; color:rgba(255,255,255,0.45); margin-top:4px;">Unlimited · Fine-tuning</div>
+            </div>
+          </div>
+        </div>
+        <div style="font-size:13px; color:rgba(255,255,255,0.4); line-height:1.6;">
+          All packages include: Web UI, API access, usage dashboard, model updates. Enterprise adds dedicated capacity, VPC deployment, and custom fine-tuning.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMING SOON -->
+<section class="coming-soon">
+  <h3>More services — coming soon</h3>
+  <div class="coming-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="coming-card">
+      <h4>Cloud Migration</h4>
+      <p>Move from on-premise or legacy systems to AWS with zero-downtime strategies.</p>
+    </div>
+    <div class="coming-card">
+      <h4>CI/CD as a Service</h4>
+      <p>Automated pipelines, testing, and deployment workflows built for your stack.</p>
+    </div>
+    <div class="coming-card">
+      <h4>Cloud Architecture</h4>
+      <p>Strategic consulting on AWS architecture, scaling, and modernization.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHY CPS -->
+<section class="why-section">
+  <div class="why-content">
+    <h2>Why Sonrisa CPS?</h2>
+    <div class="why-grid">
+      <div class="why-item">
+        <div class="why-number">01</div>
+        <h4>Not a one-person shop</h4>
+        <p>Backed by 300+ engineers at Sonrisa. No single points of failure. Your cloud never depends on one person's availability.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-number">02</div>
+        <h4>We understand software</h4>
+        <p>19 years of software engineering means we understand how application behavior drives cloud costs — not just infrastructure in isolation.</p>
+      </div>
+      <div class="why-item">
+        <div class="why-number">03</div>
+        <h4>Start small, grow with us</h4>
+        <p>From a free cost health check to a fully managed platform — every engagement is designed to prove value before you commit further.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<section class="bottom-cta">
+  <h2>Not sure where to start?</h2>
+  <p>Book a 30-minute conversation. We'll give you honest answers, real examples, and a plan built around your goals.</p>
+  <a href="#" class="btn-dark">Talk to an Expert</a>
+</section>
+
+</body>
+</html>

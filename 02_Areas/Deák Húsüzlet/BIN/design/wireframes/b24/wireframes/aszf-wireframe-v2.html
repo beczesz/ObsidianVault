@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ÁSZF — Deák Húsmíves</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #7B2D3B;
+    --text: #1A1A1A;
+    --text2: #555;
+    --border: #D8D0C8;
+    --bg: #FAF7F4;
+  }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.75; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px; margin: 16px 24px;
+    background: white; border: 1px solid var(--border);
+    border-radius: 8px; font-family: system-ui, sans-serif;
+    font-size: 14px; font-weight: 600; color: var(--primary);
+    text-decoration: none; cursor: pointer;
+  }
+  .back-btn:hover { background: #F5F0EB; }
+
+  .lang-bar {
+    display: flex; gap: 6px; padding: 0 24px 16px;
+    font-family: system-ui, sans-serif;
+  }
+  .lang-btn {
+    padding: 7px 18px; border-radius: 20px; font-size: 13px;
+    font-weight: 600; border: 1.5px solid var(--border);
+    background: white; cursor: pointer; color: var(--text2);
+    transition: all 0.15s;
+  }
+  .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  .lang-content { display: none; }
+  .lang-content.active { display: block; }
+
+  .doc-wrap { max-width: 720px; margin: 0 auto; padding: 0 24px 60px; }
+
+  h1.doc-title { font-size: 26px; font-weight: 700; margin-bottom: 4px; color: var(--primary); }
+  .doc-meta { font-size: 13px; color: var(--text2); font-family: system-ui, sans-serif; margin-bottom: 6px; }
+  .doc-date { font-size: 13px; color: var(--text2); font-family: system-ui, sans-serif; margin-bottom: 24px; }
+
+  nav.toc {
+    background: white; border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 20px; margin-bottom: 32px;
+    font-family: system-ui, sans-serif;
+  }
+  nav.toc p { font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text2); margin-bottom: 10px; }
+  nav.toc ol { padding-left: 20px; }
+  nav.toc li { margin-bottom: 4px; }
+  nav.toc a { color: var(--primary); text-decoration: none; font-size: 14px; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  .section { margin-bottom: 36px; }
+  .section h2 {
+    font-size: 17px; font-weight: 700; color: var(--primary);
+    border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 14px;
+    scroll-margin-top: 16px;
+  }
+  p { margin-bottom: 10px; }
+  ul, ol { padding-left: 22px; margin-bottom: 10px; }
+  li { margin-bottom: 5px; }
+  strong { font-weight: 700; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: 14px; font-family: system-ui, sans-serif; }
+  th { text-align: left; padding: 8px 10px; background: #EDE8E2; border: 1px solid var(--border); font-weight: 700; font-size: 13px; }
+  td { padding: 8px 10px; border: 1px solid var(--border); vertical-align: top; }
+
+  address { font-style: normal; line-height: 1.8; margin-bottom: 10px; background: white; border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; font-family: system-ui, sans-serif; font-size: 14px; }
+  address strong { display: block; font-size: 15px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">&#8592; Vissza / Înapoi / Back</a>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="showLang('hu')">🇭🇺 Magyar</button>
+  <button class="lang-btn" onclick="showLang('ro')">🇷🇴 Română</button>
+  <button class="lang-btn" onclick="showLang('en')">🇬🇧 English</button>
+</div>
+
+<!-- ============================================================ MAGYAR ============================================================ -->
+<div id="lang-hu" class="lang-content active">
+<div class="doc-wrap">
+  <h1 class="doc-title">Általános Szerződési Feltételek</h1>
+  <p class="doc-meta">Deák Húsmíves Online Platform — deakhus.ro</p>
+  <p class="doc-date">Hatályos: 2026. május 1-től | Utolsó frissítés: 2026. április 17.</p>
+
+  <nav class="toc">
+    <p>Tartalomjegyzék</p>
+    <ol>
+      <li><a href="#hu-1">Általános rendelkezések</a></li>
+      <li><a href="#hu-2">A Szolgáltató adatai</a></li>
+      <li><a href="#hu-3">A megrendelés folyamata</a></li>
+      <li><a href="#hu-4">Árak és fizetés</a></li>
+      <li><a href="#hu-5">Szállítás és teljesítés</a></li>
+      <li><a href="#hu-6">Elállási jog</a></li>
+      <li><a href="#hu-7">Szavatosság és jótállás</a></li>
+      <li><a href="#hu-8">Felelősségkorlátozás</a></li>
+      <li><a href="#hu-9">Panaszkezelés</a></li>
+      <li><a href="#hu-10">Vegyes rendelkezések</a></li>
+      <li><a href="#hu-11">Alkalmazandó jog és vitarendezés</a></li>
+    </ol>
+  </nav>
+
+  <div class="section" id="hu-1">
+    <h2>1. Általános rendelkezések</h2>
+    <p>Jelen Általános Szerződési Feltételek (továbbiakban: ÁSZF) az EXARGROUPS S.R.L. (továbbiakban: Szolgáltató) által üzemeltetett deakhus.ro online platform (továbbiakban: Platform) igénybevételére vonatkozó feltételeket tartalmazzák.</p>
+    <p>A Platform használatával, illetve megrendelés leadásával a Felhasználó elfogadja jelen ÁSZF rendelkezéseit. Az ÁSZF a Felhasználóra és a Szolgáltatóra egyaránt kötelező érvényű.</p>
+    <p>Az ÁSZF-et a Szolgáltató bármikor módosíthatja. A módosítások a Platformon való közzétételkor lépnek hatályba. A módosítás után leadott megrendelések az új ÁSZF szerint kerülnek teljesítésre.</p>
+  </div>
+
+  <div class="section" id="hu-2">
+    <h2>2. A Szolgáltató adatai</h2>
+    <address>
+      <strong>EXARGROUPS S.R.L.</strong>
+      Székhely: Székelyudvarhely (Odorheiu Secuiesc), Orbán Balázs u. 9.<br>
+      CUI: RO41839221 · J19/789/2019<br>
+      Email: contact@exar.ro<br>
+      Weboldal: deakhus.ro
+    </address>
+    <p>A Platform termékszállítását és -előkészítését végző partner:</p>
+    <address>
+      <strong>DEAK PROD SRL</strong>
+      Székhely: Székelyudvarhely, Solymossy u. 9.<br>
+      CUI: 4845288 · J19/1038/1993
+    </address>
+  </div>
+
+  <div class="section" id="hu-3">
+    <h2>3. A megrendelés folyamata</h2>
+    <p>A megrendelés leadásához regisztráció szükséges. A regisztráció Google-fiókkal vagy email/jelszó párossal lehetséges.</p>
+    <p>A megrendelési folyamat lépései:</p>
+    <ol>
+      <li>Termékek kiválasztása és kosárba helyezése</li>
+      <li>Szállítási cím és időpont megadása</li>
+      <li>Megrendelés megerősítése</li>
+      <li>Visszaigazoló email fogadása</li>
+    </ol>
+    <p>A szerződés a Felhasználó megrendelésének elküldésével és a Szolgáltató visszaigazolásával jön létre. A visszaigazolás automated email formájában érkezik a regisztrált email-címre.</p>
+    <p><strong>Minimális rendelési érték:</strong> 80 RON. Ez alatti összegű megrendelés nem adható le.</p>
+    <p><strong>Elérhetőségi körülmények:</strong> A termékek elérhetősége valós időben frissül. A Szolgáltató fenntartja a jogot a megrendelés visszautasítására, ha a termék nem áll rendelkezésre.</p>
+  </div>
+
+  <div class="section" id="hu-4">
+    <h2>4. Árak és fizetés</h2>
+    <p>Az árak román lejben (RON) értendők, és tartalmazzák az áfát (TVA). A feltüntetett ár a megrendelés visszaigazolásakor érvényes ár.</p>
+    <p><strong>Fizetési mód:</strong> Készpénz vagy bankkártya a futárnak szállításkor. Online fizetés (kártyás előre fizetés) egy későbbi verzióban kerül bevezetésre.</p>
+
+    <p>A Szolgáltató az árakat előzetes értesítés nélkül módosíthatja. A megrendelés visszaigazolásakor szereplő ár kötelező érvényű.</p>
+  </div>
+
+  <div class="section" id="hu-5">
+    <h2>5. Szállítás és teljesítés</h2>
+    <p><strong>Szállítási terület:</strong> Székelyudvarhely (Odorheiu Secuiesc) és 10 km-es körzete.</p>
+    <p><strong>Szállítási idő:</strong> A megrendeléskor megjelölt időablakban, általában a leadás napján vagy másnap. Pontos szállítási sávok a Platform megrendelési felületén érhetők el.</p>
+    <p><strong>Szállítási feltételek:</strong></p>
+    <ul>
+      <li>A kézbesítés a megadott szállítási cím bejáratáig történik</li>
+      <li>Sikertelen szállítás esetén a futár értesítést hagy; a Felhasználó 24 órán belül egyeztethet új időpontot</li>
+      <li>Friss és fagyasztott termékeket egy szállítmányban küldünk; a Felhasználó felelős a megfelelő tárolásért átvételkor</li>
+    </ul>
+    <p><strong>Élelmiszer-higiénia:</strong> A termékek HACCP-előírásoknak megfelelő csomagolásban kerülnek szállításra. A szállítás hűtött körülmények között (max. +4°C) történik.</p>
+  </div>
+
+  <div class="section" id="hu-6">
+    <h2>6. Elállási jog</h2>
+    <p>Élelmiszer-jellegű termékek esetén az EU 2011/83 irányelv 16. cikk (d) pontja alapján <strong>az elállási jog nem érvényesíthető</strong>, mivel a termékek gyorsan romlandók és higiéniai okokból visszavételre alkalmatlanok.</p>
+    <p>Megrendelés <strong>lemondása</strong> — a szállítás megkezdése előtt — a Platformon belül elérhető „Megrendelés lemondása" funkcióval lehetséges, vagy a contact@exar.ro emailen keresztül.</p>
+    <p>Szállítás megkezdése után a lemondás nem lehetséges.</p>
+  </div>
+
+  <div class="section" id="hu-7">
+    <h2>7. Szavatosság és jótállás</h2>
+    <p>A Szolgáltató és a DEAK PROD SRL szavatolja, hogy a kiszállított termékek:</p>
+    <ul>
+      <li>Megfelelnek a feltüntetett leírásnak és minőségi előírásoknak</li>
+      <li>Rendelkeznek érvényes fogyaszthatósági/minőségmegőrzési dátummal</li>
+      <li>Megfelelnek a román élelmiszer-biztonsági előírásoknak (ANSVSA)</li>
+    </ul>
+    <p>Minőségi reklamáció esetén az átvételtől számított <strong>24 órán belül</strong> kérjük értesíteni a Szolgáltatót (fotóval dokumentálva) a contact@exar.ro emailen. Megalapozott reklamáció esetén csere vagy visszatérítés történik.</p>
+  </div>
+
+  <div class="section" id="hu-8">
+    <h2>8. Felelősségkorlátozás</h2>
+    <p>A Szolgáltató nem vállal felelősséget:</p>
+    <ul>
+      <li>A DEAK PROD SRL készletezési döntéseiből eredő termékhiányért</li>
+      <li>Vis maior eseményekből eredő késedelemért vagy nemteljesítésért (természeti katasztrófa, sztrájk, hatósági intézkedés)</li>
+      <li>A Felhasználó által megadott hibás szállítási adatokból eredő sikertelenségért</li>
+      <li>Internet-kapcsolati problémákból, harmadik fél szolgáltatók (Google, Firebase) leállásából eredő kiesésekért</li>
+    </ul>
+    <p>A Szolgáltató felelőssége minden esetben a megrendelés értékére korlátozódik.</p>
+  </div>
+
+  <div class="section" id="hu-9">
+    <h2>9. Panaszkezelés</h2>
+    <p>Panaszt az alábbi csatornákon fogadunk:</p>
+    <ul>
+      <li><strong>Email:</strong> contact@exar.ro</li>
+      <li><strong>Platform:</strong> a megrendelés részletes oldalán keresztül</li>
+    </ul>
+    <p>A panaszokat <strong>5 munkanapon belül</strong> megválaszoljuk. Fogyasztóvédelmi panasz esetén a Felhasználó az <strong>ANPC</strong> (Autoritatea Națională pentru Protecția Consumatorilor) hatósághoz fordulhat: <a href="https://anpc.ro" target="_blank">anpc.ro</a>.</p>
+    <p>Online vitarendezési platform (EU ODR): <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a></p>
+  </div>
+
+  <div class="section" id="hu-10">
+    <h2>10. Vegyes rendelkezések</h2>
+    <p><strong>Szellemi tulajdon:</strong> A Platform és annak tartalma (design, szoftver, szövegek) az EXARGROUPS S.R.L. szellemi tulajdona. Engedély nélküli másolás, sokszorosítás tilos.</p>
+    <p><strong>Adatvédelem:</strong> A személyes adatok kezelésére vonatkozó részletes tájékoztatót az <a href="privacy-policy-wireframe-v2.html">Adatvédelmi Szabályzat</a> tartalmazza.</p>
+    <p><strong>Módosítás:</strong> A Szolgáltató az ÁSZF-et egyoldalúan módosíthatja. A hatályos változat mindig a Platformon érhető el.</p>
+    <p><strong>Részleges érvénytelenség:</strong> Ha jelen ÁSZF valamely rendelkezése érvénytelen, a többi rendelkezés érvényes marad.</p>
+  </div>
+
+  <div class="section" id="hu-11">
+    <h2>11. Alkalmazandó jog és vitarendezés</h2>
+    <p>Jelen ÁSZF-re a <strong>román jog</strong> az irányadó, különösen:</p>
+    <ul>
+      <li>Legea nr. 365/2002 az elektronikus kereskedelemről</li>
+      <li>OG nr. 34/2014 a fogyasztói szerződésekről (az EU 2011/83 irányelv átültetése)</li>
+      <li>GDPR (EU 2016/679) az adatvédelemről</li>
+    </ul>
+    <p>Vitás kérdések rendezésére elsősorban tárgyalásos úton törekszünk. Ennek sikertelensége esetén a Felhasználó a székelyudvarhelyi (Odorheiu Secuiesc) illetékes bírósághoz fordulhat, vagy igénybe veheti az EU online vitarendezési platformját.</p>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ ROMÂNĂ ============================================================ -->
+<div id="lang-ro" class="lang-content">
+<div class="doc-wrap">
+  <h1 class="doc-title">Termeni și Condiții Generale</h1>
+  <p class="doc-meta">Platforma Online Deák Húsmíves — deakhus.ro</p>
+  <p class="doc-date">În vigoare de la: 1 mai 2026 | Ultima actualizare: 17 aprilie 2026</p>
+
+  <nav class="toc">
+    <p>Cuprins</p>
+    <ol>
+      <li><a href="#ro-1">Dispoziții generale</a></li>
+      <li><a href="#ro-2">Date furnizor</a></li>
+      <li><a href="#ro-3">Procesul de comandă</a></li>
+      <li><a href="#ro-4">Prețuri și plată</a></li>
+      <li><a href="#ro-5">Livrare și executare</a></li>
+      <li><a href="#ro-6">Dreptul de retragere</a></li>
+      <li><a href="#ro-7">Garanție și conformitate</a></li>
+      <li><a href="#ro-8">Limitarea răspunderii</a></li>
+      <li><a href="#ro-9">Soluționarea reclamațiilor</a></li>
+      <li><a href="#ro-10">Dispoziții diverse</a></li>
+      <li><a href="#ro-11">Legea aplicabilă și soluționarea litigiilor</a></li>
+    </ol>
+  </nav>
+
+  <div class="section" id="ro-1">
+    <h2>1. Dispoziții generale</h2>
+    <p>Prezentele Termeni și Condiții Generale (denumite în continuare: TCG) reglementează condițiile de utilizare a platformei online deakhus.ro, operată de EXARGROUPS S.R.L.</p>
+    <p>Prin utilizarea Platformei sau plasarea unei comenzi, Utilizatorul acceptă prevederile prezentelor TCG. TCG sunt obligatorii atât pentru Utilizator, cât și pentru Furnizor.</p>
+    <p>Furnizorul poate modifica TCG în orice moment. Modificările intră în vigoare la publicarea pe Platformă. Comenzile plasate după modificare sunt guvernate de noile TCG.</p>
+  </div>
+
+  <div class="section" id="ro-2">
+    <h2>2. Datele furnizorului</h2>
+    <address>
+      <strong>EXARGROUPS S.R.L.</strong>
+      Sediu: Odorheiu Secuiesc, str. Orbán Balázs nr. 9<br>
+      CUI: RO41839221 · J19/789/2019<br>
+      Email: contact@exar.ro<br>
+      Website: deakhus.ro
+    </address>
+    <p>Partenerul responsabil cu prepararea și livrarea produselor:</p>
+    <address>
+      <strong>DEAK PROD SRL</strong>
+      Sediu: Odorheiu Secuiesc, str. Solymossy nr. 9<br>
+      CUI: 4845288 · J19/1038/1993
+    </address>
+  </div>
+
+  <div class="section" id="ro-3">
+    <h2>3. Procesul de comandă</h2>
+    <p>Plasarea unei comenzi necesită înregistrarea unui cont. Înregistrarea se poate face cu cont Google sau email/parolă.</p>
+    <p>Etapele procesului de comandă:</p>
+    <ol>
+      <li>Selectarea produselor și adăugarea în coș</li>
+      <li>Specificarea adresei de livrare și intervalului orar</li>
+      <li>Confirmarea comenzii</li>
+      <li>Primirea emailului de confirmare</li>
+    </ol>
+    <p>Contractul se încheie la transmiterea comenzii de către Utilizator și confirmarea acesteia de către Furnizor prin email automat.</p>
+    <p><strong>Valoare minimă a comenzii:</strong> 80 RON.</p>
+    <p>Furnizorul își rezervă dreptul de a refuza o comandă în cazul în care produsele solicitate nu sunt disponibile.</p>
+  </div>
+
+  <div class="section" id="ro-4">
+    <h2>4. Prețuri și plată</h2>
+    <p>Prețurile sunt exprimate în lei românești (RON) și includ TVA. Prețul valabil este cel din momentul confirmării comenzii.</p>
+    <p><strong>Modalitate de plată:</strong> Numerar sau card bancar la livrare. Plata online (în avans) va fi introdusă într-o versiune ulterioară.</p>
+
+    <p>Furnizorul poate modifica prețurile fără notificare prealabilă. Prețul din confirmarea comenzii este obligatoriu.</p>
+  </div>
+
+  <div class="section" id="ro-5">
+    <h2>5. Livrare și executare</h2>
+    <p><strong>Zonă de livrare:</strong> Odorheiu Secuiesc și o rază de 10 km.</p>
+    <p><strong>Termen de livrare:</strong> În intervalul orar selectat la comandă, de regulă în aceeași zi sau a doua zi.</p>
+    <ul>
+      <li>Livrarea se efectuează până la intrarea principală a adresei indicate</li>
+      <li>În caz de livrare eșuată, curirul lasă o notificare; Utilizatorul poate programa o nouă livrare în 24 de ore</li>
+      <li>Produsele proaspete și congelate sunt livrate împreună; Utilizatorul este responsabil de depozitarea corespunzătoare la primire</li>
+    </ul>
+    <p><strong>Igiena alimentară:</strong> Produsele sunt livrate în ambalaje conforme HACCP, în condiții de refrigerare (max. +4°C).</p>
+  </div>
+
+  <div class="section" id="ro-6">
+    <h2>6. Dreptul de retragere</h2>
+    <p>Pentru produse alimentare, în conformitate cu art. 16 lit. (d) din Directiva UE 2011/83, <strong>dreptul de retragere nu este aplicabil</strong>, deoarece produsele sunt perisabile și nu pot fi returnate din motive de igienă.</p>
+    <p><strong>Anularea comenzii</strong> este posibilă înainte de începerea livrării, prin funcția „Anulare comandă" din Platformă sau prin email la contact@exar.ro.</p>
+    <p>După începerea livrării, anularea nu mai este posibilă.</p>
+  </div>
+
+  <div class="section" id="ro-7">
+    <h2>7. Garanție și conformitate</h2>
+    <p>Furnizorul garantează că produsele livrate:</p>
+    <ul>
+      <li>Corespund descrierii și standardelor de calitate indicate</li>
+      <li>Au termen de valabilitate/consum valabil</li>
+      <li>Respectă normele române de siguranță alimentară (ANSVSA)</li>
+    </ul>
+    <p>Reclamațiile de calitate trebuie transmise în <strong>24 de ore</strong> de la primire (cu documentație foto) la contact@exar.ro. Reclamațiile justificate vor fi soluționate prin înlocuire sau rambursare.</p>
+  </div>
+
+  <div class="section" id="ro-8">
+    <h2>8. Limitarea răspunderii</h2>
+    <p>Furnizorul nu răspunde pentru:</p>
+    <ul>
+      <li>Lipsa de stoc cauzată de deciziile de aprovizionare ale DEAK PROD SRL</li>
+      <li>Întârzieri sau neexecutare cauzate de forță majoră</li>
+      <li>Eșecul livrării din cauza datelor incorecte furnizate de Utilizator</li>
+      <li>Întreruperi ale serviciilor terțe (Google, Firebase)</li>
+    </ul>
+    <p>Răspunderea Furnizorului este limitată în orice caz la valoarea comenzii.</p>
+  </div>
+
+  <div class="section" id="ro-9">
+    <h2>9. Soluționarea reclamațiilor</h2>
+    <p>Reclamațiile pot fi transmise prin:</p>
+    <ul>
+      <li><strong>Email:</strong> contact@exar.ro</li>
+      <li><strong>Platformă:</strong> prin pagina de detalii a comenzii</li>
+    </ul>
+    <p>Reclamațiile vor fi soluționate în <strong>5 zile lucrătoare</strong>. Utilizatorul poate sesiza <strong>ANPC</strong> (Autoritatea Națională pentru Protecția Consumatorilor): <a href="https://anpc.ro" target="_blank">anpc.ro</a>.</p>
+    <p>Platforma europeană de soluționare online a litigiilor (SOL): <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a></p>
+  </div>
+
+  <div class="section" id="ro-10">
+    <h2>10. Dispoziții diverse</h2>
+    <p><strong>Proprietate intelectuală:</strong> Platforma și conținutul acesteia (design, software, texte) sunt proprietatea intelectuală a EXARGROUPS S.R.L. Copierea sau reproducerea neautorizată este interzisă.</p>
+    <p><strong>Confidențialitate:</strong> Prelucrarea datelor cu caracter personal este reglementată de <a href="privacy-policy-wireframe-v2.html">Politica de Confidențialitate</a>.</p>
+    <p><strong>Modificare:</strong> Furnizorul poate modifica unilateral TCG. Versiunea în vigoare este disponibilă oricând pe Platformă.</p>
+    <p><strong>Nulitate parțială:</strong> Dacă o prevedere a TCG este invalidă, celelalte prevederi rămân valabile.</p>
+  </div>
+
+  <div class="section" id="ro-11">
+    <h2>11. Legea aplicabilă și soluționarea litigiilor</h2>
+    <p>Prezentele TCG sunt guvernate de <strong>legea română</strong>, în special:</p>
+    <ul>
+      <li>Legea nr. 365/2002 privind comerțul electronic</li>
+      <li>OG nr. 34/2014 privind contractele încheiate cu consumatorii (transpunerea Directivei 2011/83/UE)</li>
+      <li>RGPD (UE 2016/679) privind protecția datelor</li>
+    </ul>
+    <p>Litigiile vor fi soluționate în primul rând pe cale amiabilă. În caz de eșec, Utilizatorul se poate adresa instanței competente din Odorheiu Secuiesc sau poate utiliza platforma europeană SOL.</p>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ ENGLISH ============================================================ -->
+<div id="lang-en" class="lang-content">
+<div class="doc-wrap">
+  <h1 class="doc-title">Terms and Conditions</h1>
+  <p class="doc-meta">Deák Húsmíves Online Platform — deakhus.ro</p>
+  <p class="doc-date">Effective from: May 1, 2026 | Last updated: April 17, 2026</p>
+
+  <nav class="toc">
+    <p>Table of Contents</p>
+    <ol>
+      <li><a href="#en-1">General Provisions</a></li>
+      <li><a href="#en-2">Provider Details</a></li>
+      <li><a href="#en-3">Ordering Process</a></li>
+      <li><a href="#en-4">Prices and Payment</a></li>
+      <li><a href="#en-5">Delivery and Fulfillment</a></li>
+      <li><a href="#en-6">Right of Withdrawal</a></li>
+      <li><a href="#en-7">Warranty and Conformity</a></li>
+      <li><a href="#en-8">Limitation of Liability</a></li>
+      <li><a href="#en-9">Complaints</a></li>
+      <li><a href="#en-10">Miscellaneous</a></li>
+      <li><a href="#en-11">Governing Law and Dispute Resolution</a></li>
+    </ol>
+  </nav>
+
+  <div class="section" id="en-1">
+    <h2>1. General Provisions</h2>
+    <p>These Terms and Conditions ("T&C") govern the use of the deakhus.ro online platform operated by EXARGROUPS S.R.L. ("Provider").</p>
+    <p>By using the Platform or placing an order, the User accepts these T&C. The T&C are binding on both the User and the Provider.</p>
+    <p>The Provider may update these T&C at any time. Changes take effect upon publication on the Platform. Orders placed after a change are governed by the updated T&C.</p>
+  </div>
+
+  <div class="section" id="en-2">
+    <h2>2. Provider Details</h2>
+    <address>
+      <strong>EXARGROUPS S.R.L.</strong>
+      Address: str. Orbán Balázs nr. 9, Odorheiu Secuiesc, Romania<br>
+      CUI: RO41839221 · J19/789/2019<br>
+      Email: contact@exar.ro<br>
+      Website: deakhus.ro
+    </address>
+    <p>Partner responsible for product preparation and delivery:</p>
+    <address>
+      <strong>DEAK PROD SRL</strong>
+      Address: str. Solymossy nr. 9, Odorheiu Secuiesc, Romania<br>
+      CUI: 4845288 · J19/1038/1993
+    </address>
+  </div>
+
+  <div class="section" id="en-3">
+    <h2>3. Ordering Process</h2>
+    <p>Placing an order requires a registered account (Google OAuth or email/password).</p>
+    <ol>
+      <li>Select products and add to cart</li>
+      <li>Enter delivery address and time slot</li>
+      <li>Confirm the order</li>
+      <li>Receive email confirmation</li>
+    </ol>
+    <p>The contract is formed upon submission of the order and the Provider's email confirmation.</p>
+    <p><strong>Minimum order value:</strong> 80 RON.</p>
+    <p>The Provider reserves the right to cancel an order if requested products are unavailable.</p>
+  </div>
+
+  <div class="section" id="en-4">
+    <h2>4. Prices and Payment</h2>
+    <p>All prices are in Romanian lei (RON) and include VAT. The price valid at order confirmation is binding.</p>
+    <p><strong>Payment method:</strong> Cash or card on delivery. Online pre-payment will be introduced in a future version.</p>
+
+    <p>The Provider may change prices without prior notice. The price at order confirmation is final.</p>
+  </div>
+
+  <div class="section" id="en-5">
+    <h2>5. Delivery and Fulfillment</h2>
+    <p><strong>Delivery area:</strong> Odorheiu Secuiesc and a 10 km radius.</p>
+    <p><strong>Delivery time:</strong> Within the selected time slot, typically same-day or next-day.</p>
+    <ul>
+      <li>Delivery is made to the main entrance of the specified address</li>
+      <li>In case of failed delivery, a notice is left; a new slot can be arranged within 24 hours</li>
+      <li>Fresh and frozen products are shipped together; the User is responsible for proper storage upon receipt</li>
+    </ul>
+    <p><strong>Food safety:</strong> Products are delivered in HACCP-compliant packaging under refrigerated conditions (max. +4°C).</p>
+  </div>
+
+  <div class="section" id="en-6">
+    <h2>6. Right of Withdrawal</h2>
+    <p>For food products, the right of withdrawal does <strong>not apply</strong> under EU Directive 2011/83, Art. 16(d), as the products are perishable and cannot be returned for hygiene reasons.</p>
+    <p>Orders may be <strong>cancelled</strong> before delivery begins via the "Cancel order" option on the Platform or at contact@exar.ro.</p>
+    <p>Cancellation is not possible once delivery has started.</p>
+  </div>
+
+  <div class="section" id="en-7">
+    <h2>7. Warranty and Conformity</h2>
+    <p>The Provider warrants that delivered products:</p>
+    <ul>
+      <li>Match the described specifications and quality standards</li>
+      <li>Have a valid use-by / best-before date</li>
+      <li>Comply with Romanian food safety regulations (ANSVSA)</li>
+    </ul>
+    <p>Quality complaints must be submitted within <strong>24 hours</strong> of receipt (with photo documentation) to contact@exar.ro. Valid complaints will be resolved by replacement or refund.</p>
+  </div>
+
+  <div class="section" id="en-8">
+    <h2>8. Limitation of Liability</h2>
+    <p>The Provider is not liable for:</p>
+    <ul>
+      <li>Stock shortages due to DEAK PROD SRL's inventory decisions</li>
+      <li>Delays or non-performance due to force majeure</li>
+      <li>Failed delivery caused by incorrect address data provided by the User</li>
+      <li>Outages of third-party services (Google, Firebase)</li>
+    </ul>
+    <p>The Provider's liability is in any case limited to the value of the order.</p>
+  </div>
+
+  <div class="section" id="en-9">
+    <h2>9. Complaints</h2>
+    <p>Complaints may be submitted via:</p>
+    <ul>
+      <li><strong>Email:</strong> contact@exar.ro</li>
+      <li><strong>Platform:</strong> through the order detail page</li>
+    </ul>
+    <p>Complaints will be addressed within <strong>5 business days</strong>. Users may also contact the <strong>ANPC</strong> consumer protection authority: <a href="https://anpc.ro" target="_blank">anpc.ro</a>.</p>
+    <p>EU online dispute resolution platform (ODR): <a href="https://ec.europa.eu/consumers/odr" target="_blank">ec.europa.eu/consumers/odr</a></p>
+  </div>
+
+  <div class="section" id="en-10">
+    <h2>10. Miscellaneous</h2>
+    <p><strong>Intellectual property:</strong> The Platform and its content are the intellectual property of EXARGROUPS S.R.L. Unauthorized copying or reproduction is prohibited.</p>
+    <p><strong>Privacy:</strong> Personal data processing is governed by our <a href="privacy-policy-wireframe-v2.html">Privacy Policy</a>.</p>
+    <p><strong>Amendments:</strong> The Provider may unilaterally amend these T&C. The current version is always available on the Platform.</p>
+    <p><strong>Severability:</strong> If any provision of these T&C is invalid, the remaining provisions remain in force.</p>
+  </div>
+
+  <div class="section" id="en-11">
+    <h2>11. Governing Law and Dispute Resolution</h2>
+    <p>These T&C are governed by <strong>Romanian law</strong>, in particular:</p>
+    <ul>
+      <li>Law no. 365/2002 on e-commerce</li>
+      <li>Government Ordinance no. 34/2014 on consumer contracts (transposing Directive 2011/83/EU)</li>
+      <li>GDPR (EU 2016/679) on data protection</li>
+    </ul>
+    <p>Disputes will be resolved amicably where possible. Failing that, the User may approach the competent court in Odorheiu Secuiesc or use the EU ODR platform.</p>
+  </div>
+</div>
+</div>
+
+<script>
+function showLang(lang) {
+  document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('lang-' + lang).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

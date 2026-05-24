@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH Wireframe — ÁSZF / Termeni / T&C (3 nyelvű)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #F5F0EB; --card: #FFFFFF; --primary: #7B2D3B; --primary-light: #9B4D5B;
+    --text: #2D2D2D; --text2: #777777; --border: #E8E0D8;
+    --green: #2E7D32; --green-light: #E8F5E9;
+    --blue: #1565C0; --blue-light: #E3F2FD;
+    --red: #C62828; --red-light: #FFEBEE;
+    --amber: #F9A825; --amber-light: #FFF3CD;
+  }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #F8F5F0; color: var(--text); }
+  .header { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+  .tabs { display: flex; gap: 8px; max-width: 1200px; margin: 16px auto; padding: 0 24px; overflow-x: auto; }
+  .tab { padding: 10px 20px; border-radius: 24px; font-size: 13px; border: 1px solid var(--border); background: white; color: var(--text); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 400; }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+  .content { max-width: 1200px; margin: 0 auto; padding: 0 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+  .feature > h2 { font-size: 18px; font-weight: 700; margin: 0 0 6px; }
+  .feature > .subtitle { font-size: 13px; color: var(--text2); margin-bottom: 16px; }
+  .phones { display: flex; gap: 20px; flex-wrap: wrap; }
+  .phone { width: 375px; min-height: 700px; background: var(--bg); border-radius: 24px; border: 2px solid var(--border); overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12); flex-shrink: 0; position: relative; }
+  .phone-header { background: var(--bg); padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .phone-body { padding: 0 16px 80px; max-height: 640px; overflow-y: auto; }
+  .card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+  .label-info { display: inline-block; background: var(--blue-light); color: var(--blue); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .label-good { display: inline-block; background: var(--green-light); color: var(--green); font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .label-warn { display: inline-block; background: var(--amber-light); color: #8B6914; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 4px; margin-bottom: 8px; letter-spacing: 0.05em; }
+  .annotation { background: #FFF3CD; border-left: 3px solid #F9A825; padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+  .note-box { background: var(--green-light); border-left: 3px solid var(--green); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+  .info-box { background: var(--blue-light); border-left: 3px solid var(--blue); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+  .warn-box { background: var(--red-light); border-left: 3px solid var(--red); padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 12px; line-height: 1.5; margin: 12px 0; }
+  .lang-selector { display: flex; gap: 6px; margin: 12px 0; }
+  .lang-btn { padding: 6px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; border: 1.5px solid var(--border); background: white; cursor: pointer; color: var(--text2); }
+  .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+  .page-title { font-size: 18px; font-weight: 700; margin: 14px 0 4px; }
+  .page-brand { font-size: 12px; color: var(--text2); margin-bottom: 4px; }
+  .page-date { font-size: 11px; color: var(--text2); margin-bottom: 14px; }
+  .toc { background: var(--card); border-radius: 12px; padding: 14px 16px; margin-bottom: 14px; border: 1px solid var(--border); }
+  .toc-title { font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .toc-item { display: block; padding: 6px 0; font-size: 13px; color: var(--primary); text-decoration: none; border-bottom: 1px solid #F0ECE7; cursor: pointer; }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-num { color: var(--text2); font-weight: 600; margin-right: 6px; }
+  .section { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 10px; border: 1px solid var(--border); }
+  .section-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: var(--primary); color: white; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+  .section-body { font-size: 12.5px; line-height: 1.7; color: #444; }
+  .section-body ul { padding-left: 16px; margin: 6px 0; }
+  .section-body li { margin-bottom: 4px; }
+  .section-body strong { color: var(--text); }
+  .mini-table { width: 100%; font-size: 11px; border-collapse: collapse; margin: 8px 0; }
+  .mini-table th { text-align: left; padding: 6px 8px; background: #F5F0EB; border-bottom: 1px solid var(--border); font-weight: 600; }
+  .mini-table td { padding: 6px 8px; border-bottom: 1px solid #F0ECE7; color: #555; vertical-align: top; }
+  .company-block { background: #FAF7F4; border-radius: 8px; padding: 10px 12px; margin: 8px 0; border: 1px solid #EDE8E2; }
+  .company-name { font-size: 12px; font-weight: 700; }
+  .company-detail { font-size: 11px; color: var(--text2); line-height: 1.6; }
+  .highlight-box { background: #FFF8E1; border: 1px solid #FFE082; border-radius: 8px; padding: 10px 12px; margin: 8px 0; font-size: 12px; }
+  .bottom-nav { position: absolute; bottom: 0; left: 0; right: 0; height: 65px; background: white; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; padding: 0 8px; box-shadow: 0 -2px 8px rgba(0,0,0,0.08); }
+  .nav-item { text-align: center; font-size: 10px; color: var(--text2); }
+  .nav-icon { font-size: 20px; margin-bottom: 2px; }
+  .back-arrow { font-size: 18px; color: var(--text); cursor: pointer; }
+  .changelog { max-width: 1200px; margin: 32px auto; padding: 16px 24px; background: white; border-radius: 12px; border: 1px solid var(--border); }
+  .changelog h3 { font-size: 14px; margin-bottom: 8px; }
+  .changelog ul { font-size: 13px; color: var(--text2); padding-left: 20px; line-height: 1.8; }
+  @media (max-width: 500px) {
+    html, body { overflow-x: hidden; }
+    .header { padding: 16px 8px 0; }
+    .header h1 { font-size: 22px; }
+    .tabs { padding: 0 4px; margin: 12px auto; gap: 6px; }
+    .tab { padding: 8px 14px; font-size: 12px; }
+    .content { padding: 0 4px 24px; }
+    .phones { gap: 8px; }
+    .phone { width: 100%; min-height: auto; border-radius: 16px; border-width: 1px; }
+    .phone-body { max-height: none; overflow-y: visible; padding: 0 10px 80px; }
+    .phone-header { padding: 12px 14px; }
+    .changelog { padding: 12px 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>ÁSZF / Termeni / Terms — 3 nyelvű</h1>
+  <p>DH-130 · Általános Szerződési Feltételek — Legea 365/2002, EU 2011/83</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="showTab(0)">🇭🇺 Magyar</div>
+  <div class="tab" onclick="showTab(1)">🇷🇴 Română</div>
+  <div class="tab" onclick="showTab(2)">🇬🇧 English</div>
+  <div class="tab" onclick="showTab(3)">📋 Szekció részletek</div>
+  <div class="tab" onclick="showTab(4)">🛠 UX megjegyzések</div>
+</div>
+
+<div class="content">
+
+  <\!-- TAB 0: Hungarian full view -->
+  <div class="feature active" id="tab0">
+    <h2>Általános Szerződési Feltételek — Magyar</h2>
+    <p class="subtitle">11 fejezet, Legea 365/2002 + EU e-commerce irányelv + OUG 34/2014</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="back-arrow">←</span>
+          <span style="font-size:16px;font-weight:600;font-family:system-ui">ÁSZF</span>
+          <span style="width:20px"></span>
+        </div>
+        <div class="phone-body">
+          <div class="lang-selector">
+            <div class="lang-btn">RO</div>
+            <div class="lang-btn">EN</div>
+            <div class="lang-btn active">HU</div>
+          </div>
+          <div class="page-title">Általános Szerződési Feltételek</div>
+          <div class="page-brand">Deák Húsmíves Online Platform — deakhus.ro</div>
+          <div class="page-date">Hatályos: 2026. április 17-től</div>
+
+          <div class="toc">
+            <div class="toc-title">Tartalomjegyzék</div>
+            <a class="toc-item"><span class="toc-num">1.</span> Szolgáltató azonosítása</a>
+            <a class="toc-item"><span class="toc-num">2.</span> A szolgáltatás leírása</a>
+            <a class="toc-item"><span class="toc-num">3.</span> Regisztráció és fiók</a>
+            <a class="toc-item"><span class="toc-num">4.</span> Rendelési folyamat</a>
+            <a class="toc-item"><span class="toc-num">5.</span> Árak és fizetés</a>
+            <a class="toc-item"><span class="toc-num">6.</span> Szállítás</a>
+            <a class="toc-item"><span class="toc-num">7.</span> Elállási jog és reklamáció</a>
+            <a class="toc-item"><span class="toc-num">8.</span> Felelősség</a>
+            <a class="toc-item"><span class="toc-num">9.</span> Adatvédelem</a>
+            <a class="toc-item"><span class="toc-num">10.</span> Panaszkezelés</a>
+            <a class="toc-item"><span class="toc-num">11.</span> Záró rendelkezések</a>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">1</span> Szolgáltató azonosítása</div>
+            <div class="section-body">
+              <div class="company-block">
+                <div class="company-name">EXARGROUPS S.R.L. — Platform üzemeltető</div>
+                <div class="company-detail">Székelyudvarhely, Orbán Balázs u. 9.<br>CUI: RO41839221 · Becze Szabolcs<br>contact@exar.ro</div>
+              </div>
+              <div class="company-block">
+                <div class="company-name">DEAK PROD SRL — Termék beszállító</div>
+                <div class="company-detail">Székelyudvarhely, Solymossy u. 9.<br>CUI: 4845288</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">2</span> A szolgáltatás leírása</div>
+            <div class="section-body">
+              <ul>
+                <li>Online rendelés + házhozszállítás</li>
+                <li><strong>Terület:</strong> Székelyudvarhely</li>
+                <li>Kézműves hústermékek (aktuális készlet)</li>
+                <li>Legea 365/2002 + EU 2000/31/EK</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">3</span> Regisztráció és fiók</div>
+            <div class="section-body">
+              <ul>
+                <li>Google OAuth vagy email/jelszó</li>
+                <li>Adatok: név, email, telefon, cím</li>
+                <li>1 személy = 1 fiók, nem átruházható</li>
+                <li><strong>18 éven felüliek</strong></li>
+                <li>ÁSZF + Privacy Policy elfogadásával</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">4</span> Rendelési folyamat</div>
+            <div class="section-body">
+              <ul>
+                <li>Termék kiválasztás → szállítási nap/idő → küldés</li>
+                <li>Automatikus email visszaigazolás → <strong>szerződés létrejön</strong></li>
+                <li>Módosítás/lemondás: <strong>szállítás előtti nap 18:00-ig</strong></li>
+                <li>Készlethiány → azonnali értesítés</li>
+                <li>Minimum rendelés: <strong>nincs</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">5</span> Árak és fizetés</div>
+            <div class="section-body">
+              <div class="highlight-box">
+                <strong>Bruttó árak</strong> (ÁFA-val) · RON-ban
+              </div>
+              <table class="mini-table">
+                <tr><th>Fizetés</th><th>Pilot fázis</th></tr>
+                <tr><td>Készpénz szállításkor</td><td>✅ Elérhető</td></tr>
+                <tr><td>Online fizetés</td><td>🔜 Később</td></tr>
+              </table>
+              <table class="mini-table">
+                <tr><th>Rendelés értéke</th><th>Szállítási díj</th></tr>
+                <tr><td>≥ 150 RON</td><td style="color:var(--green);font-weight:600">Ingyenes</td></tr>
+                <tr><td>< 150 RON</td><td>10 RON</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">6</span> Szállítás</div>
+            <div class="section-body">
+              <ul>
+                <li><strong>Terület:</strong> Székelyudvarhely</li>
+                <li>Felhasználó választ napot + időablakot</li>
+                <li>DEAK PROD SRL saját futár, <strong>hűtőlánccal</strong></li>
+                <li>Személyes átvétel a megadott címen</li>
+              </ul>
+              <div class="highlight-box">
+                <strong>Sikertelen kézbesítés:</strong> futár hív telefonon → ha nem sikerül, rendelés visszamegy → új időpont: contact@exar.ro
+              </div>
+            </div>
+          </div>
+
+          <div class="section" style="border-left: 3px solid var(--amber);">
+            <div class="section-title"><span class="section-num">7</span> Elállási jog és reklamáció</div>
+            <span class="label-warn">FONTOS</span>
+            <div class="section-body">
+              <div class="warn-box">
+                <strong>Romlandó élelmiszer → 14 napos elállási jog NEM alkalmazható</strong><br>
+                <span style="font-size:11px">EU 2011/83 irányelv 16(d) + OUG 34/2014</span>
+              </div>
+              <p style="margin:8px 0;font-weight:600">Reklamáció lehetséges:</p>
+              <ul>
+                <li>Romlott / sérült termék</li>
+                <li>Téves termék / hiányos szállítás</li>
+                <li>Mennyiségi eltérés</li>
+              </ul>
+              <table class="mini-table" style="margin-top:8px">
+                <tr><th>Határidő</th><td><strong>24 óra</strong> a kézbesítéstől</td></tr>
+                <tr><th>Mód</th><td>contact@exar.ro + rendelés szám + fotó</td></tr>
+                <tr><th>Elbírálás</th><td>Max. <strong>5 munkanap</strong></td></tr>
+                <tr><th>Eredmény</th><td>Csere VAGY jóváírás</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">8</span> Felelősség</div>
+            <div class="section-body">
+              <table class="mini-table">
+                <tr><th>Ki?</th><th>Miért felel?</th></tr>
+                <tr><td>Exar Labs</td><td>Platform, elérhetőség, adatvédelem</td></tr>
+                <tr><td>DEAK PROD</td><td>Termék minőség, élelmiszerbiztonság, szállítás</td></tr>
+              </table>
+              <p style="margin-top:6px;font-size:11px">Pilot fázis: as-is · Vis maior: nem felel · Kár max. = rendelés értéke</p>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">9</span> Adatvédelem</div>
+            <div class="section-body">
+              <p>→ <span style="color:var(--primary);text-decoration:underline">Adatvédelmi Szabályzat</span> (Privacy Policy) — az ÁSZF szerves része.</p>
+              <p style="margin-top:4px">GDPR jogok: contact@exar.ro</p>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">10</span> Panaszkezelés</div>
+            <div class="section-body">
+              <p><strong>Email:</strong> contact@exar.ro · Max. <strong>5 munkanap</strong></p>
+              <div class="company-block" style="margin-top:8px">
+                <div class="company-name" style="font-size:11px">ANPC + OPC Harghita</div>
+                <div class="company-detail" style="font-size:10px">
+                  www.anpc.gov.ro<br>
+                  OPC Harghita: Miercurea Ciuc, 0266-371 769
+                </div>
+              </div>
+              <p style="margin-top:6px;font-size:11px">ODR: <span style="color:var(--primary)">ec.europa.eu/consumers/odr</span></p>
+              <p style="margin-top:4px;font-size:11px">Irányadó jog: romániai · Bíróság: Székelyudvarhely</p>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">11</span> Záró rendelkezések</div>
+            <div class="section-body">
+              <ul>
+                <li>Egyoldalú módosítás joga fenntartva</li>
+                <li>Lényeges változás → értesítés</li>
+                <li>3 nyelven elérhető — <strong>eltérés esetén a román az irányadó</strong></li>
+              </ul>
+            </div>
+          </div>
+
+          <p style="font-size:10px;color:var(--text2);text-align:center;margin:16px 0 8px">© 2026 EXARGROUPS S.R.L.</p>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🥩</div>Termékek</div>
+          <div class="nav-item"><div class="nav-icon">🛒</div>Kosár</div>
+          <div class="nav-item"><div class="nav-icon">📦</div>Rendelések</div>
+          <div class="nav-item" style="color:var(--primary)"><div class="nav-icon">👤</div>Fiókom</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- TAB 1: Romanian -->
+  <div class="feature" id="tab1">
+    <h2>Termeni și Condiții — Română</h2>
+    <p class="subtitle">Aceeași structură — 11 capitole</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="back-arrow">←</span>
+          <span style="font-size:16px;font-weight:600">Termeni și Condiții</span>
+          <span style="width:20px"></span>
+        </div>
+        <div class="phone-body">
+          <div class="lang-selector">
+            <div class="lang-btn active">RO</div>
+            <div class="lang-btn">EN</div>
+            <div class="lang-btn">HU</div>
+          </div>
+          <div class="page-title">Termeni și Condiții Generale</div>
+          <div class="page-brand">Platforma Online Deák Húsmíves — deakhus.ro</div>
+          <div class="page-date">În vigoare din: 17 aprilie 2026</div>
+
+          <div class="toc">
+            <div class="toc-title">Cuprins</div>
+            <a class="toc-item"><span class="toc-num">1.</span> Identificarea prestatorului</a>
+            <a class="toc-item"><span class="toc-num">2.</span> Descrierea serviciului</a>
+            <a class="toc-item"><span class="toc-num">3.</span> Înregistrarea și contul</a>
+            <a class="toc-item"><span class="toc-num">4.</span> Procesul de comandă</a>
+            <a class="toc-item"><span class="toc-num">5.</span> Prețuri și plăți</a>
+            <a class="toc-item"><span class="toc-num">6.</span> Livrarea</a>
+            <a class="toc-item"><span class="toc-num">7.</span> Retragere și reclamații</a>
+            <a class="toc-item"><span class="toc-num">8.</span> Responsabilitate</a>
+            <a class="toc-item"><span class="toc-num">9.</span> Protecția datelor</a>
+            <a class="toc-item"><span class="toc-num">10.</span> Reclamații și litigii</a>
+            <a class="toc-item"><span class="toc-num">11.</span> Dispoziții finale</a>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">1</span> Identificarea prestatorului</div>
+            <div class="section-body">
+              <div class="company-block">
+                <div class="company-name">EXARGROUPS S.R.L. — Operator platformă</div>
+                <div class="company-detail">Odorheiu Secuiesc, str. Orbán Balázs 9<br>CUI: RO41839221<br>contact@exar.ro</div>
+              </div>
+              <div class="company-block">
+                <div class="company-name">DEAK PROD SRL — Furnizor produse</div>
+                <div class="company-detail">Odorheiu Secuiesc, str. Solymossy 9<br>CUI: 4845288</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" style="border-left: 3px solid var(--amber);">
+            <div class="section-title"><span class="section-num">7</span> Retragere și reclamații</div>
+            <span class="label-warn">IMPORTANT</span>
+            <div class="section-body">
+              <div class="warn-box">
+                <strong>Produse perisabile → dreptul de retragere NU se aplică</strong><br>
+                <span style="font-size:11px">Dir. 2011/83/UE art. 16(d) + OUG 34/2014</span>
+              </div>
+              <table class="mini-table">
+                <tr><th>Termen</th><td><strong>24 ore</strong> de la livrare</td></tr>
+                <tr><th>Mod</th><td>contact@exar.ro + nr. comandă + foto</td></tr>
+                <tr><th>Soluționare</th><td>Max. <strong>5 zile lucrătoare</strong></td></tr>
+                <tr><th>Rezultat</th><td>Înlocuire SAU creditare</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="info-box">Structură identică cu versiunea maghiară — toate cele 11 capitole.</div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🥩</div>Produse</div>
+          <div class="nav-item"><div class="nav-icon">🛒</div>Coș</div>
+          <div class="nav-item"><div class="nav-icon">📦</div>Comenzi</div>
+          <div class="nav-item" style="color:var(--primary)"><div class="nav-icon">👤</div>Contul meu</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- TAB 2: English -->
+  <div class="feature" id="tab2">
+    <h2>Terms and Conditions — English</h2>
+    <p class="subtitle">Same structure — 11 chapters</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header">
+          <span class="back-arrow">←</span>
+          <span style="font-size:16px;font-weight:600">Terms & Conditions</span>
+          <span style="width:20px"></span>
+        </div>
+        <div class="phone-body">
+          <div class="lang-selector">
+            <div class="lang-btn">RO</div>
+            <div class="lang-btn active">EN</div>
+            <div class="lang-btn">HU</div>
+          </div>
+          <div class="page-title">Terms and Conditions</div>
+          <div class="page-brand">Deák Húsmíves Online Platform — deakhus.ro</div>
+          <div class="page-date">Effective from: April 17, 2026</div>
+
+          <div class="toc">
+            <div class="toc-title">Table of Contents</div>
+            <a class="toc-item"><span class="toc-num">1.</span> Service Provider Identification</a>
+            <a class="toc-item"><span class="toc-num">2.</span> Service Description</a>
+            <a class="toc-item"><span class="toc-num">3.</span> Registration and Account</a>
+            <a class="toc-item"><span class="toc-num">4.</span> Order Process</a>
+            <a class="toc-item"><span class="toc-num">5.</span> Prices and Payment</a>
+            <a class="toc-item"><span class="toc-num">6.</span> Delivery</a>
+            <a class="toc-item"><span class="toc-num">7.</span> Withdrawal and Complaints</a>
+            <a class="toc-item"><span class="toc-num">8.</span> Liability</a>
+            <a class="toc-item"><span class="toc-num">9.</span> Data Protection</a>
+            <a class="toc-item"><span class="toc-num">10.</span> Complaints and Disputes</a>
+            <a class="toc-item"><span class="toc-num">11.</span> Final Provisions</a>
+          </div>
+
+          <div class="section">
+            <div class="section-title"><span class="section-num">1</span> Service Provider</div>
+            <div class="section-body">
+              <div class="company-block">
+                <div class="company-name">EXARGROUPS S.R.L. — Platform operator</div>
+                <div class="company-detail">Odorheiu Secuiesc, str. Orbán Balázs 9<br>Tax ID: RO41839221<br>contact@exar.ro</div>
+              </div>
+              <div class="company-block">
+                <div class="company-name">DEAK PROD SRL — Product supplier</div>
+                <div class="company-detail">Odorheiu Secuiesc, str. Solymossy 9<br>Tax ID: 4845288</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section" style="border-left: 3px solid var(--amber);">
+            <div class="section-title"><span class="section-num">7</span> Withdrawal & Complaints</div>
+            <span class="label-warn">IMPORTANT</span>
+            <div class="section-body">
+              <div class="warn-box">
+                <strong>Perishable food → 14-day withdrawal does NOT apply</strong><br>
+                <span style="font-size:11px">EU Dir. 2011/83 art. 16(d) + OUG 34/2014</span>
+              </div>
+              <table class="mini-table">
+                <tr><th>Deadline</th><td><strong>24 hours</strong> from delivery</td></tr>
+                <tr><th>Method</th><td>contact@exar.ro + order # + photo</td></tr>
+                <tr><th>Resolution</th><td>Max. <strong>5 business days</strong></td></tr>
+                <tr><th>Outcome</th><td>Replacement OR credit</td></tr>
+              </table>
+            </div>
+          </div>
+
+          <div class="info-box">Same structure as Hungarian version — all 11 chapters.</div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🥩</div>Products</div>
+          <div class="nav-item"><div class="nav-icon">🛒</div>Cart</div>
+          <div class="nav-item"><div class="nav-icon">📦</div>Orders</div>
+          <div class="nav-item" style="color:var(--primary)"><div class="nav-icon">👤</div>Account</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- TAB 3: Key sections detail -->
+  <div class="feature" id="tab3">
+    <h2>Kulcs-szekciók részletesen</h2>
+    <p class="subtitle">A legfontosabb szekciók kibontva — fejlesztői referencia</p>
+    <div class="phones">
+      <\!-- Delivery + Payment detail -->
+      <div class="phone">
+        <div class="phone-header">
+          <span class="back-arrow">←</span>
+          <span style="font-size:16px;font-weight:600">Árak + Szállítás</span>
+          <span style="width:20px"></span>
+        </div>
+        <div class="phone-body">
+          <div class="annotation"><strong>5. Árak és fizetés</strong> — részletes nézet</div>
+
+          <div class="section">
+            <div class="section-title">💰 Árazás</div>
+            <div class="section-body">
+              <div style="display:flex;gap:8px;margin-bottom:8px">
+                <div style="flex:1;background:#F5F0EB;border-radius:8px;padding:10px;text-align:center">
+                  <div style="font-size:11px;color:var(--text2)">Ár típus</div>
+                  <div style="font-size:14px;font-weight:700">Bruttó (ÁFA-val)</div>
+                </div>
+                <div style="flex:1;background:#F5F0EB;border-radius:8px;padding:10px;text-align:center">
+                  <div style="font-size:11px;color:var(--text2)">Pénznem</div>
+                  <div style="font-size:14px;font-weight:700">RON</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">🚚 Szállítási díj vizualizáció</div>
+            <div class="section-body">
+              <div style="background:var(--green-light);border-radius:10px;padding:14px;text-align:center;margin-bottom:8px">
+                <div style="font-size:22px;font-weight:800;color:var(--green)">≥ 150 RON</div>
+                <div style="font-size:13px;color:var(--green);font-weight:600">INGYENES szállítás ✓</div>
+              </div>
+              <div style="background:#FFF3CD;border-radius:10px;padding:14px;text-align:center">
+                <div style="font-size:22px;font-weight:800;color:#8B6914">< 150 RON</div>
+                <div style="font-size:13px;color:#8B6914;font-weight:600">10 RON szállítási díj</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="section">
+            <div class="section-title">💳 Fizetési módok</div>
+            <div class="section-body">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F0ECE7">
+                <div style="width:36px;height:36px;background:var(--green-light);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px">💵</div>
+                <div>
+                  <div style="font-size:13px;font-weight:600">Készpénz szállításkor</div>
+                  <div style="font-size:11px;color:var(--green)">Elérhető (pilot fázis)</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 0">
+                <div style="width:36px;height:36px;background:#F0F0F0;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px">💳</div>
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:var(--text2)">Online fizetés</div>
+                  <div style="font-size:11px;color:var(--text2)">v0.5-ben (később)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="annotation"><strong>6. Szállítás</strong> — részletes nézet</div>
+
+          <div class="section">
+            <div class="section-title">📍 Szállítási flow</div>
+            <div class="section-body">
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="width:24px;height:24px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">1</div>
+                  <div style="font-size:12px">Felhasználó választ <strong>napot + időablakot</strong></div>
+                </div>
+                <div style="width:1px;height:12px;background:var(--border);margin-left:11px"></div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="width:24px;height:24px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">2</div>
+                  <div style="font-size:12px">DEAK PROD futár, <strong>hűtőlánccal</strong></div>
+                </div>
+                <div style="width:1px;height:12px;background:var(--border);margin-left:11px"></div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="width:24px;height:24px;border-radius:50%;background:var(--primary);color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">3</div>
+                  <div style="font-size:12px"><strong>Személyes átvétel</strong> a megadott címen</div>
+                </div>
+                <div style="width:1px;height:12px;background:var(--border);margin-left:11px"></div>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <div style="width:24px;height:24px;border-radius:50%;background:#CCC;color:white;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0">?</div>
+                  <div style="font-size:12px;color:var(--text2)">Nincs otthon → hívás → visszavisz → új időpont</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-nav">
+          <div class="nav-item"><div class="nav-icon">🥩</div>Termékek</div>
+          <div class="nav-item"><div class="nav-icon">🛒</div>Kosár</div>
+          <div class="nav-item"><div class="nav-icon">📦</div>Rendelések</div>
+          <div class="nav-item" style="color:var(--primary)"><div class="nav-icon">👤</div>Fiókom</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <\!-- TAB 4: UX notes -->
+  <div class="feature" id="tab4">
+    <h2>UX és implementációs megjegyzések</h2>
+    <p class="subtitle">Design döntések és fejlesztői útmutató</p>
+
+    <div style="max-width:700px">
+      <div class="note-box">
+        <strong>A Privacy Policy wireframe-mel azonos design pattern:</strong> nyelvváltó, tartalomjegyzék, számozott szekciók, bottom nav.
+      </div>
+
+      <div class="section" style="margin-top:16px">
+        <div class="section-title">📐 Implementáció</div>
+        <div class="section-body">
+          <ul>
+            <li><strong>Route:</strong> <code>/terms</code> (új oldal)</li>
+            <li><strong>Nyelvváltás:</strong> Azonos logika mint a Privacy Policy-nál (<code>?lang=hu</code>)</li>
+            <li><strong>Tartalom:</strong> A 3 markdown fájlból (<code>aszf-{hu,ro,en}-v1.0.md</code>)</li>
+            <li><strong>Navigáció:</strong> Fiókom → ÁSZF link, regisztrációs consent checkbox, lábléc link</li>
+            <li><strong>Privacy Policy cross-link:</strong> 9. szekció → <code>/privacy-policy</code> link</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">⚖️ Jogi háttér</div>
+        <div class="section-body">
+          <table class="mini-table">
+            <tr><th>Jogszabály</th><th>Mire vonatkozik</th></tr>
+            <tr><td>Legea 365/2002</td><td>Elektronikus kereskedelem (RO)</td></tr>
+            <tr><td>EU 2000/31/EK</td><td>E-commerce irányelv</td></tr>
+            <tr><td>EU 2011/83/EU art. 16(d)</td><td>Elállási jog — romlandó élelmiszer kivétel</td></tr>
+            <tr><td>OUG 34/2014</td><td>Fogyasztói jogok (RO)</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">🔗 Kapcsolódó Jira ticketek</div>
+        <div class="section-body">
+          <table class="mini-table">
+            <tr><th>Ticket</th><th>Mi ez</th></tr>
+            <tr><td><strong>DH-130</strong></td><td>ÁSZF draft készítése ← EZ AZ</td></tr>
+            <tr><td>DH-131</td><td>Impresszum oldal</td></tr>
+            <tr><td>DH-132</td><td>GDPR consent checkbox regisztrációnál</td></tr>
+            <tr><td>DH-137</td><td>Cookie policy</td></tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">⚠️ Szabolcs döntésre vár</div>
+        <div class="section-body">
+          <ul>
+            <li><strong>Ügyvédi ellenőrzés?</strong> A draft AI-generált — ajánlott legalább egy gyors jogi átnézés (500-1500 RON)</li>
+            <li><strong>Módosítási határidő (4.3):</strong> szállítás előtti nap 18:00 — ez OK?</li>
+            <li><strong>Reklamáció (7.3):</strong> 24 óra és 5 munkanap — ez reális?</li>
+            <li><strong>Eltérés esetén a román nyelvű változat irányadó (11.5)</strong> — ez standard, OK?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="changelog">
+  <h3>Changelog</h3>
+  <ul>
+    <li><strong>v1.0</strong> (2026-04-17) — Első verzió: ÁSZF wireframe 3 nyelven (HU/RO/EN), 11 fejezet. Kulcs-szekciók részletes tab (árak, szállítás). UX + jogi megjegyzések.</li>
+  </ul>
+</div>
+
+<script>
+function showTab(index) {
+  document.querySelectorAll('.feature').forEach(f => f.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab' + index).classList.add('active');
+  document.querySelectorAll('.tab')[index].classList.add('active');
+}
+</script>
+
+</body>
+</html>

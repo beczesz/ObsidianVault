@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH v0.4 Wireframes — Reorder + Kedvencek</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #F5F0EB; --card: #FFFFFF; --primary: #7B2D3B; --primary-light: #9B4D5B;
+    --text: #2D2D2D; --text2: #777777; --border: #E8E0D8;
+    --green: #2E7D32; --green-light: #E8F5E9; --green-dark: #1B5E20;
+    --gold: #F0A500; --gold-light: #FFF8E1; --gold-border: #E8C84A;
+    --warn: #E65100; --warn-bg: #FFF3E0;
+    --danger: #C62828; --danger-bg: #FFEBEE;
+  }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #F8F5F0; color: var(--text); }
+
+  .header { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+  .tabs { display: flex; gap: 8px; max-width: 1200px; margin: 16px auto; padding: 0 24px; overflow-x: auto; }
+  .tab { padding: 10px 20px; border-radius: 24px; font-size: 13px; border: 1px solid var(--border); background: white; color: var(--text); cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 400; }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+
+  .content { max-width: 1200px; margin: 0 auto; padding: 0 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+  .feature > h2 { font-size: 18px; font-weight: 700; margin: 0 0 12px; }
+  .feature > p.desc { font-size: 13px; color: var(--text2); margin: 0 0 16px; max-width: 720px; line-height: 1.5; }
+
+  .scenarios { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .scenario-btn { padding: 6px 12px; border-radius: 20px; font-size: 11px; border: 1px solid var(--border); background: white; cursor: pointer; }
+  .scenario-btn.active { border: 2px solid var(--primary); background: var(--primary); color: white; font-weight: 600; }
+
+  .phones { display: flex; gap: 20px; flex-wrap: wrap; }
+
+  .phone { width: 375px; min-height: 700px; background: var(--bg); border-radius: 24px; border: 2px solid var(--border); overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12); flex-shrink: 0; position: relative; }
+  .phone-header { background: var(--bg); padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .phone-header span:first-child { font-size: 20px; font-weight: 700; font-family: Georgia, serif; }
+  .phone-body { padding: 0 16px 16px; max-height: 640px; overflow-y: auto; }
+
+  .card { background: var(--card); border-radius: 16px; padding: 16px; margin-bottom: 12px; border: 1px solid var(--border); }
+
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 12px; font-weight: 600; }
+  .badge-green { color: var(--green); background: var(--green-light); }
+  .badge-gold  { color: var(--green-dark); background: var(--gold-light); }
+  .badge-warn  { color: var(--warn); background: var(--warn-bg); }
+  .badge-red   { color: var(--danger); background: var(--danger-bg); }
+
+  .btn { width: 100%; padding: 14px 20px; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; text-align: center; border: none; }
+  .btn-primary   { background: var(--primary); color: #FFF; }
+  .btn-secondary { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+  .btn-ghost     { background: transparent; color: var(--primary-light); border: none; text-decoration: underline; }
+  .btn + .btn { margin-top: 10px; }
+  .btn-sm { padding: 8px 14px; font-size: 13px; width: auto; border-radius: 10px; }
+
+  /* Progress */
+  .progress-wrap { position: relative; height: 8px; background: #E0D8D0; border-radius: 4px; margin-bottom: 6px; }
+  .progress-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; }
+  .progress-bubble { position: absolute; top: 50%; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; z-index: 2; border: 2px solid white; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+  .progress-bubble.reached { background: var(--green); color: white; }
+  .progress-bubble.not-reached { background: #E0D8D0; color: #AAA; border-color: #E0D8D0; }
+  .progress-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--text2); margin-top: 6px; }
+
+  .nudge { padding: 10px 14px; border-radius: 12px; font-size: 13px; margin-bottom: 10px; }
+  .nudge-warn  { background: var(--warn-bg); color: var(--warn); }
+  .nudge-green { background: var(--green-light); color: var(--green); }
+  .nudge-gold  { background: linear-gradient(135deg, var(--green-light), var(--gold-light)); color: var(--green-dark); font-weight: 600; }
+  .nudge-red   { background: var(--danger-bg); color: var(--danger); }
+
+  /* Product rows */
+  .prod-row { display: flex; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--border); align-items: center; }
+  .prod-row:last-child { border-bottom: none; }
+  .prod-img { width: 48px; height: 48px; border-radius: 10px; background: #E8D5C0; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+  .prod-info { flex: 1; min-width: 0; }
+  .prod-name { font-size: 13px; font-weight: 700; }
+  .prod-sub { font-size: 11px; color: var(--text2); margin-top: 1px; }
+  .prod-price { font-size: 13px; font-weight: 700; color: var(--primary); white-space: nowrap; }
+  .prod-unavailable { opacity: 0.5; }
+  .prod-unavailable .prod-name { text-decoration: line-through; }
+
+  .fav-star {
+    width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 18px; background: transparent; color: #CCC;
+    cursor: pointer; flex-shrink: 0; transition: all 0.15s;
+  }
+  .fav-star.active { color: var(--gold); }
+
+  .qty-ctl { display: flex; align-items: center; gap: 6px; }
+  .qty-ctl button { width: 24px; height: 24px; border-radius: 6px; border: 1px solid var(--border); background: white; cursor: pointer; font-weight: 700; }
+  .qty-ctl span { font-size: 13px; font-weight: 700; min-width: 16px; text-align: center; }
+
+  .remove-x {
+    width: 22px; height: 22px; border-radius: 50%; background: #EEE;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; color: var(--text2); cursor: pointer; border: none;
+  }
+  .remove-x:hover { background: var(--danger-bg); color: var(--danger); }
+
+  /* Modal */
+  .modal-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,0.45); display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 10; }
+  .modal { background: white; border-radius: 16px; padding: 20px; width: 100%; max-width: 320px; }
+  .modal h3 { font-size: 16px; margin-bottom: 8px; }
+  .modal p { font-size: 13px; color: var(--text2); margin-bottom: 14px; line-height: 1.45; }
+
+  /* Tweaks panel */
+  .tweaks-panel {
+    position: fixed; right: 16px; bottom: 16px;
+    background: white; border: 1px solid var(--border); border-radius: 14px;
+    padding: 14px 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+    width: 280px; z-index: 100; display: none;
+    font-size: 12px;
+  }
+  .tweaks-panel.visible { display: block; }
+  .tweaks-panel h4 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text2); margin-bottom: 10px; }
+  .tweaks-panel input[type=range] { width: 100%; margin: 4px 0; }
+  .tweaks-panel .val-display {
+    font-size: 18px; font-weight: 800; color: var(--primary); margin-bottom: 2px;
+  }
+  .tweaks-panel .status-text { font-size: 12px; color: var(--text2); margin: 6px 0 10px; min-height: 34px; line-height: 1.4; }
+  .tweaks-panel .presets { display: flex; gap: 4px; flex-wrap: wrap; }
+  .tweaks-panel .preset-btn {
+    padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border);
+    background: white; font-size: 11px; cursor: pointer; font-weight: 600;
+  }
+  .tweaks-panel .preset-btn:hover { border-color: var(--primary); color: var(--primary); }
+
+  @media (max-width: 420px) {
+    .phone { width: 100%; min-width: 0; border-radius: 16px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Reorder + Kedvencek</h1>
+  <p>v0.4 · DH-148 kiegészítés — a gyors újrarendelés a Kedvencek listát is felhasználja, és a kosár spórolási progressét közvetlenül mutatja.</p>
+</div>
+
+<div class="tabs">
+  <div class="tab active" data-tab="favorites">Kedvencek panel</div>
+  <div class="tab" data-tab="empty">Üres kosár</div>
+  <div class="tab" data-tab="loaded">Betöltött kosár</div>
+  <div class="tab" data-tab="merge">Merge modal</div>
+</div>
+
+<div class="content">
+
+  <!-- =================== Kedvencek =================== -->
+  <div class="feature active" id="f-favorites">
+    <h2>1 · Kedvencek panel a terméklista fölött</h2>
+    <p class="desc">A felhasználó utolsó 6 csillaggal jelölt terméke egy horizontális karusszelen — 1 kattintással a kosárba. Ha még nincs kedvenc, az „Utolsó rendelésed" CTA jelenik meg helyette.</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header"><span>Termékek</span><span>🛒</span></div>
+        <div class="phone-body">
+          <div class="card" style="background: linear-gradient(135deg, #FFF 0%, var(--gold-light) 100%); border: 1px solid var(--gold-border);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="font-size: 14px; font-weight: 700;">⭐ Kedvenceid</div>
+              <a style="font-size: 12px; color: var(--primary); text-decoration: underline;">összes</a>
+            </div>
+            <div style="display: flex; gap: 8px; overflow-x: auto; padding-bottom: 4px;">
+              <div style="flex-shrink: 0; width: 88px; background: white; border-radius: 10px; padding: 8px; text-align: center; border: 1px solid var(--gold-border);">
+                <div style="font-size: 22px;">🥓</div>
+                <div style="font-size: 11px; font-weight: 700; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Füstölt szalonna</div>
+                <div style="font-size: 10px; color: var(--primary); font-weight: 700; margin-top: 2px;">42 RON</div>
+                <button class="btn btn-primary" style="padding: 4px; font-size: 11px; margin-top: 4px; border-radius: 6px;">+ kosár</button>
+              </div>
+              <div style="flex-shrink: 0; width: 88px; background: white; border-radius: 10px; padding: 8px; text-align: center; border: 1px solid var(--gold-border);">
+                <div style="font-size: 22px;">🌭</div>
+                <div style="font-size: 11px; font-weight: 700; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Házi kolbász</div>
+                <div style="font-size: 10px; color: var(--primary); font-weight: 700; margin-top: 2px;">58 RON</div>
+                <button class="btn btn-primary" style="padding: 4px; font-size: 11px; margin-top: 4px; border-radius: 6px;">+ kosár</button>
+              </div>
+              <div style="flex-shrink: 0; width: 88px; background: white; border-radius: 10px; padding: 8px; text-align: center; border: 1px solid var(--gold-border);">
+                <div style="font-size: 22px;">🍗</div>
+                <div style="font-size: 11px; font-weight: 700; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Csirkemell</div>
+                <div style="font-size: 10px; color: var(--primary); font-weight: 700; margin-top: 2px;">36 RON</div>
+                <button class="btn btn-primary" style="padding: 4px; font-size: 11px; margin-top: 4px; border-radius: 6px;">+ kosár</button>
+              </div>
+              <div style="flex-shrink: 0; width: 88px; background: white; border-radius: 10px; padding: 8px; text-align: center; border: 1px solid var(--gold-border);">
+                <div style="font-size: 22px;">🥩</div>
+                <div style="font-size: 11px; font-weight: 700; margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tarja</div>
+                <div style="font-size: 10px; color: var(--primary); font-weight: 700; margin-top: 2px;">48 RON</div>
+                <button class="btn btn-primary" style="padding: 4px; font-size: 11px; margin-top: 4px; border-radius: 6px;">+ kosár</button>
+              </div>
+            </div>
+          </div>
+
+          <div style="font-size: 12px; color: var(--text2); padding: 8px 4px; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700;">Minden termék</div>
+
+          <div class="card" style="padding: 8px 12px;">
+            <div class="prod-row">
+              <div class="prod-img">🥓</div>
+              <div class="prod-info">
+                <div class="prod-name">Füstölt szalonna</div>
+                <div class="prod-sub">200 g · 42 RON/db</div>
+              </div>
+              <div class="fav-star active">★</div>
+              <button class="btn btn-primary btn-sm">+</button>
+            </div>
+            <div class="prod-row">
+              <div class="prod-img">🥩</div>
+              <div class="prod-info">
+                <div class="prod-name">Bélszín</div>
+                <div class="prod-sub">kg · 145 RON</div>
+              </div>
+              <div class="fav-star">☆</div>
+              <button class="btn btn-primary btn-sm">+</button>
+            </div>
+            <div class="prod-row">
+              <div class="prod-img">🍖</div>
+              <div class="prod-info">
+                <div class="prod-name">Sonka (házi)</div>
+                <div class="prod-sub">200 g · 38 RON</div>
+              </div>
+              <div class="fav-star">☆</div>
+              <button class="btn btn-primary btn-sm">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== Üres kosár =================== -->
+  <div class="feature" id="f-empty">
+    <h2>2 · Üres kosár — nudge indításra</h2>
+    <p class="desc">Üres állapotban a rendszer két gyors indítási utat kínál: az utolsó rendelés újrarendelése, vagy kedvencekből kosárba.</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header"><span>Kosár</span><span>🛒 (0)</span></div>
+        <div class="phone-body">
+          <div class="card" style="text-align: center; padding: 40px 20px;">
+            <div style="font-size: 48px; margin-bottom: 12px;">🛒</div>
+            <div style="font-size: 16px; font-weight: 700; margin-bottom: 4px;">A kosarad üres</div>
+            <div style="font-size: 13px; color: var(--text2);">Kezdjük egy gyors újrarendeléssel?</div>
+          </div>
+
+          <div class="card" style="border: 2px solid var(--primary);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div>
+                <div style="font-size: 13px; font-weight: 700;">🔄 Utolsó rendelésed</div>
+                <div style="font-size: 11px; color: var(--text2); margin-top: 2px;">2026. ápr. 12 · 7 termék · 184 RON</div>
+              </div>
+              <div class="badge badge-gold">újrarendelés</div>
+            </div>
+            <button class="btn btn-primary">Újrarendelem</button>
+          </div>
+
+          <div class="card" style="background: var(--gold-light); border-color: var(--gold-border);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="font-size: 13px; font-weight: 700;">⭐ Kedvenceid (4)</div>
+              <span style="font-size: 11px; color: var(--text2);">koppintva +1</span>
+            </div>
+            <div style="display: flex; gap: 6px; overflow-x: auto;">
+              <div style="flex-shrink: 0; width: 64px; text-align: center;">
+                <div style="width: 56px; height: 56px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto; border: 1px solid var(--gold-border);">🥓</div>
+                <div style="font-size: 10px; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Szalonna</div>
+              </div>
+              <div style="flex-shrink: 0; width: 64px; text-align: center;">
+                <div style="width: 56px; height: 56px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto; border: 1px solid var(--gold-border);">🌭</div>
+                <div style="font-size: 10px; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Kolbász</div>
+              </div>
+              <div style="flex-shrink: 0; width: 64px; text-align: center;">
+                <div style="width: 56px; height: 56px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto; border: 1px solid var(--gold-border);">🍗</div>
+                <div style="font-size: 10px; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Csirke</div>
+              </div>
+              <div style="flex-shrink: 0; width: 64px; text-align: center;">
+                <div style="width: 56px; height: 56px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin: 0 auto; border: 1px solid var(--gold-border);">🥩</div>
+                <div style="font-size: 10px; margin-top: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">Tarja</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== Betöltött kosár (tweakable) =================== -->
+  <div class="feature" id="f-loaded">
+    <h2>3 · Betöltött kosár — élő progress</h2>
+    <p class="desc">A csúszkával (Tweaks panel) módosítható a kosár összege — a progress bar, a nudge és a megtakarítás breakdown valós időben frissül.</p>
+
+    <div class="scenarios" id="loaded-scenarios">
+      <button class="scenario-btn" data-amt="0">Üres (0 RON)</button>
+      <button class="scenario-btn" data-amt="100">100 RON</button>
+      <button class="scenario-btn" data-amt="149">Majdnem (149)</button>
+      <button class="scenario-btn" data-amt="150">Küszöb (150)</button>
+      <button class="scenario-btn active" data-amt="225">Középút (225)</button>
+      <button class="scenario-btn" data-amt="300">Max (300)</button>
+    </div>
+
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header"><span>Kosár</span><span>🛒 (<span id="cart-count">4</span>)</span></div>
+        <div class="phone-body">
+
+          <!-- Progress block -->
+          <div class="card" id="progress-block">
+            <div id="progress-nudge" class="nudge nudge-gold">🟠 Még <b>25 RON</b> → ingyenes szállítás</div>
+            <div class="progress-wrap">
+              <div class="progress-fill" id="progress-fill" style="width: 75%; background: linear-gradient(90deg, var(--gold), var(--green));"></div>
+              <div class="progress-bubble reached" style="left: 0%;">✓</div>
+              <div class="progress-bubble reached" id="bubble-150" style="left: 50%;">✓</div>
+              <div class="progress-bubble not-reached" id="bubble-300" style="left: 100%;">🏆</div>
+            </div>
+            <div class="progress-labels">
+              <span>0</span><span>150 RON</span><span>300 RON</span>
+            </div>
+            <div id="savings-breakdown" style="font-size: 12px; color: var(--green); margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);">
+              ✓ Ingyenes szállítás megtakarítva: <b>15 RON</b>
+            </div>
+          </div>
+
+          <!-- Cart items -->
+          <div class="card" style="padding: 8px 12px;">
+            <div class="prod-row">
+              <div class="prod-img">🥓</div>
+              <div class="prod-info">
+                <div class="prod-name">Füstölt szalonna</div>
+                <div class="prod-sub">200 g</div>
+              </div>
+              <div class="qty-ctl"><button>−</button><span>2</span><button>+</button></div>
+              <div class="prod-price">84</div>
+            </div>
+            <div class="prod-row">
+              <div class="prod-img">🌭</div>
+              <div class="prod-info">
+                <div class="prod-name">Házi kolbász</div>
+                <div class="prod-sub">kb. 500 g</div>
+              </div>
+              <div class="qty-ctl"><button>−</button><span>1</span><button>+</button></div>
+              <div class="prod-price">58</div>
+            </div>
+            <div class="prod-row">
+              <div class="prod-img">🍗</div>
+              <div class="prod-info">
+                <div class="prod-name">Csirkemell</div>
+                <div class="prod-sub">kg</div>
+              </div>
+              <div class="qty-ctl"><button>−</button><span>1</span><button>+</button></div>
+              <div class="prod-price">36</div>
+            </div>
+            <div class="prod-row">
+              <div class="prod-img">🥩</div>
+              <div class="prod-info">
+                <div class="prod-name">Tarja</div>
+                <div class="prod-sub">500 g</div>
+              </div>
+              <div class="qty-ctl"><button>−</button><span>1</span><button>+</button></div>
+              <div class="prod-price">48</div>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+              <span style="color: var(--text2);">Részösszeg</span>
+              <span><span id="subtotal">225</span> RON</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 4px 0;">
+              <span style="color: var(--text2);">Szállítás</span>
+              <span id="shipping" style="color: var(--green); font-weight: 700;">INGYENES</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; padding: 10px 0 4px; border-top: 1px solid var(--border); margin-top: 6px; font-size: 16px; font-weight: 700;">
+              <span>Összesen</span>
+              <span><span id="total">225</span> RON</span>
+            </div>
+            <button class="btn btn-primary" style="margin-top: 12px;">Tovább a fizetéshez</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =================== Merge modal =================== -->
+  <div class="feature" id="f-merge">
+    <h2>4 · Merge modal — újrarendelés meglévő kosárral</h2>
+    <p class="desc">Ha van már tartalma a kosárnak, a Merge modal figyelmeztet a részleges elérhetőségre és megerősíti a beolvasztást.</p>
+    <div class="phones">
+      <div class="phone">
+        <div class="phone-header"><span>Rendeléseim</span><span>🛒 (3)</span></div>
+        <div class="phone-body" style="filter: blur(1px); opacity: 0.6;">
+          <div class="card">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <div style="font-weight: 700; font-size: 13px;">2026. ápr. 12</div>
+              <div class="badge badge-green">kiszállítva</div>
+            </div>
+            <div style="font-size: 12px; color: var(--text2);">7 termék · 184 RON</div>
+            <button class="btn btn-secondary" style="margin-top: 10px;">Újrarendelés</button>
+          </div>
+        </div>
+
+        <div class="modal-backdrop">
+          <div class="modal">
+            <h3>🛒 Már van 3 termék a kosaradban</h3>
+            <p>Az újrarendelés 7 terméket ad a meglévőkhöz. 1 termék <b style="color: var(--warn);">részben elérhető</b> (Csülök).</p>
+            <div class="nudge nudge-warn" style="font-size: 12px; margin-bottom: 14px;">
+              ⚠ A „Csülök" jelenleg nem elérhető — kihagyva.
+            </div>
+            <button class="btn btn-primary">Hozzáadás a kosárhoz</button>
+            <button class="btn btn-ghost" style="margin-top: 6px;">Mégse</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Tweaks panel -->
+<div class="tweaks-panel" id="tweaksPanel">
+  <h4>Tweaks — Kosár</h4>
+  <div class="val-display"><span id="tw-val">225</span> RON</div>
+  <input type="range" id="tw-slider" min="0" max="400" step="5" value="225">
+  <div class="status-text" id="tw-status">🟢 Ingyenes szállítás! (+15 RON megtakarítás)</div>
+  <div class="presets">
+    <button class="preset-btn" data-amt="0">Üres</button>
+    <button class="preset-btn" data-amt="100">100</button>
+    <button class="preset-btn" data-amt="149">Majdnem</button>
+    <button class="preset-btn" data-amt="150">150</button>
+    <button class="preset-btn" data-amt="225">225</button>
+    <button class="preset-btn" data-amt="300">300</button>
+  </div>
+</div>
+
+<script>
+/* ================= TWEAK DEFAULTS ================= */
+const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+  "cartAmount": 225
+}/*EDITMODE-END*/;
+let cartAmount = TWEAK_DEFAULTS.cartAmount;
+
+/* ============== Tabs ============== */
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+    document.querySelectorAll('.feature').forEach(x => x.classList.remove('active'));
+    t.classList.add('active');
+    document.getElementById('f-' + t.dataset.tab).classList.add('active');
+  });
+});
+
+/* ============== Scenarios ============== */
+document.querySelectorAll('#loaded-scenarios .scenario-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    const amt = parseInt(b.dataset.amt);
+    setCartAmount(amt, true);
+  });
+});
+
+/* ============== Progress rendering ============== */
+function setCartAmount(amt, fromScenario) {
+  cartAmount = Math.max(0, Math.min(400, amt));
+  renderProgress();
+  // sync tweaks slider
+  const sl = document.getElementById('tw-slider');
+  const lbl = document.getElementById('tw-val');
+  if (sl) sl.value = cartAmount;
+  if (lbl) lbl.textContent = cartAmount;
+  // persist
+  window.parent.postMessage({type: '__edit_mode_set_keys', edits: {cartAmount: cartAmount}}, '*');
+  // sync scenario active state
+  document.querySelectorAll('#loaded-scenarios .scenario-btn').forEach(b => {
+    b.classList.toggle('active', parseInt(b.dataset.amt) === cartAmount);
+  });
+}
+
+function renderProgress() {
+  const fill = document.getElementById('progress-fill');
+  const nudge = document.getElementById('progress-nudge');
+  const b150 = document.getElementById('bubble-150');
+  const b300 = document.getElementById('bubble-300');
+  const breakdown = document.getElementById('savings-breakdown');
+  const subtotal = document.getElementById('subtotal');
+  const total = document.getElementById('total');
+  const shipping = document.getElementById('shipping');
+  const status = document.getElementById('tw-status');
+
+  const pct = Math.min(100, (cartAmount / 300) * 100);
+  fill.style.width = pct + '%';
+
+  // Bubbles
+  b150.classList.toggle('reached', cartAmount >= 150);
+  b150.classList.toggle('not-reached', cartAmount < 150);
+  b300.classList.toggle('reached', cartAmount >= 300);
+  b300.classList.toggle('not-reached', cartAmount < 300);
+
+  // Color / nudge / status text
+  let nudgeText = '', nudgeClass = 'nudge', statusText = '', breakdownHtml = '';
+  if (cartAmount === 0) {
+    nudgeText = '🔴 A kosarad üres — kezdd a kedvencekkel!';
+    nudgeClass = 'nudge nudge-red';
+    statusText = '🔴 0 RON — kezdj hozzá!';
+    fill.style.background = '#E0D8D0';
+    breakdownHtml = '';
+  } else if (cartAmount >= 300) {
+    nudgeText = '🏆 <b>Teljes kedvezmény</b> — ingyen szállítás + 2% visszajár!';
+    nudgeClass = 'nudge nudge-gold';
+    const cashback = Math.round(cartAmount * 0.02);
+    statusText = '🏆 Teljes kedvezmény! (+15 RON szállítás, +' + cashback + ' RON cashback)';
+    fill.style.background = 'linear-gradient(90deg, var(--green), var(--gold))';
+    breakdownHtml = '✓ Ingyenes szállítás: <b>15 RON</b><br>✓ 2% visszajár: <b>' + cashback + ' RON</b>';
+  } else if (cartAmount >= 150) {
+    const toGold = 300 - cartAmount;
+    nudgeText = '🟢 <b>Ingyenes szállítás!</b> · Még ' + toGold + ' RON → 2% cashback';
+    nudgeClass = 'nudge nudge-green';
+    statusText = '🟢 Ingyenes szállítás! (+15 RON megtakarítás)';
+    fill.style.background = 'linear-gradient(90deg, var(--gold), var(--green))';
+    breakdownHtml = '✓ Ingyenes szállítás megtakarítva: <b>15 RON</b>';
+  } else if (cartAmount >= 140) {
+    const need = 150 - cartAmount;
+    nudgeText = '🔥 Már csak <b>' + need + ' RON</b> → ingyenes szállítás!';
+    nudgeClass = 'nudge nudge-gold';
+    statusText = '🟠→🟢 Már csak ' + need + ' RON az ingyenes szállításig!';
+    fill.style.background = 'linear-gradient(90deg, var(--warn), var(--gold))';
+  } else {
+    const need = 150 - cartAmount;
+    nudgeText = '🟠 Még <b>' + need + ' RON</b> → ingyenes szállítás';
+    nudgeClass = 'nudge nudge-warn';
+    statusText = '🟠 ' + cartAmount + ' RON → ingyenes szállítás ' + need + ' RON múlva';
+    fill.style.background = 'var(--warn)';
+  }
+
+  nudge.innerHTML = nudgeText;
+  nudge.className = nudgeClass;
+  if (status) status.textContent = statusText;
+  if (breakdown) {
+    breakdown.innerHTML = breakdownHtml;
+    breakdown.style.display = breakdownHtml ? 'block' : 'none';
+  }
+
+  if (subtotal) subtotal.textContent = cartAmount;
+  if (total) total.textContent = cartAmount >= 150 ? cartAmount : (cartAmount + 15);
+  if (shipping) {
+    if (cartAmount >= 150) {
+      shipping.textContent = 'INGYENES';
+      shipping.style.color = 'var(--green)';
+    } else {
+      shipping.textContent = '15 RON';
+      shipping.style.color = 'var(--text)';
+    }
+  }
+}
+
+/* ============== Tweaks / Edit mode ============== */
+window.addEventListener('message', (e) => {
+  if (!e.data) return;
+  if (e.data.type === '__activate_edit_mode') {
+    document.getElementById('tweaksPanel').classList.add('visible');
+  } else if (e.data.type === '__deactivate_edit_mode') {
+    document.getElementById('tweaksPanel').classList.remove('visible');
+  }
+});
+window.parent.postMessage({type: '__edit_mode_available'}, '*');
+
+document.getElementById('tw-slider').addEventListener('input', (e) => {
+  setCartAmount(parseInt(e.target.value), false);
+});
+document.querySelectorAll('.preset-btn').forEach(b => {
+  b.addEventListener('click', () => setCartAmount(parseInt(b.dataset.amt), false));
+});
+
+/* Init */
+setCartAmount(cartAmount, false);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH v0.3 — Profile → Jogi információk</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #F5F0EB; --card: #FFFFFF; --primary: #7B2D3B; --primary-light: #9B4D5B;
+    --primary-pale: #F4E6E8;
+    --text: #2D2D2D; --text2: #777777; --border: #E8E0D8;
+    --green: #2E7D32; --green-light: #E8F5E9;
+    --gold-light: #FFF8E1; --gold-border: #E8C84A;
+    --warn: #E65100; --warn-bg: #FFF3E0;
+  }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #F8F5F0; color: var(--text); }
+
+  .back-btn { display: inline-block; padding: 8px 14px; background: var(--primary); color: white; border-radius: 8px; font-size: 13px; text-decoration: none; font-weight: 600; margin: 16px 24px 0; }
+  .back-btn:hover { background: var(--primary-light); }
+
+  .header { max-width: 1400px; margin: 0 auto; padding: 16px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+  .header-meta { margin-top: 10px; font-size: 12px; color: var(--text2); }
+  .header-meta .badge-ticket { display: inline-block; background: var(--primary-pale); color: var(--primary); font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-right: 6px; }
+
+  .content { max-width: 1400px; margin: 0 auto; padding: 24px; }
+
+  .flow-wrap { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+
+  /* Phone frame */
+  .phone {
+    width: 375px; min-height: 720px; background: var(--bg);
+    border-radius: 24px; border: 2px solid var(--border); overflow: hidden;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12); flex-shrink: 0;
+    display: flex; flex-direction: column;
+  }
+  .phone-header {
+    background: var(--bg); padding: 16px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .phone-header .back-chevron {
+    width: 32px; height: 32px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent; color: var(--primary); font-size: 20px;
+    cursor: pointer;
+  }
+  .phone-header .back-chevron:hover { background: var(--primary-pale); }
+  .phone-header .title { font-size: 17px; font-weight: 700; color: var(--text); flex: 1; }
+  .phone-header .brand { font-size: 20px; font-weight: 700; font-family: Georgia, serif; color: var(--primary); }
+
+  .phone-body {
+    flex: 1;
+    padding: 12px 16px 0;
+    overflow-y: auto;
+    max-height: 620px;
+  }
+
+  /* Bottom tab bar */
+  .tab-bar {
+    background: var(--card);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 6px 0 10px;
+  }
+  .tab-item {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center;
+    gap: 3px; font-size: 10px; color: var(--text2);
+    padding: 6px 2px; cursor: pointer;
+  }
+  .tab-item.active { color: var(--primary); font-weight: 700; }
+  .tab-item svg { width: 22px; height: 22px; stroke-width: 1.8; }
+
+  /* Profile card (phone 1 top) */
+  .profile-hero {
+    background: var(--card);
+    border-radius: 16px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 12px;
+  }
+  .avatar {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary), var(--primary-light));
+    color: white; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 20px; flex-shrink: 0;
+  }
+  .profile-info .name { font-size: 15px; font-weight: 700; }
+  .profile-info .email { font-size: 12px; color: var(--text2); margin-top: 2px; }
+
+  /* Menu groups */
+  .menu-group {
+    background: var(--card);
+    border-radius: 16px;
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .menu-group-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--text2);
+    padding: 0 6px 6px;
+    margin-top: 4px;
+  }
+  .menu-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.12s;
+  }
+  .menu-row:last-child { border-bottom: none; }
+  .menu-row:hover { background: var(--bg); }
+  .menu-row.highlighted {
+    background: var(--primary-pale);
+    box-shadow: inset 3px 0 0 var(--primary);
+  }
+  .menu-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--primary-pale); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .menu-icon svg { width: 18px; height: 18px; stroke-width: 2; }
+  .menu-row.highlighted .menu-icon {
+    background: var(--primary);
+    color: white;
+  }
+  .menu-label { flex: 1; font-size: 14px; font-weight: 500; }
+  .menu-chevron { color: var(--text2); font-size: 18px; }
+  .menu-sublabel { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+  /* Danger / logout */
+  .menu-row.danger .menu-label { color: var(--primary); font-weight: 600; }
+  .menu-row.danger .menu-icon { background: var(--primary-pale); color: var(--primary); }
+
+  /* Section header on phone 2 */
+  .section-header {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--text2);
+    padding: 14px 6px 8px;
+  }
+  .section-header:first-child { padding-top: 4px; }
+
+  /* Company card */
+  .company-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 12px;
+  }
+  .company-name {
+    font-size: 15px; font-weight: 700; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .company-role {
+    display: inline-block;
+    background: var(--primary-pale);
+    color: var(--primary);
+    font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 6px;
+    margin-left: 0;
+    letter-spacing: 0.05em;
+  }
+  .company-data {
+    margin-top: 10px;
+    font-size: 13px; line-height: 1.7;
+    color: var(--text);
+  }
+  .company-data .label {
+    color: var(--text2); font-size: 11px;
+    display: inline-block; min-width: 70px;
+  }
+  .company-data .value { font-weight: 500; }
+
+  /* Doc link row */
+  .doc-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .doc-row:last-child { border-bottom: none; }
+  .doc-row:hover { background: var(--bg); }
+  .doc-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .doc-icon svg { width: 18px; height: 18px; stroke-width: 2; }
+  .doc-icon.aszf { background: #E8E0F5; color: #5E3B9C; }
+  .doc-icon.privacy { background: var(--green-light); color: var(--green); }
+  .doc-icon.cookie { background: var(--gold-light); color: #8B6914; }
+  .doc-info { flex: 1; }
+  .doc-title { font-size: 14px; font-weight: 600; }
+  .doc-sub { font-size: 11px; color: var(--text2); margin-top: 2px; }
+
+  /* Language segmented control */
+  .lang-seg {
+    display: flex;
+    background: var(--bg);
+    border-radius: 10px;
+    padding: 3px;
+    margin-bottom: 14px;
+  }
+  .lang-seg button {
+    flex: 1; padding: 8px; border-radius: 8px;
+    border: none; background: transparent;
+    font-size: 12px; font-weight: 600;
+    color: var(--text2);
+    cursor: pointer;
+  }
+  .lang-seg button.active {
+    background: var(--card);
+    color: var(--primary);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  /* Doc preview (Phone 3) */
+  .doc-title-big {
+    font-size: 18px; font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .doc-meta {
+    font-size: 11px; color: var(--text2);
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .toc-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.06em;
+    text-transform: uppercase; color: var(--text2);
+    margin-bottom: 8px;
+  }
+  .toc-list {
+    background: var(--card);
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    overflow: hidden;
+    margin-bottom: 16px;
+  }
+  .toc-item {
+    display: flex; gap: 10px; align-items: center;
+    padding: 10px 14px;
+    font-size: 13px;
+    border-bottom: 1px solid var(--border);
+  }
+  .toc-item:last-child { border-bottom: none; }
+  .toc-num {
+    font-size: 11px; color: var(--primary);
+    font-weight: 700;
+    min-width: 18px;
+  }
+
+  /* External link row */
+  .ext-row {
+    display: flex; align-items: center; gap: 12px;
+    padding: 13px 16px;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+  }
+  .ext-row:last-child { border-bottom: none; }
+  .ext-row:hover { background: var(--bg); }
+  .ext-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: var(--primary-pale); color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .ext-icon svg { width: 16px; height: 16px; stroke-width: 2; }
+  .ext-info { flex: 1; }
+  .ext-title { font-size: 13px; font-weight: 600; }
+  .ext-url { font-size: 11px; color: var(--text2); margin-top: 1px; }
+
+  /* App version footer */
+  .app-version {
+    text-align: center;
+    padding: 20px 0 10px;
+    font-size: 11px;
+    color: var(--text2);
+  }
+
+  /* Annotation panel */
+  .annot-panel {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+    width: 320px;
+    align-self: flex-start;
+  }
+  .annot-panel h3 {
+    font-size: 15px; font-weight: 700;
+    margin-bottom: 14px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .annot-panel h3 .ticket {
+    display: inline-block; background: var(--primary-pale);
+    color: var(--primary); font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 5px;
+  }
+  .annot-row {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 11px 0; border-bottom: 1px solid var(--border);
+    font-size: 12.5px; color: var(--text); line-height: 1.6;
+  }
+  .annot-row:last-child { border-bottom: none; }
+  .annot-num {
+    flex-shrink: 0; width: 22px; height: 22px;
+    background: var(--primary); color: white;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; font-weight: 700;
+  }
+  .annot-row strong { color: var(--primary); }
+
+  .legend {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    margin-top: 16px;
+    max-width: 1180px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .legend h3 {
+    font-size: 14px; font-weight: 700;
+    margin-bottom: 12px;
+  }
+  .legend-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .legend-item {
+    padding: 12px;
+    background: var(--bg);
+    border-radius: 10px;
+    font-size: 12px; line-height: 1.5;
+  }
+  .legend-item strong { color: var(--primary); display: block; margin-bottom: 3px; }
+
+  @media (max-width: 900px) {
+    .legend-grid { grid-template-columns: 1fr; }
+  }
+
+  .flow-arrow {
+    align-self: center;
+    font-size: 32px;
+    color: var(--primary);
+    padding: 0 4px;
+    margin-top: 340px;
+  }
+  @media (max-width: 1280px) {
+    .flow-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">← Vissza a galériához</a>
+
+<div class="header">
+  <h1>Profile → Jogi információk</h1>
+  <p>Mobil-first jogi információs képernyő. Profil tab → menüpont → részletes jogi oldal — helyettesíti a web footert.</p>
+  <div class="header-meta">
+    <span class="badge-ticket">DH-131</span>
+    <span class="badge-ticket">Sprint 3</span>
+    <span class="badge-ticket">v0.3</span>
+    <span>Legea 365/2002 · EU 2000/31/EK · App Store compliance</span>
+  </div>
+</div>
+
+<div class="content">
+  <div class="flow-wrap">
+
+    <!-- ════════════ PHONE 1: Profile tab ════════════ -->
+    <div class="phone">
+      <div class="phone-header">
+        <div class="brand">Deák Húsmíves</div>
+      </div>
+      <div class="phone-body">
+        <div class="profile-hero">
+          <div class="avatar">SB</div>
+          <div class="profile-info">
+            <div class="name">Szabolcs Becze</div>
+            <div class="email">szabolcs@example.com</div>
+          </div>
+        </div>
+
+        <div class="menu-group-label">Fiókom</div>
+        <div class="menu-group">
+          <div class="menu-row">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="menu-label">Saját adatok</div>
+            <span class="menu-chevron">›</span>
+          </div>
+          <div class="menu-row">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 1 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </div>
+            <div class="menu-label">Címeim</div>
+            <span class="menu-chevron">›</span>
+          </div>
+          <div class="menu-row">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 11V7a4 4 0 0 0-8 0v4M5 9h14l-1 12H6L5 9z"/></svg>
+            </div>
+            <div class="menu-label">Rendeléseim</div>
+            <span class="menu-chevron">›</span>
+          </div>
+          <div class="menu-row">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </div>
+            <div class="menu-label">Kedvencek</div>
+            <span class="menu-chevron">›</span>
+          </div>
+        </div>
+
+        <div class="menu-group-label">Beállítások</div>
+        <div class="menu-group">
+          <div class="menu-row">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            </div>
+            <div class="menu-label">Értesítések</div>
+            <span class="menu-chevron">›</span>
+          </div>
+          <div class="menu-row">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div class="menu-label">Nyelv</div>
+            <span class="menu-sublabel" style="margin-left:auto; margin-right:6px; font-weight:500; color:var(--text2); font-size:12px;">Magyar</span>
+            <span class="menu-chevron">›</span>
+          </div>
+        </div>
+
+        <div class="menu-group-label">Információk</div>
+        <div class="menu-group">
+          <div class="menu-row highlighted">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M16 2v6h6M6 2h10l6 6v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2zM8 13h8M8 17h5"/></svg>
+            </div>
+            <div class="menu-label">Jogi információk</div>
+            <span class="menu-chevron">›</span>
+          </div>
+          <div class="menu-row">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3M12 17h.01"/></svg>
+            </div>
+            <div class="menu-label">Súgó</div>
+            <span class="menu-chevron">›</span>
+          </div>
+          <div class="menu-row">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            </div>
+            <div class="menu-label">Rólunk</div>
+            <span class="menu-chevron">›</span>
+          </div>
+        </div>
+
+        <div class="menu-group" style="margin-top: 16px;">
+          <div class="menu-row danger">
+            <div class="menu-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></svg>
+            </div>
+            <div class="menu-label">Kijelentkezés</div>
+          </div>
+        </div>
+
+        <div class="app-version">Deák Húsmíves app · v0.4.0 (Build 142)</div>
+      </div>
+
+      <!-- Tab bar -->
+      <div class="tab-bar">
+        <div class="tab-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          <span>Főoldal</span>
+        </div>
+        <div class="tab-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+          <span>Kategóriák</span>
+        </div>
+        <div class="tab-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          <span>Kosár</span>
+        </div>
+        <div class="tab-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Profil</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">›</div>
+
+    <!-- ════════════ PHONE 2: Jogi információk screen ════════════ -->
+    <div class="phone">
+      <div class="phone-header">
+        <div class="back-chevron">‹</div>
+        <div class="title">Jogi információk</div>
+      </div>
+      <div class="phone-body">
+
+        <div class="section-header">Dokumentumok</div>
+        <div class="menu-group">
+          <div class="doc-row">
+            <div class="doc-icon aszf">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+            </div>
+            <div class="doc-info">
+              <div class="doc-title">Felhasználási Feltételek (ÁSZF)</div>
+              <div class="doc-sub">Utoljára frissítve: 2026.04.17</div>
+            </div>
+            <span class="menu-chevron">›</span>
+          </div>
+          <div class="doc-row">
+            <div class="doc-icon privacy">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div class="doc-info">
+              <div class="doc-title">Adatvédelmi Szabályzat</div>
+              <div class="doc-sub">GDPR · Utoljára frissítve: 2026.04.17</div>
+            </div>
+            <span class="menu-chevron">›</span>
+          </div>
+          <div class="doc-row">
+            <div class="doc-icon cookie">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/><path d="M8.5 8.5v.01M16 15.5v.01M12 12v.01M11 17v.01M7 14v.01"/></svg>
+            </div>
+            <div class="doc-info">
+              <div class="doc-title">Cookie Szabályzat</div>
+              <div class="doc-sub">Analytics és funkcionális sütik</div>
+            </div>
+            <span class="menu-chevron">›</span>
+          </div>
+        </div>
+
+        <div class="section-header">A Platform üzemeltetője</div>
+        <div class="company-card">
+          <div class="company-name">
+            EXARGROUPS S.R.L.
+          </div>
+          <div style="margin-top: 4px;"><span class="company-role">PLATFORM</span></div>
+          <div class="company-data">
+            <div><span class="label">CUI:</span> <span class="value">RO41839221</span></div>
+            <div><span class="label">Nr. Reg.:</span> <span class="value">J19/789/2019</span></div>
+            <div><span class="label">Székhely:</span> <span class="value">Orbán Balázs u. 9.,<br>Székelyudvarhely</span></div>
+            <div><span class="label">Email:</span> <span class="value">contact@exar.ro</span></div>
+            <div><span class="label">Képviselő:</span> <span class="value">Becze Szabolcs</span></div>
+          </div>
+        </div>
+
+        <div class="section-header">Termékek eladója és szállítója</div>
+        <div class="company-card">
+          <div class="company-name">
+            DEAK PROD SRL
+          </div>
+          <div style="margin-top: 4px;"><span class="company-role">ELADÓ · ANSVSA engedély</span></div>
+          <div class="company-data">
+            <div><span class="label">CUI:</span> <span class="value">4845288</span></div>
+            <div><span class="label">Nr. Reg.:</span> <span class="value">J19/1038/1993</span></div>
+            <div><span class="label">Székhely:</span> <span class="value">Solymossy u. 9.,<br>Székelyudvarhely</span></div>
+          </div>
+        </div>
+
+        <div class="section-header">Fogyasztóvédelem</div>
+        <div class="menu-group">
+          <div class="ext-row">
+            <div class="ext-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9h18M3 15h18M12 3v18M9 3a15 15 0 0 0 0 18M15 3a15 15 0 0 1 0 18"/></svg>
+            </div>
+            <div class="ext-info">
+              <div class="ext-title">ANPC</div>
+              <div class="ext-url">anpc.ro ↗</div>
+            </div>
+          </div>
+          <div class="ext-row">
+            <div class="ext-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <div class="ext-info">
+              <div class="ext-title">EU online vitarendezés</div>
+              <div class="ext-url">ec.europa.eu/consumers/odr ↗</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="app-version">
+          Legea 365/2002 · EU 2000/31/EK<br>
+          App v0.4.0 · Build 142
+        </div>
+      </div>
+    </div>
+
+    <div class="flow-arrow">›</div>
+
+    <!-- ════════════ PHONE 3: ÁSZF opened (example) ════════════ -->
+    <div class="phone">
+      <div class="phone-header">
+        <div class="back-chevron">‹</div>
+        <div class="title">Felhasználási Feltételek</div>
+      </div>
+      <div class="phone-body">
+
+        <div class="lang-seg">
+          <button class="active">Magyar</button>
+          <button>Română</button>
+          <button>English</button>
+        </div>
+
+        <div class="doc-title-big">Általános Szerződési Feltételek</div>
+        <div class="doc-meta">
+          Deák Húsmíves Online Platform · deakhus.ro<br>
+          Hatályos: 2026. május 1-től · Verzió v1.0
+        </div>
+
+        <div class="toc-title">Tartalomjegyzék</div>
+        <div class="toc-list">
+          <div class="toc-item"><span class="toc-num">1.</span> Általános rendelkezések</div>
+          <div class="toc-item"><span class="toc-num">2.</span> A Szolgáltató adatai</div>
+          <div class="toc-item"><span class="toc-num">3.</span> A megrendelés folyamata</div>
+          <div class="toc-item"><span class="toc-num">4.</span> Árak és fizetés</div>
+          <div class="toc-item"><span class="toc-num">5.</span> Szállítás és teljesítés</div>
+          <div class="toc-item"><span class="toc-num">6.</span> Elállási jog</div>
+          <div class="toc-item"><span class="toc-num">7.</span> Szavatosság és jótállás</div>
+          <div class="toc-item"><span class="toc-num">8.</span> Felelősségkorlátozás</div>
+          <div class="toc-item"><span class="toc-num">9.</span> Panaszkezelés</div>
+          <div class="toc-item"><span class="toc-num">10.</span> Vegyes rendelkezések</div>
+          <div class="toc-item"><span class="toc-num">11.</span> Alkalmazandó jog</div>
+        </div>
+
+        <div class="section-header" style="padding-top: 4px;">1. Általános rendelkezések</div>
+        <div style="font-size: 13px; line-height: 1.6; color: var(--text); padding: 0 4px 12px;">
+          Jelen Általános Szerződési Feltételek (továbbiakban: ÁSZF) az EXARGROUPS S.R.L. (továbbiakban: Szolgáltató) által üzemeltetett deakhus.ro online platform…
+        </div>
+
+        <div class="app-version">Tartalom → <strong style="color:var(--primary);">aszf-v1.0-hu.md</strong></div>
+      </div>
+    </div>
+
+    <!-- ════════════ Annotation panel ════════════ -->
+    <div class="annot-panel">
+      <h3>Designer jegyzetek <span class="ticket">DH-131</span></h3>
+
+      <div class="annot-row">
+        <div class="annot-num">1</div>
+        <div><strong>Profil tab belépési pont.</strong> Az „Információk" csoport közepén, a Súgó fölött. Ikonja: dokumentum (📄). A „Jogi információk" menüpont <strong>kiemelt állapotban</strong> látszik a wireframe-en — éles appban normál állapotban, kiemelés csak hover/press.</div>
+      </div>
+
+      <div class="annot-row">
+        <div class="annot-num">2</div>
+        <div><strong>Dokumentumok szekció.</strong> Három link: ÁSZF, Privacy Policy, Cookie Policy. Mindegyik belső screen-re visz (nem külső böngésző). Tartalom: a <code>Business Development/legal/</code> v1.0 markdown fájlok HU/RO/EN-ben.</div>
+      </div>
+
+      <div class="annot-row">
+        <div class="annot-num">3</div>
+        <div><strong>Platform üzemeltetője — EXARGROUPS S.R.L.</strong> Cégadatok <em>kártyaként</em>, nem folyószövegként. Címkével („PLATFORM") mutatja a jogi szerepet. Ugyanezek az adatok az ÁSZF §2-ben és a Privacy §1-ben is szerepelnek.</div>
+      </div>
+
+      <div class="annot-row">
+        <div class="annot-num">4</div>
+        <div><strong>Termékek eladója — DEAK PROD SRL.</strong> Marketplace modell: Exar = platform, Deák = eladó. Külön kártya, „ELADÓ · ANSVSA engedély" címkével. Ez <strong>transzparencia</strong> a user felé: ki a számlakibocsátó, ki a felelős az élelmiszer-biztonságért.</div>
+      </div>
+
+      <div class="annot-row">
+        <div class="annot-num">5</div>
+        <div><strong>Fogyasztóvédelmi linkek.</strong> ANPC + EU ODR. Ezek <strong>külső linkek</strong> — in-app browser-ben nyílnak. Jogszabályi hivatkozás (Legea 365/2002) a footer-ben.</div>
+      </div>
+
+      <div class="annot-row">
+        <div class="annot-num">6</div>
+        <div><strong>Dokumentum preview (Phone 3).</strong> Nyelvi segmented control (HU/RO/EN) → tartalom nyelvváltás instant. Sticky TOC → scroll-anchor navigáció. A content a meglévő v1.0 md fájlokból tölt.</div>
+      </div>
+
+      <div class="annot-row">
+        <div class="annot-num">7</div>
+        <div><strong>App Store compliance.</strong> A Privacy Policy URL <code>deakhus.ro/privacy</code> a submission form-ban is meg kell adni. Az app <strong>cross-linkeli</strong> a webes verzióhoz, így egy tartalmi forrás maradhat.</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════ Legend / implementation notes ════════════ -->
+  <div class="legend">
+    <h3>Fejlesztői átadás — technikai pontok</h3>
+    <div class="legend-grid">
+      <div class="legend-item">
+        <strong>Route struktúra</strong>
+        <code>/profile</code> → <code>/profile/legal</code> → <code>/profile/legal/aszf</code><br>
+        stack-navigation, back-swipe natív támogatással
+      </div>
+      <div class="legend-item">
+        <strong>Content source</strong>
+        <code>Business Development/legal/aszf-v1.0-{hu|ro|en}.md</code><br>
+        <code>privacy-policy-v1.0-{hu|ro|en}.md</code><br>
+        Build-time bundle az appba
+      </div>
+      <div class="legend-item">
+        <strong>App Store fields</strong>
+        Privacy Policy URL: <code>deakhus.ro/privacy</code><br>
+        Support URL: <code>deakhus.ro/kapcsolat</code><br>
+        Support email: <code>contact@exar.ro</code>
+      </div>
+      <div class="legend-item">
+        <strong>Cégadatok single source</strong>
+        JSON config fájl: <code>config/legal-entities.json</code><br>
+        → frissítés egy helyen, megjelenik minden screen-en + ÁSZF §2 + Privacy §1
+      </div>
+      <div class="legend-item">
+        <strong>Telemetria (opcionális)</strong>
+        Firebase event: <code>legal_doc_viewed</code> (param: doc_type, lang)<br>
+        → mérhető, hogy ténylegesen olvassa-e a user
+      </div>
+      <div class="legend-item">
+        <strong>Accessibility</strong>
+        Nyelvi segmented control: <code>role="tablist"</code><br>
+        TOC: <code>aria-label="Tartalomjegyzék"</code><br>
+        Min. touch target: 44×44 px
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

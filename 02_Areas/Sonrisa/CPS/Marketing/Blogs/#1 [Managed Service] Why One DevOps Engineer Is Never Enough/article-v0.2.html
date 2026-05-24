@@ -1,0 +1,300 @@
+<!-- Blog Article #1 | Version: 0.2 -->
+<link href="https://sonrisa.mysellvio.com/tenancy/assets/manager/files/custom-content/landing.css?v=1.6" rel="stylesheet" />
+<!-- Calendly link widget begin -->
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet" /><script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+<!-- Calendly link widget end -->
+
+<!-- ═══════════════════════════════════════════
+     SECTION 1: ARTICLE HEADER
+     ═══════════════════════════════════════════ -->
+<div class="dragdiv">
+<div class="content-w-1280">
+<p>&nbsp;</p>
+
+<p><span style="font-size:14px;"><strong>MANAGED SERVICE SERIES - ARTICLE 1 OF 3</strong></span></p>
+
+<h1><span style="font-size:36px;">The Single Engineer Trap:<br />Why Modern Infrastructure Needs More Than One Person</span></h1>
+
+<p><span style="font-size:18px;">Relying on one DevOps engineer creates hidden risks most companies only discover after something breaks. Here is what resilient infrastructure actually requires.</span></p>
+
+<p>&nbsp;</p>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 2: OPENING SCENARIO (highlighted box)
+     ═══════════════════════════════════════════ -->
+<div class="dragdiv">
+<div class="bg-gray-green bg-full-width">
+<div class="dragdiv">
+<div class="content-w-1280">
+<p>&nbsp;</p>
+
+<h3><span style="font-size:22px;">Your DevOps Engineer Just Handed in Their Notice</span></h3>
+
+<p><span style="font-size:16px;">They have been with you for two years. They built the pipelines, migrated you to AWS, set up your monitoring stack, and quietly kept everything running. And now they have three weeks left.</p>
+
+<p><span style="font-size:16px;">You have 15 developers, two product lines in production, and no one else who knows what a Terraform state file is.</span></p>
+
+<p><span style="font-size:16px;"><strong>This is the single engineer trap.</strong> And it is more common than most engineering leaders want to admit.</span></p>
+
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 3: WHY IT KEEPS HAPPENING
+     ═══════════════════════════════════════════ -->
+<div class="dragdiv">
+<div class="content-w-1280">
+<p>&nbsp;</p>
+
+<h2><span style="font-size:28px;">Why It Keeps Happening</span></h2>
+
+<p><span style="font-size:16px;">Most companies arrive at the single DevOps engineer model gradually. A startup scales fast and needs infrastructure help. Someone internal steps up, or a junior is promoted, or a first dedicated hire is made. Things stabilise. The model works well enough.</span></p>
+
+<p><span style="font-size:16px;">What nobody plans for is what happens next. The engineer becomes the single source of truth for every infrastructure decision. Architecture choices made in sprints never get documented. Workarounds get applied and forgotten. Runbooks are promises that never get written.</span></p>
+
+<p><span style="font-size:16px;">There is a term for this in engineering: the <strong>bus factor</strong>. How many people would need to leave for your infrastructure to become unmanageable? In most single-engineer setups, the answer is one.</span></p>
+
+<p>&nbsp;</p>
+
+<h2><span style="font-size:28px;">The Myth of the Full-Stack DevOps Engineer</span></h2>
+
+<p><span style="font-size:16px;">Part of the problem is that the role was always an impossible one. The average DevOps job description asks for:</span></p>
+
+<ul>
+	<li><span style="font-size:16px;">AWS and GCP expertise</span></li>
+	<li><span style="font-size:16px;">Kubernetes internals and Terraform</span></li>
+	<li><span style="font-size:16px;">CI/CD pipeline design across multiple tools</span></li>
+	<li><span style="font-size:16px;">Observability: Prometheus, Grafana, Datadog</span></li>
+	<li><span style="font-size:16px;">Network security and zero-trust architecture</span></li>
+	<li><span style="font-size:16px;">Compliance: SOC 2, ISO 27001</span></li>
+	<li><span style="font-size:16px;">Cost optimisation and FinOps</span></li>
+</ul>
+
+<p>&nbsp;</p>
+
+<h3 style="text-align: center;"><span style="font-size:22px;">That is not one job. That is five or six different specialties<br />bundled into a single title.</span></h3>
+
+<p>&nbsp;</p>
+
+<p><span style="font-size:16px;">Even the most talented engineers cover two or three of these domains deeply. Someone who excels at AWS networking and infrastructure-as-code may have only a surface understanding of security posture. A CI/CD expert may not be the right person to review your compliance controls.</span></p>
+
+<p><span style="font-size:16px;"><strong>The "unicorn" full-stack DevOps engineer is not rare because companies are too demanding. They are rare because they do not exist at scale.</strong></span></p>
+
+<p>&nbsp;</p>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 4: FOUR RISKS
+     Cards on bg-dark for visual weight
+     ═══════════════════════════════════════════ -->
+<div class="dragdiv">
+<div class="bg-dark bg-full-width">
+<div class="dragdiv">
+<div class="content-w-1280">
+<p>&nbsp;</p>
+
+<h2 style="text-align: center; color: #ffffff;"><span style="font-size:28px;">Four Risks You Are Already Carrying</span></h2>
+
+<p style="text-align: center; color: rgba(255,255,255,0.7);"><span style="font-size:16px;">If you are operating with a single DevOps engineer today, you are carrying these structural risks whether you have named them or not.</span></p>
+
+<p>&nbsp;</p>
+
+<div class="sellvio-template sellvio-template--3-cols template--addons">
+<div class="cols cols--gutter-15">
+<div class="col-md-6">
+<div class="col-card bg-gray-green">
+<div class="col-card-body">
+<h6 class="col-card-text mb-0"><span style="font-size:20px;"><strong>1. The Bus Factor</strong></span></h6>
+
+<p>&nbsp;</p>
+
+<div class="col-card-text"><span style="font-size:14px;">Knowledge built by one person stays with that person. Architecture rationale, undocumented decisions, the story behind that oddly named security group - none of it survives a departure cleanly.</span></div>
+
+<p>&nbsp;</p>
+
+<div class="col-card-text"><span style="font-size:14px;">You can request handover documentation. <strong>You will rarely get enough.</strong></span></div>
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="col-card bg-gray-green">
+<div class="col-card-body">
+<h6 class="col-card-text mb-0"><span style="font-size:20px;"><strong>2. Burnout Before the Resignation</strong></span></h6>
+
+<p>&nbsp;</p>
+
+<div class="col-card-text"><span style="font-size:14px;">On-call alerts at 3 AM. Developer interruptions. Finance questions about cloud costs. Security reviews in the backlog. The CEO wants an uptime report.</span></div>
+
+<p>&nbsp;</p>
+
+<div class="col-card-text"><span style="font-size:14px;"><strong>When one person absorbs all of this indefinitely, burnout is the expected outcome.</strong> Average DevOps tenure is 1-2 years, and burnout is among the most commonly cited reasons for leaving.</span></div>
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="col-card bg-gray-green">
+<div class="col-card-body">
+<h6 class="col-card-text mb-0"><span style="font-size:20px;"><strong>3. No Sustainable On-Call</strong></span></h6>
+
+<p>&nbsp;</p>
+
+<div class="col-card-text"><span style="font-size:14px;">Reliable on-call coverage requires at minimum three to four engineers on rotation. With one person, your operational coverage is <strong>one person - indefinitely.</strong></span></div>
+
+<p>&nbsp;</p>
+
+<div class="col-card-text"><span style="font-size:14px;">This is occasionally acceptable in early stages. As infrastructure complexity grows, it becomes untenable - and your engineer knows it.</span></div>
+</div>
+</div>
+</div>
+
+<div class="col-md-6">
+<div class="col-card bg-gray-green">
+<div class="col-card-body">
+<h6 class="col-card-text mb-0"><span style="font-size:20px;"><strong>4. No Internal Growth Path</strong></span></h6>
+
+<p>&nbsp;</p>
+
+<div class="col-card-text"><span style="font-size:14px;">Engineers grow by working with other engineers. Code reviews, architecture discussions, exposure to different approaches - these require peers.</span></div>
+
+<p>&nbsp;</p>
+
+<div class="col-card-text"><span style="font-size:14px;">A solo DevOps hire in a company of developers has no technical community to grow within. <strong>Stagnation follows, and stagnation leads to the departure you were trying to avoid.</strong></span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 5: WHAT ENOUGH LOOKS LIKE (table)
+     ═══════════════════════════════════════════ -->
+<div class="dragdiv">
+<div class="bg-gray-green bg-full-width">
+<div class="dragdiv">
+<div class="content-w-1280">
+<p>&nbsp;</p>
+
+<h2 style="text-align: center;"><span style="font-size:28px;">What "Enough" Actually Looks Like</span></h2>
+
+<p style="text-align: center;"><span style="font-size:16px;">What does a structurally resilient DevOps function require?</span></p>
+
+<p>&nbsp;</p>
+
+<table class="table--mobile table--plans">
+	<tbody>
+		<tr>
+			<th>Capability</th>
+			<th>What It Means</th>
+			<th>Why It Matters</th>
+		</tr>
+		<tr>
+			<td><strong>Primary engineer</strong></td>
+			<td>Deep context on your specific environment</td>
+			<td>Day-to-day operations and continuity</td>
+		</tr>
+		<tr>
+			<td><strong>Secondary engineer</strong></td>
+			<td>Overlapping knowledge, able to act independently</td>
+			<td>Eliminates the bus factor</td>
+		</tr>
+		<tr>
+			<td><strong>On-call rotation</strong></td>
+			<td>Minimum 2-3 people</td>
+			<td>Sustainable coverage without burning anyone out</td>
+		</tr>
+		<tr>
+			<td><strong>Architectural oversight</strong></td>
+			<td>Someone thinking 6-12 months ahead</td>
+			<td>Scalability, compliance, cost, security</td>
+		</tr>
+	</tbody>
+</table>
+
+<p>&nbsp;</p>
+
+<p style="text-align: center;"><span style="font-size:16px;">For most growing companies, covering all four with in-house hires means a minimum of <strong>three DevOps engineers</strong> and <strong>EUR 200,000+ per year</strong> in fully loaded salary costs, plus recruitment time, onboarding, and ongoing management.</span></p>
+
+<p style="text-align: center;"><span style="font-size:16px;">This is not a reason to panic. It is a reason to reconsider the model.</span></p>
+
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 6: STRATEGIC PRINCIPLE
+     ═══════════════════════════════════════════ -->
+<div class="dragdiv">
+<div class="content-w-1280">
+<p>&nbsp;</p>
+
+<h2><span style="font-size:28px;">Design for Redundancy Before You Need It</span></h2>
+
+<p><span style="font-size:16px;">The most expensive time to solve the single engineer problem is after it becomes a crisis. Most companies we work with come to us after an outage, after a resignation, or after a compliance audit surfaces an architecture no one fully understands anymore.</span></p>
+
+<p><span style="font-size:16px;">They wish they had acted earlier. Not because a vendor told them to - but because the cost and disruption of fixing a broken model mid-flight is always greater than the cost of building a resilient one from the start.</span></p>
+
+<p><span style="font-size:16px;"><strong>You do not need to hire three people tomorrow. You need to stop treating a single point of failure as a stable long-term state.</strong></span></p>
+
+<p>&nbsp;</p>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 7: NEXT IN SERIES (with link)
+     ═══════════════════════════════════════════ -->
+<div class="dragdiv">
+<div class="bg-gray-green bg-full-width">
+<div class="dragdiv">
+<div class="content-w-1280">
+<p>&nbsp;</p>
+
+<h3 style="text-align: center;"><span style="font-size:22px;">Next in this series</span></h3>
+
+<p style="text-align: center;"><span style="font-size:16px;"><strong><a href="https://sonrisa.hu/en/our-impact/article/managed-devops-vs-hiring-in-house-how-to-decide/22">Managed DevOps vs. Hiring In-House: How to Decide</a></strong><br />A five-question framework for making the decision consciously, not by default.</span></p>
+
+<p>&nbsp;</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════
+     SECTION 8: CTA BANNER
+     ═══════════════════════════════════════════ -->
+<div class="dragdiv">
+<div class="template--section-featured bg-theme bg-full-width content-w-1280">
+<div class="cols">
+<div class="col-lg-9">
+<h2 style="text-align: center;">Not sure if your <strong>DevOps setup</strong> is <em>resilient enough</em>?</h2>
+
+<p style="text-align: center;">Book a free 30-minute consultation. We will give you an honest assessment of your current infrastructure coverage, even if the answer is to hire internally.</p>
+
+<p style="text-align: center;"><a class="button button--dark" href="" onclick="Calendly.initPopupWidget({url: 'https://calendly.com/becze-szabolcs-sonrisa/sonrisa-devops-consultation-30mins'});return false;">Talk to an Expert</a></p>
+</div>
+
+<div class="col-lg-auto">
+<div class="hover-item" style="display: flex; align-items: flex-end; margin-bottom: 0;">
+<h6 class="hover-item__title" style="text-align: right;">Let&#39;s chat!</h6>
+
+<p><img alt="" src="/tenancy/assets/manager/files/custom-content/szeg1-opt.jpg" /></p>
+</div>
+</div>
+</div>
+</div>
+</div>

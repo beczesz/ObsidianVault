@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deák Húsmíves - Component Showcase</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<link href="https://unpkg.com/lucide-static@0.344.0/font/lucide.css" rel="stylesheet">
+<style>
+:root {
+  --primary: #9B2335;
+  --primary-light: #F9E0E3;
+  --primary-pale: #F4E6E8;
+  --primary-800: #7D1A2A;
+  --secondary: #D4A574;
+  --secondary-light: #F5EDDF;
+  --secondary-dark: #9C7841;
+  --success: #2D7A4F;
+  --success-light: #D4EDDA;
+  --warning: #C4841D;
+  --warning-light: #FEF3C7;
+  --error: #C4302B;
+  --info: #2B6CB0;
+  --info-light: #DBEAFE;
+  --cream: #FFFBF7;
+  --cream-dark: #F5EDE5;
+  --gray-50: #FAF8F5;
+  --gray-200: #E8E2DB;
+  --gray-300: #C5BCB3;
+  --gray-400: #8A8078;
+  --gray-600: #5C544C;
+  --gray-900: #2C2825;
+  --border: #E8E2DB;
+  --card-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  --nav-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--gray-50);
+  color: var(--gray-900);
+  -webkit-font-smoothing: antialiased;
+}
+.showcase {
+  max-width: 448px;
+  margin: 0 auto;
+  padding: 24px 16px 144px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+h1 { font-size: 24px; font-weight: 700; }
+h2 { font-size: 20px; font-weight: 600; margin-bottom: 4px; }
+.section { display: flex; flex-direction: column; gap: 12px; }
+.label { font-size: 14px; color: var(--gray-400); }
+.flex-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.heading-brand {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+  color: var(--primary-800);
+}
+
+/* StatusBadge */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.badge-sm { font-size: 12px; padding: 2px 10px; }
+.badge-md { font-size: 14px; padding: 4px 12px; }
+.badge-new { background: var(--info-light); color: var(--info); }
+.badge-processing { background: var(--warning-light); color: var(--warning); }
+.badge-ready { background: var(--secondary-light); color: var(--secondary-dark); }
+.badge-delivery { background: var(--primary-light); color: var(--primary); }
+.badge-delivered { background: var(--success-light); color: var(--success); }
+.badge-closed { background: #EDEAE6; color: var(--gray-600); }
+
+/* ProductCard */
+.product-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--card-shadow);
+  overflow: hidden;
+}
+.product-card .image {
+  aspect-ratio: 4/3;
+  background: #EDEAE6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.product-card .image svg { width: 32px; height: 32px; color: var(--gray-300); }
+.product-card .body { padding: 16px; }
+.product-card .category {
+  font-size: 12px;
+  color: var(--secondary);
+  background: rgba(212,165,116,0.1);
+  border-radius: 9999px;
+  padding: 2px 8px;
+  display: inline-block;
+  margin-bottom: 4px;
+}
+.product-card .name { font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; }
+.product-card .price { font-size: 16px; font-weight: 500; color: var(--primary); }
+.product-card .unit { font-size: 14px; color: var(--gray-400); margin-left: 4px; }
+.product-card.unavailable .image::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(17,24,39,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.product-card .unavailable-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  background: rgba(255,255,255,0.9);
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-600);
+}
+.product-card .heart {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  background: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+  z-index: 2;
+}
+.product-card .heart svg { width: 16px; height: 16px; }
+.heart-empty svg { color: var(--gray-400); fill: none; stroke: currentColor; stroke-width: 2; }
+.heart-filled svg { color: var(--primary); fill: var(--primary); stroke: var(--primary); stroke-width: 2; }
+
+/* QuantitySelector */
+.qty-selector { display: flex; align-items: center; gap: 0; justify-content: center; }
+.qty-btn {
+  width: 48px; height: 48px;
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  background: white;
+  font-size: 20px;
+  color: var(--gray-900);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qty-btn:active { background: rgba(155,35,53,0.05); border-color: var(--primary); transform: scale(0.95); }
+.qty-input {
+  width: 96px; height: 48px;
+  border: 1px solid var(--gray-300);
+  border-radius: 8px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 600;
+  font-family: inherit;
+  margin: 0 4px;
+}
+.qty-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(155,35,53,0.2); }
+.qty-compact .qty-btn { width: 40px; height: 40px; font-size: 18px; }
+.qty-compact .qty-input { width: 64px; height: 40px; font-size: 16px; }
+.qty-calc { font-size: 14px; color: var(--gray-400); text-align: center; margin-top: 4px; }
+.qty-disabled .qty-btn { background: var(--gray-200); color: var(--gray-400); cursor: default; border-color: var(--gray-200); }
+.qty-disabled .qty-input { background: #f5f5f5; color: var(--gray-400); }
+
+/* StatusIndicator */
+.status-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+.status-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  flex: 0 0 auto;
+  position: relative;
+}
+.status-dot {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 600;
+}
+.status-dot.completed { background: var(--success); color: white; }
+.status-dot.active { background: var(--primary); color: white; width: 32px; height: 32px; box-shadow: 0 0 0 4px rgba(155,35,53,0.15); }
+.status-dot.pending { background: #E5E7EB; color: #9CA3AF; }
+.status-dot.cancelled { background: var(--error); color: white; }
+.status-label { font-size: 10px; color: var(--gray-400); text-align: center; max-width: 48px; }
+.status-label.active { color: var(--primary); font-weight: 600; }
+.status-label.cancelled-label { color: var(--error); font-weight: 600; }
+.status-line {
+  flex: 1;
+  height: 2px;
+  background: #E5E7EB;
+  margin: 0 2px;
+  align-self: flex-start;
+  margin-top: 14px;
+}
+.status-line.completed { background: var(--success); }
+
+/* OrderCard */
+.order-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--card-shadow);
+  padding: 16px;
+}
+.order-card.active { border-left: 3px solid var(--primary); }
+.order-card .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; }
+.order-card .order-id { font-size: 16px; font-weight: 600; }
+.order-card .meta { font-size: 14px; color: var(--gray-400); }
+.order-card .total { font-size: 14px; font-weight: 500; color: var(--gray-600); }
+.order-card .customer-name { font-size: 18px; font-weight: 600; }
+.order-card .address { font-size: 14px; color: var(--gray-400); margin-top: 2px; }
+
+/* EmptyState */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 48px 24px;
+  gap: 12px;
+}
+.empty-state svg { width: 48px; height: 48px; color: #D1D5DB; stroke-width: 1.5; }
+.empty-state .title { font-size: 16px; font-weight: 600; color: var(--gray-600); text-align: center; }
+.empty-state .subtitle { font-size: 14px; color: var(--gray-400); text-align: center; }
+.btn-primary {
+  width: 100%;
+  height: 56px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.btn-primary:hover { background: var(--primary-800); }
+
+/* LoadingSkeleton */
+.skeleton {
+  background: #E5E0DA;
+  border-radius: 8px;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.skeleton-card {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
+  padding: 0;
+  overflow: hidden;
+}
+.skeleton-card .skeleton-img { height: 120px; border-radius: 0; }
+.skeleton-card .skeleton-body { padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.skeleton-line { height: 12px; }
+.skeleton-line.w60 { width: 60%; }
+.skeleton-line.w80 { width: 80%; }
+.skeleton-line.w40 { width: 40%; }
+.skeleton-order {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.skeleton-row { display: flex; justify-content: space-between; }
+
+/* DeliveryDatePicker */
+.date-picker-label { font-size: 14px; font-weight: 500; margin-bottom: 8px; }
+.date-picker-label .required { color: var(--primary); }
+.date-chips { display: flex; gap: 8px; overflow-x: auto; padding: 4px 0; }
+.date-chip {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  text-align: center;
+  cursor: pointer;
+  background: white;
+  font-family: inherit;
+}
+.date-chip .day { font-size: 13px; font-weight: 500; }
+.date-chip .date { font-size: 12px; color: var(--gray-400); }
+.date-chip.selected { background: var(--primary); border-color: var(--primary); color: white; }
+.date-chip.selected .date { color: rgba(255,255,255,0.8); }
+.date-scrollbar {
+  height: 4px;
+  background: var(--gray-200);
+  border-radius: 2px;
+  margin-top: 8px;
+  position: relative;
+}
+.date-scrollbar-thumb {
+  position: absolute;
+  height: 100%;
+  width: 60%;
+  background: var(--gray-400);
+  border-radius: 2px;
+}
+.empty-date-msg { font-size: 14px; color: var(--gray-400); text-align: center; padding: 16px; }
+
+/* TimeSlotSelector */
+.time-slot {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  cursor: pointer;
+  background: white;
+  font-family: inherit;
+  width: 100%;
+  text-align: left;
+}
+.time-slot.selected { border-color: var(--primary); box-shadow: 0 0 0 1px var(--primary); }
+.time-slot .radio {
+  width: 18px; height: 18px;
+  border: 2px solid var(--gray-300);
+  border-radius: 50%;
+  flex-shrink: 0;
+  position: relative;
+}
+.time-slot.selected .radio { border-color: var(--primary); }
+.time-slot.selected .radio::after {
+  content: '';
+  width: 10px; height: 10px;
+  background: var(--primary);
+  border-radius: 50%;
+  position: absolute;
+  top: 2px; left: 2px;
+}
+
+/* Form Elements */
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-label { font-size: 14px; font-weight: 500; }
+.form-label .required { color: var(--primary); }
+.form-input {
+  height: 48px;
+  border: 1px solid var(--gray-300);
+  border-radius: 12px;
+  padding: 8px 12px;
+  font-size: 18px;
+  font-family: inherit;
+  background: white;
+  width: 100%;
+}
+.form-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 2px rgba(155,35,53,0.2); }
+.form-input.error { border-color: var(--error); box-shadow: 0 0 0 2px rgba(196,48,43,0.3); }
+.form-error { font-size: 14px; color: var(--error); }
+.form-input::placeholder { color: var(--gray-400); font-size: 16px; }
+
+/* Bottom Nav */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: white;
+  border-top: 1px solid var(--gray-200);
+  box-shadow: var(--nav-shadow);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
+  padding-bottom: env(safe-area-inset-bottom);
+}
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  color: var(--gray-400);
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 500;
+}
+.nav-item.active { color: var(--primary); }
+.nav-item svg { width: 24px; height: 24px; stroke-width: 2; }
+
+/* Card wrapper */
+.card-wrap {
+  background: white;
+  border-radius: 12px;
+  border: 1px solid var(--gray-200);
+  box-shadow: var(--card-shadow);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.status-buttons { display: flex; gap: 8px; flex-wrap: wrap; }
+.status-btn {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--gray-300);
+  background: white;
+  cursor: pointer;
+  font-family: inherit;
+}
+</style>
+</head>
+<body>
+
+<div class="showcase">
+
+  <h1>Component Showcase</h1>
+
+  <!-- StatusBadge -->
+  <section class="section">
+    <h2>StatusBadge</h2>
+    <div class="flex-wrap">
+      <span class="badge badge-sm badge-new">Új rendelés</span>
+      <span class="badge badge-sm badge-processing">Feldolgozás alatt</span>
+      <span class="badge badge-sm badge-ready">Szállításra kész</span>
+      <span class="badge badge-sm badge-delivery">Kiszállítás alatt</span>
+      <span class="badge badge-sm badge-delivered">Kiszállítva</span>
+      <span class="badge badge-sm badge-closed">Lezárva</span>
+    </div>
+    <p class="label">Size "md":</p>
+    <div class="flex-wrap">
+      <span class="badge badge-md badge-new">Új rendelés</span>
+      <span class="badge badge-md badge-processing">Feldolgozás alatt</span>
+      <span class="badge badge-md badge-ready">Szállításra kész</span>
+      <span class="badge badge-md badge-delivery">Kiszállítás alatt</span>
+      <span class="badge badge-md badge-delivered">Kiszállítva</span>
+      <span class="badge badge-md badge-closed">Lezárva</span>
+    </div>
+  </section>
+
+  <!-- ProductCard -->
+  <section class="section">
+    <h2>ProductCard</h2>
+    <div class="grid-2">
+      <div class="product-card">
+        <div class="image">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          <div class="heart heart-filled"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        </div>
+        <div class="body">
+          <span class="category">Proaspete</span>
+          <div class="name">Pulpă de porc dezosată</div>
+          <span class="price">45,00 RON</span><span class="unit">/ kg</span>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="image">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          <div class="heart heart-empty"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        </div>
+        <div class="body">
+          <span class="category">Afumate</span>
+          <div class="name">Cârnați de casă afumați</div>
+          <span class="price">62,50 RON</span><span class="unit">/ kg</span>
+        </div>
+      </div>
+      <div class="product-card unavailable">
+        <div class="image">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          <span class="unavailable-badge">Nem elérhető</span>
+          <div class="heart heart-filled"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        </div>
+        <div class="body">
+          <span class="category">Afumate</span>
+          <div class="name">Slănină afumată tradițională</div>
+          <span class="price" style="color:var(--gray-400)">38,00 RON</span><span class="unit">/ kg</span>
+        </div>
+      </div>
+      <div class="product-card">
+        <div class="image">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+          <div class="heart heart-empty"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+        </div>
+        <div class="body">
+          <div class="name">Piept de pui</div>
+          <span class="price">32,50 RON</span><span class="unit">/ kg</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QuantitySelector -->
+  <section class="section">
+    <h2>QuantitySelector</h2>
+    <p class="label">Full variant (product detail):</p>
+    <div class="qty-selector">
+      <button class="qty-btn">&#8722;</button>
+      <input class="qty-input" type="text" value="1,50" readonly>
+      <button class="qty-btn">+</button>
+    </div>
+    <p class="qty-calc">1,50 kg &times; 45,00 RON/kg = 67,50 RON</p>
+    <p class="label">Compact variant (cart):</p>
+    <div class="qty-selector qty-compact">
+      <button class="qty-btn">&#8722;</button>
+      <input class="qty-input" type="text" value="1,00" readonly>
+      <button class="qty-btn">+</button>
+    </div>
+    <p class="label">Disabled:</p>
+    <div class="qty-selector qty-disabled">
+      <button class="qty-btn" disabled>&#8722;</button>
+      <input class="qty-input" type="text" value="0,50" readonly disabled>
+      <button class="qty-btn" disabled>+</button>
+    </div>
+    <p class="qty-calc">0,50 kg &times; 32,00 RON/kg = 16,00 RON</p>
+  </section>
+
+  <!-- StatusIndicator -->
+  <section class="section">
+    <h2>StatusIndicator</h2>
+    <div class="card-wrap">
+      <p class="label">Status: Processing</p>
+      <div class="status-indicator">
+        <div class="status-step"><div class="status-dot completed">&#10003;</div><div class="status-label">Új</div></div>
+        <div class="status-line completed"></div>
+        <div class="status-step"><div class="status-dot active">&#9679;</div><div class="status-label active">Feldolg.</div></div>
+        <div class="status-line"></div>
+        <div class="status-step"><div class="status-dot pending">&#9679;</div><div class="status-label">Kész</div></div>
+        <div class="status-line"></div>
+        <div class="status-step"><div class="status-dot pending">&#9679;</div><div class="status-label">Szállítás</div></div>
+        <div class="status-line"></div>
+        <div class="status-step"><div class="status-dot pending">&#9679;</div><div class="status-label">Kiszáll.</div></div>
+        <div class="status-line"></div>
+        <div class="status-step"><div class="status-dot pending">&#9679;</div><div class="status-label">Lezárva</div></div>
+      </div>
+    </div>
+    <p class="label">Cancelled:</p>
+    <div class="card-wrap">
+      <div class="status-indicator">
+        <div class="status-step"><div class="status-dot completed">&#10003;</div><div class="status-label">Új</div></div>
+        <div class="status-line completed"></div>
+        <div class="status-step"><div class="status-dot completed">&#10003;</div><div class="status-label">Feldolg.</div></div>
+        <div class="status-line completed"></div>
+        <div class="status-step"><div class="status-dot completed">&#10003;</div><div class="status-label">Kész</div></div>
+        <div class="status-line completed"></div>
+        <div class="status-step"><div class="status-dot completed">&#10003;</div><div class="status-label">Szállítás</div></div>
+        <div class="status-line completed"></div>
+        <div class="status-step"><div class="status-dot completed">&#10003;</div><div class="status-label">Kiszáll.</div></div>
+        <div class="status-line completed"></div>
+        <div class="status-step"><div class="status-dot cancelled">&#10005;</div><div class="status-label cancelled-label">Törölve</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OrderCard -->
+  <section class="section">
+    <h2>OrderCard</h2>
+    <p class="label">Customer variant:</p>
+    <div class="order-card active">
+      <div class="header"><span class="order-id">DHOP-ORD-0042</span><span class="badge badge-sm badge-processing">Feldolgozás alatt</span></div>
+      <div class="meta">11 márc. 2026 &middot; 3 termék</div>
+      <div class="total">Becsült összeg: ~125,50 RON</div>
+    </div>
+    <div class="order-card">
+      <div class="header"><span class="order-id">DHOP-ORD-0038</span><span class="badge badge-sm badge-delivered">Kiszállítva</span></div>
+      <div class="meta">8 márc. 2026 &middot; 1 termék</div>
+      <div class="total">Becsült összeg: ~45,00 RON</div>
+    </div>
+    <p class="label">Admin variant:</p>
+    <div class="order-card active">
+      <div class="header"><span class="order-id">DHOP-ORD-0042</span><span class="badge badge-sm badge-ready">Szállításra kész</span></div>
+      <div class="customer-name">Szabó Mária</div>
+      <div class="meta">11 márc. 2026 &middot; 10:00 - 12:00</div>
+      <div class="total">3 termék &middot; 125,50 RON</div>
+    </div>
+    <p class="label">Courier variant:</p>
+    <div class="order-card active">
+      <div class="header"><span class="order-id" style="display:none">DHOP-ORD-0042</span><span class="badge badge-sm badge-delivery">Kiszállítás alatt</span></div>
+      <div class="customer-name">Szabó Mária</div>
+      <div class="address">Str. Kossuth Lajos 14, Bl. 3, Ap. 7</div>
+      <div class="meta">10:00 - 12:00 &middot; 3 termék</div>
+    </div>
+  </section>
+
+  <!-- EmptyState -->
+  <section class="section">
+    <h2>EmptyState</h2>
+    <div class="card-wrap" style="padding:0">
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+        <div class="title">A kosara üres</div>
+        <button class="btn-primary">Termékek megtekintése</button>
+      </div>
+    </div>
+    <div class="card-wrap" style="padding:0">
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        <div class="title">Még nincsenek rendeléseid</div>
+        <div class="subtitle">Kezdj el vásárolni!</div>
+        <button class="btn-primary">Termékek megtekintése</button>
+      </div>
+    </div>
+    <div class="card-wrap" style="padding:0">
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        <div class="title">Jelenleg nincs elérhető termék</div>
+      </div>
+    </div>
+    <div class="card-wrap" style="padding:0">
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg>
+        <div class="title">Ma nincs ütemezett szállítás.</div>
+        <div class="subtitle">09:32</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LoadingSkeleton -->
+  <section class="section">
+    <h2>LoadingSkeleton</h2>
+    <p class="label">Product card skeletons (count=4):</p>
+    <div class="grid-2">
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line w60"></div><div class="skeleton skeleton-line w80"></div><div class="skeleton skeleton-line w40"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line w60"></div><div class="skeleton skeleton-line w80"></div><div class="skeleton skeleton-line w40"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line w60"></div><div class="skeleton skeleton-line w80"></div><div class="skeleton skeleton-line w40"></div></div></div>
+      <div class="skeleton-card"><div class="skeleton skeleton-img"></div><div class="skeleton-body"><div class="skeleton skeleton-line w60"></div><div class="skeleton skeleton-line w80"></div><div class="skeleton skeleton-line w40"></div></div></div>
+    </div>
+    <p class="label">Order card skeletons (count=2):</p>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="skeleton-order"><div class="skeleton-row"><div class="skeleton skeleton-line" style="width:40%"></div><div class="skeleton skeleton-line" style="width:25%"></div></div><div class="skeleton skeleton-line w40"></div><div class="skeleton skeleton-line w80"></div><div class="skeleton skeleton-line" style="width:50%"></div></div>
+      <div class="skeleton-order"><div class="skeleton-row"><div class="skeleton skeleton-line" style="width:40%"></div><div class="skeleton skeleton-line" style="width:25%"></div></div><div class="skeleton skeleton-line w40"></div><div class="skeleton skeleton-line w80"></div><div class="skeleton skeleton-line" style="width:50%"></div></div>
+    </div>
+  </section>
+
+  <!-- DeliveryDatePicker -->
+  <section class="section">
+    <h2>DeliveryDatePicker</h2>
+    <div class="card-wrap">
+      <div>
+        <div class="date-picker-label">Zi de livrare <span class="required">*</span></div>
+        <div class="date-chips">
+          <button class="date-chip"><div class="day">Sze</div><div class="date">22 ápr.</div></button>
+          <button class="date-chip"><div class="day">Csüt</div><div class="date">23 ápr.</div></button>
+          <button class="date-chip"><div class="day">Pén</div><div class="date">24 ápr.</div></button>
+          <button class="date-chip"><div class="day">Szo</div><div class="date">25 ápr.</div></button>
+        </div>
+        <div class="date-scrollbar"><div class="date-scrollbar-thumb"></div></div>
+        <p class="label" style="margin-top:8px">Selected: none</p>
+      </div>
+    </div>
+    <p class="label">Empty state:</p>
+    <div class="card-wrap">
+      <div>
+        <div class="date-picker-label">Zi de livrare <span class="required">*</span></div>
+        <div class="empty-date-msg">Jelenleg nincs elérhető szállítási nap</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TimeSlotSelector -->
+  <section class="section">
+    <h2>TimeSlotSelector</h2>
+    <div class="card-wrap">
+      <p class="label">Selected: none</p>
+    </div>
+  </section>
+
+  <!-- Form Elements -->
+  <section class="section">
+    <h2>Form Elements</h2>
+    <div class="card-wrap">
+      <div class="form-group">
+        <label class="form-label">Număr de telefon <span class="required">*</span></label>
+        <input class="form-input" type="tel" placeholder="07XX XXX XXX">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Cu eroare <span class="required">*</span></label>
+        <input class="form-input error" type="tel" value="0745">
+        <span class="form-error">Număr de telefon invalid</span>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Adresă de livrare <span class="required">*</span></label>
+        <input class="form-input" type="text" placeholder="Utca, házszám">
+        <input class="form-input" type="text" placeholder="Tömb, lépcsőház, lakás" style="margin-top:8px">
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Bottom Navigation -->
+<nav class="bottom-nav">
+  <a class="nav-item active" href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Termékek
+  </a>
+  <a class="nav-item" href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+    Kosár
+  </a>
+  <a class="nav-item" href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+    Rendelések
+  </a>
+  <a class="nav-item" href="#">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    Fiók
+  </a>
+</nav>
+
+</body>
+</html>

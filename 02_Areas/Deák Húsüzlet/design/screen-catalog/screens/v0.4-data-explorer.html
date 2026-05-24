@@ -1,0 +1,3669 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH Adatok Explorer — Deák Húsmíves</title>
+
+<script type="application/json" id="screen-meta">
+{
+  "id": "v0.4-data-explorer",
+  "title": "Adatok Explorer — termék + schema viewer (v1.2)",
+  "feature": "data-explorer",
+  "sprint": "Sprint 4",
+  "status": "approved",
+  "publish": false,
+  "order": 999,
+  "platform": "desktop",
+  "version": "v1.0",
+  "tags": ["DH-173", "explorer", "json", "viewer", "data"],
+  "description": "DH adatok gyors átlátás és ellenőrzés: 46 termék kereshető lista + szűrők + per-termék JSON + schema viewer. A docs[] kategóriában 'view' link nyitja meg."
+}
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary:#9B2335; --primary-800:#7D1A2A; --primary-light:#F9E0E3; --primary-pale:#F4E6E8;
+  --primary-tint:rgba(155,35,53,0.04);
+  --secondary:#D4A574; --secondary-bg:#F5EDDF; --secondary-dark:#9C7841;
+  --cream:#FFFBF7; --cream-dark:#F5EDE5;
+  --card:#FFFFFF; --bg:#FAF8F5;
+  --border:#E8E2DB; --border-strong:#C5BCB3;
+  --text:#2C2825; --text-secondary:#5C544C; --text-muted:#8A8078; --text-faint:#999;
+  --green-bg:#D4EDDA; --green-text:#2D7A4F;
+  --warning-bg:#FEF3C7; --warning-text:#92400E;
+  --info-bg:#DBEAFE; --info-text:#2B6CB0;
+  --code-bg:#F8F5F0;
+  --ease-out:cubic-bezier(0.25,1,0.5,1);
+}
+
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  padding: 24px 16px 64px 56px;
+}
+
+.back-to-catalog {
+  position: fixed; top: 12px; left: 12px; z-index: 100;
+  width: 36px; height: 36px; border-radius: 50%;
+  background: rgba(0,0,0,0.5); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  text-decoration: none;
+}
+.back-to-catalog svg { width: 18px; height: 18px; stroke: currentColor; stroke-width: 2.5; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.dh-crumb {
+  max-width: 1480px; margin: 0 auto;
+  display: flex; align-items: center; gap: 8px;
+  font-size: 12px; color: var(--text-muted);
+}
+.dh-crumb strong { color: var(--text); font-weight: 600; }
+.dh-crumb .sep { color: var(--text-muted); margin: 0 6px; opacity: 0.7; }
+.dh-crumb .crumb-file { color: var(--text-muted); font-family: ui-monospace, monospace; font-size: 11px; margin-left: 8px; }
+
+.page-intro { max-width: 1480px; margin: 14px auto 24px; }
+.page-intro .eyebrow {
+  font-size: 11px; font-weight: 700; color: var(--primary-800);
+  letter-spacing: 0.6px; text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.page-intro h1 { font-size: 24px; font-weight: 700; color: var(--text); letter-spacing: -0.2px; line-height: 1.2; }
+.page-intro p { font-size: 14px; color: var(--text-secondary); line-height: 1.55; margin-top: 10px; max-width: 720px; }
+
+.container { max-width: 1480px; margin: 0 auto; }
+
+/* ─── Stats panel ─── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.stat-value {
+  font-size: 22px; font-weight: 700;
+  color: var(--text);
+  line-height: 1.1;
+}
+.stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.stat-card.accent { background: var(--primary-pale); border-color: var(--primary-light); }
+.stat-card.accent .stat-value { color: var(--primary); }
+.stat-card.warn { background: var(--warning-bg); border-color: rgba(180, 83, 9, 0.2); }
+.stat-card.warn .stat-value { color: var(--warning-text); }
+
+/* ─── Top-level tabs ─── */
+.tabs {
+  display: flex; gap: 4px;
+  background: var(--card);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  margin-bottom: 20px;
+  width: fit-content;
+}
+.tab-btn {
+  padding: 10px 16px;
+  border-radius: 8px;
+  border: none; background: transparent;
+  color: var(--text-secondary);
+  font-family: inherit; font-size: 13px; font-weight: 500;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 8px;
+  min-height: 40px;
+  transition: all 150ms var(--ease-out);
+}
+.tab-btn:hover { background: var(--cream); color: var(--primary); }
+.tab-btn.active { background: var(--primary); color: #fff; font-weight: 600; }
+.tab-btn .count {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.1);
+  font-weight: 600;
+}
+.tab-btn.active .count { background: rgba(255,255,255,0.2); }
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ─── Toolbar (search + filters) ─── */
+.toolbar {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 16px;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.search-row { display: flex; gap: 8px; align-items: center; }
+.search-input {
+  flex: 1;
+  height: 40px;
+  padding: 0 14px 0 38px;
+  border: 1px solid var(--border-strong);
+  border-radius: 10px;
+  font-family: inherit; font-size: 14px;
+  color: var(--text);
+  background: var(--card) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238A8078' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='11' cy='11' r='8'/><line x1='21' y1='21' x2='16.65' y2='16.65'/></svg>") no-repeat 12px center;
+  background-size: 16px 16px;
+  outline: none;
+  transition: border-color 120ms var(--ease-out);
+}
+.search-input:focus { border-color: var(--primary); }
+.search-clear {
+  width: 32px; height: 32px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+}
+.search-clear:hover { color: var(--primary); background: var(--primary-pale); }
+.search-clear svg { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.filter-row {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  align-items: baseline;
+}
+.filter-group {
+  display: flex; align-items: center; gap: 6px;
+  flex-wrap: wrap;
+}
+.filter-label {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-right: 4px;
+}
+.chip-btn {
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  color: var(--text-secondary);
+  font-family: inherit; font-size: 12px; font-weight: 500;
+  cursor: pointer;
+  transition: all 120ms var(--ease-out);
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.chip-btn:hover { border-color: var(--primary); color: var(--primary); }
+.chip-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); font-weight: 600; }
+.chip-btn .chip-count {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.results-count {
+  font-size: 12px; font-weight: 500;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  letter-spacing: 0.04em;
+}
+.results-count strong { color: var(--text); font-weight: 700; }
+
+/* ─── Product list ─── */
+.product-list { display: flex; flex-direction: column; gap: 10px; }
+.product-row {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: border-color 120ms var(--ease-out);
+}
+.product-row:hover { border-color: var(--border-strong); }
+.product-row.is-expanded { border-color: var(--primary-pale); }
+
+.product-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 12px 14px;
+  cursor: pointer;
+  width: 100%;
+  background: transparent;
+  border: none;
+  font-family: inherit;
+  text-align: left;
+}
+.product-head:hover { background: var(--cream); }
+.product-row.is-expanded .product-head { background: var(--cream); border-bottom: 1px solid var(--border); }
+
+.product-thumb {
+  width: 48px; height: 48px;
+  border-radius: 8px;
+  background:
+    repeating-linear-gradient(45deg,
+      #F0EDE8 0, #F0EDE8 6px,
+      #E8E2DB 6px, #E8E2DB 12px);
+  flex-shrink: 0;
+}
+
+.product-main {
+  flex: 1; min-width: 0;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.product-name {
+  font-size: 14px; font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.1px;
+  display: flex; align-items: baseline; gap: 8px;
+  flex-wrap: wrap;
+}
+.product-name-ro {
+  font-size: 12px; font-weight: 400;
+  color: var(--text-muted);
+  font-style: italic;
+}
+.product-meta {
+  font-size: 11px; color: var(--text-muted);
+  display: flex; flex-wrap: wrap; gap: 8px;
+  letter-spacing: 0.02em;
+}
+.product-meta span { display: inline-flex; align-items: center; gap: 4px; }
+.product-meta .code {
+  font-family: ui-monospace, monospace;
+  background: var(--cream-dark);
+  padding: 1px 5px; border-radius: 3px;
+  color: var(--text-secondary);
+}
+.product-meta .price { color: var(--primary); font-weight: 600; }
+
+.product-tags {
+  display: flex; gap: 4px; flex-wrap: wrap;
+  flex-shrink: 0;
+  align-items: center;
+}
+.tag-pill {
+  font-size: 10px; font-weight: 600;
+  letter-spacing: 0.04em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: var(--cream-dark);
+  color: var(--text-secondary);
+}
+.tag-pill.tag-mandatory { background: var(--primary-pale); color: var(--primary); }
+.tag-pill.tag-paid { background: var(--secondary-bg); color: var(--secondary-dark); }
+.tag-pill.tag-hibrid { background: var(--warning-bg); color: var(--warning-text); }
+.tag-pill.tag-piece { background: var(--info-bg); color: var(--info-text); }
+.tag-pill.tag-vg { background: var(--green-bg); color: var(--green-text); }
+
+.expand-icon {
+  width: 24px; height: 24px;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-muted);
+  transition: transform 200ms var(--ease-out);
+  flex-shrink: 0;
+}
+.product-row.is-expanded .expand-icon { transform: rotate(180deg); }
+.expand-icon svg { width: 16px; height: 16px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+.product-detail {
+  display: none;
+  padding: 14px;
+  background: var(--cream);
+  border-top: 1px solid var(--border);
+}
+.product-row.is-expanded .product-detail { display: block; }
+
+.detail-section { margin-bottom: 16px; }
+.detail-section:last-child { margin-bottom: 0; }
+.detail-section h3 {
+  font-size: 11px; font-weight: 600;
+  color: var(--text-secondary);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+.detail-section h3 .copy-mini {
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--card);
+  border: 1px solid var(--border);
+  padding: 2px 7px; border-radius: 4px;
+  cursor: pointer;
+  text-transform: none;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+.detail-section h3 .copy-mini:hover { color: var(--primary); border-color: var(--primary); }
+
+.kv-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px 16px;
+  font-size: 12px;
+}
+.kv-row { display: flex; gap: 8px; align-items: baseline; }
+.kv-key {
+  color: var(--text-muted); font-weight: 500;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.kv-val {
+  color: var(--text);
+  word-break: break-word;
+}
+.kv-val.is-null { color: var(--text-faint); font-style: italic; }
+.kv-val.is-bool-true { color: var(--green-text); font-weight: 600; }
+.kv-val.is-bool-false { color: var(--text-muted); }
+
+.option-stack {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-top: 4px;
+}
+.option-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+.option-card-head {
+  display: flex; align-items: baseline; gap: 8px;
+  margin-bottom: 6px;
+  flex-wrap: wrap;
+}
+.option-card-name { font-weight: 600; color: var(--text); font-size: 13px; }
+.option-card-id {
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  color: var(--text-muted);
+  background: var(--cream-dark);
+  padding: 1px 5px; border-radius: 3px;
+}
+.option-card .kind-tag {
+  font-size: 9px; font-weight: 700;
+  padding: 1px 5px; border-radius: 3px;
+  letter-spacing: 0.06em; text-transform: uppercase;
+}
+.option-card .kind-tag.optional { background: var(--cream-dark); color: var(--text-secondary); }
+.option-card .kind-tag.mandatory { background: var(--primary-pale); color: var(--primary); }
+.option-values {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.option-value {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 4px 8px;
+  font-size: 11px;
+  color: var(--text-secondary);
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.option-value.is-default { background: var(--green-bg); color: var(--green-text); border-color: var(--green-bg); font-weight: 600; }
+.option-value .val-mod {
+  background: var(--secondary-bg);
+  color: var(--secondary-dark);
+  font-weight: 600;
+  padding: 1px 4px;
+  border-radius: 3px;
+  font-size: 10px;
+}
+
+.json-block {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--text);
+  overflow-x: auto;
+  white-space: pre;
+  position: relative;
+}
+.json-block .copy-btn {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 28px; height: 28px;
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 6px;
+  cursor: pointer;
+  color: var(--text-muted);
+  display: flex; align-items: center; justify-content: center;
+}
+.json-block .copy-btn:hover { color: var(--primary); border-color: var(--primary); }
+.json-block .copy-btn svg { width: 12px; height: 12px; stroke: currentColor; stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.json-block .copy-btn.copied { color: var(--green-text); border-color: var(--green-text); }
+
+.json-key { color: #7D1A2A; }
+.json-string { color: #2D7A4F; }
+.json-number { color: #2B6CB0; }
+.json-bool { color: #92400E; font-weight: 600; }
+.json-null { color: #999; font-style: italic; }
+
+.empty-note {
+  background: var(--card);
+  border: 1px dashed var(--border-strong);
+  border-radius: 12px;
+  padding: 32px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+/* ─── Schema tab ─── */
+.schema-defs {
+  display: flex; flex-direction: column; gap: 12px;
+}
+.schema-def {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.schema-def-head {
+  padding: 12px 14px;
+  display: flex; align-items: baseline; gap: 10px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+}
+.schema-def-head:hover { background: var(--cream); }
+.schema-def.is-open .schema-def-head { background: var(--cream); border-bottom: 1px solid var(--border); }
+.schema-def-name {
+  font-size: 14px; font-weight: 600;
+  color: var(--text);
+  font-family: ui-monospace, monospace;
+}
+.schema-def-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  flex: 1;
+}
+.schema-def-body {
+  display: none;
+  padding: 14px;
+}
+.schema-def.is-open .schema-def-body { display: block; }
+
+.schema-prop-list {
+  display: flex; flex-direction: column; gap: 8px;
+  margin-top: 8px;
+}
+.schema-prop {
+  padding: 8px 10px;
+  background: var(--cream);
+  border-radius: 6px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 10px;
+  font-size: 12px;
+}
+.schema-prop-name {
+  font-family: ui-monospace, monospace;
+  font-size: 12px;
+  color: var(--text);
+  font-weight: 600;
+  display: flex; align-items: baseline; gap: 6px;
+  flex-wrap: wrap;
+}
+.required-badge {
+  font-size: 9px; font-weight: 700;
+  background: var(--primary-pale); color: var(--primary);
+  padding: 1px 5px; border-radius: 3px;
+  letter-spacing: 0.04em; text-transform: uppercase;
+}
+.schema-prop-detail {
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+.schema-prop-type {
+  display: inline-block;
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
+  color: var(--info-text);
+  background: var(--info-bg);
+  padding: 1px 6px; border-radius: 3px;
+  margin-right: 4px;
+}
+.schema-prop-desc {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+/* ─── Raw JSON tab ─── */
+.raw-toggle {
+  display: flex; gap: 6px;
+  margin-bottom: 12px;
+}
+
+.loading {
+  text-align: center;
+  padding: 80px 20px;
+  color: var(--text-muted);
+}
+.loading svg {
+  width: 24px; height: 24px;
+  stroke: var(--primary); stroke-width: 2;
+  fill: none; stroke-linecap: round; stroke-linejoin: round;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+#dh-toast {
+  position: fixed; bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: rgba(20,15,12,0.92); color: #fff;
+  padding: 8px 16px; border-radius: 8px;
+  font-size: 12px; font-weight: 500;
+  opacity: 0; transition: opacity .18s, transform .18s;
+  pointer-events: none; z-index: 10000;
+}
+#dh-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-to-catalog" title="Vissza a katalógusba">
+  <svg viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<div class="dh-crumb">
+  <strong>DH Adatok</strong><span class="sep">›</span>Explorer<span class="crumb-file">v0.4-data-explorer.html</span>
+</div>
+
+<div class="page-intro">
+  <div class="eyebrow">v1.2 · 46 termék · 15 termék VG-vel · Schema viewer</div>
+  <h1>Adatok Explorer</h1>
+  <p>Gyors átlátás a termékkatalógus aktuális állapotán: keresés, szűrés, per-termék JSON megtekintés, schema struktúra, raw export. Forrás: <code>data/products-v1.2.json</code> és <code>data/_schema-v1.2.json</code>.</p>
+</div>
+
+<div class="container">
+
+<div class="stats" id="stats"></div>
+
+<div class="tabs" role="tablist">
+  <button class="tab-btn active" type="button" data-tab="products" role="tab">
+    Termékek <span class="count" id="count-products">…</span>
+  </button>
+  <button class="tab-btn" type="button" data-tab="schema" role="tab">
+    Schema
+  </button>
+  <button class="tab-btn" type="button" data-tab="raw" role="tab">
+    Raw JSON
+  </button>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TAB: Termékek
+     ════════════════════════════════════════════════ -->
+<div class="tab-content active" data-content="products">
+
+  <div class="toolbar">
+    <div class="search-row">
+      <input type="search" class="search-input" id="search" placeholder="Keress termékre — HU/RO név, kód, ID…" autocomplete="off">
+      <button class="search-clear" type="button" id="search-clear" aria-label="Keresés törlése" style="display:none">
+        <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+
+    <div class="filter-row">
+      <div class="filter-group" id="filter-category">
+        <span class="filter-label">Kategória</span>
+      </div>
+    </div>
+
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-label">Termék típus</span>
+        <button class="chip-btn active" data-filter-type="all" type="button">Mind</button>
+        <button class="chip-btn" data-filter-type="weight" type="button">weight</button>
+        <button class="chip-btn" data-filter-type="hybrid" type="button">hibrid</button>
+        <button class="chip-btn" data-filter-type="piece" type="button">piece</button>
+      </div>
+    </div>
+
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-label">VG opciók</span>
+        <button class="chip-btn active" data-filter-vg="all" type="button">Mind</button>
+        <button class="chip-btn" data-filter-vg="any" type="button">Van VG</button>
+        <button class="chip-btn" data-filter-vg="mandatory" type="button">Mandatory</button>
+        <button class="chip-btn" data-filter-vg="paid" type="button">Díjköteles</button>
+        <button class="chip-btn" data-filter-vg="none" type="button">Nincs VG</button>
+        <button class="chip-btn" data-filter-vg="pacolas" type="button">Pácolás</button>
+        <button class="chip-btn" data-filter-vg="szeletes" type="button">Szeletelés</button>
+        <button class="chip-btn" data-filter-vg="forma" type="button">Forma</button>
+        <button class="chip-btn" data-filter-vg="meret" type="button">Méret</button>
+        <button class="chip-btn" data-filter-vg="zsirossag" type="button">Zsírosság</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-count" id="results-count"></div>
+
+  <div id="product-list" class="product-list">
+    <div class="loading">
+      <svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>
+      <div>Adatok betöltése…</div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TAB: Schema
+     ════════════════════════════════════════════════ -->
+<div class="tab-content" data-content="schema">
+  <div class="schema-defs" id="schema-defs">
+    <div class="loading"><svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg><div>Schema betöltése…</div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════
+     TAB: Raw JSON
+     ════════════════════════════════════════════════ -->
+<div class="tab-content" data-content="raw">
+  <div class="raw-toggle">
+    <button class="chip-btn active" data-raw="products" type="button">products-v1.2.json</button>
+    <button class="chip-btn" data-raw="schema" type="button">_schema-v1.2.json</button>
+    <button class="chip-btn" data-raw="filtered" type="button">Csak a szűrt termékek</button>
+  </div>
+  <div class="json-block" id="raw-json">
+    <button class="copy-btn" type="button" id="raw-copy" aria-label="Másolás">
+      <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    </button>
+    <div id="raw-content">Adatok betöltése…</div>
+  </div>
+</div>
+
+</div><!-- /container -->
+
+<!-- ════════════════════════════════════════════════
+     EMBEDDED DATA (offline / preview mode)
+     A build pipeline regenerálja amikor a JSON-ok frissülnek.
+     ════════════════════════════════════════════════ -->
+<script type="application/json" id="embedded-products">
+{
+  "meta": {
+    "version": "1.2",
+    "schema_version": "1.2",
+    "date": "2026-05-09",
+    "author": "Becze Szabolcs / Exar Labs",
+    "description": "Deák Húsmíves termékkatalógus — 46 termék, 6 kategória, 15 termék VG-opcióval (DH-173). Generated from MASTER/products/*.md + _options.yaml."
+  },
+  "categories": [
+    {
+      "category_id": "friss_serteshus",
+      "category_name_hu": "Friss Sertéshús",
+      "category_name_ro": "Carne proaspătă de porc"
+    },
+    {
+      "category_id": "friss_novendekhus",
+      "category_name_hu": "Friss Növendékhús",
+      "category_name_ro": "Carne proaspătă de vițel"
+    },
+    {
+      "category_id": "friss_csirkehus",
+      "category_name_hu": "Friss Csirkehús",
+      "category_name_ro": "Carne proaspătă de pui"
+    },
+    {
+      "category_id": "fustolt_aruk",
+      "category_name_hu": "Füstölt Áruk",
+      "category_name_ro": "Produse afumate"
+    },
+    {
+      "category_id": "kolbasz_szalami",
+      "category_name_hu": "Kolbász & Szalámi",
+      "category_name_ro": "Cârnați & Salam"
+    },
+    {
+      "category_id": "felvagott_egyeb",
+      "category_name_hu": "Felvágott & Egyéb",
+      "category_name_ro": "Mezeluri & Altele"
+    }
+  ],
+  "products": [
+    {
+      "id": "abalt_szalonna",
+      "category": "felvagott_egyeb",
+      "image": "abalt_szalonna.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 35.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "941",
+      "product_name_hu": "Abált Szalonna",
+      "product_name_ro": "Slănină fiartă",
+      "description_hu": "Főtt szalonna, fokhagymával és fűszerekkel ízesítve, hidegen szeletelve tálalható.",
+      "description_ro": "Slănină fiartă, condimentată cu usturoi și mirodenii, servită feliată rece.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "cerna_kolbasz",
+      "category": "kolbasz_szalami",
+      "image": "cerna_kolbasz.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 48.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "920",
+      "product_name_hu": "Cérna Kolbász",
+      "product_name_ro": "Cârnați Cabanos",
+      "description_hu": "Vékony, spárgával kötött kolbász, fűszeres ízvilággal, sütve és főzve egyaránt kitűnő.",
+      "description_ro": "Cârnat subțire legat cu sfoară, cu aromă picantă, excelent prăjit și fiert.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "csirke_egybe_comb",
+      "category": "friss_csirkehus",
+      "image": "csirke_egybe_comb.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 17.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "ACS02",
+      "product_name_hu": "Csirke Egybe Comb",
+      "product_name_ro": "Pulpă de pui întreagă",
+      "description_hu": "Friss csirke comb egészben (alsó+felső). Lerbe sütésre, grillezésre, pörköltnek ideális.",
+      "description_ro": "Pulpă de pui întreagă (sus+jos). Ideală pentru cuptor, grătar sau tocane.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "csirke_mell_csont_borr_nelkul",
+      "category": "friss_csirkehus",
+      "image": "csirke_mell.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 34.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "ACS04",
+      "product_name_hu": "Csirke Mell Csont és Bőr Nélkül",
+      "product_name_ro": "Piept de pui fără os și piele",
+      "description_hu": "Friss csirke mellfilé csontnélkül és bőr nélkül. Sütéshez, főzéshez, grillezéshez.",
+      "description_ro": "Piept de pui dezosat și fără piele. Pentru prăjit, fiert sau pe grătar.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "csirke_szarny",
+      "category": "friss_csirkehus",
+      "image": "csirke_szarny.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 16.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "ACS01",
+      "product_name_hu": "Csirke Szárny",
+      "product_name_ro": "Aripi de pui",
+      "description_hu": "Friss csirke szárny, grillezésre, sütésre, levesbe egyaránt alkalmas.",
+      "description_ro": "Aripi de pui proaspete, potrivite pentru grătar, prăjit sau supă.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "diszno_fosajt",
+      "category": "felvagott_egyeb",
+      "image": "diszno_fosajt.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 35.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "909",
+      "product_name_hu": "Disznó Fősajt",
+      "product_name_ro": "Tobă de porc",
+      "description_hu": "Hagyományos disznófősajt, kocsonyás állagú, fűszerekkel gazdagítva, hideg tálakra ideális.",
+      "description_ro": "Tobă tradițională de porc, cu textură gelatinoasă, îmbogățită cu condimente, ideală pentru platouri reci.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "erdelyi_kolbasz",
+      "category": "kolbasz_szalami",
+      "image": "erdelyi_kolbasz.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 45.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "911",
+      "product_name_hu": "Deák háziKolbász",
+      "product_name_ro": "Cârnați de casă Deák",
+      "description_hu": "Hagyományos erdélyi recept szerinti fokhagymás-paprikás kolbász, füstölt aromával.",
+      "description_ro": "Cârnat ardelenesc tradițional cu usturoi și boia, cu aromă afumată.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "fustolt_belszin",
+      "category": "fustolt_aruk",
+      "image": "fustolt_belszin.webp",
+      "product_type": "hybrid",
+      "unit": "kg",
+      "price": 55.0,
+      "estimated_weight_per_piece": 0.4,
+      "weight_range_min": 0.3,
+      "weight_range_max": 0.5,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "949.3",
+      "product_name_hu": "Füstölt Bélszín",
+      "product_name_ro": "Mușchuleți porc afumat",
+      "description_hu": "Hagyományos hideg füstöléssel készített bélszín, mélyen füstös ízzel, vékonyra szeletelve.",
+      "description_ro": "Mușchi preparat prin afumare la rece tradițională, cu aromă adâncă de fum, feliat subțire.",
+      "note_hu": "Darab — kb. 0.3-0.5 kg",
+      "note_ro": "Bucată — aprox. 0.3-0.5 kg",
+      "quantity_override": null,
+      "options": []
+    },
+    {
+      "id": "fustolt_bordacsont",
+      "category": "fustolt_aruk",
+      "image": "fustolt_bordacsont.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 16.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "953",
+      "product_name_hu": "Füstölt Bordacsont",
+      "product_name_ro": "Coaste porc afumat",
+      "description_hu": "Füstölt bordacsont, bablevesbe és káposztás fogásokhoz nélkülözhetetlen alapanyag.",
+      "description_ro": "Coaste afumate, ingredient esențial în fasole bătută și mâncăruri cu varză.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "fustolt_csulok",
+      "category": "fustolt_aruk",
+      "image": "fustolt_csulok.webp",
+      "product_type": "hybrid",
+      "unit": "kg",
+      "price": 34.0,
+      "estimated_weight_per_piece": 1.5,
+      "weight_range_min": 1.2,
+      "weight_range_max": 1.8,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "945",
+      "product_name_hu": "Füstölt Csülök",
+      "product_name_ro": "Ciolan porc afumat",
+      "description_hu": "Csontján füstölt csülök, mélyen átitatott füstös ízzel, főzve vagy sütve omlós.",
+      "description_ro": "Ciolan afumat pe os, cu aromă profundă de fum, fraged la fiert sau la cuptor.",
+      "note_hu": "Darab — kb. 1.5 kg",
+      "note_ro": "Bucată — aprox. 1.5 kg",
+      "quantity_override": null,
+      "options": [
+        {
+          "option_id": "meret",
+          "option_name_hu": "Méret",
+          "option_name_ro": "Mărime",
+          "option_type": "single_select",
+          "kind": "mandatory",
+          "default_value": "kozepes",
+          "vg_off_hint_hu": null,
+          "vg_off_hint_ro": null,
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "kisebb",
+              "value_label_hu": "Kisebb",
+              "value_label_ro": "Mai mic",
+              "meta_hint_hu": "1,2-1,5 kg",
+              "meta_hint_ro": "1,2-1,5 kg",
+              "image_url": null,
+              "image_alt_hu": "Kisebb csülök referenciával méretarányhoz",
+              "image_alt_ro": "Ciolan mai mic cu referință de scară",
+              "description_hu": "Ideális kisebb háztartásnak, 2-3 fős vacsorára. Gyorsabban sül.",
+              "description_ro": "Ideal pentru gospodării mici, cină pentru 2-3 persoane. Se gătește mai repede.",
+              "price_modifier": 0,
+              "price_modifier_unit": null,
+              "weight_range_min": 1.2,
+              "weight_range_max": 1.5
+            },
+            {
+              "value_id": "kozepes",
+              "value_label_hu": "Közepes",
+              "value_label_ro": "Mediu",
+              "meta_hint_hu": "1,5-1,7 kg · alapértelmezett",
+              "meta_hint_ro": "1,5-1,7 kg · standard",
+              "image_url": null,
+              "image_alt_hu": "Közepes csülök, referencia konyhakéssel",
+              "image_alt_ro": "Ciolan mediu, referință cu cuțit",
+              "description_hu": "A leggyakoribb választás. 4 fős család vasárnapi ebédjéhez.",
+              "description_ro": "Cea mai populară alegere. Pentru prânzul de duminică al unei familii de 4.",
+              "price_modifier": 0,
+              "price_modifier_unit": null,
+              "weight_range_min": 1.5,
+              "weight_range_max": 1.7
+            },
+            {
+              "value_id": "nagyobb",
+              "value_label_hu": "Nagyobb",
+              "value_label_ro": "Mai mare",
+              "meta_hint_hu": "1,7-1,9 kg",
+              "meta_hint_ro": "1,7-1,9 kg",
+              "image_url": null,
+              "image_alt_hu": "Nagyobb csülök tálon",
+              "image_alt_ro": "Ciolan mai mare pe platou",
+              "description_hu": "Nagyobb társasághoz, lassan sült ünnepi ételekhez. Hosszabb sütési idővel.",
+              "description_ro": "Pentru grupuri mai mari, mâncăruri festive gătite lent. Timp de gătire mai lung.",
+              "price_modifier": 0,
+              "price_modifier_unit": null,
+              "weight_range_min": 1.7,
+              "weight_range_max": 1.9
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fustolt_csulok_csont_nelkul",
+      "category": "fustolt_aruk",
+      "image": "fustolt_csulok_csont_nelkul.webp",
+      "product_type": "hybrid",
+      "unit": "kg",
+      "price": 44.0,
+      "estimated_weight_per_piece": 1.2,
+      "weight_range_min": 1.0,
+      "weight_range_max": 1.5,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "945.1",
+      "product_name_hu": "Füstölt Csülök Csont Nélkül",
+      "product_name_ro": "Ciolan porc afumat fără os",
+      "description_hu": "Kicsontozott füstölt csülök, kényelmes szeletelésre, hideg tálakhoz vagy melegítve.",
+      "description_ro": "Ciolan afumat dezos, comod de feliat, pentru platouri reci sau reîncălzit.",
+      "note_hu": "Darab — kb. 1.2 kg (belső név: „Csemege Csülök\")",
+      "note_ro": "Bucată — aprox. 1.2 kg",
+      "quantity_override": null,
+      "options": [
+        {
+          "option_id": "meret",
+          "option_name_hu": "Méret",
+          "option_name_ro": "Mărime",
+          "option_type": "single_select",
+          "kind": "mandatory",
+          "default_value": "kozepes",
+          "vg_off_hint_hu": null,
+          "vg_off_hint_ro": null,
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "kisebb",
+              "value_label_hu": "Kisebb",
+              "value_label_ro": "Mai mic",
+              "meta_hint_hu": "1,0-1,2 kg",
+              "meta_hint_ro": "1,0-1,2 kg",
+              "image_url": null,
+              "image_alt_hu": "Kisebb csülök referenciával méretarányhoz",
+              "image_alt_ro": "Ciolan mai mic cu referință de scară",
+              "description_hu": "Ideális kisebb háztartásnak, 2-3 fős vacsorára. Gyorsabban sül.",
+              "description_ro": "Ideal pentru gospodării mici, cină pentru 2-3 persoane. Se gătește mai repede.",
+              "price_modifier": 0,
+              "price_modifier_unit": null,
+              "weight_range_min": 1.0,
+              "weight_range_max": 1.2
+            },
+            {
+              "value_id": "kozepes",
+              "value_label_hu": "Közepes",
+              "value_label_ro": "Mediu",
+              "meta_hint_hu": "1,2-1,4 kg · alapértelmezett",
+              "meta_hint_ro": "1,2-1,4 kg · standard",
+              "image_url": null,
+              "image_alt_hu": "Közepes csülök, referencia konyhakéssel",
+              "image_alt_ro": "Ciolan mediu, referință cu cuțit",
+              "description_hu": "A leggyakoribb választás. 4 fős család vasárnapi ebédjéhez.",
+              "description_ro": "Cea mai populară alegere. Pentru prânzul de duminică al unei familii de 4.",
+              "price_modifier": 0,
+              "price_modifier_unit": null,
+              "weight_range_min": 1.2,
+              "weight_range_max": 1.4
+            },
+            {
+              "value_id": "nagyobb",
+              "value_label_hu": "Nagyobb",
+              "value_label_ro": "Mai mare",
+              "meta_hint_hu": "1,4-1,5 kg",
+              "meta_hint_ro": "1,4-1,5 kg",
+              "image_url": null,
+              "image_alt_hu": "Nagyobb csülök tálon",
+              "image_alt_ro": "Ciolan mai mare pe platou",
+              "description_hu": "Nagyobb társasághoz, lassan sült ünnepi ételekhez. Hosszabb sütési idővel.",
+              "description_ro": "Pentru grupuri mai mari, mâncăruri festive gătite lent. Timp de gătire mai lung.",
+              "price_modifier": 0,
+              "price_modifier_unit": null,
+              "weight_range_min": 1.4,
+              "weight_range_max": 1.5
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fustolt_egybe_sonka",
+      "category": "fustolt_aruk",
+      "image": "fustolt_egybe_sonka.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 55.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "934",
+      "product_name_hu": "Füstölt Egész Sonka",
+      "product_name_ro": "Șuncă de porc întreg afumat",
+      "description_hu": "Egészben füstölt sonka, ünnepi alkalmak klasszikusa, hidegen és melegen egyaránt.",
+      "description_ro": "Șuncă afumată întreagă, clasic al meselor festive, excelentă rece și caldă.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "fustolt_feher_karaj",
+      "category": "fustolt_aruk",
+      "image": "fustolt_feher_karaj.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 49.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "949",
+      "product_name_hu": "Füstölt Fehér Karaj",
+      "product_name_ro": "Cotlet porc afumat",
+      "description_hu": "Enyhén füstölt fehér karaj, sovány és aromás, szendvicsbe vagy hideg tálra.",
+      "description_ro": "Cotlet alb ușor afumat, slab și aromat, pentru sandvișuri sau platouri reci.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "szeletes",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Egészben",
+          "vg_off_hint_ro": "Întreg",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "vekony",
+              "value_label_hu": "Vékony",
+              "value_label_ro": "Subțire",
+              "meta_hint_hu": "1 cm",
+              "meta_hint_ro": "1 cm",
+              "image_url": null,
+              "image_alt_hu": "Vékonyra szeletelt hús",
+              "image_alt_ro": "Carne feliată subțire",
+              "description_hu": "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.",
+              "description_ro": "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "1,5 cm",
+              "meta_hint_ro": "1,5 cm",
+              "image_url": null,
+              "image_alt_hu": "Egységesen szeletelt hús közepes vastagságra",
+              "image_alt_ro": "Carne feliată uniform la grosime medie",
+              "description_hu": "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.",
+              "description_ro": "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "vastagabb",
+              "value_label_hu": "Vastagabb",
+              "value_label_ro": "Mai gros",
+              "meta_hint_hu": "2,5 cm",
+              "meta_hint_ro": "2,5 cm",
+              "image_url": null,
+              "image_alt_hu": "Vastag szeletek hús",
+              "image_alt_ro": "Felii groase de carne",
+              "description_hu": "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz.",
+              "description_ro": "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fustolt_has",
+      "category": "fustolt_aruk",
+      "image": "fustolt_has.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 47.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "946",
+      "product_name_hu": "Füstölt Has",
+      "product_name_ro": "Piept porc afumat",
+      "description_hu": "Füstölt hasrész, ízgazdag és zsíros, babos ételekhez és káposztás fogásokhoz ideális.",
+      "description_ro": "Burtă afumată, bogată în gust și grasă, ideală pentru fasole și mâncăruri cu varză.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "szeletes",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Egészben",
+          "vg_off_hint_ro": "Întreg",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "vekony",
+              "value_label_hu": "Vékony",
+              "value_label_ro": "Subțire",
+              "meta_hint_hu": "2 mm",
+              "meta_hint_ro": "2 mm",
+              "image_url": null,
+              "image_alt_hu": "Vékonyra szeletelt hús",
+              "image_alt_ro": "Carne feliată subțire",
+              "description_hu": "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.",
+              "description_ro": "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "4 mm",
+              "meta_hint_ro": "4 mm",
+              "image_url": null,
+              "image_alt_hu": "Egységesen szeletelt hús közepes vastagságra",
+              "image_alt_ro": "Carne feliată uniform la grosime medie",
+              "description_hu": "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.",
+              "description_ro": "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "vastagabb",
+              "value_label_hu": "Vastagabb",
+              "value_label_ro": "Mai gros",
+              "meta_hint_hu": "6 mm",
+              "meta_hint_ro": "6 mm",
+              "image_url": null,
+              "image_alt_hu": "Vastag szeletek hús",
+              "image_alt_ro": "Felii groase de carne",
+              "description_hu": "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz.",
+              "description_ro": "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        },
+        {
+          "option_id": "pacolas",
+          "option_name_hu": "Pácolás",
+          "option_name_ro": "Marinare",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Pácolatlan",
+          "vg_off_hint_ro": "Nemarinat",
+          "display_order": 20,
+          "values": [
+            {
+              "value_id": "hagyomanyos",
+              "value_label_hu": "Hagyományos",
+              "value_label_ro": "Tradițional",
+              "meta_hint_hu": "Só, bors, fokhagyma",
+              "meta_hint_ro": "Sare, piper, usturoi",
+              "image_url": null,
+              "image_alt_hu": "Sózott-borsozott, fokhagymás karaj",
+              "image_alt_ro": "Cotlet sărat-piperat cu usturoi",
+              "description_hu": "Só, bors, fokhagyma, friss fűszerek. Klasszikus kárpát-medencei ízprofil sütésre és grillezésre. A mészáros 24 órás pácolást javasol, hogy az ízek mélyen átjárják a húst. Felár: +2 RON/kg.",
+              "description_ro": "Sare, piper, usturoi, ierburi proaspete. Profil clasic carpatic pentru frigare și grătar. Măcelarul recomandă 24 de ore de marinare pentru ca aromele să pătrundă bine. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            },
+            {
+              "value_id": "barbecue",
+              "value_label_hu": "Barbecue",
+              "value_label_ro": "Barbecue",
+              "meta_hint_hu": "Paradicsomos, BBQ-szerű",
+              "meta_hint_ro": "Cu roșii, stil BBQ",
+              "image_url": null,
+              "image_alt_hu": "Paradicsomos BBQ pácban karaj grillen",
+              "image_alt_ro": "Cotlet în marinată BBQ cu roșii pe grătar",
+              "description_hu": "Paradicsomos, édeskés, füstös ízprofil. Grillezésre kifejezetten ajánlott. A pác benne van, közvetlenül a grillre helyezhető. Felár: +2 RON/kg.",
+              "description_ro": "Profil cu roșii, dulce, afumat. Recomandat pentru grătar. Marinata este deja în carne, direct pe grătar. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fustolt_kotozott_sonka",
+      "category": "fustolt_aruk",
+      "image": "fustolt_kotozott_sonka.webp",
+      "product_type": "hybrid",
+      "unit": "kg",
+      "price": 50.0,
+      "estimated_weight_per_piece": 1.0,
+      "weight_range_min": 0.8,
+      "weight_range_max": 1.3,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": null,
+      "product_name_hu": "Füstölt Kötözött Sonka",
+      "product_name_ro": "Jambon de sărbătoare",
+      "description_hu": "Kötöléssel formált egyenletes füstölt sonka, könnyen szeletelhető, hideg tálakhoz tökéletes.",
+      "description_ro": "Șuncă afumată rulată, uniform formată, ușor de feliat, perfectă pentru platouri reci.",
+      "note_hu": "Darab — kb. 1 kg, fél darab is adható",
+      "note_ro": "Bucată — aprox. 1 kg, jumătate disponibil",
+      "quantity_override": null,
+      "options": []
+    },
+    {
+      "id": "fustolt_nyakas_karaj",
+      "category": "fustolt_aruk",
+      "image": "fustolt_nyakas_karaj.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 49.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "948",
+      "product_name_hu": "Füstölt Nyakas Karaj",
+      "product_name_ro": "Ceafă porc afumat",
+      "description_hu": "Márványos szerkezetű füstölt nyakas karaj, gazdag füstös ízzel, hidegen és melegen is kiváló.",
+      "description_ro": "Ceafă afumată cu structură marmorată, gust bogat de fum, excelentă rece și caldă.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "szeletes",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Egészben",
+          "vg_off_hint_ro": "Întreg",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "vekony",
+              "value_label_hu": "Vékony",
+              "value_label_ro": "Subțire",
+              "meta_hint_hu": "2 mm",
+              "meta_hint_ro": "2 mm",
+              "image_url": null,
+              "image_alt_hu": "Vékonyra szeletelt hús",
+              "image_alt_ro": "Carne feliată subțire",
+              "description_hu": "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.",
+              "description_ro": "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "4 mm",
+              "meta_hint_ro": "4 mm",
+              "image_url": null,
+              "image_alt_hu": "Egységesen szeletelt hús közepes vastagságra",
+              "image_alt_ro": "Carne feliată uniform la grosime medie",
+              "description_hu": "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.",
+              "description_ro": "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "vastagabb",
+              "value_label_hu": "Vastagabb",
+              "value_label_ro": "Mai gros",
+              "meta_hint_hu": "6 mm",
+              "meta_hint_ro": "6 mm",
+              "image_url": null,
+              "image_alt_hu": "Vastag szeletek hús",
+              "image_alt_ro": "Felii groase de carne",
+              "description_hu": "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz.",
+              "description_ro": "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fustolt_oldalas",
+      "category": "fustolt_aruk",
+      "image": "fustolt_oldalas.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 47.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "952",
+      "product_name_hu": "Füstölt Oldalas",
+      "product_name_ro": "Costiță afumată",
+      "description_hu": "Füstölt oldalas, sütőben vagy grillen omlósra süthető, barbecue kedvencek közé tartozik.",
+      "description_ro": "Coaste afumate, fragede la cuptor sau pe grătar, un favorit la grătar.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "fustolt_szalonna",
+      "category": "fustolt_aruk",
+      "image": "fustolt_szalonna.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 42.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "942",
+      "product_name_hu": "Füstölt Szalonna",
+      "product_name_ro": "Slănină afumată",
+      "description_hu": "Klasszikus házi jellegű füstölt szalonna, vékonyra szeletelve vagy kockázva mindenhez illik.",
+      "description_ro": "Slănină afumată clasică de casă, feliată subțire sau tăiată cubulețe, se potrivește la orice.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "fustolt_szalonnas_sonka",
+      "category": "fustolt_aruk",
+      "image": "fustolt_szalonnas_sonka.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 48.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "933",
+      "product_name_hu": "Füstölt Szalonnás Sonka",
+      "product_name_ro": "Șuncă de porc afumat cu slănină",
+      "description_hu": "Szalonnás füstölt sonka gazdag ízprofillal, hideg tálak és szendvicsek alapanyaga.",
+      "description_ro": "Șuncă afumată cu slănină, cu profil gustativ bogat, bază pentru platouri reci și sandvișuri.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "gongyolt_hus",
+      "category": "felvagott_egyeb",
+      "image": "gongyolt_hus.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 47.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "9980",
+      "product_name_hu": "Göngyölt Hús",
+      "product_name_ro": "Rulada de porc",
+      "description_hu": "Fűszerezett húsdarabok göngyölve és főzve, szeletelhető hideg fogás, szendvicsek alapanyaga.",
+      "description_ro": "Bucăți de carne condimentate, rulate și fierte, fel rece feliabil, bază pentru sandvișuri.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "miccs",
+      "category": "kolbasz_szalami",
+      "image": "miccs.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 40.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "906",
+      "product_name_hu": "Miccs",
+      "product_name_ro": "Mititei",
+      "description_hu": "Friss fűszeres darált húsból formált rúd, grillezve vagy serpenyőben sütve a legjobb.",
+      "description_ro": "Rulou din carne tocată proaspătă condimentată, cel mai bun pe grătar sau la tigaie.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "novendek_szalami",
+      "category": "kolbasz_szalami",
+      "image": "novendek_szalami.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 46.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "991",
+      "product_name_hu": "Házi szalámi",
+      "product_name_ro": "Salam de casă",
+      "description_hu": "Finomszemcsés, enyhén fűszerezett szalámi, hideg tálak és szendvicsek kedvelt alapanyaga.",
+      "description_ro": "Salam fin, ușor condimentat, ingredient preferat pentru platouri reci și sandvișuri.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "szeletes",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Egészben",
+          "vg_off_hint_ro": "Întreg",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "vekony",
+              "value_label_hu": "Vékony",
+              "value_label_ro": "Subțire",
+              "meta_hint_hu": "2 mm",
+              "meta_hint_ro": "2 mm",
+              "image_url": null,
+              "image_alt_hu": "Vékonyra szeletelt hús",
+              "image_alt_ro": "Carne feliată subțire",
+              "description_hu": "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.",
+              "description_ro": "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "4 mm",
+              "meta_hint_ro": "4 mm",
+              "image_url": null,
+              "image_alt_hu": "Egységesen szeletelt hús közepes vastagságra",
+              "image_alt_ro": "Carne feliată uniform la grosime medie",
+              "description_hu": "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.",
+              "description_ro": "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "vastagabb",
+              "value_label_hu": "Vastagabb",
+              "value_label_ro": "Mai gros",
+              "meta_hint_hu": "6 mm",
+              "meta_hint_ro": "6 mm",
+              "image_url": null,
+              "image_alt_hu": "Vastag szeletek hús",
+              "image_alt_ro": "Felii groase de carne",
+              "description_hu": "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz.",
+              "description_ro": "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nyakas_karaj",
+      "category": "friss_serteshus",
+      "image": "nyakas_karaj.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 33.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "014",
+      "product_name_hu": "Sertés nyakaskaraj",
+      "product_name_ro": "Ceafă porc",
+      "description_hu": "A nyak és a karaj közötti márványos rész, kiváló sütéshez és pároláshoz.",
+      "description_ro": "Bucată marmorată între gât și cotlet, excelentă la prăjit și înăbușit.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "forma",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Standard",
+          "vg_off_hint_ro": "Standard",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "Klasszikus szelet",
+              "meta_hint_ro": "Felie clasică",
+              "image_url": null,
+              "image_alt_hu": "Klasszikus nyakaskaraj szelet",
+              "image_alt_ro": "Felie clasică de ceafă",
+              "description_hu": "Egyszelet, klasszikus, minimum újnyi vastagságú. Pörkölthöz, rántott karajhoz, gyorsan átsülő ételekhez.",
+              "description_ro": "O singură felie clasică, minimum un deget de groasă. Pentru tocăniță, șnițel, rețete care se gătesc rapid.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "dupla",
+              "value_label_hu": "Dupla (Lecsi pecsi)",
+              "value_label_ro": "Dublă",
+              "meta_hint_hu": "Két szelet egyben, potyolva",
+              "meta_hint_ro": "Două felii unite, bătute",
+              "image_url": null,
+              "image_alt_hu": "Dupla nyakaskaraj kinyitva, potyolva",
+              "image_alt_ro": "Ceafă dublă deschisă și bătută",
+              "description_hu": "Két szelet középen egyben tartva, kinyitva, potyolva — a hagyományos „Lecsi pecsi\". Vastagabb, férfiasabb porció lassú sütésre. A mészáros 4 ujjnyi vastagságot javasol pörkölésre.",
+              "description_ro": "Două felii unite la mijloc, deschise, bătute, „Lecsi pecsi\" tradițional. Porție mai groasă pentru gătit lent. Măcelarul recomandă grosime de 4 degete pentru frigare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        },
+        {
+          "option_id": "pacolas",
+          "option_name_hu": "Pácolás",
+          "option_name_ro": "Marinare",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Pácolatlan",
+          "vg_off_hint_ro": "Nemarinat",
+          "display_order": 20,
+          "values": [
+            {
+              "value_id": "hagyomanyos",
+              "value_label_hu": "Hagyományos",
+              "value_label_ro": "Tradițional",
+              "meta_hint_hu": "Só, bors, fokhagyma",
+              "meta_hint_ro": "Sare, piper, usturoi",
+              "image_url": null,
+              "image_alt_hu": "Sózott-borsozott, fokhagymás karaj",
+              "image_alt_ro": "Cotlet sărat-piperat cu usturoi",
+              "description_hu": "Só, bors, fokhagyma, friss fűszerek. Klasszikus kárpát-medencei ízprofil sütésre és grillezésre. A mészáros 24 órás pácolást javasol, hogy az ízek mélyen átjárják a húst. Felár: +2 RON/kg.",
+              "description_ro": "Sare, piper, usturoi, ierburi proaspete. Profil clasic carpatic pentru frigare și grătar. Măcelarul recomandă 24 de ore de marinare pentru ca aromele să pătrundă bine. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            },
+            {
+              "value_id": "barbecue",
+              "value_label_hu": "Barbecue",
+              "value_label_ro": "Barbecue",
+              "meta_hint_hu": "Paradicsomos, BBQ-szerű",
+              "meta_hint_ro": "Cu roșii, stil BBQ",
+              "image_url": null,
+              "image_alt_hu": "Paradicsomos BBQ pácban karaj grillen",
+              "image_alt_ro": "Cotlet în marinată BBQ cu roșii pe grătar",
+              "description_hu": "Paradicsomos, édeskés, füstös ízprofil. Grillezésre kifejezetten ajánlott. A pác benne van, közvetlenül a grillre helyezhető. Felár: +2 RON/kg.",
+              "description_ro": "Profil cu roșii, dulce, afumat. Recomandat pentru grătar. Marinata este deja în carne, direct pe grătar. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "pastetom",
+      "category": "felvagott_egyeb",
+      "image": "pastetom.webp",
+      "product_type": "piece",
+      "unit": "pcs",
+      "price": 22.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "982",
+      "product_name_hu": "Pástétom",
+      "product_name_ro": "Pate porc de casă",
+      "description_hu": "Krémes, finomra dolgozott húspástétom, pirítósra kenve vagy hideg tálak kísérőjeként.",
+      "description_ro": "Pate de carne cremos, fin prelucrat, uns pe pâine prăjită sau ca garnitură pentru platouri reci.",
+      "note_hu": "Darab (330g)",
+      "note_ro": "Bucată (330g)",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "options": []
+    },
+    {
+      "id": "roppanos_virsli",
+      "category": "kolbasz_szalami",
+      "image": "miccs.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 48.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "960",
+      "product_name_hu": "Roppanós Virsli",
+      "product_name_ro": "Crenvuști \"Roppanós\"",
+      "description_hu": "Disznócombból készített ropogós virsli, juhbélbe töltve, ehető bél.",
+      "description_ro": "Crenvuști crocanți din pulpă de porc, în maț natural de oaie, comestibil.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "sajtos_cerna_kolbasz",
+      "category": "kolbasz_szalami",
+      "image": "cerna_kolbasz.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 48.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "9201",
+      "product_name_hu": "Sajtos Cérna Kolbász",
+      "product_name_ro": "Cârnați de cabanos cu cașcaval",
+      "description_hu": "Vékony, sajttal töltött spárgával kötött kolbász. Főzni, sütni, grillezni egyaránt kiváló.",
+      "description_ro": "Cârnat subțire umplut cu cașcaval, legat cu sfoară. Excelent fiert, prăjit sau pe grătar.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "sertes_belszin",
+      "category": "friss_serteshus",
+      "image": "sertes_belszin.webp",
+      "product_type": "hybrid",
+      "unit": "kg",
+      "price": 40.0,
+      "estimated_weight_per_piece": 0.5,
+      "weight_range_min": 0.4,
+      "weight_range_max": 0.6,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "026",
+      "product_name_hu": "Sertés Bélszín",
+      "product_name_ro": "Mușchuleți porc",
+      "description_hu": "A sertés legpuhább, legnemesebb része, omlós állagú, tökéletes steaknek vagy sütve.",
+      "description_ro": "Cea mai fragedă și nobilă parte a porcului, cu textură moale, perfectă pentru friptură sau la tigaie.",
+      "note_hu": "Darab — kb. 0.5 kg-os",
+      "note_ro": "Bucată — aprox. 0.5 kg",
+      "quantity_override": null,
+      "options": []
+    },
+    {
+      "id": "sertes_borda_csont",
+      "category": "friss_serteshus",
+      "image": "sertes_borda_csont.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 12.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "0221",
+      "product_name_hu": "Sertés Bordacsont",
+      "product_name_ro": "Coaste porc",
+      "description_hu": "Friss bordacsont, gazdag ízű, ideális levesbe vagy párolva.",
+      "description_ro": "Coaste proaspete, cu gust bogat, ideale pentru supă sau înăbușite.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "sertes_comb",
+      "category": "friss_serteshus",
+      "image": "sertes_comb.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 25.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "010",
+      "product_name_hu": "Sertés comb csontnélkül",
+      "product_name_ro": "Pulpă porc",
+      "description_hu": "Sovány, nagy húsdarab, sokoldalúan felhasználható sütve, főzve vagy darálva.",
+      "description_ro": "Bucată mare și slabă, versatilă — la cuptor, fiartă sau tocată.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "sertes_csontos_karaj",
+      "category": "friss_serteshus",
+      "image": "sertes_csontos_karaj.webp",
+      "product_type": "hybrid",
+      "unit": "kg",
+      "price": 25.5,
+      "estimated_weight_per_piece": 1.5,
+      "weight_range_min": 1.2,
+      "weight_range_max": 1.8,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "016",
+      "product_name_hu": "Sertés fehérkaraj csontos szalonnás",
+      "product_name_ro": "Cotlet porc cu os și slănină",
+      "description_hu": "Csontján hagyott karajszelet, saftos és ízletes, grillezéshez vagy sütőbe.",
+      "description_ro": "Cotlet cu os, suculent și gustos, perfect pe grătar sau la cuptor.",
+      "note_hu": "Darab — kb. 1.5 kg-os",
+      "note_ro": "Bucată — aprox. 1.5 kg",
+      "quantity_override": null,
+      "options": [
+        {
+          "option_id": "pacolas",
+          "option_name_hu": "Pácolás",
+          "option_name_ro": "Marinare",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Pácolatlan",
+          "vg_off_hint_ro": "Nemarinat",
+          "display_order": 20,
+          "values": [
+            {
+              "value_id": "hagyomanyos",
+              "value_label_hu": "Hagyományos",
+              "value_label_ro": "Tradițional",
+              "meta_hint_hu": "Só, bors, fokhagyma",
+              "meta_hint_ro": "Sare, piper, usturoi",
+              "image_url": null,
+              "image_alt_hu": "Sózott-borsozott, fokhagymás karaj",
+              "image_alt_ro": "Cotlet sărat-piperat cu usturoi",
+              "description_hu": "Só, bors, fokhagyma, friss fűszerek. Klasszikus kárpát-medencei ízprofil sütésre és grillezésre. A mészáros 24 órás pácolást javasol, hogy az ízek mélyen átjárják a húst. Felár: +2 RON/kg.",
+              "description_ro": "Sare, piper, usturoi, ierburi proaspete. Profil clasic carpatic pentru frigare și grătar. Măcelarul recomandă 24 de ore de marinare pentru ca aromele să pătrundă bine. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            },
+            {
+              "value_id": "barbecue",
+              "value_label_hu": "Barbecue",
+              "value_label_ro": "Barbecue",
+              "meta_hint_hu": "Paradicsomos, BBQ-szerű",
+              "meta_hint_ro": "Cu roșii, stil BBQ",
+              "image_url": null,
+              "image_alt_hu": "Paradicsomos BBQ pácban karaj grillen",
+              "image_alt_ro": "Cotlet în marinată BBQ cu roșii pe grătar",
+              "description_hu": "Paradicsomos, édeskés, füstös ízprofil. Grillezésre kifejezetten ajánlott. A pác benne van, közvetlenül a grillre helyezhető. Felár: +2 RON/kg.",
+              "description_ro": "Profil cu roșii, dulce, afumat. Recomandat pentru grătar. Marinata este deja în carne, direct pe grătar. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sertes_csulok",
+      "category": "friss_serteshus",
+      "image": "sertes_csulok.webp",
+      "product_type": "hybrid",
+      "unit": "kg",
+      "price": 19.0,
+      "estimated_weight_per_piece": 1.5,
+      "weight_range_min": 1.2,
+      "weight_range_max": 1.8,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "007",
+      "product_name_hu": "Sertés Csülök",
+      "product_name_ro": "Ciolan porc",
+      "description_hu": "Kollagénben gazdag friss csülök, párolt fogásokhoz és húsleveshez ideális.",
+      "description_ro": "Ciolan proaspăt bogat în colagen, ideal pentru mâncăruri înăbușite și supă de carne.",
+      "note_hu": "Darab — kb. 1.5 kg-os, ±10% utólagos súlykorrekció",
+      "note_ro": "Bucată — aprox. 1.5 kg, posibilă corecție de greutate ±10%",
+      "quantity_override": null,
+      "options": [
+        {
+          "option_id": "meret",
+          "option_name_hu": "Méret",
+          "option_name_ro": "Mărime",
+          "option_type": "single_select",
+          "kind": "mandatory",
+          "default_value": "kozepes",
+          "vg_off_hint_hu": null,
+          "vg_off_hint_ro": null,
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "kisebb",
+              "value_label_hu": "Kisebb",
+              "value_label_ro": "Mai mic",
+              "meta_hint_hu": "1,2-1,4 kg",
+              "meta_hint_ro": "1,2-1,4 kg",
+              "image_url": null,
+              "image_alt_hu": "Kisebb csülök referenciával méretarányhoz",
+              "image_alt_ro": "Ciolan mai mic cu referință de scară",
+              "description_hu": "Ideális kisebb háztartásnak, 2-3 fős vacsorára. Gyorsabban sül.",
+              "description_ro": "Ideal pentru gospodării mici, cină pentru 2-3 persoane. Se gătește mai repede.",
+              "price_modifier": 0,
+              "price_modifier_unit": null,
+              "weight_range_min": 1.2,
+              "weight_range_max": 1.4
+            },
+            {
+              "value_id": "kozepes",
+              "value_label_hu": "Közepes",
+              "value_label_ro": "Mediu",
+              "meta_hint_hu": "1,4-1,6 kg · alapértelmezett",
+              "meta_hint_ro": "1,4-1,6 kg · standard",
+              "image_url": null,
+              "image_alt_hu": "Közepes csülök, referencia konyhakéssel",
+              "image_alt_ro": "Ciolan mediu, referință cu cuțit",
+              "description_hu": "A leggyakoribb választás. 4 fős család vasárnapi ebédjéhez.",
+              "description_ro": "Cea mai populară alegere. Pentru prânzul de duminică al unei familii de 4.",
+              "price_modifier": 0,
+              "price_modifier_unit": null,
+              "weight_range_min": 1.4,
+              "weight_range_max": 1.6
+            },
+            {
+              "value_id": "nagyobb",
+              "value_label_hu": "Nagyobb",
+              "value_label_ro": "Mai mare",
+              "meta_hint_hu": "1,6-1,8 kg",
+              "meta_hint_ro": "1,6-1,8 kg",
+              "image_url": null,
+              "image_alt_hu": "Nagyobb csülök tálon",
+              "image_alt_ro": "Ciolan mai mare pe platou",
+              "description_hu": "Nagyobb társasághoz, lassan sült ünnepi ételekhez. Hosszabb sütési idővel.",
+              "description_ro": "Pentru grupuri mai mari, mâncăruri festive gătite lent. Timp de gătire mai lung.",
+              "price_modifier": 0,
+              "price_modifier_unit": null,
+              "weight_range_min": 1.6,
+              "weight_range_max": 1.8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sertes_egesz_bordacsont",
+      "category": "friss_serteshus",
+      "image": "sertes_egesz_bordacsont.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 15.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "0222",
+      "product_name_hu": "Sertés Egész Bordacsont",
+      "product_name_ro": "Coaste porc întregi",
+      "description_hu": "Egészben hagyott bordacsont, ünnepi alkalmakra és grillezéshez tökéletes.",
+      "description_ro": "Coaste întregi, perfecte pentru ocazii festive și grătar.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "sertes_feher_karaj",
+      "category": "friss_serteshus",
+      "image": "sertes_feher_karaj.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 33.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "015",
+      "product_name_hu": "Sertés fehérkaraj csontnélkül",
+      "product_name_ro": "Cotlet porc fără os",
+      "description_hu": "Zsírszegény, egyenletes húsú karajdarab, könnyen szeletelhető sütéshez.",
+      "description_ro": "Cotlet slab cu carne uniformă, ușor de feliat pentru prăjit.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "szeletes",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Egészben",
+          "vg_off_hint_ro": "Întreg",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "vekony",
+              "value_label_hu": "Vékony",
+              "value_label_ro": "Subțire",
+              "meta_hint_hu": "1 cm",
+              "meta_hint_ro": "1 cm",
+              "image_url": null,
+              "image_alt_hu": "Vékonyra szeletelt hús",
+              "image_alt_ro": "Carne feliată subțire",
+              "description_hu": "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.",
+              "description_ro": "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "1,5 cm",
+              "meta_hint_ro": "1,5 cm",
+              "image_url": null,
+              "image_alt_hu": "Egységesen szeletelt hús közepes vastagságra",
+              "image_alt_ro": "Carne feliată uniform la grosime medie",
+              "description_hu": "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.",
+              "description_ro": "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "vastagabb",
+              "value_label_hu": "Vastagabb",
+              "value_label_ro": "Mai gros",
+              "meta_hint_hu": "2,5 cm",
+              "meta_hint_ro": "2,5 cm",
+              "image_url": null,
+              "image_alt_hu": "Vastag szeletek hús",
+              "image_alt_ro": "Felii groase de carne",
+              "description_hu": "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz.",
+              "description_ro": "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        },
+        {
+          "option_id": "pacolas",
+          "option_name_hu": "Pácolás",
+          "option_name_ro": "Marinare",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Pácolatlan",
+          "vg_off_hint_ro": "Nemarinat",
+          "display_order": 20,
+          "values": [
+            {
+              "value_id": "hagyomanyos",
+              "value_label_hu": "Hagyományos",
+              "value_label_ro": "Tradițional",
+              "meta_hint_hu": "Só, bors, fokhagyma",
+              "meta_hint_ro": "Sare, piper, usturoi",
+              "image_url": null,
+              "image_alt_hu": "Sózott-borsozott, fokhagymás karaj",
+              "image_alt_ro": "Cotlet sărat-piperat cu usturoi",
+              "description_hu": "Só, bors, fokhagyma, friss fűszerek. Klasszikus kárpát-medencei ízprofil sütésre és grillezésre. A mészáros 24 órás pácolást javasol, hogy az ízek mélyen átjárják a húst. Felár: +2 RON/kg.",
+              "description_ro": "Sare, piper, usturoi, ierburi proaspete. Profil clasic carpatic pentru frigare și grătar. Măcelarul recomandă 24 de ore de marinare pentru ca aromele să pătrundă bine. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            },
+            {
+              "value_id": "barbecue",
+              "value_label_hu": "Barbecue",
+              "value_label_ro": "Barbecue",
+              "meta_hint_hu": "Paradicsomos, BBQ-szerű",
+              "meta_hint_ro": "Cu roșii, stil BBQ",
+              "image_url": null,
+              "image_alt_hu": "Paradicsomos BBQ pácban karaj grillen",
+              "image_alt_ro": "Cotlet în marinată BBQ cu roșii pe grătar",
+              "description_hu": "Paradicsomos, édeskés, füstös ízprofil. Grillezésre kifejezetten ajánlott. A pác benne van, közvetlenül a grillre helyezhető. Felár: +2 RON/kg.",
+              "description_ro": "Profil cu roșii, dulce, afumat. Recomandat pentru grătar. Marinata este deja în carne, direct pe grătar. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sertes_hasresz",
+      "category": "friss_serteshus",
+      "image": "sertes_hasresz.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 24.5,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "018",
+      "product_name_hu": "Sertés Hasrész",
+      "product_name_ro": "Piept porc",
+      "description_hu": "Zsíros, ízgazdag hasrész, pörköltnek, darálva vagy frissen sütve kiváló.",
+      "description_ro": "Burtă de porc grasă și gustoasă, excelentă la tocană, tocată sau prăjită proaspătă.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "sertes_hasresz_csont_nelkul",
+      "category": "friss_serteshus",
+      "image": "sertes_hasresz.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 26.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "019",
+      "product_name_hu": "Sertés Hasrész Csontnélkül",
+      "product_name_ro": "Piept porc fără os",
+      "description_hu": "Bőrös, csontnélküli hasrész — szeletelve, pácolva is kérhető. Grill, lerben kisütés ideális.",
+      "description_ro": "Piept de porc cu piele, fără os — disponibil feliat și marinat. Ideal pentru grătar și cuptor.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "szeletes",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Egészben",
+          "vg_off_hint_ro": "Întreg",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "vekony",
+              "value_label_hu": "Vékony",
+              "value_label_ro": "Subțire",
+              "meta_hint_hu": "1,5 cm",
+              "meta_hint_ro": "1,5 cm",
+              "image_url": null,
+              "image_alt_hu": "Vékonyra szeletelt hús",
+              "image_alt_ro": "Carne feliată subțire",
+              "description_hu": "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.",
+              "description_ro": "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "2 cm",
+              "meta_hint_ro": "2 cm",
+              "image_url": null,
+              "image_alt_hu": "Egységesen szeletelt hús közepes vastagságra",
+              "image_alt_ro": "Carne feliată uniform la grosime medie",
+              "description_hu": "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.",
+              "description_ro": "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "vastagabb",
+              "value_label_hu": "Vastagabb",
+              "value_label_ro": "Mai gros",
+              "meta_hint_hu": "3 cm",
+              "meta_hint_ro": "3 cm",
+              "image_url": null,
+              "image_alt_hu": "Vastag szeletek hús",
+              "image_alt_ro": "Felii groase de carne",
+              "description_hu": "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz.",
+              "description_ro": "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        },
+        {
+          "option_id": "pacolas",
+          "option_name_hu": "Pácolás",
+          "option_name_ro": "Marinare",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Pácolatlan",
+          "vg_off_hint_ro": "Nemarinat",
+          "display_order": 20,
+          "values": [
+            {
+              "value_id": "hagyomanyos",
+              "value_label_hu": "Hagyományos",
+              "value_label_ro": "Tradițional",
+              "meta_hint_hu": "Só, bors, fokhagyma",
+              "meta_hint_ro": "Sare, piper, usturoi",
+              "image_url": null,
+              "image_alt_hu": "Sózott-borsozott, fokhagymás karaj",
+              "image_alt_ro": "Cotlet sărat-piperat cu usturoi",
+              "description_hu": "Só, bors, fokhagyma, friss fűszerek. Klasszikus kárpát-medencei ízprofil sütésre és grillezésre. A mészáros 24 órás pácolást javasol, hogy az ízek mélyen átjárják a húst. Felár: +2 RON/kg.",
+              "description_ro": "Sare, piper, usturoi, ierburi proaspete. Profil clasic carpatic pentru frigare și grătar. Măcelarul recomandă 24 de ore de marinare pentru ca aromele să pătrundă bine. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            },
+            {
+              "value_id": "barbecue",
+              "value_label_hu": "Barbecue",
+              "value_label_ro": "Barbecue",
+              "meta_hint_hu": "Paradicsomos, BBQ-szerű",
+              "meta_hint_ro": "Cu roșii, stil BBQ",
+              "image_url": null,
+              "image_alt_hu": "Paradicsomos BBQ pácban karaj grillen",
+              "image_alt_ro": "Cotlet în marinată BBQ cu roșii pe grătar",
+              "description_hu": "Paradicsomos, édeskés, füstös ízprofil. Grillezésre kifejezetten ajánlott. A pác benne van, közvetlenül a grillre helyezhető. Felár: +2 RON/kg.",
+              "description_ro": "Profil cu roșii, dulce, afumat. Recomandat pentru grătar. Marinata este deja în carne, direct pe grătar. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sertes_lapocka",
+      "category": "friss_serteshus",
+      "image": "sertes_munka_hus.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 25.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "011",
+      "product_name_hu": "Sertés Lapocka",
+      "product_name_ro": "Spata porc, fără os și fără slănină",
+      "description_hu": "Sertés lapocka csontnélkül és szalonna nélkül. Puhább mint a comb, hamarabb fő — pörköltnek, töltelékesnek, levesnek ideális.",
+      "description_ro": "Spată de porc fără os și fără slănină. Mai fragedă decât pulpa, se gătește mai rapid — ideală pentru tocane, sarmale, supe.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "sertes_munka_hus",
+      "category": "friss_serteshus",
+      "image": "sertes_munka_hus.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 21.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "021",
+      "product_name_hu": "Sertés Apróhús",
+      "product_name_ro": "Carne porc lucru",
+      "description_hu": "Vegyes húsdarabok, ideálisak pörköltnek, ragúnak vagy daráláshoz.",
+      "description_ro": "Bucăți mixte de carne, ideale pentru tocană, ragú sau tocat.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "sertes_oldalas",
+      "category": "friss_serteshus",
+      "image": "sertes_hasresz.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 26.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "020",
+      "product_name_hu": "Sertés Oldalas",
+      "product_name_ro": "Costiță",
+      "description_hu": "Csontos sertés oldalas, bőr nélkül — szeletelve és pácolva kérhető. Grillezésre, lerbe sütésre ideális.",
+      "description_ro": "Costiță de porc cu os, fără piele — disponibilă feliată și marinată. Ideală pentru grătar și cuptor.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "szeletes",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Egészben",
+          "vg_off_hint_ro": "Întreg",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "vekony",
+              "value_label_hu": "Vékony",
+              "value_label_ro": "Subțire",
+              "meta_hint_hu": "1,5 cm",
+              "meta_hint_ro": "1,5 cm",
+              "image_url": null,
+              "image_alt_hu": "Vékonyra szeletelt hús",
+              "image_alt_ro": "Carne feliată subțire",
+              "description_hu": "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.",
+              "description_ro": "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "2 cm",
+              "meta_hint_ro": "2 cm",
+              "image_url": null,
+              "image_alt_hu": "Egységesen szeletelt hús közepes vastagságra",
+              "image_alt_ro": "Carne feliată uniform la grosime medie",
+              "description_hu": "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.",
+              "description_ro": "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "vastagabb",
+              "value_label_hu": "Vastagabb",
+              "value_label_ro": "Mai gros",
+              "meta_hint_hu": "3 cm",
+              "meta_hint_ro": "3 cm",
+              "image_url": null,
+              "image_alt_hu": "Vastag szeletek hús",
+              "image_alt_ro": "Felii groase de carne",
+              "description_hu": "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz.",
+              "description_ro": "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        },
+        {
+          "option_id": "pacolas",
+          "option_name_hu": "Pácolás",
+          "option_name_ro": "Marinare",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Pácolatlan",
+          "vg_off_hint_ro": "Nemarinat",
+          "display_order": 20,
+          "values": [
+            {
+              "value_id": "hagyomanyos",
+              "value_label_hu": "Hagyományos",
+              "value_label_ro": "Tradițional",
+              "meta_hint_hu": "Só, bors, fokhagyma",
+              "meta_hint_ro": "Sare, piper, usturoi",
+              "image_url": null,
+              "image_alt_hu": "Sózott-borsozott, fokhagymás karaj",
+              "image_alt_ro": "Cotlet sărat-piperat cu usturoi",
+              "description_hu": "Só, bors, fokhagyma, friss fűszerek. Klasszikus kárpát-medencei ízprofil sütésre és grillezésre. A mészáros 24 órás pácolást javasol, hogy az ízek mélyen átjárják a húst. Felár: +2 RON/kg.",
+              "description_ro": "Sare, piper, usturoi, ierburi proaspete. Profil clasic carpatic pentru frigare și grătar. Măcelarul recomandă 24 de ore de marinare pentru ca aromele să pătrundă bine. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            },
+            {
+              "value_id": "barbecue",
+              "value_label_hu": "Barbecue",
+              "value_label_ro": "Barbecue",
+              "meta_hint_hu": "Paradicsomos, BBQ-szerű",
+              "meta_hint_ro": "Cu roșii, stil BBQ",
+              "image_url": null,
+              "image_alt_hu": "Paradicsomos BBQ pácban karaj grillen",
+              "image_alt_ro": "Cotlet în marinată BBQ cu roșii pe grătar",
+              "description_hu": "Paradicsomos, édeskés, füstös ízprofil. Grillezésre kifejezetten ajánlott. A pác benne van, közvetlenül a grillre helyezhető. Felár: +2 RON/kg.",
+              "description_ro": "Profil cu roșii, dulce, afumat. Recomandat pentru grătar. Marinata este deja în carne, direct pe grătar. Supliment: +2 RON/kg.",
+              "price_modifier": 2,
+              "price_modifier_unit": "per_kg"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sertes_orolt_hus",
+      "category": "friss_serteshus",
+      "image": "sertes_orolt_hus.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 21.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "902",
+      "product_name_hu": "Sertés Őrölt Hús",
+      "product_name_ro": "Carne tocată porc",
+      "description_hu": "Frissen darált sertéshús, kolbászkészítéshez, fasírthoz és töltött ételekhez.",
+      "description_ro": "Carne de porc tocată proaspătă, pentru cârnați, chiftele și mâncăruri umplute.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "zsirossag",
+          "option_name_hu": "Zsírosság",
+          "option_name_ro": "Conținut de grăsime",
+          "option_type": "single_select",
+          "kind": "mandatory",
+          "default_value": "normal",
+          "vg_off_hint_hu": null,
+          "vg_off_hint_ro": null,
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "kevesbe_zsiros",
+              "value_label_hu": "Kevésbé zsíros",
+              "value_label_ro": "Mai slab",
+              "meta_hint_hu": "Bolognai, ragú · kb. 70/30",
+              "meta_hint_ro": "Bolognese, ragout · cca. 70/30",
+              "image_url": null,
+              "image_alt_hu": "Sovány, kevés zsírral darált hús",
+              "image_alt_ro": "Carne tocată slabă cu puțină grăsime",
+              "description_hu": "Kb. 70% sovány, 30% zsír. Egészségtudatosabb választás bolognai szószhoz, ragúhoz, könnyebb fasírthoz.",
+              "description_ro": "Aprox. 70% slab, 30% grăsime. Alegere mai sănătoasă pentru sos bolognez, ragout, chiftele ușoare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "Alapértelmezett, fele-fele",
+              "meta_hint_ro": "Standard, jumi-juma",
+              "image_url": null,
+              "image_alt_hu": "Klasszikus arányú darált hús",
+              "image_alt_ro": "Carne tocată cu raport clasic",
+              "description_hu": "Kb. 50-50% sovány-zsír arány. A mészáros alapbeállítása, minden klasszikus recepthez illik.",
+              "description_ro": "Aprox. 50-50% slab-grăsime. Setarea standard a măcelarului, potrivită pentru toate rețetele clasice.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "zsirosabb",
+              "value_label_hu": "Zsírosabb",
+              "value_label_ro": "Mai gras",
+              "meta_hint_hu": "Fasírt, töltelékes káposzta · kb. 35/65",
+              "meta_hint_ro": "Chiftele, sarmale · cca. 35/65",
+              "image_url": null,
+              "image_alt_hu": "Zsírosabb, lédús darált hús",
+              "image_alt_ro": "Carne tocată mai grasă, suculentă",
+              "description_hu": "Kb. 35% sovány, 65% zsír. Lédús fasírthoz, töltelékes káposztához, hagyományos magyar és román ételekhez.",
+              "description_ro": "Aprox. 35% slab, 65% grăsime. Pentru chiftele suculente, sarmale, mâncăruri tradiționale ungare și românești.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sertes_szalami",
+      "category": "kolbasz_szalami",
+      "image": "sertes_szalami.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 43.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "917",
+      "product_name_hu": "Sertés Szalámi",
+      "product_name_ro": "Salam de porc",
+      "description_hu": "Tradicionálisan érlelt sertésszalámi, karakteres ízzel, vékonyra szeletelve tálalható.",
+      "description_ro": "Salam de porc maturat tradițional, cu gust caracteristic, servit feliat subțire.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "szeletes",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Egészben",
+          "vg_off_hint_ro": "Întreg",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "vekony",
+              "value_label_hu": "Vékony",
+              "value_label_ro": "Subțire",
+              "meta_hint_hu": "2 mm",
+              "meta_hint_ro": "2 mm",
+              "image_url": null,
+              "image_alt_hu": "Vékonyra szeletelt hús",
+              "image_alt_ro": "Carne feliată subțire",
+              "description_hu": "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.",
+              "description_ro": "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "4 mm",
+              "meta_hint_ro": "4 mm",
+              "image_url": null,
+              "image_alt_hu": "Egységesen szeletelt hús közepes vastagságra",
+              "image_alt_ro": "Carne feliată uniform la grosime medie",
+              "description_hu": "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.",
+              "description_ro": "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "vastagabb",
+              "value_label_hu": "Vastagabb",
+              "value_label_ro": "Mai gros",
+              "meta_hint_hu": "6 mm",
+              "meta_hint_ro": "6 mm",
+              "image_url": null,
+              "image_alt_hu": "Vastag szeletek hús",
+              "image_alt_ro": "Felii groase de carne",
+              "description_hu": "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz.",
+              "description_ro": "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "sertes_szalonnas_comb",
+      "category": "friss_serteshus",
+      "image": "sertes_szalonnas_comb.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 24.5,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "012",
+      "product_name_hu": "Sertés Szalonnás Comb",
+      "product_name_ro": "Pulpă porc cu slănină",
+      "description_hu": "Szalonnával borított combdarab, szaftos és ízletes egészben sütve.",
+      "description_ro": "Pulpă acoperită cu slănină, suculentă și gustoasă la cuptor întreg.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "sertes_toka_szalonna",
+      "category": "friss_serteshus",
+      "image": "sertes_toka_szalonna.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 20.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "008",
+      "product_name_hu": "Sertés Toka Szalonna",
+      "product_name_ro": "Slănină gușă",
+      "description_hu": "A tokájából készített szalonna, jellegzetes márványos szerkezettel, főzve és sütve egyaránt.",
+      "description_ro": "Slănina de obraz cu structură marmorată caracteristică, excelentă fiartă sau prăjită.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "szekely_kolbasz",
+      "category": "kolbasz_szalami",
+      "image": "szekely_kolbasz.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 45.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "921",
+      "product_name_hu": "Székely Kolbász",
+      "product_name_ro": "Cârnați de casă Secuieni",
+      "description_hu": "Erősen fűszerezett, paprikás székely kolbász, a régió egyik jellegzetes kézműves terméke.",
+      "description_ro": "Cârnat secuiesc puternic condimentat cu boia, unul dintre produsele artizanale reprezentative ale regiunii.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "teli_szalami",
+      "category": "kolbasz_szalami",
+      "image": "teli_szalami.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 68.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "9904",
+      "product_name_hu": "Téli Szalámi",
+      "product_name_ro": "Salam de iarnă",
+      "description_hu": "Hosszan érlelt, intenzív ízű téli szalámi, hideg tálak és szendvicsek klasszikusa.",
+      "description_ro": "Salam de iarnă maturat îndelung, cu gust intens, clasic al platourilor reci și sandvișurilor.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": [
+        {
+          "option_id": "szeletes",
+          "option_name_hu": "Szeletelés",
+          "option_name_ro": "Tăiere",
+          "option_type": "single_select",
+          "kind": "optional",
+          "default_value": null,
+          "vg_off_hint_hu": "Egészben",
+          "vg_off_hint_ro": "Întreg",
+          "display_order": 10,
+          "values": [
+            {
+              "value_id": "vekony",
+              "value_label_hu": "Vékony",
+              "value_label_ro": "Subțire",
+              "meta_hint_hu": "2 mm",
+              "meta_hint_ro": "2 mm",
+              "image_url": null,
+              "image_alt_hu": "Vékonyra szeletelt hús",
+              "image_alt_ro": "Carne feliată subțire",
+              "description_hu": "Vékonyra szeletelve. Klasszikus szendvicsbe, hideg tálra, gyorsan átsülő ételekhez, finom ízekhez.",
+              "description_ro": "Feliat subțire. Pentru sandviș clasic, platou rece, rețete rapide, arome fine.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "normal",
+              "value_label_hu": "Normál",
+              "value_label_ro": "Normal",
+              "meta_hint_hu": "4 mm",
+              "meta_hint_ro": "4 mm",
+              "image_url": null,
+              "image_alt_hu": "Egységesen szeletelt hús közepes vastagságra",
+              "image_alt_ro": "Carne feliată uniform la grosime medie",
+              "description_hu": "A leggyakoribb választás. Egységes vastagság szendvicsre, sütésre, harapásra egyaránt.",
+              "description_ro": "Cea mai populară alegere. Grosime uniformă pentru sandviș, gătit, gustare.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            },
+            {
+              "value_id": "vastagabb",
+              "value_label_hu": "Vastagabb",
+              "value_label_ro": "Mai gros",
+              "meta_hint_hu": "6 mm",
+              "meta_hint_ro": "6 mm",
+              "image_url": null,
+              "image_alt_hu": "Vastag szeletek hús",
+              "image_alt_ro": "Felii groase de carne",
+              "description_hu": "Robusztus szelet, falatozásra, paraszti tálra, vajaskenyérre, lassú sütésre. Karakteres íz.",
+              "description_ro": "Felie robustă, pentru gustare, platou țărănesc, pâine cu unt, gătit lent. Aromă pronunțată.",
+              "price_modifier": 0,
+              "price_modifier_unit": null
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tepertonek_valo_szalonna",
+      "category": "felvagott_egyeb",
+      "image": "fustolt_szalonna.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 15.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "025",
+      "product_name_hu": "Tepertőnek való Szalonna",
+      "product_name_ro": "Slănină lucru",
+      "description_hu": "Tepertő készítésére alkalmas friss szalonna. Nyári termék, főleg szezonálisan elérhető.",
+      "description_ro": "Slănină proaspătă potrivită pentru jumeri. Produs sezonier de vară.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    },
+    {
+      "id": "velos_csont",
+      "category": "friss_novendekhus",
+      "image": "velos_csont.webp",
+      "product_type": "weight",
+      "unit": "kg",
+      "price": 22.0,
+      "is_available": true,
+      "popularity_score": 100,
+      "internal_code": "114",
+      "product_name_hu": "Növendék Velős Csont",
+      "product_name_ro": "Oase bovine cu măduvă",
+      "description_hu": "Csontvelőben gazdag csont, gazdag levesalapnak vagy pirítóson tálalva különlegesség.",
+      "description_ro": "Os bogat în măduvă, bază excelentă pentru supă sau servit pe pâine prăjită ca specialitate.",
+      "estimated_weight_per_piece": null,
+      "weight_range_min": null,
+      "weight_range_max": null,
+      "quantity_override": null,
+      "note_hu": null,
+      "note_ro": null,
+      "options": []
+    }
+  ],
+  "settings": {
+    "default_min_quantity": 0.5,
+    "default_max_quantity": 5.0,
+    "default_step": 0.05,
+    "default_hot_amounts": [
+      0.5,
+      1,
+      2,
+      3,
+      5
+    ],
+    "weight_range_percent": 20.0,
+    "unit_options": [
+      {
+        "unit_id": "kg",
+        "unit_label_ro": "kg",
+        "unit_label_hu": "kg"
+      },
+      {
+        "unit_id": "pcs",
+        "unit_label_ro": "buc",
+        "unit_label_hu": "db"
+      }
+    ]
+  }
+}
+</script>
+<script type="application/json" id="embedded-schema">
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://deakhus.netlify.app/data/_schema-v1.2.json",
+  "title": "Deák Húsmíves Product Catalog",
+  "version": "1.2",
+  "description": "Schema for the Deák Húsmíves product catalog. v1.2: added options[] array on products (DH-173 VG = Variation Group). Each product can have multiple options, each with values that may carry price modifiers, modal info content, and per-product overrides. Covers Deak Product, Deak Product Category, Deak Product Settings, Deak Product Quantity Override, Deak Unit Option, Deak Product Option, and Deak Product Option Value doctypes.",
+  "type": "object",
+  "required": [
+    "meta",
+    "categories",
+    "products",
+    "settings"
+  ],
+  "properties": {
+    "meta": { "$ref": "#/definitions/meta" },
+    "categories": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/category" }
+    },
+    "products": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/product" }
+    },
+    "settings": { "$ref": "#/definitions/settings" }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "meta": {
+      "type": "object",
+      "required": ["version", "schema_version", "date"],
+      "properties": {
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$",
+          "description": "Data version — must match the filename (e.g. products-v1.2.json → \"1.2\")"
+        },
+        "schema_version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+$",
+          "description": "Schema version this data conforms to (e.g. \"1.2\" → _schema-v1.2.json)"
+        },
+        "date": { "type": "string", "format": "date" },
+        "author": { "type": "string" },
+        "description": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "category": {
+      "type": "object",
+      "required": ["category_id", "category_name_ro", "category_name_hu"],
+      "properties": {
+        "category_id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "category_name_ro": { "type": "string" },
+        "category_name_hu": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "product": {
+      "type": "object",
+      "required": [
+        "id",
+        "product_name_ro",
+        "product_name_hu",
+        "image",
+        "price",
+        "unit",
+        "product_type",
+        "category",
+        "is_available"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "internal_code": {
+          "type": ["string", "null"],
+          "pattern": "^[A-Z0-9]{3,7}(\\.[0-9]+)?$",
+          "default": null
+        },
+        "product_name_ro": { "type": "string" },
+        "product_name_hu": { "type": "string" },
+        "description_ro": { "type": ["string", "null"], "default": null },
+        "description_hu": { "type": ["string", "null"], "default": null },
+        "note_ro": { "type": ["string", "null"], "default": null },
+        "note_hu": { "type": ["string", "null"], "default": null },
+        "image": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+\\.(webp|jpg|png)$"
+        },
+        "price": { "type": "number", "exclusiveMinimum": 0 },
+        "unit": { "type": "string" },
+        "product_type": {
+          "type": "string",
+          "enum": ["weight", "piece", "hybrid"]
+        },
+        "estimated_weight_per_piece": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null
+        },
+        "weight_range_min": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null
+        },
+        "weight_range_max": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null
+        },
+        "category": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "is_available": { "type": "boolean" },
+        "popularity_score": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1000,
+          "default": 0
+        },
+        "quantity_override": {
+          "oneOf": [
+            { "$ref": "#/definitions/quantity_override" },
+            { "type": "null" }
+          ],
+          "default": null
+        },
+        "options": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/product_option" },
+          "default": [],
+          "description": "DH-173 VG (Variation Group) — termék-szintű opciók. Üres array = nincs opció (csak alap kosár-flow)."
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "product_type": { "const": "hybrid" } } },
+          "then": {
+            "required": ["estimated_weight_per_piece", "weight_range_min", "weight_range_max"],
+            "properties": {
+              "estimated_weight_per_piece": { "type": "number", "exclusiveMinimum": 0 },
+              "weight_range_min": { "type": "number", "exclusiveMinimum": 0 },
+              "weight_range_max": { "type": "number", "exclusiveMinimum": 0 }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "product_type": { "const": "weight" } } },
+          "then": {
+            "properties": {
+              "estimated_weight_per_piece": { "type": "null" },
+              "weight_range_min": { "type": "null" },
+              "weight_range_max": { "type": "null" }
+            }
+          }
+        },
+        {
+          "if": { "properties": { "product_type": { "const": "piece" } } },
+          "then": {
+            "properties": {
+              "estimated_weight_per_piece": { "type": "null" },
+              "weight_range_min": { "type": "null" },
+              "weight_range_max": { "type": "null" }
+            }
+          }
+        }
+      ]
+    },
+    "product_option": {
+      "type": "object",
+      "required": [
+        "option_id",
+        "option_name_hu",
+        "option_name_ro",
+        "option_type",
+        "kind",
+        "values"
+      ],
+      "properties": {
+        "option_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$",
+          "description": "Stable identifier (e.g. 'pacolas', 'szeletes', 'meret')."
+        },
+        "option_name_hu": { "type": "string" },
+        "option_name_ro": { "type": "string" },
+        "option_type": {
+          "type": "string",
+          "enum": ["single_select", "multi_level", "text"],
+          "description": "Phase 1: csak single_select. multi_level és text későbbi phase-re fenntartva."
+        },
+        "kind": {
+          "type": "string",
+          "enum": ["optional", "mandatory"],
+          "description": "OPTIONAL: checkbox + opt-in. MANDATORY: nincs checkbox, default mindig kiválasztva."
+        },
+        "default_value": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "MANDATORY VG-knél: a default érték value_id-ja (kötelező). OPTIONAL VG-knél: fallback javaslat (UI nem applikálja automatikusan), lehet null."
+        },
+        "vg_off_hint_hu": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "OPTIONAL VG OFF-állapotában megjelenő hint (HU). Pl. 'Pácolatlan'. MANDATORY-nál null."
+        },
+        "vg_off_hint_ro": {
+          "type": ["string", "null"],
+          "default": null
+        },
+        "display_order": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0,
+          "description": "Megjelenítési sorrend a termékdetail oldalon."
+        },
+        "values": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/option_value" },
+          "minItems": 1
+        }
+      },
+      "additionalProperties": false,
+      "allOf": [
+        {
+          "if": { "properties": { "kind": { "const": "mandatory" } } },
+          "then": {
+            "required": ["default_value"],
+            "properties": {
+              "default_value": { "type": "string" },
+              "vg_off_hint_hu": { "type": "null" },
+              "vg_off_hint_ro": { "type": "null" }
+            }
+          }
+        }
+      ]
+    },
+    "option_value": {
+      "type": "object",
+      "required": ["value_id", "value_label_hu", "value_label_ro"],
+      "properties": {
+        "value_id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "value_label_hu": { "type": "string" },
+        "value_label_ro": { "type": "string" },
+        "meta_hint_hu": {
+          "type": ["string", "null"],
+          "maxLength": 60,
+          "default": null,
+          "description": "Rövid másodlagos hint a radio mellett (max 60 char). Pl. 'Só, bors, fokhagyma'."
+        },
+        "meta_hint_ro": {
+          "type": ["string", "null"],
+          "maxLength": 60,
+          "default": null
+        },
+        "image_url": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Modal info kép útvonala (pl. '/files/options/pacolas-hagyomanyos.webp'). Null = placeholder."
+        },
+        "image_alt_hu": { "type": ["string", "null"], "default": null },
+        "image_alt_ro": { "type": ["string", "null"], "default": null },
+        "description_hu": {
+          "type": ["string", "null"],
+          "default": null,
+          "description": "Modal info description (HU). Markdown / HTML tartalmaz."
+        },
+        "description_ro": { "type": ["string", "null"], "default": null },
+        "price_modifier": {
+          "type": "number",
+          "default": 0,
+          "description": "Felár ami a termék alapárához hozzáadódik. 0 = ingyenes opció."
+        },
+        "price_modifier_unit": {
+          "type": ["string", "null"],
+          "enum": ["per_kg", "per_unit", "flat", null],
+          "default": null,
+          "description": "per_kg: tétel kg-jával szorzódik. per_unit: db-számmal. flat: egyszeri felár. null: ingyenes opció."
+        },
+        "weight_range_min": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null,
+          "description": "Méret-VG hibrid termékeinél a kg-tartomány alja (override mező)."
+        },
+        "weight_range_max": {
+          "type": ["number", "null"],
+          "exclusiveMinimum": 0,
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "quantity_override": {
+      "type": "object",
+      "properties": {
+        "min_quantity": { "type": ["number", "null"], "exclusiveMinimum": 0, "default": null },
+        "max_quantity": { "type": ["number", "null"], "exclusiveMinimum": 0, "default": null },
+        "step": { "type": ["number", "null"], "exclusiveMinimum": 0, "default": null },
+        "hot_amounts": {
+          "type": ["array", "null"],
+          "items": { "type": "number", "exclusiveMinimum": 0 },
+          "default": null
+        }
+      },
+      "additionalProperties": false
+    },
+    "unit_option": {
+      "type": "object",
+      "required": ["unit_id", "unit_label_ro", "unit_label_hu"],
+      "properties": {
+        "unit_id": { "type": "string" },
+        "unit_label_ro": { "type": "string" },
+        "unit_label_hu": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "settings": {
+      "type": "object",
+      "required": [
+        "default_min_quantity",
+        "default_max_quantity",
+        "default_step",
+        "default_hot_amounts",
+        "weight_range_percent",
+        "unit_options"
+      ],
+      "properties": {
+        "default_min_quantity": { "type": "number", "exclusiveMinimum": 0 },
+        "default_max_quantity": { "type": "number", "exclusiveMinimum": 0 },
+        "default_step": { "type": "number", "exclusiveMinimum": 0 },
+        "default_hot_amounts": {
+          "type": "array",
+          "items": { "type": "number", "exclusiveMinimum": 0 }
+        },
+        "weight_range_percent": { "type": "number", "exclusiveMinimum": 0 },
+        "unit_options": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/unit_option" }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
+
+</script>
+
+
+<script>
+(function () {
+  'use strict';
+
+  var DATA = null;
+  var SCHEMA = null;
+  var FILTERS = {
+    search: '',
+    category: 'all',
+    type: 'all',
+    vg: 'all',
+  };
+  var EXPANDED = new Set();
+  var CURRENT_RAW = 'products';
+
+  // ─── Toast ───────────────────────────────────────
+  var toast = document.createElement('div');
+  toast.id = 'dh-toast';
+  document.body.appendChild(toast);
+  var toastT;
+  function showToast(m) {
+    toast.textContent = m;
+    toast.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { toast.classList.remove('show'); }, 1500);
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function () {
+        showToast('Másolva');
+      });
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;left:-9999px;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); showToast('Másolva'); }
+      catch (e) { showToast('Másolás sikertelen'); }
+      document.body.removeChild(ta);
+    }
+  }
+
+  // ─── JSON syntax highlight ──────────────────────
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function highlightJson(json) {
+    var s = typeof json === 'string' ? json : JSON.stringify(json, null, 2);
+    s = escapeHtml(s);
+    s = s.replace(/("(?:[^"\\]|\\.)*")(\s*:)/g, '<span class="json-key">$1</span>$2');
+    s = s.replace(/: ("(?:[^"\\]|\\.)*")/g, ': <span class="json-string">$1</span>');
+    s = s.replace(/: (-?\d+(?:\.\d+)?)/g, ': <span class="json-number">$1</span>');
+    s = s.replace(/: (true|false)/g, ': <span class="json-bool">$1</span>');
+    s = s.replace(/: null/g, ': <span class="json-null">null</span>');
+    return s;
+  }
+
+  // ─── Stats ──────────────────────────────────────
+  function renderStats() {
+    var products = DATA.products;
+    var withOpts = products.filter(function (p) { return (p.options || []).length > 0; });
+    var mandatory = products.filter(function (p) {
+      return (p.options || []).some(function (o) { return o.kind === 'mandatory'; });
+    });
+    var paid = products.filter(function (p) {
+      return (p.options || []).some(function (o) {
+        return o.values.some(function (v) { return v.price_modifier > 0; });
+      });
+    });
+    var byType = { weight: 0, hybrid: 0, piece: 0 };
+    products.forEach(function (p) { byType[p.product_type] = (byType[p.product_type] || 0) + 1; });
+
+    var stats = [
+      { label: 'Termék', value: products.length },
+      { label: 'Kategória', value: DATA.categories.length },
+      { label: 'VG-vel', value: withOpts.length, accent: true },
+      { label: 'Mandatory', value: mandatory.length },
+      { label: 'Díjköteles', value: paid.length, warn: paid.length > 0 },
+      { label: 'kg-os', value: byType.weight || 0 },
+      { label: 'hibrid', value: byType.hybrid || 0 },
+      { label: 'db-os', value: byType.piece || 0 },
+    ];
+
+    var html = stats.map(function (s) {
+      var cls = 'stat-card' + (s.accent ? ' accent' : '') + (s.warn ? ' warn' : '');
+      return '<div class="' + cls + '"><div class="stat-value">' + s.value + '</div><div class="stat-label">' + s.label + '</div></div>';
+    }).join('');
+    document.getElementById('stats').innerHTML = html;
+    document.getElementById('count-products').textContent = products.length;
+  }
+
+  // ─── Category filter chips ──────────────────────
+  function renderCategoryChips() {
+    var counts = {};
+    DATA.products.forEach(function (p) {
+      counts[p.category] = (counts[p.category] || 0) + 1;
+    });
+    var container = document.getElementById('filter-category');
+    var html = '<button class="chip-btn active" data-filter-cat="all" type="button">Mind <span class="chip-count">(' + DATA.products.length + ')</span></button>';
+    DATA.categories.forEach(function (c) {
+      var n = counts[c.category_id] || 0;
+      html += '<button class="chip-btn" data-filter-cat="' + c.category_id + '" type="button">' + c.category_name_hu + ' <span class="chip-count">(' + n + ')</span></button>';
+    });
+    container.innerHTML = '<span class="filter-label">Kategória</span>' + html;
+
+    container.querySelectorAll('[data-filter-cat]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        FILTERS.category = b.dataset.filterCat;
+        container.querySelectorAll('[data-filter-cat]').forEach(function (x) { x.classList.toggle('active', x === b); });
+        renderProducts();
+      });
+    });
+  }
+
+  // ─── Product filter pipeline ────────────────────
+  function matchesFilters(p) {
+    // Category
+    if (FILTERS.category !== 'all' && p.category !== FILTERS.category) return false;
+    // Type
+    if (FILTERS.type !== 'all' && p.product_type !== FILTERS.type) return false;
+    // VG
+    if (FILTERS.vg !== 'all') {
+      var opts = p.options || [];
+      if (FILTERS.vg === 'any' && opts.length === 0) return false;
+      if (FILTERS.vg === 'none' && opts.length > 0) return false;
+      if (FILTERS.vg === 'mandatory' && !opts.some(function (o) { return o.kind === 'mandatory'; })) return false;
+      if (FILTERS.vg === 'paid' && !opts.some(function (o) {
+        return o.values.some(function (v) { return v.price_modifier > 0; });
+      })) return false;
+      if (['pacolas', 'szeletes', 'forma', 'meret', 'zsirossag'].indexOf(FILTERS.vg) >= 0) {
+        if (!opts.some(function (o) { return o.option_id === FILTERS.vg; })) return false;
+      }
+    }
+    // Search
+    var q = FILTERS.search.trim().toLowerCase();
+    if (q) {
+      var hay = [
+        p.id, p.product_name_hu, p.product_name_ro,
+        p.internal_code || '', p.category
+      ].join(' ').toLowerCase();
+      if (hay.indexOf(q) < 0) return false;
+    }
+    return true;
+  }
+
+  function renderProducts() {
+    var matched = DATA.products.filter(matchesFilters);
+    document.getElementById('results-count').innerHTML =
+      '<strong>' + matched.length + '</strong> / ' + DATA.products.length + ' termék';
+
+    if (matched.length === 0) {
+      document.getElementById('product-list').innerHTML =
+        '<div class="empty-note">Nincs találat. Próbáld törölni a szűrőket vagy a keresést.</div>';
+      return;
+    }
+
+    var html = matched.map(renderProductRow).join('');
+    document.getElementById('product-list').innerHTML = html;
+
+    // Wire up expand/collapse
+    document.querySelectorAll('.product-head').forEach(function (head) {
+      head.addEventListener('click', function () {
+        var pid = head.dataset.pid;
+        var row = head.closest('.product-row');
+        if (EXPANDED.has(pid)) {
+          EXPANDED.delete(pid);
+          row.classList.remove('is-expanded');
+        } else {
+          EXPANDED.add(pid);
+          row.classList.add('is-expanded');
+        }
+      });
+    });
+
+    // Wire up copy buttons
+    document.querySelectorAll('.copy-mini').forEach(function (btn) {
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var pid = btn.dataset.pid;
+        var p = DATA.products.find(function (x) { return x.id === pid; });
+        copyText(JSON.stringify(p, null, 2));
+      });
+    });
+
+    // Re-update raw filtered if active
+    if (CURRENT_RAW === 'filtered') renderRaw();
+  }
+
+  function renderProductRow(p) {
+    var pid = p.id;
+    var hasOpts = (p.options || []).length > 0;
+    var hasMand = (p.options || []).some(function (o) { return o.kind === 'mandatory'; });
+    var hasPaid = (p.options || []).some(function (o) {
+      return o.values.some(function (v) { return v.price_modifier > 0; });
+    });
+
+    var tags = [];
+    if (p.product_type === 'hybrid') tags.push('<span class="tag-pill tag-hibrid">hibrid</span>');
+    if (p.product_type === 'piece') tags.push('<span class="tag-pill tag-piece">db</span>');
+    if (hasOpts) tags.push('<span class="tag-pill tag-vg">VG ×' + p.options.length + '</span>');
+    if (hasMand) tags.push('<span class="tag-pill tag-mandatory">mandatory</span>');
+    if (hasPaid) tags.push('<span class="tag-pill tag-paid">+RON</span>');
+
+    var meta = [];
+    if (p.internal_code) meta.push('<span class="code">' + escapeHtml(p.internal_code) + '</span>');
+    meta.push('<span>' + escapeHtml(p.category) + '</span>');
+    meta.push('<span class="price">' + p.price.toFixed(2).replace('.', ',') + ' RON / ' + escapeHtml(p.unit) + '</span>');
+
+    var rowClass = 'product-row' + (EXPANDED.has(pid) ? ' is-expanded' : '');
+
+    return '<div class="' + rowClass + '" data-pid="' + escapeHtml(pid) + '">' +
+      '<button type="button" class="product-head" data-pid="' + escapeHtml(pid) + '">' +
+        '<div class="product-thumb"></div>' +
+        '<div class="product-main">' +
+          '<div class="product-name">' + escapeHtml(p.product_name_hu) + ' <span class="product-name-ro">' + escapeHtml(p.product_name_ro) + '</span></div>' +
+          '<div class="product-meta">' + meta.join('') + '</div>' +
+        '</div>' +
+        '<div class="product-tags">' + tags.join('') + '</div>' +
+        '<div class="expand-icon"><svg viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></div>' +
+      '</button>' +
+      '<div class="product-detail">' + renderProductDetail(p) + '</div>' +
+    '</div>';
+  }
+
+  function renderProductDetail(p) {
+    var html = '';
+    // Core fields
+    html += '<div class="detail-section"><h3>Alap mezők <button class="copy-mini" data-pid="' + escapeHtml(p.id) + '">másolás (full JSON)</button></h3>';
+    html += '<div class="kv-grid">' + renderKvGrid({
+      id: p.id, internal_code: p.internal_code, category: p.category,
+      product_type: p.product_type, unit: p.unit, price: p.price,
+      is_available: p.is_available, popularity_score: p.popularity_score,
+      estimated_weight_per_piece: p.estimated_weight_per_piece,
+      weight_range_min: p.weight_range_min, weight_range_max: p.weight_range_max,
+      image: p.image
+    }) + '</div></div>';
+
+    // Names + descriptions
+    if (p.description_hu || p.description_ro || p.note_hu || p.note_ro) {
+      html += '<div class="detail-section"><h3>Szövegek</h3><div class="kv-grid">' + renderKvGrid({
+        description_hu: p.description_hu, description_ro: p.description_ro,
+        note_hu: p.note_hu, note_ro: p.note_ro
+      }) + '</div></div>';
+    }
+
+    // Options
+    if ((p.options || []).length > 0) {
+      html += '<div class="detail-section"><h3>VG (' + p.options.length + ')</h3><div class="option-stack">';
+      p.options.forEach(function (opt) {
+        html += renderOptionCard(opt);
+      });
+      html += '</div></div>';
+    }
+
+    return html;
+  }
+
+  function renderOptionCard(opt) {
+    var html = '<div class="option-card">';
+    html += '<div class="option-card-head">';
+    html += '<span class="option-card-name">' + escapeHtml(opt.option_name_hu) + '</span>';
+    html += '<span class="option-card-id">' + escapeHtml(opt.option_id) + '</span>';
+    html += '<span class="kind-tag ' + opt.kind + '">' + opt.kind + '</span>';
+    if (opt.vg_off_hint_hu) {
+      html += '<span style="font-size:11px;color:var(--text-muted)">OFF: ' + escapeHtml(opt.vg_off_hint_hu) + '</span>';
+    }
+    html += '</div>';
+    html += '<div class="option-values">';
+    opt.values.forEach(function (v) {
+      var cls = 'option-value' + (opt.default_value === v.value_id ? ' is-default' : '');
+      var label = escapeHtml(v.value_label_hu);
+      if (v.meta_hint_hu) label += ' <em style="opacity:0.7;font-style:normal">(' + escapeHtml(v.meta_hint_hu) + ')</em>';
+      html += '<span class="' + cls + '">' + label;
+      if (v.price_modifier && v.price_modifier > 0) {
+        html += ' <span class="val-mod">+' + v.price_modifier + ' RON/' + (v.price_modifier_unit === 'per_kg' ? 'kg' : v.price_modifier_unit === 'per_unit' ? 'db' : '') + '</span>';
+      }
+      html += '</span>';
+    });
+    html += '</div></div>';
+    return html;
+  }
+
+  function renderKvGrid(obj) {
+    return Object.keys(obj).map(function (k) {
+      var v = obj[k];
+      var cls = 'kv-val';
+      var disp;
+      if (v === null || v === undefined) { cls += ' is-null'; disp = 'null'; }
+      else if (typeof v === 'boolean') { cls += v ? ' is-bool-true' : ' is-bool-false'; disp = String(v); }
+      else if (typeof v === 'string') { disp = escapeHtml(v); }
+      else { disp = String(v); }
+      return '<div class="kv-row"><span class="kv-key">' + escapeHtml(k) + ':</span><span class="' + cls + '">' + disp + '</span></div>';
+    }).join('');
+  }
+
+  // ─── Schema renderer ────────────────────────────
+  function renderSchema() {
+    if (!SCHEMA) return;
+    var defs = SCHEMA.definitions || {};
+    var defOrder = ['meta', 'category', 'product', 'product_option', 'option_value', 'quantity_override', 'unit_option', 'settings'];
+    var ordered = defOrder.filter(function (k) { return defs[k]; }).concat(
+      Object.keys(defs).filter(function (k) { return defOrder.indexOf(k) < 0; })
+    );
+
+    var html = ordered.map(function (name) {
+      var d = defs[name];
+      var props = d.properties || {};
+      var required = d.required || [];
+      var propsHtml = Object.keys(props).map(function (pname) {
+        var p = props[pname];
+        var typeStr = Array.isArray(p.type) ? p.type.join(' | ') : (p.type || (p['$ref'] ? 'ref' : 'any'));
+        var enumStr = p.enum ? ' enum: [' + p.enum.map(function (e) { return JSON.stringify(e); }).join(', ') + ']' : '';
+        var defStr = p['default'] !== undefined ? ' default: ' + JSON.stringify(p['default']) : '';
+        var refStr = p['$ref'] ? ' → ' + p['$ref'].replace('#/definitions/', '') : '';
+        var pattStr = p.pattern ? ' pattern: <code style="font-family:ui-monospace,monospace;font-size:11px">' + escapeHtml(p.pattern) + '</code>' : '';
+        var maxStr = p.maxLength ? ' max: ' + p.maxLength : '';
+        var isReq = required.indexOf(pname) >= 0;
+        return '<div class="schema-prop">' +
+          '<div class="schema-prop-name">' + escapeHtml(pname) + (isReq ? ' <span class="required-badge">required</span>' : '') + '</div>' +
+          '<div class="schema-prop-detail">' +
+            '<span class="schema-prop-type">' + escapeHtml(typeStr) + '</span>' +
+            (refStr ? '<span style="font-size:11px;color:var(--text-muted)">' + escapeHtml(refStr) + '</span>' : '') +
+            (enumStr ? '<span style="font-size:11px;color:var(--text-muted)">' + escapeHtml(enumStr) + '</span>' : '') +
+            (defStr ? '<span style="font-size:11px;color:var(--text-muted)">' + escapeHtml(defStr) + '</span>' : '') +
+            (maxStr ? '<span style="font-size:11px;color:var(--text-muted)">' + escapeHtml(maxStr) + '</span>' : '') +
+            (pattStr ? '<div style="font-size:11px;color:var(--text-muted);margin-top:2px">' + pattStr + '</div>' : '') +
+            (p.description ? '<div class="schema-prop-desc">' + escapeHtml(p.description) + '</div>' : '') +
+          '</div>' +
+        '</div>';
+      }).join('');
+
+      return '<div class="schema-def" data-name="' + escapeHtml(name) + '">' +
+        '<button type="button" class="schema-def-head">' +
+          '<span class="schema-def-name">' + escapeHtml(name) + '</span>' +
+          '<span class="schema-def-meta">' +
+            (d.type ? d.type + ' · ' : '') +
+            Object.keys(props).length + ' mező' +
+            (required.length ? ' · ' + required.length + ' required' : '') +
+          '</span>' +
+        '</button>' +
+        '<div class="schema-def-body">' +
+          (d.description ? '<p style="font-size:13px;color:var(--text-secondary);line-height:1.55;margin-bottom:8px">' + escapeHtml(d.description) + '</p>' : '') +
+          '<div class="schema-prop-list">' + propsHtml + '</div>' +
+        '</div>' +
+      '</div>';
+    }).join('');
+
+    document.getElementById('schema-defs').innerHTML = html;
+    document.querySelectorAll('.schema-def-head').forEach(function (h) {
+      h.addEventListener('click', function () {
+        h.closest('.schema-def').classList.toggle('is-open');
+      });
+    });
+  }
+
+  // ─── Raw JSON ───────────────────────────────────
+  function renderRaw() {
+    var content = document.getElementById('raw-content');
+    var src;
+    if (CURRENT_RAW === 'products') src = DATA;
+    else if (CURRENT_RAW === 'schema') src = SCHEMA;
+    else if (CURRENT_RAW === 'filtered') {
+      src = {
+        meta: DATA.meta,
+        categories: DATA.categories,
+        products: DATA.products.filter(matchesFilters),
+        settings: DATA.settings
+      };
+    }
+    var pretty = JSON.stringify(src, null, 2);
+    content.innerHTML = highlightJson(pretty);
+    content.dataset.raw = pretty;
+  }
+
+  // ─── Tabs + filters wiring ──────────────────────
+  function init() {
+    document.querySelectorAll('.tab-btn').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var t = b.dataset.tab;
+        document.querySelectorAll('.tab-btn').forEach(function (x) { x.classList.toggle('active', x === b); });
+        document.querySelectorAll('.tab-content').forEach(function (c) {
+          c.classList.toggle('active', c.dataset.content === t);
+        });
+        if (t === 'raw') renderRaw();
+        if (t === 'schema' && SCHEMA && document.getElementById('schema-defs').children.length <= 1) renderSchema();
+      });
+    });
+
+    document.querySelectorAll('[data-filter-type]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        FILTERS.type = b.dataset.filterType;
+        document.querySelectorAll('[data-filter-type]').forEach(function (x) { x.classList.toggle('active', x === b); });
+        renderProducts();
+      });
+    });
+
+    document.querySelectorAll('[data-filter-vg]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        FILTERS.vg = b.dataset.filterVg;
+        document.querySelectorAll('[data-filter-vg]').forEach(function (x) { x.classList.toggle('active', x === b); });
+        renderProducts();
+      });
+    });
+
+    document.querySelectorAll('[data-raw]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        CURRENT_RAW = b.dataset.raw;
+        document.querySelectorAll('[data-raw]').forEach(function (x) { x.classList.toggle('active', x === b); });
+        renderRaw();
+      });
+    });
+
+    var search = document.getElementById('search');
+    var clear = document.getElementById('search-clear');
+    search.addEventListener('input', function () {
+      FILTERS.search = search.value;
+      clear.style.display = search.value ? 'flex' : 'none';
+      renderProducts();
+    });
+    clear.addEventListener('click', function () {
+      search.value = '';
+      FILTERS.search = '';
+      clear.style.display = 'none';
+      renderProducts();
+      search.focus();
+    });
+
+    document.getElementById('raw-copy').addEventListener('click', function () {
+      var content = document.getElementById('raw-content');
+      copyText(content.dataset.raw || content.textContent);
+    });
+
+    // Hash deep-link support
+    if (location.hash) {
+      var h = location.hash.replace('#', '');
+      if (h.indexOf('product/') === 0) {
+        var pid = h.substring('product/'.length);
+        EXPANDED.add(pid);
+        FILTERS.search = pid;
+        search.value = pid;
+        clear.style.display = 'flex';
+      }
+    }
+  }
+
+  // ─── Load data — embedded inline (works offline + in preview) ──
+  function loadEmbedded() {
+    var p = document.getElementById('embedded-products');
+    var s = document.getElementById('embedded-schema');
+    if (p && p.textContent.trim()) DATA = JSON.parse(p.textContent);
+    if (s && s.textContent.trim()) SCHEMA = JSON.parse(s.textContent);
+  }
+  function loadFromFetch() {
+    return Promise.all([
+      fetch('../data/products-v1.2.json').then(function (r) { return r.json(); }),
+      fetch('../data/_schema-v1.2.json').then(function (r) { return r.json(); })
+    ]).then(function (results) {
+      DATA = results[0]; SCHEMA = results[1];
+    });
+  }
+  function boot() {
+    renderStats();
+    renderCategoryChips();
+    renderProducts();
+    renderSchema();
+    init();
+  }
+  try {
+    loadEmbedded();
+    if (DATA && SCHEMA) {
+      boot();
+    } else {
+      loadFromFetch().then(boot).catch(function (err) {
+        document.getElementById('product-list').innerHTML =
+          '<div class="empty-note" style="color:var(--primary)">Adatok betöltése sikertelen: ' + err.message + '</div>';
+        console.error(err);
+      });
+    }
+  } catch (e) {
+    document.getElementById('product-list').innerHTML =
+      '<div class="empty-note" style="color:var(--primary)">Embedded JSON parse hiba: ' + e.message + '</div>';
+    console.error(e);
+  }
+})();
+</script>
+</body>
+</html>

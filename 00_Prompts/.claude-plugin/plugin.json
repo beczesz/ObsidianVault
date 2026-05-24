@@ -1,0 +1,9 @@
+{
+  "name": "navigator-podcast",
+  "version": "0.1.0",
+  "description": "YouTube metadata generator for the Navigátor Podcast — titles, thumbnails, descriptions, timestamps, and cold open hooks from SRT transcripts",
+  "author": {
+    "name": "Szabolcs"
+  },
+  "keywords": ["podcast", "youtube", "metadata", "seo", "navigator"]
+}

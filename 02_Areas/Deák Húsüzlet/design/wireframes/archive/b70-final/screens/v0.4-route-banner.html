@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Route info banner — Deák Húsmíves</title>
+<script type="application/json" id="screen-meta">
+{
+  "id": "v0.4-route-banner",
+  "title": "Route info banner — komponens (4 állapot)",
+  "feature": "rural-delivery",
+  "sprint": "Sprint 4",
+  "status": "draft",
+  "version": "v0.4",
+  "platform": "mobile",
+  "publish": true,
+  "order": 20,
+  "tags": ["DH-184", "rural", "banner", "F2.1", "F2.2", "F2.3"],
+  "description": "Route info banner komponens 4 állapotban — aktív nyitott, sürgős, zárt, nem indul. Visszaszámlálóval."
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --primary:#9B2335; --primary-800:#7D1A2A; --primary-light:#F9E0E3;
+    --cream:#FFFBF7; --cream-dark:#F5EDE5; --card:#FFFFFF; --bg:#FAF8F5;
+    --border:#E8E2DB;
+    --text:#2C2825; --text-secondary:#5C544C; --text-muted:#8A8078;
+    --success:#2D7A4F; --success-bg:#E8F5E9; --success-border:#C8E6C9;
+    --warning:#C4841D; --warning-bg:#FFF3E0; --warning-border:#FFE0B2;
+    --error:#C4302B; --error-bg:#FDECEA; --error-border:#F5C6CB;
+    --neutral:#5C544C; --neutral-bg:#EDEAE6; --neutral-border:#D6D0C8;
+  }
+  body {
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased; min-height:100vh; padding:32px 16px 64px;
+  }
+  .back-to-catalog {
+    position:fixed; top:12px; left:12px; z-index:100; width:36px; height:36px;
+    border-radius:50%; background:rgba(0,0,0,0.5); color:#fff;
+    display:flex; align-items:center; justify-content:center; text-decoration:none;
+  }
+
+  .page-intro { max-width:920px; margin:0 auto 28px; }
+  .page-intro h1 { font-family:'Playfair Display',serif; font-size:24px; font-weight:700; color:var(--primary-800); }
+  .page-intro p { font-size:14px; color:var(--text-secondary); margin-top:6px; max-width:640px; }
+
+  .grid {
+    max-width:920px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(auto-fit, minmax(380px, 1fr));
+    gap:20px;
+  }
+
+  .state {
+    background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:18px; display:flex; flex-direction:column; gap:14px;
+  }
+  .state-head { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+  .state-title { font-size:14px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:8px; }
+  .state-title .dot { width:10px; height:10px; border-radius:50%; }
+  .dot-green { background:var(--success); }
+  .dot-orange { background:var(--warning); }
+  .dot-grey { background:var(--text-muted); }
+  .dot-red { background:var(--error); }
+  .state-tag { font-size:11px; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--text-muted); }
+
+  /* Phone-like preview frame */
+  .frame {
+    background:var(--cream); border-radius:12px; padding:0;
+    border:1px solid var(--border); overflow:hidden;
+  }
+
+  /* === BANNER COMPONENT === */
+  .banner {
+    padding:14px 16px;
+    display:flex; gap:12px; align-items:flex-start;
+    border-bottom:1px solid transparent;
+    position:relative;
+  }
+  .banner svg.lead { width:22px; height:22px; flex-shrink:0; margin-top:1px; }
+  .banner-body { flex:1; min-width:0; }
+  .banner-title {
+    font-size:14px; font-weight:600; line-height:1.35;
+  }
+  .banner-meta {
+    font-size:13px; line-height:1.45; margin-top:4px;
+  }
+  .banner-meta .countdown {
+    display:inline-flex; align-items:center; gap:4px;
+    font-weight:600; font-variant-numeric:tabular-nums;
+  }
+  .banner-meta .countdown svg { width:14px; height:14px; }
+  .banner-action {
+    margin-top:10px;
+    display:inline-flex; align-items:center; gap:4px;
+    font-size:13px; font-weight:600; text-decoration:none;
+    padding:6px 0;
+  }
+  .banner-action svg { width:14px; height:14px; }
+
+  /* color variants */
+  .banner.green { background:var(--success-bg); border-bottom-color:var(--success-border); color:#1F5135; }
+  .banner.green svg.lead { color:var(--success); }
+  .banner.green .banner-action { color:var(--success); }
+
+  .banner.orange { background:var(--warning-bg); border-bottom-color:var(--warning-border); color:#6E4810; }
+  .banner.orange svg.lead { color:var(--warning); }
+  .banner.orange .countdown { color:var(--warning); }
+  .banner.orange .banner-action { color:var(--warning); }
+
+  .banner.grey { background:var(--neutral-bg); border-bottom-color:var(--neutral-border); color:var(--text-secondary); }
+  .banner.grey svg.lead { color:var(--text-secondary); }
+  .banner.grey .banner-action { color:var(--primary); }
+
+  .banner.red { background:var(--error-bg); border-bottom-color:var(--error-border); color:#7A1F1B; }
+  .banner.red svg.lead { color:var(--error); }
+  .banner.red .banner-action { color:var(--error); }
+
+  /* settlement chip (clickable shortcut) */
+  .chip-settlement {
+    display:inline-flex; align-items:center; gap:4px;
+    font-weight:600; padding:1px 0;
+    text-decoration:underline; text-decoration-color:rgba(0,0,0,0.15);
+    text-underline-offset:2px;
+  }
+
+  /* mock content beneath banner — to show context */
+  .mock-content { padding:14px 16px 18px; }
+  .mock-tabs { display:flex; gap:8px; margin-bottom:10px; }
+  .mock-tab { font-size:12px; padding:6px 10px; border-radius:999px; background:#fff; border:1px solid var(--border); color:var(--text-muted); }
+  .mock-tab.on { background:var(--primary); color:#fff; border-color:var(--primary); }
+  .mock-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; opacity:.6; }
+  .mock-card { background:#fff; border:1px solid var(--border); border-radius:8px; height:80px; }
+
+  /* Spec table */
+  .spec {
+    max-width:920px; margin:28px auto 0; padding:18px;
+    background:var(--card); border:1px solid var(--border); border-radius:12px;
+  }
+  .spec h3 { font-size:13px; font-weight:700; margin-bottom:10px; }
+  .spec table { width:100%; border-collapse:collapse; font-size:13px; }
+  .spec th, .spec td { text-align:left; padding:8px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  .spec th { font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--text-muted); font-weight:700; }
+  .spec td:first-child { font-weight:600; white-space:nowrap; }
+  .pill {
+    display:inline-block; padding:2px 8px; border-radius:999px; font-size:11px; font-weight:600;
+  }
+  .pill.green { background:var(--success-bg); color:var(--success); }
+  .pill.orange { background:var(--warning-bg); color:#6E4810; }
+  .pill.grey { background:var(--neutral-bg); color:var(--text-secondary); }
+  .pill.red { background:var(--error-bg); color:var(--error); }
+
+  /* Compact 1-line variant */
+  .banner-compact {
+    padding:10px 14px;
+    display:flex; align-items:center; gap:10px;
+    font-size:13px;
+  }
+  .banner-compact svg { width:16px; height:16px; flex-shrink:0; }
+  .banner-compact .right { margin-left:auto; font-weight:600; font-variant-numeric:tabular-nums; }
+
+  @keyframes pulse-red {
+    0%,100% { opacity:1; } 50% { opacity:0.55; }
+  }
+  .pulse { animation: pulse-red 1.4s ease-in-out infinite; }
+  @media (prefers-reduced-motion: reduce) { .pulse { animation:none; } }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-to-catalog" title="Vissza">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<div class="page-intro">
+  <h1>Route info banner — komponens</h1>
+  <p>Falusi felhasználóknak — főoldal teteje és kosár teteje. 4 állapot: aktív-nyitott, aktív-sürgős, zárt-cutoff, nem-indul. Spec: F2.1–F2.3.</p>
+</div>
+
+<div class="grid">
+
+  <!-- 1. AKTÍV — NYITOTT -->
+  <div class="state">
+    <div class="state-head">
+      <div class="state-title"><span class="dot dot-green"></span> 1 · Aktív — nyitott</div>
+      <span class="state-tag">Cutoff előtt &gt; 24 óra</span>
+    </div>
+    <div class="frame">
+      <div class="banner green">
+        <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+        <div class="banner-body">
+          <div class="banner-title">Csütörtökön szállítunk <a href="#" class="chip-settlement">Keresztúri kör</a>-re</div>
+          <div class="banner-meta">
+            Rendelési határidő: szerda 20:00 ·
+            <span class="countdown">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              még 2 nap 4 óra
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-tabs">
+          <span class="mock-tab on">Mind</span>
+          <span class="mock-tab">Friss</span>
+          <span class="mock-tab">Füstölt</span>
+          <span class="mock-tab">Készételek</span>
+        </div>
+        <div class="mock-grid">
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. AKTÍV — SÜRGŐS -->
+  <div class="state">
+    <div class="state-head">
+      <div class="state-title"><span class="dot dot-orange"></span> 2 · Aktív — sürgős</div>
+      <span class="state-tag">&lt; 24 óra a cutoff-ig</span>
+    </div>
+    <div class="frame">
+      <div class="banner orange">
+        <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <div class="banner-body">
+          <div class="banner-title">Még ma rendelhetsz csütörtökre!</div>
+          <div class="banner-meta">
+            <span class="countdown">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              14 óra 32 perc a határidőig
+            </span> · <a href="#" class="chip-settlement">Keresztúri kör</a>
+          </div>
+        </div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-tabs">
+          <span class="mock-tab on">Mind</span>
+          <span class="mock-tab">Friss</span>
+          <span class="mock-tab">Füstölt</span>
+        </div>
+        <div class="mock-grid">
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. ZÁRT — CUTOFF LEJÁRT -->
+  <div class="state">
+    <div class="state-head">
+      <div class="state-title"><span class="dot dot-grey"></span> 3 · Zárt — cutoff lejárt</div>
+      <span class="state-tag">Cutoff után, szállítás napja előtt</span>
+    </div>
+    <div class="frame">
+      <div class="banner grey">
+        <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg>
+        <div class="banner-body">
+          <div class="banner-title">A következő szállítás: jövő csütörtök, máj. 15.</div>
+          <div class="banner-meta">
+            Mostantól rendelhetsz — a határidő szerda 20:00.
+            <a href="#" class="banner-action">
+              Tovább a termékekhez
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-tabs">
+          <span class="mock-tab on">Mind</span>
+          <span class="mock-tab">Friss</span>
+          <span class="mock-tab">Füstölt</span>
+        </div>
+        <div class="mock-grid">
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. NEM INDUL -->
+  <div class="state">
+    <div class="state-head">
+      <div class="state-title"><span class="dot dot-red"></span> 4 · Route nem indul</div>
+      <span class="state-tag">Admin törölte / postponed</span>
+    </div>
+    <div class="frame">
+      <div class="banner red">
+        <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+        <div class="banner-body">
+          <div class="banner-title">Ezen a héten nem indul járat <a href="#" class="chip-settlement">Keresztúri kör</a>-re</div>
+          <div class="banner-meta">
+            A következő lehetőség: <strong>csütörtök, máj. 15.</strong>
+            A nyitott rendelésed automatikusan átkerül.
+            <a href="#" class="banner-action">
+              Részletek a rendeléseimben
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="mock-content">
+        <div class="mock-tabs">
+          <span class="mock-tab on">Mind</span>
+          <span class="mock-tab">Friss</span>
+        </div>
+        <div class="mock-grid">
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+          <div class="mock-card"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- COMPACT VARIANT -->
+<div class="page-intro" style="margin-top:36px;">
+  <h1 style="font-size:18px;">Kompakt variáns — kosár oldal teteje (1 soros)</h1>
+  <p>Csak a lényeg. Tap = teljes információ kibontása.</p>
+</div>
+<div class="grid" style="grid-template-columns:1fr; max-width:560px;">
+  <div class="state">
+    <div class="frame">
+      <div class="banner-compact" style="background:var(--success-bg); color:#1F5135;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#2D7A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span><strong>Csütörtök, máj. 8.</strong> · Keresztúri kör</span>
+        <span class="right" style="color:var(--success);">2 nap 4 óra</span>
+      </div>
+    </div>
+    <div class="frame">
+      <div class="banner-compact" style="background:var(--warning-bg); color:#6E4810;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#C4841D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span><strong>Még ma rendelhetsz!</strong> Keresztúri kör</span>
+        <span class="right pulse" style="color:var(--warning);">42 perc</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="spec">
+  <h3>Állapot-mátrix</h3>
+  <table>
+    <thead>
+      <tr><th>Állapot</th><th>Mikor</th><th>Szöveg</th><th>Visszaszámláló</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="pill green">Nyitott</span></td>
+        <td>Cutoff előtt &gt; 24h</td>
+        <td>Csütörtökön szállítunk [település]-re</td>
+        <td>„X nap Y óra" — óra pontossággal</td>
+      </tr>
+      <tr>
+        <td><span class="pill orange">Sürgős</span></td>
+        <td>Cutoff előtt &lt; 24h</td>
+        <td>Még ma rendelhetsz csütörtökre!</td>
+        <td>„Y óra Z perc" — perc pontossággal, 1 órán belül pulzál</td>
+      </tr>
+      <tr>
+        <td><span class="pill grey">Zárt</span></td>
+        <td>Cutoff után, szállítás előtt</td>
+        <td>A következő szállítás: jövő csütörtök, [dátum]</td>
+        <td>—</td>
+      </tr>
+      <tr>
+        <td><span class="pill red">Nem indul</span></td>
+        <td>Phase 2: route postponed</td>
+        <td>Ezen a héten nem indul járat — átkerül a következő hétre</td>
+        <td>—</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

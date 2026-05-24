@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="TransOffice Trade — papetărie, consumabile de birou și tonere HP recondiționate pentru IMM-uri din Transilvania. Livrare în Odorheiu Secuiesc, Harghita și județele învecinate.">
+<title>TransOffice Trade — Papetărie și consumabile pentru IMM-uri</title>
+<style>
+  :root {
+    --green-900: #0a3d2a;
+    --green-700: #166548;
+    --green-500: #2b9b6a;
+    --green-300: #84d4b0;
+    --green-50:  #ecfaf2;
+    --gold:      #d9a441;
+    --ink:       #0f172a;
+    --ink-muted: #475569;
+    --line:      #e2e8f0;
+    --bg:        #fbfdfc;
+    --card:      #ffffff;
+    --radius:    14px;
+    --shadow:    0 1px 2px rgba(15,23,42,.04), 0 8px 24px rgba(15,23,42,.06);
+    --shadow-lg: 0 12px 40px rgba(15,23,42,.10);
+    --container: 1180px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    color: var(--ink); background: var(--bg);
+    line-height: 1.6; font-size: 16px; -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--green-700); text-decoration: none; }
+  a:hover { color: var(--green-500); }
+  img { max-width: 100%; height: auto; }
+  .container { max-width: var(--container); margin: 0 auto; padding: 0 24px; }
+
+  /* NAV */
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,.85); backdrop-filter: saturate(180%) blur(10px); -webkit-backdrop-filter: saturate(180%) blur(10px); border-bottom: 1px solid var(--line); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; padding: 16px 24px; max-width: var(--container); margin: 0 auto; }
+  .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; color: var(--ink); letter-spacing: -0.01em; }
+  .logo-mark { width: 36px; height: 36px; border-radius: 9px; background: linear-gradient(135deg, var(--green-700) 0%, var(--green-500) 100%); display: grid; place-items: center; color: #fff; font-weight: 800; }
+  .nav-links { display: flex; gap: 28px; align-items: center; }
+  .nav-links a { color: var(--ink-muted); font-size: 0.94rem; font-weight: 500; transition: color .15s ease; }
+  .nav-links a:hover { color: var(--green-700); }
+  .nav-cta { background: var(--green-700); color: #fff !important; padding: 9px 18px; border-radius: 999px; font-weight: 600; font-size: 0.9rem; transition: transform .15s ease, background .15s ease; }
+  .nav-cta:hover { background: var(--green-900); transform: translateY(-1px); color: #fff !important; }
+
+  /* HERO */
+  .hero { position: relative; overflow: hidden; padding: 96px 0 120px; background: radial-gradient(1200px 500px at 80% -100px, rgba(43,155,106,.18), transparent 60%), radial-gradient(800px 400px at -100px 200px, rgba(217,164,65,.12), transparent 60%), linear-gradient(180deg, #f6fdf9 0%, var(--bg) 100%); }
+  .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 64px; align-items: center; }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; background: var(--green-50); color: var(--green-700); padding: 6px 14px; border-radius: 999px; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.02em; border: 1px solid rgba(43,155,106,.2); margin-bottom: 24px; }
+  .eyebrow::before { content: '●'; color: var(--green-500); font-size: 0.7em; }
+  h1 { font-size: clamp(2.4rem, 5vw, 3.6rem); line-height: 1.05; letter-spacing: -0.025em; font-weight: 800; color: var(--ink); margin-bottom: 22px; }
+  h1 em { font-style: normal; color: var(--green-700); }
+  .hero p.lead { font-size: 1.15rem; color: var(--ink-muted); max-width: 540px; margin-bottom: 32px; }
+  .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 14px 26px; border-radius: 999px; font-weight: 600; font-size: 0.98rem; transition: all .18s ease; cursor: pointer; border: 0; }
+  .btn-primary { background: var(--green-700); color: #fff; }
+  .btn-primary:hover { background: var(--green-900); transform: translateY(-1px); color: #fff; box-shadow: 0 10px 28px rgba(22,101,72,.28); }
+  .btn-ghost { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+  .btn-ghost:hover { background: #fff; border-color: var(--green-300); }
+  .hero-card { background: var(--card); border-radius: 22px; padding: 28px; box-shadow: var(--shadow-lg); border: 1px solid var(--line); position: relative; }
+  .hero-card::before { content: ''; position: absolute; inset: -1px; background: linear-gradient(135deg, transparent 60%, rgba(43,155,106,.18)); border-radius: 22px; pointer-events: none; }
+  .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
+  .stat { background: var(--green-50); border-radius: 12px; padding: 18px; border: 1px solid rgba(43,155,106,.15); }
+  .stat-value { font-size: 1.8rem; font-weight: 800; color: var(--green-900); letter-spacing: -0.02em; }
+  .stat-label { font-size: 0.82rem; color: var(--ink-muted); margin-top: 2px; }
+  .hero-card h3 { font-size: 1rem; font-weight: 700; margin-bottom: 4px; }
+  .hero-card .meta { color: var(--ink-muted); font-size: 0.88rem; }
+  .hero-card .pill { display: inline-block; padding: 4px 10px; border-radius: 999px; background: var(--gold); color: #5b3d0f; font-size: 0.75rem; font-weight: 700; margin-top: 14px; }
+
+  /* SECTION */
+  section { padding: 100px 0; }
+  .section-head { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+  .section-eyebrow { text-transform: uppercase; letter-spacing: 0.12em; font-size: 0.78rem; font-weight: 700; color: var(--green-700); margin-bottom: 14px; }
+  h2 { font-size: clamp(2rem, 3.8vw, 2.8rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 800; margin-bottom: 18px; }
+  .section-head p { color: var(--ink-muted); font-size: 1.08rem; }
+
+  /* SERVICES */
+  .services-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; }
+  .service { background: var(--card); padding: 32px 24px; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow); transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease; }
+  .service:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: rgba(43,155,106,.3); }
+  .service-icon { width: 48px; height: 48px; border-radius: 12px; background: var(--green-50); color: var(--green-700); display: grid; place-items: center; font-size: 1.5rem; margin-bottom: 18px; }
+  .service h3 { font-size: 1.12rem; font-weight: 700; margin-bottom: 8px; }
+  .service p { color: var(--ink-muted); font-size: 0.94rem; }
+
+  /* AFM GREEN */
+  .afm-section { background: linear-gradient(180deg, var(--green-900) 0%, #0d4d35 100%); color: #fff; border-radius: 28px; margin: 40px auto; padding: 80px 56px; max-width: calc(var(--container) - 48px); position: relative; overflow: hidden; }
+  .afm-section::before { content: ''; position: absolute; top: -100px; right: -100px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(217,164,65,.22), transparent 70%); }
+  .afm-section::after { content: ''; position: absolute; bottom: -150px; left: -50px; width: 350px; height: 350px; border-radius: 50%; background: radial-gradient(circle, rgba(132,212,176,.15), transparent 70%); }
+  .afm-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; position: relative; z-index: 1; }
+  .afm-section .eyebrow { background: rgba(132,212,176,.15); color: var(--green-300); border-color: rgba(132,212,176,.2); }
+  .afm-section h2 { color: #fff; }
+  .afm-section h2 em { font-style: normal; color: var(--gold); }
+  .afm-section p.lead { color: rgba(255,255,255,.78); font-size: 1.08rem; margin-bottom: 28px; }
+  .afm-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .afm-stat { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); padding: 22px; border-radius: 14px; backdrop-filter: blur(8px); }
+  .afm-stat-value { font-size: 2.4rem; font-weight: 800; background: linear-gradient(135deg, #fff 0%, var(--green-300) 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -0.02em; }
+  .afm-stat-label { font-size: 0.88rem; color: rgba(255,255,255,.7); margin-top: 4px; }
+  .afm-visual { background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 18px; padding: 28px; backdrop-filter: blur(8px); }
+  .fleet-item { display: flex; align-items: center; gap: 14px; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .fleet-item:last-child { border-bottom: 0; }
+  .fleet-icon { width: 40px; height: 40px; border-radius: 10px; background: rgba(132,212,176,.16); color: var(--green-300); display: grid; place-items: center; font-size: 1.3rem; flex-shrink: 0; }
+  .fleet-icon.gold { background: rgba(217,164,65,.18); color: var(--gold); }
+  .fleet-text strong { display: block; color: #fff; font-size: 0.98rem; }
+  .fleet-text span { color: rgba(255,255,255,.65); font-size: 0.84rem; }
+  .progress-bar { margin-top: 20px; background: rgba(255,255,255,.08); height: 8px; border-radius: 999px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 40%; background: linear-gradient(90deg, var(--green-300), var(--gold)); border-radius: 999px; }
+  .progress-meta { display: flex; justify-content: space-between; color: rgba(255,255,255,.65); font-size: 0.8rem; margin-top: 8px; }
+
+  /* TEAM */
+  .team-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 28px; max-width: 820px; margin: 0 auto; }
+  .team-card { background: var(--card); padding: 32px; border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow); display: flex; gap: 22px; align-items: flex-start; }
+  .avatar { width: 76px; height: 76px; border-radius: 50%; background: linear-gradient(135deg, var(--green-700), var(--green-500)); color: #fff; display: grid; place-items: center; font-weight: 700; font-size: 1.6rem; flex-shrink: 0; }
+  .avatar.gold { background: linear-gradient(135deg, var(--gold), #b8861a); }
+  .team-card h3 { font-size: 1.15rem; font-weight: 700; margin-bottom: 4px; }
+  .team-role { color: var(--green-700); font-weight: 600; font-size: 0.92rem; margin-bottom: 10px; }
+  .team-bio { color: var(--ink-muted); font-size: 0.93rem; }
+  .team-contacts { display: flex; gap: 16px; margin-top: 14px; font-size: 0.88rem; }
+  .team-contacts a { color: var(--ink-muted); }
+  .team-contacts a:hover { color: var(--green-700); }
+
+  /* CONTACT */
+  .contact-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: stretch; }
+  .contact-info { padding: 8px 0; }
+  .contact-list { display: flex; flex-direction: column; gap: 22px; margin-top: 28px; }
+  .contact-item { display: flex; gap: 16px; align-items: flex-start; }
+  .contact-icon { width: 44px; height: 44px; border-radius: 11px; background: var(--green-50); color: var(--green-700); display: grid; place-items: center; font-size: 1.25rem; flex-shrink: 0; }
+  .contact-item h4 { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-muted); margin-bottom: 4px; }
+  .contact-item p { font-size: 1rem; color: var(--ink); }
+  .contact-item a { color: var(--ink); font-weight: 500; }
+  .contact-item a:hover { color: var(--green-700); }
+  .map-card { background: linear-gradient(135deg, var(--green-50) 0%, #f0fbf5 100%); border-radius: var(--radius); padding: 40px; border: 1px solid var(--green-300); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden; min-height: 320px; }
+  .map-card::before { content: '📍'; position: absolute; right: -20px; bottom: -30px; font-size: 12rem; opacity: 0.06; }
+  .map-card h3 { font-size: 1.4rem; font-weight: 800; margin-bottom: 12px; }
+  .map-card p { color: var(--ink-muted); font-size: 0.98rem; }
+  .map-card .map-link { display: inline-flex; align-items: center; gap: 8px; background: #fff; padding: 12px 22px; border-radius: 999px; color: var(--green-700); font-weight: 600; font-size: 0.94rem; border: 1px solid var(--green-300); align-self: flex-start; margin-top: 24px; transition: all .15s ease; }
+  .map-card .map-link:hover { background: var(--green-700); color: #fff; transform: translateY(-1px); }
+
+  /* FOOTER */
+  .footer { background: var(--ink); color: rgba(255,255,255,.7); padding: 56px 0 32px; margin-top: 60px; }
+  .footer-grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; padding-bottom: 36px; border-bottom: 1px solid rgba(255,255,255,.1); }
+  .footer h5 { color: #fff; font-size: 0.9rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+  .footer ul { list-style: none; }
+  .footer ul li { margin-bottom: 8px; font-size: 0.92rem; }
+  .footer ul a { color: rgba(255,255,255,.7); }
+  .footer ul a:hover { color: var(--green-300); }
+  .footer-brand p { font-size: 0.9rem; max-width: 320px; margin-top: 10px; }
+  .footer-bottom { padding-top: 24px; text-align: center; color: rgba(255,255,255,.45); font-size: 0.84rem; }
+  .badge-eu { display: inline-flex; align-items: center; gap: 8px; background: rgba(217,164,65,.12); border: 1px solid rgba(217,164,65,.25); padding: 6px 14px; border-radius: 999px; color: var(--gold); font-size: 0.82rem; font-weight: 600; margin-top: 14px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 980px) {
+    .services-grid { grid-template-columns: repeat(2, 1fr); }
+    .hero-grid { grid-template-columns: 1fr; gap: 40px; }
+    .afm-grid { grid-template-columns: 1fr; gap: 40px; }
+    .contact-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; gap: 32px; }
+  }
+  @media (max-width: 680px) {
+    section { padding: 64px 0; }
+    .hero { padding: 56px 0 72px; }
+    .nav-links a:not(.nav-cta) { display: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .team-grid { grid-template-columns: 1fr; }
+    .team-card { flex-direction: column; align-items: center; text-align: center; }
+    .team-contacts { justify-content: center; }
+    .afm-section { padding: 56px 24px; border-radius: 0; margin: 24px 0; max-width: 100%; }
+    .footer-grid { grid-template-columns: 1fr; gap: 24px; }
+    .hero-ctas { width: 100%; }
+    .btn { width: 100%; justify-content: center; }
+    .stat-row { grid-template-columns: 1fr 1fr; }
+    .afm-stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#top" class="logo">
+      <div class="logo-mark">T</div>
+      <span>TransOffice</span>
+    </a>
+    <div class="nav-links">
+      <a href="#servicii">Servicii</a>
+      <a href="#mobilitate">Mobilitate verde</a>
+      <a href="#echipa">Echipa</a>
+      <a href="#contact">Contact</a>
+      <a href="#contact" class="nav-cta">Cere ofertă</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <span class="eyebrow">Papetărie și consumabile pentru IMM-uri · Harghita</span>
+        <h1>Aprovizionăm biroul tău, <em>de 23 de ani</em>, în Transilvania.</h1>
+        <p class="lead">
+          Hârtie A3/A4, tonere HP recondiționate, articole de birou și consumabile pentru imprimante — livrate direct la sediul tău, în Odorheiu Secuiesc și județele învecinate. Stocuri ferme, prețuri loiale, livrare în 24h.
+        </p>
+        <div class="hero-ctas">
+          <a href="#contact" class="btn btn-primary">Cere ofertă personalizată →</a>
+          <a href="#servicii" class="btn btn-ghost">Vezi serviciile</a>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <h3>TransOffice Trade S.R.L.</h3>
+        <p class="meta">Înființată în 2003 · CUI 15847291 · Odorheiu Secuiesc</p>
+        <div class="stat-row">
+          <div class="stat"><div class="stat-value">23+</div><div class="stat-label">ani de experiență</div></div>
+          <div class="stat"><div class="stat-value">12</div><div class="stat-label">colegi dedicați</div></div>
+          <div class="stat"><div class="stat-value">2M+</div><div class="stat-label">RON cifră de afaceri / an</div></div>
+          <div class="stat"><div class="stat-value">98%</div><div class="stat-label">livrări la timp</div></div>
+        </div>
+        <span class="pill">★ Partener AFM 2026</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="servicii">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Servicii</div>
+      <h2>Tot ce-ți trebuie la birou, dintr-un singur loc</h2>
+      <p>De la cele 50 de coli zilnice până la aprovizionarea anuală a unei firme cu 100 de angajați — TransOffice acoperă întregul lanț de consumabile de birou.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service">
+        <div class="service-icon">📄</div>
+        <h3>Hârtie A4 și A3</h3>
+        <p>Hârtie de calitate premium pentru imprimantă și copiator, de la mărci de top — în volume mici și mari, cu livrare săptămânală.</p>
+      </div>
+      <div class="service">
+        <div class="service-icon">🖨️</div>
+        <h3>Tonere HP recondiționate</h3>
+        <p>Tonere HP refilate la standarde de calitate, cu garanție 12 luni — economie până la 60% față de tonerele originale, fără compromis pe imprimare.</p>
+      </div>
+      <div class="service">
+        <div class="service-icon">✏️</div>
+        <h3>Articole de birou</h3>
+        <p>Pixuri, dosare, agrafe, post-it-uri, sigilii, etichete — peste 1500 de produse în stoc, gata de expediere în 24h.</p>
+      </div>
+      <div class="service">
+        <div class="service-icon">🚚</div>
+        <h3>Livrare gratuită</h3>
+        <p>Pentru comenzi peste 500 RON, livrare gratuită în Odorheiu Secuiesc și împrejurimi. Flotă proprie — fără terți, fără surprize.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="mobilitate" style="padding-top: 40px; padding-bottom: 40px;">
+  <div class="container" style="padding: 0;">
+    <div class="afm-section">
+      <div class="afm-grid">
+        <div>
+          <span class="eyebrow">Programul AFM Mobilitate Verde IMM 2026</span>
+          <h2>Drum spre <em>zero emisii</em>, în Harghita.</h2>
+          <p class="lead">
+            TransOffice își transformă flota comercială pentru a sprijini tranziția climatică. Cu sprijinul programului AFM, modernizăm parcul auto cu vehicule 100% electrice și instalăm propria stație de reîncărcare. Pas cu pas, către o livrare fără emisii directe.
+          </p>
+          <div class="afm-stats">
+            <div class="afm-stat">
+              <div class="afm-stat-value">5</div>
+              <div class="afm-stat-label">vehicule comerciale<br>(2 electrice noi + 3 existente)</div>
+            </div>
+            <div class="afm-stat">
+              <div class="afm-stat-value">2</div>
+              <div class="afm-stat-label">puncte de reîncărcare<br>AC 22 kW la sediu</div>
+            </div>
+            <div class="afm-stat">
+              <div class="afm-stat-value">−12t</div>
+              <div class="afm-stat-label">CO₂ evitate / an<br>conform Anexa 8</div>
+            </div>
+            <div class="afm-stat">
+              <div class="afm-stat-value">80%</div>
+              <div class="afm-stat-label">finanțare nerambursabilă<br>din fonduri europene</div>
+            </div>
+          </div>
+        </div>
+        <div class="afm-visual">
+          <div style="font-size: 0.82rem; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 600; margin-bottom: 14px;">Flota actuală și proiectată</div>
+          <div class="fleet-item">
+            <div class="fleet-icon">⚡</div>
+            <div class="fleet-text"><strong>Renault Kangoo E-Tech Electric</strong><span>BEV · N1 · 285 km autonomie WLTP · NOU</span></div>
+          </div>
+          <div class="fleet-item">
+            <div class="fleet-icon">⚡</div>
+            <div class="fleet-text"><strong>Citroën ë-Berlingo Van</strong><span>BEV · N1 · 280 km autonomie WLTP · NOU</span></div>
+          </div>
+          <div class="fleet-item">
+            <div class="fleet-icon" style="background: rgba(255,255,255,.08); color: rgba(255,255,255,.6);">🚐</div>
+            <div class="fleet-text"><strong>Ford Transit Connect</strong><span>Diesel · livrări comerciale · în uz</span></div>
+          </div>
+          <div class="fleet-item">
+            <div class="fleet-icon" style="background: rgba(255,255,255,.08); color: rgba(255,255,255,.6);">🚐</div>
+            <div class="fleet-text"><strong>Volkswagen Caddy</strong><span>Diesel · livrări comerciale · în uz</span></div>
+          </div>
+          <div class="fleet-item">
+            <div class="fleet-icon gold">🔌</div>
+            <div class="fleet-text"><strong>Stație AC 22 kW · 2 puncte</strong><span>Curtea sediului · pentru flota electrică</span></div>
+          </div>
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+          <div class="progress-meta">
+            <span>Tranziție electrică</span>
+            <span>40% din flotă · țintă 2028: 80%</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="echipa">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Echipa</div>
+      <h2>Oamenii din spatele firmei</h2>
+      <p>O echipă mică, dar dedicată — cu rădăcini de familie și 23 de ani de experiență comună în papetărie și aprovizionare de birou.</p>
+    </div>
+    <div class="team-grid">
+      <div class="team-card">
+        <div class="avatar">KM</div>
+        <div>
+          <h3>Kovács Márton</h3>
+          <div class="team-role">Director Operațiuni</div>
+          <p class="team-bio">Conduce activitatea operațională, relațiile cu clienții-cheie și dezvoltarea strategică. Specializat în logistică și tranziție verde — coordonează proiectul AFM 2026.</p>
+          <div class="team-contacts"><a href="mailto:marton.kovacs@transoffice.ro">✉ marton.kovacs@transoffice.ro</a></div>
+        </div>
+      </div>
+      <div class="team-card">
+        <div class="avatar gold">EN</div>
+        <div>
+          <h3>Enikő</h3>
+          <div class="team-role">Contabilitate & Administrație</div>
+          <p class="team-bio">Asigură evidența contabilă, relația cu ANAF și facturarea pentru clienții instituționali. Punct de contact pentru tot ce ține de documente și plăți.</p>
+          <div class="team-contacts"><a href="mailto:contabilitate@transoffice.ro">✉ contabilitate@transoffice.ro</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="container">
+    <div class="section-head">
+      <div class="section-eyebrow">Contact</div>
+      <h2>Hai să discutăm despre nevoile tale</h2>
+      <p>Răspundem la fiecare cerere de ofertă în maxim 24 de ore lucrătoare. Sună-ne, scrie-ne sau treci pe la sediu.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-list">
+          <div class="contact-item">
+            <div class="contact-icon">📍</div>
+            <div><h4>Sediu</h4><p>str. Calea Băieșenilor nr. 22<br>Odorheiu Secuiesc, jud. Harghita<br>535600 România</p></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">📞</div>
+            <div><h4>Telefon</h4><p><a href="tel:+40266218945">0266-218.945</a></p></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">✉</div>
+            <div><h4>Email</h4><p><a href="mailto:contact@transoffice.ro">contact@transoffice.ro</a></p></div>
+          </div>
+          <div class="contact-item">
+            <div class="contact-icon">🕐</div>
+            <div><h4>Program</h4><p>Luni–Vineri · 08:30–17:00<br>Sâmbătă · 09:00–13:00 (cu programare)</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="map-card">
+        <div>
+          <h3>Vino în vizită</h3>
+          <p>Sediul nostru și depozitul de 412 m² se află în zona industrială din vestul Odorheiului. Parcare proprie, intrare directă pentru clienți.</p>
+        </div>
+        <a href="https://www.google.com/maps/search/?api=1&query=Calea+Băieșenilor+22+Odorheiu+Secuiesc" target="_blank" rel="noopener" class="map-link">Vezi pe Google Maps →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo" style="color: #fff;">
+          <div class="logo-mark">T</div>
+          <span>TransOffice Trade</span>
+        </div>
+        <p>Papetărie, consumabile de birou și tonere HP recondiționate pentru IMM-uri din Transilvania.</p>
+        <div class="badge-eu">⚡ Mobilitate verde · AFM 2026</div>
+      </div>
+      <div>
+        <h5>Servicii</h5>
+        <ul>
+          <li><a href="#servicii">Hârtie A4/A3</a></li>
+          <li><a href="#servicii">Tonere HP</a></li>
+          <li><a href="#servicii">Articole de birou</a></li>
+          <li><a href="#servicii">Livrare</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Companie</h5>
+        <ul>
+          <li><a href="#echipa">Echipa</a></li>
+          <li><a href="#mobilitate">Mobilitate verde</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h5>Legal</h5>
+        <ul>
+          <li>CUI 15847291</li>
+          <li>J19/421/2003</li>
+          <li><a href="#">Politică cookies</a></li>
+          <li><a href="#">GDPR</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © 2026 TransOffice Trade S.R.L. · Odorheiu Secuiesc, România. Toate drepturile rezervate.
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

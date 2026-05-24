@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<script type="application/json" id="screen-meta">
+{
+  "title": "Founding 50 — Early adopter program",
+  "feature": "onboarding",
+  "sprint": "Sprint 3",
+  "status": "approved",
+  "publish": true,
+  "order": 40,
+  "platform": "mobile",
+  "version": "v1",
+  "tags": [
+    "onboarding",
+    "founding50",
+    "referral"
+  ]
+}
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH v0.3 — Founding 50 Program (DH-153/154/155)</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --bg: #FAF8F5; --card: #FFFFFF; --primary: #9B2335; --primary-light: #F9E0E3;
+    --primary-pale: #F4E6E8; --primary-dark: #7D1A2A;
+    --text: #2C2825; --text2: #8A8078; --border: #E8E2DB;
+    --green: #2D7A4F; --green-light: #D4EDDA; --green-dark: #1B5E20;
+    --gold: #D4A574; --gold-light: #FFF8E1;
+    --warn: #C4841D; --warn-bg: #FEF3C7;
+    --danger: #C4302B;
+    --cream: #FFFBF7;
+    --backdrop: rgba(0,0,0,0.45);
+    --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-display: 'Playfair Display', Georgia, serif;
+  }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); }
+
+  /* Page header */
+  .header { max-width: 1200px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+  .header .jira-links { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+  .breadcrumb-bar {
+    margin-top: 10px; display: flex; align-items: center; gap: 8px;
+    background: #F5F0EB; border: 1px solid var(--border); border-radius: 8px;
+    padding: 8px 12px; font-size: 12px; font-weight: 500; color: var(--text2);
+    font-family: ui-monospace, 'SF Mono', Monaco, Consolas, monospace;
+    cursor: pointer; transition: border-color 0.15s;
+    user-select: all;
+  }
+  .breadcrumb-bar:hover { border-color: var(--primary); }
+  .breadcrumb-bar .bc-text { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .breadcrumb-bar .bc-sep { color: var(--border); margin: 0 2px; }
+  .breadcrumb-bar .bc-copy {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 6px; border: 1px solid var(--border);
+    background: white; cursor: pointer; flex-shrink: 0; font-size: 13px;
+    transition: all 0.15s;
+  }
+  .breadcrumb-bar .bc-copy:hover { background: var(--primary-light); border-color: var(--primary); }
+  .breadcrumb-bar .bc-copy.copied { background: var(--green-light); border-color: var(--green); }
+  .jira-tag {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #E7EEF8; color: #1F4E8C; padding: 3px 8px; border-radius: 4px;
+    font-size: 11px; font-weight: 700; text-decoration: none; letter-spacing: 0.3px;
+  }
+  .jira-tag:hover { background: #D6E3F3; }
+
+  /* Tabs */
+  .tabs { display: flex; gap: 8px; max-width: 1200px; margin: 16px auto; padding: 0 24px; overflow-x: auto; }
+  .tab {
+    padding: 10px 20px; border-radius: 24px; font-size: 13px;
+    border: 1px solid var(--border); background: white; color: var(--text);
+    cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 500;
+    font-family: var(--font-sans);
+  }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+
+  .content { max-width: 1200px; margin: 0 auto; padding: 0 24px 60px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+  .feature > h2 { font-size: 18px; font-weight: 700; margin: 0 0 6px; }
+  .feature > .desc { font-size: 13px; color: var(--text2); margin-bottom: 16px; line-height: 1.5; }
+
+  /* Scenario buttons */
+  .scenarios { display: flex; gap: 6px; margin-bottom: 16px; flex-wrap: wrap; }
+  .scenario-btn {
+    padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 500;
+    border: 1px solid var(--border); background: white; cursor: pointer;
+    font-family: var(--font-sans); transition: all 0.15s;
+  }
+  .scenario-btn.active { border: 2px solid var(--primary); background: var(--primary); color: white; font-weight: 600; }
+
+  .phones { display: flex; gap: 24px; flex-wrap: wrap; align-items: flex-start; }
+
+  /* Phone frame */
+  .phone {
+    width: 375px; height: 812px; background: var(--cream);
+    border-radius: 24px; border: 2px solid var(--border);
+    overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    flex-shrink: 0; position: relative;
+    display: flex; flex-direction: column;
+  }
+  .phone-label {
+    position: absolute; top: -28px; left: 0; right: 0; text-align: center;
+    font-size: 11px; font-weight: 700; color: var(--text2);
+    letter-spacing: 0.5px; text-transform: uppercase;
+  }
+
+  /* Status bar */
+  .status-bar {
+    height: 44px; display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 0 22px 6px; font-size: 14px; font-weight: 600; background: var(--cream);
+    flex-shrink: 0;
+  }
+
+  /* App header */
+  .app-header {
+    height: 56px; background: white; display: flex; align-items: center;
+    justify-content: space-between; padding: 0 16px;
+    border-bottom: 1px solid var(--border); flex-shrink: 0;
+  }
+  .app-header h1 { font-size: 20px; font-weight: 400; color: var(--primary-dark); }
+
+  /* Content area */
+  .app-body {
+    flex: 1; overflow-y: auto; scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .app-body::-webkit-scrollbar { display: none; }
+
+  /* Bottom nav */
+  .app-nav {
+    height: 65px; background: white; border-top: 1px solid var(--border);
+    display: grid; grid-template-columns: repeat(4,1fr);
+    flex-shrink: 0; box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+  }
+  .nav-item {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2px; font-size: 10px; font-weight: 600; color: var(--text2);
+  }
+  .nav-item.active { color: var(--primary); }
+  .nav-item svg { width: 22px; height: 22px; }
+
+  /* Product grid (simplified background) */
+  .product-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 12px 16px; }
+  .product-card-mini {
+    background: white; border-radius: 16px; overflow: hidden;
+    border: 1px solid var(--border); box-shadow: 0 1px 2px rgba(0,0,0,0.08);
+  }
+  .product-card-mini .img-placeholder {
+    width: 100%; height: 100px; background: linear-gradient(135deg, #F0EBE6 0%, #E8E0D8 100%);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .product-card-mini .img-placeholder svg { width: 28px; height: 28px; color: #C4B8AA; }
+  .product-card-mini .info { padding: 12px; }
+  .product-card-mini .cat { font-size: 11px; font-weight: 500; color: var(--gold); margin-bottom: 3px; }
+  .product-card-mini .name { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .product-card-mini .price { font-size: 12px; font-weight: 500; color: var(--primary); }
+
+  /* Category tabs (in-phone) */
+  .cat-tabs { display: flex; gap: 8px; padding: 12px 16px 0; overflow-x: hidden; }
+  .cat-tab {
+    padding: 8px 14px; border-radius: 999px; font-size: 12px; font-weight: 500;
+    white-space: nowrap; flex-shrink: 0;
+  }
+  .cat-tab.active { background: var(--primary); color: white; }
+  .cat-tab.inactive { background: rgba(232,226,219,0.6); color: #5C544C; }
+
+  /* ── Modal overlay ── */
+  .modal-overlay {
+    position: absolute; inset: 0; z-index: 20;
+    background: var(--backdrop);
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+
+  /* ── Option A: White card modal ── */
+  .modal-card {
+    background: white; border-radius: 16px; padding: 28px 24px 24px;
+    width: 100%; max-width: 327px;
+    display: flex; flex-direction: column; align-items: center; gap: 0;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.2);
+  }
+  .modal-icon-wrap {
+    width: 56px; height: 56px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 16px;
+  }
+  .modal-icon-wrap.primary-bg { background: var(--primary-light); color: var(--primary); }
+  .modal-icon-wrap.gold-bg { background: var(--gold-light); color: #8F6F1F; }
+  .modal-icon-wrap svg { width: 28px; height: 28px; }
+  .modal-title {
+    font-family: var(--font-display); font-size: 20px; font-weight: 700;
+    color: var(--primary-dark); text-align: center; letter-spacing: -0.3px;
+    margin-bottom: 8px; line-height: 1.3;
+  }
+  .modal-desc {
+    font-size: 14px; color: var(--text2); text-align: center; line-height: 1.55;
+    margin-bottom: 20px;
+  }
+
+  /* Counter styles */
+  .counter-wrap { width: 100%; margin-bottom: 20px; }
+
+  /* Counter: progress bar */
+  .counter-bar { width: 100%; }
+  .counter-bar .bar-label {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .counter-bar .bar-number { font-size: 24px; font-weight: 800; color: var(--primary); }
+  .counter-bar .bar-total { font-size: 14px; font-weight: 500; color: var(--text2); }
+  .counter-bar .bar-track {
+    width: 100%; height: 10px; background: #E8E2DB; border-radius: 5px;
+    overflow: hidden;
+  }
+  .counter-bar .bar-fill {
+    height: 100%; border-radius: 5px;
+    background: linear-gradient(90deg, var(--primary), #C44A5A);
+    transition: width 0.5s ease;
+  }
+  .counter-bar .bar-hint {
+    font-size: 12px; color: var(--text2); margin-top: 6px; text-align: center;
+  }
+
+
+
+  /* Modal actions */
+  .modal-actions { width: 100%; display: flex; flex-direction: column; gap: 10px; align-items: center; }
+  .modal-btn-primary {
+    width: 100%; height: 48px; border-radius: 12px; border: none;
+    background: var(--primary); color: white; font-size: 15px; font-weight: 600;
+    cursor: pointer; font-family: var(--font-sans);
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .modal-btn-ghost {
+    background: none; border: none; color: var(--text2); font-size: 13px;
+    font-weight: 500; cursor: pointer; padding: 8px; font-family: var(--font-sans);
+  }
+  .modal-btn-ghost:hover { color: var(--primary); }
+
+
+
+  /* ── Scarcity badge ── */
+  .scarcity-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: #FEF3C7; color: #92400E; padding: 4px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 700; margin-bottom: 12px;
+  }
+  .scarcity-badge svg { width: 12px; height: 12px; }
+
+  /* Doc block */
+  .doc-block {
+    width: 100%; margin-top: 24px;
+    border: 1px solid #D4CCC3; border-radius: 10px; background: #FAF7F2;
+    font-family: 'SF Mono', Monaco, Consolas, monospace; overflow: hidden;
+  }
+  .doc-trigger {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; padding: 12px 16px; background: transparent; border: none;
+    cursor: pointer; font-family: inherit; font-size: 12px; font-weight: 600;
+    color: var(--text); text-align: left;
+  }
+  .doc-trigger:hover { background: #F2EDE5; }
+  .doc-content {
+    display: none; padding: 4px 16px 16px; border-top: 1px solid #E8DDD0;
+  }
+  .doc-block.open .doc-content { display: block; }
+  .doc-block.open .doc-chev { transform: rotate(90deg); }
+  .doc-chev { transition: transform 0.2s; font-size: 10px; color: #8B7D6F; }
+  .doc-section { margin-top: 12px; }
+  .doc-section:first-child { margin-top: 8px; }
+  .doc-section h4 {
+    font-size: 10px; font-weight: 700; color: #8B7D6F;
+    letter-spacing: 0.8px; text-transform: uppercase; margin-bottom: 4px;
+  }
+  .doc-section ul { margin: 0; padding-left: 16px; list-style: none; }
+  .doc-section li {
+    position: relative; font-size: 11.5px; color: #3A3028; line-height: 1.5; padding: 2px 0;
+  }
+  .doc-section li::before {
+    content: '›'; position: absolute; left: -14px; color: #8B7D6F; font-weight: 700;
+  }
+  .doc-section code {
+    background: #F2EDE5; padding: 1px 5px; border-radius: 3px;
+    font-size: 10.5px; color: #7D4E1F; border: 1px solid #E8DDD0;
+  }
+
+  @media (max-width: 800px) {
+    .phones { flex-direction: column; align-items: center; }
+  }
+</style>
+
+  <style>
+  .back-to-catalog {
+    position: fixed; top: 12px; left: 12px; z-index: 9999;
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(155,35,53,0.92); color: white;
+    font-family: -apple-system, sans-serif;
+    font-size: 12px; font-weight: 600;
+    padding: 7px 12px 7px 10px; border-radius: 999px;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    backdrop-filter: blur(4px);
+    transition: opacity .15s;
+  }
+  .back-to-catalog:hover { opacity: .85; }
+  .back-to-catalog svg { width:14px; height:14px; stroke:white; stroke-width:2.5; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+  </style>
+</head>
+<body>
+<a class="back-to-catalog" href="../index.html">
+  <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+  Katalógus
+</a>
+
+<div class="header">
+  <h1>Founding 50 Program</h1>
+  <p>DH-153/154 · Kampány modal + gratuláció + badge</p>
+  <div class="breadcrumb-bar" id="breadcrumb" onclick="copyBreadcrumb()">
+    <span class="bc-text" id="bcText">v0.3-founding50.html</span>
+    <span class="bc-copy" id="bcCopy" title="Hivatkozás másolása">📋</span>
+  </div>
+  <div class="jira-links">
+    <a href="https://exarlabs.atlassian.net/browse/DH-150" class="jira-tag" target="_blank">DH-150 parent</a>
+    <a href="https://exarlabs.atlassian.net/browse/DH-153" class="jira-tag" target="_blank">DH-153</a>
+    <a href="https://exarlabs.atlassian.net/browse/DH-154" class="jira-tag" target="_blank">DH-154</a>
+  </div>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div class="content" id="content"></div>
+
+<script>
+/* ────────────────────────────────────────
+   Tab / scenario system
+   ──────────────────────────────────────── */
+const FEATURES = [
+  { id: 'optA', label: 'DH-153 · Kampány modal', scenarios: [
+    { id: 'a-bar',    label: 'Standard (37/50)' },
+    { id: 'a-scarce', label: 'Szinte betelt (48/50)' },
+  ]},
+  { id: 'flow', label: 'Megjelenési logika', scenarios: [
+    { id: 'f-appear', label: 'Trigger flow' },
+  ]},
+  { id: 'grat', label: 'DH-154 · Gratuláció + Badge', scenarios: [
+    { id: 'g-modal',   label: 'Gratuláció modal' },
+    { id: 'g-profile', label: 'Badge — Profil' },
+    { id: 'g-checkout',label: 'Badge — Checkout' },
+    { id: 'g-order',   label: 'Badge — Rendelés' },
+  ]},
+];
+
+let activeFeature = FEATURES[0].id;
+let activeScenarios = {};
+FEATURES.forEach(f => { activeScenarios[f.id] = f.scenarios[0].id; });
+
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = FEATURES.map(f =>
+    `<button class="tab ${f.id === activeFeature ? 'active' : ''}" onclick="switchFeature('${f.id}')">${f.label}</button>`
+  ).join('');
+}
+
+function switchFeature(id) {
+  activeFeature = id;
+  renderTabs();
+  renderContent();
+}
+
+function switchScenario(featureId, scenarioId) {
+  activeScenarios[featureId] = scenarioId;
+  renderContent();
+}
+
+/* ────────────────────────────────────────
+   SVG icon helpers
+   ──────────────────────────────────────── */
+const ICONS = {
+  gift: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12v10H4V12"/><path d="M2 7h20v5H2z"/><path d="M12 22V7"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>',
+  users: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+  truck: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18h2"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>',
+  clock: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  zap: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+  chevRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>',
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+  cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>',
+  file: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>',
+  user: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>',
+  flame: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg>',
+  alertTriangle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  package2: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16.5 9.4 7.55 4.24"/><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.29 7 12 12 20.71 7"/><line x1="12" y1="22" x2="12" y2="12"/></svg>',
+  circleCheck: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+  award: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>',
+  mapPin: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>',
+  chevLeft: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>',
+  bell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>',
+};
+
+function ic(name, size) {
+  const s = size || 22;
+  return `<span style="display:inline-flex;width:${s}px;height:${s}px">${ICONS[name] || ''}</span>`;
+}
+
+/* ────────────────────────────────────────
+   Phone background (products page)
+   ──────────────────────────────────────── */
+function productsBackground() {
+  const cards = [
+    { cat: 'Füstölt Áruk', name: 'Füstölt Has', price: '47,00 RON / kg' },
+    { cat: 'Füstölt Áruk', name: 'Füstölt Oldalas', price: '47,00 RON / kg' },
+    { cat: 'Friss Sertéshús', name: 'Sertés Őrölt Hús', price: '21,00 RON / kg' },
+    { cat: 'Friss Sertéshús', name: 'Fehér Karaj', price: '33,00 RON / kg' },
+    { cat: 'Friss Sertéshús', name: 'Sertés Apróhús', price: '21,00 RON / kg' },
+    { cat: 'Felvágott & Egyéb', name: 'Abált Szalonna', price: '35,00 RON / kg' },
+  ];
+  return `
+    <div class="app-header">
+      <h1>Termékek</h1>
+      <span style="width:22px;height:16px;display:flex;overflow:hidden;border-radius:2px">
+        <svg viewBox="0 0 22 16"><rect width="22" height="5.33" fill="#CE2939"/><rect y="5.33" width="22" height="5.33" fill="#FFF"/><rect y="10.66" width="22" height="5.34" fill="#1A8B42"/></svg>
+      </span>
+    </div>
+    <div class="app-body">
+      <div class="cat-tabs">
+        <span class="cat-tab active">Összes</span>
+        <span class="cat-tab inactive">Felvágott</span>
+        <span class="cat-tab inactive">Friss Sertés</span>
+        <span class="cat-tab inactive">Füstölt</span>
+      </div>
+      <div class="product-grid">
+        ${cards.map(c => `
+          <div class="product-card-mini">
+            <div class="img-placeholder">
+              ${ic('package2', 28)}
+            </div>
+            <div class="info">
+              <div class="cat">${c.cat}</div>
+              <div class="name">${c.name}</div>
+              <div class="price" style="color:var(--primary);font-size:12px;font-weight:500">${c.price}</div>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function bottomNav(active) {
+  const tabs = [
+    { key: 'products', icon: 'home', label: 'Termékek' },
+    { key: 'cart', icon: 'cart', label: 'Kosár' },
+    { key: 'orders', icon: 'file', label: 'Rendelések' },
+    { key: 'profile', icon: 'user', label: 'Fiók' },
+  ];
+  return `
+    <div class="app-nav">
+      ${tabs.map(t => `<div class="nav-item ${(active || 'products') === t.key ? 'active' : ''}">${ic(t.icon)} <span>${t.label}</span></div>`).join('')}
+    </div>
+  `;
+}
+
+/* ────────────────────────────────────────
+   Counter renderers
+   ──────────────────────────────────────── */
+function counterBar(taken, total) {
+  const pct = Math.round((taken / total) * 100);
+  const remaining = total - taken;
+  return `
+    <div class="counter-wrap">
+      <div class="counter-bar">
+        <div class="bar-label">
+          <span class="bar-number">${taken}<span style="font-size:14px;font-weight:500;color:var(--text2)"> / ${total}</span></span>
+          <span class="bar-total">hely betelve</span>
+        </div>
+        <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>
+        <div class="bar-hint">${remaining <= 5 ? `Már csak <b>${remaining} hely</b> maradt` : `Még ${remaining} hely elérhető`}</div>
+      </div>
+    </div>`;
+}
+
+
+
+/* ────────────────────────────────────────
+   Modal A (white card)
+   ──────────────────────────────────────── */
+function modalA(counterHTML, scarcityTag) {
+  return `
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <div class="modal-icon-wrap primary-bg">${ICONS.gift}</div>
+        ${scarcityTag ? `<div class="scarcity-badge">${ic('flame',12)} Hamarosan betelik</div>` : ''}
+        <div class="modal-title">Legyél az első 50 alapító tag között</div>
+        <div class="modal-desc">Csatlakozz a Deák Húsmíves online rendelési programjához, és <b>3 hónapig ingyenes kiszállítást</b> kapsz.</div>
+        ${counterHTML}
+        <div class="modal-actions">
+          <button class="modal-btn-primary">${ic('users',18)} Csatlakozom most</button>
+          <button class="modal-btn-ghost">Talán később</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+
+
+/* ────────────────────────────────────────
+   DH-154: Gratuláció modal
+   ──────────────────────────────────────── */
+function gratulationModal() {
+  return `
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <div style="width:72px;height:72px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <span style="display:inline-flex;width:36px;height:36px;color:var(--green)">${ICONS.circleCheck}</span>
+        </div>
+        <div class="modal-title" style="color:var(--green-dark)">Üdv az alapító tagok között!</div>
+        <div class="modal-desc">Gratulálunk! Mostantól <b>3 hónapig ingyenes kiszállítást</b> kapsz minden rendelésedre Székelyudvarhely területén.</div>
+        <div style="width:100%;background:var(--green-light);border:1px solid #A7F3D0;border-radius:10px;padding:12px 14px;margin-bottom:20px;display:flex;align-items:center;gap:10px">
+          <span style="display:inline-flex;width:20px;height:20px;color:var(--green)">${ICONS.truck}</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:var(--green-dark)">Ingyenes szállítás aktív</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px">Érvényes: 2026. aug. 15-ig</div>
+          </div>
+        </div>
+        <div style="width:100%;display:flex;align-items:center;gap:8px;background:var(--gold-light);border-radius:8px;padding:8px 12px;margin-bottom:20px">
+          <span style="display:inline-flex;width:18px;height:18px;color:#8F6F1F">${ICONS.award}</span>
+          <span style="font-size:12px;font-weight:600;color:#8F6F1F">Alapító tag #38</span>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn-primary" style="background:var(--green)">Megnézem a termékeket</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ────────────────────────────────────────
+   DH-154: Profile with badge
+   ──────────────────────────────────────── */
+function profileWithBadge() {
+  return `
+    <div class="phone" style="position:relative;margin-top:32px">
+      <div class="phone-label">Profil oldal — Alapító tag badge</div>
+      <div class="status-bar"><span>9:41</span><span style="font-size:12px">●●●●</span></div>
+      <div class="app-header">
+        <h1 style="font-size:18px;font-weight:700;font-family:Georgia,serif;color:var(--primary)">Deák Húsmíves</h1>
+      </div>
+      <div class="app-body" style="padding:12px 16px">
+        <!-- Profile hero with badge -->
+        <div style="background:white;border-radius:12px;padding:16px;margin-bottom:10px;display:flex;align-items:center;gap:14px;border:1px solid var(--border)">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--primary-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+            <span style="display:inline-flex;width:28px;height:28px;color:var(--primary)">${ICONS.user}</span>
+          </div>
+          <div style="flex:1;min-width:0">
+            <div style="margin-bottom:4px">
+              <span style="display:inline-flex;align-items:center;gap:4px;background:var(--gold-light);border:1px solid #E8C84A;padding:3px 8px;border-radius:999px;font-size:10px;font-weight:700;color:#8F6F1F">
+                <span style="display:inline-flex;width:12px;height:12px">${ICONS.award}</span> Alapító tag
+              </span>
+            </div>
+            <div style="font-size:16px;font-weight:700">Becze Szabolcs</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:2px">0740 507 135</div>
+          </div>
+        </div>
+
+        <!-- Founding member card -->
+        <div style="background:linear-gradient(135deg,#FFFBF0 0%,#FFF8E1 100%);border:1px solid #E8C84A;border-radius:12px;padding:14px;margin-bottom:10px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+            <span style="display:inline-flex;width:18px;height:18px;color:#8F6F1F">${ICONS.award}</span>
+            <span style="font-size:14px;font-weight:700;color:#6B5A1F">Founding 50 — Alapító tag</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:#8F6F1F">
+            <span>Ingyenes szállítás</span>
+            <span style="font-weight:600">2026. aug. 15-ig</span>
+          </div>
+          <div style="margin-top:8px;height:4px;background:#E8DCC0;border-radius:2px;overflow:hidden">
+            <div style="height:100%;width:35%;background:linear-gradient(90deg,#D4A574,#8F6F1F);border-radius:2px"></div>
+          </div>
+          <div style="font-size:10px;color:#A08B5C;margin-top:4px">35 nap a 90-ből felhasználva</div>
+        </div>
+
+        <!-- Menu rows placeholder -->
+        <div style="font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.6px;margin:12px 0 6px 2px">Beállítások</div>
+        <div style="background:white;border-radius:12px;border:1px solid var(--border);overflow:hidden">
+          <div style="display:flex;align-items:center;gap:12px;padding:13px 14px;border-bottom:1px solid var(--border)">
+            <div style="width:34px;height:34px;border-radius:9px;background:var(--primary-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0">
+              <span style="display:inline-flex;width:18px;height:18px;color:var(--primary)">${ICONS.mapPin}</span>
+            </div>
+            <div style="flex:1"><div style="font-size:14px;font-weight:600">Szállítási címek</div><div style="font-size:12px;color:var(--text2)">Morii, 20/1</div></div>
+            <span style="display:inline-flex;width:16px;height:16px;color:#BBB">${ICONS.chevRight}</span>
+          </div>
+        </div>
+      </div>
+      ${bottomNav('profile')}
+    </div>`;
+}
+
+/* ────────────────────────────────────────
+   DH-154: Checkout with badge
+   ──────────────────────────────────────── */
+function checkoutWithBadge() {
+  return `
+    <div class="phone" style="position:relative;margin-top:32px">
+      <div class="phone-label">Checkout — szállítási díj override</div>
+      <div class="status-bar"><span>9:41</span><span style="font-size:12px">●●●●</span></div>
+      <div class="app-header">
+        <h1 style="font-size:18px;font-weight:700">Kosaram</h1>
+        <span style="display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;color:var(--text2);background:#F3EEE9;padding:3px 8px;border-radius:10px">HU</span>
+      </div>
+      <div class="app-body" style="padding:0 16px 16px">
+        <div class="newcart-wrap">
+          ${ncItem('Füstölt Has', '47,00', '5,00', '235,00', '🥓')}
+          ${ncItem('Sertés Őrölt Hús', '21,00', '5,00', '105,00', '🥩')}
+
+          <div style="background:#FEF6E8;border:1px solid #F5DFB3;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:10px;font-size:13px;color:#8B5A00;margin-bottom:12px">
+            <span style="display:inline-flex;width:16px;height:16px;flex-shrink:0;color:#C98A1E">${ICONS.alertTriangle}</span>
+            <span>A végső súly és ár ±10%-kal eltérhet</span>
+          </div>
+
+          <!-- Progress bar -->
+          <div style="background:white;border:1px solid #EDE4D6;border-radius:14px;padding:18px 16px 14px;margin-bottom:12px">
+            <div style="position:relative;height:6px;background:#EDE4D6;border-radius:99px;margin:0 14px 10px">
+              <div style="position:absolute;inset:0 auto 0 0;width:100%;background:linear-gradient(90deg,#4A9960,#3D8A53);border-radius:99px"></div>
+              <div style="position:absolute;top:50%;left:30%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:#4A9960;border:2px solid white;display:flex;align-items:center;justify-content:center;color:white;box-shadow:0 0 0 2px white,0 0 0 3px rgba(74,153,96,0.18)"><svg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg></div>
+              <div style="position:absolute;top:50%;left:60%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:#4A9960;border:2px solid white;display:flex;align-items:center;justify-content:center;color:white;box-shadow:0 0 0 2px white,0 0 0 3px rgba(74,153,96,0.18)"><svg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg></div>
+              <div style="position:absolute;top:50%;left:100%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:#4A9960;border:2px solid white;display:flex;align-items:center;justify-content:center;color:white;box-shadow:0 0 0 2px white,0 0 0 3px rgba(74,153,96,0.18)"><svg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'/></svg></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:11px;color:#8B7D6F;padding:0 2px">
+              <span style="text-align:left;flex:0 0 auto"><span style="color:#8B7D6F;font-size:11px;font-weight:500">0 RON</span></span>
+              <span style="text-align:center;flex:1"><span style="display:block;color:#3D8A53;font-weight:700;font-size:12px">150 RON</span><span style="display:block;margin-top:1px;font-size:10.5px">Ingy. száll.</span></span>
+              <span style="text-align:center;flex:1"><span style="display:block;color:#3D8A53;font-weight:700;font-size:12px">200 RON</span><span style="display:block;margin-top:1px;font-size:10.5px">1% kedv.</span></span>
+              <span style="text-align:center;flex:1"><span style="display:block;color:#3D8A53;font-weight:700;font-size:12px">300 RON</span><span style="display:block;margin-top:1px;font-size:10.5px">2% kedv.</span></span>
+            </div>
+          </div>
+
+          <!-- Success nudge -->
+          <div style="background:#EDF8EF;border:1px solid #C7E5CE;border-radius:12px;padding:10px 14px 12px;margin-bottom:12px">
+            <div style="font-size:13.5px;font-weight:700;color:#2D7A4F;margin-bottom:2px">Teljes kedvezmény!</div>
+            <div style="font-size:12px;color:#3F6B4E;line-height:1.4">+10 RON (ingyenes szállítás) · +6,80 RON (2% kedvezmény)</div>
+          </div>
+
+          <!-- Founding tag badge -->
+          <div style="background:var(--gold-light);border:1px solid #E8C84A;border-radius:12px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;gap:10px">
+            <span style="display:inline-flex;width:18px;height:18px;color:#8F6F1F">${ICONS.award}</span>
+            <div>
+              <div style="font-size:12px;font-weight:700;color:#6B5A1F">Alapító tag — ingyenes szállítás</div>
+              <div style="font-size:10px;color:#A08B5C;margin-top:1px">Érvényes: 2026. aug. 15-ig</div>
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div style="padding:14px 2px 0;border-top:1px solid #EDE4D6">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:#6B5D50;margin-bottom:8px;font-variant-numeric:tabular-nums"><span>Becsült részösszeg</span><span style="color:var(--text);font-weight:500">~340,00 RON</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:#6B5D50;margin-bottom:8px;font-variant-numeric:tabular-nums">
+              <span>Szállítás</span>
+              <span><span style="text-decoration:line-through;color:#B8AD9E;margin-right:6px">10,00 RON</span><span style="color:#3D8A53;font-weight:700">Ingyenes</span></span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:13px;color:#3D8A53;margin-bottom:8px;font-variant-numeric:tabular-nums;font-weight:600"><span>2% kedvezmény</span><span>−6,80 RON</span></div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:12px;padding-top:12px;border-top:1px solid #EDE4D6">
+              <div>
+                <div style="font-size:16px;font-weight:700;color:var(--text)">Becsült összesen</div>
+                <div style="font-size:11.5px;color:#8B7D6F;margin-top:4px">2 termék · becslés a kiválasztott mennyiségek alapján</div>
+              </div>
+              <div style="font-size:22px;font-weight:800;color:var(--primary);font-variant-numeric:tabular-nums">~333,20 RON</div>
+            </div>
+          </div>
+
+          <button style="width:100%;margin-top:16px;background:var(--primary);color:white;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;letter-spacing:0.2px">
+            Tovább a fizetéshez
+            <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'/></svg>
+          </button>
+        </div>
+      </div>
+      ${bottomNav('cart')}
+    </div>`;
+}
+
+function ncItem(name, unitPrice, qty, total, emoji) {
+  return `
+    <div style="background:white;border:1px solid #EDE4D6;border-radius:14px;padding:14px;margin-bottom:12px;display:grid;grid-template-columns:72px 1fr auto;grid-template-rows:auto auto;gap:10px 14px;align-items:start">
+      <div style="grid-area:1/1/span 2;width:72px;height:72px;border-radius:10px;background:linear-gradient(135deg,#F5EBDD,#E8D8BE);display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0">${emoji}</div>
+      <div style="grid-area:1/2/auto/span 2;display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
+        <div>
+          <div style="font-size:16px;font-weight:700;color:var(--text);line-height:1.2;margin-bottom:3px">${name}</div>
+          <div style="font-size:13px;color:#8B7D6F;font-weight:500">${unitPrice} RON / kg</div>
+        </div>
+        <button style="width:32px;height:32px;border:1px solid #E8DDD0;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#8B7D6F;padding:0;flex-shrink:0">
+          <svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'><path d='M3 6h18'/><path d='M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2'/><path d='M19 6 18 20a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6'/></svg>
+        </button>
+      </div>
+      <div style="grid-area:2/2/auto/span 2;display:flex;align-items:center;justify-content:space-between;gap:12px">
+        <div style="display:flex;align-items:center;gap:6px">
+          <button style="width:34px;height:34px;border:1px solid #E8DDD0;background:white;border-radius:8px;font-size:18px;font-weight:500;color:#6B5D50;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">−</button>
+          <input type="text" value="${qty}" readonly style="width:56px;height:34px;border:1px solid #E8DDD0;background:white;border-radius:8px;text-align:center;font-size:14px;font-weight:600;color:var(--text);font-variant-numeric:tabular-nums;outline:none">
+          <button style="width:34px;height:34px;border:1px solid #E8DDD0;background:white;border-radius:8px;font-size:18px;font-weight:500;color:#6B5D50;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0">+</button>
+        </div>
+        <div style="font-size:16px;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums">${total} RON</div>
+      </div>
+    </div>`;
+}
+
+/* ────────────────────────────────────────
+   DH-154: Order card with badge
+   ──────────────────────────────────────── */
+function orderWithBadge() {
+  const reorderSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M21 21v-5h-5"/></svg>';
+  const heartSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg>';
+  const coinsSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="6"/><path d="M18.09 10.37A6 6 0 1 1 10.34 18"/><path d="M7 6h1v4"/><path d="m16.71 13.88.7.71-2.82 2.82"/></svg>';
+  const chevSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+  const bagSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/></svg>';
+
+  function chip(name, qty) {
+    return '<span style="display:inline-flex;align-items:baseline;gap:6px;padding:4px 8px;border-radius:6px;background:#F5EDE5;border:1px solid #E8DDD0"><span style="font-size:11px;font-weight:600;color:#2C2825">' + name + '</span><span style="font-size:10px;color:#8A8078;font-variant-numeric:tabular-nums">' + qty + '</span></span>';
+  }
+
+  function foundingBadge() {
+    return '<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#FFF8E1;border:1px solid #E8C84A;font-size:10px;font-weight:700;color:#8F6F1F;white-space:nowrap"><span style="display:inline-flex;width:12px;height:12px">' + ICONS.award + '</span> Alapító tag</span>';
+  }
+
+  function orderCard(date, total, savings, chips, orderId, hasFounding) {
+    return '<article style="background:white;border-radius:12px;box-shadow:0 1px 2px rgba(0,0,0,0.1);border:1px solid #E8E2DB;padding:10px 12px;display:flex;flex-direction:column;gap:12px">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
+        '<span style="font-size:13px;font-weight:700;color:#2C2825">' + date + '</span>' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+          (savings ? '<span style="display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:999px;background:#D4EDDA;color:#2D7A4F;font-size:12px;font-weight:700;white-space:nowrap">' + coinsSvg + ' ' + savings + '</span>' : '') +
+          '<span style="font-size:16px;font-weight:600;color:#2C2825;white-space:nowrap">' + total + '</span>' +
+        '</div>' +
+      '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:8px">' + chips +
+      '</div>' +
+      '<div style="display:flex;align-items:center;justify-content:space-between">' +
+        '<div style="display:flex;align-items:center;gap:8px;flex:1">' +
+          '<button style="flex:1;height:40px;background:#9B2335;color:white;border:none;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px">' + reorderSvg + ' Mégegyszer</button>' +
+          '<button style="width:40px;height:40px;border-radius:10px;border:1px solid #E8E2DB;background:white;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#8A8078;flex-shrink:0">' + heartSvg + '</button>' +
+        '</div>' +
+      '</div>' +
+      '<div style="font-size:9px;color:#8A8078;font-family:monospace;text-transform:uppercase;letter-spacing:0.5px;text-align:right;display:flex;align-items:center;justify-content:space-between">' +
+        (hasFounding ? foundingBadge() : '<span></span>') +
+        '<span>' + orderId + '</span>' +
+      '</div>' +
+    '</article>';
+  }
+
+  return '<div class="phone" style="position:relative;margin-top:32px">' +
+    '<div class="phone-label">Rendeléseim — Alapító tag indikátor</div>' +
+    '<div class="status-bar"><span>9:41</span><span style="font-size:12px">●●●●</span></div>' +
+    '<div class="app-header"><h1 style="font-size:20px;font-weight:400;color:#842030">Rendeléseim</h1></div>' +
+    '<div class="app-body" style="padding:16px">' +
+      // Active order
+      '<div style="position:relative;overflow:hidden;background:linear-gradient(to right bottom,#FFFFFF,#FFFBF7);border:1.5px solid #E8DDD0;border-radius:16px;padding:12px 16px 12px 18px;cursor:pointer;margin-bottom:24px">' +
+        '<div style="position:absolute;left:0;top:0;bottom:0;width:4px;background:#C9A247;border-radius:16px 0 0 16px"></div>' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+          '<span style="width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#FAF1D8;color:#8F6F1F">' + bagSvg + '</span>' +
+          '<span style="font-size:10px;font-weight:700;color:#8F6F1F;text-transform:uppercase;letter-spacing:0.5px">Csomagolás alatt</span>' +
+        '</div>' +
+        '<div style="font-size:14px;font-weight:700;color:#2C2825;margin-top:8px">A rendelésed most készül</div>' +
+        '<div style="display:flex;align-items:center;gap:4px;margin-top:4px;font-size:12px"><strong>22 ápr.</strong><span style="color:#5C544C">·</span><strong>14:00-16:00</strong></div>' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px">' +
+          '<span style="font-size:9px;color:#8A8078;font-family:monospace;text-transform:uppercase;letter-spacing:0.5px">DEAK-ORD-00044</span>' +
+          '<span style="font-size:12px;font-weight:700;color:#9B2335;display:flex;align-items:center;gap:2px">Követés ' + chevSvg + '</span>' +
+        '</div>' +
+      '</div>' +
+      // Section header
+      '<div style="font-size:16px;font-weight:600;color:#2C2825;margin-bottom:12px">Kiszállított rendelések</div>' +
+      // Orders list
+      '<div style="display:flex;flex-direction:column;gap:12px">' +
+        orderCard('21 ápr. 2026', '494,90 RON', '-20,10 RON',
+          chip('Füstölt Has', '5 kg') + chip('Sertés Őrölt Hús', '5 kg') + chip('Füstölt Bélszín', '3 kg'),
+          'DEAK-ORD-00034', true) +
+        orderCard('20 ápr. 2026', '333,20 RON', '-16,80 RON',
+          chip('Füstölt Has', '5 kg') + chip('Sertés Őrölt Hús', '5 kg'),
+          'DEAK-ORD-00031', true) +
+        orderCard('10 ápr. 2026', '158,50 RON', '',
+          chip('Abált Szalonna', '0,5 kg') + chip('Füstölt Has', '3 kg'),
+          'DEAK-ORD-00015', false) +
+      '</div>' +
+    '</div>' +
+    bottomNav('orders') +
+  '</div>';
+}
+
+/* ────────────────────────────────────────
+   DH-155: Betelt (full) modal
+   ──────────────────────────────────────── */
+function fullModal() {
+  return `
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <div style="width:56px;height:56px;border-radius:14px;background:#FEE2E2;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <span style="display:inline-flex;width:28px;height:28px;color:var(--danger)">${ICONS.users}</span>
+        </div>
+        <div class="modal-title">Az alapító program betelt</div>
+        <div class="modal-desc">Sajnos az 50 hely már betelt. Iratkozz fel a várólistára, és értesítünk, ha hely szabadul fel!</div>
+        <div class="counter-wrap">
+          <div class="counter-bar">
+            <div class="bar-label">
+              <span class="bar-number">50<span style="font-size:14px;font-weight:500;color:var(--text2)"> / 50</span></span>
+              <span class="bar-total" style="color:var(--danger);font-weight:600">Betelt!</span>
+            </div>
+            <div class="bar-track"><div class="bar-fill" style="width:100%;background:var(--danger)"></div></div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn-primary">Feliratkozom a várólistára</button>
+          <button class="modal-btn-ghost">Rendben, nézem a termékeket</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ────────────────────────────────────────
+   DH-155: Waitlist confirmation modal
+   ──────────────────────────────────────── */
+function waitlistConfirmModal() {
+  return `
+    <div class="modal-overlay">
+      <div class="modal-card">
+        <div style="width:72px;height:72px;border-radius:50%;background:#DBEAFE;display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+          <span style="display:inline-flex;width:36px;height:36px;color:#1E40AF">${ICONS.bell}</span>
+        </div>
+        <div class="modal-title" style="color:#1E40AF">Feliratkoztál a várólistára!</div>
+        <div class="modal-desc">Értesítünk, amint hely szabadul fel a Founding 50 programban. Addig is böngészd termékeinket!</div>
+        <div style="width:100%;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 14px;margin-bottom:20px;display:flex;align-items:center;gap:10px">
+          <span style="display:inline-flex;width:20px;height:20px;color:#1E40AF">${ICONS.clock}</span>
+          <div>
+            <div style="font-size:13px;font-weight:600;color:#1E40AF">Várólistán vagy</div>
+            <div style="font-size:11px;color:var(--text2);margin-top:2px">Pozíciód: #3 — értesítünk e-mailben</div>
+          </div>
+        </div>
+        <div class="modal-actions">
+          <button class="modal-btn-primary" style="background:#1E40AF">Megnézem a termékeket</button>
+        </div>
+      </div>
+    </div>`;
+}
+
+/* ────────────────────────────────────────
+   Phone wrapper
+   ──────────────────────────────────────── */
+function phone(label, modalHTML) {
+  return `
+    <div class="phone" style="position:relative;margin-top:32px">
+      <div class="phone-label">${label}</div>
+      <div class="status-bar"><span>9:41</span><span style="font-size:12px">●●●●</span></div>
+      ${productsBackground()}
+      ${bottomNav()}
+      ${modalHTML}
+    </div>`;
+}
+
+/* ────────────────────────────────────────
+   Render
+   ──────────────────────────────────────── */
+function renderContent() {
+  const f = FEATURES.find(f => f.id === activeFeature);
+  const sc = activeScenarios[f.id];
+
+  let html = `<div class="feature active">`;
+  html += `<div class="scenarios">${f.scenarios.map(s =>
+    `<button class="scenario-btn ${s.id === sc ? 'active' : ''}" onclick="switchScenario('${f.id}','${s.id}')">${s.label}</button>`
+  ).join('')}</div>`;
+
+  html += `<div class="phones">`;
+
+  if (f.id === 'optA') {
+    if (sc === 'a-bar') {
+      html += phone('Progress bar · 37/50', modalA(counterBar(37, 50), false));
+    } else if (sc === 'a-scarce') {
+      html += phone('Szinte betelt · 48/50', modalA(counterBar(48, 50), true));
+    }
+  } else if (f.id === 'grat') {
+    if (sc === 'g-modal') {
+      html += phone('Gratuláció modal', gratulationModal());
+    } else if (sc === 'g-profile') {
+      html += profileWithBadge();
+    } else if (sc === 'g-checkout') {
+      html += checkoutWithBadge();
+    } else if (sc === 'g-order') {
+      html += orderWithBadge();
+    }
+  } else if (f.id === 'flow') {
+    // Flow diagram
+    html += `
+      <div style="max-width:600px;width:100%;">
+        <h2 style="font-size:16px;font-weight:700;margin-bottom:16px">Modal megjelenési logika</h2>
+        <div style="display:flex;flex-direction:column;gap:0">
+          ${flowStep(1, 'Forrás', 'QR kód boltban / személyes ajánlás / szórólap / Facebook', '#E7EEF8', '#1F4E8C')}
+          ${flowArrow()}
+          ${flowStep(2, 'UTM detection', '<code>?utm_campaign=founding50</code> → sessionStorage', '#FEF3C7', '#92400E')}
+          ${flowArrow()}
+          ${flowStep(3, 'Termékek oldal betöltés', 'Guest-first UX — nincs login szükséges', '#E8F5E9', '#2D7A4F')}
+          ${flowArrow()}
+          ${flowStep(4, 'Trigger', '2-3 sec delay VAGY első scroll (amelyik hamarabb)', '#F9E0E3', '#9B2335')}
+          ${flowArrow()}
+          <div style="display:flex;gap:12px;width:100%">
+            <div style="flex:1;background:#E8F5E9;border:1px solid #A7F3D0;border-radius:10px;padding:12px;text-align:center">
+              <div style="font-size:12px;font-weight:700;color:#2D7A4F;margin-bottom:4px">"Csatlakozom most"</div>
+              <div style="font-size:11px;color:#3A3028">→ Regisztráció oldal</div>
+            </div>
+            <div style="flex:1;background:#F5F0EB;border:1px solid #E8E2DB;border-radius:10px;padding:12px;text-align:center">
+              <div style="font-size:12px;font-weight:700;color:var(--text2);margin-bottom:4px">"Talán később"</div>
+              <div style="font-size:11px;color:#3A3028">→ sessionStorage flag<br>→ nem tér vissza</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;background:white;border:1px solid var(--border);border-radius:10px;padding:16px">
+          <div style="font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px">NEM jelenik meg ha:</div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <span style="color:var(--danger)">${ic('alertTriangle',16)}</span> User már regisztrált / founding member
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <span style="color:var(--danger)">${ic('alertTriangle',16)}</span> Program betelt (50/50)
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:13px">
+              <span style="color:var(--danger)">${ic('alertTriangle',16)}</span> Session-ben már elutasította ("Talán később")
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  html += `</div>`; // phones
+
+  // Doc block for design tickets
+  if (f.id === 'optA' || f.id === 'grat') {
+    const docSpecs = {
+      optA: {
+        title: 'FEJLESZTŐI SPEC — Kampány Modal',
+        ticket: 'DH-153',
+        sections: `
+          <div class="doc-section"><h4>Trigger logika</h4><ul>
+            <li>UTM: <code>?utm_campaign=founding50</code></li>
+            <li>Timing: 2-3 sec delay VAGY első scroll (amelyik hamarabb)</li>
+            <li>"Talán később" → <code>sessionStorage.setItem('f50_dismissed', '1')</code></li>
+            <li>NEM jelenik meg: user már founding member / program betelt / session-ben elutasította</li>
+          </ul></div>
+          <div class="doc-section"><h4>API hívás</h4><ul>
+            <li><code>GET /api/method/founding50_status</code></li>
+            <li>Response: <code>{ slots_total: 50, slots_taken: 37, slots_remaining: 13, is_member: false }</code></li>
+          </ul></div>
+          <div class="doc-section"><h4>CTA action</h4><ul>
+            <li>"Csatlakozom most" → <code>router.push('/register?campaign=founding50')</code></li>
+            <li>"Talán később" → modal bezárás + sessionStorage flag</li>
+          </ul></div>
+          <div class="doc-section"><h4>Analytics events</h4><ul>
+            <li><code>founding50_modal_shown</code> — modal megjelenítésekor (utm_source, utm_campaign)</li>
+            <li><code>founding50_cta_clicked</code> — "Csatlakozom most" kattintás</li>
+            <li><code>founding50_dismissed</code> — "Talán később" kattintás</li>
+          </ul></div>`
+      },
+      grat: {
+        title: 'FEJLESZTŐI SPEC — Gratuláció + Badge',
+        ticket: 'DH-154',
+        sections: `
+          <div class="doc-section"><h4>Gratuláció modal</h4><ul>
+            <li>Trigger: sikeres regisztráció + <code>founding_member = true</code> beállítás után</li>
+            <li>Modal megjelenik a Termékek oldalon, visszanavigáláskor</li>
+            <li>CTA: "Megnézem a termékeket" → modal bezárás</li>
+            <li>Analytics: <code>founding50_registered</code> (user_id, slot_number)</li>
+          </ul></div>
+          <div class="doc-section"><h4>Badge megjelenítés</h4><ul>
+            <li>Profil oldal: <code>"Alapító tag"</code> chip a név mellett + founding card</li>
+            <li>Checkout: szállítási díj sor — <code>&lt;del&gt;15 RON&lt;/del&gt; INGYENES</code> + badge</li>
+            <li>Rendelés lista: kis <code>"Alapító"</code> pill az ingyenes szállítás mellett</li>
+            <li>Feltétel: <code>user.founding_member AND today &lt;= user.founding_expiry_date</code></li>
+          </ul></div>
+          <div class="doc-section"><h4>Delivery fee override</h4><ul>
+            <li><code>if founding_member AND today &lt;= expiry → delivery_fee = 0</code></li>
+            <li>Checkout UI: áthúzott eredeti ár + "INGYENES" zöld + badge hivatkozás</li>
+          </ul></div>`
+      },
+      full: {
+        title: 'FEJLESZTŐI SPEC — Betelt + Waitlist',
+        ticket: 'DH-155',
+        sections: `
+          <div class="doc-section"><h4>Betelt állapot</h4><ul>
+            <li>Trigger: <code>founding50_status.slots_remaining === 0</code></li>
+            <li>Counter: 50/50, piros progress bar</li>
+            <li>CTA: "Feliratkozom a várólistára"</li>
+          </ul></div>
+          <div class="doc-section"><h4>Waitlist regisztráció</h4><ul>
+            <li>"Feliratkozom" → regisztráció (ha guest) → <code>founding_waitlist = true</code></li>
+            <li>Megerősítő modal: pozíció kijelzés + e-mail értesítés ígéret</li>
+            <li>Analytics: <code>founding50_waitlisted</code></li>
+          </ul></div>
+          <div class="doc-section"><h4>Pótlás (MVP)</h4><ul>
+            <li>Inaktivitás miatti kiesés → hely felszabadul</li>
+            <li>Admin manuálisan pótol a várólistáról (MVP)</li>
+            <li>Értesítés: e-mail a várólistán lévőnek</li>
+          </ul></div>`
+      },
+    };
+    const spec = docSpecs[f.id];
+    html += `
+      <div class="doc-block">
+        <button class="doc-trigger" onclick="this.parentElement.classList.toggle('open')">
+          <span style="display:flex;align-items:center;gap:8px">
+            <span class="doc-chev">▶</span>
+            <span style="font-weight:700">${spec.title}</span>
+          </span>
+          <a href="https://exarlabs.atlassian.net/browse/${spec.ticket}" class="jira-tag" target="_blank" onclick="event.stopPropagation()">${spec.ticket}</a>
+        </button>
+        <div class="doc-content">${spec.sections}</div>
+      </div>`;
+  }
+
+  html += `</div>`; // feature
+  document.getElementById('content').innerHTML = html;
+  updateBreadcrumb();
+}
+
+function flowStep(num, title, desc, bg, color) {
+  return `
+    <div style="display:flex;align-items:center;gap:12px;background:${bg};border-radius:10px;padding:12px 16px">
+      <span style="width:28px;height:28px;border-radius:50%;background:${color};color:white;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0">${num}</span>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:${color}">${title}</div>
+        <div style="font-size:12px;color:#3A3028;margin-top:2px">${desc}</div>
+      </div>
+    </div>`;
+}
+
+function flowArrow() {
+  return `<div style="text-align:center;padding:4px 0;color:var(--text2);font-size:16px">↓</div>`;
+}
+
+/* ────────────────────────────────────────
+   Breadcrumb
+   ──────────────────────────────────────── */
+function updateBreadcrumb() {
+  const f = FEATURES.find(x => x.id === activeFeature);
+  const sc = activeScenarios[f.id];
+  const s = f.scenarios.find(x => x.id === sc);
+  const filename = location.pathname.split('/').pop();
+  const ref = `@screen[${filename} > ${f.label} > ${s.label}]`;
+  const bcText = document.getElementById('bcText');
+  if (bcText) bcText.textContent = ref;
+}
+
+function copyBreadcrumb() {
+  const text = document.getElementById('bcText').textContent;
+  const bcCopy = document.getElementById('bcCopy');
+  // Use fallback for iframe context
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;left:-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  bcCopy.classList.add('copied');
+  bcCopy.textContent = '✓';
+  setTimeout(() => { bcCopy.classList.remove('copied'); bcCopy.textContent = '📋'; }, 1500);
+}
+
+// Init
+renderTabs();
+renderContent();
+</script>
+
+
+<!-- Pull-to-refresh -->
+<style>
+.ptr-ind {
+  position: fixed; top: 0; left: 50%;
+  transform: translateX(-50%) translateY(-56px);
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--card, #fff);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s cubic-bezier(.25,.46,.45,.94), opacity .2s;
+  opacity: 0; z-index: 9999; pointer-events: none;
+}
+.ptr-ind.vis { opacity: 1; transform: translateX(-50%) translateY(12px); }
+.ptr-ind svg { width: 18px; height: 18px; stroke: var(--primary, #9B2335); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ptr-ind.spin svg { animation: ptr-r .7s linear infinite; }
+@keyframes ptr-r { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ptr-ind, .ptr-ind svg { animation: none !important; transition: none !important; } }
+</style>
+<script>
+(function(){
+  var el = document.createElement('div');
+  el.className = 'ptr-ind';
+  el.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>';
+  document.body.appendChild(el);
+  var sy = 0, on = false, T = 64;
+  document.addEventListener('touchstart', function(e){ if(window.scrollY===0){ sy=e.touches[0].clientY; on=true; } }, {passive:true});
+  document.addEventListener('touchmove',  function(e){ if(!on) return; if(e.touches[0].clientY - sy > 10) el.classList.add('vis'); }, {passive:true});
+  document.addEventListener('touchend',   function(e){ if(!on) return; var dy=(e.changedTouches[0]||{clientY:sy}).clientY - sy; if(dy >= T){ el.classList.add('spin'); setTimeout(function(){ location.reload(); }, 300); } else { el.classList.remove('vis'); } on=false; }, {passive:true});
+})();
+</script>
+</body>
+</html>

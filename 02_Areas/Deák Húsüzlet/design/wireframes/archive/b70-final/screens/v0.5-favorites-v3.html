@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>Termékek — Kedvencek | DH-146</title>
+  <script type="application/json" id="screen-meta">
+  {
+    "id": "v0.5-favorites-v3",
+    "title": "Termékek — Kedvencek",
+    "sprint": "Sprint 5",
+    "status": "draft",
+    "tags": ["DH-146", "DH-160", "favorites", "retention"],
+    "order": 22,
+    "description": "Csillag toggle kedvencekhez, Kedvenceim szekció a lista tetején, vendég login nudge toast"
+  }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+    :root {
+      --primary:#9B2335; --primary-dark:#7D1A2A; --primary-light:#F9E0E3;
+      --bg:#FFFBF7; --card:#FFFFFF; --text:#2C2825; --text2:#5C544C; --text3:#8A8078;
+      --border:#E8E2DB; --success:#2D7A4F; --success-light:#D4EDDA;
+      --gold:#F0A500; --gold-border:#E8C84A; --gold-light:#FFF8E1; --gold-dark:#9C7841;
+      --info:#2563EB; --info-light:#EFF6FF;
+    }
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{font-family:Inter,system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+    body{max-width:390px;margin:0 auto;min-height:100vh;padding-bottom:90px}
+
+    .back-to-catalog{position:fixed;top:12px;left:12px;z-index:9999;display:inline-flex;align-items:center;gap:6px;background:rgba(155,35,53,0.92);color:white;font-family:-apple-system,sans-serif;font-size:12px;font-weight:600;padding:7px 12px 7px 10px;border-radius:999px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+
+    .switcher{position:fixed;top:12px;right:12px;z-index:9998;display:flex;gap:4px;flex-direction:column;align-items:flex-end}
+    .switcher-label{font-size:9px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px}
+    .switcher-btns{display:flex;gap:4px}
+    .sw-btn{background:rgba(255,255,255,0.92);border:1.5px solid var(--border);border-radius:8px;font-size:10px;font-weight:700;color:var(--text2);padding:4px 8px;cursor:pointer;font-family:inherit;transition:all .15s}
+    .sw-btn.active{background:var(--primary);color:white;border-color:var(--primary)}
+
+    .scenario-label{padding:68px 16px 0;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.08em}
+    .scenario-desc{padding:4px 16px 0;font-size:12px;color:var(--text2);line-height:1.5;margin-bottom:4px}
+
+    .header{display:flex;align-items:center;justify-content:space-between;padding:0 16px;height:56px;background:var(--card);position:sticky;top:0;z-index:10;box-shadow:0 0 1px rgba(0,0,0,0.12),0 0.5px 2px rgba(0,0,0,0.1)}
+    .header h1{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-0.3px}
+    .header-icons{display:flex;gap:8px}
+    .icon-btn{width:40px;height:40px;background:#F5F0EB;border-radius:12px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;position:relative}
+    .icon-btn svg{width:20px;height:20px;stroke:var(--text);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .icon-btn.has-fav svg{stroke:var(--gold);fill:var(--gold)}
+    .fav-badge{position:absolute;top:4px;right:4px;min-width:16px;height:16px;padding:0 4px;background:var(--gold);color:white;font-size:9px;font-weight:800;border-radius:999px;display:flex;align-items:center;justify-content:center;border:1.5px solid var(--card)}
+
+    .cat-tabs{display:flex;gap:8px;padding:12px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:var(--card);border-bottom:1px solid var(--border)}
+    .cat-tabs::-webkit-scrollbar{display:none}
+    .cat-tab{flex-shrink:0;background:#F5F0EB;border:none;border-radius:20px;padding:6px 14px;font-size:13px;font-weight:500;color:var(--text2);cursor:pointer;font-family:inherit;white-space:nowrap}
+    .cat-tab.active{background:var(--primary);color:white;font-weight:600}
+
+    .section-header{display:flex;align-items:center;justify-content:space-between;padding:16px 16px 8px}
+    .section-title{display:flex;align-items:center;gap:7px;font-size:15px;font-weight:700;color:var(--text)}
+    .section-title svg{width:16px;height:16px;stroke-width:2;flex-shrink:0;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .section-title.gold svg{stroke:var(--gold);fill:var(--gold)}
+    .section-count{font-size:11px;font-weight:800;padding:2px 7px;border-radius:999px}
+    .section-count.gold{background:var(--gold-light);color:var(--gold-dark);border:1px solid var(--gold-border)}
+    .section-count.grey{background:var(--border);color:var(--text2)}
+    .section-action{font-size:12px;color:var(--primary);font-weight:600;cursor:pointer;background:none;border:none;font-family:inherit}
+
+    .divider{height:1px;background:var(--border);margin:4px 16px}
+    .products-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px 8px}
+
+    .product-card{background:var(--card);border-radius:16px;border:1.5px solid var(--border);overflow:hidden;cursor:pointer;position:relative}
+    .product-card.fav{border:2px solid var(--gold-border);background:var(--gold-light)}
+    .product-img{width:100%;aspect-ratio:1/1;position:relative;overflow:hidden}
+    .img-bg{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:38px}
+    .img-bg.smoked{background:linear-gradient(145deg,#E8D5C0,#D4B898)}
+    .img-bg.sausage{background:linear-gradient(145deg,#F0D8C0,#E0B888)}
+    .img-bg.meat{background:linear-gradient(145deg,#F5DDD5,#EDCAB8)}
+    .sale-badge{position:absolute;top:6px;left:6px;background:var(--primary);color:white;font-size:10px;font-weight:800;padding:2px 6px;border-radius:6px}
+
+    .star-btn{position:absolute;top:7px;right:7px;width:28px;height:28px;background:rgba(0,0,0,0.22);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s ease-out;z-index:2}
+    .star-btn:active{transform:scale(0.88)}
+    .star-btn svg{width:15px;height:15px;stroke-linecap:round;stroke-linejoin:round;stroke-width:2}
+    .star-btn.off svg{stroke:rgba(255,255,255,0.88);fill:none}
+    .star-btn.on svg{stroke:var(--gold);fill:var(--gold)}
+    @keyframes starPop{0%{transform:scale(1)}50%{transform:scale(1.4)}100%{transform:scale(1)}}
+    .star-btn.pop{animation:starPop .2s ease-out}
+
+    .card-content{padding:10px 10px 12px}
+    .card-cat{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:3px}
+    .card-name{font-size:13px;font-weight:700;color:var(--text);line-height:1.3;margin-bottom:6px}
+    .card-price{font-size:14px;font-weight:800;color:var(--primary);display:flex;align-items:baseline;gap:4px;flex-wrap:wrap}
+    .card-price .unit{font-size:11px;font-weight:500;color:var(--text3)}
+    .card-old-price{font-size:11px;color:var(--text3);text-decoration:line-through}
+
+    .toast-wrap{position:fixed;bottom:90px;left:16px;right:16px;max-width:358px;z-index:300;pointer-events:none;transform:translateY(12px);opacity:0;transition:all .25s ease-out}
+    .toast-wrap.show{transform:translateY(0);opacity:1;pointer-events:auto}
+    .toast{background:#1E1B18;color:white;border-radius:16px;padding:14px;display:flex;align-items:center;gap:12px;box-shadow:0 8px 32px rgba(0,0,0,0.3)}
+    .toast-icon{width:42px;height:42px;flex-shrink:0;background:rgba(255,255,255,0.1);border-radius:12px;display:flex;align-items:center;justify-content:center}
+    .toast-icon svg{width:20px;height:20px;stroke:var(--gold);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .toast-body{flex:1;min-width:0}
+    .toast-title{font-size:13px;font-weight:700;margin-bottom:2px}
+    .toast-sub{font-size:11px;opacity:.65;line-height:1.4}
+    .toast-cta{background:var(--primary);color:white;font-size:12px;font-weight:700;padding:8px 14px;border-radius:10px;border:none;cursor:pointer;font-family:inherit;white-space:nowrap;flex-shrink:0}
+
+    .spec-section{padding:16px}
+    .spec-card{background:var(--card);border:1.5px solid var(--border);border-radius:20px;padding:20px;margin-bottom:14px}
+    .spec-card-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:16px}
+    .star-states-row{display:flex;gap:14px;justify-content:center;align-items:flex-end;margin-bottom:20px;flex-wrap:wrap}
+    .star-state-item{display:flex;flex-direction:column;align-items:center;gap:10px}
+    .star-mock-bg{width:60px;height:60px;border-radius:14px;display:flex;align-items:center;justify-content:center}
+    .star-mock-bg.dark{background:#3A3530}
+    .star-mock-bg.light{background:#F0E8E0}
+    .star-mock-btn{width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,0.22);display:flex;align-items:center;justify-content:center}
+    .star-mock-btn svg{width:16px;height:16px;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .star-mock-btn.off svg{stroke:rgba(255,255,255,0.88);fill:none}
+    .star-mock-btn.on svg{stroke:var(--gold);fill:var(--gold)}
+    .star-state-label{font-size:10px;font-weight:600;color:var(--text3);text-align:center;line-height:1.4}
+    .state-arrow{font-size:16px;color:var(--text3);padding-bottom:28px}
+
+    .spec-row{display:flex;align-items:flex-start;gap:12px;padding:9px 0;border-top:1px solid var(--border)}
+    .spec-key{font-size:11px;color:var(--text3);font-weight:500;min-width:88px;flex-shrink:0;padding-top:1px}
+    .spec-val{font-size:11px;color:var(--text);font-weight:600;font-family:'Courier New',monospace;line-height:1.6}
+    .spec-val .note{font-family:Inter,sans-serif;font-weight:400;color:var(--text2);font-style:italic}
+
+    .behavior-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-top:1px solid var(--border)}
+    .behavior-icon{width:28px;height:28px;flex-shrink:0;border-radius:8px;display:flex;align-items:center;justify-content:center}
+    .behavior-icon.ok{background:#D4EDDA}
+    .behavior-icon.ok svg{stroke:var(--success)}
+    .behavior-icon.warn{background:#FFF3CD}
+    .behavior-icon.warn svg{stroke:#856404}
+    .behavior-icon svg{width:15px;height:15px;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+    .behavior-text strong{font-size:12px;font-weight:700;color:var(--text);display:block;margin-bottom:2px}
+    .behavior-text span{font-size:11px;color:var(--text2);line-height:1.5}
+
+    .annotation{margin:4px 16px 10px;background:var(--info-light);border:1px solid #BFDBFE;border-radius:12px;padding:10px 12px;display:flex;gap:8px;align-items:flex-start}
+    .annotation svg{width:15px;height:15px;stroke:var(--info);fill:none;stroke-width:2;flex-shrink:0;margin-top:1px;stroke-linecap:round;stroke-linejoin:round}
+    .annotation p{font-size:11px;color:#1E40AF;line-height:1.5}
+
+    .mode-toggle{padding:10px 16px 0;display:flex;gap:8px;align-items:center}
+    .mode-toggle span{font-size:11px;color:var(--text3);font-weight:600}
+    .mode-btn{font-size:11px;font-weight:700;padding:5px 12px;border-radius:8px;cursor:pointer;font-family:inherit;transition:all .15s}
+
+    .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:390px;background:var(--card);border-top:1px solid var(--border);display:flex;padding:8px 0 20px;z-index:20}
+    .nav-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;cursor:pointer}
+    .nav-item svg{width:22px;height:22px;stroke:var(--text3);stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+    .nav-item span{font-size:10px;font-weight:500;color:var(--text3)}
+    .nav-item.active svg{stroke:var(--primary)}
+    .nav-item.active span{color:var(--primary);font-weight:700}
+  </style>
+</head>
+<body>
+
+<a href="../index.html" class="back-to-catalog">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:13px;height:13px"><polyline points="15 18 9 12 15 6"/></svg>
+  Catalog
+</a>
+
+<div class="switcher">
+  <div class="switcher-label">Forgatókönyv</div>
+  <div class="switcher-btns">
+    <button class="sw-btn active" onclick="setScene('A')">A</button>
+    <button class="sw-btn" onclick="setScene('B')">B</button>
+    <button class="sw-btn" onclick="setScene('C')">C</button>
+    <button class="sw-btn" onclick="setScene('D')">D</button>
+    <button class="sw-btn" onclick="setScene('E')">E</button>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap">
+  <div class="toast">
+    <div class="toast-icon"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+    <div class="toast-body">
+      <div class="toast-title">Kedvencekhez mentéshez be kell jelentkezned</div>
+      <div class="toast-sub">Ingyenes fiók — 30 másodperc</div>
+    </div>
+    <button class="toast-cta" onclick="hideToast()">Belépés</button>
+  </div>
+</div>
+
+<!-- A: Alapállapot -->
+<div id="scene-A">
+  <div class="scenario-label">A — Alapállapot</div>
+  <div class="scenario-desc">Nincs kedvenc. Csillag minden kártyán: off állapot, halvány fehér körvonal, nem zavaró.</div>
+  <div class="header"><h1>Termékek</h1><div class="header-icons">
+    <button class="icon-btn"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+    <button class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></button>
+  </div></div>
+  <div class="cat-tabs"><button class="cat-tab active">Összes</button><button class="cat-tab">Felvágott</button><button class="cat-tab">Növendékhús</button><button class="cat-tab">Sertéshús</button><button class="cat-tab">Füstölt</button><button class="cat-tab">Kolbász</button></div>
+  <div class="annotation"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Csillag gomb: <strong>jobb felső sarok</strong>, képen belül, 28×28px kerek. Off: fehér körvonal. Felfedezésre invitál, de nem zavaró. Tap → arany kitöltés + kártya sárgás háttér.</p></div>
+  <div class="products-grid">
+    <div class="product-card"><div class="product-img"><div class="img-bg smoked">🥩</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Füstölt Áruk</div><div class="card-name">Füstölt Szalonna</div><div class="card-price">42,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg sausage">🌭</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Kolbász &amp; Szalámi</div><div class="card-name">Erdélyi Kolbász</div><div class="card-price">45,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg meat">🥩</div><div class="sale-badge">&#8722;10 RON</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Friss Sertéshús</div><div class="card-name">Sertés Őrölt Hús</div><div class="card-price"><span class="card-old-price">21,00</span>11,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg smoked">🍖</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Füstölt Áruk</div><div class="card-name">Füstölt Csülök</div><div class="card-price">34,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg sausage">🌭</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Kolbász &amp; Szalámi</div><div class="card-name">Székely Kolbász</div><div class="card-price">45,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg meat">🥩</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Friss Sertéshús</div><div class="card-name">Sertés Comb</div><div class="card-price">25,00 <span class="unit">RON/kg</span></div></div></div>
+  </div>
+</div>
+
+<!-- B: 1 kedvenc -->
+<div id="scene-B" style="display:none">
+  <div class="scenario-label">B — 1 Kedvenc</div>
+  <div class="scenario-desc">"Kedvenceim" szekció jelenik meg 1 termékkel. Header ikon arany + arany badge.</div>
+  <div class="header"><h1>Termékek</h1><div class="header-icons">
+    <button class="icon-btn has-fav"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="fav-badge">1</span></button>
+    <button class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></button>
+  </div></div>
+  <div class="cat-tabs"><button class="cat-tab active">Összes</button><button class="cat-tab">Felvágott</button><button class="cat-tab">Sertéshús</button><button class="cat-tab">Füstölt</button><button class="cat-tab">Kolbász</button></div>
+  <div class="section-header"><div class="section-title gold"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Kedvenceim<span class="section-count gold">1</span></div><button class="section-action">Kosárba</button></div>
+  <div class="products-grid" style="padding-bottom:4px">
+    <div class="product-card fav"><div class="product-img"><div class="img-bg smoked">🥩</div><button class="star-btn on"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Füstölt Áruk</div><div class="card-name">Füstölt Szalonna</div><div class="card-price">42,00 <span class="unit">RON/kg</span></div></div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="section-header"><div class="section-title"><svg viewBox="0 0 24 24" style="stroke:var(--text3)"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Összes termék<span class="section-count grey">37</span></div></div>
+  <div class="products-grid">
+    <div class="product-card"><div class="product-img"><div class="img-bg sausage">🌭</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Kolbász &amp; Szalámi</div><div class="card-name">Erdélyi Kolbász</div><div class="card-price">45,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg meat">🥩</div><div class="sale-badge">&#8722;10 RON</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Friss Sertéshús</div><div class="card-name">Sertés Őrölt Hús</div><div class="card-price"><span class="card-old-price">21,00</span>11,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg smoked">🍖</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Füstölt Áruk</div><div class="card-name">Füstölt Csülök</div><div class="card-price">34,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg sausage">🌭</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Kolbász &amp; Szalámi</div><div class="card-name">Székely Kolbász</div><div class="card-price">45,00 <span class="unit">RON/kg</span></div></div></div>
+  </div>
+</div>
+
+<!-- C: Több kedvenc -->
+<div id="scene-C" style="display:none">
+  <div class="scenario-label">C — Több Kedvenc (3)</div>
+  <div class="scenario-desc">Sárgás kártya keret, arany csillag, "Kosárba mind" gyorsgomb. Divider elválaszt.</div>
+  <div class="header"><h1>Termékek</h1><div class="header-icons">
+    <button class="icon-btn has-fav"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span class="fav-badge">3</span></button>
+    <button class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span class="fav-badge" style="background:var(--primary)">2</span></button>
+  </div></div>
+  <div class="cat-tabs"><button class="cat-tab active">Összes</button><button class="cat-tab">Felvágott</button><button class="cat-tab">Sertéshús</button><button class="cat-tab">Füstölt</button><button class="cat-tab">Kolbász</button></div>
+  <div class="section-header"><div class="section-title gold"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Kedvenceim<span class="section-count gold">3</span></div><button class="section-action">Kosárba mind</button></div>
+  <div class="products-grid" style="padding-bottom:4px">
+    <div class="product-card fav"><div class="product-img"><div class="img-bg smoked">🥩</div><button class="star-btn on"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Füstölt Áruk</div><div class="card-name">Füstölt Szalonna</div><div class="card-price">42,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card fav"><div class="product-img"><div class="img-bg sausage">🌭</div><button class="star-btn on"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Kolbász &amp; Szalámi</div><div class="card-name">Erdélyi Kolbász</div><div class="card-price">45,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card fav"><div class="product-img"><div class="img-bg meat">🥩</div><button class="star-btn on"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Friss Sertéshús</div><div class="card-name">Sertés Comb</div><div class="card-price">25,00 <span class="unit">RON/kg</span></div></div></div>
+  </div>
+  <div class="divider"></div>
+  <div class="section-header"><div class="section-title"><svg viewBox="0 0 24 24" style="stroke:var(--text3)"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Összes termék<span class="section-count grey">37</span></div></div>
+  <div class="products-grid">
+    <div class="product-card"><div class="product-img"><div class="img-bg meat">🥩</div><div class="sale-badge">&#8722;10 RON</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Friss Sertéshús</div><div class="card-name">Sertés Őrölt Hús</div><div class="card-price"><span class="card-old-price">21,00</span>11,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg smoked">🍖</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Füstölt Áruk</div><div class="card-name">Füstölt Csülök</div><div class="card-price">34,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg sausage">🌭</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Kolbász &amp; Szalámi</div><div class="card-name">Székely Kolbász</div><div class="card-price">45,00 <span class="unit">RON/kg</span></div></div></div>
+    <div class="product-card"><div class="product-img"><div class="img-bg smoked">🥩</div><button class="star-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button></div><div class="card-content"><div class="card-cat">Füstölt Áruk</div><div class="card-name">Füstölt Fehér Karaj</div><div class="card-price">49,00 <span class="unit">RON/kg</span></div></div></div>
+  </div>
+</div>
+
+<!-- D: Interaktív demo -->
+<div id="scene-D" style="display:none">
+  <div class="scenario-label">D — Interaktív demo</div>
+  <div class="scenario-desc">Kattints a csillagokra! Válts user módot lent.</div>
+  <div class="header"><h1>Termékek</h1><div class="header-icons">
+    <button class="icon-btn" id="d-hdr-btn"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></button>
+    <button class="icon-btn"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></button>
+  </div></div>
+  <div class="cat-tabs"><button class="cat-tab active">Összes</button><button class="cat-tab">Sertéshús</button><button class="cat-tab">Füstölt</button><button class="cat-tab">Kolbász</button></div>
+  <div class="mode-toggle"><span>User mód:</span>
+    <button class="mode-btn" id="btn-logged" onclick="setUserMode('logged')" style="border:1.5px solid var(--primary);background:var(--primary);color:white">Bejelentkezett</button>
+    <button class="mode-btn" id="btn-guest" onclick="setUserMode('guest')" style="border:1.5px solid var(--border);background:var(--card);color:var(--text2)">Vendég</button>
+  </div>
+  <div id="d-fav-section" style="display:none">
+    <div class="section-header"><div class="section-title gold"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>Kedvenceim<span class="section-count gold" id="d-fav-count">0</span></div><button class="section-action">Kosárba mind</button></div>
+    <div class="products-grid" id="d-fav-grid" style="padding-bottom:4px"></div>
+    <div class="divider"></div>
+  </div>
+  <div class="section-header"><div class="section-title"><svg viewBox="0 0 24 24" style="stroke:var(--text3)"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Összes termék<span class="section-count grey">6</span></div></div>
+  <div class="products-grid" id="d-all-grid"></div>
+</div>
+
+<!-- E: Spec -->
+<div id="scene-E" style="display:none">
+  <div class="scenario-label">E — Vizuális spec</div>
+  <div class="scenario-desc">Fejlesztőnek átadható: méretek, színek, animáció, viselkedési szabályok.</div>
+  <div class="spec-section">
+    <div class="spec-card">
+      <div class="spec-card-title">Csillag gomb — két állapot</div>
+      <div class="star-states-row">
+        <div class="star-state-item"><div class="star-mock-bg dark"><div class="star-mock-btn off"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div><div class="star-state-label">OFF<br>nem kedvenc</div></div>
+        <div class="state-arrow">&#8594;</div>
+        <div class="star-state-item"><div class="star-mock-bg dark"><div class="star-mock-btn on"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div><div class="star-state-label">ON<br>kedvenc ✓</div></div>
+        <div class="state-arrow">+</div>
+        <div class="star-state-item"><div class="star-mock-bg light" style="border:2px solid var(--gold-border)"><div class="star-mock-btn on"><svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div></div><div class="star-state-label">Kártya ON<br>sárgás háttér</div></div>
+      </div>
+      <div class="spec-row"><span class="spec-key">Pozíció</span><span class="spec-val">top:7px; right:7px <span class="note">(képen belül, abs.)</span></span></div>
+      <div class="spec-row"><span class="spec-key">Méret</span><span class="spec-val">28&#215;28px; border-radius:50%</span></div>
+      <div class="spec-row"><span class="spec-key">Háttér</span><span class="spec-val">rgba(0,0,0, 0.22)</span></div>
+      <div class="spec-row"><span class="spec-key">Ikon</span><span class="spec-val">15&#215;15px; stroke-width:2; Lucide star</span></div>
+      <div class="spec-row"><span class="spec-key">OFF szín</span><span class="spec-val">stroke:rgba(255,255,255,0.88); fill:none</span></div>
+      <div class="spec-row"><span class="spec-key">ON szín</span><span class="spec-val">stroke:#F0A500; fill:#F0A500</span></div>
+      <div class="spec-row"><span class="spec-key">Kártya ON</span><span class="spec-val">border:2px solid #E8C84A; bg:#FFF8E1</span></div>
+      <div class="spec-row"><span class="spec-key">Animáció</span><span class="spec-val">scale(1&#8594;1.4&#8594;1); 200ms ease-out</span></div>
+    </div>
+    <div class="spec-card">
+      <div class="spec-card-title">Viselkedési szabályok</div>
+      <div class="behavior-item"><div class="behavior-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="behavior-text"><strong>Bejelentkezett — toggle</strong><span>Tap: animáció + API hívás (POST /api/favorites/toggle). Lista azonnal átrendeződik — kedvenc felkerül a "Kedvenceim" szekcióba tetejére.</span></div></div>
+      <div class="behavior-item"><div class="behavior-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="behavior-text"><strong>Kedvenceim szekció</strong><span>Csak ha &#8805;1 kedvenc van. Kategóriaszűrőn belül is működik. "Kosárba mind" gyorsgomb a fejlécnél. Divider az "Összes termék" előtt.</span></div></div>
+      <div class="behavior-item"><div class="behavior-icon warn"><svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div><div class="behavior-text"><strong>Vendég — login nudge toast</strong><span>Tap &#8594; toast slide-up alulról: "Kedvencekhez mentéshez be kell jelentkezned". CTA: Belépés. 4 mp után eltűnik. DH-160: popup nem csúszhat billentyűzet alá.</span></div></div>
+      <div class="behavior-item"><div class="behavior-icon ok"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div><div class="behavior-text"><strong>API + tárolás (Frappe)</strong><span>User doctype: favorite_items JSON Array. POST /api/favorites/toggle &#8594; &#123;is_fav:bool&#125;. Bejelentkezéskor szinkronizál.</span></div></div>
+    </div>
+    <div class="spec-card" style="background:var(--gold-light);border-color:var(--gold-border)">
+      <div class="spec-card-title" style="color:var(--gold-dark)">Retention flywheel</div>
+      <div style="font-size:12px;color:var(--gold-dark);line-height:1.7">
+        <strong>Kedvenc &#8594; Gyors újrarendelés &#8594; Szokás &#8594; Visszatérés</strong><br><br>
+        &#8226; <strong>DH-127</strong> Familiar Favourites — "Szokásos rendelésem" gomb<br>
+        &#8226; <strong>DH-120</strong> Basket Loader — <code style="font-size:11px;background:rgba(0,0,0,0.06);padding:1px 4px;border-radius:4px">loadBasket(source:'favorite')</code><br>
+        &#8226; <strong>DH-116</strong> Savings Engine — kedvencek alapú spórolás javaslat (v0.4+)
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bottom-nav">
+  <div class="nav-item active"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>Termékek</span></div>
+  <div class="nav-item"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg><span>Kosár</span></div>
+  <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Rendelések</span></div>
+  <div class="nav-item"><svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Fiók</span></div>
+</div>
+
+<script>
+const SCENES=['A','B','C','D','E'];
+function setScene(s){SCENES.forEach(id=>{document.getElementById('scene-'+id).style.display=id===s?'':'none'});document.querySelectorAll('.sw-btn').forEach((b,i)=>b.classList.toggle('active',SCENES[i]===s));window.scrollTo(0,0)}
+let toastTimer;
+function showToast(){const tw=document.getElementById('toastWrap');tw.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(hideToast,4000)}
+function hideToast(){document.getElementById('toastWrap').classList.remove('show')}
+const PRODS=[{id:'p1',name:'Füstölt Szalonna',cat:'Füstölt Áruk',price:'42,00',unit:'kg',emoji:'🥩',type:'smoked'},{id:'p2',name:'Erdélyi Kolbász',cat:'Kolbász &amp; Szalámi',price:'45,00',unit:'kg',emoji:'🌭',type:'sausage'},{id:'p3',name:'Sertés Őrölt Hús',cat:'Friss Sertéshús',price:'11,00',unit:'kg',emoji:'🥩',type:'meat',sale:'&#8722;10 RON'},{id:'p4',name:'Füstölt Csülök',cat:'Füstölt Áruk',price:'34,00',unit:'kg',emoji:'🍖',type:'smoked'},{id:'p5',name:'Székely Kolbász',cat:'Kolbász &amp; Szalámi',price:'45,00',unit:'kg',emoji:'🌭',type:'sausage'},{id:'p6',name:'Sertés Comb',cat:'Friss Sertéshús',price:'25,00',unit:'kg',emoji:'🥩',type:'meat'}];
+const STAR='<svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+let favs=new Set(),userMode='logged';
+function setUserMode(m){userMode=m;const bl=document.getElementById('btn-logged'),bg=document.getElementById('btn-guest');bl.style.background=m==='logged'?'var(--primary)':'var(--card)';bl.style.color=m==='logged'?'white':'var(--text2)';bl.style.borderColor=m==='logged'?'var(--primary)':'var(--border)';bg.style.background=m==='guest'?'#444':'var(--card)';bg.style.color=m==='guest'?'white':'var(--text2)';bg.style.borderColor=m==='guest'?'#444':'var(--border)'}
+function makeCard(p,isFav){const d=document.createElement('div');d.className='product-card'+(isFav?' fav':'');d.innerHTML='<div class="product-img"><div class="img-bg '+p.type+'">'+p.emoji+'</div>'+(p.sale?'<div class="sale-badge">'+p.sale+'</div>':'')+'<button class="star-btn '+(isFav?'on':'off')+'" data-id="'+p.id+'">'+STAR+'</button></div><div class="card-content"><div class="card-cat">'+p.cat+'</div><div class="card-name">'+p.name+'</div><div class="card-price">'+p.price+' <span class="unit">RON/'+p.unit+'</span></div></div>';d.querySelector('.star-btn').addEventListener('click',e=>{e.stopPropagation();handleStar(p.id,e.currentTarget)});return d}
+function handleStar(id,btn){if(userMode==='guest'){showToast();return}btn.classList.add('pop');btn.addEventListener('animationend',()=>btn.classList.remove('pop'),{once:true});favs.has(id)?favs.delete(id):favs.add(id);renderD()}
+function renderD(){const fg=document.getElementById('d-fav-grid'),ag=document.getElementById('d-all-grid'),fs=document.getElementById('d-fav-section'),fc=document.getElementById('d-fav-count'),hb=document.getElementById('d-hdr-btn');fg.innerHTML='';ag.innerHTML='';const hf=favs.size>0;fs.style.display=hf?'':'none';fc.textContent=favs.size;hb.className='icon-btn'+(hf?' has-fav':'');let badge=hb.querySelector('.fav-badge');if(hf){if(!badge){badge=document.createElement('span');badge.className='fav-badge';hb.appendChild(badge)}badge.textContent=favs.size}else if(badge)badge.remove();PRODS.forEach(p=>{if(favs.has(p.id))fg.appendChild(makeCard(p,true));ag.appendChild(makeCard(p,false))})}
+renderD();
+</script>
+
+<!-- Pull-to-refresh -->
+<style>
+.ptr-ind {
+  position: fixed; top: 0; left: 50%;
+  transform: translateX(-50%) translateY(-56px);
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--card, #fff);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s cubic-bezier(.25,.46,.45,.94), opacity .2s;
+  opacity: 0; z-index: 9999; pointer-events: none;
+}
+.ptr-ind.vis { opacity: 1; transform: translateX(-50%) translateY(12px); }
+.ptr-ind svg { width: 18px; height: 18px; stroke: var(--primary, #9B2335); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ptr-ind.spin svg { animation: ptr-r .7s linear infinite; }
+@keyframes ptr-r { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ptr-ind, .ptr-ind svg { animation: none !important; transition: none !important; } }
+</style>
+<script>
+(function(){
+  var el = document.createElement('div');
+  el.className = 'ptr-ind';
+  el.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>';
+  document.body.appendChild(el);
+  var sy = 0, on = false, T = 64;
+  document.addEventListener('touchstart', function(e){ if(window.scrollY===0){ sy=e.touches[0].clientY; on=true; } }, {passive:true});
+  document.addEventListener('touchmove',  function(e){ if(!on) return; if(e.touches[0].clientY - sy > 10) el.classList.add('vis'); }, {passive:true});
+  document.addEventListener('touchend',   function(e){ if(!on) return; var dy=(e.changedTouches[0]||{clientY:sy}).clientY - sy; if(dy >= T){ el.classList.add('spin'); setTimeout(function(){ location.reload(); }, 300); } else { el.classList.remove('vis'); } on=false; }, {passive:true});
+})();
+</script>
+</body>
+</html>

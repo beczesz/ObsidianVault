@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sonrisa Insights - Blog Listing Page Preview</title>
+<!-- Insights Page | Version: 0.1 -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif; color: #032c13; line-height: 1.6; }
+
+  /* ---- Sonrisa color tokens ---- */
+  :root {
+    --mid-green: #4a7c59;
+    --dark: #032c13;
+    --gray-green: #c5d1c0;
+    --bg-gray-green: #dce4d8;
+    --theme: #6b9d4a;
+    --light-green: #e8efe4;
+    --white: #ffffff;
+    --pink: #d4577a;
+    --text-light: rgba(255,255,255,0.85);
+  }
+
+  .content-w-1280 { max-width: 1280px; margin: 0 auto; padding: 0 32px; }
+
+  /* ---- SECTION 1: HERO ---- */
+  .hero { background: var(--mid-green); padding: 64px 0 56px; text-align: center; }
+  .hero h1 { color: var(--white); font-size: 42px; font-weight: 700; margin-bottom: 12px; }
+  .hero p { color: var(--text-light); font-size: 18px; max-width: 600px; margin: 0 auto; }
+
+  /* ---- SECTION 2: FEATURED ---- */
+  .featured-section { padding: 56px 0 48px; background: var(--white); }
+  .featured-section h2 { font-size: 28px; font-weight: 700; margin-bottom: 32px; }
+  .featured-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; }
+
+  /* Featured main (left) */
+  .featured-main { }
+  .featured-main .thumb { width: 100%; aspect-ratio: 16/9; background: var(--bg-gray-green); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--mid-green); font-size: 14px; font-weight: 600; margin-bottom: 20px; overflow: hidden; }
+  .featured-main .thumb img { width: 100%; height: 100%; object-fit: cover; }
+  .category-tag { display: inline-block; background: var(--mid-green); color: var(--white); font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .featured-main h3 { font-size: 24px; font-weight: 700; margin-bottom: 10px; line-height: 1.3; }
+  .featured-main h3 a { color: var(--dark); text-decoration: none; }
+  .featured-main h3 a:hover { text-decoration: underline; }
+  .featured-main .excerpt { font-size: 15px; color: #4a5a42; margin-bottom: 16px; line-height: 1.6; }
+  .author-row { display: flex; align-items: center; gap: 10px; }
+  .author-avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--gray-green); }
+  .author-info .name { font-size: 13px; font-weight: 600; }
+  .author-info .role { font-size: 12px; color: #6b7a63; }
+
+  /* Latest posts sidebar (right) */
+  .latest-sidebar { }
+  .latest-sidebar h3 { font-size: 20px; font-weight: 700; padding-bottom: 12px; border-bottom: 3px solid var(--mid-green); margin-bottom: 24px; }
+  .sidebar-item { margin-bottom: 28px; padding-bottom: 24px; border-bottom: 1px solid #e5e9e2; }
+  .sidebar-item:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .sidebar-item .category-tag { font-size: 10px; padding: 2px 8px; margin-bottom: 8px; }
+  .sidebar-item h4 { font-size: 16px; font-weight: 600; margin-bottom: 6px; line-height: 1.35; }
+  .sidebar-item h4 a { color: var(--dark); text-decoration: none; }
+  .sidebar-item h4 a:hover { text-decoration: underline; }
+  .sidebar-item .excerpt { font-size: 13px; color: #6b7a63; margin-bottom: 10px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .sidebar-item .author-row { gap: 8px; }
+  .sidebar-item .author-avatar { width: 28px; height: 28px; }
+  .sidebar-item .author-info .name { font-size: 12px; }
+  .sidebar-item .author-info .role { font-size: 11px; }
+
+  /* ---- SECTION 3: ALL ARTICLES ---- */
+  .all-articles { padding: 48px 0 56px; background: var(--light-green); }
+  .all-articles h2 { font-size: 28px; font-weight: 700; margin-bottom: 32px; }
+  .articles-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+
+  .article-card { background: var(--bg-gray-green); border-radius: 8px; padding: 28px 28px 24px; display: flex; flex-direction: column; }
+  .article-card .read-time { font-size: 12px; color: var(--mid-green); font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .article-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 10px; line-height: 1.3; }
+  .article-card .excerpt { font-size: 14px; color: #4a5a42; margin-bottom: 20px; line-height: 1.55; flex-grow: 1; }
+  .article-card .btn { display: inline-block; background: var(--dark); color: var(--white); padding: 10px 24px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; text-align: center; transition: opacity 0.2s; align-self: flex-start; }
+  .article-card .btn:hover { opacity: 0.85; }
+
+  /* ---- SECTION 4: CTA BANNER ---- */
+  .cta-banner { background: var(--theme); padding: 56px 0; }
+  .cta-inner { display: flex; align-items: center; gap: 40px; }
+  .cta-text { flex: 1; }
+  .cta-text h2 { color: var(--white); font-size: 30px; font-weight: 700; margin-bottom: 12px; }
+  .cta-text p { color: var(--text-light); font-size: 16px; margin-bottom: 24px; max-width: 580px; line-height: 1.6; }
+  .cta-buttons { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-dark { display: inline-block; background: var(--dark); color: var(--white); padding: 12px 28px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; transition: opacity 0.2s; }
+  .btn-dark:hover { opacity: 0.85; }
+  .btn-pink { display: inline-block; background: var(--pink); color: var(--white); padding: 12px 28px; border-radius: 6px; font-size: 14px; font-weight: 600; text-decoration: none; transition: opacity 0.85; }
+  .btn-pink:hover { opacity: 0.85; }
+  .cta-avatar { text-align: right; flex-shrink: 0; }
+  .cta-avatar .chat-label { font-size: 14px; font-weight: 600; color: var(--white); text-align: right; margin-bottom: 6px; }
+  .cta-avatar .avatar-img { width: 120px; height: 140px; border-radius: 8px; background: var(--gray-green); display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+
+  /* ---- ANNOTATIONS (designer notes) ---- */
+  .design-note { background: #fff8e1; border: 1px dashed #e6c200; border-radius: 6px; padding: 12px 16px; margin: 12px 0; font-size: 12px; color: #7a6800; line-height: 1.5; }
+  .design-note strong { color: #5a4e00; }
+
+  @media (max-width: 768px) {
+    .featured-grid { grid-template-columns: 1fr; }
+    .articles-grid { grid-template-columns: 1fr; }
+    .cta-inner { flex-direction: column; text-align: center; }
+    .cta-buttons { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============================================================
+     DESIGN NOTE: This is a visual preview/mockup for the designer.
+     The final implementation will use Sellvio CMS components.
+     ============================================================ -->
+
+<!-- SECTION 1: HERO -->
+<section class="hero">
+  <div class="content-w-1280">
+    <h1>Insights</h1>
+    <p>Practical insights on the topics that matter most to our clients.</p>
+  </div>
+</section>
+
+<!-- SECTION 2: FEATURED + LATEST POSTS -->
+<section class="featured-section">
+  <div class="content-w-1280">
+    <h2>Featured</h2>
+    <div class="featured-grid">
+
+      <!-- LEFT: Featured article (latest) -->
+      <div class="featured-main">
+        <div class="thumb" style="background: linear-gradient(135deg, var(--bg-gray-green) 0%, var(--gray-green) 100%);">
+          Article 3 thumbnail placeholder
+        </div>
+        <span class="category-tag">Cloud Platform Services</span>
+        <h3><a href="/en/our-impact/article/the-hidden-costs-of-hiring-vs-managed-services/23">The Hidden Costs of Hiring vs. the Predictability of Managed Services</a></h3>
+        <p class="excerpt">You budget &euro;70,000 for a DevOps engineer. By the end of year one, you have spent &euro;110,000 or more. We break down the real numbers and compare them to predictable managed service pricing.</p>
+        <div class="author-row">
+          <div class="author-avatar"></div>
+          <div class="author-info">
+            <div class="name">Szabolcs Becze</div>
+            <div class="role">Head of Cloud Platform Services</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Latest Posts sidebar -->
+      <div class="latest-sidebar">
+        <h3>Latest Posts</h3>
+
+        <div class="sidebar-item">
+          <span class="category-tag">Cloud Platform Services</span>
+          <h4><a href="/en/our-impact/article/in-house-or-managed-devops-five-questions-that-decide-it/22">In-House or Managed DevOps: Five Questions That Decide It</a></h4>
+          <p class="excerpt">A structured framework for IT leaders who want to make this choice consciously - not after an outage forces their hand.</p>
+          <div class="author-row">
+            <div class="author-avatar"></div>
+            <div class="author-info">
+              <div class="name">Szabolcs Becze</div>
+              <div class="role">Head of CPS</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar-item">
+          <span class="category-tag">Cloud Platform Services</span>
+          <h4><a href="/en/our-impact/article/why-one-devops-engineer-is-never-enough/18">Why One DevOps Engineer Is Never Enough</a></h4>
+          <p class="excerpt">The infrastructure demands of modern cloud environments have outgrown the single-engineer model. Here is what most companies only discover after something breaks.</p>
+          <div class="author-row">
+            <div class="author-avatar"></div>
+            <div class="author-info">
+              <div class="name">Szabolcs Becze</div>
+              <div class="role">Head of CPS</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: ALL ARTICLES -->
+<section class="all-articles">
+  <div class="content-w-1280">
+    <h2>All Articles</h2>
+    <div class="articles-grid">
+
+      <div class="article-card">
+        <div class="read-time">6 min read</div>
+        <h3>The Hidden Costs of Hiring vs. the Predictability of Managed Services</h3>
+        <p class="excerpt">A DevOps engineer costs far more than their salary. We break down the real numbers and compare them to predictable managed service pricing.</p>
+        <a href="/en/our-impact/article/the-hidden-costs-of-hiring-vs-managed-services/23" class="btn">Read Article</a>
+      </div>
+
+      <div class="article-card">
+        <div class="read-time">5 min read</div>
+        <h3>In-House or Managed DevOps: Five Questions That Decide It</h3>
+        <p class="excerpt">A structured framework for IT leaders who want to make this choice consciously - not after an outage forces their hand.</p>
+        <a href="/en/our-impact/article/in-house-or-managed-devops-five-questions-that-decide-it/22" class="btn">Read Article</a>
+      </div>
+
+      <div class="article-card">
+        <div class="read-time">5 min read</div>
+        <h3>Why One DevOps Engineer Is Never Enough</h3>
+        <p class="excerpt">The infrastructure demands of modern cloud environments have outgrown the single-engineer model. Here is what most companies only discover after something breaks.</p>
+        <a href="/en/our-impact/article/why-one-devops-engineer-is-never-enough/18" class="btn">Read Article</a>
+      </div>
+
+    </div>
+
+    <div class="design-note">
+      <strong>Designer note:</strong> As more articles are published, this grid grows. 2-column layout. Cards use bg-gray-green (#dce4d8) with 8px border-radius. No images on cards - text-only with read time, title, excerpt, and dark CTA button. This keeps the page clean and fast-loading.
+    </div>
+
+  </div>
+</section>
+
+<!-- SECTION 4: CTA BANNER -->
+<section class="cta-banner">
+  <div class="content-w-1280">
+    <div class="cta-inner">
+      <div class="cta-text">
+        <h2>Have a challenge we can help with?</h2>
+        <p>From managed cloud operations and AI enablement to system integration and legacy modernization - Sonrisa has been solving complex technology problems for over 20 years.</p>
+        <div class="cta-buttons">
+          <a href="#" class="btn-dark">Get in Touch</a>
+          <a href="/en/our-services.html" class="btn-pink">Explore Our Services</a>
+        </div>
+      </div>
+      <div class="cta-avatar">
+        <div class="chat-label">Let&#39;s chat!</div>
+        <div class="avatar-img" style="background: #c5d1c0;">
+          <span style="font-size: 11px; color: #4a7c59; padding: 8px;">Photo placeholder</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

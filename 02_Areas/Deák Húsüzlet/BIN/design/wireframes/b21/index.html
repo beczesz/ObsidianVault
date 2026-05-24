@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH Wireframes — Deák Húsmíves</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #9B2335; --primary-light: #F9E0E3; --primary-pale: #F4E6E8;
+    --bg: #FAF7F4; --card: #FFFFFF;
+    --text: #2C2825; --text-muted: #8A8078; --border: #E8E2DB;
+    --green: #2D7A4F; --green-light: #D4EDDA;
+    --gold: #D4A574; --gold-light: #FFF8E1;
+    --info: #2B6CB0; --info-light: #DBEAFE;
+    --park-bg: #FEF3C7; --park-fg: #92400E;
+  }
+  body {
+    font-family: Inter, 'InterVar', system-ui, -apple-system, sans-serif;
+    background: var(--bg); color: var(--text); min-height: 100vh; line-height: 1.5;
+  }
+  header { background: var(--card); border-bottom: 1px solid var(--border); padding: 22px 24px; }
+  .header-row { display: flex; align-items: center; gap: 14px; max-width: 880px; margin: 0 auto; }
+  .logo {
+    width: 48px; height: 48px; background: var(--primary); border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-weight: 800; font-size: 18px; letter-spacing: -0.5px; flex-shrink: 0;
+  }
+  .header-text h1 { font-size: 19px; font-weight: 700; letter-spacing: -0.2px; }
+  .header-meta { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+  .build-badge {
+    display: inline-block; background: var(--primary-light); color: var(--primary);
+    font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 6px; margin-left: 6px;
+  }
+
+  main { max-width: 880px; margin: 0 auto; padding: 24px 16px 16px; }
+
+  .intro {
+    background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--primary);
+    border-radius: 10px; padding: 14px 18px; margin-bottom: 20px;
+    font-size: 13px; color: var(--text); line-height: 1.6;
+  }
+  .intro b { color: var(--primary); }
+
+  /* Collapsible section */
+  .group { margin-bottom: 12px; }
+  .group-head {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 14px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    cursor: pointer; transition: border-color 0.15s, background 0.15s;
+    font-family: inherit;
+  }
+  .group-head:hover { border-color: var(--primary); background: #FFFAFB; }
+  .group-head.open { border-radius: 10px 10px 0 0; border-bottom-color: transparent; background: #FFFAFB; }
+  .group-head-left { display: flex; align-items: center; gap: 10px; text-align: left; min-width: 0; flex: 1; }
+  .group-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .group-head.open .group-label { color: var(--primary); }
+  .group-hint { font-size: 11px; color: var(--text-muted); font-weight: 500; }
+  .group-count {
+    font-size: 10px; font-weight: 700; color: var(--text-muted);
+    background: #F3EEE9; padding: 2px 7px; border-radius: 10px;
+  }
+  .group-head.open .group-count { background: var(--primary-pale); color: var(--primary); }
+  .chev {
+    width: 18px; height: 18px; color: var(--text-muted);
+    transition: transform 0.2s;
+  }
+  .group-head.open .chev { transform: rotate(90deg); color: var(--primary); }
+  .chev svg { width: 100%; height: 100%; stroke: currentColor; stroke-width: 2.2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+
+  .group-body {
+    display: none;
+    padding: 10px 10px 12px;
+    background: #FFFAFB;
+    border: 1px solid var(--border); border-top: none;
+    border-radius: 0 0 10px 10px;
+  }
+  .group.open .group-body { display: flex; flex-direction: column; gap: 6px; }
+
+  /* Button card */
+  .wf-btn {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 14px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px;
+    text-decoration: none; color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  }
+  .wf-btn:hover {
+    border-color: var(--primary);
+    box-shadow: 0 3px 12px rgba(155,35,53,0.08);
+    transform: translateY(-1px);
+  }
+  .wf-btn.parked { background: #FAF7F0; border-style: dashed; }
+  .wf-btn.featured {
+    border: 1.5px solid var(--primary);
+    background: linear-gradient(135deg, #FFF 0%, #FFF8F9 100%);
+  }
+  .wf-btn.featured:hover { box-shadow: 0 4px 18px rgba(155,35,53,0.15); }
+
+  .btn-icon {
+    width: 38px; height: 38px; background: var(--primary-light);
+    border-radius: 9px; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .btn-icon svg { width: 18px; height: 18px; stroke: var(--primary); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+  .btn-icon.legal { background: #E8EAF6; }      .btn-icon.legal svg { stroke: #3949AB; }
+  .btn-icon.favorites { background: var(--gold-light); } .btn-icon.favorites svg { stroke: #B8860B; }
+  .btn-icon.cluster { background: #EDE4FA; }    .btn-icon.cluster svg { stroke: #5E3B9C; }
+  .btn-icon.admin { background: var(--info-light); } .btn-icon.admin svg { stroke: var(--info); }
+  .btn-icon.reorder { background: var(--green-light); } .btn-icon.reorder svg { stroke: var(--green); }
+
+  /* Status-driven icon (replaces feature icon on left) */
+  .btn-icon.status-icon svg { fill: none; }
+  .btn-icon.status-icon--review {
+    background: #FEF3C7;
+  }
+  .btn-icon.status-icon--review svg { stroke: #92400E; }
+  .btn-icon.status-icon--ready {
+    background: #DBEAFE;
+  }
+  .btn-icon.status-icon--ready svg { stroke: #1E40AF; fill: #1E40AF; stroke-width: 1; }
+  .btn-icon.status-icon--done {
+    background: #D1FAE5;
+  }
+  .btn-icon.status-icon--done svg { stroke: #065F46; }
+
+  /* Status label badge — shown next to title on all viewports */
+  .status-label {
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 2px 7px; border-radius: 10px;
+    font-size: 10px; font-weight: 700;
+    letter-spacing: 0.2px; white-space: nowrap;
+    vertical-align: middle;
+  }
+  .status-label--review { background: #FEF3C7; color: #92400E; }
+  .status-label--ready  { background: #DBEAFE; color: #1E40AF; }
+  .status-label--done   { background: #D1FAE5; color: #065F46; }
+
+  .btn-content { flex: 1; min-width: 0; }
+  .btn-title {
+    font-size: 14px; font-weight: 700;
+    display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+  }
+  .btn-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; line-height: 1.45; }
+  .btn-arrow { color: var(--text-muted); font-size: 18px; flex-shrink: 0; }
+  .wf-btn:hover .btn-arrow { color: var(--primary); }
+
+  /* ===== Status chip (3 állapot) ===== */
+  .status {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+    padding: 4px 8px 4px 6px; border-radius: 999px;
+    border: 1px solid transparent;
+    white-space: nowrap; flex-shrink: 0;
+    text-transform: uppercase;
+  }
+  .status svg {
+    width: 12px; height: 12px;
+    stroke: currentColor; stroke-width: 2.2;
+    fill: none; stroke-linecap: round; stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+  /* 1. Under review — amber/okker */
+  .status-review {
+    background: #FEF3C7; color: #92400E; border-color: #FDE68A;
+  }
+  /* 2. Ready for implementation — kék */
+  .status-ready {
+    background: #DBEAFE; color: #1E40AF; border-color: #BFDBFE;
+  }
+  .status-ready svg { fill: none; }
+  /* 3. Implementation done — zöld */
+  .status-done {
+    background: #D1FAE5; color: #065F46; border-color: #A7F3D0;
+  }
+  .status-done svg { stroke-width: 2.6; }
+
+  /* Row-level visual hint via left icon only — no border accent */
+
+  /* Status filter bar */
+  .status-filter {
+    display: flex; gap: 6px; align-items: center; flex-wrap: wrap;
+    margin-bottom: 14px; padding: 10px 12px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+  }
+  .status-filter-label {
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.06em; margin-right: 4px;
+  }
+  .status-filter button {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: transparent; border: 1px solid var(--border);
+    padding: 5px 10px 5px 8px; border-radius: 999px;
+    font-size: 11px; font-weight: 600; color: var(--text-muted);
+    cursor: pointer; font-family: inherit;
+    transition: all 0.15s;
+  }
+  .status-filter button svg {
+    width: 11px; height: 11px;
+    stroke: currentColor; stroke-width: 2.2;
+    fill: none; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .status-filter button:hover { border-color: var(--text); color: var(--text); }
+  .status-filter button.active {
+    background: var(--text); color: white; border-color: var(--text);
+  }
+  .status-filter .count {
+    font-size: 10px; opacity: 0.7; margin-left: 2px;
+  }
+  .wf-btn.hidden { display: none; }
+  /* When a group has no visible items */
+  .group-body.empty::before {
+    content: "Nincs találat ebben a kategóriában.";
+    display: block; text-align: center;
+    font-size: 12px; color: var(--text-muted);
+    padding: 20px 10px; font-style: italic;
+  }
+
+  /* Badges */
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 6px; border-radius: 4px; letter-spacing: 0.3px;
+  }
+  .badge-ticket { background: #E8EAF6; color: #1A237E; font-family: ui-monospace, monospace; }
+  .badge-new { background: var(--green-light); color: var(--green); }
+  .badge-v2 { background: var(--primary-light); color: var(--primary); }
+  .badge-featured { background: var(--primary); color: white; }
+  .badge-parked { background: var(--park-bg); color: var(--park-fg); }
+  .badge-done { background: var(--green-light); color: var(--green); }
+  .badge-v { background: var(--primary-pale); color: var(--primary); font-family: ui-monospace, monospace; }
+
+  /* Toggle all */
+  .toggle-all {
+    display: flex; justify-content: flex-end; margin-bottom: 10px; gap: 6px;
+  }
+  .toggle-all button {
+    background: transparent; border: 1px solid var(--border); color: var(--text-muted);
+    padding: 5px 10px; border-radius: 6px; font-size: 11px; font-weight: 600; cursor: pointer;
+    font-family: inherit;
+  }
+  .toggle-all button:hover { border-color: var(--primary); color: var(--primary); }
+
+  footer {
+    text-align: center; padding: 32px 16px;
+    font-size: 12px; color: var(--text-muted); border-top: 1px solid var(--border);
+    margin-top: 32px;
+  }
+
+  @media (max-width: 500px) {
+    .btn-icon { width: 34px; height: 34px; }
+    .btn-icon svg { width: 16px; height: 16px; }
+    .btn-title { font-size: 13px; }
+    .wf-btn { padding: 10px 12px; gap: 10px; }
+    .status { font-size: 9px; padding: 3px 7px 3px 5px; }
+    .status svg { width: 10px; height: 10px; }
+    .status span { display: none; } /* mobile: csak az ikon */
+    .status { padding: 5px; }
+    .status-filter { padding: 8px; gap: 4px; }
+    .status-filter button { padding: 4px 8px 4px 6px; font-size: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-row">
+    <div class="logo">DH</div>
+    <div class="header-text">
+      <h1>Deák Húsmíves — Wireframes</h1>
+      <div class="header-meta">Design dokumentáció <span class="build-badge">Build #21</span></div>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <div class="toggle-all">
+    <button onclick="toggleAll(true)">Összes kinyitása</button>
+    <button onclick="toggleAll(false)">Összes becsukása</button>
+  </div>
+
+  <!-- Status filter -->
+  <div class="status-filter" id="statusFilter">
+    <span class="status-filter-label">Státusz:</span>
+    <button data-filter="all" class="active">Mind <span class="count" id="count-all">0</span></button>
+    <button data-filter="review">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      Under review <span class="count" id="count-review">0</span>
+    </button>
+    <button data-filter="ready">
+      <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+      Ready <span class="count" id="count-ready">0</span>
+    </button>
+    <button data-filter="done">
+      <svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg>
+      Done <span class="count" id="count-done">0</span>
+    </button>
+  </div>
+
+  <!-- ============ SPRINT 3 — default open ============ -->
+  <div class="group open" data-persist="grp-s3">
+    <button class="group-head open" type="button" onclick="toggleGroup(this)">
+      <span class="group-head-left">
+        <span class="group-label">Sprint 3 — v0.3 · Funkcionális</span>
+        <span class="group-hint">— savings engine + GDPR</span>
+      </span>
+      <span class="group-count">4</span>
+      <span class="chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
+    </button>
+    <div class="group-body">
+      <!-- Split savings-engine feature files -->
+      <a href="v0.3-post-order-recap.html" class="wf-btn">
+        <div class="btn-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Post-order Recap <span class="badge badge-new">új</span> <span class="badge badge-ticket">DH-119</span></div>
+          <div class="btn-desc">Sikeres rendelés visszaigazolás + megtakarítás breakdown + szállítási ETA + return banner.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+      <a href="v0.3-reorder-v2.html" class="wf-btn">
+        <div class="btn-icon reorder">
+          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Reorder v2 — design review javítások <span class="badge badge-new">új</span> <span class="badge badge-ticket">DH-120</span> <span class="badge badge-ticket">DH-121</span></div>
+          <div class="btn-desc">Új scenario: üres kosár → közvetlen betöltés. Merge modal sötét backdrop-pal, partial-availability warning. × eltávolítás az unavailable termékhez, nagyobb "Hasonló termékek" chip.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+      <a href="v0.3-family-bundles.html" class="wf-btn">
+        <div class="btn-icon">
+          <svg viewBox="0 0 24 24"><path d="M11 21.73a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73z"/><path d="M12 22V12"/><polyline points="3.29 7 12 12 20.71 7"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Családi csomagok <span class="badge badge-new">új</span></div>
+          <div class="btn-desc">Bundle grid (páros/családi/nagy/grill), részletező nézet, admin szerkesztő.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+      <a href="v0.3-savings-counter.html" class="wf-btn" style="opacity:0.75;">
+        <div class="btn-icon">
+          <svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Savings Counter <span class="badge badge-done">✓ kész</span></div>
+          <div class="btn-desc">Kosár progress bar + küszöbök (150 / 300 RON), nudge-ok, 5 scenario (üres → 350 RON).</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+      <a href="v0.3-consent-gdpr.html" class="wf-btn">
+        <div class="btn-icon legal">
+          <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">GDPR Consent &amp; ÁSZF <span class="badge badge-ticket">DH-132</span></div>
+          <div class="btn-desc">Regisztrációs consent, beléptető kapu, cookie banner — HU/RO kétnyelvű.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ============ SPRINT 4 — default collapsed ============ -->
+  <div class="group" data-persist="grp-s4">
+    <button class="group-head" type="button" onclick="toggleGroup(this)">
+      <span class="group-head-left">
+        <span class="group-label">Sprint 4 — v0.4</span>
+        <span class="group-hint">— profil + gyors újrarendelés</span>
+      </span>
+      <span class="group-count">3</span>
+      <span class="chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
+    </button>
+    <div class="group-body">
+      <a href="v0.4-profile-admin.html" class="wf-btn">
+        <div class="btn-icon admin">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Profile &amp; Admin panel <span class="badge badge-ticket">DH-147</span></div>
+          <div class="btn-desc">Fiók oldal redesign + admin navigáció + operátor mód switcher.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+      <a href="v0.4-reorder-quick-panel.html" class="wf-btn">
+        <div class="btn-icon reorder">
+          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Reorder Quick Panel <span class="badge badge-ticket">DH-148</span></div>
+          <div class="btn-desc">Terméklista fölötti „Utolsó rendelésed" kártya + 1-kattintásos újrarendelés CTA. Empty state, panel, merge modal.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+      <a href="v0.4-reorder-favorites.html" class="wf-btn">
+        <div class="btn-icon favorites">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Reorder + Kedvencek <span class="badge badge-ticket">DH-148b</span></div>
+          <div class="btn-desc">Kedvencek karusszel a terméklista fölött · live progress bar (Tweaks csúszkával) · empty state · merge modal. 4 tab.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ============ SPRINT 5 — default collapsed ============ -->
+  <div class="group" data-persist="grp-s5">
+    <button class="group-head" type="button" onclick="toggleGroup(this)">
+      <span class="group-head-left">
+        <span class="group-label">Sprint 5 — v0.5</span>
+        <span class="group-hint">— kedvencek + közös rendelés</span>
+      </span>
+      <span class="group-count">2</span>
+      <span class="chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
+    </button>
+    <div class="group-body">
+      <a href="v0.5-favorites-v2.html" class="wf-btn">
+        <div class="btn-icon favorites">
+          <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Kedvenc Termékek <span class="badge badge-v">v2</span></div>
+          <div class="btn-desc">Csillag toggle, kedvencek a lista tetején, login gate, interaktív demo.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+      <a href="v0.5-shared-basket.html" class="wf-btn parked">
+        <div class="btn-icon cluster">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Shared Basket — v1 (eredeti)
+            <span class="badge badge-ticket">DH-149</span>
+            <span class="badge badge-parked">⏸ parkolt</span>
+          </div>
+          <div class="btn-desc">Az eredeti Host+Guest flow + Delivery Cluster alternatíva. Referencia — a v2 ezt váltja ki.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ============ JOGI — default collapsed ============ -->
+  <div class="group" data-persist="grp-legal">
+    <button class="group-head" type="button" onclick="toggleGroup(this)">
+      <span class="group-head-left">
+        <span class="group-label">Jogi oldalak</span>
+        <span class="group-hint">— copy-paste ready, 3 nyelvű</span>
+      </span>
+      <span class="group-count">3</span>
+      <span class="chev"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>
+    </button>
+    <div class="group-body">
+      <a href="v0.3-legal-info-profile.html" class="wf-btn">
+        <div class="btn-icon legal">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Profile → Jogi információk <span class="badge badge-ticket">DH-131</span></div>
+          <div class="btn-desc">Mobil-first jogi info screen — cégadat kártyák, doc linkek, ANPC/ODR.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+      <a href="privacy-policy-wireframe-v2.html" class="wf-btn">
+        <div class="btn-icon legal">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">Privacy Policy — 3 nyelvű
+            <span class="badge badge-ticket">DH-134</span>
+            <span class="badge badge-v">v2</span>
+          </div>
+          <div class="btn-desc">Teljes tartalom, kattintható TOC, HU/RO/EN.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+      <a href="aszf-wireframe-v2.html" class="wf-btn">
+        <div class="btn-icon legal">
+          <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        </div>
+        <div class="btn-content">
+          <div class="btn-title">ÁSZF / Termeni / T&amp;C — 3 nyelvű
+            <span class="badge badge-ticket">DH-130</span>
+            <span class="badge badge-v">v2</span>
+          </div>
+          <div class="btn-desc">Teljes tartalom, kattintható TOC, HU/RO/EN.</div>
+        </div>
+        <div class="btn-arrow">›</div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>Deák Húsmíves · Exar Labs · 2026</footer>
+
+<script>
+/* ============ Status system ============ */
+const STATUS_ICONS = {
+  review: '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>',
+  ready:  '<svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>',
+  done:   '<svg viewBox="0 0 24 24"><polyline points="4 12 10 18 20 6"/></svg>'
+};
+const STATUS_LABELS = {
+  review: 'Under review',
+  ready:  'Ready for impl.',
+  done:   'Implemented'
+};
+
+// Per-card status overrides — add entries here (or via attributes in HTML).
+// Key = filename from href, value = 'review' | 'ready' | 'done'
+const STATUS_OVERRIDES = {
+  'v0.3-post-order-recap.html': 'ready',
+  'v0.3-reorder-v2.html': 'ready',
+  'v0.5-shared-basket-v2.html': 'review',
+  'v0.3-savings-counter.html': 'done',
+};
+
+function hrefKey(el) {
+  const h = el.getAttribute('href') || '';
+  return h.split('/').pop().split('?')[0].split('#')[0];
+}
+
+function applyStatuses() {
+  document.querySelectorAll('.wf-btn').forEach(btn => {
+    // priority: explicit data-status > override map > default 'review'
+    let status = btn.getAttribute('data-status');
+    if (!status) {
+      const key = hrefKey(btn);
+      status = STATUS_OVERRIDES[key] || 'review';
+      btn.setAttribute('data-status', status);
+    }
+    // Replace LEFT btn-icon contents with the status icon (feature icon removed).
+    // Add .status-icon class for color control.
+    const btnIcon = btn.querySelector(':scope > .btn-icon');
+    if (btnIcon) {
+      btnIcon.classList.add('status-icon');
+      btnIcon.classList.remove('legal','favorites','cluster','admin','reorder');
+      btnIcon.classList.remove('status-icon--review','status-icon--ready','status-icon--done');
+      btnIcon.classList.add('status-icon--' + status);
+      btnIcon.innerHTML = STATUS_ICONS[status];
+    }
+    // Inject status label into title (replace existing if present)
+    const title = btn.querySelector('.btn-title');
+    if (title) {
+      let label = title.querySelector('.status-label');
+      if (!label) {
+        label = document.createElement('span');
+        label.className = 'status-label';
+        title.appendChild(label);
+      }
+      label.classList.remove('status-label--review','status-label--ready','status-label--done');
+      label.classList.add('status-label--' + status);
+      label.textContent = STATUS_LABELS[status];
+    }
+    // Remove any existing right-side status chip (we only use left icon now).
+    const existingChip = btn.querySelector(':scope > .status');
+    if (existingChip) existingChip.remove();
+  });
+  updateCounts();
+}
+
+function updateCounts() {
+  const all = document.querySelectorAll('.wf-btn');
+  const counts = { all: all.length, review: 0, ready: 0, done: 0 };
+  all.forEach(b => { counts[b.dataset.status] = (counts[b.dataset.status] || 0) + 1; });
+  ['all','review','ready','done'].forEach(k => {
+    const el = document.getElementById('count-' + k);
+    if (el) el.textContent = counts[k] || 0;
+  });
+}
+
+function applyFilter(filter) {
+  document.querySelectorAll('.wf-btn').forEach(b => {
+    const show = filter === 'all' || b.dataset.status === filter;
+    b.classList.toggle('hidden', !show);
+  });
+  // mark empty group-bodies
+  document.querySelectorAll('.group-body').forEach(body => {
+    const visible = body.querySelectorAll('.wf-btn:not(.hidden)').length;
+    body.classList.toggle('empty', visible === 0);
+  });
+  // persist
+  try { localStorage.setItem('dh_wf_status_filter', filter); } catch (e) {}
+}
+
+document.getElementById('statusFilter').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-filter]');
+  if (!btn) return;
+  document.querySelectorAll('#statusFilter button').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilter(btn.dataset.filter);
+});
+
+applyStatuses();
+// restore filter
+try {
+  const saved = localStorage.getItem('dh_wf_status_filter') || 'all';
+  const fbtn = document.querySelector('#statusFilter button[data-filter="' + saved + '"]');
+  if (fbtn) {
+    document.querySelectorAll('#statusFilter button').forEach(b => b.classList.remove('active'));
+    fbtn.classList.add('active');
+    applyFilter(saved);
+  }
+} catch (e) {}
+</script>
+
+<script>
+function toggleGroup(btn) {
+  const group = btn.parentElement;
+  const isOpen = group.classList.toggle('open');
+  btn.classList.toggle('open', isOpen);
+  try {
+    const key = group.dataset.persist;
+    if (key) localStorage.setItem('dh_wf_' + key, isOpen ? '1' : '0');
+  } catch (e) {}
+}
+function toggleAll(open) {
+  document.querySelectorAll('.group').forEach(g => {
+    g.classList.toggle('open', open);
+    const head = g.querySelector('.group-head');
+    if (head) head.classList.toggle('open', open);
+    try {
+      const key = g.dataset.persist;
+      if (key) localStorage.setItem('dh_wf_' + key, open ? '1' : '0');
+    } catch (e) {}
+  });
+}
+// Restore persisted state
+(function() {
+  // Build #19: minden csoport alapból nyitva — töröljük a régi state-et
+  try {
+    const BUILD_KEY = 'dh_wf_build';
+    if (localStorage.getItem(BUILD_KEY) !== '21') {
+      Object.keys(localStorage).forEach(k => {
+        if (k.startsWith('dh_wf_') && k !== BUILD_KEY) localStorage.removeItem(k);
+      });
+      localStorage.setItem(BUILD_KEY, '21');
+    }
+  } catch (e) {}
+
+  document.querySelectorAll('.group').forEach(g => {
+    try {
+      const key = g.dataset.persist;
+      if (!key) return;
+      const saved = localStorage.getItem('dh_wf_' + key);
+      if (saved === null) return; // leave default
+      const open = saved === '1';
+      g.classList.toggle('open', open);
+      const head = g.querySelector('.group-head');
+      if (head) head.classList.toggle('open', open);
+    } catch (e) {}
+  });
+})();
+</script>
+
+</body>
+</html>

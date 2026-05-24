@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Politica de Confidențialitate — Deák Húsmíves</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+	<style>
+		/* ── Reset ── */
+		*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+		:root {
+			--primary: #9B2335;
+			--primary-dark: #7A1C2A;
+			--secondary: #D4A574;
+			--gray-50: #FAF8F5;
+			--gray-200: #E8E2DB;
+			--gray-300: #C5BCB3;
+			--gray-400: #8A8078;
+			--gray-600: #5C544C;
+			--gray-900: #2C2825;
+			--white: #FFFFFF;
+		}
+
+		html {
+			font-family: 'Inter', system-ui, -apple-system, sans-serif;
+			font-size: 16px;
+			line-height: 1.6;
+			color: var(--gray-900);
+			background: var(--gray-50);
+			-webkit-font-smoothing: antialiased;
+			-moz-osx-font-smoothing: grayscale;
+		}
+
+		.hero {
+			background: var(--primary);
+			padding: 3rem 1.5rem 5rem;
+			text-align: center;
+			position: relative;
+		}
+
+		.hero::after {
+			content: '';
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			background: var(--gray-50);
+			border-radius: 1.5rem 1.5rem 0 0;
+		}
+
+		.hero-logo {
+			width: 72px;
+			height: 72px;
+			object-fit: contain;
+			margin-bottom: 1rem;
+			border-radius: 12px;
+		}
+
+		.hero-title {
+			font-size: 1.5rem;
+			font-weight: 700;
+			color: var(--white);
+			line-height: 1.25;
+			margin-bottom: 0.375rem;
+		}
+
+		.hero-subtitle {
+			font-size: 0.875rem;
+			font-weight: 400;
+			color: rgba(255, 255, 255, 0.6);
+			margin-bottom: 1.75rem;
+		}
+
+		.lang-switcher {
+			display: inline-flex;
+			gap: 0.25rem;
+			padding: 0.25rem;
+			background: rgba(255, 255, 255, 0.15);
+			border-radius: 9999px;
+		}
+
+		.lang-btn {
+			font-family: inherit;
+			font-size: 0.875rem;
+			font-weight: 400;
+			padding: 0.375rem 1.25rem;
+			border: none;
+			border-radius: 9999px;
+			cursor: pointer;
+			transition: all 150ms ease;
+			background: transparent;
+			color: rgba(255, 255, 255, 0.8);
+		}
+
+		.lang-btn:hover { background: rgba(255, 255, 255, 0.1); }
+
+		.lang-btn.active {
+			background: var(--white);
+			color: var(--primary);
+			font-weight: 600;
+			box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+		}
+
+		.lang-btn.active:hover { background: var(--white); }
+
+		.content-card {
+			background: var(--white);
+			border-radius: 1rem;
+			box-shadow: 0 4px 24px rgba(44, 40, 37, 0.08), 0 1px 4px rgba(44, 40, 37, 0.04);
+			max-width: 672px;
+			margin: -2rem auto 0;
+			padding: 2rem 1.5rem 2.5rem;
+			position: relative;
+			z-index: 1;
+			animation: fadeInUp 400ms ease-out;
+		}
+
+		@keyframes fadeInUp {
+			from { opacity: 0; transform: translateY(16px); }
+			to { opacity: 1; transform: translateY(0); }
+		}
+
+		@media (prefers-reduced-motion: reduce) {
+			.content-card { animation: none; }
+		}
+
+		.meta {
+			font-size: 0.875rem;
+			color: var(--gray-400);
+			margin-bottom: 1.5rem;
+		}
+
+		.divider {
+			border: none;
+			border-top: 1px solid var(--gray-200);
+			margin: 0 0 2rem;
+		}
+
+		.policy-section { margin-bottom: 2rem; }
+		.policy-section:last-child { margin-bottom: 0; }
+
+		.section-heading {
+			font-size: 1.125rem;
+			font-weight: 600;
+			color: var(--gray-900);
+			margin-bottom: 0.75rem;
+			line-height: 1.35;
+		}
+
+		.section-body {
+			font-size: 1rem;
+			color: var(--gray-600);
+			line-height: 1.7;
+		}
+
+		.section-body p { margin-bottom: 0.75rem; }
+		.section-body p:last-child { margin-bottom: 0; }
+
+		.section-body ul {
+			list-style: none;
+			padding-left: 0;
+			margin: 0.5rem 0 0.75rem;
+		}
+
+		.section-body li {
+			padding-left: 1.25rem;
+			position: relative;
+			margin-bottom: 0.375rem;
+		}
+
+		.section-body li::before {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0.65em;
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background: var(--primary);
+		}
+
+		.contact-box {
+			background: var(--gray-50);
+			border: 1px solid var(--gray-200);
+			border-radius: 0.75rem;
+			padding: 1.25rem;
+			text-align: center;
+			margin-top: 0.75rem;
+		}
+
+		.contact-email {
+			display: inline-flex;
+			align-items: center;
+			gap: 0.5rem;
+			font-size: 1rem;
+			font-weight: 500;
+			color: var(--primary);
+			text-decoration: none;
+			transition: color 150ms ease;
+		}
+
+		.contact-email:hover { color: var(--primary-dark); }
+		.contact-email svg { flex-shrink: 0; }
+
+		.contact-entity {
+			font-size: 0.875rem;
+			color: var(--gray-400);
+			margin-top: 0.375rem;
+		}
+
+		.footer {
+			text-align: center;
+			padding: 2.5rem 1.5rem;
+			font-size: 0.875rem;
+			color: var(--gray-400);
+			line-height: 1.5;
+		}
+
+		[data-lang="ro"] .lang-en,
+		[data-lang="ro"] .lang-hu,
+		[data-lang="en"] .lang-ro,
+		[data-lang="en"] .lang-hu,
+		[data-lang="hu"] .lang-ro,
+		[data-lang="hu"] .lang-en {
+			display: none;
+		}
+
+		@media (min-width: 640px) {
+			.hero { padding: 4rem 2rem 6rem; }
+			.hero-title { font-size: 1.75rem; }
+			.content-card { padding: 2.5rem 3rem 3rem; margin-top: -2.5rem; }
+		}
+</style>
+</head>
+<body data-lang="ro">
+	<header class="hero">
+		<h1 class="hero-title">
+			<span class="lang-ro">Politica de Confidențialitate</span>
+			<span class="lang-en">Privacy Policy</span>
+			<span class="lang-hu">Adatvédelmi Szabályzat</span>
+		</h1>
+		<p class="hero-subtitle">Deák Húsmíves — deakhus.ro</p>
+		<nav class="lang-switcher" aria-label="Language selector">
+			<button class="lang-btn active" data-lang-btn="ro" type="button">RO</button>
+			<button class="lang-btn" data-lang-btn="en" type="button">EN</button>
+			<button class="lang-btn" data-lang-btn="hu" type="button">HU</button>
+		</nav>
+	</header>
+
+	<main class="content-card">
+		<p class="meta">
+			<span class="lang-ro">Ultima actualizare: 21 aprilie 2026</span>
+			<span class="lang-en">Last updated: April 21, 2026</span>
+			<span class="lang-hu">Utolsó frissítés: 2026. április 21.</span>
+		</p>
+		<hr class="divider">
+
+		<!-- 1 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">1. Operatorul de date</span>
+				<span class="lang-en">1. Data Controller</span>
+				<span class="lang-hu">1. Az adatkezelő</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<p>Operatorul unic al platformei deakhus.ro este:</p>
+					<p><strong>EXARGROUPS S.R.L.</strong><br>Sediu: Odorheiu Secuiesc, str. Orbán Balázs nr. 9<br>CUI: RO41839221 · J19/789/2019<br>Reprezentant: Becze Szabolcs<br>Email: contact@exar.ro</p>
+					<p>Partenerul platformei, cu acces la datele de livrare în calitate de <strong>persoană împuternicită</strong>:</p>
+					<p><strong>DEAK PROD SRL</strong><br>Sediu: Odorheiu Secuiesc, str. Solymossy nr. 9<br>CUI: 4845288 · J19/1038/1993</p>
+				</div>
+				<div class="lang-en">
+					<p>The sole data controller and operator of the deakhus.ro platform is:</p>
+					<p><strong>EXARGROUPS S.R.L.</strong><br>Address: Odorheiu Secuiesc (Székelyudvarhely), str. Orbán Balázs nr. 9, Romania<br>CUI: RO41839221 · J19/789/2019<br>Representative: Becze Szabolcs<br>Email: contact@exar.ro</p>
+					<p>The platform's ordering partner, acting as a <strong>data processor</strong> for delivery data only:</p>
+					<p><strong>DEAK PROD SRL</strong><br>Address: Odorheiu Secuiesc, str. Solymossy nr. 9, Romania<br>CUI: 4845288 · J19/1038/1993</p>
+				</div>
+				<div class="lang-hu">
+					<p>A deakhus.ro platform üzemeltetője és kizárólagos adatkezelője:</p>
+					<p><strong>EXARGROUPS S.R.L.</strong><br>Székhely: Székelyudvarhely (Odorheiu Secuiesc), Orbán Balázs u. 9.<br>CUI: RO41839221 · J19/789/2019<br>Képviselő: Becze Szabolcs<br>Email: contact@exar.ro</p>
+					<p>A platform megrendelője és partnere, aki szállítási adatokhoz <strong>adatfeldolgozói</strong> minőségben fér hozzá:</p>
+					<p><strong>DEAK PROD SRL</strong><br>Székhely: Székelyudvarhely, Solymossy u. 9.<br>CUI: 4845288 · J19/1038/1993</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 2 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">2. Ce date colectăm</span>
+				<span class="lang-en">2. What Data We Collect</span>
+				<span class="lang-hu">2. Milyen adatokat gyűjtünk</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<ul>
+						<li><strong>Nume complet</strong> — identificarea contului și livrare</li>
+						<li><strong>Adresă de email</strong> — autentificare Google OAuth sau email/parolă</li>
+						<li><strong>Număr de telefon</strong> — contact pentru livrare</li>
+						<li><strong>Adresă de livrare</strong> — locul de livrare al comenzii</li>
+					</ul>
+					<p>Nu colectăm date speciale (medicale, biometrice, religioase etc.). Nu colectăm date de la persoane sub 18 ani.</p>
+				</div>
+				<div class="lang-en">
+					<ul>
+						<li><strong>Full name</strong> — account identification and delivery</li>
+						<li><strong>Email address</strong> — Google OAuth or email/password sign-in</li>
+						<li><strong>Phone number</strong> — delivery contact</li>
+						<li><strong>Delivery address</strong> — order fulfillment</li>
+					</ul>
+					<p>We do <strong>not collect</strong> special categories of data (health, biometric, religious, etc.). We do not knowingly collect data from persons under 18.</p>
+				</div>
+				<div class="lang-hu">
+					<ul>
+						<li><strong>Teljes név</strong> — fiók azonosítás és szállítási cím feltüntetése</li>
+						<li><strong>Email cím</strong> — Google OAuth vagy email/jelszó alapú belépés</li>
+						<li><strong>Telefonszám</strong> — szállítási kapcsolattartás</li>
+						<li><strong>Szállítási cím</strong> — kézbesítés helyszíne</li>
+					</ul>
+					<p>Különleges személyes adatokat (egészségügyi, biometrikus, vallási stb.) <strong>nem gyűjtünk</strong>. 18 év alatti személyektől tudatosan nem gyűjtünk adatot.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 3 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">3. Scopul și temeiul juridic</span>
+				<span class="lang-en">3. Purpose and Legal Basis</span>
+				<span class="lang-hu">3. Az adatgyűjtés célja és jogalapja</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<ul>
+						<li>Gestionarea contului — Executarea contractului, Art. 6(1)(b)</li>
+						<li>Procesarea comenzii — Executarea contractului, Art. 6(1)(b)</li>
+						<li>Livrare la domiciliu — Executarea contractului, Art. 6(1)(b)</li>
+						<li>Istoricul comenzilor — Executarea contractului, Art. 6(1)(b)</li>
+						<li>Firebase Analytics — Consimțământ, Art. 6(1)(a)</li>
+						<li>Obligații contabile — Obligație legală, Art. 6(1)(c)</li>
+					</ul>
+					<p>Datele dumneavoastră <strong>nu sunt utilizate în scopuri de marketing</strong>. Nu realizăm profilare sau luarea automată a deciziilor.</p>
+				</div>
+				<div class="lang-en">
+					<ul>
+						<li>Account management — Contract performance, Art. 6(1)(b)</li>
+						<li>Order processing — Contract performance, Art. 6(1)(b)</li>
+						<li>Home delivery — Contract performance, Art. 6(1)(b)</li>
+						<li>Order history and status — Contract performance, Art. 6(1)(b)</li>
+						<li>Firebase Analytics — Consent, Art. 6(1)(a)</li>
+						<li>Accounting obligations — Legal obligation, Art. 6(1)(c)</li>
+					</ul>
+					<p>We do <strong>not use your data for marketing</strong>. We do not perform automated decision-making or profiling.</p>
+				</div>
+				<div class="lang-hu">
+					<ul>
+						<li>Fiók létrehozása és kezelése — Szerződés teljesítése, Art. 6(1)(b)</li>
+						<li>Rendelés feldolgozása — Szerződés teljesítése, Art. 6(1)(b)</li>
+						<li>Házhozszállítás — Szerződés teljesítése, Art. 6(1)(b)</li>
+						<li>Rendelési előzmények és státusz — Szerződés teljesítése, Art. 6(1)(b)</li>
+						<li>Firebase Analytics — Hozzájárulás, Art. 6(1)(a)</li>
+						<li>Számviteli kötelezettségek — Jogi kötelezettség, Art. 6(1)(c)</li>
+					</ul>
+					<p>Adatait <strong>marketing célokra nem használjuk</strong>, automatizált döntéshozatalt és profilalkotást <strong>nem végzünk</strong>.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 4 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">4. Partajarea datelor cu terți</span>
+				<span class="lang-en">4. Sharing Data with Third Parties</span>
+				<span class="lang-hu">4. Adatok megosztása harmadik felekkel</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<ul>
+						<li><strong>DEAK PROD SRL</strong> — primește datele de livrare (nume, adresă, telefon) pe baza unui contract de prelucrare.</li>
+						<li><strong>Google Firebase / Google LLC</strong> — furnizează infrastructura aplicației (autentificare, analytics).</li>
+						<li><strong>Infrastructura Exar Labs</strong> — backend-ul este operat pe propriile servere, fără transfer către terți.</li>
+					</ul>
+					<p>Datele dumneavoastră <strong>nu sunt vândute sau transferate</strong> altor terți, cu excepția obligațiilor legale.</p>
+				</div>
+				<div class="lang-en">
+					<ul>
+						<li><strong>DEAK PROD SRL</strong> — receives delivery data (name, address, phone) under a data processing agreement.</li>
+						<li><strong>Google Firebase / Google LLC</strong> — provides app infrastructure (authentication, analytics).</li>
+						<li><strong>Exar Labs infrastructure</strong> — backend runs on our own servers; data is not transferred to third parties.</li>
+					</ul>
+					<p>We do <strong>not sell or transfer</strong> your data to any other third party, except where required by law.</p>
+				</div>
+				<div class="lang-hu">
+					<ul>
+						<li><strong>DEAK PROD SRL</strong> — a rendelés teljesítéséhez szükséges szállítási adatokat (név, cím, telefon) kapja meg adatfeldolgozói szerződés alapján.</li>
+						<li><strong>Google Firebase / Google LLC</strong> — az alkalmazás infrastruktúráját (autentikáció, analytics) biztosítja.</li>
+						<li><strong>Exar Labs infrastruktúra</strong> — a backend platformot üzemeltetjük saját szervereinken, harmadik félnek nem adjuk át.</li>
+					</ul>
+					<p>Adatait egyéb harmadik félnek <strong>nem adjuk el és nem adjuk át</strong>, kivéve ha jogszabály kötelez rá.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 5 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">5. Firebase Analytics</span>
+				<span class="lang-en">5. Firebase Analytics</span>
+				<span class="lang-hu">5. Firebase Analytics</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<p>Utilizăm Google Firebase Analytics pentru îmbunătățirea experienței utilizatorilor. Acest sistem:</p>
+					<ul>
+						<li>Colectează date anonime și agregate (ex. ce pagini sunt vizitate)</li>
+						<li>Nu colectează identificatori personali</li>
+						<li>Urmărește traficul prin coduri QR (care cod QR din magazin a fost scanat)</li>
+					</ul>
+					<p>Analytics se activează doar cu consimțământul dumneavoastră (acceptarea bannerului cookie). Consimțământul poate fi retras oricând din setările contului.</p>
+				</div>
+				<div class="lang-en">
+					<p>We use Google Firebase Analytics to improve the user experience. This system:</p>
+					<ul>
+						<li>Collects anonymous, aggregated event data (e.g. which pages are visited)</li>
+						<li>Does not collect personal identifiers</li>
+						<li>Tracks QR-code-based traffic sources (which in-store QR code was scanned)</li>
+					</ul>
+					<p>Analytics is activated only with your consent (cookie banner). You may withdraw consent at any time in your account settings.</p>
+				</div>
+				<div class="lang-hu">
+					<p>A platformon Google Firebase Analytics szolgáltatást használunk a felhasználói élmény javítása érdekében. Ez a rendszer:</p>
+					<ul>
+						<li>Anonim, aggregált eseményadatokat gyűjt (pl. melyik oldalt nézik, mennyi ideig)</li>
+						<li>Nem gyűjt személyes azonosítókat (névtelen session-azonosítót használ)</li>
+						<li>QR-kód alapú forgalomkövetést végez (melyik bolt előtt helyezett ki QR-kódot szkennelek)</li>
+					</ul>
+					<p>Az Analytics csak az Ön hozzájárulásával (cookie banner elfogadása) aktiválódik. Hozzájárulása bármikor visszavonható a fiókbeállításokban.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 6 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">6. Cookie-uri</span>
+				<span class="lang-en">6. Cookies</span>
+				<span class="lang-hu">6. Cookie-k (sütik)</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<ul>
+						<li><strong>Cookie de sesiune</strong> — Menținerea stării de autentificare. Expiră la închiderea browserului. Nu necesită consimțământ (funcțional).</li>
+						<li><strong>Firebase Analytics</strong> — Analiza utilizării platformei. Expiră după 14 luni. Necesită consimțământ.</li>
+					</ul>
+					<p>Nu utilizăm cookie-uri de marketing terțe.</p>
+				</div>
+				<div class="lang-en">
+					<ul>
+						<li><strong>Session cookie</strong> — Maintaining authenticated state. Expires on browser close. No consent required (functional).</li>
+						<li><strong>Firebase Analytics</strong> — Platform usage analysis. Expires after 14 months. Consent required.</li>
+					</ul>
+					<p>We do not use third-party marketing cookies.</p>
+				</div>
+				<div class="lang-hu">
+					<ul>
+						<li><strong>Session cookie</strong> — Bejelentkezett állapot megőrzése. Böngésző zárásáig érvényes. Nem szükséges hozzájárulás (működési).</li>
+						<li><strong>Firebase Analytics</strong> — Platformhasználat elemzése. 14 hónapig érvényes. Hozzájárulás szükséges.</li>
+					</ul>
+					<p>Harmadik fél marketing cookie-t <strong>nem alkalmazunk</strong>.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 7 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">7. Perioada de păstrare a datelor</span>
+				<span class="lang-en">7. Data Retention</span>
+				<span class="lang-hu">7. Adatmegőrzési idő</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<ul>
+						<li><strong>Datele contului</strong> — pe durata activității + 2 ani după ștergere</li>
+						<li><strong>Datele comenzilor</strong> — 5 ani (Legea 82/1991 privind contabilitatea)</li>
+						<li><strong>Date Analytics</strong> — 14 luni (implicit Firebase)</li>
+					</ul>
+					<p>Puteți solicita ștergerea contului oricând la contact@exar.ro. Datele necesare obligațiilor legale vor fi păstrate conform legii.</p>
+				</div>
+				<div class="lang-en">
+					<ul>
+						<li><strong>Account data</strong> — active period + 2 years after deletion</li>
+						<li><strong>Order data</strong> — 5 years (Romanian Accounting Law 82/1991)</li>
+						<li><strong>Analytics data</strong> — 14 months (Firebase default)</li>
+					</ul>
+					<p>You may request account deletion at any time at contact@exar.ro. Data required for legal obligations will be retained as required by law.</p>
+				</div>
+				<div class="lang-hu">
+					<ul>
+						<li><strong>Felhasználói fiók adatai</strong> — a fiók aktív időszakára + törlés után 2 évig</li>
+						<li><strong>Rendelési adatok</strong> — 5 évig (román számviteli jogszabály, Legea 82/1991)</li>
+						<li><strong>Analytics adatok</strong> — 14 hónapig (Firebase alapértelmezett)</li>
+					</ul>
+					<p>Fiókja törlését bármikor kérheti a contact@exar.ro címen. Törlés után a számviteli kötelezettséghez szükséges adatokat kivéve minden adatát töröljük.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 8 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">8. Securitatea datelor</span>
+				<span class="lang-en">8. Data Security</span>
+				<span class="lang-hu">8. Adatbiztonság</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<ul>
+						<li>Toate transferurile de date se realizează prin HTTPS</li>
+						<li>Parolele sunt stocate criptat (hash) — recomandăm autentificarea Google OAuth</li>
+						<li>Firebase este certificat SOC 2 / ISO 27001</li>
+						<li>Accesul la panoul de administrare este restricționat la personal autorizat</li>
+					</ul>
+					<p>În caz de incident de securitate, persoanele vizate și ANSPDCP vor fi notificate în termen de 72 de ore (GDPR Art. 33-34).</p>
+				</div>
+				<div class="lang-en">
+					<ul>
+						<li>All data transfers use HTTPS encryption</li>
+						<li>Passwords are stored encrypted (hashed) — we recommend Google OAuth sign-in</li>
+						<li>Firebase is SOC 2 / ISO 27001 certified</li>
+						<li>Admin access is restricted to authorized personnel only</li>
+					</ul>
+					<p>In the event of a data breach, affected users and the ANSPDCP supervisory authority will be notified within 72 hours (GDPR Art. 33-34).</p>
+				</div>
+				<div class="lang-hu">
+					<ul>
+						<li>Minden adatátvitel HTTPS titkosítással történik</li>
+						<li>A jelszavakat titkosított formában (hash) tároljuk — bejelentkezéshez Google OAuth-ot ajánlunk</li>
+						<li>A Firebase infrastruktúrát a Google SOC 2 / ISO 27001 tanúsítványokkal üzemelteti</li>
+						<li>Az adminisztrációs felülethez csak azonosított munkatársak férnek hozzá</li>
+					</ul>
+					<p>Adatvédelmi incidens esetén az érintetteket és az ANSPDCP hatóságot a GDPR 72 órás határidején belül értesítjük.</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 9 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">9. Drepturile dumneavoastră</span>
+				<span class="lang-en">9. Your Rights</span>
+				<span class="lang-hu">9. Az Ön jogai</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<ul>
+						<li><strong>Drept de acces (Art. 15)</strong> — puteți solicita o copie a datelor stocate</li>
+						<li><strong>Drept de rectificare (Art. 16)</strong> — puteți solicita corectarea datelor inexacte</li>
+						<li><strong>Drept la ștergere (Art. 17)</strong> — puteți solicita ștergerea datelor</li>
+						<li><strong>Portabilitatea datelor (Art. 20)</strong> — puteți primi datele în format structurat</li>
+						<li><strong>Drept de opoziție (Art. 21)</strong> — puteți obiecta la prelucrarea bazată pe interes legitim</li>
+						<li><strong>Retragerea consimțământului</strong> — consimțământul pentru Analytics poate fi retras oricând</li>
+					</ul>
+					<p>Puteți depune o plângere la <strong>ANSPDCP</strong>: <a href="https://www.dataprotection.ro" target="_blank" style="color:var(--primary)">dataprotection.ro</a></p>
+				</div>
+				<div class="lang-en">
+					<ul>
+						<li><strong>Right of access (Art. 15)</strong> — you may request a copy of your stored data</li>
+						<li><strong>Right to rectification (Art. 16)</strong> — you may request correction of inaccurate data</li>
+						<li><strong>Right to erasure (Art. 17)</strong> — you may request deletion of your data</li>
+						<li><strong>Data portability (Art. 20)</strong> — you may receive your data in a machine-readable format</li>
+						<li><strong>Right to object (Art. 21)</strong> — you may object to processing based on legitimate interest</li>
+						<li><strong>Withdrawal of consent</strong> — Analytics consent can be withdrawn at any time</li>
+					</ul>
+					<p>You may lodge a complaint with <strong>ANSPDCP</strong>: <a href="https://www.dataprotection.ro" target="_blank" style="color:var(--primary)">dataprotection.ro</a></p>
+				</div>
+				<div class="lang-hu">
+					<ul>
+						<li><strong>Hozzáférési jog (Art. 15)</strong> — kérheti az Önről tárolt adatok másolatát</li>
+						<li><strong>Helyesbítési jog (Art. 16)</strong> — kérheti a pontatlan adatok javítását</li>
+						<li><strong>Törlési jog / „elfeledtetéshez való jog" (Art. 17)</strong> — kérheti adatai törlését</li>
+						<li><strong>Adathordozhatóság (Art. 20)</strong> — adatait géppel olvasható formában kérheti</li>
+						<li><strong>Tiltakozási jog (Art. 21)</strong> — jogos érdeken alapuló adatkezelés ellen tiltakozhat</li>
+						<li><strong>Hozzájárulás visszavonása</strong> — az Analytics hozzájárulást bármikor visszavonhatja</li>
+					</ul>
+					<p>Panasszal az <strong>ANSPDCP</strong> hatósághoz fordulhat: <a href="https://www.dataprotection.ro" target="_blank" style="color:var(--primary)">dataprotection.ro</a></p>
+				</div>
+			</div>
+		</section>
+
+		<!-- 10 -->
+		<section class="policy-section">
+			<h2 class="section-heading">
+				<span class="lang-ro">10. Contact și plângeri</span>
+				<span class="lang-en">10. Contact and Complaints</span>
+				<span class="lang-hu">10. Kapcsolat és panasz</span>
+			</h2>
+			<div class="section-body">
+				<div class="lang-ro">
+					<p>Pentru orice întrebări sau solicitări legate de datele dumneavoastră personale:</p>
+				</div>
+				<div class="lang-en">
+					<p>For any questions or requests regarding your personal data:</p>
+				</div>
+				<div class="lang-hu">
+					<p>Adatvédelemmel kapcsolatos kérdéseivel és kérelmeivel kérjük forduljon hozzánk:</p>
+				</div>
+				<div class="contact-box">
+					<a href="mailto:contact@exar.ro" class="contact-email">
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+						contact@exar.ro
+					</a>
+					<p class="contact-entity">EXARGROUPS SRL · Odorheiu Secuiesc, str. Orbán Balázs nr. 9</p>
+					<p class="contact-entity">
+						<span class="lang-ro">Vom răspunde în termen de <strong>30 de zile</strong>.</span>
+						<span class="lang-en">We will respond within <strong>30 days</strong>.</span>
+						<span class="lang-hu">Kérelmét <strong>30 napon belül</strong> megválaszoljuk.</span>
+					</p>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<footer class="footer">
+		<span class="lang-ro">&copy; 2026 EXARGROUPS SRL. Toate drepturile rezervate.</span>
+		<span class="lang-en">&copy; 2026 EXARGROUPS SRL. All rights reserved.</span>
+		<span class="lang-hu">&copy; 2026 EXARGROUPS SRL. Minden jog fenntartva.</span>
+	</footer>
+
+	<script>
+		(function () {
+			var body = document.body;
+			var buttons = document.querySelectorAll("[data-lang-btn]");
+			function switchLang(lang) {
+				body.setAttribute("data-lang", lang);
+				document.documentElement.lang = lang;
+				for (var i = 0; i < buttons.length; i++) {
+					if (buttons[i].getAttribute("data-lang-btn") === lang) {
+						buttons[i].classList.add("active");
+					} else {
+						buttons[i].classList.remove("active");
+					}
+				}
+			}
+			for (var i = 0; i < buttons.length; i++) {
+				buttons[i].addEventListener("click", function () {
+					switchLang(this.getAttribute("data-lang-btn"));
+				});
+			}
+		})();
+	</script>
+<script src="breadcrumb.js"></script>
+</body>
+</html>

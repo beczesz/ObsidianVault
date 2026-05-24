@@ -1,0 +1,2 @@
+Angol: [Limba modernă engleză clasa a III-a](https://manuale.edu.ro/manuale/Clasa%20a%20III-a/Limba%20moderna%20engleza/Uy5DLiBVTklTQ0FOIEdS/)
+Quiz: [Log in to Quizlet \| Quizlet](https://quizlet.com/latest)

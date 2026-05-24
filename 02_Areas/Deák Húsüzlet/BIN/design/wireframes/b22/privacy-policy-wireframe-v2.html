@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adatvédelmi Szabályzat — Deák Húsmíves</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    --primary: #7B2D3B;
+    --text: #1A1A1A;
+    --text2: #555;
+    --border: #D8D0C8;
+    --bg: #FAF7F4;
+  }
+  body { font-family: Georgia, 'Times New Roman', serif; background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.75; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px; margin: 16px 24px;
+    background: white; border: 1px solid var(--border);
+    border-radius: 8px; font-family: system-ui, sans-serif;
+    font-size: 14px; font-weight: 600; color: var(--primary);
+    text-decoration: none; cursor: pointer;
+  }
+  .back-btn:hover { background: #F5F0EB; }
+
+  .lang-bar {
+    display: flex; gap: 6px; padding: 0 24px 16px;
+    font-family: system-ui, sans-serif;
+  }
+  .lang-btn {
+    padding: 7px 18px; border-radius: 20px; font-size: 13px;
+    font-weight: 600; border: 1.5px solid var(--border);
+    background: white; cursor: pointer; color: var(--text2);
+    transition: all 0.15s;
+  }
+  .lang-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
+
+  .lang-content { display: none; }
+  .lang-content.active { display: block; }
+
+  .doc-wrap { max-width: 720px; margin: 0 auto; padding: 0 24px 60px; }
+
+  h1.doc-title { font-size: 26px; font-weight: 700; margin-bottom: 4px; color: var(--primary); }
+  .doc-meta { font-size: 13px; color: var(--text2); font-family: system-ui, sans-serif; margin-bottom: 6px; }
+  .doc-date { font-size: 13px; color: var(--text2); font-family: system-ui, sans-serif; margin-bottom: 24px; }
+
+  nav.toc {
+    background: white; border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px 20px; margin-bottom: 32px;
+    font-family: system-ui, sans-serif;
+  }
+  nav.toc p { font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: var(--text2); margin-bottom: 10px; }
+  nav.toc ol { padding-left: 20px; }
+  nav.toc li { margin-bottom: 4px; }
+  nav.toc a { color: var(--primary); text-decoration: none; font-size: 14px; }
+  nav.toc a:hover { text-decoration: underline; }
+
+  .section { margin-bottom: 36px; }
+  .section h2 {
+    font-size: 17px; font-weight: 700; color: var(--primary);
+    border-bottom: 1px solid var(--border); padding-bottom: 6px; margin-bottom: 14px;
+    scroll-margin-top: 16px;
+  }
+  p { margin-bottom: 10px; }
+  ul, ol { padding-left: 22px; margin-bottom: 10px; }
+  li { margin-bottom: 5px; }
+  strong { font-weight: 700; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: 14px; font-family: system-ui, sans-serif; }
+  th { text-align: left; padding: 8px 10px; background: #EDE8E2; border: 1px solid var(--border); font-weight: 700; font-size: 13px; }
+  td { padding: 8px 10px; border: 1px solid var(--border); vertical-align: top; }
+
+  address { font-style: normal; line-height: 1.8; margin-bottom: 10px; background: white; border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; font-family: system-ui, sans-serif; font-size: 14px; }
+  address strong { display: block; font-size: 15px; margin-bottom: 4px; }
+</style>
+</head>
+<body>
+
+<a href="index.html" class="back-btn">&#8592; Vissza / Înapoi / Back</a>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="showLang('hu')">🇭🇺 Magyar</button>
+  <button class="lang-btn" onclick="showLang('ro')">🇷🇴 Română</button>
+  <button class="lang-btn" onclick="showLang('en')">🇬🇧 English</button>
+</div>
+
+<!-- ============================================================ MAGYAR ============================================================ -->
+<div id="lang-hu" class="lang-content active">
+<div class="doc-wrap">
+  <h1 class="doc-title">Adatvédelmi Szabályzat</h1>
+  <p class="doc-meta">Deák Húsmíves Online Platform — deakhus.ro</p>
+  <p class="doc-date">Utolsó frissítés: 2026. április 17.</p>
+
+  <nav class="toc">
+    <p>Tartalomjegyzék</p>
+    <ol>
+      <li><a href="#hu-1">Az adatkezelő</a></li>
+      <li><a href="#hu-2">Milyen adatokat gyűjtünk</a></li>
+      <li><a href="#hu-3">Az adatgyűjtés célja és jogalapja</a></li>
+      <li><a href="#hu-4">Adatok megosztása harmadik felekkel</a></li>
+      <li><a href="#hu-5">Firebase Analytics</a></li>
+      <li><a href="#hu-6">Cookie-k (sütik)</a></li>
+      <li><a href="#hu-7">Adatmegőrzési idő</a></li>
+      <li><a href="#hu-8">Adatbiztonság</a></li>
+      <li><a href="#hu-9">Az Ön jogai</a></li>
+      <li><a href="#hu-10">Kapcsolat és panasz</a></li>
+    </ol>
+  </nav>
+
+  <div class="section" id="hu-1">
+    <h2>1. Az adatkezelő</h2>
+    <p>A deakhus.ro platform üzemeltetője és kizárólagos adatkezelője:</p>
+    <address>
+      <strong>EXARGROUPS S.R.L.</strong>
+      Székhely: Székelyudvarhely (Odorheiu Secuiesc), Orbán Balázs u. 9.<br>
+      CUI: RO41839221 · J19/789/2019<br>
+      Képviselő: Becze Szabolcs<br>
+      Email: contact@exar.ro
+    </address>
+    <p>A platform megrendelője és partnere, aki szállítási adatokhoz <strong>adatfeldolgozói</strong> minőségben fér hozzá:</p>
+    <address>
+      <strong>DEAK PROD SRL</strong>
+      Székhely: Székelyudvarhely, Solymossy u. 9.<br>
+      CUI: 4845288 · J19/1038/1993
+    </address>
+  </div>
+
+  <div class="section" id="hu-2">
+    <h2>2. Milyen adatokat gyűjtünk</h2>
+    <p>Regisztráció és rendelés során az alábbi személyes adatokat kérjük:</p>
+    <ul>
+      <li><strong>Teljes név</strong> — fiók azonosítás és szállítási cím feltüntetése</li>
+      <li><strong>Email cím</strong> — Google OAuth vagy email/jelszó alapú belépés</li>
+      <li><strong>Telefonszám</strong> — szállítási kapcsolattartás</li>
+      <li><strong>Szállítási cím</strong> — kézbesítés helyszíne</li>
+    </ul>
+    <p>Különleges személyes adatokat (egészségügyi, biometrikus, vallási stb.) <strong>nem gyűjtünk</strong>. 18 év alatti személyektől tudatosan nem gyűjtünk adatot.</p>
+  </div>
+
+  <div class="section" id="hu-3">
+    <h2>3. Az adatgyűjtés célja és jogalapja</h2>
+    <table>
+      <tr><th>Adatkezelési cél</th><th>Jogalap (GDPR)</th><th>Érintett adatok</th></tr>
+      <tr><td>Fiók létrehozása és kezelése</td><td>Szerződés teljesítése — Art. 6(1)(b)</td><td>Név, email</td></tr>
+      <tr><td>Rendelés feldolgozása</td><td>Szerződés teljesítése — Art. 6(1)(b)</td><td>Név, cím, telefon</td></tr>
+      <tr><td>Házhozszállítás</td><td>Szerződés teljesítése — Art. 6(1)(b)</td><td>Cím, telefon</td></tr>
+      <tr><td>Rendelési előzmények és státusz</td><td>Szerződés teljesítése — Art. 6(1)(b)</td><td>Rendelési adatok</td></tr>
+      <tr><td>Firebase Analytics (platformhasználat)</td><td>Hozzájárulás — Art. 6(1)(a)</td><td>Anonim eseményadatok</td></tr>
+      <tr><td>Számviteli kötelezettségek</td><td>Jogi kötelezettség — Art. 6(1)(c)</td><td>Tranzakciós adatok</td></tr>
+    </table>
+    <p>Adatait <strong>marketing célokra nem használjuk</strong>, automatizált döntéshozatalt és profilalkotást <strong>nem végzünk</strong>.</p>
+  </div>
+
+  <div class="section" id="hu-4">
+    <h2>4. Adatok megosztása harmadik felekkel</h2>
+    <ul>
+      <li><strong>DEAK PROD SRL</strong> — a rendelés teljesítéséhez szükséges szállítási adatokat (név, cím, telefon) kapja meg adatfeldolgozói szerződés alapján.</li>
+      <li><strong>Google Firebase / Google LLC</strong> — az alkalmazás infrastruktúráját (autentikáció, analytics) biztosítja. Google adatvédelmi irányelve: <a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a>.</li>
+      <li><strong>Frappe Technologies / Exar Labs infrastruktúra</strong> — a backend platformot üzemeltetjük saját szervereinken, harmadik félnek nem adjuk át.</li>
+    </ul>
+    <p>Adatait egyéb harmadik félnek <strong>nem adjuk el és nem adjuk át</strong>, kivéve ha jogszabály kötelez rá.</p>
+  </div>
+
+  <div class="section" id="hu-5">
+    <h2>5. Firebase Analytics</h2>
+    <p>A platformon Google Firebase Analytics szolgáltatást használunk a felhasználói élmény javítása érdekében. Ez a rendszer:</p>
+    <ul>
+      <li>Anonim, aggregált eseményadatokat gyűjt (pl. melyik oldalt nézik, mennyi ideig)</li>
+      <li>Nem gyűjt személyes azonosítókat (névtelen session-azonosítót használ)</li>
+      <li>QR-kód alapú forgalomkövetést végez (melyik bolt előtt helyezett ki QR-kódot szkennelek)</li>
+    </ul>
+    <p>Az Analytics csak az Ön hozzájárulásával (cookie banner elfogadása) aktiválódik. Hozzájárulása bármikor visszavonható a fiókbeállításokban.</p>
+  </div>
+
+  <div class="section" id="hu-6">
+    <h2>6. Cookie-k (sütik)</h2>
+    <table>
+      <tr><th>Cookie típusa</th><th>Célja</th><th>Lejárat</th><th>Hozzájárulás</th></tr>
+      <tr><td>Session cookie</td><td>Bejelentkezett állapot megőrzése</td><td>Böngésző zárásáig</td><td>Nem szükséges (működés)</td></tr>
+      <tr><td>Firebase Analytics</td><td>Platformhasználat elemzése</td><td>14 hónap</td><td>Szükséges</td></tr>
+    </table>
+    <p>Harmadik fél marketing cookie-t <strong>nem alkalmazunk</strong>.</p>
+  </div>
+
+  <div class="section" id="hu-7">
+    <h2>7. Adatmegőrzési idő</h2>
+    <ul>
+      <li><strong>Felhasználói fiók adatai</strong> — a fiók aktív időszakára + törlés után 2 évig (visszaélés-megelőzés)</li>
+      <li><strong>Rendelési adatok</strong> — 5 évig (román számviteli jogszabály, Legea 82/1991)</li>
+      <li><strong>Analytics adatok</strong> — 14 hónapig (Firebase alapértelmezett)</li>
+    </ul>
+    <p>Fiókja törlését bármikor kérheti a contact@exar.ro címen. Törlés után a számviteli kötelezettséghez szükséges adatokat kivéve minden adatát töröljük.</p>
+  </div>
+
+  <div class="section" id="hu-8">
+    <h2>8. Adatbiztonság</h2>
+    <p>Az adatok védelme érdekében az alábbi intézkedéseket alkalmazzuk:</p>
+    <ul>
+      <li>Minden adatátvitel HTTPS titkosítással történik</li>
+      <li>A jelszavakat titkosított formában (hash) tároljuk — bejelentkezéshez Google OAuth-ot ajánlunk</li>
+      <li>A Firebase infrastruktúrát a Google SOC 2 / ISO 27001 tanúsítványokkal üzemelteti</li>
+      <li>Az adminisztrációs felülethez csak azonosított munkatársak férnek hozzá</li>
+    </ul>
+    <p>Adatvédelmi incidens esetén az érintetteket és az ANSPDCP hatóságot a GDPR 72 órás határidején belül értesítjük.</p>
+  </div>
+
+  <div class="section" id="hu-9">
+    <h2>9. Az Ön jogai</h2>
+    <p>A GDPR alapján Ön jogosult:</p>
+    <ul>
+      <li><strong>Hozzáférési jog (Art. 15)</strong> — kérheti az Önről tárolt adatok másolatát</li>
+      <li><strong>Helyesbítési jog (Art. 16)</strong> — kérheti a pontatlan adatok javítását</li>
+      <li><strong>Törlési jog / „elfeledtetéshez való jog" (Art. 17)</strong> — kérheti adatai törlését</li>
+      <li><strong>Adathordozhatóság (Art. 20)</strong> — adatait géppel olvasható formában kérheti</li>
+      <li><strong>Tiltakozási jog (Art. 21)</strong> — jogos érdeken alapuló adatkezelés ellen tiltakozhat</li>
+      <li><strong>Hozzájárulás visszavonása</strong> — az Analytics hozzájárulást bármikor visszavonhatja</li>
+    </ul>
+    <p>Panasszal az <strong>ANSPDCP</strong> (Autoritatea Națională de Supraveghere a Prelucrării Datelor cu Caracter Personal) hatósághoz fordulhat: <a href="https://www.dataprotection.ro" target="_blank">dataprotection.ro</a></p>
+  </div>
+
+  <div class="section" id="hu-10">
+    <h2>10. Kapcsolat és panasz</h2>
+    <p>Adatvédelemmel kapcsolatos kérdéseivel és kérelmeivel kérjük forduljon hozzánk:</p>
+    <address>
+      <strong>EXARGROUPS S.R.L.</strong>
+      Email: contact@exar.ro<br>
+      Cím: Székelyudvarhely, Orbán Balázs u. 9.
+    </address>
+    <p>Kérelmét a beérkezéstől számított <strong>30 napon belül</strong> megválaszoljuk.</p>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ ROMÂNĂ ============================================================ -->
+<div id="lang-ro" class="lang-content">
+<div class="doc-wrap">
+  <h1 class="doc-title">Politica de Confidențialitate</h1>
+  <p class="doc-meta">Platforma Online Deák Húsmíves — deakhus.ro</p>
+  <p class="doc-date">Ultima actualizare: 17 aprilie 2026</p>
+
+  <nav class="toc">
+    <p>Cuprins</p>
+    <ol>
+      <li><a href="#ro-1">Operatorul de date</a></li>
+      <li><a href="#ro-2">Ce date colectăm</a></li>
+      <li><a href="#ro-3">Scopul și temeiul juridic</a></li>
+      <li><a href="#ro-4">Partajarea datelor cu terți</a></li>
+      <li><a href="#ro-5">Firebase Analytics</a></li>
+      <li><a href="#ro-6">Cookie-uri</a></li>
+      <li><a href="#ro-7">Perioada de păstrare</a></li>
+      <li><a href="#ro-8">Securitatea datelor</a></li>
+      <li><a href="#ro-9">Drepturile dumneavoastră</a></li>
+      <li><a href="#ro-10">Contact și plângeri</a></li>
+    </ol>
+  </nav>
+
+  <div class="section" id="ro-1">
+    <h2>1. Operatorul de date</h2>
+    <p>Operatorul unic al platformei deakhus.ro este:</p>
+    <address>
+      <strong>EXARGROUPS S.R.L.</strong>
+      Sediu: Odorheiu Secuiesc, str. Orbán Balázs nr. 9<br>
+      CUI: RO41839221 · J19/789/2019<br>
+      Reprezentant: Becze Szabolcs<br>
+      Email: contact@exar.ro
+    </address>
+    <p>Partenerul platformei, cu acces la datele de livrare în calitate de <strong>persoană împuternicită</strong>:</p>
+    <address>
+      <strong>DEAK PROD SRL</strong>
+      Sediu: Odorheiu Secuiesc, str. Solymossy nr. 9<br>
+      CUI: 4845288 · J19/1038/1993
+    </address>
+  </div>
+
+  <div class="section" id="ro-2">
+    <h2>2. Ce date colectăm</h2>
+    <ul>
+      <li><strong>Nume complet</strong> — identificarea contului și livrare</li>
+      <li><strong>Adresă de email</strong> — autentificare Google OAuth sau email/parolă</li>
+      <li><strong>Număr de telefon</strong> — contact pentru livrare</li>
+      <li><strong>Adresă de livrare</strong> — locul de livrare al comenzii</li>
+    </ul>
+    <p>Nu colectăm date speciale (medicale, biometrice, religioase etc.). Nu colectăm date de la persoane sub 18 ani.</p>
+  </div>
+
+  <div class="section" id="ro-3">
+    <h2>3. Scopul și temeiul juridic</h2>
+    <table>
+      <tr><th>Scop</th><th>Temei juridic (GDPR)</th><th>Date vizate</th></tr>
+      <tr><td>Gestionarea contului</td><td>Executarea contractului — Art. 6(1)(b)</td><td>Nume, email</td></tr>
+      <tr><td>Procesarea comenzii</td><td>Executarea contractului — Art. 6(1)(b)</td><td>Nume, adresă, telefon</td></tr>
+      <tr><td>Livrare la domiciliu</td><td>Executarea contractului — Art. 6(1)(b)</td><td>Adresă, telefon</td></tr>
+      <tr><td>Istoricul comenzilor</td><td>Executarea contractului — Art. 6(1)(b)</td><td>Date comandă</td></tr>
+      <tr><td>Firebase Analytics</td><td>Consimțământ — Art. 6(1)(a)</td><td>Evenimente anonime</td></tr>
+      <tr><td>Obligații contabile</td><td>Obligație legală — Art. 6(1)(c)</td><td>Date tranzacții</td></tr>
+    </table>
+    <p>Datele dumneavoastră <strong>nu sunt utilizate în scopuri de marketing</strong>. Nu realizăm profilare sau luarea automată a deciziilor.</p>
+  </div>
+
+  <div class="section" id="ro-4">
+    <h2>4. Partajarea datelor cu terți</h2>
+    <ul>
+      <li><strong>DEAK PROD SRL</strong> — primește datele de livrare (nume, adresă, telefon) pe baza unui contract de prelucrare.</li>
+      <li><strong>Google Firebase / Google LLC</strong> — furnizează infrastructura aplicației (autentificare, analytics). Politica Google: <a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a>.</li>
+      <li><strong>Infrastructura Exar Labs</strong> — backend-ul este operat pe propriile servere, fără transfer către terți.</li>
+    </ul>
+    <p>Datele dumneavoastră <strong>nu sunt vândute sau transferate</strong> altor terți, cu excepția obligațiilor legale.</p>
+  </div>
+
+  <div class="section" id="ro-5">
+    <h2>5. Firebase Analytics</h2>
+    <p>Utilizăm Google Firebase Analytics pentru îmbunătățirea experienței utilizatorilor. Acest sistem:</p>
+    <ul>
+      <li>Colectează date anonime și agregate (ex. ce pagini sunt vizitate)</li>
+      <li>Nu colectează identificatori personali</li>
+      <li>Urmărește traficul prin coduri QR (care cod QR din magazin a fost scanat)</li>
+    </ul>
+    <p>Analytics se activează doar cu consimțământul dumneavoastră (acceptarea bannerului cookie). Consimțământul poate fi retras oricând din setările contului.</p>
+  </div>
+
+  <div class="section" id="ro-6">
+    <h2>6. Cookie-uri</h2>
+    <table>
+      <tr><th>Tip cookie</th><th>Scop</th><th>Expirare</th><th>Consimțământ</th></tr>
+      <tr><td>Cookie de sesiune</td><td>Menținerea stării de autentificare</td><td>La închiderea browserului</td><td>Nu (funcțional)</td></tr>
+      <tr><td>Firebase Analytics</td><td>Analiza utilizării platformei</td><td>14 luni</td><td>Da</td></tr>
+    </table>
+    <p>Nu utilizăm cookie-uri de marketing terțe.</p>
+  </div>
+
+  <div class="section" id="ro-7">
+    <h2>7. Perioada de păstrare a datelor</h2>
+    <ul>
+      <li><strong>Datele contului</strong> — pe durata activității + 2 ani după ștergere</li>
+      <li><strong>Datele comenzilor</strong> — 5 ani (Legea 82/1991 privind contabilitatea)</li>
+      <li><strong>Date Analytics</strong> — 14 luni (implicit Firebase)</li>
+    </ul>
+    <p>Puteți solicita ștergerea contului oricând la contact@exar.ro. Datele necesare obligațiilor legale vor fi păstrate conform legii.</p>
+  </div>
+
+  <div class="section" id="ro-8">
+    <h2>8. Securitatea datelor</h2>
+    <ul>
+      <li>Toate transferurile de date se realizează prin HTTPS</li>
+      <li>Parolele sunt stocate criptat (hash) — recomandăm autentificarea Google OAuth</li>
+      <li>Firebase este certificat SOC 2 / ISO 27001</li>
+      <li>Accesul la panoul de administrare este restricționat la personal autorizat</li>
+    </ul>
+    <p>În caz de incident de securitate, persoanele vizate și ANSPDCP vor fi notificate în termen de 72 de ore (GDPR Art. 33-34).</p>
+  </div>
+
+  <div class="section" id="ro-9">
+    <h2>9. Drepturile dumneavoastră</h2>
+    <ul>
+      <li><strong>Drept de acces (Art. 15)</strong> — puteți solicita o copie a datelor stocate</li>
+      <li><strong>Drept de rectificare (Art. 16)</strong> — puteți solicita corectarea datelor inexacte</li>
+      <li><strong>Drept la ștergere (Art. 17)</strong> — puteți solicita ștergerea datelor</li>
+      <li><strong>Portabilitatea datelor (Art. 20)</strong> — puteți primi datele în format structurat</li>
+      <li><strong>Drept de opoziție (Art. 21)</strong> — puteți obiecta la prelucrarea bazată pe interes legitim</li>
+      <li><strong>Retragerea consimțământului</strong> — consimțământul pentru Analytics poate fi retras oricând</li>
+    </ul>
+    <p>Puteți depune o plângere la <strong>ANSPDCP</strong>: <a href="https://www.dataprotection.ro" target="_blank">dataprotection.ro</a></p>
+  </div>
+
+  <div class="section" id="ro-10">
+    <h2>10. Contact și plângeri</h2>
+    <address>
+      <strong>EXARGROUPS S.R.L.</strong>
+      Email: contact@exar.ro<br>
+      Adresă: Odorheiu Secuiesc, str. Orbán Balázs nr. 9
+    </address>
+    <p>Vom răspunde solicitărilor în termen de <strong>30 de zile</strong> de la primire.</p>
+  </div>
+</div>
+</div>
+
+<!-- ============================================================ ENGLISH ============================================================ -->
+<div id="lang-en" class="lang-content">
+<div class="doc-wrap">
+  <h1 class="doc-title">Privacy Policy</h1>
+  <p class="doc-meta">Deák Húsmíves Online Platform — deakhus.ro</p>
+  <p class="doc-date">Last updated: April 17, 2026</p>
+
+  <nav class="toc">
+    <p>Table of Contents</p>
+    <ol>
+      <li><a href="#en-1">Data Controller</a></li>
+      <li><a href="#en-2">What Data We Collect</a></li>
+      <li><a href="#en-3">Purpose and Legal Basis</a></li>
+      <li><a href="#en-4">Sharing Data with Third Parties</a></li>
+      <li><a href="#en-5">Firebase Analytics</a></li>
+      <li><a href="#en-6">Cookies</a></li>
+      <li><a href="#en-7">Data Retention</a></li>
+      <li><a href="#en-8">Data Security</a></li>
+      <li><a href="#en-9">Your Rights</a></li>
+      <li><a href="#en-10">Contact and Complaints</a></li>
+    </ol>
+  </nav>
+
+  <div class="section" id="en-1">
+    <h2>1. Data Controller</h2>
+    <p>The sole data controller and operator of the deakhus.ro platform is:</p>
+    <address>
+      <strong>EXARGROUPS S.R.L.</strong>
+      Address: Odorheiu Secuiesc (Székelyudvarhely), str. Orbán Balázs nr. 9, Romania<br>
+      CUI: RO41839221 · J19/789/2019<br>
+      Representative: Becze Szabolcs<br>
+      Email: contact@exar.ro
+    </address>
+    <p>The platform's ordering partner, acting as a <strong>data processor</strong> for delivery data only:</p>
+    <address>
+      <strong>DEAK PROD SRL</strong>
+      Address: Odorheiu Secuiesc, str. Solymossy nr. 9, Romania<br>
+      CUI: 4845288 · J19/1038/1993
+    </address>
+  </div>
+
+  <div class="section" id="en-2">
+    <h2>2. What Data We Collect</h2>
+    <ul>
+      <li><strong>Full name</strong> — account identification and delivery</li>
+      <li><strong>Email address</strong> — Google OAuth or email/password sign-in</li>
+      <li><strong>Phone number</strong> — delivery contact</li>
+      <li><strong>Delivery address</strong> — order fulfillment</li>
+    </ul>
+    <p>We do <strong>not collect</strong> special categories of data (health, biometric, religious, etc.). We do not knowingly collect data from persons under 18.</p>
+  </div>
+
+  <div class="section" id="en-3">
+    <h2>3. Purpose and Legal Basis</h2>
+    <table>
+      <tr><th>Purpose</th><th>Legal basis (GDPR)</th><th>Data involved</th></tr>
+      <tr><td>Account management</td><td>Contract performance — Art. 6(1)(b)</td><td>Name, email</td></tr>
+      <tr><td>Order processing</td><td>Contract performance — Art. 6(1)(b)</td><td>Name, address, phone</td></tr>
+      <tr><td>Home delivery</td><td>Contract performance — Art. 6(1)(b)</td><td>Address, phone</td></tr>
+      <tr><td>Order history and status</td><td>Contract performance — Art. 6(1)(b)</td><td>Order data</td></tr>
+      <tr><td>Firebase Analytics</td><td>Consent — Art. 6(1)(a)</td><td>Anonymous events</td></tr>
+      <tr><td>Accounting obligations</td><td>Legal obligation — Art. 6(1)(c)</td><td>Transaction data</td></tr>
+    </table>
+    <p>We do <strong>not use your data for marketing</strong>. We do not perform automated decision-making or profiling.</p>
+  </div>
+
+  <div class="section" id="en-4">
+    <h2>4. Sharing Data with Third Parties</h2>
+    <ul>
+      <li><strong>DEAK PROD SRL</strong> — receives delivery data (name, address, phone) under a data processing agreement.</li>
+      <li><strong>Google Firebase / Google LLC</strong> — provides app infrastructure (authentication, analytics). Google Privacy Policy: <a href="https://policies.google.com/privacy" target="_blank">policies.google.com/privacy</a>.</li>
+      <li><strong>Exar Labs infrastructure</strong> — backend runs on our own servers; data is not transferred to third parties.</li>
+    </ul>
+    <p>We do <strong>not sell or transfer</strong> your data to any other third party, except where required by law.</p>
+  </div>
+
+  <div class="section" id="en-5">
+    <h2>5. Firebase Analytics</h2>
+    <p>We use Google Firebase Analytics to improve the user experience. This system:</p>
+    <ul>
+      <li>Collects anonymous, aggregated event data (e.g. which pages are visited)</li>
+      <li>Does not collect personal identifiers</li>
+      <li>Tracks QR-code-based traffic sources (which in-store QR code was scanned)</li>
+    </ul>
+    <p>Analytics is activated only with your consent (cookie banner). You may withdraw consent at any time in your account settings.</p>
+  </div>
+
+  <div class="section" id="en-6">
+    <h2>6. Cookies</h2>
+    <table>
+      <tr><th>Cookie type</th><th>Purpose</th><th>Expiry</th><th>Consent required</th></tr>
+      <tr><td>Session cookie</td><td>Maintaining authenticated state</td><td>Browser close</td><td>No (functional)</td></tr>
+      <tr><td>Firebase Analytics</td><td>Platform usage analysis</td><td>14 months</td><td>Yes</td></tr>
+    </table>
+    <p>We do not use third-party marketing cookies.</p>
+  </div>
+
+  <div class="section" id="en-7">
+    <h2>7. Data Retention</h2>
+    <ul>
+      <li><strong>Account data</strong> — active period + 2 years after deletion</li>
+      <li><strong>Order data</strong> — 5 years (Romanian Accounting Law 82/1991)</li>
+      <li><strong>Analytics data</strong> — 14 months (Firebase default)</li>
+    </ul>
+    <p>You may request account deletion at any time at contact@exar.ro. Data required for legal obligations will be retained as required by law.</p>
+  </div>
+
+  <div class="section" id="en-8">
+    <h2>8. Data Security</h2>
+    <ul>
+      <li>All data transfers use HTTPS encryption</li>
+      <li>Passwords are stored encrypted (hashed) — we recommend Google OAuth sign-in</li>
+      <li>Firebase is SOC 2 / ISO 27001 certified</li>
+      <li>Admin access is restricted to authorized personnel only</li>
+    </ul>
+    <p>In the event of a data breach, affected users and the ANSPDCP supervisory authority will be notified within 72 hours (GDPR Art. 33–34).</p>
+  </div>
+
+  <div class="section" id="en-9">
+    <h2>9. Your Rights</h2>
+    <ul>
+      <li><strong>Right of access (Art. 15)</strong> — you may request a copy of your stored data</li>
+      <li><strong>Right to rectification (Art. 16)</strong> — you may request correction of inaccurate data</li>
+      <li><strong>Right to erasure (Art. 17)</strong> — you may request deletion of your data</li>
+      <li><strong>Data portability (Art. 20)</strong> — you may receive your data in a machine-readable format</li>
+      <li><strong>Right to object (Art. 21)</strong> — you may object to processing based on legitimate interest</li>
+      <li><strong>Withdrawal of consent</strong> — Analytics consent can be withdrawn at any time</li>
+    </ul>
+    <p>You may lodge a complaint with <strong>ANSPDCP</strong>: <a href="https://www.dataprotection.ro" target="_blank">dataprotection.ro</a></p>
+  </div>
+
+  <div class="section" id="en-10">
+    <h2>10. Contact and Complaints</h2>
+    <address>
+      <strong>EXARGROUPS S.R.L.</strong>
+      Email: contact@exar.ro<br>
+      Address: str. Orbán Balázs nr. 9, Odorheiu Secuiesc, Romania
+    </address>
+    <p>We will respond to your request within <strong>30 days</strong> of receipt.</p>
+  </div>
+</div>
+</div>
+
+<script>
+function showLang(lang) {
+  document.querySelectorAll('.lang-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.lang-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('lang-' + lang).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

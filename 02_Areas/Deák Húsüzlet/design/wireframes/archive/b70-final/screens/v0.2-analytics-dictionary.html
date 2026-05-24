@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH Analytics Dictionary v2.2</title>
+<style>
+  :root {
+    --green:#16a34a;--green-bg:#f0fdf4;--green-bd:#bbf7d0;
+    --amber:#d97706;--amber-bg:#fffbeb;--amber-bd:#fde68a;
+    --blue:#2563eb;--blue-bg:#eff6ff;--blue-bd:#bfdbfe;
+    --red:#dc2626;--red-bg:#fef2f2;--red-bd:#fecaca;
+    --gray:#64748b;--gray-bg:#f8fafc;--gray-bd:#e2e8f0;
+    --text:#1e293b;--bg:#f1f5f9;
+    --font:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+    --mono:"SF Mono","Fira Code","Consolas",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;}
+  .container{max-width:960px;margin:0 auto;padding:24px 16px;}
+  
+
+  /* Catalog back button */
+  .back-to-catalog{position:fixed;top:12px;left:12px;z-index:999;display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.95);color:#64748b;text-decoration:none;font-size:0.82rem;padding:6px 12px;border-radius:8px;border:1px solid #e2e8f0;box-shadow:0 1px 4px rgba(0,0,0,.08);backdrop-filter:blur(4px);transition:all 0.15s;}
+  .back-to-catalog:hover{color:#1e293b;border-color:#cbd5e1;}
+  /* Back button */
+  .back-btn{display:inline-flex;align-items:center;gap:6px;color:var(--gray);text-decoration:none;font-size:0.85rem;margin-bottom:12px;padding:6px 12px;border-radius:8px;border:1px solid var(--gray-bd);transition:all 0.15s;}
+  .back-btn:hover{color:var(--text);border-color:#cbd5e1;background:#fff;}
+  
+  h1{font-size:1.5rem;margin-bottom:4px;}
+  .subtitle{color:var(--gray);font-size:0.85rem;margin-bottom:20px;}
+  
+  /* Summary cards */
+  .summary{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;}
+  .s-card{background:#fff;border-radius:12px;padding:14px;text-align:center;border-left:4px solid;}
+  .s-card .num{font-size:1.8rem;font-weight:700;}
+  .s-card .lbl{font-size:0.65rem;color:var(--gray);text-transform:uppercase;letter-spacing:0.5px;}
+  
+  /* Search */
+  .search-box{position:relative;margin-bottom:12px;}
+  .search-input{width:100%;padding:10px 14px 10px 38px;border:1px solid var(--gray-bd);border-radius:10px;font-size:0.9rem;font-family:var(--font);background:#fff;outline:none;transition:border-color 0.15s;}
+  .search-input:focus{border-color:var(--blue);}
+  .search-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--gray);}
+  .search-clear{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--gray);cursor:pointer;font-size:18px;display:none;}
+  
+  /* Filter chips */
+  .filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+  .f-chip{padding:6px 12px;border:1px solid var(--gray-bd);border-radius:20px;font-size:0.8rem;font-weight:600;cursor:pointer;background:#fff;color:var(--gray);transition:all 0.15s;font-family:var(--font);}
+  .f-chip:hover{border-color:var(--text);color:var(--text);}
+  .f-chip.active{background:var(--text);color:#fff;border-color:var(--text);}
+  .f-chip .cnt{font-size:0.7rem;opacity:0.7;margin-left:3px;}
+  .f-sep{width:1px;background:var(--gray-bd);margin:0 4px;}
+  
+  /* Category chips */
+  .cat-chip{padding:6px 12px;border:1px solid var(--gray-bd);border-radius:20px;font-size:0.8rem;font-weight:500;cursor:pointer;background:#fff;color:var(--gray);transition:all 0.15s;font-family:var(--font);}
+  .cat-chip:hover{border-color:var(--blue);color:var(--blue);}
+  .cat-chip.active{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-bd);}
+  
+  /* Event cards */
+  .ev-card{background:#fff;border-radius:10px;margin-bottom:8px;border:1px solid #e2e8f0;overflow:hidden;transition:opacity 0.15s;}
+  .ev-card.hidden{display:none;}
+  .ev-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;user-select:none;}
+  .ev-header:hover{background:var(--gray-bg);}
+  .ev-left{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .ev-right{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+  .ev-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .ev-name{font-family:var(--mono);font-size:0.88rem;font-weight:600;}
+  .ev-tag{display:inline-block;font-size:0.65rem;font-weight:700;padding:2px 7px;border-radius:4px;border:1px solid;}
+  .tag-priority{display:inline-block;font-size:0.6rem;font-weight:800;padding:2px 6px;border-radius:4px;background:var(--red-bg);color:var(--red);border:1px solid var(--red-bd);}
+  .ev-count{font-size:0.75rem;color:var(--gray);white-space:nowrap;}
+  .ev-arrow{color:var(--gray);font-size:12px;transition:transform 0.2s;}
+  .ev-card.open .ev-arrow{transform:rotate(90deg);}
+  .ev-body{display:none;padding:0 16px 16px;border-top:1px solid #f1f5f9;}
+  .ev-card.open .ev-body{display:block;padding-top:12px;}
+  
+  /* Detail table */
+  .detail-tbl{width:100%;border-collapse:collapse;font-size:0.82rem;margin-bottom:8px;}
+  .detail-tbl th{text-align:left;padding:6px 10px;background:var(--gray-bg);width:120px;color:var(--gray);font-weight:600;border-bottom:1px solid #f1f5f9;vertical-align:top;}
+  .detail-tbl td{padding:6px 10px;border-bottom:1px solid #f1f5f9;}
+  
+  /* Param sections */
+  .param-section{margin:8px 0;}
+  .param-label{font-size:0.78rem;font-weight:600;color:var(--gray);margin-bottom:4px;}
+  .param-empty{font-size:0.8rem;color:var(--gray);font-style:italic;}
+  .ptable{width:100%;border-collapse:collapse;font-size:0.8rem;}
+  .ptable th{text-align:left;padding:5px 8px;background:var(--gray-bg);border-bottom:1px solid #e2e8f0;font-weight:600;}
+  .ptable td{padding:5px 8px;border-bottom:1px solid #f1f5f9;}
+  .ptable.expected td{background:var(--green-bg);}
+  
+  .fix-note{background:var(--amber-bg);border:1px solid var(--amber-bd);border-radius:6px;padding:8px 12px;font-size:0.82rem;margin-top:8px;}
+  
+  /* No results */
+  .no-results{text-align:center;padding:40px;color:var(--gray);font-size:0.9rem;display:none;}
+  .no-results.show{display:block;}
+  
+  .result-count{font-size:0.8rem;color:var(--gray);margin-bottom:12px;}
+  
+  .footer{text-align:center;color:var(--gray);font-size:0.75rem;margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;}
+  
+  @media(max-width:600px){
+    .summary{grid-template-columns:repeat(2,1fr);}
+    .ev-count{display:none;}
+    .detail-tbl th{width:90px;}
+  }
+  html{scroll-behavior:smooth;}
+</style>
+<script type="application/json" id="screen-meta">
+{
+  "id": "v0.2-analytics-dictionary",
+  "title": "Analytics Dictionary v2.2",
+  "sprint": "Sprint 2",
+  "status": "done",
+  "tags": ["DH-104", "firebase", "analytics", "dictionary"],
+  "order": 20,
+  "description": "Firebase Analytics event szótár — 26 event státusza (OK / Javítandó / Hiányzó), kereshető, szűrhető"
+}
+</script>
+</head>
+<body>
+<div class="container">
+  <a href="../index.html" class="back-to-catalog">&#x2190; Catalog</a>
+  <h1>DH Analytics Dictionary v2.2</h1>
+  <div class="subtitle">GA4 Audit: Apr 1&ndash;28, 2026 &middot; Sprint 3 Ticket: DH-181</div>
+  
+  <div class="summary">
+    <div class="s-card" style="border-color:var(--green)"><div class="num" style="color:var(--green)">10</div><div class="lbl">OK</div></div>
+    <div class="s-card" style="border-color:var(--amber)"><div class="num" style="color:var(--amber)">4</div><div class="lbl">Javítandó</div></div>
+    <div class="s-card" style="border-color:var(--blue)"><div class="num" style="color:var(--blue)">4</div><div class="lbl">Ellenőrizendő</div></div>
+    <div class="s-card" style="border-color:var(--red)"><div class="num" style="color:var(--red)">8</div><div class="lbl">Hiányzó</div></div>
+  </div>
+  
+  <!-- Search -->
+  <div class="search-box">
+    <span class="search-icon">&#x1F50D;</span>
+    <input type="text" class="search-input" id="searchInput" placeholder="Keresés event név, leírás, paraméter...">
+    <button class="search-clear" id="searchClear" onclick="clearSearch()">&times;</button>
+  </div>
+  
+  <!-- Quick filters -->
+  <div class="filters" id="filters">
+    <button class="f-chip active" data-filter="all">Mind <span class="cnt">26</span></button>
+    <button class="f-chip" data-filter="ok" style="--fc:var(--green)">&#x2705; OK <span class="cnt">10</span></button>
+    <button class="f-chip" data-filter="fix" style="--fc:var(--amber)">&#x26A0;&#xFE0F; Javítandó <span class="cnt">4</span></button>
+    <button class="f-chip" data-filter="check" style="--fc:var(--blue)">&#x2753; Ellenőrizendő <span class="cnt">4</span></button>
+    <button class="f-chip" data-filter="missing" style="--fc:var(--red)">&#x274C; Hiányzó <span class="cnt">8</span></button>
+    <div class="f-sep"></div>
+    <button class="cat-chip" data-cat="Core Funnel">Core Funnel</button>
+    <button class="cat-chip" data-cat="Campaign">Campaign</button>
+    <button class="cat-chip" data-cat="Order Lifecycle">Order Lifecycle</button>
+    <button class="cat-chip" data-cat="Savings Engine">Savings Engine</button>
+    <button class="cat-chip" data-cat="Extra">Extra</button>
+  </div>
+  
+  <div class="result-count" id="resultCount"></div>
+  
+  <!-- Event cards -->
+  <div id="eventList">
+    <div class="ev-card" id="evt-product_list_view" data-status="ok" data-cat="Core Funnel" data-name="product_list_view" data-search="product_list_view A felhasználó megnyitja a terméklistát (főoldal vagy kategória nézet). A termékkatalógus megtekintése. Az első lépés a vásárlási funnelben — a felhasználó böngészi a kínálatot. Terméklista → Kosár konverziós ráta alapja. Ha sokan nézik de kevesen raknak kosárba, az UX vagy kínálat problémát jelezhet. Core Funnel">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">product_list_view</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">237 ev / 28 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A felhasználó megnyitja a terméklistát (főoldal vagy kategória nézet).</td></tr>
+      <tr><th>Mit jelent</th><td>A termékkatalógus megtekintése. Az első lépés a vásárlási funnelben — a felhasználó böngészi a kínálatot.</td></tr>
+      <tr><th>Miért fontos</th><td>Terméklista → Kosár konverziós ráta alapja. Ha sokan nézik de kevesen raknak kosárba, az UX vagy kínálat problémát jelezhet.</td></tr>
+    </table>
+    
+    
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-landing_view" data-status="ok" data-cat="Core Funnel" data-name="landing_view" data-search="landing_view A felhasználó először megnyitja az appot / belép a landing oldalra. Az app landing képernyőjének megtekintése — a belépési pont. Hány egyedi felhasználó éri el az appot. Összevetve a session_start-tal mutatja a bounce rate-et. Core Funnel">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">landing_view</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">10 ev / 7 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A felhasználó először megnyitja az appot / belép a landing oldalra.</td></tr>
+      <tr><th>Mit jelent</th><td>Az app landing képernyőjének megtekintése — a belépési pont.</td></tr>
+      <tr><th>Miért fontos</th><td>Hány egyedi felhasználó éri el az appot. Összevetve a session_start-tal mutatja a bounce rate-et.</td></tr>
+    </table>
+    
+    
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-campaign_dismissed" data-status="ok" data-cat="Campaign" data-name="campaign_dismissed" data-search="campaign_dismissed A felhasználó bezárja (X gomb vagy swipe) a Founding 50 kampány modalt anélkül, hogy csatlakozna. A kampány modal elutasítása — a felhasználó nem érdeklődik vagy később dönt. Modal shown (41) vs. dismissed (24) vs. enrolled (9) = campaign engagement ráta. Ha túl sokan dismisselnek, az ajánlat vagy a timing nem jó. Campaign">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">campaign_dismissed</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">24 ev / 19 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A felhasználó bezárja (X gomb vagy swipe) a Founding 50 kampány modalt anélkül, hogy csatlakozna.</td></tr>
+      <tr><th>Mit jelent</th><td>A kampány modal elutasítása — a felhasználó nem érdeklődik vagy később dönt.</td></tr>
+      <tr><th>Miért fontos</th><td>Modal shown (41) vs. dismissed (24) vs. enrolled (9) = campaign engagement ráta. Ha túl sokan dismisselnek, az ajánlat vagy a timing nem jó.</td></tr>
+    </table>
+    
+    
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-order_delivered" data-status="ok" data-cat="Order Lifecycle" data-name="order_delivered" data-search="order_delivered A futár kiszállította a rendelést és a státusz "Kiszállítva"-ra változik (admin/futár app frissíti). A rendelés sikeresen kiszállítva. A fulfillment flow végpontja. Delivery rate mérés. Ha order_created (4) vs. order_delivered (3) = 75%, az 1 rendelés nem lett kiszállítva — supply/ops probléma. Order Lifecycle">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">order_delivered</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">3 ev / 2 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A futár kiszállította a rendelést és a státusz "Kiszállítva"-ra változik (admin/futár app frissíti).</td></tr>
+      <tr><th>Mit jelent</th><td>A rendelés sikeresen kiszállítva. A fulfillment flow végpontja.</td></tr>
+      <tr><th>Miért fontos</th><td>Delivery rate mérés. Ha order_created (4) vs. order_delivered (3) = 75%, az 1 rendelés nem lett kiszállítva — supply/ops probléma.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>order_id</code></td><td>Rendelés azonosító</td></tr></table></div>
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-order_out_for_delivery" data-status="ok" data-cat="Order Lifecycle" data-name="order_out_for_delivery" data-search="order_out_for_delivery A futár elindult a rendeléssel. A státusz "Úton" / "Kiszállítás alatt"-ra változik. A rendelés fizikailag úton van a vásárlóhoz. Fulfillment pipeline: preparing → ready → out_for_delivery → delivered. Az egyes lépések idejét méri. Order Lifecycle">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">order_out_for_delivery</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">3 ev / 1 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A futár elindult a rendeléssel. A státusz "Úton" / "Kiszállítás alatt"-ra változik.</td></tr>
+      <tr><th>Mit jelent</th><td>A rendelés fizikailag úton van a vásárlóhoz.</td></tr>
+      <tr><th>Miért fontos</th><td>Fulfillment pipeline: preparing → ready → out_for_delivery → delivered. Az egyes lépések idejét méri.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>order_id</code></td><td>Rendelés azonosító</td></tr></table></div>
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-order_preparing" data-status="ok" data-cat="Order Lifecycle" data-name="order_preparing" data-search="order_preparing A mészáros elkezdte a rendelés összeállítását. A státusz "Előkészítés alatt"-ra változik. A rendelés a mészáros kezében van, készül. Preparation time mérés: order_created → order_preparing közti idő mutatja a reakcióidőt. Order Lifecycle">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">order_preparing</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">3 ev / 1 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A mészáros elkezdte a rendelés összeállítását. A státusz "Előkészítés alatt"-ra változik.</td></tr>
+      <tr><th>Mit jelent</th><td>A rendelés a mészáros kezében van, készül.</td></tr>
+      <tr><th>Miért fontos</th><td>Preparation time mérés: order_created → order_preparing közti idő mutatja a reakcióidőt.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>order_id</code></td><td>Rendelés azonosító</td></tr></table></div>
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-order_ready" data-status="ok" data-cat="Order Lifecycle" data-name="order_ready" data-search="order_ready A rendelés össze van állítva, kész az átvételre/szállításra. A státusz "Kész"-re változik. A rendelés fizikailag elkészült, várja a futárt. Ready → Out for delivery idő mutatja a futár rendelkezésre állását. Order Lifecycle">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">order_ready</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">2 ev / 1 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A rendelés össze van állítva, kész az átvételre/szállításra. A státusz "Kész"-re változik.</td></tr>
+      <tr><th>Mit jelent</th><td>A rendelés fizikailag elkészült, várja a futárt.</td></tr>
+      <tr><th>Miért fontos</th><td>Ready → Out for delivery idő mutatja a futár rendelkezésre állását.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>order_id</code></td><td>Rendelés azonosító</td></tr></table></div>
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-active_banner_tapped" data-status="ok" data-cat="Extra" data-name="active_banner_tapped" data-search="active_banner_tapped A felhasználó megnyomja az aktív promóciós bannert az app tetején (pl. Founding 50 banner). Banner engagement — a felhasználó reagált a promócióra. Banner CTR mérés. Ha a banner sokszor jelenik meg de kevesen nyomják meg, a design vagy a szöveg nem vonzó. Extra">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">active_banner_tapped</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">13 ev / 2 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A felhasználó megnyomja az aktív promóciós bannert az app tetején (pl. Founding 50 banner).</td></tr>
+      <tr><th>Mit jelent</th><td>Banner engagement — a felhasználó reagált a promócióra.</td></tr>
+      <tr><th>Miért fontos</th><td>Banner CTR mérés. Ha a banner sokszor jelenik meg de kevesen nyomják meg, a design vagy a szöveg nem vonzó.</td></tr>
+    </table>
+    
+    
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-reorder_cancelled" data-status="ok" data-cat="Extra" data-name="reorder_cancelled" data-search="reorder_cancelled A felhasználó elindította az újrarendelés folyamatot, de visszavonta mielőtt a kosárba töltötte volna. Reorder flow megszakítás. Reorder abandon ráta: reorder_initiated (1) vs. reorder_cancelled (1) = 100% abandon. Kis mintaméret, de figyelendő. Extra">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">reorder_cancelled</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">1 ev / 1 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A felhasználó elindította az újrarendelés folyamatot, de visszavonta mielőtt a kosárba töltötte volna.</td></tr>
+      <tr><th>Mit jelent</th><td>Reorder flow megszakítás.</td></tr>
+      <tr><th>Miért fontos</th><td>Reorder abandon ráta: reorder_initiated (1) vs. reorder_cancelled (1) = 100% abandon. Kis mintaméret, de figyelendő.</td></tr>
+    </table>
+    
+    
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-reorder_initiated" data-status="ok" data-cat="Extra" data-name="reorder_initiated" data-search="reorder_initiated A felhasználó megnyomta az "Újrarendelés" gombot egy korábbi rendelésnél a Rendeléseim oldalon. Reorder szándék kifejezése — a felhasználó kényelmi funkciót használ. Reorder feature használat mérése. Ha magas, a kényelmi funkció értékes a felhasználóknak. Extra">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#16a34a"></span>
+      <code class="ev-name">reorder_initiated</code>
+      <span class="ev-tag" style="background:#f0fdf4;color:#16a34a;border-color:#bbf7d0">OK</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">1 ev / 1 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A felhasználó megnyomta az "Újrarendelés" gombot egy korábbi rendelésnél a Rendeléseim oldalon.</td></tr>
+      <tr><th>Mit jelent</th><td>Reorder szándék kifejezése — a felhasználó kényelmi funkciót használ.</td></tr>
+      <tr><th>Miért fontos</th><td>Reorder feature használat mérése. Ha magas, a kényelmi funkció értékes a felhasználóknak.</td></tr>
+    </table>
+    
+    
+    
+  </div>
+</div>
+<div class="ev-card" id="evt-add_to_cart" data-status="fix" data-cat="Core Funnel" data-name="add_to_cart" data-search="add_to_cart Felhasználó megnyomja a "Kosárba" gombot egy terméknél. Termék hozzáadva a kosárhoz. A vásárlási szándék első konkrét jelzése. Product view → Add to cart konverziós ráta. GA4 Enhanced E-commerce riportok alapja — jelenleg használhatatlanok a hash ID miatt. Core Funnel">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#d97706"></span>
+      <code class="ev-name">add_to_cart</code>
+      <span class="ev-tag" style="background:#fffbeb;color:#d97706;border-color:#fde68a">Javítandó</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">65 ev / 14 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Felhasználó megnyomja a "Kosárba" gombot egy terméknél.</td></tr>
+      <tr><th>Mit jelent</th><td>Termék hozzáadva a kosárhoz. A vásárlási szándék első konkrét jelzése.</td></tr>
+      <tr><th>Miért fontos</th><td>Product view → Add to cart konverziós ráta. GA4 Enhanced E-commerce riportok alapja — jelenleg használhatatlanok a hash ID miatt.</td></tr>
+    </table>
+    <div class="param-section"><div class="param-label">Jelenlegi paraméterek:</div><table class="ptable"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>item_id</code></td><td>a1b2c3d4 (hash)</td></tr><tr><td><code>quantity</code></td><td>1</td></tr></table></div>
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>item_id</code></td><td>dh_csk_01 (olvasható)</td></tr><tr><td><code>item_name</code></td><td>Csülkös sonka</td></tr><tr><td><code>item_category</code></td><td>Sonkák</td></tr><tr><td><code>price</code></td><td>45.90</td></tr><tr><td><code>quantity</code></td><td>1</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Hash product ID → olvasható ID + item_name, item_category, price hozzáadása az items[]-hez</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-campaign_cta_clicked" data-status="fix" data-cat="Campaign" data-name="campaign_cta_clicked" data-search="campaign_cta_clicked A felhasználó a Founding 50 modalon megnyomja a CTA gombot. Kampány CTA kattintás — a felhasználó érdeklődik a Founding 50 iránt. Modal shown → CTA click → Enrolled funnel mérése. Campaign">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#d97706"></span>
+      <code class="ev-name">campaign_cta_clicked</code>
+      <span class="ev-tag" style="background:#fffbeb;color:#d97706;border-color:#fde68a">Javítandó</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">17 ev / 13 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A felhasználó a Founding 50 modalon megnyomja a CTA gombot.</td></tr>
+      <tr><th>Mit jelent</th><td>Kampány CTA kattintás — a felhasználó érdeklődik a Founding 50 iránt.</td></tr>
+      <tr><th>Miért fontos</th><td>Modal shown → CTA click → Enrolled funnel mérése.</td></tr>
+    </table>
+    <div class="param-section"><div class="param-label">Jelenlegi paraméterek:</div><table class="ptable"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>campaign</code></td><td>"1" (szám string)</td></tr></table></div>
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>campaign_name</code></td><td>"founding_50"</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> campaign="1" → campaign_name="founding_50" (string)</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-campaign_modal_shown" data-status="fix" data-cat="Campaign" data-name="campaign_modal_shown" data-search="campaign_modal_shown A Founding 50 kampány modal megjelenik a képernyőn. Minden platformon tüzelnie kell. A kampány modal megjelenítése — a toborzás első lépése. Mobilon nem tüzel — az adatok csak desktop-ról jönnek, ami torzítja a konverziós rátát. Campaign">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#d97706"></span>
+      <code class="ev-name">campaign_modal_shown</code>
+      <span class="ev-tag" style="background:#fffbeb;color:#d97706;border-color:#fde68a">Javítandó</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">41 ev / 23 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A Founding 50 kampány modal megjelenik a képernyőn. Minden platformon tüzelnie kell.</td></tr>
+      <tr><th>Mit jelent</th><td>A kampány modal megjelenítése — a toborzás első lépése.</td></tr>
+      <tr><th>Miért fontos</th><td>Mobilon nem tüzel — az adatok csak desktop-ról jönnek, ami torzítja a konverziós rátát.</td></tr>
+    </table>
+    <div class="param-section"><div class="param-label">Jelenlegi paraméterek:</div><div class="param-empty">— nem látható a GA4-ben</div></div>
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>campaign_name</code></td><td>"founding_50"</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Mobilon nem tüzel — logEvent() feltétel vizsgálat szükséges</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-registration_completed" data-status="fix" data-cat="Core Funnel" data-name="registration_completed" data-search="registration_completed Felhasználó sikeresen befejezi a regisztrációt (email megerősítés után). Új felhasználó regisztráció — a legfontosabb top-of-funnel konverziós event. User_id nélkül nem lehet a regisztrációt összekapcsolni a későbbi rendelésekkel — a teljes funnel mérhetetlen. Core Funnel">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#d97706"></span>
+      <code class="ev-name">registration_completed</code>
+      <span class="ev-tag" style="background:#fffbeb;color:#d97706;border-color:#fde68a">Javítandó</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">4 ev / 4 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Felhasználó sikeresen befejezi a regisztrációt (email megerősítés után).</td></tr>
+      <tr><th>Mit jelent</th><td>Új felhasználó regisztráció — a legfontosabb top-of-funnel konverziós event.</td></tr>
+      <tr><th>Miért fontos</th><td>User_id nélkül nem lehet a regisztrációt összekapcsolni a későbbi rendelésekkel — a teljes funnel mérhetetlen.</td></tr>
+    </table>
+    <div class="param-section"><div class="param-label">Jelenlegi paraméterek:</div><div class="param-empty">— nem látható a GA4-ben</div></div>
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>user_id</code></td><td><firebase_uid></td></tr><tr><td><code>method</code></td><td>"email"</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> user_id + method paraméter hozzáadása (Mate In Progress — DH-169)</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-checkout_started" data-status="check" data-cat="Core Funnel" data-name="checkout_started" data-search="checkout_started A felhasználó a kosárból megnyomja a "Megrendelés" / "Tovább a fizetéshez" gombot. A checkout flow első lépése. A vásárló eldöntötte, hogy megrendeli a kosár tartalmát. A funnel "intent to buy" pontja. Cart → Checkout konverziós ráta: 65 add_to_cart → 18 checkout = ~28%. Ha alacsony, UX vagy árazási probléma. Core Funnel">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#2563eb"></span>
+      <code class="ev-name">checkout_started</code>
+      <span class="ev-tag" style="background:#eff6ff;color:#2563eb;border-color:#bfdbfe">Ellenőrizendő</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">18 ev / 9 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A felhasználó a kosárból megnyomja a "Megrendelés" / "Tovább a fizetéshez" gombot. A checkout flow első lépése.</td></tr>
+      <tr><th>Mit jelent</th><td>A vásárló eldöntötte, hogy megrendeli a kosár tartalmát. A funnel "intent to buy" pontja.</td></tr>
+      <tr><th>Miért fontos</th><td>Cart → Checkout konverziós ráta: 65 add_to_cart → 18 checkout = ~28%. Ha alacsony, UX vagy árazási probléma.</td></tr>
+    </table>
+    <div class="param-section"><div class="param-label">Jelenlegi paraméterek:</div><div class="param-empty">— nem látható a GA4-ben</div></div>
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>cart_value</code></td><td>189.50 (RON)</td></tr><tr><td><code>item_count</code></td><td>4</td></tr><tr><td><code>items[]</code></td><td>GA4 Enhanced E-commerce</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Kérdés Mate-nek: küldi-e a paramétereket a logEvent()-ben?</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-order_created" data-status="check" data-cat="Core Funnel" data-name="order_created" data-search="order_created A rendelés sikeresen létrejön a backend-en — szállítási adatok megadva, rendelés megerősítve. Befejezett vásárlás. A legfontosabb konverziós event — ténylegesen rendelt a felhasználó. A végső konverziós pont: Visitor → Regisztráció → Kosár → Checkout → Order Created. Core Funnel">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#2563eb"></span>
+      <code class="ev-name">order_created</code>
+      <span class="ev-tag" style="background:#eff6ff;color:#2563eb;border-color:#bfdbfe">Ellenőrizendő</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">4 ev / 4 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A rendelés sikeresen létrejön a backend-en — szállítási adatok megadva, rendelés megerősítve.</td></tr>
+      <tr><th>Mit jelent</th><td>Befejezett vásárlás. A legfontosabb konverziós event — ténylegesen rendelt a felhasználó.</td></tr>
+      <tr><th>Miért fontos</th><td>A végső konverziós pont: Visitor → Regisztráció → Kosár → Checkout → Order Created.</td></tr>
+    </table>
+    <div class="param-section"><div class="param-label">Jelenlegi paraméterek:</div><div class="param-empty">— nem látható a GA4-ben</div></div>
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>order_id</code></td><td>DH-2026-0042</td></tr><tr><td><code>order_value</code></td><td>189.50 (RON)</td></tr><tr><td><code>item_count</code></td><td>4</td></tr><tr><td><code>payment_method</code></td><td>"cash"</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Kérdés Mate-nek: küldi-e a paramétereket a logEvent()-ben?</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-campaign_enrolled" data-status="check" data-cat="Campaign" data-name="campaign_enrolled" data-search="campaign_enrolled A felhasználó a Founding 50 modalon megnyomja a "Csatlakozom" gombot és sikeresen csatlakozik. Opt-in a Founding 50 early adopter programba (3 hónap ingyenes szállítás, max 50 fő). Founding 50 toborzás: modal shown (41) → enrolled (9) = ~22% konverzió. Campaign">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#2563eb"></span>
+      <code class="ev-name">campaign_enrolled</code>
+      <span class="ev-tag" style="background:#eff6ff;color:#2563eb;border-color:#bfdbfe">Ellenőrizendő</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">9 ev / 9 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>A felhasználó a Founding 50 modalon megnyomja a "Csatlakozom" gombot és sikeresen csatlakozik.</td></tr>
+      <tr><th>Mit jelent</th><td>Opt-in a Founding 50 early adopter programba (3 hónap ingyenes szállítás, max 50 fő).</td></tr>
+      <tr><th>Miért fontos</th><td>Founding 50 toborzás: modal shown (41) → enrolled (9) = ~22% konverzió.</td></tr>
+    </table>
+    <div class="param-section"><div class="param-label">Jelenlegi paraméterek:</div><div class="param-empty">— nem látható a GA4-ben</div></div>
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>campaign_name</code></td><td>"founding_50"</td></tr><tr><td><code>enrollment_source</code></td><td>"modal"</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Kérdés Mate-nek: küldi-e a paramétereket a logEvent()-ben?</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-campaign_order" data-status="check" data-cat="Campaign" data-name="campaign_order" data-search="campaign_order Egy Founding 50 tag leadja a rendelését. Az order_created kampány-specifikus párja — csak aktív F50 tagnál. Kampány-specifikus konverzió: enrolled (9) → campaign_order (3) = 33% aktiválás. Founding 50 ROI mérése. Ha a tagok nem rendelnek, a program nem működik. Campaign">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#2563eb"></span>
+      <code class="ev-name">campaign_order</code>
+      <span class="ev-tag" style="background:#eff6ff;color:#2563eb;border-color:#bfdbfe">Ellenőrizendő</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">3 ev / 3 users</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Egy Founding 50 tag leadja a rendelését. Az order_created kampány-specifikus párja — csak aktív F50 tagnál.</td></tr>
+      <tr><th>Mit jelent</th><td>Kampány-specifikus konverzió: enrolled (9) → campaign_order (3) = 33% aktiválás.</td></tr>
+      <tr><th>Miért fontos</th><td>Founding 50 ROI mérése. Ha a tagok nem rendelnek, a program nem működik.</td></tr>
+    </table>
+    <div class="param-section"><div class="param-label">Jelenlegi paraméterek:</div><div class="param-empty">— nem látható a GA4-ben</div></div>
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>order_id</code></td><td>DH-2026-0042</td></tr><tr><td><code>campaign_name</code></td><td>"founding_50"</td></tr><tr><td><code>order_value</code></td><td>189.50 (RON)</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Kérdés Mate-nek: küldi-e a paramétereket a logEvent()-ben?</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-repeat_order_created" data-status="missing" data-cat="Core Funnel" data-name="repeat_order_created" data-search="repeat_order_created Felhasználó rendelést ad le ÉS már van ≥1 korábbi befejezett rendelése. A 2., 3., ... rendelésnél. Első rendelésnél NEM. Visszatérő vásárlás — a DH pilot legfontosabb metrikája. Second Order Rate = North Star KPI (cél: ≥40% 14 napon belül). Ha a felhasználók nem rendelnek újra, a modell nem működik. Core Funnel">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#dc2626"></span>
+      <code class="ev-name">repeat_order_created</code>
+      <span class="ev-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">Hiányzó</span> <span class="tag-priority">P0</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">Nem implementált</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Felhasználó rendelést ad le ÉS már van ≥1 korábbi befejezett rendelése. A 2., 3., ... rendelésnél. Első rendelésnél NEM.</td></tr>
+      <tr><th>Mit jelent</th><td>Visszatérő vásárlás — a DH pilot legfontosabb metrikája.</td></tr>
+      <tr><th>Miért fontos</th><td>Second Order Rate = North Star KPI (cél: ≥40% 14 napon belül). Ha a felhasználók nem rendelnek újra, a modell nem működik.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>order_id</code></td><td>DH-2026-0055</td></tr><tr><td><code>days_since_first</code></td><td>7</td></tr><tr><td><code>order_value</code></td><td>142.00 (RON)</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Backend: user.completed_orders.count >= 1 → fire</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-order_cancelled" data-status="missing" data-cat="Core Funnel" data-name="order_cancelled" data-search="order_cancelled Rendelés törlése — felhasználó kéri / admin törli / készlethiány. Egy korábban leadott rendelés nem lesz teljesítve. Ha >10% törlési arány → modell fenntarthatósága veszélyben. A cancel_reason segít diagnosztizálni. Core Funnel">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#dc2626"></span>
+      <code class="ev-name">order_cancelled</code>
+      <span class="ev-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">Hiányzó</span> <span class="tag-priority">P0</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">Nem implementált</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Rendelés törlése — felhasználó kéri / admin törli / készlethiány.</td></tr>
+      <tr><th>Mit jelent</th><td>Egy korábban leadott rendelés nem lesz teljesítve.</td></tr>
+      <tr><th>Miért fontos</th><td>Ha >10% törlési arány → modell fenntarthatósága veszélyben. A cancel_reason segít diagnosztizálni.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>order_id</code></td><td>DH-2026-0042</td></tr><tr><td><code>cancel_reason</code></td><td>"user_requested" | "out_of_stock" | "admin_cancelled"</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Backend: order státusz → cancelled</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-threshold_achieved_150" data-status="missing" data-cat="Savings Engine" data-name="threshold_achieved_150" data-search="threshold_achieved_150 Kumulatív megtakarítás (bolti ár vs. DH online ár, összes rendelés) átlépi a 150 RON-t. Egyszer/user. Első spórolási mérföldkő. Celebration UI az app-ban. Savings engine motivációs hatásának mérése. Savings Engine">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#dc2626"></span>
+      <code class="ev-name">threshold_achieved_150</code>
+      <span class="ev-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">Hiányzó</span> <span class="tag-priority">P1</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">Nem implementált</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Kumulatív megtakarítás (bolti ár vs. DH online ár, összes rendelés) átlépi a 150 RON-t. Egyszer/user.</td></tr>
+      <tr><th>Mit jelent</th><td>Első spórolási mérföldkő. Celebration UI az app-ban.</td></tr>
+      <tr><th>Miért fontos</th><td>Savings engine motivációs hatásának mérése.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>total_savings</code></td><td>152.30 (RON)</td></tr><tr><td><code>order_count</code></td><td>5</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Savings kalkuláció után, threshold check</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-threshold_achieved_300" data-status="missing" data-cat="Savings Engine" data-name="threshold_achieved_300" data-search="threshold_achieved_300 Kumulatív megtakarítás átlépi a 300 RON-t. Egyszer/user. Második mérföldkő — power user azonosítás. Aki eléri → lojális vásárló, potenciális word-of-mouth forrás. Savings Engine">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#dc2626"></span>
+      <code class="ev-name">threshold_achieved_300</code>
+      <span class="ev-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">Hiányzó</span> <span class="tag-priority">P1</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">Nem implementált</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Kumulatív megtakarítás átlépi a 300 RON-t. Egyszer/user.</td></tr>
+      <tr><th>Mit jelent</th><td>Második mérföldkő — power user azonosítás.</td></tr>
+      <tr><th>Miért fontos</th><td>Aki eléri → lojális vásárló, potenciális word-of-mouth forrás.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>total_savings</code></td><td>312.50 (RON)</td></tr><tr><td><code>order_count</code></td><td>12</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Savings kalkuláció után, threshold check</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-bundle_added_to_cart" data-status="missing" data-cat="Savings Engine" data-name="bundle_added_to_cart" data-search="bundle_added_to_cart Felhasználó egy előre összeállított családi csomag (bundle) terméket ad a kosarához. NEM egyedi termék. Bundle feature használata — magasabb kosárérték és jobb margin. Bundle feature adoption. Ha senki nem használja → feature nem működik vagy nem vonzó. Savings Engine">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#dc2626"></span>
+      <code class="ev-name">bundle_added_to_cart</code>
+      <span class="ev-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">Hiányzó</span> <span class="tag-priority">P1</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">Nem implementált</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Felhasználó egy előre összeállított családi csomag (bundle) terméket ad a kosarához. NEM egyedi termék.</td></tr>
+      <tr><th>Mit jelent</th><td>Bundle feature használata — magasabb kosárérték és jobb margin.</td></tr>
+      <tr><th>Miért fontos</th><td>Bundle feature adoption. Ha senki nem használja → feature nem működik vagy nem vonzó.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>bundle_id</code></td><td>"family_grill"</td></tr><tr><td><code>bundle_name</code></td><td>"Családi Grillcsomag"</td></tr><tr><td><code>bundle_price</code></td><td>89.90</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Bundle kosárba rakás trigger</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-reorder_clicked" data-status="missing" data-cat="Savings Engine" data-name="reorder_clicked" data-search="reorder_clicked "Rendeléseim" oldalon "Újrarendelés" gomb megnyomása. Első lépés — kosár még nem töltött. Reorder szándék. Retention trigger — csökkenti a rendelési súrlódást. Reorder feature használat. Ha magas de alacsony a basket_loaded → UX probléma. Savings Engine">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#dc2626"></span>
+      <code class="ev-name">reorder_clicked</code>
+      <span class="ev-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">Hiányzó</span> <span class="tag-priority">P1</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">Nem implementált</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>"Rendeléseim" oldalon "Újrarendelés" gomb megnyomása. Első lépés — kosár még nem töltött.</td></tr>
+      <tr><th>Mit jelent</th><td>Reorder szándék. Retention trigger — csökkenti a rendelési súrlódást.</td></tr>
+      <tr><th>Miért fontos</th><td>Reorder feature használat. Ha magas de alacsony a basket_loaded → UX probléma.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>source_order_id</code></td><td>DH-2026-0042</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Gombnyomás trigger a Rendeléseim oldalon</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-basket_loaded" data-status="missing" data-cat="Savings Engine" data-name="basket_loaded" data-search="basket_loaded Korábbi rendelés tételei sikeresen betöltődnek a kosárba (reorder_clicked után). Reorder flow 2. lépése — kosár feltöltve korábbi tételekkel. Reorder funnel: reorder_clicked → basket_loaded → checkout_started → order_created. Savings Engine">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#dc2626"></span>
+      <code class="ev-name">basket_loaded</code>
+      <span class="ev-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">Hiányzó</span> <span class="tag-priority">P1</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">Nem implementált</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Korábbi rendelés tételei sikeresen betöltődnek a kosárba (reorder_clicked után).</td></tr>
+      <tr><th>Mit jelent</th><td>Reorder flow 2. lépése — kosár feltöltve korábbi tételekkel.</td></tr>
+      <tr><th>Miért fontos</th><td>Reorder funnel: reorder_clicked → basket_loaded → checkout_started → order_created.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>source_order_id</code></td><td>DH-2026-0042</td></tr><tr><td><code>item_count</code></td><td>6</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Kosár betöltés sikeres callback</div>
+  </div>
+</div>
+<div class="ev-card" id="evt-recap_viewed" data-status="missing" data-cat="Savings Engine" data-name="recap_viewed" data-search="recap_viewed Felhasználó megnyitja a spórolás összefoglaló képernyőt (havi/összesített dashboard). A felhasználó aktívan érdeklődik a megtakarítása iránt. Savings motivation engagement. Ha rendszeresen nézik → spórolás üzenet motivál. Savings Engine">
+  <div class="ev-header" onclick="toggleEv(this)">
+    <div class="ev-left">
+      <span class="ev-status-dot" style="background:#dc2626"></span>
+      <code class="ev-name">recap_viewed</code>
+      <span class="ev-tag" style="background:#fef2f2;color:#dc2626;border-color:#fecaca">Hiányzó</span> <span class="tag-priority">P1</span>
+    </div>
+    <div class="ev-right">
+      <span class="ev-count">Nem implementált</span>
+      <span class="ev-arrow">&#x25B6;</span>
+    </div>
+  </div>
+  <div class="ev-body">
+    <table class="detail-tbl">
+      <tr><th>Mikor tüzel</th><td>Felhasználó megnyitja a spórolás összefoglaló képernyőt (havi/összesített dashboard).</td></tr>
+      <tr><th>Mit jelent</th><td>A felhasználó aktívan érdeklődik a megtakarítása iránt.</td></tr>
+      <tr><th>Miért fontos</th><td>Savings motivation engagement. Ha rendszeresen nézik → spórolás üzenet motivál.</td></tr>
+    </table>
+    
+    <div class="param-section"><div class="param-label">Elvárt paraméterek:</div><table class="ptable expected"><tr><th>Param</th><th>Érték</th></tr><tr><td><code>total_savings</code></td><td>245.80 (RON)</td></tr><tr><td><code>period</code></td><td>"monthly" | "all_time"</td></tr></table></div>
+    <div class="fix-note"><strong>Teendő:</strong> Recap screen megnyitás trigger</div>
+  </div>
+</div>
+  </div>
+  
+  <div class="no-results" id="noResults">Nincs találat a megadott keresésre.</div>
+  
+  <div class="footer">DH Analytics Dictionary v2.2 &middot; 2026-04-29 &middot; GA4 Apr 1&ndash;28, 2026</div>
+</div>
+
+<script>
+function toggleEv(el) {
+  el.closest('.ev-card').classList.toggle('open');
+}
+
+// Filtering
+let activeStatus = 'all';
+let activeCat = null;
+let searchTerm = '';
+
+function applyFilters() {
+  const cards = document.querySelectorAll('.ev-card');
+  let visible = 0;
+  cards.forEach(c => {
+    const matchStatus = activeStatus === 'all' || c.dataset.status === activeStatus;
+    const matchCat = !activeCat || c.dataset.cat === activeCat;
+    const matchSearch = !searchTerm || c.dataset.search.toLowerCase().includes(searchTerm);
+    const show = matchStatus && matchCat && matchSearch;
+    c.classList.toggle('hidden', !show);
+    if (show) visible++;
+  });
+  document.getElementById('resultCount').textContent = visible + ' / ' + cards.length + ' event';
+  document.getElementById('noResults').classList.toggle('show', visible === 0);
+}
+
+// Status filter chips
+document.querySelectorAll('.f-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.f-chip').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeStatus = btn.dataset.filter;
+    applyFilters();
+  });
+});
+
+// Category chips
+document.querySelectorAll('.cat-chip').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.classList.contains('active')) {
+      btn.classList.remove('active');
+      activeCat = null;
+    } else {
+      document.querySelectorAll('.cat-chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeCat = btn.dataset.cat;
+    }
+    applyFilters();
+  });
+});
+
+// Search
+const searchInput = document.getElementById('searchInput');
+const searchClear = document.getElementById('searchClear');
+searchInput.addEventListener('input', () => {
+  searchTerm = searchInput.value.toLowerCase().trim();
+  searchClear.style.display = searchTerm ? 'block' : 'none';
+  applyFilters();
+});
+function clearSearch() {
+  searchInput.value = '';
+  searchTerm = '';
+  searchClear.style.display = 'none';
+  applyFilters();
+}
+
+applyFilters();
+</script>
+</body>
+</html>

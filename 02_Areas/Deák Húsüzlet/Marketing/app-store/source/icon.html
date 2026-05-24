@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>DH app icon — 512 (pig face, white bg, redesigned)</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 512px; height: 512px; overflow: hidden; }
+  body {
+    background: #FFFBF7;
+    position: relative;
+  }
+  /* Very faint warm vignette to give surface depth without darkening visibly */
+  body::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 42%, transparent 65%, rgba(155, 35, 53, 0.025) 100%);
+    pointer-events: none;
+  }
+  .mascot {
+    position: absolute;
+    /* 74% size, slight upward bias: top 8%, bottom 18% — bigger bottom margin
+       to compensate for the thumbs-up sitting in the lower-right of the source artwork. */
+    width: 74%;
+    height: 74%;
+    top: 8%;
+    left: 13%;
+    background-image: url('pig-mascot.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    filter: drop-shadow(0 6px 16px rgba(60, 30, 30, 0.12));
+  }
+</style>
+</head>
+<body>
+  <div class="mascot"></div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Rendelés sikeres — Deák Húsmíves</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+:root {
+  --bg: #FFFBF7;
+  --primary: #9B2335;
+  --text: #2C2825;
+  --text2: #5C544C;
+  --text3: #8A8078;
+  --border: #E8E2DB;
+  --card-bg: #FFFFFF;
+  --green: #2D7A4F;
+  --green-dark: #1B5E20;
+  --green-bg: #D4EDDA;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: #FAF8F5; font-family: Inter, system-ui, -apple-system, sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; margin: 0; }
+.page-wrapper { max-width: 512px; width: 100%; margin: 0 auto; min-height: 100vh; background: var(--bg); padding: 32px 16px; }
+
+/* Content wrapper */
+.content { display: flex; flex-direction: column; align-items: center; gap: 16px; }
+
+/* Success header */
+.success-header { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.success-header svg { width: 48px; height: 48px; color: var(--green); }
+.success-header h1 { font-size: 20px; font-weight: 700; color: var(--text); text-align: center; letter-spacing: 0.2px; }
+.success-header .order-id { font-size: 13px; font-weight: 400; color: #999999; text-align: center; }
+
+/* Card */
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 16px; width: 100%; }
+
+/* Delivery card */
+.delivery-card { display: flex; align-items: center; gap: 12px; margin-top: 8px; }
+.delivery-card svg { width: 40px; height: 40px; color: var(--primary); flex-shrink: 0; }
+.delivery-text { display: flex; flex-direction: column; }
+.delivery-title { font-size: 14px; font-weight: 500; color: var(--text); letter-spacing: 0.28px; }
+.delivery-subtitle { font-size: 13px; font-weight: 400; color: var(--text3); }
+
+/* Savings card */
+.savings-banner { background: var(--green-bg); border-radius: 16px; padding: 10px 14px; margin-bottom: 12px; text-align: center; }
+.savings-badge { font-size: 15px; font-weight: 600; color: var(--green); }
+.savings-amount { font-size: 20px; font-weight: 800; color: var(--green-dark); margin-top: 8px; margin-bottom: 4px; }
+.savings-row { display: flex; justify-content: space-between; padding: 4px 0; }
+.savings-row-label { font-size: 12px; font-weight: 400; color: var(--text3); }
+.savings-row-value { font-size: 12px; font-weight: 600; color: var(--green); }
+
+/* Buttons */
+.buttons { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+.btn-primary { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: var(--primary); color: white; font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0.28px; border: none; border-radius: 16px; cursor: pointer; text-align: center; }
+.btn-secondary { display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; background: var(--card-bg); color: var(--primary); font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0.28px; border: 1px solid var(--primary); border-radius: 16px; cursor: pointer; text-align: center; }
+
+.static-label { position: fixed; top: 8px; right: 8px; background: rgba(0,0,0,0.5); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; z-index: 100; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="static-label">STATIC COPY — deakhus.ro</div>
+
+<div class="page-wrapper">
+<div class="content">
+
+  <!-- Success header -->
+  <div class="success-header">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+    <h1>Köszönjük a rendelést!</h1>
+    <p class="order-id">DEAK-ORD-00055 · 156,45 RON</p>
+  </div>
+
+  <!-- Delivery card -->
+  <section class="card delivery-card">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+    <div class="delivery-text">
+      <span class="delivery-title">Szállítás május 9., szombat, 12:00-13:00</span>
+      <span class="delivery-subtitle">A futár telefonon fogja értesíteni önt.</span>
+    </div>
+  </section>
+
+  <!-- Savings card -->
+  <section class="card">
+    <div class="savings-banner">
+      <p class="savings-badge">Ingyenes szállítás!</p>
+      <p class="savings-amount">+10,00 RON megtakarítás</p>
+    </div>
+    <div class="savings-row">
+      <span class="savings-row-label">Ingyenes szállítás</span>
+      <span class="savings-row-value">+10,00 RON</span>
+    </div>
+  </section>
+
+  <!-- Buttons -->
+  <div class="buttons">
+    <button class="btn-primary">← Vissza a termékekre</button>
+    <button class="btn-secondary">Rendelés részletei</button>
+  </div>
+
+</div>
+</div>
+
+</body>
+</html>

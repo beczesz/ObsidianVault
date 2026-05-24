@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DH v0.6 — Kedvenc Termékek</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  :root {
+    /* Real-app DNS, extracted from screenshot */
+    --bg: #FAF8F5;
+    --card: #FFFFFF;
+    --primary: #9C2335;
+    --primary-light: #BE3D50;
+    --primary-lighter: #F5E6E8;
+    --text: #2D2825;
+    --text2: #5C544C;
+    --text3: #9B938C;
+    --border: #E8E2DB;
+    --badge-bg: #FAF6F2;
+    --badge-text: #9C5A4F;
+    --price-red: #C8102E;
+    --accent-peach: #FFE8DC;
+    --accent-peach-text: #B86B4E;
+    --gold: #E8A828;
+    --green: #2D7A4F;
+    --green-light: #E8F5E9;
+  }
+  body { font-family: -apple-system, 'Segoe UI', system-ui, sans-serif; background: #F2EDE7; color: var(--text); }
+
+  /* Page chrome */
+  .header { max-width: 1400px; margin: 0 auto; padding: 24px 24px 0; }
+  .header h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.3px; }
+  .header p { font-size: 14px; color: var(--text2); margin-top: 4px; }
+
+  .tabs { display: flex; gap: 8px; max-width: 1400px; margin: 16px auto; padding: 0 24px; overflow-x: auto; flex-wrap: wrap; }
+  .tab {
+    padding: 10px 18px; border-radius: 24px; font-size: 13px;
+    border: 1px solid var(--border); background: white; color: var(--text);
+    cursor: pointer; white-space: nowrap; transition: all 0.2s; font-weight: 500;
+  }
+  .tab.active { background: var(--primary); color: white; border-color: var(--primary); font-weight: 700; }
+  .tab:hover:not(.active) { border-color: var(--primary); }
+
+  .content { max-width: 1400px; margin: 0 auto; padding: 0 24px 40px; }
+  .feature { display: none; }
+  .feature.active { display: block; }
+
+  /* Approach frame */
+  .approach {
+    background: white; border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px 24px; margin-bottom: 20px;
+  }
+  .approach-title { font-size: 20px; font-weight: 800; margin-bottom: 4px; letter-spacing: -0.2px; }
+  .approach-sub { font-size: 13px; color: var(--text2); margin-bottom: 12px; }
+  .approach-text { font-size: 13px; line-height: 1.55; color: var(--text); }
+  .approach-text strong { color: var(--primary); font-weight: 700; }
+
+  /* Phones staging */
+  .phones {
+    display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; padding-top: 4px;
+  }
+
+  /* Phone frame — iPhone style with dynamic island */
+  .phone {
+    width: 390px;
+    height: 844px;
+    background: var(--bg);
+    border-radius: 44px;
+    border: 10px solid #0a0a0a;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    flex-shrink: 0;
+    display: flex; flex-direction: column;
+    position: relative;
+  }
+  /* Dynamic Island */
+  .phone::before {
+    content: '';
+    position: absolute;
+    top: 10px; left: 50%; transform: translateX(-50%);
+    width: 120px; height: 36px;
+    background: #0a0a0a;
+    border-radius: 22px;
+    z-index: 10;
+  }
+  .phone-status {
+    flex-shrink: 0;
+    height: 54px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 30px 6px;
+    font-size: 16px; font-weight: 600;
+    color: var(--text);
+  }
+  .phone-status .stat-right {
+    display: flex; gap: 5px; align-items: center;
+  }
+  .phone-status .battery {
+    display: inline-flex; align-items: center; gap: 3px;
+    background: #000; color: white; border-radius: 5px;
+    padding: 2px 6px 2px 4px; font-size: 11px; font-weight: 700;
+    position: relative;
+  }
+  .phone-status .battery::after {
+    content: ''; position: absolute; right: -3px; top: 5px;
+    width: 2px; height: 6px; background: #000; border-radius: 0 2px 2px 0;
+  }
+
+  .phone-header {
+    flex-shrink: 0;
+    padding: 14px 20px 12px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .phone-header .ph-title {
+    font-size: 24px; font-weight: 800;
+    color: var(--primary);
+    letter-spacing: -0.3px;
+  }
+  .phone-header .ph-right { display: flex; gap: 8px; align-items: center; }
+  .phone-header .ph-flag {
+    font-size: 22px; line-height: 1;
+  }
+  .phone-header .ph-icon {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    background: transparent; cursor: pointer;
+  }
+  .phone-divider {
+    flex-shrink: 0;
+    height: 1px; background: var(--border); margin: 0 20px;
+  }
+
+  .phone-body {
+    flex: 1; min-height: 0;
+    overflow-y: auto;
+    padding: 14px 16px 16px;
+    scroll-behavior: smooth;
+  }
+  .phone-body::-webkit-scrollbar { width: 0; }
+
+  /* Category pills (matches screenshot) */
+  .cat-pills {
+    display: flex; gap: 10px; overflow-x: auto;
+    margin: 0 -16px 14px; padding: 0 16px 4px;
+    scrollbar-width: none;
+  }
+  .cat-pills::-webkit-scrollbar { display: none; }
+  .cat-pill {
+    padding: 11px 22px;
+    border-radius: 24px;
+    font-size: 14px; font-weight: 600;
+    background: #F0E8E0;
+    color: var(--text2);
+    white-space: nowrap; cursor: pointer; flex-shrink: 0;
+    border: none;
+    transition: all 0.15s;
+  }
+  .cat-pill.active {
+    background: var(--primary); color: white;
+  }
+
+  /* Product card — 2-col grid (matches screenshot exactly) */
+  .prod-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+    margin-bottom: 14px;
+  }
+  .prod-card {
+    background: var(--card);
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+    border: 1px solid rgba(232,226,219,0.6);
+  }
+  .prod-card .pc-img {
+    aspect-ratio: 1 / 0.85;
+    overflow: hidden;
+    background: #F5EFE8;
+    position: relative;
+    background-size: cover;
+    background-position: center;
+  }
+  /* meat photos — stylized gradient + illustration stand-ins */
+  .meat-photo {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .meat-photo svg { width: 100%; height: 100%; }
+
+  .prod-card .pc-heart {
+    position: absolute; top: 10px; right: 10px;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(4px);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+    z-index: 2;
+    border: none;
+    transition: transform 0.14s ease;
+  }
+  .prod-card .pc-heart:active { transform: scale(1.2); }
+  .prod-card .pc-heart.off svg { fill: none; stroke: #5C544C; stroke-width: 2; }
+  .prod-card .pc-heart.on svg { fill: var(--price-red); stroke: var(--price-red); stroke-width: 2; }
+  .prod-card .pc-heart.on { background: white; box-shadow: 0 2px 8px rgba(200,16,46,0.25); }
+
+  .prod-card .pc-body {
+    padding: 10px 12px 14px;
+  }
+  .prod-card .pc-cat {
+    display: inline-block;
+    background: var(--badge-bg);
+    color: var(--badge-text);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .prod-card .pc-cat.peach { background: var(--accent-peach); color: var(--accent-peach-text); }
+  .prod-card .pc-name {
+    font-size: 15px; font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+  .prod-card .pc-price-row {
+    display: flex; align-items: baseline; gap: 3px;
+  }
+  .prod-card .pc-price {
+    font-size: 15px; font-weight: 700; color: var(--price-red);
+  }
+  .prod-card .pc-price-unit {
+    font-size: 13px; color: var(--text3); font-weight: 500;
+  }
+  /* OOS overlay */
+  .prod-card.oos .pc-img::after {
+    content: 'Nincs raktáron';
+    position: absolute; inset: 0;
+    background: rgba(255,255,255,0.8); backdrop-filter: blur(2px);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 700; color: var(--text2);
+  }
+
+  /* Section heading (for Kedvenceim / Összes) */
+  .sec-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin: 4px 2px 12px;
+    gap: 8px;
+  }
+  .sec-head-left { display: flex; align-items: center; gap: 8px; }
+  .sec-head .sh-title {
+    font-size: 16px; font-weight: 800; color: var(--text);
+    letter-spacing: -0.2px;
+  }
+  .sec-head .sh-count {
+    background: var(--primary-lighter);
+    color: var(--primary);
+    font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 10px;
+    line-height: 1;
+  }
+  .sec-head .sh-action {
+    font-size: 12px; font-weight: 700;
+    color: var(--primary);
+    cursor: pointer;
+    display: inline-flex; align-items: center; gap: 3px;
+    padding: 4px 8px;
+    background: var(--primary-lighter);
+    border-radius: 8px;
+  }
+  .sec-divider {
+    height: 1px; background: var(--border);
+    margin: 6px 0 16px;
+  }
+
+  /* Bottom tab bar (matches screenshot) */
+  .tabbar {
+    flex-shrink: 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-around;
+    padding: 10px 12px 26px;
+  }
+  .tabbar-item {
+    display: flex; flex-direction: column; align-items: center; gap: 4px;
+    font-size: 11px; font-weight: 500;
+    color: var(--text3);
+    cursor: pointer;
+    position: relative;
+    min-width: 56px;
+  }
+  .tabbar-item.active { color: var(--primary); font-weight: 700; }
+  .tabbar-item svg { opacity: 0.85; }
+  .tabbar-item.active svg { opacity: 1; stroke: var(--primary); }
+  .tabbar-item .tb-badge {
+    position: absolute;
+    top: -4px; right: 50%; transform: translateX(18px);
+    background: var(--price-red);
+    color: white;
+    font-size: 10px; font-weight: 700;
+    min-width: 18px; height: 18px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 0 5px;
+    border: 2px solid var(--bg);
+  }
+
+  /* Kedvencek empty state */
+  .empty-state {
+    padding: 40px 20px 20px;
+    text-align: center;
+  }
+  .empty-state .es-illust {
+    width: 120px; height: 120px;
+    margin: 0 auto 20px;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--primary-lighter);
+    border-radius: 30px;
+    color: var(--primary);
+  }
+  .empty-state h3 {
+    font-size: 20px; font-weight: 800; margin-bottom: 6px;
+    letter-spacing: -0.3px;
+  }
+  .empty-state p {
+    font-size: 13px; color: var(--text2); line-height: 1.5;
+    margin-bottom: 24px; max-width: 280px; margin-left: auto; margin-right: auto;
+  }
+  .empty-state .es-steps {
+    background: white; border-radius: 16px; padding: 18px;
+    text-align: left; margin: 0 auto 20px; max-width: 320px;
+    border: 1px solid var(--border);
+  }
+  .empty-state .es-step {
+    display: flex; gap: 12px; padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .empty-state .es-step:last-child { border-bottom: none; }
+  .empty-state .es-step-num {
+    flex-shrink: 0; width: 24px; height: 24px;
+    background: var(--primary); color: white;
+    border-radius: 50%; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .empty-state .es-step-body strong {
+    display: block; font-size: 13px; font-weight: 700; color: var(--text);
+  }
+  .empty-state .es-step-body span {
+    font-size: 11px; color: var(--text2);
+  }
+  .empty-state .es-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 14px 28px; border-radius: 14px;
+    background: var(--primary); color: white;
+    font-size: 14px; font-weight: 700; border: none; cursor: pointer;
+  }
+
+  /* Bulk action bar on Kedvencek page */
+  .bulk-bar {
+    background: linear-gradient(135deg, var(--primary) 0%, #7B1B2A 100%);
+    border-radius: 16px; padding: 14px 16px;
+    color: white; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .bulk-bar .bb-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    background: rgba(255,255,255,0.15);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .bulk-bar .bb-body { flex: 1; min-width: 0; }
+  .bulk-bar .bb-title { font-size: 14px; font-weight: 700; }
+  .bulk-bar .bb-sub { font-size: 11px; opacity: 0.85; margin-top: 1px; }
+  .bulk-bar .bb-cta {
+    background: white; color: var(--primary);
+    padding: 8px 14px; border-radius: 10px;
+    font-size: 13px; font-weight: 700; border: none; cursor: pointer;
+    white-space: nowrap;
+  }
+
+  /* Guest bottom sheet */
+  .bottom-sheet {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    background: white;
+    border-radius: 20px 20px 0 0;
+    padding: 24px 20px;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.15);
+    z-index: 20;
+  }
+  .bottom-sheet .bs-handle {
+    width: 40px; height: 4px; background: var(--border);
+    border-radius: 2px; margin: 0 auto 16px;
+  }
+  .bottom-sheet h3 {
+    font-size: 18px; font-weight: 800; text-align: center;
+    letter-spacing: -0.3px;
+  }
+  .bottom-sheet p {
+    font-size: 13px; color: var(--text2); text-align: center;
+    line-height: 1.5; margin: 6px 0 20px;
+  }
+  .bottom-sheet .bs-btn {
+    width: 100%; padding: 14px; border-radius: 14px;
+    font-size: 14px; font-weight: 700; border: none; cursor: pointer;
+    margin-bottom: 8px;
+  }
+  .bottom-sheet .bs-btn.primary { background: var(--primary); color: white; }
+  .bottom-sheet .bs-btn.secondary { background: transparent; color: var(--primary); border: 2px solid var(--primary); }
+  .bottom-sheet .bs-btn.ghost { background: transparent; color: var(--text2); }
+  .bottom-sheet .bs-overlay-bg {
+    position: absolute; inset: 0;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(2px);
+    z-index: -1;
+  }
+
+  /* Toast */
+  .toast {
+    position: absolute; bottom: 100px; left: 16px; right: 16px;
+    background: var(--text);
+    color: white;
+    padding: 14px 16px;
+    border-radius: 14px;
+    font-size: 13px; font-weight: 600;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 15;
+  }
+  .toast .t-icon {
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--primary-lighter);
+    color: var(--primary);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .toast .t-action {
+    margin-left: auto; color: var(--primary-lighter);
+    font-weight: 700; cursor: pointer; flex-shrink: 0;
+  }
+
+  /* Filter pill for "Csak kedvencek" */
+  .fav-filter-pill {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 11px 18px; border-radius: 24px;
+    background: #F0E8E0; color: var(--text2);
+    font-size: 14px; font-weight: 600;
+    white-space: nowrap; cursor: pointer;
+    border: none;
+  }
+  .fav-filter-pill.active {
+    background: var(--price-red); color: white;
+  }
+  .fav-filter-pill svg { flex-shrink: 0; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 10px 16px; margin: 16px 24px 0;
+    background: white; border: 1px solid #D8D0C8;
+    border-radius: 8px; font-family: system-ui, sans-serif;
+    font-size: 14px; font-weight: 600; color: var(--primary);
+    text-decoration: none; cursor: pointer;
+  }
+  .back-btn:hover { background: #F5F0EB; }
+
+  @media (max-width: 500px) {
+    .header { padding: 16px 12px 0; }
+    .header h1 { font-size: 22px; }
+    .tabs { padding: 0 12px; gap: 6px; }
+    .content { padding: 0 12px 24px; }
+    .phone { width: 100%; max-width: 390px; }
+  }
+</style>
+</head>
+<body>
+<a href="index.html" class="back-btn">← Vissza</a>
+
+<div class="header">
+  <h1>Kedvenc Termékek</h1>
+  <p>Deák Húsmíves · v0.6 · Szív toggle · Kedvencek szekció + dedikált oldal · Vendég flow · Bulk kosárba</p>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="empty">1 · Alapállapot</button>
+  <button class="tab" data-tab="one-fav">2 · 1 kedvenc</button>
+  <button class="tab" data-tab="multi-fav">3 · Több kedvenc</button>
+  <button class="tab" data-tab="fav-page">4 · Kedvenceim oldal</button>
+  <button class="tab" data-tab="fav-empty">5 · Kedvenceim üresen</button>
+  <button class="tab" data-tab="guest">6 · Vendég flow</button>
+  <button class="tab" data-tab="heart-spec">7 · Szív ikon spec</button>
+</div>
+
+<div class="content">
+  <!-- 1 -->
+  <div class="feature active" id="empty">
+    <div class="approach">
+      <div class="approach-title">1 · Alapállapot — termékek oldal, nincs kedvenc</div>
+      <div class="approach-sub">A termékkártyákon szív ikon jelenik meg — bárki jelölheti.</div>
+      <div class="approach-text">
+        Szív ikon (nem csillag — univerzálisabb kedvenc-jel), jobb felső sarokban, fehér bubble háttérrel hogy bármilyen fotón jól látszódjon. Tap: <strong>üres szív → telt piros</strong> (`#C8102E`). Bejelentkezett user: szerverre megy. Vendég: <strong>bottom sheet</strong> login prompt.
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-empty"></div></div>
+  </div>
+
+  <!-- 2 -->
+  <div class="feature" id="one-fav">
+    <div class="approach">
+      <div class="approach-title">2 · Egy termék kedvencnek jelölve</div>
+      <div class="approach-sub">Kedvenc → lista tetejére kerül egy saját szekcióba.</div>
+      <div class="approach-text">
+        Jelöléskor: <strong>"Kedvenceim"</strong> szekció jelenik meg a lista tetején, pirossal kiemelve. A termékkártya normál design marad (nincs nagy színes háttér) — csak a telt szív jelöli. A kártyán lévő szív ikon azonnal piros telt lesz. Alatta <strong>"Összes termék"</strong> szekció a maradékkal.
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-one-fav"></div></div>
+  </div>
+
+  <!-- 3 -->
+  <div class="feature" id="multi-fav">
+    <div class="approach">
+      <div class="approach-title">3 · Több kedvenc + "Csak kedvencek" filter</div>
+      <div class="approach-sub">3 termék jelölve + új filter pill a kategóriák mellé: "Csak kedvencek".</div>
+      <div class="approach-text">
+        A kategória pill-ek mellé egy szív-ikonos <strong>"Kedvencek"</strong> filter pill kerül — aktiválva csak a kedvenceket szűri le. Két phone egymás mellett: <strong>bal</strong> normál böngészés kedvenc-szekcióval, <strong>jobb</strong> "Csak kedvencek" filter aktív.
+      </div>
+    </div>
+    <div class="phones">
+      <div class="phone" id="phone-multi-fav"></div>
+      <div class="phone" id="phone-multi-fav-filter"></div>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <div class="feature" id="fav-page">
+    <div class="approach">
+      <div class="approach-title">4 · Dedikált "Kedvenceim" oldal</div>
+      <div class="approach-sub">Önálló oldal, a Fiók menüből és egy szív ikonból a headerből érhető el.</div>
+      <div class="approach-text">
+        <strong>Nem</strong> külön bottom nav tab (4 tab marad: Termékek/Kosár/Rendelések/Fiók). A "Kedvenceim" egy aloldal — fejlécben a szív ikon vezet oda, vagy a Fiók menüből. <strong>Fent: bulk bar</strong> "<em>Mind kosárba (3) — ~{ár} RON</em>" CTA-val. Alatta a kedvenc termékek grid-je.
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-fav-page"></div></div>
+  </div>
+
+  <!-- 5 -->
+  <div class="feature" id="fav-empty">
+    <div class="approach">
+      <div class="approach-title">5 · Kedvenceim — üres állapot</div>
+      <div class="approach-sub">Első látogatáskor vagy ha mindent eltávolított.</div>
+      <div class="approach-text">
+        Nagy szív illusztráció + cím + 3-step "így működik" kártya + CTA "Böngéssz termékeket →". Informatív, nem frusztráló.
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-fav-empty"></div></div>
+  </div>
+
+  <!-- 6 -->
+  <div class="feature" id="guest">
+    <div class="approach">
+      <div class="approach-title">6 · Vendég (nem bejelentkezett) flow</div>
+      <div class="approach-sub">Szív tap vendégként → bottom sheet login prompt.</div>
+      <div class="approach-text">
+        Nem localStorage mentés (a kedvenc szándékosan <strong>account-bound</strong>). Szív koppintásra bottom sheet csúszik fel: <em>"Menthetjük neked?"</em> — primary: Bejelentkezés / secondary: Regisztráció / ghost: Mégse. Termék nem lesz kedvenc amíg nem belép.
+      </div>
+    </div>
+    <div class="phones"><div class="phone" id="phone-guest"></div></div>
+  </div>
+
+  <!-- 7 -->
+  <div class="feature" id="heart-spec">
+    <div class="approach">
+      <div class="approach-title">7 · Szív ikon dizájn spec</div>
+      <div class="approach-sub">Implementációs referencia — méretek, színek, animáció.</div>
+      <div class="approach-text">
+        <strong>Off:</strong> 36×36px fehér bubble, `stroke: #5C544C`, `fill: none`<br>
+        <strong>On:</strong> 36×36px fehér bubble + subtle shadow, `fill & stroke: #C8102E`<br>
+        <strong>Animáció:</strong> scale(1) → 1.2 → 1, 140ms ease-out, fill átmenet<br>
+        <strong>Pozíció:</strong> `top: 10px; right: 10px;` a termékképen<br>
+        <strong>Frappe:</strong> `User.favorite_items: JSON[]` + `POST /api/favorites/toggle`
+      </div>
+    </div>
+    <div class="phones" id="heart-spec-phones"></div>
+  </div>
+</div>
+
+<script src="v0.6-favorites-data.js"></script>
+<script src="v0.6-favorites-render.js"></script>
+
+</body>
+</html>

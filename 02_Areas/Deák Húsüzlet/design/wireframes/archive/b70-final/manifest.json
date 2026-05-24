@@ -1,0 +1,170 @@
+{
+  "meta": {
+    "build": 72,
+    "generatedAt": "2026-05-03T14:15:00Z",
+    "description": "DH Hub — unified design & documentation portal"
+  },
+  "screens": [
+    {
+      "file": "screens/product_details.html",
+      "title": "Termék Részletek — kg / hibrid / db / chart",
+      "feature": "product-detail",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 4,
+      "version": "v1",
+      "tags": [
+        "DH-183",
+        "product",
+        "variants"
+      ],
+      "description": "Termék részlet oldal — 3 termék típus (kg / hibrid / db) + chart view egy fájlban, fenti tab navigációval."
+    },
+    {
+      "file": "screens/v0.5-shared-basket-v2.html",
+      "title": "Shared Basket v2 — Közös kosár",
+      "feature": "basket",
+      "sprint": "Sprint 5",
+      "status": "review",
+      "publish": true,
+      "order": 10,
+      "version": "v2",
+      "tags": [
+        "DH-149",
+        "basket",
+        "shared"
+      ]
+    },
+    {
+      "file": "screens/v0.5-notification-component.html",
+      "title": "Notification Component — Products oldal",
+      "feature": "notifications",
+      "sprint": "Sprint 5",
+      "status": "approved",
+      "publish": true,
+      "order": 1,
+      "version": "v1",
+      "tags": [
+        "DH-159",
+        "notification"
+      ]
+    },
+    {
+      "file": "screens/v0.5-favorites-v3.html",
+      "title": "Termékek — Kedvencek v3",
+      "feature": "favorites",
+      "sprint": "Sprint 5",
+      "status": "draft",
+      "publish": true,
+      "order": 22,
+      "version": "v3",
+      "tags": [
+        "DH-146",
+        "DH-160",
+        "favorites"
+      ]
+    },
+    {
+      "file": "screens/v0.4-seasonal-article.html",
+      "title": "Szezonális Cikk Oldal",
+      "feature": "article",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 1,
+      "version": "v0.4",
+      "tags": [
+        "DH-163",
+        "seasonal"
+      ]
+    },
+    {
+      "file": "screens/v0.4-rural-delivery.html",
+      "title": "Falusi route — teljes flow (6 nézet, v1.4)",
+      "feature": "rural-delivery",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 10,
+      "version": "v0.4",
+      "tags": [
+        "DH-184",
+        "rural",
+        "v1.4"
+      ],
+      "description": "Teljes falusi szállítási flow (v1.4) — felső tab-okkal: hibrid kör-választó (GPS+2 gomb+mismatch), route banner, kosár, checkout, visszaigazolás, futár. 200 RON Keresztúri threshold."
+    },
+    {
+      "file": "screens/v0.3-kassza-qr.html",
+      "title": "Kassza Szalag — QR Kód",
+      "feature": "qr-print",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 30,
+      "version": "v1",
+      "tags": [
+        "DH-167",
+        "founding50",
+        "qr"
+      ]
+    }
+  ],
+  "docs": [
+    {
+      "category": "Showcase",
+      "items": [
+        {
+          "file": "screens/voxhumana/index.html",
+          "title": "Vox Humana",
+          "desc": "Az Erdélyi Szakrális Örökség Őrzői",
+          "icon": "design",
+          "version": "v1",
+          "tags": [
+            "showcase"
+          ],
+          "updated": "2026-05",
+          "live": false
+        }
+      ]
+    },
+    {
+      "category": "Analytics",
+      "items": [
+        {
+          "file": "screens/v0.2-analytics-dictionary.html",
+          "title": "Analytics Dictionary v2.2",
+          "desc": "Firebase Analytics event szótár — 26 event státusza (OK / Javítandó / Hiányzó), kereshető, szűrhető",
+          "icon": "analytics",
+          "version": "v2.2",
+          "tags": [
+            "DH-104",
+            "firebase",
+            "analytics"
+          ],
+          "updated": "2026-04-28",
+          "live": true
+        }
+      ]
+    },
+    {
+      "category": "Business",
+      "items": [
+        {
+          "file": "screens/v0.1-economic-loop.html",
+          "title": "Economic Loop",
+          "desc": "DH gazdasági modell — flywheel és unit economics vizualizáció",
+          "icon": "business",
+          "version": "v1",
+          "tags": [
+            "flywheel",
+            "economics"
+          ],
+          "updated": "2026-04",
+          "live": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,14 +1,4 @@
-# {{date:YYYY-MM-DD}} ({{date:dddd}})
-
-
-
----
-
-## 📅 Events & Calendar
-(Integrate with Calendar plugin or add manually)
-
----
-
+# ({{date:dddd}})
 
 ## 🗂 Projects & Tasks
 
@@ -24,43 +14,59 @@ GROUP BY file.folder + "/" + file.name
 ``` dataview
 TASK
 FROM "02_Areas"
-WHERE !completed AND due <= date(today) and due
-GROUP BY file.folder + "/" + file.name
+  AND -"02_Areas/Sonrisa/CPS/TODAY"
+  AND -"02_Areas/Sonrisa/CPS/Sales/DASHBOARD_CONTRACT"
+  AND -"02_Areas/Sonrisa/CPS/Accounts/Leads"
+WHERE !completed
+  AND due
+  AND due <= date(today)
+  AND !contains(file.folder, ".claude/worktrees")
+  AND !contains(file.folder, "/BIN/")
+GROUP BY link(file.path)
 ```
 
+### 📝 Quick tasks
 
-### 📝 Other tasks
+- [ ] 
 
-- [ ] Read the emails
+```dataviewjs
+// Daily note → Weekly navigation (Prev / This / Next) on ONE LINE
+// Weekly note location: 05_DailyNotes/YYYY/YYYY-Www
 
----
+const title = dv.current().file.name;
+const isoTitleMatch = /^\d{4}-\d{2}-\d{2}$/.test(title);
+const refDate = isoTitleMatch ? dv.date(title) : dv.date("today");
 
-## 🤝 Meetings
-- Meeting: [[Project X Sync]]  
-  - Notes:  
-  - Decisions:  
-  - Action items:  
+function weeklyWikilink(dateObj) {
+  const isoYear = dateObj.toFormat("kkkk"); // ISO week-year
+  const week = dateObj.toFormat("WW");      // ISO week number 01..53
+  const name = `${isoYear}-W${week}`;
+  const path = `05_DailyNotes/${isoYear}/${name}`;
+  return `[[${path}|${name}]]`;
+}
 
+const prev = refDate.minus({ weeks: 1 });
+const next = refDate.plus({ weeks: 1 });
 
+const line = `← ${weeklyWikilink(prev)} | ${weeklyWikilink(refDate)} | ${weeklyWikilink(next)} →`;
+dv.paragraph(line);
 
----
-# Personal
-
-## 🌙 Reflection
-- What went well today?  
-- What challenged me?  
-- What did I learn?  
-- What am I grateful for?  
+```
   
-## Habit Tracker
+## [[Personal Areas]]
 
 ```habittracker
 {
-	"path": "02_Areas/Personal Growh/Habits/"
+	"path": "02_Areas/Personal Growth/Habits/"
 }
 ```
 
-Weight:: 96.8
+Weight:: 
+```dataviewjs
+await dv.view("02_Areas/Personal Growth/_views/weight-matrix");
+```
 
-## 🌅 Morning Thoughts
-_Free writing / journaling space for reflections, insights, or essay-style entries. Personal and unfiltered._
+```dataviewjs
+await dv.view("02_Areas/Personal Growth/_views/weight-chart", { defaultRangeDays: 30, useNoteAsRefDate: true });
+```
+

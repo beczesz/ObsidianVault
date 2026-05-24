@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Szállítási adatok — Deák Húsmíves</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root {
+  --bg: #FFFBF7;
+  --primary: #9B2335;
+  --text: #2C2825;
+  --text2: #5C544C;
+  --text3: #8A8078;
+  --border: #C5BCB3;
+  --border-light: #E8E2DB;
+  --card-bg: #FFFFFF;
+  --red-star: #C4302B;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: #FAF8F5; font-family: Inter, system-ui, -apple-system, sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; margin: 0; }
+.page-wrapper { max-width: 512px; width: 100%; margin: 0 auto; min-height: 100vh; background: var(--bg); position: relative; }
+
+/* Header */
+.header { height: 56px; background: #FFF; position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 10;
+  box-shadow: rgba(0,0,0,0.12) 0px 0px 1px 0px, rgba(0,0,0,0.15) 0px 0.5px 2px 0px, rgba(0,0,0,0.16) 0px 2px 3px 0px; }
+.header-inner { max-width: 512px; width: 100%; margin: 0 auto; display: flex; align-items: center; height: 100%; padding: 0 16px; }
+.back-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 12px; border: none; background: none; cursor: pointer; color: var(--text2); flex-shrink: 0; }
+.back-btn svg { width: 20px; height: 20px; }
+.header h1 { font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: 0.18px; flex: 1; text-align: center; }
+.header-spacer { width: 40px; flex-shrink: 0; }
+
+/* Main form */
+.main { padding: 72px 16px 144px; display: flex; flex-direction: column; gap: 24px; }
+
+/* Form group (label + input, gap-1 = 4px) */
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+
+/* Labels */
+.form-label { font-size: 14px; font-weight: 500; color: var(--text); letter-spacing: 0.28px; }
+.form-label .required { color: var(--red-star); }
+.form-label-sm { font-size: 12px; font-weight: 600; color: var(--text3); letter-spacing: 0.24px; }
+
+/* Inputs */
+.form-input { height: 48px; border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); font-size: 14px; font-weight: 400; color: var(--text); padding: 12px 16px; font-family: inherit; outline: none; letter-spacing: 0.28px; width: 100%; }
+.form-input::placeholder { color: #9CA3AF; font-weight: 400; }
+.form-textarea { border-radius: 12px; border: 1px solid var(--border); background: var(--card-bg); font-size: 14px; color: var(--text); padding: 12px 16px; font-family: inherit; outline: none; resize: none; height: 96px; width: 100%; letter-spacing: 0.28px; }
+.form-textarea::placeholder { color: #9CA3AF; }
+
+/* Section header */
+.section-header { font-size: 12px; font-weight: 700; color: var(--text3); letter-spacing: 0.6px; text-transform: uppercase; margin-bottom: 4px; }
+
+/* Address fields wrapper (gap-3 = 12px) */
+.address-fields { display: flex; flex-direction: column; gap: 12px; }
+
+/* Row: City + Zip */
+.row-2 { display: flex; gap: 12px; }
+.row-2 .field:first-child { flex: 2; }
+.row-2 .field:last-child { flex: 1; }
+
+/* Info box (-mt-4 = -16px to pull closer to address section) */
+.info-box { display: flex; align-items: flex-start; gap: 8px; padding: 12px; background: rgba(155,35,53,0.05); border: 1px solid rgba(155,35,53,0.2); border-radius: 12px; margin-top: -16px; }
+.info-box svg { width: 16px; height: 16px; color: var(--primary); flex-shrink: 0; margin-top: 2px; }
+.info-box p { font-size: 13px; font-weight: 400; color: var(--text2); letter-spacing: 0.26px; line-height: normal; }
+
+/* Date section (gap-1 = 4px between label, scroll, scrollbar) */
+.date-section { display: flex; flex-direction: column; gap: 4px; }
+.date-scroll-wrapper { display: flex; align-items: center; gap: 4px; }
+.date-scroll { display: flex; gap: 12px; overflow-x: auto; padding: 8px 0; flex: 1; scrollbar-width: none; -ms-overflow-style: none; }
+.date-scroll::-webkit-scrollbar { display: none; }
+.date-btn { width: 80px; height: 64px; border-radius: 16px; border: 1px solid var(--border); background: var(--card-bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; cursor: pointer; flex-shrink: 0; padding: 0; }
+.date-btn .day-name { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: 0.26px; }
+.date-btn .day-date { font-size: 14px; font-weight: 500; color: var(--text); letter-spacing: 0.28px; }
+.date-btn.selected { border-color: var(--primary); background: rgba(155,35,53,0.05); }
+.date-btn.selected .day-name,
+.date-btn.selected .day-date { color: var(--primary); }
+.scroll-arrow { width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; border: none; background: none; cursor: pointer; color: var(--text3); flex-shrink: 0; }
+.scroll-arrow svg { width: 16px; height: 16px; }
+
+/* Scrollbar track */
+.scrollbar-track { height: 4px; background: var(--border-light); border-radius: 2px; position: relative; }
+.scrollbar-thumb { height: 100%; width: 60%; background: var(--text3); border-radius: 2px; }
+
+/* Date hint section (gap-2 = 8px, separate from date picker) */
+.date-hint-section { display: flex; flex-direction: column; gap: 8px; }
+.date-hint { font-size: 13px; font-weight: 400; color: var(--text3); letter-spacing: 0.26px; }
+
+/* Counter */
+.char-counter { font-size: 12px; font-weight: 400; color: var(--text3); letter-spacing: 0.24px; text-align: right; }
+
+/* Optional label */
+.optional-label { font-size: 13px; font-weight: 400; color: var(--text3); letter-spacing: 0.26px; }
+
+/* CTA bar */
+.cta-bar { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; z-index: 15; background: rgba(255,255,255,0.95); box-shadow: rgba(0,0,0,0.1) 0px -1px 3px 0px; padding: 16px; height: 88px; }
+.cta-bar-inner { max-width: 512px; width: 100%; margin: 0 auto; height: 56px; }
+.cta-btn { display: block; width: 100%; height: 56px; padding: 0 8px; background: var(--primary); color: white; font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0.28px; border: none; border-radius: 16px; cursor: pointer; text-align: center; }
+
+.static-label { position: fixed; top: 8px; right: 8px; background: rgba(0,0,0,0.5); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; z-index: 100; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="static-label">STATIC COPY — staging.deakhus.ro</div>
+
+<div class="page-wrapper">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <button class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <h1>Szállítási adatok</h1>
+    <div class="header-spacer"></div>
+  </div>
+</div>
+
+<!-- Main content (flat structure matching staging form) -->
+<div class="main">
+
+  <!-- Címzett neve -->
+  <div class="form-group">
+    <label class="form-label">Címzett neve <span class="required">*</span></label>
+    <input class="form-input" type="text" placeholder="Adja meg a címzett nevét">
+  </div>
+
+  <!-- Telefonszám -->
+  <div class="form-group">
+    <label class="form-label">Telefonszám <span class="required">*</span></label>
+    <input class="form-input" type="text" placeholder="07XX XXX XXX">
+  </div>
+
+  <!-- Email cím -->
+  <div class="form-group">
+    <label class="form-label">Email cím <span class="required">*</span></label>
+    <input class="form-input" type="email" placeholder="pelda@email.com">
+  </div>
+
+  <!-- SZÁLLÍTÁSI CÍM section header (direct child, mb: 4px) -->
+  <p class="section-header">Szállítási cím</p>
+
+  <!-- Address fields (outer gap-1=4px, inner gap-3=12px) -->
+  <div class="form-group">
+    <div class="address-fields">
+      <!-- Utca -->
+      <div class="form-group">
+        <label class="form-label-sm">Utca <span class="required">*</span></label>
+        <input class="form-input" type="text" placeholder="pl. Morii utca">
+      </div>
+      <!-- Házszám -->
+      <div class="form-group">
+        <label class="form-label-sm">Házszám <span class="required">*</span></label>
+        <input class="form-input" type="text" placeholder="pl. 20/1">
+      </div>
+      <!-- Emelet, ajtó -->
+      <div class="form-group">
+        <label class="form-label-sm">Emelet, ajtó</label>
+        <input class="form-input" type="text" placeholder="pl. 3. emelet, 12. ajtó">
+      </div>
+      <!-- Város + Irányítószám -->
+      <div class="row-2">
+        <div class="field form-group">
+          <label class="form-label-sm">Város <span class="required">*</span></label>
+          <input class="form-input" type="text" placeholder="pl. Székelyudvarhely">
+        </div>
+        <div class="field form-group">
+          <label class="form-label-sm">Irányítószám <span class="required">*</span></label>
+          <input class="form-input" type="text" placeholder="535600">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Info box (with -mt-4 = -16px negative margin) -->
+  <div class="info-box">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+    <p>Kiszállítás csak Székelyudvarhely és +10 km-es körzetében. 10 km-en túli kiszállítás esetén 1,5 RON/km pótdíj kerül felszámításra.</p>
+  </div>
+
+  <!-- Szállítási nap (gap-2 = 8px) -->
+  <div class="date-section">
+    <label class="form-label">Szállítási nap <span class="required">*</span></label>
+    <div class="date-scroll-wrapper">
+      <button class="scroll-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <div class="date-scroll">
+        <button class="date-btn">
+          <span class="day-name">Sze</span>
+          <span class="day-date">6 máj.</span>
+        </button>
+        <button class="date-btn">
+          <span class="day-name">Pén</span>
+          <span class="day-date">8 máj.</span>
+        </button>
+        <button class="date-btn">
+          <span class="day-name">Sze</span>
+          <span class="day-date">13 máj.</span>
+        </button>
+        <button class="date-btn">
+          <span class="day-name">Pén</span>
+          <span class="day-date">15 máj.</span>
+        </button>
+        <button class="date-btn">
+          <span class="day-name">Sze</span>
+          <span class="day-date">20 máj.</span>
+        </button>
+        <button class="date-btn">
+          <span class="day-name">Pén</span>
+          <span class="day-date">22 máj.</span>
+        </button>
+      </div>
+      <button class="scroll-arrow">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+    </div>
+    <div class="scrollbar-track"><div class="scrollbar-thumb"></div></div>
+  </div>
+
+  <!-- Date hint (separate section, gap-2 = 8px) -->
+  <div class="date-hint-section">
+    <p class="date-hint">Először válasszon szállítási napot</p>
+  </div>
+
+  <!-- Megjegyzés -->
+  <div class="form-group">
+    <label class="form-label">Megjegyzés a szállításhoz <span class="optional-label">(opcionális)</span></label>
+    <textarea class="form-textarea" placeholder="Pl: Csöngessen kétszer"></textarea>
+    <p class="char-counter">0/200</p>
+  </div>
+
+</div>
+
+</div><!-- /.page-wrapper -->
+
+<!-- CTA bar -->
+<div class="cta-bar">
+  <div class="cta-bar-inner">
+    <button class="cta-btn">Tovább</button>
+  </div>
+</div>
+
+</body>
+</html>

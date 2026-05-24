@@ -1,0 +1,14 @@
+Ez a mappa 2026-05-14-én átszervezésre került.
+A tartalma az új tematikus mappákba került:
+
+- email_exportok/  →  07_Email_archivum/
+- meetings/        →  08_Meetings/  és  00_AFM_Palyazat_2026/meeting_20260825/
+- Marketing/       →  06_Marketing_es_IT/
+- Kovacs_Ilona/    →  szétosztva: 02_Ugyfelek/, 03_Beszallitok/,
+                                  05_Penzugy/, 09_Belso_dokumentumok/
+
+A Drive nem engedi törölni az üres mappákat innen, kérlek töröld kézzel
+a Drive felületén ha már nem kell.
+
+Ha bármi visszakeresendő, az eredeti állapot megvan a
+_TransOffice_eredeti_BACKUP_20260514/ mappában.

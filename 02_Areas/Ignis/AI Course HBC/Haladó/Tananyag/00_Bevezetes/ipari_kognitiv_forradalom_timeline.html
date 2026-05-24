@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ipari forradalom ↔ Kognitív forradalom</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0a2540;
+    background: radial-gradient(ellipse at top, #102d52 0%, #0a2540 50%, #050d1c 100%);
+    color: #ffffff;
+    font-family: 'Inter', 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    line-height: 1.6;
+    padding-bottom: 200px;
+  }
+
+  /* Header */
+  .header {
+    text-align: center;
+    padding: 100px 40px 60px;
+    position: relative;
+  }
+
+  .header h1 {
+    font-size: 56px;
+    font-weight: 200;
+    letter-spacing: -1px;
+    margin-bottom: 16px;
+  }
+
+  .header h1 .accent {
+    color: #ff6b35;
+    font-weight: 300;
+  }
+
+  .header .subtitle {
+    font-size: 20px;
+    font-weight: 300;
+    color: rgba(255, 255, 255, 0.5);
+    letter-spacing: 0.5px;
+  }
+
+  /* Column headers */
+  .columns-header {
+    max-width: 1280px;
+    margin: 0 auto 40px;
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    align-items: center;
+    position: sticky;
+    top: 0;
+    background: rgba(10, 37, 64, 0.92);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 50;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .col-label {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  .col-label.left {
+    text-align: right;
+  }
+
+  .col-label.left .icon {
+    color: #d4a574;
+  }
+
+  .col-label.right .icon {
+    color: #ff6b35;
+  }
+
+  /* Timeline container */
+  .timeline {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 40px;
+    position: relative;
+  }
+
+  /* Center spine */
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom,
+      transparent 0%,
+      rgba(255, 255, 255, 0.15) 5%,
+      rgba(255, 255, 255, 0.15) 95%,
+      transparent 100%);
+    transform: translateX(-1px);
+  }
+
+  /* Each row in the timeline */
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 80px 1fr;
+    align-items: center;
+    margin-bottom: 60px;
+    position: relative;
+  }
+
+  /* Center milestone dot */
+  .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #0a2540;
+    border: 2px solid rgba(255, 255, 255, 0.25);
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+    transition: all 0.6s ease;
+  }
+
+  .dot.steam-on {
+    background: #d4a574;
+    border-color: #d4a574;
+    box-shadow: 0 0 20px rgba(212, 165, 116, 0.5);
+  }
+
+  .dot.ai-on {
+    background: #ff6b35;
+    border-color: #ff6b35;
+    box-shadow: 0 0 20px rgba(255, 107, 53, 0.5);
+  }
+
+  /* Event card */
+  .event {
+    padding: 24px 28px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                transform 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  .event.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .event.steam {
+    grid-column: 1;
+    text-align: right;
+    border-left: 3px solid #d4a574;
+  }
+
+  .event.ai {
+    grid-column: 3;
+    text-align: left;
+    border-right: 3px solid #ff6b35;
+  }
+
+  .event .date {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .event.steam .date {
+    color: #d4a574;
+  }
+
+  .event.ai .date {
+    color: #ff6b35;
+  }
+
+  .event .text {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.92);
+    font-weight: 300;
+    line-height: 1.65;
+  }
+
+  .event .text strong {
+    color: #ffffff;
+    font-weight: 500;
+  }
+
+  /* Special highlight rows */
+  .event.highlight {
+    background: rgba(255, 107, 53, 0.08);
+    border-radius: 16px;
+  }
+
+  .event.steam.highlight {
+    background: rgba(212, 165, 116, 0.08);
+  }
+
+  /* Controls */
+  .controls {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+    align-items: center;
+  }
+
+  .btn {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: white;
+    padding: 14px 26px;
+    border-radius: 100px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 400;
+    letter-spacing: 0.3px;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .btn:hover:not(:disabled) {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  .btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: #ff6b35;
+    border-color: #ff6b35;
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: #ff7d50;
+    border-color: #ff7d50;
+  }
+
+  .progress {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    padding: 0 16px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .phase-label {
+    position: fixed;
+    top: 30px;
+    right: 40px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 8px 18px;
+    border-radius: 100px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    z-index: 50;
+    transition: all 0.4s ease;
+  }
+
+  .phase-label.steam {
+    border-color: rgba(212, 165, 116, 0.4);
+    color: #d4a574;
+  }
+
+  .phase-label.ai {
+    border-color: rgba(255, 107, 53, 0.4);
+    color: #ff6b35;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .header h1 { font-size: 36px; }
+    .columns-header, .timeline { padding: 20px; }
+    .row { grid-template-columns: 1fr 40px 1fr; margin-bottom: 40px; }
+    .event { padding: 16px 18px; }
+    .event .text { font-size: 14px; }
+    .header { padding: 60px 20px 40px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="phase-label" id="phaseLabel">VÁRAKOZÁS</div>
+
+  <div class="header">
+    <h1>Ipari forradalom <span class="accent">↔</span> Kognitív forradalom</h1>
+    <p class="subtitle">Két korszak. Egy minta.</p>
+  </div>
+
+  <div class="columns-header">
+    <div class="col-label left"><span class="icon">⚙</span> &nbsp; GŐZGÉP KORSZAK</div>
+    <div></div>
+    <div class="col-label right">AI + LOKÁLIS WORKFLOW &nbsp; <span class="icon">◆</span></div>
+  </div>
+
+  <div class="timeline" id="timeline">
+
+    <!-- Row 1 -->
+    <div class="row">
+      <div class="event steam" data-step="1">
+        <div class="date">Kr. u. 1. század</div>
+        <div class="text"><strong>Hérón</strong> leír egyszerű gőzzel működő szerkezeteket. Érdekes technikai kuriózum, de nincs gyakorlati gazdasági hatása.</div>
+      </div>
+      <div class="dot" data-dot="1"></div>
+      <div class="event ai" data-step="12">
+        <div class="date">1950–2020</div>
+        <div class="text"><strong>AI kutatás évtizedei.</strong> Sok ígéret, sok hype, de kevés valódi mindennapi workflow-integráció.</div>
+      </div>
+    </div>
+
+    <!-- Row 2 -->
+    <div class="row">
+      <div class="event steam" data-step="2">
+        <div class="date">1698</div>
+        <div class="text"><strong>Thomas Savery</strong> első gyakorlati gőzgépe bányavíz kiszivattyúzására. Szűk niche probléma megoldása.</div>
+      </div>
+      <div class="dot" data-dot="2"></div>
+      <div class="event ai" data-step="13">
+        <div class="date">2010-es évek</div>
+        <div class="text"><strong>Markdown</strong> széles körben elterjed fejlesztői és tudáskezelési környezetben. Egyszerű, ember- és gépolvasható standard formátummá válik.</div>
+      </div>
+    </div>
+
+    <!-- Row 3 -->
+    <div class="row">
+      <div class="event steam" data-step="3">
+        <div class="date">1712</div>
+        <div class="text"><strong>Thomas Newcomen</strong> első iparilag használható gőzgépe. Már működőképes, de még nehézkes és specializált.</div>
+      </div>
+      <div class="dot" data-dot="3"></div>
+      <div class="event ai" data-step="14">
+        <div class="date">2020</div>
+        <div class="text"><strong>Obsidian megjelenése.</strong> A lokális markdown-alapú tudásgráf széles körben használhatóvá válik.</div>
+      </div>
+    </div>
+
+    <!-- Row 4 -->
+    <div class="row">
+      <div class="event steam" data-step="4">
+        <div class="date">1760–1780</div>
+        <div class="text"><strong>James Watt</strong> hatékonyabbá teszi a gőzgépet. Már nem csak vizet pumpál, hanem általános energiaforrássá válik.</div>
+      </div>
+      <div class="dot" data-dot="4"></div>
+      <div class="event ai" data-step="15">
+        <div class="date">2022. november</div>
+        <div class="text"><strong>ChatGPT indulása.</strong> Az LLM-ek tömegesen elérhetővé válnak. Az AI először kerül tömegek kezébe.</div>
+      </div>
+    </div>
+
+    <!-- Row 5 -->
+    <div class="row">
+      <div class="event steam" data-step="5">
+        <div class="date">1770–1800</div>
+        <div class="text"><strong>Precíziós esztergák és szerszámgépek</strong> megjelenése (Henry Maudslay és mások). Standardizált, pontos alkatrészgyártás válik lehetővé.</div>
+      </div>
+      <div class="dot" data-dot="5"></div>
+      <div class="event ai" data-step="16">
+        <div class="date">2023–2025</div>
+        <div class="text"><strong>AI workflow kultúra</strong> kialakulása. Prompt engineering, markdown workflow, knowledge base-ek, AI-assisted dokumentáció terjedése.</div>
+      </div>
+    </div>
+
+    <!-- Row 6 -->
+    <div class="row">
+      <div class="event steam highlight" data-step="6">
+        <div class="date">1800-as évek eleje</div>
+        <div class="text"><strong>Gőzgép + szerszámgépek kombinációja.</strong> Megindul az ipari robbanás: gyárak, vasút, tömegtermelés.</div>
+      </div>
+      <div class="dot" data-dot="6"></div>
+      <div class="event ai highlight" data-step="17">
+        <div class="date">2025–2026</div>
+        <div class="text"><strong>Local AI workflow korszak.</strong> AI hozzáfér a lokális fájlrendszerhez, több fájlhoz, workflow-khoz, böngészőhöz.</div>
+      </div>
+    </div>
+
+    <!-- Row 7 -->
+    <div class="row">
+      <div class="event steam" data-step="7">
+        <div class="date">A kombinatorikus robbanás kezdete</div>
+        <div class="text">amikor a gőzgép és a precíziós szerszámgép egymást kezdi erősíteni.</div>
+      </div>
+      <div class="dot" data-dot="7"></div>
+      <div class="event ai" data-step="18">
+        <div class="date">2026. február</div>
+        <div class="text"><strong>A kombinatorikus robbanás kezdete:</strong> amikor az LLM + Markdown + Obsidian + lokális filesystem + agentic AI együtt kezd működni.</div>
+      </div>
+    </div>
+
+    <!-- Row 8 -->
+    <div class="row">
+      <div class="event steam" data-step="8">
+        <div class="date">Az eredmény</div>
+        <div class="text">Gyárak, automatizáció, tömegtermelés, modern ipar.</div>
+      </div>
+      <div class="dot" data-dot="8"></div>
+      <div class="event ai" data-step="19">
+        <div class="date">Az eredmény</div>
+        <div class="text"><strong>„Cognitive operating system"</strong> — AI-alapú munkarendszerek, automatizált tudásmunka, agentic workflow-k.</div>
+      </div>
+    </div>
+
+    <!-- Row 9 -->
+    <div class="row">
+      <div class="event steam" data-step="9">
+        <div class="date">A gőzgép önmagában még nem volt elég</div>
+        <div class="text">A forradalmat az infrastruktúra és a szerszámgépek hozták el.</div>
+      </div>
+      <div class="dot" data-dot="9"></div>
+      <div class="event ai" data-step="20">
+        <div class="date">A chatbot önmagában még nem volt elég</div>
+        <div class="text">A forradalmat a workflow, memória és lokális operációs réteg hozza el.</div>
+      </div>
+    </div>
+
+    <!-- Row 10 -->
+    <div class="row">
+      <div class="event steam" data-step="10">
+        <div class="date">A szerszámgép</div>
+        <div class="text">lehetővé tette új gépek gyártását.</div>
+      </div>
+      <div class="dot" data-dot="10"></div>
+      <div class="event ai" data-step="21">
+        <div class="date">Az AI workflow rendszer</div>
+        <div class="text">lehetővé teszi új workflow-k, pluginok és tudásrendszerek gyártását.</div>
+      </div>
+    </div>
+
+    <!-- Row 11 -->
+    <div class="row">
+      <div class="event steam highlight" data-step="11">
+        <div class="date">EREDMÉNY</div>
+        <div class="text"><strong>Ipari infrastruktúra született.</strong></div>
+      </div>
+      <div class="dot" data-dot="11"></div>
+      <div class="event ai highlight" data-step="22">
+        <div class="date">EREDMÉNY</div>
+        <div class="text"><strong>Kognitív infrastruktúra születik.</strong></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="backBtn">← Vissza</button>
+    <div class="progress" id="progress">0 / 22</div>
+    <button class="btn btn-primary" id="forwardBtn">Tovább →</button>
+  </div>
+
+<script>
+  const events = document.querySelectorAll('.event');
+  const dots = document.querySelectorAll('.dot');
+  const backBtn = document.getElementById('backBtn');
+  const forwardBtn = document.getElementById('forwardBtn');
+  const progress = document.getElementById('progress');
+  const phaseLabel = document.getElementById('phaseLabel');
+  const TOTAL = events.length;
+  const STEAM_COUNT = 11;
+  let currentStep = 0;
+  let busy = false;
+
+  function updatePhase() {
+    if (currentStep === 0) {
+      phaseLabel.textContent = 'VÁRAKOZÁS';
+      phaseLabel.className = 'phase-label';
+    } else if (currentStep <= STEAM_COUNT) {
+      phaseLabel.textContent = '⚙ GŐZGÉP KORSZAK';
+      phaseLabel.className = 'phase-label steam';
+    } else {
+      phaseLabel.textContent = '◆ KOGNITÍV KORSZAK';
+      phaseLabel.className = 'phase-label ai';
+    }
+  }
+
+  function updateUI() {
+    progress.textContent = currentStep + ' / ' + TOTAL;
+    backBtn.disabled = currentStep === 0;
+    forwardBtn.disabled = currentStep === TOTAL;
+    updatePhase();
+  }
+
+  function showEvent(step) {
+    const event = document.querySelector('[data-step="' + step + '"]');
+    if (!event) return;
+    event.classList.add('visible');
+
+    // Light up the corresponding dot
+    const rowIndex = ((step - 1) % STEAM_COUNT) + 1;
+    const dot = document.querySelector('[data-dot="' + rowIndex + '"]');
+    if (dot) {
+      if (step <= STEAM_COUNT) dot.classList.add('steam-on');
+      else dot.classList.add('ai-on');
+    }
+
+    // Scroll to center
+    event.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+
+  function hideEvent(step) {
+    const event = document.querySelector('[data-step="' + step + '"]');
+    if (!event) return;
+    event.classList.remove('visible');
+
+    // Dim the dot (only if both sides are off)
+    const rowIndex = ((step - 1) % STEAM_COUNT) + 1;
+    const dot = document.querySelector('[data-dot="' + rowIndex + '"]');
+    if (dot) {
+      if (step <= STEAM_COUNT) dot.classList.remove('steam-on');
+      else dot.classList.remove('ai-on');
+    }
+  }
+
+  function goForward() {
+    if (busy) return;
+    if (currentStep >= TOTAL) return;
+
+    busy = true;
+
+    // Special transition: from last steam to first AI
+    if (currentStep === STEAM_COUNT) {
+      // Scroll to top first
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      phaseLabel.textContent = '◆ KOGNITÍV KORSZAK';
+      phaseLabel.className = 'phase-label ai';
+      setTimeout(function() {
+        currentStep++;
+        showEvent(currentStep);
+        updateUI();
+        busy = false;
+      }, 900);
+    } else {
+      currentStep++;
+      showEvent(currentStep);
+      updateUI();
+      setTimeout(function() { busy = false; }, 600);
+    }
+  }
+
+  function goBack() {
+    if (busy) return;
+    if (currentStep <= 0) return;
+
+    busy = true;
+    hideEvent(currentStep);
+    currentStep--;
+
+    // If we just went from first AI back to last steam, scroll to bottom
+    if (currentStep === STEAM_COUNT) {
+      const lastSteam = document.querySelector('[data-step="' + STEAM_COUNT + '"]');
+      if (lastSteam) lastSteam.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else if (currentStep > 0) {
+      showEvent(currentStep); // re-trigger scroll to current
+      // Don't add visible again, just scroll
+      const event = document.querySelector('[data-step="' + currentStep + '"]');
+      if (event) event.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    updateUI();
+    setTimeout(function() { busy = false; }, 600);
+  }
+
+  forwardBtn.addEventListener('click', goForward);
+  backBtn.addEventListener('click', goBack);
+
+  // Keyboard navigation
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+      e.preventDefault();
+      goForward();
+    } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+      e.preventDefault();
+      goBack();
+    }
+  });
+
+  updateUI();
+</script>
+
+</body>
+</html>

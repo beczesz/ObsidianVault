@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Rendelés megerősítése — Deák Húsmíves</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+:root {
+  --bg: #FFFBF7;
+  --primary: #9B2335;
+  --text: #2C2825;
+  --text2: #5C544C;
+  --text3: #8A8078;
+  --border: #E8E2DB;
+  --card-bg: #FFFFFF;
+  --green: #2D7A4F;
+  --warning: #C4841D;
+  --warning-bg: rgba(196, 132, 29, 0.1);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { background: #FAF8F5; font-family: Inter, system-ui, -apple-system, sans-serif; color: var(--text); -webkit-font-smoothing: antialiased; margin: 0; }
+.page-wrapper { max-width: 512px; width: 100%; margin: 0 auto; min-height: 100vh; background: var(--bg); position: relative; }
+
+/* Header */
+.header { height: 56px; background: #FFF; position: fixed; top: 0; left: 0; right: 0; width: 100%; z-index: 40;
+  box-shadow: rgba(0,0,0,0.12) 0px 0px 1px 0px, rgba(0,0,0,0.15) 0px 0.5px 2px 0px, rgba(0,0,0,0.16) 0px 2px 3px 0px; }
+.header-inner { max-width: 512px; width: 100%; margin: 0 auto; display: flex; align-items: center; height: 100%; padding: 0 16px; }
+.back-btn { width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 12px; border: none; background: none; cursor: pointer; color: var(--text2); flex-shrink: 0; }
+.back-btn svg { width: 20px; height: 20px; }
+.header h1 { font-size: 18px; font-weight: 600; color: var(--text); letter-spacing: 0.18px; flex: 1; text-align: center; }
+.header-spacer { width: 40px; flex-shrink: 0; }
+
+/* Main */
+.main { padding: 72px 16px 144px; }
+.cards-wrapper { display: flex; flex-direction: column; gap: 16px; }
+
+/* Card */
+.card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; padding: 16px; }
+
+/* Section header */
+.section-header { font-size: 12px; font-weight: 600; color: var(--text3); letter-spacing: 0.3px; text-transform: uppercase; margin-bottom: 12px; }
+
+/* Product list */
+.product-list { display: flex; flex-direction: column; }
+.product-item { padding: 12px 0; border-bottom: 1px solid var(--border); }
+.product-item:last-child { border-bottom: none; }
+.product-row { display: flex; justify-content: space-between; align-items: flex-start; }
+.product-info { display: flex; flex-direction: column; gap: 4px; flex: 1; }
+.product-name { font-size: 14px; font-weight: 500; color: var(--text); letter-spacing: 0.28px; }
+.product-detail { font-size: 13px; font-weight: 400; color: var(--text3); letter-spacing: 0.26px; }
+.product-price { font-size: 14px; font-weight: 500; color: var(--text); letter-spacing: 0.28px; flex-shrink: 0; margin-left: 12px; }
+
+/* Summary */
+.summary { border-top: 1px solid var(--border); margin-top: 8px; padding-top: 12px; }
+.summary-rows { display: flex; flex-direction: column; gap: 8px; }
+.summary-row { display: flex; align-items: center; justify-content: space-between; }
+.summary-label { font-size: 13px; font-weight: 400; color: var(--text2); }
+.summary-value { font-size: 13px; font-weight: 400; color: var(--text2); }
+.line-through { text-decoration: line-through; color: var(--text3); margin-right: 4px; font-size: 13px; }
+.text-green { color: var(--green); font-weight: 500; font-size: 13px; }
+.summary-total-row { display: flex; align-items: center; justify-content: space-between; padding-top: 4px; }
+.summary-total-label { font-size: 14px; font-weight: 600; color: var(--text); }
+.summary-total-value { font-size: 16px; font-weight: 600; color: var(--text); }
+
+/* Warning box */
+.warning-box { display: flex; align-items: flex-start; gap: 8px; background: var(--warning-bg); border-radius: 12px; padding: 12px; margin-top: 8px; }
+.warning-box svg { width: 16px; height: 16px; color: var(--warning); flex-shrink: 0; margin-top: 2px; }
+.warning-box p { font-size: 12px; font-weight: 400; color: var(--warning); line-height: 16.5px; letter-spacing: 0.24px; }
+
+/* Delivery info */
+.delivery-rows { display: flex; flex-direction: column; gap: 12px; }
+.delivery-row { display: flex; flex-direction: column; }
+.delivery-label { font-size: 12px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.3px; }
+.delivery-value { font-size: 14px; font-weight: 400; color: var(--text); letter-spacing: 0.28px; }
+
+/* Time badge */
+.time-badge { display: inline-flex; align-items: center; padding: 4px 10px; border-radius: 6px; background: rgba(155, 35, 53, 0.05); border: 1px solid rgba(155, 35, 53, 0.2); font-size: 14px; font-weight: 500; color: var(--text); }
+
+/* Payment options */
+.payment-options { display: flex; flex-direction: column; gap: 12px; }
+.payment-option { width: 100%; display: flex; align-items: center; gap: 12px; border-radius: 12px; border: 1px solid; padding: 12px; cursor: pointer; background: var(--card-bg); text-align: left; font-family: inherit; }
+.payment-option.selected { border-color: var(--primary); background: rgba(155, 35, 53, 0.05); }
+.payment-option.unselected { border-color: #C5BCB3; background: var(--card-bg); }
+
+/* Radio */
+.radio-outer { width: 20px; height: 20px; border-radius: 9999px; border: 2px solid; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.radio-outer.active { border-color: var(--primary); }
+.radio-outer.inactive { border-color: #C5BCB3; }
+.radio-inner { width: 10px; height: 10px; border-radius: 9999px; background: var(--primary); }
+
+/* Payment icon */
+.pay-icon { width: 24px; height: 24px; flex-shrink: 0; }
+.pay-icon.cash { color: var(--green); }
+.pay-icon.card-icon { color: #3B82F6; }
+
+/* Payment text */
+.pay-text { display: flex; flex-direction: column; }
+.pay-title { font-size: 14px; font-weight: 500; color: var(--text); }
+.pay-desc { font-size: 13px; font-weight: 400; color: var(--text3); }
+
+/* Footer note */
+.footer-note { font-size: 12px; font-weight: 400; color: var(--text3); margin-top: 0; line-height: normal; }
+
+/* CTA bar */
+.cta-bar { position: fixed; bottom: 0; left: 0; right: 0; width: 100%; z-index: 15; background: rgba(255,255,255,0.95); box-shadow: rgba(0,0,0,0.1) 0px -1px 3px 0px; padding: 16px; height: 88px; }
+.cta-bar-inner { max-width: 512px; width: 100%; margin: 0 auto; height: 56px; }
+.cta-btn { display: block; width: 100%; height: 56px; padding: 0 8px; background: var(--primary); color: white; font-family: inherit; font-size: 14px; font-weight: 600; letter-spacing: 0.28px; border: none; border-radius: 16px; cursor: pointer; text-align: center; }
+
+.static-label { position: fixed; top: 8px; right: 8px; background: rgba(0,0,0,0.5); color: white; font-size: 9px; padding: 2px 6px; border-radius: 4px; z-index: 100; font-family: monospace; }
+</style>
+</head>
+<body>
+<div class="static-label">STATIC COPY — deakhus.ro</div>
+
+<div class="page-wrapper">
+
+<!-- Header -->
+<div class="header">
+  <div class="header-inner">
+    <button class="back-btn">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <h1>Rendelés megerősítése</h1>
+    <div class="header-spacer"></div>
+  </div>
+</div>
+
+<!-- Main content -->
+<main class="main">
+<div class="cards-wrapper">
+
+  <!-- Card 1: Products -->
+  <div class="card">
+    <h2 class="section-header">Megrendelt termékek</h2>
+    <div class="product-list">
+      <div class="product-item">
+        <div class="product-row">
+          <div class="product-info">
+            <span class="product-name">Sertés nyakaskaraj</span>
+            <span class="product-detail">0,9 kg × 33,00 RON/kg</span>
+          </div>
+          <span class="product-price">~29,70 RON</span>
+        </div>
+      </div>
+      <div class="product-item">
+        <div class="product-row">
+          <div class="product-info">
+            <span class="product-name">Miccs</span>
+            <span class="product-detail">0,9 kg × 40,00 RON/kg</span>
+          </div>
+          <span class="product-price">~36,00 RON</span>
+        </div>
+      </div>
+      <div class="product-item">
+        <div class="product-row">
+          <div class="product-info">
+            <span class="product-name">Cérna Kolbász</span>
+            <span class="product-detail">0,9 kg × 48,00 RON/kg</span>
+          </div>
+          <span class="product-price">~43,20 RON</span>
+        </div>
+      </div>
+      <div class="product-item">
+        <div class="product-row">
+          <div class="product-info">
+            <span class="product-name">Sertés Hasrész</span>
+            <span class="product-detail">0,9 kg × 24,50 RON/kg</span>
+          </div>
+          <span class="product-price">~22,05 RON</span>
+        </div>
+      </div>
+      <div class="product-item">
+        <div class="product-row">
+          <div class="product-info">
+            <span class="product-name">Sertés fehérkaraj csontos szalonnás</span>
+            <span class="product-detail">1,0 kg × 25,50 RON/kg</span>
+          </div>
+          <span class="product-price">~25,50 RON</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Summary -->
+    <div class="summary">
+      <div class="summary-rows">
+        <div class="summary-row">
+          <span class="summary-label">Becsült részösszeg</span>
+          <span class="summary-value">~156,45 RON</span>
+        </div>
+        <div class="summary-row">
+          <span class="summary-label">Szállítás</span>
+          <span class="summary-value"><span class="line-through">10,00 RON</span><span class="text-green">Ingyenes</span></span>
+        </div>
+        <div class="summary-total-row">
+          <span class="summary-total-label">Becsült összesen</span>
+          <span class="summary-total-value">~156,45 RON</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Warning box -->
+    <div class="warning-box">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/></svg>
+      <p>A végső ár ±10%-kal eltérhet, mivel a termékek szállításkor kerülnek mérlegre.</p>
+    </div>
+  </div>
+
+  <!-- Card 2: Delivery info -->
+  <div class="card">
+    <h2 class="section-header">Szállítási adatok</h2>
+    <div class="delivery-rows">
+      <div class="delivery-row">
+        <span class="delivery-label">Címzett</span>
+        <span class="delivery-value">Szabolcs Becze</span>
+      </div>
+      <div class="delivery-row">
+        <span class="delivery-label">Telefon</span>
+        <span class="delivery-value">0740 507 135</span>
+      </div>
+      <div class="delivery-row">
+        <span class="delivery-label">Cím</span>
+        <span class="delivery-value">Morii -</span>
+        <span class="delivery-value">20</span>
+        <span class="delivery-value">Székelyudvarhely, 535600</span>
+      </div>
+      <div class="delivery-row">
+        <span class="delivery-label">Szállítás dátuma</span>
+        <span class="delivery-value">Szombat, 9 máj. 2026</span>
+      </div>
+      <div class="delivery-row">
+        <span class="delivery-label">Időablak</span>
+        <div style="display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px;">
+          <span class="time-badge">12:00 - 13:00</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3: Payment -->
+  <div class="card">
+    <h2 class="section-header">Fizetési mód</h2>
+    <div class="payment-options">
+      <!-- Selected: Cash -->
+      <button class="payment-option selected">
+        <span class="radio-outer active">
+          <span class="radio-inner"></span>
+        </span>
+        <svg class="pay-icon cash" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="12" x="2" y="6" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></svg>
+        <div class="pay-text">
+          <span class="pay-title">Fizetés átvételkor</span>
+          <span class="pay-desc">Fizessen a futárnak a rendelés átvételekor.</span>
+        </div>
+      </button>
+      <!-- Unselected: Card -->
+      <button class="payment-option unselected">
+        <span class="radio-outer inactive"></span>
+        <svg class="pay-icon card-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" x2="22" y1="10" y2="10"/></svg>
+        <div class="pay-text">
+          <span class="pay-title">Bankkártyás fizetés átvételkor</span>
+          <span class="pay-desc">Fizessen bankkártyával a futárnak a rendelés átvételekor.</span>
+        </div>
+      </button>
+      <p class="footer-note">A végső ár a pontos mért súly alapján kerül meghatározásra, ezért a fizetés kiszállításkor történik.</p>
+    </div>
+  </div>
+
+</div>
+</main>
+
+</div><!-- /.page-wrapper -->
+
+<!-- CTA bar -->
+<div class="cta-bar">
+  <div class="cta-bar-inner">
+    <button class="cta-btn">Rendelés leadása</button>
+  </div>
+</div>
+
+</body>
+</html>

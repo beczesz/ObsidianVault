@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Mascot extractor</title>
+<style>
+  * { margin: 0; padding: 0; }
+  html, body { width: 2000px; height: 2000px; overflow: hidden; background: transparent; }
+  canvas { display: block; width: 2000px; height: 2000px; }
+</style>
+</head>
+<body>
+<canvas id="c" width="2000" height="2000"></canvas>
+<script>
+const c = document.getElementById('c');
+const ctx = c.getContext('2d', { willReadFrequently: true });
+const img = new Image();
+img.onload = () => {
+  ctx.clearRect(0, 0, 2000, 2000);
+  ctx.drawImage(img, 0, 0, 2000, 2000);
+
+  const id = ctx.getImageData(0, 0, 2000, 2000);
+  const data = id.data;
+  const w = 2000, h = 2000;
+  const visited = new Uint8Array(w * h);
+  const stack = [];
+
+  // White-ish threshold for "background"
+  const isWhiteish = (idx) => {
+    const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+    return r >= 240 && g >= 240 && b >= 240;
+  };
+
+  const tryEnqueue = (x, y) => {
+    if (x < 0 || y < 0 || x >= w || y >= h) return;
+    const p = y * w + x;
+    if (visited[p]) return;
+    if (!isWhiteish(p * 4)) return;
+    visited[p] = 1;
+    stack.push(p);
+  };
+
+  // Seed from all edge pixels
+  for (let x = 0; x < w; x++) { tryEnqueue(x, 0); tryEnqueue(x, h - 1); }
+  for (let y = 0; y < h; y++) { tryEnqueue(0, y); tryEnqueue(w - 1, y); }
+
+  // 4-connectivity flood fill
+  while (stack.length) {
+    const p = stack.pop();
+    const x = p % w;
+    const y = (p - x) / w;
+    tryEnqueue(x - 1, y);
+    tryEnqueue(x + 1, y);
+    tryEnqueue(x, y - 1);
+    tryEnqueue(x, y + 1);
+  }
+
+  // Anti-alias edge softening: near-white pixels adjacent to visited bg get partial alpha.
+  // Walk visited[] one more pass to find "edge" pixels and give them gradient alpha.
+  for (let p = 0; p < w * h; p++) {
+    if (visited[p]) {
+      data[p * 4 + 3] = 0;            // fully transparent
+    } else {
+      // Check if this non-bg pixel is whitish near the visited boundary → soften alpha
+      const idx = p * 4;
+      const r = data[idx], g = data[idx + 1], b = data[idx + 2];
+      if (r >= 220 && g >= 220 && b >= 220) {
+        // Look at 4-neighbors; if any visited, fade
+        const x = p % w, y = (p - x) / w;
+        let bgNeighbors = 0;
+        if (x > 0 && visited[p - 1]) bgNeighbors++;
+        if (x < w - 1 && visited[p + 1]) bgNeighbors++;
+        if (y > 0 && visited[p - w]) bgNeighbors++;
+        if (y < h - 1 && visited[p + w]) bgNeighbors++;
+        if (bgNeighbors > 0) {
+          // Scale alpha by darkness — pure-white edge → mostly transparent
+          const lum = (r + g + b) / 3;
+          const fade = Math.max(0, Math.min(255, (255 - lum) * 8));
+          data[idx + 3] = fade;
+        }
+      }
+    }
+  }
+
+  ctx.clearRect(0, 0, 2000, 2000);
+  ctx.putImageData(id, 0, 0);
+  document.title = 'Ready';
+};
+img.onerror = (e) => {
+  document.title = 'Error loading image';
+  document.body.innerHTML = '<pre style="color:red;font:48px sans-serif">Image load failed</pre>';
+};
+img.src = 'deak_face_logo.png';
+</script>
+</body>
+</html>

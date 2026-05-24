@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DH Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root {
+      --primary:#9B2335; --primary-light:#F9E0E3; --primary-pale:#F4E6E8;
+      --bg:#FAF7F4; --card:#FFFFFF;
+      --text:#2C2825; --text-muted:#8A8078; --border:#E8E2DB;
+      --green:#2D7A4F; --green-light:#D4EDDA;
+      --info:#1E40AF; --info-light:#DBEAFE;
+      --amber:#92400E; --amber-light:#FEF3C7;
+      --done-text:#2D7A4F; --done-bg:#D4EDDA;
+    }
+    body { font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); min-height:100vh; line-height:1.5; }
+
+    /* Header */
+    header { background:var(--card); border-bottom:1px solid var(--border); }
+    .header-inner { max-width:860px; margin:0 auto; padding:20px 24px 0; }
+    .header-row { display:flex; align-items:center; gap:14px; }
+    .logo { width:44px; height:44px; background:var(--primary); border-radius:10px; display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:16px; flex-shrink:0; }
+    .header-text h1 { font-size:18px; font-weight:700; }
+    .header-meta { font-size:13px; color:var(--text-muted); margin-top:2px; }
+    .build-badge { display:inline-block; background:var(--primary-light); color:var(--primary); font-size:11px; font-weight:700; padding:2px 8px; border-radius:6px; margin-left:6px; }
+
+    /* Tabs */
+    .tabs { display:flex; gap:0; margin-top:16px; max-width:860px; margin-left:auto; margin-right:auto; }
+    .tab { padding:10px 20px; font-size:14px; font-weight:600; color:var(--text-muted); cursor:pointer; border-bottom:3px solid transparent; transition:all .15s; background:none; border-top:none; border-left:none; border-right:none; font-family:inherit; }
+    .tab:hover { color:var(--text); }
+    .tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+    .tab .tab-count { font-size:11px; font-weight:700; background:#F3EEE9; color:var(--text-muted); padding:1px 7px; border-radius:10px; margin-left:6px; }
+    .tab.active .tab-count { background:var(--primary-light); color:var(--primary); }
+
+    /* Panels */
+    .panel { display:none; }
+    .panel.active { display:block; }
+
+    /* Main */
+    main { max-width:860px; margin:0 auto; padding:20px 16px 40px; }
+
+    /* ── SCREENS TAB ── */
+    .status-filter { display:flex; gap:6px; align-items:center; flex-wrap:wrap; margin-bottom:16px; padding:10px 12px; background:var(--card); border:1px solid var(--border); border-radius:10px; }
+    .status-filter-label { font-size:11px; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:.06em; margin-right:4px; }
+    .sf-btn { display:inline-flex; align-items:center; gap:5px; background:transparent; border:1px solid var(--border); padding:5px 10px 5px 8px; border-radius:999px; font-size:11px; font-weight:600; color:var(--text-muted); cursor:pointer; font-family:inherit; transition:all .15s; }
+    .sf-btn svg { width:11px; height:11px; stroke:currentColor; stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .sf-btn:hover { border-color:var(--text); color:var(--text); }
+    .sf-btn.active { background:var(--text); color:white; border-color:var(--text); }
+    .sf-count { font-size:10px; opacity:.7; margin-left:2px; }
+    .toggle-all { display:flex; justify-content:flex-end; gap:6px; margin-bottom:10px; }
+    .toggle-all button { background:transparent; border:1px solid var(--border); color:var(--text-muted); padding:5px 10px; border-radius:6px; font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; transition:all .15s; }
+    .toggle-all button:hover { border-color:var(--primary); color:var(--primary); }
+    .group { margin-bottom:10px; }
+    .group-head { width:100%; display:flex; align-items:center; justify-content:space-between; padding:12px 14px; background:var(--card); border:1px solid var(--border); border-radius:10px; cursor:pointer; transition:border-color .15s,background .15s; font-family:inherit; }
+    .group-head:hover { border-color:var(--primary); background:#FFFAFB; }
+    .group-head.open { border-radius:10px 10px 0 0; border-bottom-color:transparent; background:#FFFAFB; }
+    .group-head-left { display:flex; align-items:center; gap:10px; text-align:left; min-width:0; flex:1; }
+    .group-label { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--text-muted); }
+    .group-head.open .group-label { color:var(--primary); }
+    .group-hint { font-size:11px; color:var(--text-muted); font-weight:500; }
+    .group-count { font-size:10px; font-weight:700; color:var(--text-muted); background:#F3EEE9; padding:2px 7px; border-radius:10px; }
+    .group-head.open .group-count { background:var(--primary-pale); color:var(--primary); }
+    .chev { width:18px; height:18px; color:var(--text-muted); transition:transform .2s; }
+    .group-head.open .chev { transform:rotate(90deg); color:var(--primary); }
+    .chev svg { width:100%; height:100%; stroke:currentColor; stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .group-body { display:none; padding:8px 8px 10px; background:#FFFAFB; border:1px solid var(--border); border-top:none; border-radius:0 0 10px 10px; }
+    .group.open .group-body { display:flex; flex-direction:column; gap:6px; }
+    .wf-item { display:flex; align-items:stretch; background:var(--card); border:1px solid var(--border); border-radius:9px; transition:border-color .15s,box-shadow .15s,transform .1s; overflow:hidden; }
+    .wf-item:hover { border-color:var(--primary); box-shadow:0 2px 10px rgba(155,35,53,.08); transform:translateY(-1px); }
+    .wf-item.hidden { display:none !important; }
+    .wf-item[data-status="done"] { opacity:0.72; }
+    .wf-item[data-status="done"]:hover { opacity:1; }
+    .wf-btn { display:flex; align-items:center; gap:12px; padding:11px 13px; text-decoration:none; color:var(--text); flex:1; min-width:0; }
+    .btn-icon { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .btn-icon svg { width:17px; height:17px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .icon-approved { background:var(--info-light); color:var(--info); }
+    .icon-review   { background:var(--amber-light); color:var(--amber); }
+    .icon-draft    { background:#F3EEE9; color:var(--text-muted); }
+    .icon-done     { background:var(--done-bg); color:var(--done-text); }
+    .btn-content { flex:1; min-width:0; }
+    .btn-title { font-size:14px; font-weight:700; display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+    .btn-desc  { font-size:12px; color:var(--text-muted); margin-top:2px; }
+    .btn-arrow { color:var(--text-muted); font-size:18px; flex-shrink:0; }
+    .wf-btn:hover .btn-arrow { color:var(--primary); }
+    .copy-ref-btn { display:flex; align-items:center; justify-content:center; width:40px; min-width:40px; border:none; border-left:1px solid var(--border); background:transparent; color:var(--text-muted); cursor:pointer; transition:color .15s,background .15s; padding:0; font-family:inherit; border-radius:0; }
+    .copy-ref-btn:hover { color:var(--primary); background:var(--primary-pale); }
+    .copy-ref-btn.copied { color:var(--green); background:var(--green-light); }
+    .copy-ref-btn svg { width:14px; height:14px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .status { display:inline-flex; align-items:center; gap:4px; font-size:10px; font-weight:700; padding:3px 8px 3px 6px; border-radius:999px; border:1px solid transparent; white-space:nowrap; text-transform:uppercase; letter-spacing:.04em; }
+    .status svg { width:11px; height:11px; stroke:currentColor; stroke-width:2.2; fill:none; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0; }
+    .status-approved { background:var(--info-light); color:var(--info); border-color:#BFDBFE; }
+    .status-review   { background:var(--amber-light); color:var(--amber); border-color:#FDE68A; }
+    .status-draft    { background:#F3EEE9; color:var(--text-muted); border-color:var(--border); }
+    .status-done     { background:var(--done-bg); color:var(--done-text); border-color:#A7F3D0; }
+    .badge { display:inline-block; font-size:10px; font-weight:700; padding:2px 6px; border-radius:4px; }
+    .badge-v { background:var(--primary-pale); color:var(--primary); font-family:ui-monospace,monospace; }
+    .badge-sprint { background:#E8EAF6; color:#1A237E; }
+    .legal-ref-card { display:flex; align-items:center; gap:12px; padding:11px 13px; background:var(--primary-pale); border:1px dashed var(--primary); border-radius:9px; text-decoration:none; color:var(--primary); transition:all .15s; cursor:pointer; margin-top:4px; }
+    .legal-ref-card:hover { box-shadow:0 2px 10px rgba(155,35,53,.12); transform:translateY(-1px); border-style:solid; }
+    .legal-ref-icon { width:32px; height:32px; min-width:32px; background:rgba(155,35,53,.1); border-radius:7px; display:flex; align-items:center; justify-content:center; color:var(--primary); }
+    .legal-ref-icon svg { width:16px; height:16px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .legal-ref-label { font-size:12px; font-weight:700; letter-spacing:.03em; }
+    .legal-ref-sub { font-size:11px; color:var(--primary); opacity:.7; margin-top:1px; }
+    .group-body.empty::before { content:"Nincs találat."; display:block; text-align:center; font-size:12px; color:var(--text-muted); padding:20px 10px; font-style:italic; }
+
+    /* ── DOCS TAB ── */
+    .doc-grid { display:grid; grid-template-columns:1fr; gap:12px; }
+    .doc-category { margin-bottom:20px; }
+    .doc-cat-title { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--text-muted); margin-bottom:10px; padding-left:2px; }
+    .doc-card { display:flex; align-items:center; gap:14px; padding:14px 16px; background:var(--card); border:1px solid var(--border); border-radius:10px; text-decoration:none; color:var(--text); transition:all .15s; }
+    .doc-card:hover { border-color:var(--primary); box-shadow:0 2px 12px rgba(155,35,53,.08); transform:translateY(-1px); }
+    .doc-icon { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .doc-icon svg { width:20px; height:20px; stroke:currentColor; stroke-width:2; fill:none; stroke-linecap:round; stroke-linejoin:round; }
+    .doc-icon.analytics { background:#eeedfe; color:#5B21B6; }
+    .doc-icon.design { background:#e6f1fb; color:#1E40AF; }
+    .doc-icon.business { background:#faeeda; color:#92400E; }
+    .doc-icon.legal { background:var(--primary-light); color:var(--primary); }
+    .doc-info { flex:1; min-width:0; }
+    .doc-title { font-size:14px; font-weight:700; }
+    .doc-desc { font-size:12px; color:var(--text-muted); margin-top:2px; }
+    .doc-meta { display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; }
+    .doc-tag { font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px; background:#F3EEE9; color:var(--text-muted); }
+    .doc-tag.live { background:var(--done-bg); color:var(--done-text); }
+    .doc-tag.version { background:var(--primary-pale); color:var(--primary); font-family:ui-monospace,monospace; }
+    .doc-arrow { color:var(--text-muted); font-size:20px; flex-shrink:0; }
+    .doc-card:hover .doc-arrow { color:var(--primary); }
+    .doc-empty { text-align:center; padding:40px 20px; color:var(--text-muted); font-size:13px; font-style:italic; }
+
+    footer { text-align:center; padding:24px; font-size:12px; color:var(--text-muted); border-top:1px solid var(--border); margin-top:24px; }
+
+    .dh-toast { position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(10px); background:var(--text); color:#FFFBF7; padding:9px 18px; border-radius:8px; font-size:13px; font-weight:500; opacity:0; transition:opacity .2s ease-out,transform .2s ease-out; pointer-events:none; z-index:9999; white-space:nowrap; box-shadow:0 4px 12px rgba(0,0,0,.18); }
+    .dh-toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
+    .dh-toast.error { background:var(--primary); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="header-row">
+      <div class="logo" aria-hidden="true">DH</div>
+      <div class="header-text">
+        <h1>DH Hub <span class="build-badge" id="build-badge">–</span></h1>
+        <div class="header-meta">Deák Húsmíves · Design &amp; Dokumentáció · <span id="last-updated"></span></div>
+      </div>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Hub szekciók">
+      <button class="tab active" role="tab" aria-selected="true" aria-controls="panel-screens" data-tab="screens" onclick="switchTab('screens',this)">
+        <svg style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        Képernyők <span class="tab-count" id="tab-screens-count"></span>
+      </button>
+      <button class="tab" role="tab" aria-selected="false" aria-controls="panel-docs" data-tab="docs" onclick="switchTab('docs',this)">
+        <svg style="width:14px;height:14px;vertical-align:-2px;margin-right:4px;stroke:currentColor;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round" viewBox="0 0 24 24" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+        Dokumentáció <span class="tab-count" id="tab-docs-count"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- SCREENS PANEL -->
+  <div class="panel active" id="panel-screens" role="tabpanel" aria-labelledby="tab-screens">
+    <div class="status-filter" id="statusFilter" role="group" aria-label="Státusz szűrő">
+      <span class="status-filter-label">Szűrő:</span>
+      <button class="sf-btn active" data-filter="all" aria-pressed="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> Mind <span class="sf-count" id="cnt-all"></span></button>
+      <button class="sf-btn" data-filter="approved" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg> Approved <span class="sf-count" id="cnt-approved"></span></button>
+      <button class="sf-btn" data-filter="review" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Review <span class="sf-count" id="cnt-review"></span></button>
+      <button class="sf-btn" data-filter="draft" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg> Draft <span class="sf-count" id="cnt-draft"></span></button>
+    </div>
+    <div class="toggle-all">
+      <button onclick="toggleAll(true)" aria-label="Összes csoport megnyitása">Összes megnyitása</button>
+      <button onclick="toggleAll(false)" aria-label="Összes csoport bezárása">Összes bezárása</button>
+    </div>
+    <div id="groups-container"></div>
+  </div>
+
+  <!-- DOCS PANEL -->
+  <div class="panel" id="panel-docs" role="tabpanel" aria-labelledby="tab-docs">
+    <div id="docs-container"></div>
+  </div>
+</main>
+
+<footer>DH Hub · Design &amp; Dokumentáció · <span id="footer-date"></span></footer>
+
+<script>
+/* ══════════════════════════════════════════
+   MANIFEST
+   ══════════════════════════════════════════ */
+const MANIFEST = {
+  "meta": {
+    "build": 72,
+    "generatedAt": "2026-05-03T14:15:00Z",
+    "description": "DH Hub — unified design & documentation portal"
+  },
+  "screens": [
+    {
+      "file": "screens/product_details.html",
+      "title": "Termék Részletek — kg / hibrid / db / chart",
+      "feature": "product-detail",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 4,
+      "version": "v1",
+      "tags": [
+        "DH-183",
+        "product",
+        "variants"
+      ],
+      "description": "Termék részlet oldal — 3 termék típus (kg / hibrid / db) + chart view egy fájlban, fenti tab navigációval."
+    },
+    {
+      "file": "screens/v0.5-shared-basket-v2.html",
+      "title": "Shared Basket v2 — Közös kosár",
+      "feature": "basket",
+      "sprint": "Sprint 5",
+      "status": "review",
+      "publish": true,
+      "order": 10,
+      "version": "v2",
+      "tags": [
+        "DH-149",
+        "basket",
+        "shared"
+      ]
+    },
+    {
+      "file": "screens/v0.5-notification-component.html",
+      "title": "Notification Component — Products oldal",
+      "feature": "notifications",
+      "sprint": "Sprint 5",
+      "status": "approved",
+      "publish": true,
+      "order": 1,
+      "version": "v1",
+      "tags": [
+        "DH-159",
+        "notification"
+      ]
+    },
+    {
+      "file": "screens/v0.5-favorites-v3.html",
+      "title": "Termékek — Kedvencek v3",
+      "feature": "favorites",
+      "sprint": "Sprint 5",
+      "status": "draft",
+      "publish": true,
+      "order": 22,
+      "version": "v3",
+      "tags": [
+        "DH-146",
+        "DH-160",
+        "favorites"
+      ]
+    },
+    {
+      "file": "screens/v0.4-seasonal-article.html",
+      "title": "Szezonális Cikk Oldal",
+      "feature": "article",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 1,
+      "version": "v0.4",
+      "tags": [
+        "DH-163",
+        "seasonal"
+      ]
+    },
+    {
+      "file": "screens/v0.4-rural-delivery.html",
+      "title": "Falusi route — teljes flow (6 nézet, v1.4)",
+      "feature": "rural-delivery",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 10,
+      "version": "v0.4",
+      "tags": [
+        "DH-184",
+        "rural",
+        "v1.4"
+      ],
+      "description": "Teljes falusi szállítási flow (v1.4) — felső tab-okkal: hibrid kör-választó (GPS+2 gomb+mismatch), route banner, kosár, checkout, visszaigazolás, futár. 200 RON Keresztúri threshold."
+    },
+    {
+      "file": "screens/v0.3-kassza-qr.html",
+      "title": "Kassza Szalag — QR Kód",
+      "feature": "qr-print",
+      "sprint": "Sprint 4",
+      "status": "draft",
+      "publish": true,
+      "order": 30,
+      "version": "v1",
+      "tags": [
+        "DH-167",
+        "founding50",
+        "qr"
+      ]
+    }
+  ],
+  "docs": [
+    {
+      "category": "Showcase",
+      "items": [
+        {
+          "file": "screens/voxhumana/index.html",
+          "title": "Vox Humana",
+          "desc": "Az Erdélyi Szakrális Örökség Őrzői",
+          "icon": "design",
+          "version": "v1",
+          "tags": [
+            "showcase"
+          ],
+          "updated": "2026-05",
+          "live": false
+        }
+      ]
+    },
+    {
+      "category": "Analytics",
+      "items": [
+        {
+          "file": "screens/v0.2-analytics-dictionary.html",
+          "title": "Analytics Dictionary v2.2",
+          "desc": "Firebase Analytics event szótár — 26 event státusza (OK / Javítandó / Hiányzó), kereshető, szűrhető",
+          "icon": "analytics",
+          "version": "v2.2",
+          "tags": [
+            "DH-104",
+            "firebase",
+            "analytics"
+          ],
+          "updated": "2026-04-28",
+          "live": true
+        }
+      ]
+    },
+    {
+      "category": "Business",
+      "items": [
+        {
+          "file": "screens/v0.1-economic-loop.html",
+          "title": "Economic Loop",
+          "desc": "DH gazdasági modell — flywheel és unit economics vizualizáció",
+          "icon": "business",
+          "version": "v1",
+          "tags": [
+            "flywheel",
+            "economics"
+          ],
+          "updated": "2026-04",
+          "live": false
+        }
+      ]
+    }
+  ]
+};
+
+/* ══════════════════════════════════════
+   ICON MAPS — Lucide SVG, inline only
+   ══════════════════════════════════════ */
+const STATUS_ICONS = {
+  approved: '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>',
+  review:   '<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>',
+  draft:    '<svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>',
+  done:     '<svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>',
+};
+const STATUS_LABELS = { approved:'Ready', review:'Review', draft:'Draft', done:'Done' };
+
+const DOC_ICONS = {
+  analytics: '<svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>',
+  business:  '<svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>',
+  design:    '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>',
+  legal:     '<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>',
+};
+const DOC_ICON_DEFAULT = '<svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>';
+
+const LEGAL_ICON = '<svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>';
+
+const COPY_ICON = '<svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+const CHECK_ICON = '<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>';
+
+let _toastTimer;
+function showToast(msg, isError) {
+  let t = document.getElementById('dh-toast');
+  if (!t) { t = document.createElement('div'); t.id = 'dh-toast'; t.className = 'dh-toast'; document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.toggle('error', !!isError);
+  t.classList.add('show');
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function copyRef(e) {
+  e.preventDefault();
+  e.stopPropagation();
+  const btn = e.currentTarget;
+  const ref = btn.dataset.ref;
+
+  function onSuccess() {
+    btn.innerHTML = CHECK_ICON;
+    btn.classList.add('copied');
+    showToast('Referencia másolva');
+    setTimeout(() => { btn.innerHTML = COPY_ICON; btn.classList.remove('copied'); }, 1500);
+  }
+  function onFail() { showToast('Másolás sikertelen', true); }
+
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(ref).then(onSuccess).catch(() => fallbackCopy(ref, onSuccess, onFail));
+  } else {
+    fallbackCopy(ref, onSuccess, onFail);
+  }
+}
+
+function fallbackCopy(text, onSuccess, onFail) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.cssText = 'position:fixed;left:-9999px;top:-9999px;opacity:0';
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try { document.execCommand('copy') ? onSuccess() : onFail(); }
+  catch { onFail(); }
+  document.body.removeChild(ta);
+}
+
+/* ══════════════════════════════════════
+   TAB SWITCHING
+   ══════════════════════════════════════ */
+function switchTab(tab, btn) {
+  document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  btn.setAttribute('aria-selected','true');
+  document.getElementById('panel-' + tab).classList.add('active');
+}
+
+/* ══════════════════════════════════════
+   SCREENS TAB
+   ══════════════════════════════════════ */
+function initScreens() {
+  const screens = (MANIFEST.screens || []).filter(s => s.publish !== false);
+
+  document.getElementById('tab-screens-count').textContent = screens.length;
+  document.getElementById('cnt-all').textContent = screens.length;
+  document.getElementById('cnt-approved').textContent = screens.filter(s=>s.status==='approved').length;
+  document.getElementById('cnt-review').textContent = screens.filter(s=>s.status==='review').length;
+  document.getElementById('cnt-draft').textContent = screens.filter(s=>s.status==='draft').length;
+
+  const groups = {};
+  screens.forEach(s => { const sp = s.sprint||'Egyéb'; if (!groups[sp]) groups[sp]=[]; groups[sp].push(s); });
+  ['Sprint 4'].forEach(sp => { if (!groups[sp]) groups[sp] = []; });
+  const sorted = Object.keys(groups).sort((a,b) => (parseInt(a.replace(/\D/g,''))||999)-(parseInt(b.replace(/\D/g,''))||999));
+  sorted.forEach(sp => groups[sp].sort((a,b) => {
+    const da = a.status==='done'?1:0, db = b.status==='done'?1:0;
+    if (da !== db) return da-db;
+    return (a.order||99)-(b.order||99);
+  }));
+
+  const container = document.getElementById('groups-container');
+  container.innerHTML = sorted.map(sp => {
+    const items = groups[sp];
+    const itemsHtml = items.length === 0
+      ? '<div style="padding:18px 12px;color:var(--text-muted);font-size:13px;font-style:italic;text-align:center;">Még nincsenek képernyők</div>'
+      : items.map(s => {
+          const st = s.status || 'draft';
+          const ver = s.version ? '<span class="badge badge-v">'+s.version+'</span>' : '';
+          const statusChip = '<span class="status status-'+st+'">'+(STATUS_ICONS[st]||'')+'<span>'+(STATUS_LABELS[st]||st)+'</span></span>';
+          const chips = (s.tags||[]).slice(0,2).map(t=>'<span class="badge badge-sprint">'+t+'</span>').join('');
+          const ref = '[DH] ' + s.file + ' — ' + s.title;
+          return '<div class="wf-item" data-status="'+st+'">' +
+            '<a class="wf-btn" href="'+(s.file||'#')+'" target="_blank" aria-label="'+s.title+' — '+(STATUS_LABELS[st]||st)+'">' +
+            '<div class="btn-icon icon-'+st+'" aria-hidden="true">'+(STATUS_ICONS[st]||STATUS_ICONS.draft)+'</div>' +
+            '<div class="btn-content"><div class="btn-title">'+s.title+' '+ver+' '+statusChip+'</div>' +
+            '<div class="btn-desc">'+(s.feature||'')+' '+chips+'</div></div>' +
+            '<span class="btn-arrow" aria-hidden="true">›</span></a>' +
+            '<button class="copy-ref-btn" data-ref="'+ref+'" onclick="copyRef(event)" aria-label="Referencia másolása: '+s.title+'" title="Referencia másolása">'+COPY_ICON+'</button>' +
+            '</div>';
+        }).join('');
+
+    const hint = items.length === 0 ? '· üres' : '· ' + items.length + ' képernyő';
+    const count = items.length === 0 ? '—' : items.length;
+    return '<div class="group open"><button class="group-head open" onclick="toggleGroup(this)" aria-expanded="true" aria-label="'+sp+' csoport">' +
+      '<div class="group-head-left"><span class="group-label">'+sp+'</span>' +
+      '<span class="group-hint">'+hint+'</span></div>' +
+      '<span class="group-count" aria-hidden="true">'+count+'</span>' +
+      '<span class="chev" aria-hidden="true"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></span>' +
+      '</button><div class="group-body">'+itemsHtml+'</div></div>';
+  }).join('');
+}
+function applyFilter(filter) {
+  document.querySelectorAll('.wf-item').forEach(b => b.classList.toggle('hidden', filter !== 'all' && b.dataset.status !== filter));
+  document.querySelectorAll('.group-body').forEach(body => body.classList.toggle('empty', body.querySelectorAll('.wf-item:not(.hidden)').length === 0));
+}
+document.getElementById('statusFilter').addEventListener('click', e => {
+  const btn = e.target.closest('button[data-filter]');
+  if (!btn) return;
+  document.querySelectorAll('#statusFilter .sf-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+  btn.classList.add('active');
+  btn.setAttribute('aria-pressed','true');
+  applyFilter(btn.dataset.filter);
+});
+function toggleGroup(btn) {
+  const g = btn.parentElement;
+  const o = g.classList.toggle('open');
+  btn.classList.toggle('open', o);
+  btn.setAttribute('aria-expanded', o ? 'true' : 'false');
+}
+function toggleAll(open) {
+  document.querySelectorAll('.group').forEach(g => {
+    g.classList.toggle('open',open);
+    const h=g.querySelector('.group-head');
+    if(h) { h.classList.toggle('open',open); h.setAttribute('aria-expanded', open ? 'true' : 'false'); }
+  });
+}
+
+/* ══════════════════════════════════════
+   DOCS TAB
+   ══════════════════════════════════════ */
+function initDocs() {
+  const docs = MANIFEST.docs || [];
+  let totalDocs = 0;
+  docs.forEach(cat => totalDocs += cat.items.length);
+  document.getElementById('tab-docs-count').textContent = totalDocs;
+
+  const container = document.getElementById('docs-container');
+  container.innerHTML = docs.map(cat => {
+    const cardsHtml = cat.items.map(d => {
+      const tags = (d.tags || []).map(t => '<span class="doc-tag">'+t+'</span>').join('');
+      const verTag = d.version ? '<span class="doc-tag version">'+d.version+'</span>' : '';
+      const liveTag = d.live ? '<span class="doc-tag live">Éles</span>' : '';
+      const icon = DOC_ICONS[d.icon] || DOC_ICON_DEFAULT;
+      return '<a class="doc-card" href="'+(d.file||'#')+'" target="_blank" aria-label="'+d.title+'">' +
+        '<div class="doc-icon '+(d.icon||'')+'" aria-hidden="true">'+icon+'</div>' +
+        '<div class="doc-info"><div class="doc-title">'+d.title+'</div>' +
+        '<div class="doc-desc">'+d.desc+'</div>' +
+        '<div class="doc-meta">'+verTag+liveTag+tags+'</div></div>' +
+        '<span class="doc-arrow" aria-hidden="true">›</span></a>';
+    }).join('');
+    return '<div class="doc-category"><div class="doc-cat-title">'+cat.category+'</div>' +
+      '<div class="doc-grid">'+cardsHtml+'</div></div>';
+  }).join('');
+
+  if (totalDocs === 0) {
+    container.innerHTML = '<div class="doc-empty">Még nincsenek dokumentumok</div>';
+  }
+}
+
+/* ══════════════════════════════════════
+   INIT
+   ══════════════════════════════════════ */
+function init() {
+  const meta = MANIFEST.meta || {};
+  if (meta.build) { document.getElementById('build-badge').textContent = 'Build #' + meta.build; document.title = 'DH Hub · Build #' + meta.build; }
+  if (meta.generatedAt) {
+    const d = new Date(meta.generatedAt);
+    const fmt = d.toLocaleDateString('hu-HU', {year:'numeric',month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'});
+    document.getElementById('last-updated').textContent = fmt;
+    document.getElementById('footer-date').textContent = fmt;
+  }
+  initScreens();
+  initDocs();
+}
+init();
+</script>
+
+<!-- Pull-to-refresh -->
+<style>
+.ptr-ind {
+  position: fixed; top: 0; left: 50%;
+  transform: translateX(-50%) translateY(-56px);
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--card, #fff);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  display: flex; align-items: center; justify-content: center;
+  transition: transform .2s cubic-bezier(.25,.46,.45,.94), opacity .2s;
+  opacity: 0; z-index: 9999; pointer-events: none;
+}
+.ptr-ind.vis { opacity: 1; transform: translateX(-50%) translateY(12px); }
+.ptr-ind svg { width: 18px; height: 18px; stroke: var(--primary, #9B2335); stroke-width: 2; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.ptr-ind.spin svg { animation: ptr-r .7s linear infinite; }
+@keyframes ptr-r { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ptr-ind, .ptr-ind svg { animation: none !important; transition: none !important; } }
+</style>
+<script>
+(function(){
+  var el = document.createElement('div');
+  el.className = 'ptr-ind';
+  el.innerHTML = '<svg viewBox="0 0 24 24"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>';
+  document.body.appendChild(el);
+  var sy = 0, on = false, T = 64;
+  document.addEventListener('touchstart', function(e){ if(window.scrollY===0){ sy=e.touches[0].clientY; on=true; } }, {passive:true});
+  document.addEventListener('touchmove',  function(e){ if(!on) return; if(e.touches[0].clientY - sy > 10) el.classList.add('vis'); }, {passive:true});
+  document.addEventListener('touchend',   function(e){ if(!on) return; var dy=(e.changedTouches[0]||{clientY:sy}).clientY - sy; if(dy >= T){ el.classList.add('spin'); setTimeout(function(){ location.reload(); }, 300); } else { el.classList.remove('vis'); } on=false; }, {passive:true});
+})();
+</script>
+</body>
+</html>

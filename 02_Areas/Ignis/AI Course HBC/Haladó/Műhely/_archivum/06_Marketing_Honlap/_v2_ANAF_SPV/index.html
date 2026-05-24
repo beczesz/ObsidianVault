@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>TransOffice Trade SRL — Furnizor de echipamente de birou și papetărie | Odorheiu Secuiesc</title>
+<meta name="description" content="TransOffice Trade SRL — distribuitor de consumabile de birou, hârtie, tonere și papetărie în Odorheiu Secuiesc și județul Harghita. Din 2003.">
+<link rel="stylesheet" href="design-system/anaf-style.css">
+<style>
+  /* Extra page-specific styles */
+  .product-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+  .product-table th { background: var(--anaf-indigo); color: white; padding: 8px; text-align: left; border: 1px solid var(--anaf-indigo-dark); }
+  .product-table td { border: 1px solid #ccc; padding: 7px; vertical-align: top; }
+  .product-table tr:nth-child(even) td { background: var(--off-white); }
+  .product-table .price-old { color: #999; text-decoration: line-through; font-size: 11px; }
+  .product-table .price-new { color: var(--red-accent); font-weight: bold; }
+  .stock-yes { color: #007a3d; font-weight: bold; }
+  .stock-low { color: #b86e00; font-weight: bold; }
+  .stock-no { color: #999; }
+  .badge-new { background: var(--red-accent); color: white; font-size: 10px; padding: 2px 6px; font-weight: bold; }
+  .badge-promo { background: #ffc107; color: #333; font-size: 10px; padding: 2px 6px; font-weight: bold; }
+  .news-list { list-style: none; padding: 0; }
+  .news-list li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+  .news-list .date { color: var(--text-muted); font-size: 11px; font-weight: bold; }
+  .testimonial { background: #f8f8fa; border-left: 4px solid var(--anaf-indigo); padding: 12px 16px; margin: 10px 0; font-size: 13px; }
+  .testimonial .author { color: var(--text-muted); font-size: 11px; font-style: italic; margin-top: 5px; }
+  .testimonial .stars { color: #f0ad4e; }
+  .photo-gallery { margin: 16px 0; font-size: 0; }
+  .photo-gallery .photo-box {
+    width: 180px; height: 130px;
+    background: #ededed; border: 1px solid #ccc;
+    font-size: 11px; color: #666; text-align: center;
+    padding: 50px 6px 6px 6px;
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 10px;
+  }
+  .partner-grid { margin: 12px 0; }
+  .partner-grid .partner { display: inline-block; background: #f8f8fa; border: 1px solid #ddd; padding: 8px 14px; font-size: 11px; font-weight: bold; color: var(--text-muted); margin: 0 6px 6px 0; }
+  .poll-box { background: var(--off-white); border: 1px solid #ddd; padding: 14px; font-size: 12px; }
+  .poll-bar { background: #e0e0e0; height: 18px; margin: 4px 0; position: relative; border-radius: 2px; overflow: hidden; }
+  .poll-bar .fill { background: var(--anaf-indigo); height: 100%; }
+  .poll-bar .label { position: absolute; left: 8px; top: 0; line-height: 18px; color: white; font-size: 11px; font-weight: bold; }
+  .info-row { display: table; width: 100%; margin: 14px 0; border-spacing: 14px 0; }
+  .info-col { display: table-cell; vertical-align: top; background: var(--off-white); padding: 14px; border: 1px solid #ddd; }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- ====== HEADER ====== -->
+  <header class="site-header">
+    <div class="logo-cell">
+      <a href="index.html" class="logo">
+        <div class="logo-shield">TO</div>
+        <div class="logo-text">
+          <div class="brand">TransOffice</div>
+          <div class="tagline">Echipamente de birou și papetărie — din 2003</div>
+        </div>
+      </a>
+    </div>
+    <div class="auth-cell">
+      <div class="flag-bar">
+        <a href="index.html" class="flag-ro">RO</a>
+        <a href="index_en.html" class="flag-en">EN</a>
+        <a href="harta-site.html" class="flag-sitemap">SITE</a>
+      </div>
+      <div class="auth-grid">
+        <span class="search-icon">🔍</span>
+        <a href="comanda-rapida.html" class="auth-btn">Comandă rapidă<br><small style="font-weight:normal; font-size:9px;">cu validare CUI</small></a>
+        <a href="catalog.pdf" class="auth-btn">Catalog produse 2024<br><small style="font-weight:normal; font-size:9px;">PDF · 5,8 MB</small></a>
+        <br>
+        <a href="login.html" class="auth-btn">Autentificare client B2B</a>
+        <a href="cerere-oferta.html" class="auth-btn red">Cerere ofertă personalizată<br><small style="font-weight:normal; font-size:9px;">pentru cantități mari</small></a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== BREADCRUMB ====== -->
+  <div class="breadcrumb-wrap">
+    <div class="breadcrumb">
+      <a href="index.html">TransOffice</a>
+      <span class="separator">&gt;</span>
+      <a href="acasa.html">Acasă</a>
+      <span class="separator">&gt;</span>
+      Prima pagină
+    </div>
+  </div>
+
+  <!-- ====== TOP NAVIGATION ====== -->
+  <nav class="top-nav">
+    <a href="index.html" class="top-nav-cell active">Acasă</a>
+    <a href="despre.html" class="top-nav-cell">Despre noi</a>
+    <a href="produse.html" class="top-nav-cell">Produse</a>
+    <a href="servicii.html" class="top-nav-cell">Servicii</a>
+    <a href="parteneri.html" class="top-nav-cell">Parteneri</a>
+    <a href="cariere.html" class="top-nav-cell">Cariere</a>
+    <a href="galerie.html" class="top-nav-cell">Galerie foto</a>
+    <a href="contact.html" class="top-nav-cell">Contact</a>
+    <a href="carte-oaspeti.html" class="top-nav-cell">Carte de oaspeți</a>
+  </nav>
+
+  <!-- ====== SECTION TITLE ====== -->
+  <div class="section-title">Bun venit la TransOffice Trade SRL</div>
+
+  <!-- ====== LEFT FLOATING ICONS ====== -->
+  <aside class="floating-left">
+    <a href="contact.html" class="floating-icon"><span class="ico">📧</span>Formular contact</a>
+    <a href="tel:0266371058" class="floating-icon"><span class="ico">📞</span>Call Center</a>
+    <a href="calendar.html" class="floating-icon"><span class="ico">📅</span>Calendar livrări</a>
+    <a href="catalog.pdf" class="floating-icon"><span class="ico">📄</span>Catalog PDF</a>
+    <a href="login.html" class="floating-icon"><span class="ico">🔑</span>Login B2B</a>
+    <a href="rss.xml" class="floating-icon"><span class="ico">📡</span>RSS</a>
+    <a href="gdpr.html" class="floating-icon"><span class="ico">🇪🇺</span>GDPR</a>
+    <a href="share.html" class="floating-icon"><span class="ico">🔗</span>Share</a>
+  </aside>
+
+  <!-- ====== RIGHT FLOATING ICON (accessibility) ====== -->
+  <aside class="floating-right">
+    <a href="accesibilitate.html" class="floating-icon"><span class="ico">♿</span></a>
+  </aside>
+
+  <!-- ====== 4 IMAGE TILES — CATEGORII PRINCIPALE ====== -->
+  <div class="tile-grid">
+    <div class="tile-cell">
+      <a href="cat/cartuse.html" class="image-tile">
+        <div class="tile-title">Cartușe &amp; Tonere</div>
+        <div class="tile-art">🖨️</div>
+        <div class="tile-hover">
+          Cartușe originale și compatibile pentru HP, Canon, Epson, Brother, Lexmark. <br>Peste 200 de modele în stoc.
+        </div>
+      </a>
+    </div>
+    <div class="tile-cell">
+      <a href="cat/hartie.html" class="image-tile">
+        <div class="tile-title">Hârtie &amp; Papetărie</div>
+        <div class="tile-art">📄</div>
+        <div class="tile-hover">
+          Hârtie A4, A3, format mare, color și fotografică. <br>Mărci premium: Mondi, Navigator, Double A.
+        </div>
+      </a>
+    </div>
+    <div class="tile-cell">
+      <a href="cat/mobilier.html" class="image-tile">
+        <div class="tile-title">Mobilier de birou</div>
+        <div class="tile-art">🪑</div>
+        <div class="tile-hover">
+          Scaune ergonomice, birouri, dulapuri, rafturi metalice. <br>Comandă specială cu livrare în 2-3 săptămâni.
+        </div>
+      </a>
+    </div>
+    <div class="tile-cell">
+      <a href="cat/echipamente-it.html" class="image-tile">
+        <div class="tile-title">Echipamente IT</div>
+        <div class="tile-art">💻</div>
+        <div class="tile-hover">
+          Imprimante, multifuncționale, scanere, distrugătoare de documente, calculatoare de birou.
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- ====== CONTENT AREA ====== -->
+  <main class="content-area">
+
+    <h1>Furnizor de echipamente de birou din Odorheiu Secuiesc</h1>
+
+    <p>
+      <strong>TransOffice Trade SRL</strong> este principalul furnizor de echipamente de birou, papetărie și consumabile IT din zona <strong>Odorheiu Secuiesc</strong> și județul <strong>Harghita</strong>. Din anul <strong>2003</strong> deservim cu profesionalism instituțiile publice, școlile, cabinetele de avocatură, contabilii autorizați și companiile private din Ținutul Secuiesc și împrejurimi.
+    </p>
+
+    <p>
+      Oferim <strong>cele mai bune prețuri din zonă</strong>, <strong>livrare rapidă</strong> (24-48 ore în Harghita), și <strong>consultanță personalizată</strong>. Lucrăm cu peste <strong>40 de clienți B2B activi</strong>, inclusiv primării, școli, instituții publice și firme private.
+    </p>
+
+    <div class="warning-box">
+      <strong>⚠ ATENȚIE — Modificare program livrare:</strong> Începând cu 1 aprilie 2024, livrările se efectuează doar Luni, Miercuri și Vineri. Pentru comenzi urgente, contactați-ne la 0266-371-058. Detalii la secțiunea <a href="#program">Program</a>.
+    </div>
+
+    <div class="info-box">
+      <strong>ℹ NOU — Listă de prețuri 2024:</strong> Începând cu 20 ianuarie este disponibilă lista de prețuri actualizată pentru anul 2024. <a href="lista-preturi-2024.pdf">Descarcă PDF (2,4 MB)</a> sau solicită ofertă personalizată.
+    </div>
+
+    <h2>Produse recomandate săptămâna aceasta</h2>
+
+    <p>Selecție de produse cu reduceri speciale, valabile între <strong>11.03.2024 – 18.03.2024</strong>:</p>
+
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th style="width:8%;">Cod</th>
+          <th>Produs</th>
+          <th style="width:11%;">Preț vechi</th>
+          <th style="width:11%;">Preț nou</th>
+          <th style="width:18%;">Stoc</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>TO-1001</td>
+          <td>Cartuș HP 305 Black <span class="badge-new">NEW</span></td>
+          <td class="price-old">89 Lei</td>
+          <td class="price-new">75 Lei</td>
+          <td class="stock-yes">✓ În stoc</td>
+        </tr>
+        <tr>
+          <td>TO-1002</td>
+          <td>Hârtie A4 Navigator 80g (5 topuri) <span class="badge-promo">PROMO</span></td>
+          <td class="price-old">145 Lei</td>
+          <td class="price-new">119 Lei</td>
+          <td class="stock-yes">✓ În stoc</td>
+        </tr>
+        <tr>
+          <td>TO-1003</td>
+          <td>Imprimantă HP LaserJet M110we</td>
+          <td class="price-old">890 Lei</td>
+          <td class="price-new">749 Lei</td>
+          <td class="stock-low">⚠ Ultimele 3 buc.</td>
+        </tr>
+        <tr>
+          <td>TO-1004</td>
+          <td>Scaun ergonomic „Confort Plus"</td>
+          <td class="price-old">1.250 Lei</td>
+          <td class="price-new">999 Lei</td>
+          <td class="stock-no">✗ Comandă specială</td>
+        </tr>
+        <tr>
+          <td>TO-1005</td>
+          <td>Set pixuri Bic Cristal (50 buc)</td>
+          <td class="price-old">65 Lei</td>
+          <td class="price-new">49 Lei</td>
+          <td class="stock-yes">✓ În stoc</td>
+        </tr>
+        <tr>
+          <td>TO-1006</td>
+          <td>Biblioraft plastifiat A4 (10 buc) <span class="badge-new">NEW</span></td>
+          <td class="price-old">110 Lei</td>
+          <td class="price-new">85 Lei</td>
+          <td class="stock-yes">✓ În stoc</td>
+        </tr>
+        <tr>
+          <td>TO-1007</td>
+          <td>Toner Brother TN-2420 (compatibil)</td>
+          <td class="price-old">155 Lei</td>
+          <td class="price-new">129 Lei</td>
+          <td class="stock-yes">✓ În stoc</td>
+        </tr>
+        <tr>
+          <td>TO-1008</td>
+          <td>Plicuri DL alb autoadezive (1000 buc)</td>
+          <td class="price-old">189 Lei</td>
+          <td class="price-new">159 Lei</td>
+          <td class="stock-low">⚠ Ultimele 5 cutii</td>
+        </tr>
+        <tr>
+          <td>TO-1009</td>
+          <td>Calculator Casio MS-20F (de birou)</td>
+          <td class="price-old">95 Lei</td>
+          <td class="price-new">79 Lei</td>
+          <td class="stock-yes">✓ În stoc</td>
+        </tr>
+        <tr>
+          <td>TO-1010</td>
+          <td>Distrugător documente AmazonBasics</td>
+          <td class="price-old">450 Lei</td>
+          <td class="price-new">379 Lei</td>
+          <td class="stock-yes">✓ În stoc</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size: 11px; color: var(--text-muted); font-style: italic;">
+      * Prețurile includ TVA 19%. Livrare gratuită peste 200 Lei în Odorheiu Secuiesc; pentru județele Harghita, Covasna, Mureș livrarea este 25 Lei.
+    </p>
+
+    <p style="margin-top: 14px;">
+      <a href="lista-preturi-2024.pdf" class="btn">📄 Listă completă de prețuri (PDF)</a>
+      <a href="catalog.pdf" class="btn">📊 Catalog vizual (PDF)</a>
+      <a href="cerere-oferta.html" class="btn red">💬 Cere ofertă personalizată</a>
+    </p>
+
+    <h2>Noutăți și anunțuri</h2>
+
+    <ul class="news-list">
+      <li><span class="date">[15.03.2024]</span> &nbsp;Am primit noile modele de <strong>calculatoare Casio MS-20F</strong>! Veniți în magazin sau comandați online.</li>
+      <li><span class="date">[02.03.2024]</span> &nbsp;<span class="badge-promo">PROMO</span> La 10 topuri de hârtie A4, primiți <strong>1 GRATIS</strong>! Ofertă valabilă până la epuizarea stocului.</li>
+      <li><span class="date">[20.02.2024]</span> &nbsp;Am încheiat un nou parteneriat cu <strong>Mondi Color</strong> — putem oferi tot catalogul lor la prețuri en-gros.</li>
+      <li><span class="date">[14.02.2024]</span> &nbsp;Programul de Valentine's Day: 09:00–15:00 (sâmbătă, 17.02.2024).</li>
+      <li><span class="date">[20.01.2024]</span> &nbsp;Am actualizat lista de prețuri pentru 2024. <a href="lista-preturi-2024.pdf">Cereți oferta!</a></li>
+      <li><span class="date">[15.12.2023]</span> &nbsp;Mulțumim pentru un an minunat! La mulți ani 2024! Programul de sărbători: <a href="program-sarbatori.html">vezi aici</a>.</li>
+      <li><span class="date">[10.11.2023]</span> &nbsp;Am adăugat gama nouă de <strong>echipamente de prezentare BenQ</strong>: proiectoare, ecrane, sisteme audio.</li>
+      <li><span class="date">[15.10.2023]</span> &nbsp;Mulțumim Primăriei Odorheiu Secuiesc pentru contractul de furnizare 2023–2025 pentru toate instituțiile subordonate.</li>
+    </ul>
+
+    <p><a href="arhiva-noutati.html">» Arhivă completă noutăți și anunțuri</a></p>
+
+    <h2 id="program">Program de funcționare</h2>
+
+    <table class="data" style="max-width: 600px;">
+      <thead>
+        <tr><th>Ziua</th><th>Program magazin</th><th>Program livrări</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Luni</td><td>08:00 – 17:00</td><td>08:00 – 15:00</td></tr>
+        <tr><td>Marți</td><td>08:00 – 17:00</td><td><em>Doar urgențe</em></td></tr>
+        <tr><td>Miercuri</td><td>08:00 – 17:00</td><td>08:00 – 15:00</td></tr>
+        <tr><td>Joi</td><td>08:00 – 17:00</td><td><em>Doar urgențe</em></td></tr>
+        <tr><td>Vineri</td><td>08:00 – 17:00</td><td>08:00 – 14:00</td></tr>
+        <tr><td>Sâmbătă</td><td>09:00 – 13:00</td><td>—</td></tr>
+        <tr><td>Duminică</td><td><em style="color: var(--red-accent);">ÎNCHIS</em></td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Recenzii clienți</h2>
+
+    <div class="testimonial">
+      <div>„Foarte mulțumit de servicii! Comandă plasată miercuri, livrată joi dimineața. Recomand cu încredere pentru orice firmă din zonă."</div>
+      <div class="author">— Ionescu Marian, Cabinet Avocat „Ionescu &amp; Asociații", Odorheiu Secuiesc (15.02.2024) <span class="stars">⭐⭐⭐⭐⭐</span></div>
+    </div>
+
+    <div class="testimonial">
+      <div>„Gyors kiszállítás, jó árak. Köszi! Tartós kapcsolat, mindig pontosak."</div>
+      <div class="author">— Kiss Attila, Primăria Lupeni, județul Harghita (03.02.2024) <span class="stars">⭐⭐⭐⭐</span></div>
+    </div>
+
+    <div class="testimonial">
+      <div>„Am comandat 50 de bibliorafturi pentru școală, au venit în 2 zile. Super! Prețuri corecte, fără surprize."</div>
+      <div class="author">— Pop Vasile, Director Școala Generală „Tamási Áron", Lupeni (22.01.2024) <span class="stars">⭐⭐⭐⭐⭐</span></div>
+    </div>
+
+    <div class="testimonial">
+      <div>„Furnizor de încredere de peste 8 ani. Întotdeauna găsesc soluții la cerințele noastre, chiar și pentru produse mai puțin uzuale."</div>
+      <div class="author">— Dna Szabó Edit, Contabil-șef, Consiliul Județean Harghita (10.01.2024) <span class="stars">⭐⭐⭐⭐⭐</span></div>
+    </div>
+
+    <p><a href="carte-oaspeti.html" class="btn">✍ Lăsați-ne și voi un mesaj</a></p>
+
+    <h2>Parteneri și certificări</h2>
+
+    <p>De-a lungul anilor am construit relații de încredere cu cei mai cunoscuți producători și distribuitori din domeniu:</p>
+
+    <div class="partner-grid">
+      <div class="partner">HP Inc.</div>
+      <div class="partner">Canon</div>
+      <div class="partner">Epson</div>
+      <div class="partner">Brother</div>
+      <div class="partner">Mondi</div>
+      <div class="partner">Navigator</div>
+      <div class="partner">Bic</div>
+      <div class="partner">Stabilo</div>
+      <div class="partner">Edding</div>
+      <div class="partner">Casio</div>
+      <div class="partner">BenQ</div>
+      <div class="partner">PaperWorld RO</div>
+    </div>
+
+    <h3>Certificări și calitate</h3>
+    <ul>
+      <li><strong>ISO 9001:2015</strong> — Management calitate (certificat 2018, reînnoit 2021)</li>
+      <li><strong>Operator economic autorizat ANAF</strong> — CUI 15847291, atribut fiscal RO</li>
+      <li><strong>Membru CCIR</strong> (Camera de Comerț și Industrie Harghita) din 2005</li>
+      <li><strong>Furnizor înregistrat ANAP / SEAP</strong> (Sistem Electronic de Achiziții Publice)</li>
+    </ul>
+
+    <h2>Părerea dumneavoastră contează</h2>
+
+    <div class="poll-box">
+      <p style="margin-bottom: 10px;"><strong>Care este factorul cel mai important pentru dvs. la achiziția de produse de birou?</strong></p>
+      <div class="poll-bar"><div class="fill" style="width: 38%;"></div><div class="label">Prețul (38%)</div></div>
+      <div class="poll-bar"><div class="fill" style="width: 27%;"></div><div class="label">Calitatea (27%)</div></div>
+      <div class="poll-bar"><div class="fill" style="width: 18%;"></div><div class="label">Rapiditatea livrării (18%)</div></div>
+      <div class="poll-bar"><div class="fill" style="width: 11%;"></div><div class="label">Consultanța (11%)</div></div>
+      <div class="poll-bar"><div class="fill" style="width: 6%;"></div><div class="label">Brandul (6%)</div></div>
+      <p style="font-size: 10px; color: var(--text-muted); margin-top: 8px;">287 respondenți · Sondaj actualizat săptămânal · <a href="sondaj.html">Votați și dvs.</a></p>
+    </div>
+
+    <h2>Vremea în Odorheiu Secuiesc · Curs valutar BNR</h2>
+
+    <div class="info-row">
+      <div class="info-col" style="text-align: center;">
+        <div style="font-size: 40px;">☀️</div>
+        <div style="font-size: 22px; font-weight: bold; color: var(--anaf-indigo);">12°C</div>
+        <div style="font-size: 12px; color: var(--text-muted);">Senin, vânt 4 km/h<br>Umiditate: 62%</div>
+        <div style="font-size: 10px; color: #999; margin-top: 6px;">Actualizat: 12.05.2026, 09:00</div>
+      </div>
+      <div class="info-col">
+        <table style="width: 100%; font-size: 12px;">
+          <tr><td>1 EUR</td><td style="text-align: right;"><strong>4,9748 RON</strong></td></tr>
+          <tr><td>1 USD</td><td style="text-align: right;"><strong>4,5821 RON</strong></td></tr>
+          <tr><td>1 GBP</td><td style="text-align: right;"><strong>5,8104 RON</strong></td></tr>
+          <tr><td>100 HUF</td><td style="text-align: right;"><strong>1,2543 RON</strong></td></tr>
+          <tr><td>1 CHF</td><td style="text-align: right;"><strong>5,1672 RON</strong></td></tr>
+        </table>
+        <div style="font-size: 10px; color: #999; margin-top: 6px;">Sursa: BNR · actualizat zilnic 13:00</div>
+      </div>
+    </div>
+
+    <h2>Galerie foto</h2>
+
+    <div class="photo-gallery">
+      <div class="photo-box">🏬<br>Magazinul nostru<br><em>(foto 2012)</em></div>
+      <div class="photo-box">🖨️<br>Showroom imprimante<br><em>(foto 2013)</em></div>
+      <div class="photo-box">📦<br>Depozitul central<br><em>(foto 2014)</em></div>
+      <div class="photo-box">🚚<br>Furgoneta de livrare<br><em>(foto 2016)</em></div>
+      <div class="photo-box">👥<br>Echipa TransOffice<br><em>(foto 2019)</em></div>
+    </div>
+
+  </main>
+
+</div>
+
+<!-- ====== FOOTER ====== -->
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div class="footer-col">
+      <h4>Despre TransOffice</h4>
+      <ul>
+        <li><a href="despre.html">Cine suntem</a></li>
+        <li><a href="echipa.html">Echipa noastră</a></li>
+        <li><a href="istorie.html">Istoricul firmei</a></li>
+        <li><a href="cariere.html">Cariere</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Servicii</h4>
+      <ul>
+        <li><a href="livrare.html">Livrare la sediu</a></li>
+        <li><a href="contracte.html">Contracte de furnizare</a></li>
+        <li><a href="oferta.html">Oferte personalizate</a></li>
+        <li><a href="seap.html">SEAP / Achiziții publice</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Suport clienți</h4>
+      <ul>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="reclamatii.html">Reclamații</a></li>
+        <li><a href="garantie.html">Garanție</a></li>
+        <li><a href="retur.html">Politica de retur</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Informații legale</h4>
+      <ul>
+        <li><a href="confidentialitate.html">Confidențialitate</a></li>
+        <li><a href="termeni.html">Termeni și condiții</a></li>
+        <li><a href="cookie.html">Politica de cookies</a></li>
+        <li><a href="anpc.html">ANPC</a></li>
+        <li><a href="sol.html">SOL — Soluționare online</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    © 2003–2024 <strong>TransOffice Trade SRL</strong> · CUI: 15847291 · J19/421/2003 · Sediul: Calea Băieșenilor 22, Odorheiu Secuiesc, jud. Harghita<br>
+    Ultima actualizare a site-ului: 15.03.2024 · WebDesign: Gábor IT Solutions
+  </div>
+</footer>
+
+<!-- ====== CHATBOT BUTTON ====== -->
+<a href="chat.html" class="chatbot-btn">Asistent online</a>
+
+</body>
+</html>

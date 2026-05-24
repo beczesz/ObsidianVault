@@ -1,5 +1,5 @@
 
-- [ ] Centralize all data, from WhatsApp 📅 2025-09-09
+- [ ] Centralize all data, from WhatsApp 
 - [ ] 
 
 

@@ -1,0 +1,1453 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<title>Oktatói segédlet v2.0</title>
+<style>
+@page {
+  size: A4;
+  margin: 18mm 16mm 18mm 16mm;
+  @top-center {
+    content: "Oktatói segédlet v2.0 — Ignis Academy Haladó AI Workshop";
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 8.5pt;
+    color: #999;
+  }
+  @bottom-center {
+    content: counter(page) " / " counter(pages);
+    font-family: "Helvetica", "Arial", sans-serif;
+    font-size: 9pt;
+    color: #888;
+  }
+}
+
+body {
+  font-family: "Helvetica", "Arial", sans-serif;
+  font-size: 10.5pt;
+  line-height: 1.5;
+  color: #1a1a1a;
+}
+
+/* Headings */
+h1 {
+  font-size: 22pt;
+  color: #1a1a1a;
+  border-bottom: 2px solid #333;
+  padding-bottom: 3mm;
+  margin-top: 0;
+  page-break-after: avoid;
+}
+
+h2 {
+  font-size: 16pt;
+  color: #1565c0;
+  margin-top: 8mm;
+  margin-bottom: 3mm;
+  border-bottom: 1px solid #ccd6e0;
+  padding-bottom: 2mm;
+  page-break-after: avoid;
+  page-break-before: always;
+}
+
+/* The very first h2 (Tartalomjegyzek) shouldn't break */
+h2:first-of-type {
+  page-break-before: avoid;
+}
+
+h3 {
+  font-size: 13pt;
+  color: #2e7d32;
+  margin-top: 5mm;
+  margin-bottom: 2mm;
+  page-break-after: avoid;
+}
+
+h4 {
+  font-size: 11.5pt;
+  color: #455a64;
+  margin-top: 4mm;
+  margin-bottom: 2mm;
+  page-break-after: avoid;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 4px solid #1565c0;
+  background: #f3f8fd;
+  margin: 3mm 0;
+  padding: 2mm 4mm;
+  color: #1a1a1a;
+  font-style: italic;
+  page-break-inside: avoid;
+}
+
+blockquote em {
+  font-style: italic;
+  color: #1565c0;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 3mm 0;
+  page-break-inside: avoid;
+  font-size: 9.5pt;
+}
+
+th {
+  background: #1565c0;
+  color: #fff;
+  padding: 1.5mm 2mm;
+  text-align: left;
+  font-weight: 600;
+}
+
+th strong, th em, th {
+  color: white !important;
+}
+
+td {
+  border-bottom: 1px solid #e0e6ed;
+  padding: 1.5mm 2mm;
+  vertical-align: top;
+}
+
+tr:nth-child(even) td {
+  background: #f7faff;
+}
+
+/* Code blocks (prompts) */
+pre {
+  background: #f4f5f7;
+  border: 1px solid #d8dde3;
+  border-left: 4px solid #5a6478;
+  padding: 3mm 4mm;
+  font-family: "Menlo", "Consolas", "Courier New", monospace;
+  font-size: 8.5pt;
+  line-height: 1.4;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  margin: 2mm 0 4mm 0;
+  page-break-inside: avoid;
+  color: #1a1a1a;
+}
+
+code {
+  font-family: "Menlo", "Consolas", "Courier New", monospace;
+  font-size: 9pt;
+  background: #f4f5f7;
+  padding: 0.5mm 1mm;
+  border-radius: 1mm;
+}
+
+/* Inline modifiers */
+p.mondom {
+  background: #e8f4fd;
+  border-left: 3px solid #1565c0;
+  padding: 2mm 3mm;
+  margin: 2mm 0;
+  page-break-inside: avoid;
+}
+
+p.mondom strong {
+  color: #1565c0;
+}
+
+p.vigyazz {
+  background: #fff3e0;
+  border-left: 3px solid #e65100;
+  padding: 2mm 3mm;
+  margin: 2mm 0;
+  page-break-inside: avoid;
+}
+
+p.vigyazz strong {
+  color: #e65100;
+}
+
+p.csinalom {
+  background: #f1f8e9;
+  border-left: 3px solid #558b2f;
+  padding: 2mm 3mm;
+  margin: 2mm 0;
+  page-break-inside: avoid;
+}
+
+p.csinalom strong {
+  color: #558b2f;
+}
+
+p.prompt-label {
+  background: #f4f5f7;
+  padding: 1.5mm 3mm;
+  margin: 2mm 0 0 0;
+  font-weight: 600;
+  border-radius: 1mm 1mm 0 0;
+}
+
+p.prompt-label strong {
+  color: #5a6478;
+}
+
+/* Lists */
+ul, ol {
+  margin: 2mm 0;
+  padding-left: 5mm;
+}
+
+li {
+  margin: 0.8mm 0;
+}
+
+/* Horizontal rule */
+hr {
+  border: none;
+  border-top: 1px dashed #ccd6e0;
+  margin: 5mm 0;
+}
+
+/* Strong general */
+strong {
+  color: #1a1a1a;
+}
+
+/* Anchor tags */
+a {
+  color: #1565c0;
+  text-decoration: none;
+}
+
+/* TOC links */
+h2 + ol, h2 + ul {
+  font-size: 9.5pt;
+}
+</style>
+</head>
+<body>
+<h1 id="oktatoi-segedlet-v20-ignis-academy-halado-ai-workshop">🎬 Oktatói segédlet v2.0 — Ignis Academy Haladó AI Workshop</h1>
+<blockquote>
+<p><strong>Verzió:</strong> 2.0 (instructor-led + stációk modell)
+<strong>Készült:</strong> 2026-05-12
+<strong>Hossz:</strong> 4 óra (240 perc) — délelőtt 9:00 → 13:00 példa
+<strong>Csoport:</strong> 10-15 fő (5-7 pár), HBC közösség
+<strong>Eszközök:</strong> Oktatói laptop + projektor, minden résztvevő saját laptopja, Claude Cowork Pro
+<strong>Pedagógia:</strong> Az oktató kivetítve végigviszi a narratívát és a demókat. A résztvevők <strong>fix stációkon</strong> dolgoznak a saját laptopjukon — izolált, 3-5 perces feladatok F1 után bárki meg tudja csinálni.
+<strong>Tananyag-verzió:</strong> v1.3 + F1 v2.1</p>
+</blockquote>
+<hr />
+<h2 id="tartalomjegyzek">📋 Tartalomjegyzék</h2>
+<ol>
+<li><a href="#hogyan">Hogyan használd ezt a segédletet</a></li>
+<li><a href="#pre">Pre-workshop checklist</a></li>
+<li><a href="#ido">Idővonalas áttekintés</a></li>
+<li><a href="#bev">Bevezető (0:00 → 0:22)</a></li>
+<li><a href="#f1">F1 — Káoszból rendszer (0:22 → 0:47)</a></li>
+<li><a href="#f2">F2 — Rend a TODO-k között (0:47 → 1:12)</a></li>
+<li><a href="#sz1">SZÜNET 1 (1:12 → 1:27)</a></li>
+<li><a href="#f3">F3 — Pályázati elemzés (1:27 → 1:57)</a></li>
+<li><a href="#f4">F4 — Multi-persona kommunikáció (1:57 → 2:34)</a></li>
+<li><a href="#sz2">SZÜNET 2 (2:34 → 2:44)</a></li>
+<li><a href="#f5">F5 — Pályázat összeállítás (2:44 → 3:19)</a></li>
+<li><a href="#f6">F6 — Web redesign (3:19 → 3:37)</a></li>
+<li><a href="#zar">Zárás (3:37 → 3:50)</a></li>
+<li><a href="#appA">Appendix A — Minden prompt egy helyen</a></li>
+<li><a href="#vesz">Vészforgatókönyv</a></li>
+</ol>
+<hr />
+<h2 id="hogyan-hasznald-ezt-a-segedletet">Hogyan használd ezt a segédletet  <a id="hogyan"></a></h2>
+<p>Ez egy <strong>élő segítség</strong> — workshop közben pillantasz rá. <strong>A workshop modellje:</strong></p>
+<ul>
+<li>🎤 <strong>Az oktató (te) kivetíti a laptopját</strong> és a teljes narratívát végigviszi</li>
+<li>🖥 <strong>A résztvevők figyelnek</strong> a kivetítőre — látják a demókat élőben</li>
+<li>⏸ <strong>Stációknál</strong> megállsz, a résztvevők előveszik a saját laptopjukat és 3-5 percig egy izolált mini-feladatot csinálnak</li>
+<li>🔄 <strong>Visszatérünk</strong> a kivetítőhöz, közös megbeszélés, megyünk tovább</li>
+</ul>
+<p><strong>Jelölések a segédletben:</strong>
+- 🎤 <strong>[OKTATÓ]</strong> — te beszélsz / mutatod
+- ⏸ <strong>[STÁCIÓ]</strong> — a résztvevők dolgoznak (mindenki saját laptopján)
+- 💬 <strong>[BESZÉLGETÉS]</strong> — közös megbeszélés
+- 📝 <strong>PROMPT:</strong> — pontos szöveg amit beírsz a Cowork-be (vagy a résztvevők)
+- 📍 <strong>MONDOM:</strong> — pontos mondat amit te mondasz
+- ⚠️ <strong>VIGYÁZZ:</strong> — gyakori hiba</p>
+<hr />
+<h2 id="pre-workshop-checklist-t-30p">Pre-workshop checklist (T-30p)  <a id="pre"></a></h2>
+<p><strong>Technikai (10 perc):</strong></p>
+<table>
+<thead>
+<tr>
+<th>☐</th>
+<th>Tétel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td>Projektor + laptop + WiFi működik</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>Claude Cowork desktop megnyitva, bejelentkezve (Pro account)</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>Productivity + Legal plugin aktiválva a Cowork-ben</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>A <strong><code>TransOffice/</code></strong> mappa előkészítve az oktatói laptopon (referencia példányként)</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>A <strong>résztvevők TransOffice-ai</strong> előkészítve (USB-stick / GDrive link kéznél)</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>Mobil hotspot bekapcsolva (vész esetére)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Asseteket előkészíteni (10 perc):</strong></p>
+<table>
+<thead>
+<tr>
+<th>☐</th>
+<th>Tétel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td><code>Feladat_1.1.md</code> előre megnyitva egy böngésző-tabban (a tanulók látják a copy-paste promptot)</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><code>meeting_transcript_20250224.srt</code> letöltve a saját gépedre</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><code>Ghidul-solicitantului-Mobilitate-Verde-IMM-2025.md</code> letöltve</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><code>szerzodes_chirie_TransOffice_2018.docx</code> letöltve</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><code>bilant_TransOffice_2023_2024.xlsx</code> letöltve</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><code>formular_depunere_AFM_Mobilitate_Verde.html</code> browser tab nyitva</td>
+</tr>
+<tr>
+<td>☐</td>
+<td><code>transoffice_old_website.html</code> browser tab nyitva</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Mentális (10 perc):</strong></p>
+<table>
+<thead>
+<tr>
+<th>☐</th>
+<th>Tétel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>☐</td>
+<td>Olvasd át a Story Book-ot egyszer</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>Ellenőrizd a 2 szünet időpontját — írd táblára (pl. 10:35 és 11:42)</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>Készíts pohár vizet</td>
+</tr>
+<tr>
+<td>☐</td>
+<td>1 perc csendes lélegzés</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="idovonalas-attekintes">Idővonalas áttekintés  <a id="ido"></a></h2>
+<table>
+<thead>
+<tr>
+<th>Idő</th>
+<th>Szegmens</th>
+<th>Hossz</th>
+<th>Stációk</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0:00 → 0:22</td>
+<td><strong>Bevezető</strong></td>
+<td>22p</td>
+<td>1 micro-bemutatkozás</td>
+</tr>
+<tr>
+<td>0:22 → 0:47</td>
+<td><strong>F1 — Káoszból rendszer</strong></td>
+<td>25p</td>
+<td><strong>MINDENKI</strong> (kivétel)</td>
+</tr>
+<tr>
+<td>0:47 → 1:12</td>
+<td><strong>F2 — TODO-k</strong></td>
+<td>25p</td>
+<td>1 stáció (Follow-up email)</td>
+</tr>
+<tr>
+<td>1:12 → 1:27</td>
+<td>☕ <strong>SZÜNET 1</strong></td>
+<td>15p</td>
+<td>—</td>
+</tr>
+<tr>
+<td>1:27 → 1:57</td>
+<td><strong>F3 — Pályázati elemzés</strong></td>
+<td>30p</td>
+<td>2 stáció (1 kritérium + 1 melléklet)</td>
+</tr>
+<tr>
+<td>1:57 → 2:34</td>
+<td><strong>F4 — Multi-persona</strong></td>
+<td>37p</td>
+<td>2 stáció (Béla bácsi válasz + EBITDA)</td>
+</tr>
+<tr>
+<td>2:34 → 2:44</td>
+<td>☕ <strong>SZÜNET 2</strong></td>
+<td>10p</td>
+<td>—</td>
+</tr>
+<tr>
+<td>2:44 → 3:19</td>
+<td><strong>F5 — Pályázat összeáll.</strong></td>
+<td>35p</td>
+<td>2 stáció (Form-katalog + Idő-becslés)</td>
+</tr>
+<tr>
+<td>3:19 → 3:37</td>
+<td><strong>F6 — Web redesign</strong></td>
+<td>18p</td>
+<td>1 nagy stáció (3 saját variáns)</td>
+</tr>
+<tr>
+<td>3:37 → 3:50</td>
+<td><strong>Zárás</strong></td>
+<td>13p</td>
+<td>Anonim „1 mondat"</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Példa óratervezéssel:</strong> 9:00 → 13:00, szünetek: 10:12 és 11:34.</p>
+<hr />
+<h2 id="bevezeto-000-022">🎬 BEVEZETŐ (0:00 → 0:22)  <a id="bev"></a></h2>
+<p><strong>Cél:</strong> Mindenki helyén legyen, megismerjék a kerettet, megérezzék a stake-eket.</p>
+<table>
+<thead>
+<tr>
+<th>Idő</th>
+<th>Mód</th>
+<th>Mit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0:00-0:03</td>
+<td>🎤 OKTATÓ</td>
+<td>Üdvözlés</td>
+</tr>
+<tr>
+<td>0:03-0:07</td>
+<td>⏸ STÁCIÓ</td>
+<td>„1 dolog amit várok" mini-bemutatkozás</td>
+</tr>
+<tr>
+<td>0:07-0:13</td>
+<td>🎤 OKTATÓ</td>
+<td>Workshop ív + film-metafora</td>
+</tr>
+<tr>
+<td>0:13-0:18</td>
+<td>🎤 OKTATÓ</td>
+<td>TransOffice + Márton + pisztolymisszió</td>
+</tr>
+<tr>
+<td>0:18-0:22</td>
+<td>🎤 OKTATÓ</td>
+<td>Szabályok + idő-jelölés</td>
+</tr>
+</tbody>
+</table>
+<h3 id="000-003-udvozles">0:00-0:03 — Üdvözlés</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Sziasztok! Köszönöm hogy itt vagytok. 4 óra alatt egy fiktív céget fogunk a káoszból kihúzni — beadunk vele egy 200 000 eurós EU-pályázatot. És megérzitek mit jelent ha az AI mellettetek dolgozik."</em></p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> Ne mondd hogy „megtanítom" — mondd hogy „megtapasztaljátok". Ez nem tool-tanulás.</p>
+<h3 id="003-007-stacio-1-dolog-amit-varok">0:03-0:07 — ⏸ STÁCIÓ: „1 dolog amit várok"</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Egy gyors kör. Mindenki 1 mondatban: ki vagy, mivel foglalkozol, és </em><em>1 dolog amit ma várok az AI-tól</em><em>. Csak 1 mondat — nem előadás."</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Körbejárok, kb. 4 perc 12-15 főre.</p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> A „1 dolog amit várok" <strong>pozitív</strong> — nem hierarchikus mint a „hány %-ban használod". Egy kezdő is biztonságban szólalhat meg.</p>
+<h3 id="007-013-workshop-iv">0:07-0:13 — Workshop ív</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„A workshop egy film. Ti vagytok az új Operations Manager a TransOffice-nél. 4 óra alatt végigvisszük a céget a káoszból a beadott pályázatig. 6 felvonás — F1-F6. Mindegyik 20-35 perces. A film közben:</em>
+- <em>Én végigviszem a narratívát a saját gépemen, kivetítve. Megmutatok valamit.</em>
+- <em>Stációknál megálljatok. Előveszitek a saját laptopjaitokat, kipróbáljátok ti is — 3-5 perc.</em>
+- <em>Aztán visszatérünk."</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Mutatom a 6 fázis listáját az Obsidian-ban / a kivetítőn.</p>
+<h3 id="013-018-transoffice-bemutatasa">0:13-0:18 — TransOffice bemutatása</h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Megnyitom a <code>Ceg_leiras_TransOffice.md</code>-t <strong>csak a fő képet</strong> — nem olvasok fel.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„TransOffice Trade SRL. Székelyudvarhely. 22 éves cég, irodai eszközök B2B. Az anyu kezelte az admint 20 évig. Most a fia (Kovács Márton) átvette — és a fia tudja: az anyu fejében volt minden. Excel-dzsungel, email-káosz. Ti vagytok az új ember, aki rendet rak."</em></p>
+<p>📍 <strong>MONDOM:</strong> <em>„És van egy kemény határidő: az AFM Mobilitate Verde pályázat. 200 000 euró elektromos járműflottára. </em><em>Péntekig</em><em> be kell adni vagy lemarad. </em><em>Egy hét, egy ember, egy káosz, egy AI.</em><em>"</em></p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> <strong>Tömör maradj</strong> — 5 perc, nem 10. A részletek F1-ben jönnek elő.</p>
+<h3 id="018-022-szabalyok">0:18-0:22 — Szabályok</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Két szabály. Egy: kérdezz bátran, bármikor. Két: ha lassú vagyok vagy túl gyors, szóljatok. Két szünet lesz: kb. [10:12] és kb. [11:34]. Most kezdjük!"</em></p>
+<hr />
+<h2 id="f1-kaoszbol-rendszer-022-047-25-perc">🎬 F1 — Káoszból rendszer (0:22 → 0:47, 25 perc)  <a id="f1"></a></h2>
+<p><strong>Cél:</strong> Mindenki saját TransOffice-án ugyanazt a promptot futtatja → saját rendezett mappa, saját CLAUDE.md, saját kivonat.
+<strong>Modell:</strong> <strong>Kivétel — ez az egyetlen fázis ahol mindenki egyszerre dolgozik a saját laptopján.</strong></p>
+<table>
+<thead>
+<tr>
+<th>Idő</th>
+<th>Mód</th>
+<th>Mit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0:22-0:25</td>
+<td>🎤 OKTATÓ</td>
+<td>Felvezetés + a Feladat_1.1 megnyitása</td>
+</tr>
+<tr>
+<td>0:25-0:27</td>
+<td>🎤 OKTATÓ</td>
+<td>Cowork-projekt setup demó</td>
+</tr>
+<tr>
+<td>0:27-0:42</td>
+<td>⏸ STÁCIÓ</td>
+<td>Mindenki copy-paste a promptot, Cowork dolgozik</td>
+</tr>
+<tr>
+<td>0:42-0:45</td>
+<td>💬 BESZÉLGETÉS</td>
+<td>Páros megbeszélés</td>
+</tr>
+<tr>
+<td>0:45-0:47</td>
+<td>🎤 OKTATÓ</td>
+<td>Átkötés F2-be</td>
+</tr>
+</tbody>
+</table>
+<h3 id="022-025-felvezetes">0:22-0:25 — Felvezetés</h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Megnyitom a <code>Tananyag/01_Ceg_megertes/Feladat_1.1.md</code>-t a kivetítőn. Mindenki lássa.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Olvassuk el együtt a szituációt. Márton odajön a második kávéval..."</em> — felolvasom a Márton-monológot.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Mindenki nyissa ki a saját laptopján a Cowork-öt és a <code>Feladat_1.1.md</code>-t. A 3. lépésnél van egy szürke kódblokk — ez a prompt. Ezt fogjátok bemásolni a Cowork-be. Mind a 15-en. Egyszerre."</em></p>
+<h3 id="025-027-cowork-projekt-setup">0:25-0:27 — Cowork-projekt setup</h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Megmutatom a kivetítőn:
+1. Új Cowork-projekt
+2. <code>TransOffice/</code> mappa hozzáadása projekt-kontextusként
+3. Üres chat-tab</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Mindenki itt áll a saját gépén? Ki ne tudja még megnyitni?"</em> — várok 30 mp-et.</p>
+<h3 id="027-042-stacio-15-perc-mindenki-rendet-tesz">0:27-0:42 — ⏸ STÁCIÓ (15 perc): „Mindenki rendet tesz"</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Másoljátok ki a promptot a Feladat_1.1.md 3. lépéséből, illeszétek a Cowork chat-be, és nyomjátok el. </em><em>Csak figyeljétek hogy mit csinál.</em><em> Ha készen van, nézzétek át az outputot."</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (amit ők másolnak):</strong></p>
+<pre><code>Az új munkatárs vagyok a TransOffice cégnél, ma az első napom.
+
+A TransOffice mappában találod a cégünk összes dokumentumát. Rendetlenség
+van — évek alatt gyűlt össze mindenféle dokumentum, és senki nem nézte át
+őket.
+
+Légy szíves, segíts rendbe tenni:
+
+1. Először a jelenlegi mappáról készíts egy biztonsági másolatot, hogy
+   bármikor vissza tudjam keresni a fileokat.
+
+2. Kezd el egyenként átnézni a fileokat és kategorizálni.
+
+3. Legyen egy Kuka mappa is — abba másolj minden olyan filet, ami szemét,
+   elavult, vagy nem releváns.
+
+4. Gyere egy javaslattal, hogy hogyan rendezzük az anyagot, és rendezd is
+   el úgy.
+
+5. Készíts nekem egy kivonatot arról, mit találtál és mit csináltál.
+
+Készíts egy CLAUDE.md fájlt is — ez lesz a hosszútávú memóriád. Minden új
+munkamenetben elsőként ezt fogod elolvasni.
+
+Ha bármi nem világos, kérdezz vissza.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM közben:</strong> Én is futtatom a saját gépemen — kivetítve. A résztvevők látják mit csinál a Cowork (kivetítő = referencia).</p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> Egyiküknek <strong>biztosan nem fog elindulni</strong> valami (rossz mappa, nincs projekt, lassú net). Légy türelmes, segíts. Ne hagyd, hogy lemaradjon.</p>
+<h3 id="042-045-paros-megbeszeles-3-perc">0:42-0:45 — 💬 Páros megbeszélés (3 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Páronként mutassátok meg egymásnak:</em>
+- <em>Mit dobott a Kukába a Cowork? Egyezett a 2 listátok?</em>
+- <em>A CLAUDE.md-be ki került be a csapatba és kit hagyott ki?</em>
+- <em>Mit írna át máshogy?"</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Körbejárok. Hallom mit beszélnek. <strong>Ne avatkozz be, hagyd őket.</strong></p>
+<h3 id="045-047-atkotes-f2-be">0:45-0:47 — Átkötés F2-be</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Oké, a fájlok rendben. </em><em>Mindenkinek van egy CLAUDE.md-je</em><em> — ezt mostantól F6-ig használjuk. De Márton közben besüllyed egy sürgős meetingre Enikővel. Itt jön az F2."</em></p>
+<hr />
+<h2 id="f2-rend-a-todo-k-kozott-047-112-25-perc">🎬 F2 — Rend a TODO-k között (0:47 → 1:12, 25 perc)  <a id="f2"></a></h2>
+<p><strong>Cél:</strong> A Productivity plugin bemutatása. Egy SRT-transcript → TODO lista, ami <strong>session-ök között is megmarad</strong>.
+<strong>Stáció:</strong> 1 db (Follow-up email Enikőnek a látott TODO lista alapján).</p>
+<table>
+<thead>
+<tr>
+<th>Idő</th>
+<th>Mód</th>
+<th>Mit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0:47-0:50</td>
+<td>🎤 OKTATÓ</td>
+<td>Átvezetés + Productivity plugin bemutatás</td>
+</tr>
+<tr>
+<td>0:50-0:58</td>
+<td>🎤 OKTATÓ</td>
+<td>DEMO: SRT-transcript → TODO (Productivity plugin)</td>
+</tr>
+<tr>
+<td>0:58-1:01</td>
+<td>🎤 OKTATÓ</td>
+<td>„Session-ök közötti memória" mágia (új chat)</td>
+</tr>
+<tr>
+<td>1:01-1:08</td>
+<td>⏸ STÁCIÓ</td>
+<td>Follow-up email Enikőnek</td>
+</tr>
+<tr>
+<td>1:08-1:10</td>
+<td>💬 BESZÉLGETÉS</td>
+<td>„Kinek mit írt a Cowork?"</td>
+</tr>
+<tr>
+<td>1:10-1:12</td>
+<td>🎤 OKTATÓ</td>
+<td>Átkötés F3-ba</td>
+</tr>
+</tbody>
+</table>
+<h3 id="047-050-atvezetes">0:47-0:50 — Átvezetés</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Másnap reggel. Márton odaszól Enikőnek: '15 perc múlva irodában, sürgős.' A meeting kaotikus — kiderül, hogy ez a pályázat 2 hónapja a radarjuk alatt van, és </em><em>a forrás kifut</em><em>. Valaki felvette a meetinget — ez egy SRT transcript fájl, mintha egy AI transcribe-olta volna."</em></p>
+<p>📍 <strong>MONDOM:</strong> <em>„A Cowork-nek van egy </em><em>Productivity plugin</em><em>-ja, ami </em><em>nem ChatGPT</em><em>. A ChatGPT elfelejti amit mondtál. A Cowork </em><em>megjegyzi a TODO-kat session-ök között</em><em>."</em></p>
+<h3 id="050-058-demo-srt-transcript-todo">0:50-0:58 — DEMO: SRT-transcript → TODO</h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> A Cowork-be behúzom a <code>meeting_transcript_20250224.srt</code> fájlt. Új chat-tab.</p>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Olvasd el ezt a meeting transcriptet. Sürgős megbeszélés egy EU pályázatról
+(AFM Mobilitate Verde 2025 — elektromos járműflotta).
+
+Kérek:
+1. Helyzet összefoglaló (3-5 mondat)
+2. TODO lista: Ki → Mit → Mikorra → Prioritás
+3. Hiányzó információk (amik nélkül nem lehet pályázni)
+4. Blokkolók: melyik TODO függ a másiktól
+
+A TODO-kat mentsd el a Productivity pluginbe.
+</code></pre>
+<p>📍 <strong>MONDOM közben:</strong> <em>„Nézzétek — a Cowork olvas. Strukturál. A 'kedd' szóból dátumot készít. A 'Béla bácsi szilveszteri megjegyzéséből' TODO-t csinál — pedig az csak egy mellékmondat volt. Ezt </em><em>kézzel</em><em> egy ember </em><em>fél órán</em><em> át írná át jegyzetből."</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Mutatom a Productivity plugin tab-ot — látszanak az elmentett TODO-k.</p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> Ha a Béla bácsi-szál említve van a TODO-listán, <strong>NE húzd alá</strong> itt. Most még nem foglalkozunk vele. Az F4-ben jön a csúcs.</p>
+<h3 id="058-101-session-ok-kozotti-memoria-3-perc">0:58-1:01 — „Session-ök közötti memória" (3 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„És most a varázslat. Bezárom ezt a chatet. Új sessiont nyitok. </em><em>Egy üreset.</em><em>"</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Új chat-tab.</p>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Mik a nyitott feladataim?
+</code></pre>
+<p>📍 <strong>MONDOM:</strong> <em>„És nézzétek — emlékszik. A ChatGPT-vel ez nem így megy. </em><em>Csendes pillanat.</em><em> Ez </em><em>a Cowork erőssége</em><em>."</em></p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> <strong>Hagyj rá 5-10 másodperc csendet.</strong> Hadd lássák. Ne magyarázd túl.</p>
+<h3 id="101-108-stacio-2a-follow-up-email-enikonek-7-perc">1:01-1:08 — ⏸ STÁCIÓ 2.A: Follow-up email Enikőnek (7 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Most ti következtek. A TODO lista ott van — a kivetítőn látjátok, és a saját Cowork-jeiteken </em><em>a CLAUDE.md-ben</em><em> is van valami arról hogy mire pályázunk. Mindenki nyissa meg a saját Cowork-jét, új chat-tab. Másoljátok be ezt a promptot."</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (ők másolják):</strong></p>
+<pre><code>Olvasd el a CLAUDE.md-t. Ez alapján és a workshop-vezetőtől látott TODO
+lista alapján: írj egy 4-5 mondatos follow-up emailt Enikőnek arról,
+hogy mik a feladatai a következő 3 napban az AFM pályázat előkészítésében.
+
+Hangnem: kollegális, konkrét, határidős.
+
+Magyarul írd.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Körbejárok. Pár perc múlva: <em>„Ha kész vagy, mutasd meg a párodnak."</em></p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> Egyiknek-másiknak más TODO lehet (mindenki saját CLAUDE.md-jétől függ). Ez <strong>normális</strong> — a workshop ezt <strong>dicséri</strong>, nem hibáztatja.</p>
+<h3 id="108-110-paros-megbeszeles-2-perc">1:08-1:10 — 💬 Páros megbeszélés (2 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„30 másodperc — mutasd meg a párodnak. Kinek hangzik élesebbnek? Mit emelne ki?"</em></p>
+<h3 id="110-112-atkotes-f3-ba">1:10-1:12 — Átkötés F3-ba</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„A TODO-k megvannak, a levelek kész. De most jön az első kemény akadály: </em><em>a 94 oldalas pályázati kiírás</em><em>. Senki nem olvasta végig. </em><em>Pályázhatunk-e egyáltalán?</em><em> Erre 30 perc múlva válaszolunk."</em></p>
+<p>📍 <strong>MONDOM:</strong> <em>„De előtte — szünet. 15 perc. Találkozunk [10:27]-kor."</em></p>
+<hr />
+<h2 id="szunet-1-112-127-15-perc">☕ SZÜNET 1 (1:12 → 1:27, 15 perc)  <a id="sz1"></a></h2>
+<h3 id="mit-csinalsz-a-szunet-alatt">Mit csinálsz a szünet alatt</h3>
+<ol>
+<li><strong>Frissítsd a Cowork-öt</strong> (memória-felszabadítás)</li>
+<li><strong>Vizet igyál</strong></li>
+<li><strong>Készítsd elő az F3 promptot</strong> (Appendix A.3) — legyen kéznél copy-paste</li>
+<li><strong>Töltsd az aksit</strong></li>
+<li><strong>Ne dolgozz</strong> — a résztvevők kérdeznek szünetben</li>
+</ol>
+<h3 id="visszainditas-127">Visszaindítás (1:27)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Visszajöttünk. Most a 94 oldalas pályázati kiírás. Készen álltok?"</em></p>
+<hr />
+<h2 id="f3-palyazati-elemzes-127-157-30-perc">🎬 F3 — Pályázati elemzés (1:27 → 1:57, 30 perc)  <a id="f3"></a></h2>
+<p><strong>Cél:</strong> A 94 oldalas pályázati kiírás → strukturált eligibility tábla + gap analízis + Data Completion Board.
+<strong>Stációk:</strong> 2 db (1 kritérium ellenőrzése + 1 melléklet beszerzési útja).</p>
+<table>
+<thead>
+<tr>
+<th>Idő</th>
+<th>Mód</th>
+<th>Mit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1:27-1:30</td>
+<td>🎤 OKTATÓ</td>
+<td>„És itt a 94 oldal"</td>
+</tr>
+<tr>
+<td>1:30-1:40</td>
+<td>🎤 OKTATÓ</td>
+<td>F3.1 DEMO: Eligibility check</td>
+</tr>
+<tr>
+<td>1:40-1:43</td>
+<td>⏸ STÁCIÓ</td>
+<td>1 kritérium ellenőrzése</td>
+</tr>
+<tr>
+<td>1:43-1:51</td>
+<td>🎤 OKTATÓ</td>
+<td>F3.2 DEMO: Gap analízis (17 melléklet)</td>
+</tr>
+<tr>
+<td>1:51-1:54</td>
+<td>⏸ STÁCIÓ</td>
+<td>1 melléklet beszerzési útja</td>
+</tr>
+<tr>
+<td>1:54-1:57</td>
+<td>🎤 OKTATÓ</td>
+<td>F3.3 DEMO: Data Completion Board + átkötés</td>
+</tr>
+</tbody>
+</table>
+<h3 id="127-130-felvezetes">1:27-1:30 — Felvezetés</h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Megnyitom a <code>Ghidul-solicitantului-Mobilitate-Verde-IMM-2025.pdf</code> borítóját — gyorsan görgetek, lássák hogy <strong>valódi 94 oldalas dokumentum</strong>.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Ez egy 94 oldalas, románul írt, jogszabály-stílusú pályázati kiírás. Egy ember </em><em>2-3 nap alatt</em><em> olvassa át. A Cowork-kel </em><em>5 perc múlva eldöntjük, pályázhatunk-e</em><em>. Nem csak igen/nem — strukturáltan, indoklással, kockázatokkal."</em></p>
+<h3 id="130-140-f31-demo-eligibility-check-10-perc">1:30-1:40 — F3.1 DEMO: Eligibility check (10 perc)</h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> A pályázati kiírás MD verzióját behúzom a Cowork-be projekt-kontextusként.</p>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Olvasd át a Palyazat_kiiras/Ghidul-solicitantului-Mobilitate-Verde-IMM-
+2025.md fájlt és vesd össze a TransOffice cégadatokkal (a CLAUDE.md
+alapján).
+
+Listázd ki az ÖSSZES eligibility kritériumot. Minden kritériumra jelöld:
+✅ TELJESÍTJÜK / ⚠️ RÉSZBEN / ❌ NEM TELJESÍTJÜK
++ rövid indoklás (max 2 mondat / kritérium)
+
+A végén egy döntés: PÁLYÁZHATUNK / NEM PÁLYÁZHATUNK / FELTÉTELESEN
++ a top 3 kockázat amit el kell intézni.
+</code></pre>
+<p>📍 <strong>MONDOM közben:</strong> <em>„A Cowork most </em><em>párhuzamosan olvas két dolgot</em><em>: a pályázati kiírást és a TransOffice cégadatokat. </em><em>Egy tanácsadó ezt 3 napig csinálná. Egy tanácsadó óradíja 100 EUR/óra. Ez most 3000 EUR-os tanács — ingyen."</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Várok 60-90 mp. Megjelenik a kimenet. Mutatom: 12 kritérium, 10 ✅, 2 ⚠️. <strong>Kiemelek 2-3 érdekes pontot.</strong></p>
+<h3 id="140-143-stacio-3a-1-kriterium-ellenorzese-3-perc">1:40-1:43 — ⏸ STÁCIÓ 3.A: 1 kritérium ellenőrzése (3 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Most ti következtek. Mindenki saját Cowork-jén — másoljátok be ezt:"</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (ők másolják):</strong></p>
+<pre><code>Olvasd el a Palyazat_kiiras/Ghidul-solicitantului-Mobilitate-Verde-IMM-
+2025.md-ben a CR-08 (járműflotta) kritériumot. A TransOffice teljesíti-e?
+Részletesen, indoklással. Maximum 5 mondat.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Körbejárok, ha valaki más kritériumot szeretne, hagyom.</p>
+<h3 id="143-151-f32-demo-gap-analizis-8-perc">1:43-1:51 — F3.2 DEMO: Gap analízis (8 perc)</h3>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Most listázd ki a 17 kötelező mellékletet a pályázathoz. Minden
+mellékletre jelöld a TransOffice cégadatok (CLAUDE.md + TransOffice/
+mappa) alapján: VAN / NINCS / RÉSZBEN. Ahol RÉSZBEN vagy NINCS, írd
+oda kitől kell beszerezni és milyen formátumban.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Mutatom a 17 soros táblát. <strong>Kiemelek 3-4 piros tételt.</strong></p>
+<p>📍 <strong>MONDOM:</strong> <em>„Látjátok — 17 dokumentum. 6 piros, 5 sárga, 6 zöld. </em><em>Ez az F4-es stáció lista</em><em>: itt fogjuk megszerezni a pirosakat."</em></p>
+<h3 id="151-154-stacio-3b-1-melleklet-beszerzesi-utja-3-perc">1:51-1:54 — ⏸ STÁCIÓ 3.B: 1 melléklet beszerzési útja (3 perc)</h3>
+<p class="prompt-label">📝 <strong>PROMPT (ők másolják):</strong></p>
+<pre><code>Az M-11 (járműflotta-leltár) mellékletet hogyan állítanám össze?
+Kitől kapok adatot, milyen formátumban, hány napos a folyamat?
+Maximum 6 mondat.
+</code></pre>
+<h3 id="154-157-f33-demo-data-completion-board-3-perc">1:54-1:57 — F3.3 DEMO: Data Completion Board (3 perc)</h3>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Az eligibility + gap analízisből generálj Data Completion Board-ot:
+oszlopok = Tétel, Felelős, Határidő, Forrás, Státusz. Csoportosítsd
+3 fázis szerint: BEADÁS ELŐTT / ELBÍRÁLÁS ALATT / MEGVALÓSÍTÁS ALATT.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Mutatom a táblát.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„</em><em>Ez a táblát egy tanácsadó 3000 EUR-ért adja. 5 perc, ingyen.</em><em> De most jön a neheze: ezeket az adatokat be is kell szerezni. Email a könyvelőnek románul, szerződés-ellenőrzés, prezentáció Mártonnak. </em><em>F4 következik.</em><em>"</em></p>
+<hr />
+<h2 id="f4-multi-persona-kommunikacio-157-234-37-perc">🎬 F4 — Multi-persona kommunikáció (1:57 → 2:34, 37 perc)  <a id="f4"></a></h2>
+<p><strong>Cél:</strong> Az AI mint multi-persona kommunikátor — szerződés deep-check, román email, pénzügyi értelmezés, CEO PPT.
+<strong>Stációk:</strong> 2 db (Béla bácsi válasz-tervezet + EBITDA számítás).</p>
+<table>
+<thead>
+<tr>
+<th>Idő</th>
+<th>Mód</th>
+<th>Mit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1:57-2:00</td>
+<td>🎤 OKTATÓ</td>
+<td>Átvezetés („3 ember, 3 stílus")</td>
+</tr>
+<tr>
+<td>2:00-2:12</td>
+<td>🎤 OKTATÓ</td>
+<td>F4.1 DEMO: Bérleti szerződés + Béla bácsi cross-doc</td>
+</tr>
+<tr>
+<td>2:12-2:16</td>
+<td>⏸ STÁCIÓ</td>
+<td>Saját válasz-tervezet Béla bácsira</td>
+</tr>
+<tr>
+<td>2:16-2:25</td>
+<td>🎤 OKTATÓ</td>
+<td>F4.2 DEMO: Mihaela Excel + EBITDA</td>
+</tr>
+<tr>
+<td>2:25-2:28</td>
+<td>⏸ STÁCIÓ</td>
+<td>EBITDA margin saját számítás</td>
+</tr>
+<tr>
+<td>2:28-2:34</td>
+<td>🎤 OKTATÓ</td>
+<td>F4.3 DEMO: CEO update PPT</td>
+</tr>
+</tbody>
+</table>
+<h3 id="157-200-atvezetes">1:57-2:00 — Átvezetés</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„A Data Completion Board kész — 14 feladat, 8 felelős. Most jön a neheze: emaileket küldeni, válaszokat dolgozni, Mártonnak prezentációt készíteni. </em><em>3 ember, 3 stílus.</em><em> Kezdjük a legkockázatosabbal: a bérleti szerződéssel."</em></p>
+<h3 id="200-212-f41-demo-berleti-szerzodes-bela-bacsi-12-perc-a-wow-pillanat">2:00-2:12 — F4.1 DEMO: Bérleti szerződés + Béla bácsi (12 perc) ← <strong>A WOW PILLANAT</strong></h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Behúzom a <code>szerzodes_chirie_TransOffice_2018.docx</code>-et a Cowork-be.</p>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Olvasd el a szerzodes_chirie_TransOffice_2018.docx-et. A TransOffice
+mint bérlő szempontjából:
+
+1. Listázd a top 5 kockázati pontot
+2. Hasonlítsd össze a TransOffice mappájában lévő MÁS fájlokkal —
+   keress kapcsolódó információt (meeting transcript, emailek,
+   jegyzetek). Bármilyen red flag fontos.
+3. Akcióterv: mit teszünk a pályázat előtti 7 napban
+</code></pre>
+<p>📍 <strong>MONDOM közben:</strong> <em>„Figyeljétek: a Cowork most NEM CSAK ezt a szerződést olvassa. Visszanéz a többi fájlra is — meeting transcript, emailek..."</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Várok 90 mp. Megjelenik a kimenet.</p>
+<p>📍 <strong>MONDOM (lassan, drámaian):</strong> <em>„</em><em>Itt egy fontos dolog.</em><em> A Cowork talált valamit. Visszanézte a meeting transcriptet — emlékeztek a 6. jelenetre? Béla bácsi szilveszterkor megemlítette hogy szeretné eladni az egyik területét. </em><em>Lehet hogy a miénk lesz a következő.</em><em> Ez egy red flag a pályázathoz."</em></p>
+<p>📍 <strong>MONDOM:</strong> <em>„És most mit teszünk? </em><em>Levelet írunk Béla bácsinak.</em><em>"</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Írj udvarias levelet Béla bácsinak — Kovács Márton nevében — kérdezve
+hogy mi a helyzet a bérleményünkkel a következő 5 évre. Hangnem:
+tiszteletteljes, közvetlen, magyaros (Béla bácsi 70 éves).
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Mutatom a levelet.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Tegyük fel hogy ez a levél elment. </em><em>Béla bácsi visszaválaszolt is.</em><em>"</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Megnyitom a <code>bela_bacsi_valasz/email.md</code>-t — felolvasok 2-3 mondatot.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„5 év stabilitás biztos, és ha eladja </em><em>csak nekünk adja el</em><em> — vételi opció. </em><em>Bonus.</em><em>"</em></p>
+<h3 id="212-216-stacio-4a-sajat-valasz-tervezet-4-perc">2:12-2:16 — ⏸ STÁCIÓ 4.A: Saját válasz-tervezet (4 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Most ti következtek. Béla bácsi válaszára Márton hogyan reagáljon? Másoljátok be ezt:"</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (ők másolják):</strong></p>
+<pre><code>Béla bácsi visszaválaszolt: 5 év stabilitás + acord proprietar a
+töltőpontra. Írj egy 5 mondatos köszönő-választ Márton nevében —
+meleg, megerősítő, és kérdezz vissza a vételi opcióra is.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Körbejárok. Megnézek 1-2 példát. <em>„Tetszik ahogy Tibi befejezte!"</em> — pozitív megerősítés.</p>
+<h3 id="216-225-f42-demo-mihaela-excel-9-perc">2:16-2:25 — F4.2 DEMO: Mihaela Excel (9 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Második sub-flow: a könyvelő. Mihaela külsős, </em><em>románul</em><em> írunk neki."</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Írj emailt románul Mihaela Florian-nek, a külsős könyvelőnek. Kérjünk
+pénzügyi adatokat 2023 és 2024 évre: árbevétel, EBITDA, alkalmazotti
+adatok. A pályázat AFM Mobilitate Verde 2025. Hangnem: professzionális
+de közvetlen.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Mutatom a román emailt.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Tegyük fel hogy Mihaela 2 nap múlva visszaválaszolt. Itt az Excel."</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Megnyitom a <code>bilant_TransOffice_2023_2024.xlsx</code>-et.</p>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Itt van Mihaela visszaküldött bilance-Excelje. Számítsd ki és mutasd be:
+1. Árbevétel 2023 vs 2024 (RON-ban + %)
+2. EBITDA 2023 vs 2024 (RON-ban + marzs %)
+3. Alkalmazottak száma 2023 vs 2024
+4. Trend értelmezése — emelkedünk vagy csökkenünk?
+5. Pályázati szempontból: melyik 3 KPI a legerősebb érv?
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Mutatom a strukturált jelentést.</p>
+<h3 id="225-228-stacio-4b-ebitda-margin-3-perc">2:25-2:28 — ⏸ STÁCIÓ 4.B: EBITDA margin (3 perc)</h3>
+<p class="prompt-label">📝 <strong>PROMPT (ők másolják):</strong></p>
+<pre><code>A Mihaelától kapott bilance-Excel alapján: számítsd ki az EBITDA
+margint 2024-re (%-ban). Mutasd meg a képletet és az eredményt
+1 mondatban.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> <em>„Aki kész, mondja az eredményt szóban."</em> — 2-3 ember mondja: pl. „4,6%". <strong>Ha ugyanaz a szám:</strong> <em>„Látjátok? Ugyanaz."</em> <strong>Ha más:</strong> <em>„Érdekes — miért?"</em> — vita-momentum.</p>
+<h3 id="228-234-f43-demo-ceo-update-ppt-6-perc">2:28-2:34 — F4.3 DEMO: CEO update PPT (6 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Márton 11-kor visszajön az ügyfél-meetingről. </em><em>8 perc múlva</em><em> prezentációt akar. Cowork-kel: 5 perc."</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Készíts egy 5 slide-os PPTX prezentációt Mártonnak az AFM Mobilitate
+Verde pályázat aktuális állásáról. Slide-onkénti felépítés:
+
+Slide 1: Helyzet — hol állunk a Data Completion Board-on
+Slide 2: Eligibility check — ✅ pályázhatunk
+Slide 3: Pénzügyi készség — EBITDA 2024, trend
+Slide 4: Béla bácsi (telephely) — zöld, sőt vételi opció
+Slide 5: Akcióterv — a következő 7 nap
+
+Stílus: tiszta, üzleti, magyar nyelven.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Várok 1-2 perc. Megnyitom a kész .pptx-et. Slide-ról slide-ra mutatom.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„</em><em>Letölthető, prezentálható.</em><em> Holnap reggel Mártonnal."</em> <em>„Itt a szünet. 10 perc."</em></p>
+<hr />
+<h2 id="szunet-2-234-244-10-perc">☕ SZÜNET 2 (2:34 → 2:44, 10 perc)  <a id="sz2"></a></h2>
+<h3 id="mit-csinalsz">Mit csinálsz</h3>
+<ol>
+<li>Idd meg a kávét</li>
+<li><strong>Készítsd elő a Plan de afaceri promptot</strong> (Appendix A.5)</li>
+<li><strong>Nyisd meg a <code>formular_depunere_AFM_Mobilitate_Verde.html</code>-t</strong> egy fülön</li>
+<li>Ellenőrizd a Cowork-öt — frissítsd ha lassú</li>
+</ol>
+<h3 id="visszainditas">Visszaindítás</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Visszajöttünk. Most jön a WOW. </em><em>A pályázat össze fog állni.</em><em>"</em></p>
+<hr />
+<h2 id="f5-palyazat-osszeallitas-244-319-35-perc">🎬 F5 — Pályázat összeállítás (2:44 → 3:19, 35 perc)  <a id="f5"></a></h2>
+<p><strong>Cél:</strong> Vizuális csúcspont. A teljes Plan de afaceri + 23 tételes csomag + form-kitöltés.
+<strong>Stációk:</strong> 2 db (Form-katalogizáló + Manuális idő-becslés) — együtt drámailag mutatják a Cowork ROI-ját.</p>
+<table>
+<thead>
+<tr>
+<th>Idő</th>
+<th>Mód</th>
+<th>Mit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2:44-2:46</td>
+<td>🎤 OKTATÓ</td>
+<td>„Most jön a WOW"</td>
+</tr>
+<tr>
+<td>2:46-2:58</td>
+<td>🎤 OKTATÓ</td>
+<td>F5.1 DEMO: Plan de afaceri</td>
+</tr>
+<tr>
+<td>2:58-3:05</td>
+<td>🎤 OKTATÓ</td>
+<td>F5.2 DEMO: 23 tételes csomag</td>
+</tr>
+<tr>
+<td>3:05-3:10</td>
+<td>⏸ STÁCIÓ 5.A</td>
+<td>Form-katalogizáló (mezők kategorizálása)</td>
+</tr>
+<tr>
+<td>3:10-3:15</td>
+<td>⏸ STÁCIÓ 5.B</td>
+<td>Manuális idő-becslés</td>
+</tr>
+<tr>
+<td>3:15-3:19</td>
+<td>🎤 OKTATÓ</td>
+<td>F5.3 DEMO: Form-kitöltés AI-jal + összevetés</td>
+</tr>
+</tbody>
+</table>
+<h3 id="244-246-atvezetes">2:44-2:46 — Átvezetés</h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Mutatom 20 mp-ig a TransOffice fájl-mappát F1-ből (káosz emlékeztető).</p>
+<p>📍 <strong>MONDOM:</strong> <em>„...innen indultunk. Most összeállítjuk a teljes pályázatot."</em></p>
+<h3 id="246-258-f51-demo-plan-de-afaceri-12-perc">2:46-2:58 — F5.1 DEMO: Plan de afaceri (12 perc)</h3>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Készíts egy teljes Plan de afaceri-t (románul) a TransOffice számára
+az AFM Mobilitate Verde 2025 pályázathoz. Tartalmazza:
+
+1. Rezumat executiv
+2. Prezentarea companiei (Béla bácsi telephely-stabilitással)
+3. Analiza pieței (B2B irodai logisztika Hargita megye)
+4. Proiect propus — 5 elektromos jármű + 2 töltőpont
+5. Plan financiar — 18 hónapos cash flow, EBITDA forecast 5 évre
+6. Plan de marketing
+7. Plan de implementare — M1-M18 milestone-ok
+8. Echipa managerială
+
+Hossz: 25-40 oldal. Stílus: profi, román pályázati formátum.
+Vedd alapul: F1 cégadatok + F3 eligibility + F4 EBITDA +
+F4 Béla bácsi vételi opció.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Várok 2-3 perc — <strong>CSENDBEN</strong>. Hadd lássák.</p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Görgetem a kész doksit. Kiemelek 3-4 fejezetet.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„260 sor, </em><em>románul</em><em>, profi minőség. Tanácsadó 3-5 nap, 2-3000 EUR. Mi: 2 perc."</em></p>
+<h3 id="258-305-f52-demo-23-teteles-csomag-7-perc">2:58-3:05 — F5.2 DEMO: 23 tételes csomag (7 perc)</h3>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Készíts egy 23-tételes pályázati csomag-checklistet a Plan de afaceri
++ Data Completion Board alapján. Oszlopok: tételszám, dokumentum,
+státusz (van/hiányzik/folyamatban), forrás, felelős.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Mutatom a táblát.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„23 tétel — mindegyiknél tudjuk hol van, ki kapja, mikor."</em></p>
+<h3 id="305-310-stacio-5a-form-katalogizalo-5-perc">3:05-3:10 — ⏸ STÁCIÓ 5.A: Form-katalogizáló (5 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Most ti következtek. </em><em>Tanuljunk meg összefoglalni egy formot.</em><em> Nyissátok meg a saját Cowork-jeiteken — kapjatok egy gyors katalogizálót a pályázati formról."</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Megosztom a <code>formular_depunere_AFM_Mobilitate_Verde.html</code> linket (vagy fájlt).</p>
+<p class="prompt-label">📝 <strong>PROMPT (ők másolják):</strong></p>
+<pre><code>Itt a pályázati formunk: formular_depunere_AFM_Mobilitate_Verde.html
+
+Nyisd meg, és listázd ki az ÖSSZES mezőt kategória szerint csoportosítva
+(pl. Cégadatok, Pénzügy, Projektleírás, Mellékletek). Minden mezőhöz írd:
+- kötelező-e
+- milyen formátumban kell kitölteni (szöveg / szám / dátum / fájl)
+
+A kimenet egy strukturált tábla legyen.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Körbejárok. Pár perc múlva: <em>„Mindenki látja? Hány mező van összesen?"</em></p>
+<h3 id="310-315-stacio-5b-manualis-ido-becsles-5-perc-kontraszt-pillanat">3:10-3:15 — ⏸ STÁCIÓ 5.B: Manuális idő-becslés (5 perc) ← <strong>KONTRASZT-PILLANAT</strong></h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Most a következő stáció. </em><em>Becsüljétek meg: ha NEM AI-val, csak kézzel kellene kitölteni, mennyi idő lenne?</em><em> Másoljátok be:"</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (ők másolják):</strong></p>
+<pre><code>A formular_depunere_AFM_Mobilitate_Verde.html alapján: ha MINDEN
+információ a kezedben van (cégadatok, pénzügyi számok, projektleírás
+megfogalmazva), és csak MANUÁLISAN, gondolkodás nélkül kell beírnod
+minden mezőt — mennyi időbe telne a teljes form kitöltése?
+
+Számítsd ki mezőkként (kb. mennyi idő egy egyszerű mezőre, mennyi
+egy hosszabb szöveges mezőre, mennyi egy file-feltöltésre), és
+összesítve. Adj egy reális percszámot.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> <em>„Aki kész, mondja az eredményt szóban."</em> — 2-3 ember válaszol: <em>„85 perc", „2 óra", „90 perc"</em>.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Tehát kb. </em><em>1,5-2 óra manuálisan</em><em>, ha minden adat a kezünkben van. </em><em>Nézzük mit csinál a Cowork.</em><em>"</em></p>
+<h3 id="315-319-f53-demo-form-kitoltes-ai-jal-4-perc-wow">3:15-3:19 — F5.3 DEMO: Form-kitöltés AI-jal (4 perc) ← <strong>WOW</strong></h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> A saját Cowork-jén.</p>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Tölts ki minden mezőt a formular_depunere_AFM_Mobilitate_Verde.html
+formban. Használd a Plan de afaceri + Dosar complet + Data Completion
+Board adatokat. Generálj egy CSV-t ami minden mezőhöz tartalmazza
+az értéket.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Várok 60-90 mp. A CSV elkészül. Mutatom 5-6 mezőt élőben kitöltve a form-mockup-on.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„</em><em>90 mp.</em><em> A ti becslésetek 90 PERC volt. </em><em>60× gyorsabb. És hibátlanul.</em><em>"</em></p>
+<p>📍 <strong>MONDOM:</strong> <em>„</em><em>Itt a pályázat. Be van adva. Eddig a film. De Márton közben mondja...</em><em>"</em> — átkötés F6-ba.</p>
+<hr />
+<h2 id="f6-web-redesign-319-337-18-perc">🎬 F6 — Web redesign (3:19 → 3:37, 18 perc)  <a id="f6"></a></h2>
+<p><strong>Cél:</strong> Vizuális payoff. Az AI mint designer + builder.
+<strong>Stáció:</strong> 1 db, <strong>nagy</strong> — mindenki saját 3 variánst generál különböző stílusban.</p>
+<table>
+<thead>
+<tr>
+<th>Idő</th>
+<th>Mód</th>
+<th>Mit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3:19-3:23</td>
+<td>🎤 OKTATÓ</td>
+<td>Régi oldal elemzése (Comic Sans)</td>
+</tr>
+<tr>
+<td>3:23-3:28</td>
+<td>🎤 OKTATÓ</td>
+<td>DEMO: 1 referencia variáns (Modern)</td>
+</tr>
+<tr>
+<td>3:28-3:35</td>
+<td>⏸ STÁCIÓ</td>
+<td>Mindenki 3 variáns saját stílusban</td>
+</tr>
+<tr>
+<td>3:35-3:37</td>
+<td>💬 BESZÉLGETÉS</td>
+<td>Bemutatók (2-3 résztvevő)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="319-323-comic-sans-nevetes-4-perc">3:19-3:23 — Comic Sans nevetés (4 perc)</h3>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Átkapcsolok a <code>transoffice_old_website.html</code> browser tab-ra. Scrollozok le-fel — látsszanak a bizarr elemek.</p>
+<p>📍 <strong>MONDOM (drámai felzaklatott hangon):</strong> <em>„Hölgyeim és Uraim — TransOffice Trade SRL, 2012-ben. Comic Sans. Animált csillagok. Vendégkönyv. 14 872 látogató. </em><em>Best viewed in Internet Explorer 8.</em><em>"</em></p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> <strong>Hagyd hogy nevessenek.</strong> Ez a workshop legjobb pillanata. 3:19-kor a fáradt csoportnak energia kell.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Márton: 'Ez a cégünk arca. Szégyen.' De most fél óra van. </em><em>Tudunk-e ebből valamit csinálni?</em><em>"</em></p>
+<h3 id="323-328-demo-1-referencia-varians-5-perc">3:23-3:28 — DEMO: 1 referencia variáns (5 perc)</h3>
+<p class="prompt-label">📝 <strong>PROMPT (én írom be):</strong></p>
+<pre><code>Készíts egy modern, clean B2B weboldal-variánst a TransOffice számára
+HTML-ben. Egyetlen fájlban (inline CSS).
+
+- Színek: kék, fehér, szürke
+- Tipográfia: modern sans-serif (Inter / system-ui)
+- Hero szekció: cég neve + 1 mondatos pozícionálás
+- Szolgáltatások: 3-4 kártya icon-okkal
+- AFM elektromos járműflotta szekció: 5 jármű, 2 töltőpont, 5,2t CO2/év
+- Csapat: Márton + Enikő
+- Kapcsolat: Székelyudvarhely cím
+
+Reszponzív, mobile-friendly.
+</code></pre>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Várok 60-90 mp. Megnyitom új browser tab-ban.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Tiszta, modern, professzionális. </em><em>5 perc.</em><em> Egy designer csapat 3 hét, 5-8 000 RON."</em></p>
+<h3 id="328-335-stacio-6-mindenki-3-sajat-varians-7-perc">3:28-3:35 — ⏸ STÁCIÓ 6: Mindenki 3 saját variáns (7 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Most ti következtek. </em><em>Mindenki generáljon 3 variánst eltérő stílusban.</em><em> Itt a prompt — egyetlen szóváltoztatással új arcot kap a cég. Tegyétek el magatoknak a 3 verziót."</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (ők másolják) — első variáns:</strong></p>
+<pre><code>Készíts egy [STÍLUS] weboldal-variánst a TransOffice számára HTML-ben,
+inline CSS-szel. Egy fájl.
+
+Tartalmazza:
+- Hero (cég neve + pozícionálás)
+- Szolgáltatások (3-4 kártya)
+- AFM zöld átállás szekció (5 jármű, 2 töltőpont)
+- Csapat (Márton, Enikő)
+- Kapcsolat (Székelyudvarhely)
+
+Reszponzív, mobile-friendly. Egyetlen HTML fájl.
+</code></pre>
+<p>📍 <strong>MONDOM:</strong> <em>„A <code>[STÍLUS]</code> helyére másoljatok be 3 különbözőt:</em>
+- <em>Variáns 1: </em><em>'klasszikus, konzervatív, intézményi'</em><em>;</em>
+- <em>Variáns 2: </em><em>'erdélyi, meleg, helyi karakter'</em><em>;</em>
+- <em>Variáns 3: </em><em>bármi amit ti elképzeltek</em><em> — pl. 'startup-os energikus', 'minimal japán-zen', 'retró-90-es'..."</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Körbejárok. <strong>Hagyom hogy kísérletezzenek.</strong></p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> Egyiküknek a 3 variáns nem fog elférni 7 percbe. <strong>Az is OK</strong> ha csak 2 készül. <strong>A kísérletezés a lényeg.</strong></p>
+<h3 id="335-337-bemutatok-2-perc">3:35-3:37 — 💬 Bemutatók (2 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Ki készített valami menőt? Mutasd meg!"</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> 1-2 résztvevő prevezeti a sajátját a kivetítőn (USB / GDrive / képernyőmegosztás).</p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> <strong>2 perc kemény limit</strong> — ne folyjanak túl a bemutatók.</p>
+<p>📍 <strong>MONDOM:</strong> <em>„Innen indultunk... ide értünk. Most jön a zárás."</em></p>
+<hr />
+<h2 id="zaras-337-350-13-perc">🎬 ZÁRÁS (3:37 → 3:50, 13 perc)  <a id="zar"></a></h2>
+<p><strong>Cél:</strong> Elviszik a tanulságot, közös élmény-záró pont.</p>
+<table>
+<thead>
+<tr>
+<th>Idő</th>
+<th>Mód</th>
+<th>Mit</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3:37-3:40</td>
+<td>🎤 OKTATÓ</td>
+<td>Visszatekintés a 6 fázisra</td>
+</tr>
+<tr>
+<td>3:40-3:46</td>
+<td>⏸ STÁCIÓ</td>
+<td>Anonim „1 mondat amit elviszek"</td>
+</tr>
+<tr>
+<td>3:46-3:48</td>
+<td>🎤 OKTATÓ</td>
+<td>Bónusz feladatok bemutatása</td>
+</tr>
+<tr>
+<td>3:48-3:50</td>
+<td>🎤 OKTATÓ</td>
+<td>Búcsú</td>
+</tr>
+</tbody>
+</table>
+<h3 id="337-340-visszatekintes-3-perc">3:37-3:40 — Visszatekintés (3 perc)</h3>
+<p>📍 <strong>MONDOM (lassan, hangsúlyosan, ujjakon számolva):</strong>
+- <em>„F1 — 30 fájl kaotikus → rendezett mappa + CLAUDE.md"</em>
+- <em>„F2 — kaotikus meeting → 14 mentett TODO"</em>
+- <em>„F3 — 94 oldalas pályázati kiírás → eligibility + gap + akcióterv"</em>
+- <em>„F4 — Béla bácsi cross-doc felfedezés + Mihaela EBITDA + Márton PPTX"</em>
+- <em>„F5 — teljes Plan de afaceri + 23 tételes csomag + 90 perces form 90 másodperc alatt"</em>
+- <em>„F6 — Comic Sans → 3 modern weboldal mindenkitől"</em></p>
+<p>📍 <strong>MONDOM:</strong> <em>„Régen egy ember 5-7 napos munkája. Ma: 4 óra."</em></p>
+<h3 id="340-346-stacio-anonim-1-mondat-amit-elviszek-6-perc">3:40-3:46 — ⏸ STÁCIÓ: Anonim „1 mondat amit elviszek" (6 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Utolsó körünk. Mindenki </em><em>1 mondatban</em><em> írja meg: </em><em>mi az 1 dolog amit ma elviszel?</em><em> Anonim — nem kell megosztanod. Másoljátok be a Cowork-be ezt:"</em></p>
+<p class="prompt-label">📝 <strong>PROMPT (ők másolják) — a saját Cowork-jükben:</strong></p>
+<pre><code>Egy mondatban: a mai workshopból mi az 1 dolog amit elviszek a saját
+életembe, a saját cégemnél, a saját munkámban? Légy konkrét.
+</code></pre>
+<p>📍 <strong>MONDOM:</strong> <em>„Aki akarja, megoszthatja velünk. Aki nem, az is jó — eltette magának."</em></p>
+<p class="csinalom">🖥 <strong>CSINÁLOM:</strong> Körbejárok. 1-2 mondatot elolvasok hangosan a saját laptopomon (a sajátomat). <em>„Nálam pl.: ...."</em></p>
+<p>📍 <strong>MONDOM:</strong> <em>„Ki szeretne megosztani? Akinek tetszik."</em> — 3-4 önkéntes szólhat.</p>
+<p>⚠️ <strong>VIGYÁZZ:</strong> <strong>Ne kommentáld</strong> amit hallasz. Bólints, „Köszönöm."</p>
+<h3 id="346-348-bonusz-feladatok-2-perc">3:46-3:48 — Bónusz feladatok (2 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„A Tananyag mappában találtok </em><em>18 bónusz feladatot</em><em> — minden fázishoz 3-4 db. Otthon, a saját tempótokban kipróbálhatjátok. </em><em>A lényeg: ne másold a TransOffice-t — vidd át a saját életedre.</em><em> Saját szerződéseden, saját meetingeden, saját pályázatodon."</em></p>
+<h3 id="348-350-bucsu-2-perc">3:48-3:50 — Búcsú (2 perc)</h3>
+<p>📍 <strong>MONDOM:</strong> <em>„Ennyi volt. </em><em>Köszönöm.</em><em> Ha kérdés van, </em><em>most</em><em> szóljatok. Holnap email-en is elérhető vagyok."</em></p>
+<p>📍 <strong>MONDOM:</strong> <em>„Vigyázzatok magatokra. </em><em>Találkozunk a következő szinten.</em><em>"</em></p>
+<hr />
+<h2 id="appendix-a-minden-prompt-egy-helyen">📎 Appendix A — Minden prompt egy helyen  <a id="appA"></a></h2>
+<h3 id="a1-f1-stacio-ok-masoljak">A.1 — F1 STÁCIÓ (ők másolják)</h3>
+<pre><code>Az új munkatárs vagyok a TransOffice cégnél, ma az első napom.
+
+A TransOffice mappában találod a cégünk összes dokumentumát. Rendetlenség
+van — évek alatt gyűlt össze mindenféle dokumentum, és senki nem nézte át
+őket.
+
+Légy szíves, segíts rendbe tenni:
+
+1. Először a jelenlegi mappáról készíts egy biztonsági másolatot, hogy
+   bármikor vissza tudjam keresni a fileokat.
+2. Kezd el egyenként átnézni a fileokat és kategorizálni.
+3. Legyen egy Kuka mappa is — abba másolj minden olyan filet, ami szemét,
+   elavult, vagy nem releváns.
+4. Gyere egy javaslattal, hogy hogyan rendezzük az anyagot, és rendezd is
+   el úgy.
+5. Készíts nekem egy kivonatot arról, mit találtál és mit csináltál.
+
+Készíts egy CLAUDE.md fájlt is — ez lesz a hosszútávú memóriád. Minden új
+munkamenetben elsőként ezt fogod elolvasni.
+
+Ha bármi nem világos, kérdezz vissza.
+</code></pre>
+<h3 id="a2-f2-demo-en">A.2 — F2 DEMO (én)</h3>
+<pre><code>Olvasd el ezt a meeting transcriptet. Sürgős megbeszélés egy EU pályázatról
+(AFM Mobilitate Verde 2025 — elektromos járműflotta).
+
+Kérek:
+1. Helyzet összefoglaló (3-5 mondat)
+2. TODO lista: Ki → Mit → Mikorra → Prioritás
+3. Hiányzó információk (amik nélkül nem lehet pályázni)
+4. Blokkolók: melyik TODO függ a másiktól
+
+A TODO-kat mentsd el a Productivity pluginbe.
+</code></pre>
+<h3 id="a3-f2-stacio-ok-masoljak">A.3 — F2 STÁCIÓ (ők másolják)</h3>
+<pre><code>Olvasd el a CLAUDE.md-t. Ez alapján és a workshop-vezetőtől látott TODO
+lista alapján: írj egy 4-5 mondatos follow-up emailt Enikőnek arról,
+hogy mik a feladatai a következő 3 napban az AFM pályázat előkészítésében.
+
+Hangnem: kollegális, konkrét, határidős. Magyarul írd.
+</code></pre>
+<h3 id="a4-f31-demo-en">A.4 — F3.1 DEMO (én)</h3>
+<pre><code>Olvasd át a Palyazat_kiiras/Ghidul-solicitantului-Mobilitate-Verde-IMM-
+2025.md fájlt és vesd össze a TransOffice cégadatokkal (CLAUDE.md alapján).
+
+Listázd ki az ÖSSZES eligibility kritériumot. Minden kritériumra jelöld:
+✅ TELJESÍTJÜK / ⚠️ RÉSZBEN / ❌ NEM TELJESÍTJÜK
++ rövid indoklás (max 2 mondat / kritérium)
+
+A végén egy döntés: PÁLYÁZHATUNK / NEM PÁLYÁZHATUNK / FELTÉTELESEN
++ a top 3 kockázat amit el kell intézni.
+</code></pre>
+<h3 id="a5-f3-stacio-3a-ok-masoljak">A.5 — F3 STÁCIÓ 3.A (ők másolják)</h3>
+<pre><code>Olvasd el a Palyazat_kiiras/Ghidul-solicitantului-Mobilitate-Verde-IMM-
+2025.md-ben a CR-08 (járműflotta) kritériumot. A TransOffice teljesíti-e?
+Részletesen, indoklással. Maximum 5 mondat.
+</code></pre>
+<h3 id="a6-f32-demo-en">A.6 — F3.2 DEMO (én)</h3>
+<pre><code>Most listázd ki a 17 kötelező mellékletet a pályázathoz. Minden
+mellékletre jelöld a TransOffice cégadatok (CLAUDE.md + TransOffice/
+mappa) alapján: VAN / NINCS / RÉSZBEN. Ahol RÉSZBEN vagy NINCS, írd
+oda kitől kell beszerezni és milyen formátumban.
+</code></pre>
+<h3 id="a7-f3-stacio-3b-ok-masoljak">A.7 — F3 STÁCIÓ 3.B (ők másolják)</h3>
+<pre><code>Az M-11 (járműflotta-leltár) mellékletet hogyan állítanám össze?
+Kitől kapok adatot, milyen formátumban, hány napos a folyamat?
+Maximum 6 mondat.
+</code></pre>
+<h3 id="a8-f33-demo-en">A.8 — F3.3 DEMO (én)</h3>
+<pre><code>Az eligibility + gap analízisből generálj Data Completion Board-ot:
+oszlopok = Tétel, Felelős, Határidő, Forrás, Státusz. Csoportosítsd
+3 fázis szerint: BEADÁS ELŐTT / ELBÍRÁLÁS ALATT / MEGVALÓSÍTÁS ALATT.
+</code></pre>
+<h3 id="a9-f41-demo-en">A.9 — F4.1 DEMO (én)</h3>
+<pre><code>Olvasd el a szerzodes_chirie_TransOffice_2018.docx-et. A TransOffice
+mint bérlő szempontjából:
+
+1. Listázd a top 5 kockázati pontot
+2. Hasonlítsd össze a TransOffice mappájában lévő MÁS fájlokkal —
+   keress kapcsolódó információt (meeting transcript, emailek,
+   jegyzetek). Bármilyen red flag fontos.
+3. Akcióterv: mit teszünk a pályázat előtti 7 napban
+</code></pre>
+<h3 id="a10-f41-masodik-demo-en-level-bela-bacsinak">A.10 — F4.1 második DEMO (én) — levél Béla bácsinak</h3>
+<pre><code>Írj udvarias levelet Béla bácsinak — Kovács Márton nevében — kérdezve
+hogy mi a helyzet a bérleményünkkel a következő 5 évre. Hangnem:
+tiszteletteljes, közvetlen, magyaros (Béla bácsi 70 éves).
+</code></pre>
+<h3 id="a11-f4-stacio-4a-ok-masoljak">A.11 — F4 STÁCIÓ 4.A (ők másolják)</h3>
+<pre><code>Béla bácsi visszaválaszolt: 5 év stabilitás + acord proprietar a
+töltőpontra. Írj egy 5 mondatos köszönő-választ Márton nevében —
+meleg, megerősítő, és kérdezz vissza a vételi opcióra is.
+</code></pre>
+<h3 id="a12-f42-demo-en-email-mihaelanak">A.12 — F4.2 DEMO (én) — email Mihaelának</h3>
+<pre><code>Írj emailt románul Mihaela Florian-nek, a külsős könyvelőnek. Kérjünk
+pénzügyi adatokat 2023 és 2024 évre: árbevétel, EBITDA, alkalmazotti
+adatok. A pályázat AFM Mobilitate Verde 2025. Hangnem: professzionális
+de közvetlen.
+</code></pre>
+<h3 id="a13-f42-masodik-demo-en-excel-elemzes">A.13 — F4.2 második DEMO (én) — Excel elemzés</h3>
+<pre><code>Itt van Mihaela visszaküldött bilance-Excelje. Számítsd ki és mutasd be:
+1. Árbevétel 2023 vs 2024 (RON-ban + %)
+2. EBITDA 2023 vs 2024 (RON-ban + marzs %)
+3. Alkalmazottak száma 2023 vs 2024
+4. Trend értelmezése — emelkedünk vagy csökkenünk?
+5. Pályázati szempontból: melyik 3 KPI a legerősebb érv?
+</code></pre>
+<h3 id="a14-f4-stacio-4b-ok-masoljak">A.14 — F4 STÁCIÓ 4.B (ők másolják)</h3>
+<pre><code>A Mihaelától kapott bilance-Excel alapján: számítsd ki az EBITDA
+margint 2024-re (%-ban). Mutasd meg a képletet és az eredményt
+1 mondatban.
+</code></pre>
+<h3 id="a15-f43-demo-en">A.15 — F4.3 DEMO (én)</h3>
+<pre><code>Készíts egy 5 slide-os PPTX prezentációt Mártonnak az AFM Mobilitate
+Verde pályázat aktuális állásáról. Slide-onkénti felépítés:
+
+Slide 1: Helyzet — hol állunk a Data Completion Board-on
+Slide 2: Eligibility check — ✅ pályázhatunk
+Slide 3: Pénzügyi készség — EBITDA 2024, trend
+Slide 4: Béla bácsi (telephely) — zöld, sőt vételi opció
+Slide 5: Akcióterv — a következő 7 nap
+
+Stílus: tiszta, üzleti, magyar nyelven.
+</code></pre>
+<h3 id="a16-f51-demo-en">A.16 — F5.1 DEMO (én)</h3>
+<pre><code>Készíts egy teljes Plan de afaceri-t (románul) a TransOffice számára
+az AFM Mobilitate Verde 2025 pályázathoz. Tartalmazza:
+
+1. Rezumat executiv
+2. Prezentarea companiei (Béla bácsi telephely-stabilitással)
+3. Analiza pieței
+4. Proiect propus — 5 elektromos jármű + 2 töltőpont
+5. Plan financiar — 18 hónapos cash flow, EBITDA forecast
+6. Plan de marketing
+7. Plan de implementare — M1-M18
+8. Echipa managerială
+
+Hossz: 25-40 oldal. Stílus: profi, román pályázati formátum.
+Vedd alapul: F1 cégadatok + F3 eligibility + F4 EBITDA + F4 Béla bácsi.
+</code></pre>
+<h3 id="a17-f52-demo-en">A.17 — F5.2 DEMO (én)</h3>
+<pre><code>Készíts egy 23-tételes pályázati csomag-checklistet a Plan de afaceri
++ Data Completion Board alapján. Oszlopok: tételszám, dokumentum,
+státusz (van/hiányzik/folyamatban), forrás, felelős.
+</code></pre>
+<h3 id="a18-f5-stacio-5a-ok-masoljak">A.18 — F5 STÁCIÓ 5.A (ők másolják)</h3>
+<pre><code>Itt a pályázati formunk: formular_depunere_AFM_Mobilitate_Verde.html
+
+Nyisd meg, és listázd ki az ÖSSZES mezőt kategória szerint csoportosítva
+(pl. Cégadatok, Pénzügy, Projektleírás, Mellékletek). Minden mezőhöz írd:
+- kötelező-e
+- milyen formátumban kell kitölteni (szöveg / szám / dátum / fájl)
+
+A kimenet egy strukturált tábla legyen.
+</code></pre>
+<h3 id="a19-f5-stacio-5b-ok-masoljak">A.19 — F5 STÁCIÓ 5.B (ők másolják)</h3>
+<pre><code>A formular_depunere_AFM_Mobilitate_Verde.html alapján: ha MINDEN
+információ a kezedben van (cégadatok, pénzügyi számok, projektleírás
+megfogalmazva), és csak MANUÁLISAN, gondolkodás nélkül kell beírnod
+minden mezőt — mennyi időbe telne a teljes form kitöltése?
+
+Számítsd ki mezőkként (kb. mennyi idő egy egyszerű mezőre, mennyi
+egy hosszabb szöveges mezőre, mennyi egy file-feltöltésre), és
+összesítve. Adj egy reális percszámot.
+</code></pre>
+<h3 id="a20-f53-demo-en-form-kitoltes-ai-jal">A.20 — F5.3 DEMO (én) — Form-kitöltés AI-jal</h3>
+<pre><code>Tölts ki minden mezőt a formular_depunere_AFM_Mobilitate_Verde.html
+formban. Használd a Plan de afaceri + Dosar complet + Data Completion
+Board adatokat. Generálj egy CSV-t ami minden mezőhöz tartalmazza
+az értéket.
+</code></pre>
+<h3 id="a21-f6-demo-en-modern-referencia">A.21 — F6 DEMO (én) — Modern referencia</h3>
+<pre><code>Készíts egy modern, clean B2B weboldal-variánst a TransOffice számára
+HTML-ben. Egyetlen fájlban (inline CSS).
+
+- Színek: kék, fehér, szürke
+- Tipográfia: modern sans-serif
+- Hero (cég neve + pozícionálás)
+- Szolgáltatások: 3-4 kártya icon-okkal
+- AFM elektromos járműflotta szekció: 5 jármű, 2 töltőpont, 5,2t CO2/év
+- Csapat: Márton + Enikő
+- Kapcsolat: Székelyudvarhely cím
+
+Reszponzív, mobile-friendly.
+</code></pre>
+<h3 id="a22-f6-stacio-ok-masoljak-3-szor-stilus-cserevel">A.22 — F6 STÁCIÓ (ők másolják — 3-szor, [STÍLUS] cserével)</h3>
+<pre><code>Készíts egy [STÍLUS] weboldal-variánst a TransOffice számára HTML-ben,
+inline CSS-szel. Egy fájl.
+
+Tartalmazza:
+- Hero (cég neve + pozícionálás)
+- Szolgáltatások (3-4 kártya)
+- AFM zöld átállás szekció (5 jármű, 2 töltőpont)
+- Csapat (Márton, Enikő)
+- Kapcsolat (Székelyudvarhely)
+
+Reszponzív, mobile-friendly. Egyetlen HTML fájl.
+</code></pre>
+<p>[STÍLUS]-példák: <code>klasszikus, konzervatív, intézményi</code> / <code>erdélyi, meleg, helyi karakter</code> / <code>startup-os energikus</code> / <code>minimal japán-zen</code> / <code>retró-90-es</code></p>
+<h3 id="a23-zaras-stacio-ok-masoljak">A.23 — Zárás STÁCIÓ (ők másolják)</h3>
+<pre><code>Egy mondatban: a mai workshopból mi az 1 dolog amit elviszek a saját
+életembe, a saját cégemnél, a saját munkámban? Légy konkrét.
+</code></pre>
+<hr />
+<h2 id="veszforgatokonyv">🚨 Vészforgatókönyv  <a id="vesz"></a></h2>
+<h3 id="ha-a-cowork-lefagy">Ha a Cowork <strong>lefagy</strong></h3>
+<ol>
+<li>Frissítsd az ablakot (Cmd+R)</li>
+<li>Indítsd újra a Cowork desktop-ot</li>
+<li>Használd a <strong>Claude.ai web-verziót</strong> (Pro plugin-ek ott is)</li>
+<li>Plan B: a <code>Pelda_outputok/</code> mappa minden F3 demohoz előre legenerált választ tartalmaz</li>
+</ol>
+<h3 id="ha-wifi-kiszakad">Ha <strong>WiFi kiszakad</strong></h3>
+<ul>
+<li>📍 <em>„10 perces kávészünet."</em> — kapcsolj <strong>mobil hotspotra</strong> (előre tesztelve)</li>
+<li>Plan B: az előre letöltött PDF outputok kinyomtatva</li>
+</ul>
+<h3 id="ha-a-csoport-total-faradt">Ha <strong>a csoport totál fáradt</strong></h3>
+<ul>
+<li>Adj <strong>2 perces állva-kávé</strong> szünetet</li>
+<li>F6-ot kezdd erősen (régi oldal nagyon emelt, drámai)</li>
+</ul>
+<h3 id="ha-idejetkoran-vegezel">Ha <strong>idejétkorán végezel</strong></h3>
+<ul>
+<li>Hagyj <strong>plusz Q&amp;A időt</strong> a végén</li>
+<li>Mutasd be a <strong>bónusz feladatokat</strong> részletesebben</li>
+<li>Egy résztvevő <strong>saját szituációját</strong> dolgozd fel a Cowork-kel közösen</li>
+</ul>
+<h3 id="ha-csuszol-es-nem-fer-be-minden">Ha <strong>csúszol és nem fér be minden</strong></h3>
+<ul>
+<li>F3 és F4 között legyen <strong>kemény time-box</strong></li>
+<li>F6 az utolsó <strong>vágható</strong> fázis (még 10 percben is hatékony)</li>
+<li>A „1 mondat" záró STÁCIÓ-t <strong>soha ne hagyd ki</strong></li>
+</ul>
+<hr />
+<h2 id="verzio-elozmenyek">📜 Verzió-előzmények</h2>
+<table>
+<thead>
+<tr>
+<th>Verzió</th>
+<th>Dátum</th>
+<th>Változás</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>1.0</strong></td>
+<td>2026-05-12</td>
+<td>Első kiadás — minden fázis részletezve, 70/20/10 ígérve.</td>
+</tr>
+<tr>
+<td><strong>2.0</strong></td>
+<td>2026-05-12</td>
+<td><strong>Páros-mód + stációk modell.</strong> Az oktató kivetítve végigviszi a narratívát. A résztvevők stációknál (F1 kivételével) 1-2 izolált mini-feladatot csinálnak saját laptopukon. F1 = mindenki saját laptopján parallel mode. Új F5 stáció-pár: form-katalogizáló + manuális idő-becslés → kontraszt-pillanat az AI-form-kitöltéssel. 23 prompt egy helyen az Appendix A-ban.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><strong>Készítette:</strong> Claude (Cowork)
+<strong>Kapcsolat:</strong> Szabolcs · exarlabs@gmail.com
+<strong>Utolsó frissítés:</strong> 2026-05-12</p>
+</body>
+</html>

@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Falusi route — Deák Húsmíves</title>
+<script type="application/json" id="screen-meta">
+{
+  "id": "v0.4-rural-delivery",
+  "title": "Falusi route — teljes flow (6 nézet)",
+  "feature": "rural-delivery",
+  "sprint": "Sprint 4",
+  "status": "draft",
+  "version": "v0.4",
+  "platform": "mobile",
+  "publish": true,
+  "order": 10,
+  "tags": ["DH-184", "rural", "F1", "F2", "F4", "F5", "F6", "F9.2"],
+  "description": "Teljes falusi szállítási flow egy oldalon, felső tab-okkal: település-választó, route banner, kosár, checkout, visszaigazolás, futár route."
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --primary:#9B2335; --primary-800:#7D1A2A; --primary-light:#F9E0E3; --primary-pale:#F4E6E8;
+    --cream:#FFFBF7; --cream-dark:#F5EDE5; --card:#FFFFFF; --bg:#FAF8F5;
+    --border:#E8E2DB; --border-strong:#C5BCB3;
+    --text:#2C2825; --text-secondary:#5C544C; --text-muted:#8A8078;
+  }
+  html, body { height:100%; }
+  body {
+    font-family:'Inter',system-ui,-apple-system,sans-serif;
+    background:var(--bg); color:var(--text);
+    -webkit-font-smoothing:antialiased;
+    display:flex; flex-direction:column; min-height:100vh;
+  }
+
+  /* Back button */
+  .back-to-catalog {
+    position:fixed; top:12px; left:12px; z-index:100;
+    width:36px; height:36px; border-radius:50%;
+    background:rgba(0,0,0,0.5); color:#fff;
+    display:flex; align-items:center; justify-content:center; text-decoration:none;
+  }
+
+  /* Header */
+  header {
+    background:var(--card); border-bottom:1px solid var(--border);
+    box-shadow:0 1px 2px rgba(0,0,0,0.04);
+    flex-shrink:0;
+  }
+  .header-inner { max-width:1100px; margin:0 auto; padding:18px 24px 0; }
+  .header-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .badge-rural {
+    display:inline-flex; align-items:center; gap:6px;
+    background:var(--primary-pale); color:var(--primary);
+    font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    padding:4px 10px; border-radius:999px;
+  }
+  .badge-rural svg { width:12px; height:12px; }
+  h1 {
+    font-family:'Playfair Display',serif; font-weight:700;
+    font-size:22px; color:var(--primary-800); letter-spacing:-0.3px;
+  }
+  .meta { font-size:13px; color:var(--text-muted); margin-top:4px; }
+
+  /* Tabs */
+  .tabs {
+    display:flex; gap:0; margin-top:14px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .tabs::-webkit-scrollbar { display:none; }
+  .tab {
+    flex-shrink:0;
+    padding:12px 16px;
+    font-size:13px; font-weight:600;
+    color:var(--text-muted);
+    background:none; border:none; cursor:pointer;
+    border-bottom:3px solid transparent;
+    font-family:inherit;
+    display:inline-flex; align-items:center; gap:8px;
+    transition:color .12s, border-color .12s;
+    white-space:nowrap;
+  }
+  .tab:hover { color:var(--text); }
+  .tab .num {
+    font-size:11px; font-weight:700;
+    background:var(--cream-dark); color:var(--text-muted);
+    padding:1px 6px; border-radius:999px;
+    min-width:18px; text-align:center;
+  }
+  .tab.active { color:var(--primary); border-bottom-color:var(--primary); }
+  .tab.active .num { background:var(--primary-pale); color:var(--primary); }
+
+  /* Spec line under tabs */
+  .spec-line {
+    max-width:1100px; margin:0 auto;
+    padding:10px 24px;
+    font-size:12px; color:var(--text-secondary);
+    background:var(--cream); border-top:1px solid var(--border);
+    display:flex; align-items:center; gap:10px;
+  }
+  .spec-line .spec-tag {
+    background:var(--cream-dark); color:var(--text-secondary);
+    padding:2px 8px; border-radius:6px; font-weight:600;
+    font-size:11px; letter-spacing:0.04em;
+  }
+  .spec-line .spec-desc { flex:1; min-width:0; }
+
+  /* Frame area */
+  main {
+    flex:1;
+    display:flex; flex-direction:column;
+    background:var(--bg);
+  }
+  .frame-wrap {
+    flex:1; position:relative;
+    background:var(--bg);
+  }
+  .frame-wrap iframe {
+    width:100%; height:100%;
+    border:0; display:block; background:var(--bg);
+  }
+
+  /* Loading shimmer */
+  .frame-loader {
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+    background:var(--bg);
+    color:var(--text-muted); font-size:13px;
+    pointer-events:none;
+    opacity:0; transition:opacity .12s;
+  }
+  .frame-loader.show { opacity:1; }
+  .frame-loader svg {
+    width:18px; height:18px; margin-right:8px;
+    animation:spin 1s linear infinite;
+  }
+  @keyframes spin { to { transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .frame-loader svg { animation:none; }
+  }
+</style>
+</head>
+<body>
+
+<a href="../index.html" class="back-to-catalog" title="Vissza a katalógusba">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+</a>
+
+<header>
+  <div class="header-inner">
+    <div class="header-row">
+      <span class="badge-rural">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+        Falusi route
+      </span>
+      <div>
+        <h1>Falusi route — teljes flow</h1>
+        <div class="meta">DH-184 · Sprint 4 · 6 képernyő · csütörtöki járat, szerda 20:00 cutoff</div>
+      </div>
+    </div>
+
+    <div class="tabs" role="tablist" id="tabs"></div>
+  </div>
+  <div class="spec-line">
+    <span class="spec-tag" id="spec-tag">F1.1</span>
+    <span class="spec-desc" id="spec-desc">Település-választó bottom sheet — onboarding (üres) és módosítás (kitöltött) állapotok.</span>
+  </div>
+</header>
+
+<main>
+  <div class="frame-wrap">
+    <div class="frame-loader" id="loader">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.22-8.56"/></svg>
+      Betöltés…
+    </div>
+    <iframe id="frame" src="" title="Képernyő előnézet"></iframe>
+  </div>
+</main>
+
+<script>
+const VIEWS = [
+  {
+    id: 'zone-picker',
+    label: 'Kör-választó',
+    file: 'v0.4-zone-picker.html',
+    spec: 'F1.1–F1.3 (v1.4)',
+    desc: 'Hibrid kiszállítási kör választó — GPS-javaslat (A), 2 gombos választó (B), perzisztens (C), checkout település-mismatch (D).'
+  },
+  {
+    id: 'route-banner',
+    label: 'Route banner',
+    file: 'v0.4-route-banner.html',
+    spec: 'F2.1–F2.3',
+    desc: '4 banner-állapot (zöld / narancs / szürke / piros) + kompakt 1-soros kosár-variáns.'
+  },
+  {
+    id: 'cart',
+    label: 'Kosár',
+    file: 'v0.4-cart-rural.html',
+    spec: 'F4.1 / F4.2',
+    desc: 'Kosár falusi adaptáció — kompakt banner, szállítási info, 120 RON nudge, cutoff utáni állapot.'
+  },
+  {
+    id: 'checkout',
+    label: 'Checkout',
+    file: 'v0.4-checkout-rural.html',
+    spec: 'F5.1–F5.3',
+    desc: '6 blokkos checkout — ambassador-javasolt átadási pont, ajánlott termékek, készpénz pay.'
+  },
+  {
+    id: 'confirm',
+    label: 'Visszaigazolás',
+    file: 'v0.4-order-confirm-rural.html',
+    spec: 'F6',
+    desc: 'Sikeres rendelés képernyő — kiemelt csüt. dátum, „a sofőr hív" info, megosztás-tipp.'
+  },
+  {
+    id: 'courier',
+    label: 'Futár — route',
+    file: 'v0.4-courier-route.html',
+    spec: 'F9.2',
+    desc: 'Futár interfész — települések route-sorrendben, hívás/kézbesítve, alul haladás-sáv.'
+  },
+];
+
+const tabsEl = document.getElementById('tabs');
+const frameEl = document.getElementById('frame');
+const loaderEl = document.getElementById('loader');
+const specTagEl = document.getElementById('spec-tag');
+const specDescEl = document.getElementById('spec-desc');
+
+VIEWS.forEach((v, i) => {
+  const btn = document.createElement('button');
+  btn.className = 'tab' + (i === 0 ? ' active' : '');
+  btn.role = 'tab';
+  btn.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+  btn.dataset.id = v.id;
+  btn.innerHTML = '<span class="num">' + (i + 1) + '</span><span>' + v.label + '</span>';
+  btn.addEventListener('click', () => activate(v.id));
+  tabsEl.appendChild(btn);
+});
+
+function activate(id) {
+  const v = VIEWS.find(x => x.id === id);
+  if (!v) return;
+
+  document.querySelectorAll('.tab').forEach(t => {
+    const on = t.dataset.id === id;
+    t.classList.toggle('active', on);
+    t.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+
+  specTagEl.textContent = v.spec;
+  specDescEl.textContent = v.desc;
+
+  loaderEl.classList.add('show');
+  frameEl.src = v.file;
+
+  // Update URL hash for deep-link
+  if (history.replaceState) {
+    history.replaceState(null, '', '#' + id);
+  }
+}
+
+frameEl.addEventListener('load', () => {
+  loaderEl.classList.remove('show');
+});
+
+// Initial route (deep link via hash, fallback to first)
+const initial = (location.hash || '').replace('#', '');
+activate(VIEWS.find(v => v.id === initial) ? initial : VIEWS[0].id);
+</script>
+
+</body>
+</html>
