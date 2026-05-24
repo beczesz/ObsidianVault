@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  CPS Partnerships, partner-health board.   Version: 0.2.3
+  =============================================================================
+  Renders from:
+    /02_Areas/Sonrisa/CPS/Partnership/partners.md  (YAML frontmatter per vendor)
+  Live via SSE file-watcher push (dash-server.mjs), 8s/30s poll fallback.
+  Read-only. Edit partners.md in Obsidian.
+
+  Audit trail:
+    0.1.0 (2026-05-20) initial board: AWS / Oracle / Azure vendor cards,
+          tier badges, cert coverage bars, requirement met/gap tracking,
+          renewal countdown, gaps callout, contacts, next actions.
+    0.2.0 (2026-05-20) moved to _dashboards/, absolute fetch path, SSE push.
+    0.2.1 (2026-05-22) — added .card-copy-ref hover buttons + data-card-id
+          (DESIGN_SYSTEM 0.2.0). Vendor cards: id = slugified vendor name.
+    0.2.2 (2026-05-22) — added day/night theme toggle + dark tokens
+          (DESIGN_SYSTEM 0.3.0). Shared localStorage key "dash-theme". FOUC-init.
+    0.2.3 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
+
+  Conventions: see Sales/DASHBOARD_CONTRACT.md "Shared dashboard conventions".
+  Served by _dashboards/_tools/dash-server.mjs (or any HTTP server from vault root).
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPS Partnerships</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M11 16a5 5 0 0 1 5-5 5 5 0 0 1 5 5' fill='none' stroke='%23D97757' stroke-width='2.2' stroke-linecap='round'/%3E%3Ccircle cx='11' cy='16' r='2.4' fill='%23D97757'/%3E%3Ccircle cx='21' cy='16' r='2.4' fill='%23D97757'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-page: #faf9f5;
+  --bg-elev: #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint: #f5f4ef;
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+  --line: #e5e4df;
+  --line-soft: #efede7;
+  --accent: #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  --ok:        #1f7a4d;
+  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;
+  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;
+  --gap-tint:  #fbeae6;
+  --idle:      #7a7a76;
+  --idle-tint: #efeeeb;
+
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 10px;
+  --radius-xl: 14px;
+
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+  --ink-1: #f5f4ef;
+  --ink-2: #d6d4ce;
+  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;
+  --ink-5: #54524d;
+  --line:      #36342f;
+  --line-soft: #2c2a26;
+  --accent:      #e08a6a;
+  --accent-deep: #f0a085;
+  --accent-tint: #3a2a22;
+  --ok:        #5cc08a;  --ok-tint:   #1e3329;
+  --warn:      #d6a94a;  --warn-tint: #352c18;
+  --gap:       #e57c6e;  --gap-tint:  #3a221e;
+  --idle:      #9a9892;  --idle-tint: #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:   #1a1916;
+    --bg-elev:   #232220;
+    --bg-sunken: #2c2a26;
+    --bg-tint:   #262420;
+    --ink-1: #f5f4ef;
+    --ink-2: #d6d4ce;
+    --ink-3: #a8a6a0;
+    --ink-4: #7c7a74;
+    --ink-5: #54524d;
+    --line:      #36342f;
+    --line-soft: #2c2a26;
+    --accent:      #e08a6a;
+    --accent-deep: #f0a085;
+    --accent-tint: #3a2a22;
+    --ok:        #5cc08a;  --ok-tint:   #1e3329;
+    --warn:      #d6a94a;  --warn-tint: #352c18;
+    --gap:       #e57c6e;  --gap-tint:  #3a221e;
+    --idle:      #9a9892;  --idle-tint: #2a2925;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+a { color: inherit; text-decoration: none; }
+
+.app { max-width: 1200px; margin: 0 auto; padding: 28px 36px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { padding-bottom: 22px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+/* ===== Theme toggle button (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.version-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
+  border-radius: 999px; letter-spacing: 0; text-transform: none;
+}
+.masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta {
+  margin-top: 10px; font-size: 14px; color: var(--ink-3);
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+}
+.masthead .submeta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-5); }
+.masthead .submeta strong { color: var(--ink-1); font-weight: 600; }
+
+/* ===== Sync indicator ===== */
+.sync-status {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 11px;
+  color: var(--ink-3); font-weight: 500; cursor: pointer;
+  padding: 3px 6px; margin: -3px -6px; border-radius: 6px; transition: background var(--t-fast); user-select: none;
+}
+.sync-status:hover { background: rgba(20,20,19,.04); }
+.sync-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-4); flex-shrink: 0; transition: background var(--t-fast); }
+.sync-status[data-state="live"] .dot { background: var(--ok); box-shadow: 0 0 0 3px rgba(31,122,77,.16); }
+.sync-status[data-state="syncing"] .dot { background: var(--warn); animation: pulse-sync 1s ease-in-out infinite; }
+.sync-status[data-state="error"] .dot, .sync-status[data-state="offline"] .dot { background: var(--ink-5); }
+@keyframes pulse-sync { 0%,100% { opacity:1; transform:scale(1);} 50% { opacity:.35; transform:scale(.7);} }
+.sync-bar { width: 46px; height: 3px; background: rgba(20,20,19,.08); border-radius: 999px; overflow: hidden; flex-shrink: 0; }
+.sync-bar-fill { display: block; height: 100%; background: var(--ok); width: 0%; border-radius: 999px; transform-origin: left center; }
+.sync-status[data-state="live"] .sync-bar-fill { animation: sync-countdown 8s linear forwards; }
+.sync-status[data-state="syncing"] .sync-bar-fill { animation: sync-shuttle .9s ease-in-out infinite; background: var(--warn); width: 30%; }
+@keyframes sync-countdown { 0% { width: 0%; } 100% { width: 100%; } }
+@keyframes sync-shuttle { 0% { transform: translateX(0%);} 50% { transform: translateX(160%);} 100% { transform: translateX(0%);} }
+
+/* ===== Widgets ===== */
+.widgets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 32px; }
+.widget { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 18px 20px 16px; }
+.widget h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); font-weight: 600; margin-bottom: 12px; }
+.widget .big { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.widget .big .of { font-size: 16px; color: var(--ink-4); font-weight: 500; }
+.widget .cap { margin-top: 8px; font-size: 12.5px; color: var(--ink-3); }
+.widget .cap strong { color: var(--ink-1); font-weight: 600; }
+.widget.is-gap .big { color: var(--gap); }
+
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+.vendor { position: relative; }
+.card-copy-ref {
+  position: absolute;
+  top: 10px; right: 10px;
+  opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.vendor:hover .card-copy-ref,
+.vendor:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ===== Vendor cards ===== */
+.vendors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.vendor {
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-xl);
+  overflow: visible; display: flex; flex-direction: column;
+  transition: transform var(--t-med), box-shadow var(--t-med), border-color var(--t-med);
+}
+/* stripe clips itself via border-radius on the card */
+.vendor .stripe { border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+.vendor:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--ink-5); }
+.vendor .stripe { height: 4px; background: var(--vendor-accent, var(--accent)); }
+.vendor .body { padding: 22px 22px 20px; display: flex; flex-direction: column; flex-grow: 1; }
+.vendor .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+.vendor h3 { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.status-badge {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  padding: 4px 9px; border-radius: 4px; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.status-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.status-badge.active { color: var(--ok); background: var(--ok-tint); }
+.status-badge.in_progress { color: var(--warn); background: var(--warn-tint); }
+.status-badge.none { color: var(--idle); background: var(--idle-tint); }
+
+.vendor .program { font-size: 12px; color: var(--ink-4); margin-bottom: 2px; }
+.vendor .tier { font-size: 14px; font-weight: 600; color: var(--ink-1); margin-bottom: 12px; }
+.vendor .summary { font-size: 13px; color: var(--ink-3); line-height: 1.5; margin-bottom: 16px; }
+
+.facts-row { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 16px; }
+.fact { }
+.fact .label { font-size: 10px; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-4); font-weight: 500; margin-bottom: 3px; }
+.fact .val { font-size: 13.5px; font-weight: 600; color: var(--ink-1); font-variant-numeric: tabular-nums; }
+.fact .val.soon { color: var(--warn); }
+.fact .val.muted { color: var(--ink-4); font-weight: 500; }
+
+.section-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); font-weight: 700; margin: 4px 0 8px; }
+
+/* cert coverage bar */
+.coverage { margin-bottom: 16px; }
+.coverage-bar { height: 8px; background: var(--bg-sunken); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+.coverage-fill { height: 100%; border-radius: 999px; background: var(--vendor-accent, var(--accent)); transition: width var(--t-med); }
+.coverage-cap { font-size: 12px; color: var(--ink-3); }
+.coverage-cap strong { color: var(--ink-1); font-weight: 600; }
+
+/* requirements */
+.reqs { list-style: none; margin-bottom: 16px; }
+.req { display: flex; align-items: center; gap: 8px; padding: 5px 0; font-size: 12.5px; border-bottom: 1px solid var(--line-soft); }
+.req:last-child { border-bottom: none; }
+.req .marker { width: 15px; height: 15px; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; }
+.req.met .marker { background: var(--ok); }
+.req.gap .marker { background: var(--gap-tint); border: 1px solid var(--gap); }
+.req .marker svg { width: 9px; height: 9px; }
+.req .rlabel { flex-grow: 1; color: var(--ink-2); }
+.req .rcount { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink-1); font-size: 12px; }
+.req.gap .rcount { color: var(--gap); }
+
+/* gaps callout */
+.gaps { background: var(--gap-tint); border: 1px solid #f0c4bf; border-radius: var(--radius-m); padding: 12px 14px; margin-bottom: 16px; }
+.gaps .section-label { color: var(--gap); margin-top: 0; }
+.gaps ul { list-style: none; }
+.gaps li { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; padding-left: 16px; position: relative; margin-bottom: 4px; }
+.gaps li::before { content: '!'; position: absolute; left: 0; color: var(--gap); font-weight: 700; }
+.gaps li:last-child { margin-bottom: 0; }
+
+/* contacts + actions */
+.mini-list { list-style: none; margin-bottom: 16px; }
+.mini-list li { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; padding: 4px 0; }
+.mini-list li .nm { font-weight: 600; color: var(--ink-1); }
+.mini-list li .rl { color: var(--ink-3); }
+.actions-list { list-style: none; margin-bottom: 16px; }
+.actions-list li { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; padding-left: 16px; position: relative; margin-bottom: 5px; }
+.actions-list li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: 700; }
+
+/* source links footer */
+.vendor .sources { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--line-soft); display: flex; flex-wrap: wrap; gap: 6px; }
+.src-link {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500;
+  font-family: 'JetBrains Mono', monospace; color: var(--ink-3);
+  border: 1px solid var(--line); border-radius: var(--radius-s); padding: 3px 8px; transition: all var(--t-fast);
+}
+.src-link:hover { border-color: var(--accent); color: var(--accent-deep); background: var(--accent-tint); }
+
+.empty-note { font-size: 12.5px; color: var(--ink-4); font-style: italic; padding: 4px 0 12px; }
+
+@media (max-width: 980px) {
+  .widgets { grid-template-columns: repeat(2, 1fr); }
+  .vendors { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .app { padding: 18px 16px 80px; }
+  .widgets { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+<div class="app">
+
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Back to the vault home dashboard">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle"
+              aria-label="Switch to dark theme"
+              title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      <span>CPS Partnerships</span>
+      <span class="version-pill">v0.2.2</span>
+    </div>
+    <h1>Partner Health <span class="accent">.</span></h1>
+    <div class="submeta">
+      <span><strong id="activeCount">0</strong> active of <strong id="totalCount">0</strong></span>
+      <span class="dot"></span>
+      <span><strong id="gapCount">0</strong> open gaps</span>
+      <span class="dot"></span>
+      <span class="sync-status" data-state="offline" role="button" tabindex="0" title="">
+        <span class="dot"></span>
+        <span class="sync-label">Connecting</span>
+        <span class="sync-bar"><span class="sync-bar-fill"></span></span>
+      </span>
+    </div>
+  </header>
+
+  <section class="widgets" id="widgets" aria-label="Partnership overview"></section>
+
+  <section class="vendors" id="vendors" aria-label="Vendor partnerships"></section>
+
+</div>
+
+<script>
+/* ============================================================
+   Minimal YAML frontmatter parser (shared pattern with the
+   Sales dashboard). Supports scalars, inline + block arrays,
+   block objects, and arrays of objects with nested arrays.
+   ============================================================ */
+function parseYamlFrontmatter(md) {
+  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  if (!m) return null;
+  const lines = m[1].split('\n');
+  const root = {};
+  const stack = [{ indent: -1, container: root, key: null }];
+
+  const stripComment = (line) => {
+    let q = null;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (q) { if (c === q && line[i-1] !== '\\') q = null; }
+      else if (c === '"' || c === "'") q = c;
+      else if (c === '#' && (i === 0 || /\s/.test(line[i-1]))) return line.slice(0, i).replace(/\s+$/, '');
+    }
+    return line.replace(/\s+$/, '');
+  };
+  const sv = (raw) => {
+    let v = raw.trim();
+    if (v === '') return '';
+    if (v === 'null' || v === '~') return null;
+    if (v === 'true') return true;
+    if (v === 'false') return false;
+    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) return v.slice(1, -1);
+    if (v.startsWith('[') && v.endsWith(']')) {
+      const inner = v.slice(1, -1).trim();
+      return inner ? inner.split(',').map(s => sv(s)) : [];
+    }
+    if (/^-?\d+$/.test(v)) return parseInt(v, 10);
+    if (/^-?\d+\.\d+$/.test(v)) return parseFloat(v);
+    return v;
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    if (!raw || /^\s*$/.test(raw)) continue;
+    const nc = stripComment(raw);
+    if (!nc.trim()) continue;
+    const indent = nc.match(/^(\s*)/)[1].length;
+    const trimmed = nc.trim();
+    while (stack.length > 1 && indent <= stack[stack.length-1].indent) stack.pop();
+    const top = stack[stack.length-1];
+
+    if (trimmed.startsWith('- ')) {
+      const item = trimmed.slice(2).trim();
+      if (!Array.isArray(top.container)) continue;
+      if (item.includes(':')) {
+        const obj = {};
+        top.container.push(obj);
+        const ci = item.indexOf(':');
+        const k = item.slice(0, ci).trim();
+        const val = item.slice(ci+1).trim();
+        if (val !== '') obj[k] = sv(val);
+        stack.push({ indent, container: obj, key: null });
+      } else {
+        top.container.push(sv(item));
+      }
+      continue;
+    }
+
+    const ci = trimmed.indexOf(':');
+    if (ci === -1) continue;
+    const key = trimmed.slice(0, ci).trim();
+    const val = trimmed.slice(ci+1).trim();
+    const parent = top.container;
+    if (val === '') {
+      let ni = i + 1;
+      while (ni < lines.length && /^\s*(#.*)?$/.test(lines[ni])) ni++;
+      const nl = lines[ni] || '';
+      const nIndent = nl.match(/^(\s*)/)[1].length;
+      const nTrim = nl.trim();
+      if (nTrim.startsWith('- ') && nIndent > indent) {
+        const arr = []; if (Array.isArray(parent)) parent.push(arr); else parent[key] = arr;
+        stack.push({ indent, container: arr, key });
+      } else if (nIndent > indent && nTrim.includes(':')) {
+        const obj = {}; if (Array.isArray(parent)) parent.push(obj); else parent[key] = obj;
+        stack.push({ indent, container: obj, key });
+      } else {
+        if (Array.isArray(parent)) parent.push(null); else parent[key] = null;
+      }
+    } else {
+      const value = sv(val);
+      if (Array.isArray(parent)) parent.push({ [key]: value }); else parent[key] = value;
+    }
+  }
+  return { frontmatter: root, body: md.slice(m[0].length) };
+}
+
+/* ============================================================
+   State + helpers
+   ============================================================ */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const OBSIDIAN_VAULT = 'ideas-vault';
+const VAULT_BASE = '02_Areas/Sonrisa/CPS/Partnership/';
+const SOURCE_FILE = '/02_Areas/Sonrisa/CPS/Partnership/partners.md';
+const DASH_STEM = 'partnerships';
+let POLL_INTERVAL_MS = 8000;
+
+let PARTNERS = [];
+let syncState = 'offline';
+let syncTooltip = '';
+let lastMd = null;
+let pollTimer = null;
+let lastSyncAt = null;
+let tickTimer = null;
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function toSlug(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+function copyText(text, el) {
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  });
+}
+function wireCopyRef(container) {
+  container.querySelectorAll('.card-copy-ref').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const card = btn.closest('[data-card-id]');
+      if (!card) return;
+      copyText(DASH_STEM + ':' + card.dataset.cardId, btn);
+    };
+  });
+}
+function escapeAttr(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function obsidianOpen(filePath) {
+  return `obsidian://open?vault=${encodeURIComponent(OBSIDIAN_VAULT)}&file=${encodeURIComponent(filePath)}`;
+}
+function daysUntil(dateStr) {
+  if (!dateStr) return null;
+  const d = new Date(dateStr);
+  if (isNaN(d)) return null;
+  return Math.round((d - new Date()) / 86400000);
+}
+function renewalLabel(dateStr) {
+  const days = daysUntil(dateStr);
+  if (days == null) return null;
+  if (days < 0) return { text: `expired ${dateStr}`, soon: true };
+  if (days < 60) return { text: `${days}d left (${dateStr})`, soon: true };
+  const months = Math.round(days / 30);
+  return { text: `${months} mo left (${dateStr})`, soon: false };
+}
+
+/* ============================================================
+   Render
+   ============================================================ */
+function statusLabel(s) {
+  if (s === 'active') return 'Active';
+  if (s === 'in_progress') return 'In progress';
+  return 'None';
+}
+
+function renderWidgets() {
+  const total = PARTNERS.length;
+  const active = PARTNERS.filter(p => p.status === 'active').length;
+  const gaps = PARTNERS.reduce((a, p) => a + (Array.isArray(p.gaps) ? p.gaps.length : 0), 0);
+  const certs = PARTNERS.reduce((a, p) => a + (p.certs_active || 0), 0);
+
+  // Earliest upcoming renewal
+  let nextRenewal = null;
+  PARTNERS.forEach(p => {
+    const d = daysUntil(p.renewal);
+    if (d != null && d >= 0 && (nextRenewal == null || d < nextRenewal.days)) {
+      nextRenewal = { days: d, date: p.renewal, vendor: p.vendor };
+    }
+  });
+
+  $('#activeCount').textContent = active;
+  $('#totalCount').textContent = total;
+  $('#gapCount').textContent = gaps;
+
+  const renewalCap = nextRenewal
+    ? `<strong>${nextRenewal.vendor}</strong> in ${nextRenewal.days < 60 ? nextRenewal.days + 'd' : Math.round(nextRenewal.days/30) + ' mo'}`
+    : 'none scheduled';
+
+  $('#widgets').innerHTML = `
+    <div class="widget">
+      <h2>Active partnerships</h2>
+      <div class="big tabular">${active}<span class="of"> / ${total}</span></div>
+      <div class="cap">${PARTNERS.filter(p=>p.status==='in_progress').length} in progress</div>
+    </div>
+    <div class="widget is-gap">
+      <h2>Open gaps</h2>
+      <div class="big tabular">${gaps}</div>
+      <div class="cap">across all vendors</div>
+    </div>
+    <div class="widget">
+      <h2>Active certifications</h2>
+      <div class="big tabular">${certs}</div>
+      <div class="cap">individual certs on file</div>
+    </div>
+    <div class="widget">
+      <h2>Next renewal</h2>
+      <div class="big tabular" style="font-size:22px;">${nextRenewal ? nextRenewal.date : '—'}</div>
+      <div class="cap">${renewalCap}</div>
+    </div>
+  `;
+}
+
+function renderVendors() {
+  const wrap = $('#vendors');
+  if (!PARTNERS.length) {
+    wrap.innerHTML = `<div class="empty-note">No partner data. Check partners.md.</div>`;
+    return;
+  }
+  wrap.innerHTML = PARTNERS.map(p => {
+    const reqs = Array.isArray(p.requirements) ? p.requirements : [];
+    const gaps = Array.isArray(p.gaps) ? p.gaps : [];
+    const contacts = Array.isArray(p.contacts) ? p.contacts : [];
+    const actions = Array.isArray(p.next_actions) ? p.next_actions : [];
+    const sources = Array.isArray(p.source_files) ? p.source_files : [];
+
+    const renewal = renewalLabel(p.renewal);
+    const coveragePct = p.certs_target > 0 ? Math.min(100, Math.round((p.certs_active / p.certs_target) * 100)) : 0;
+
+    const reqRows = reqs.map(r => `
+      <li class="req ${r.met ? 'met' : 'gap'}">
+        <span class="marker">${r.met ? '<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>' : ''}</span>
+        <span class="rlabel">${escapeHtml(r.label)}</span>
+        <span class="rcount tabular">${r.current} / ${r.required}</span>
+      </li>`).join('');
+
+    const contactRows = contacts.map(c => `<li><span class="nm">${escapeHtml(c.name)}</span> <span class="rl">${escapeHtml(c.role || '')}</span></li>`).join('');
+    const actionRows = actions.map(a => `<li>${escapeHtml(a)}</li>`).join('');
+    const gapRows = gaps.map(g => `<li>${escapeHtml(g)}</li>`).join('');
+    const srcLinks = sources.map(s => `<a class="src-link" href="${obsidianOpen(VAULT_BASE + s)}">${escapeHtml(s)}</a>`).join('');
+
+    const cardId = toSlug(p.vendor || 'vendor');
+    return `
+      <article class="vendor" data-card-id="${escapeHtml(cardId)}" style="--vendor-accent: ${escapeAttr(p.accent || 'var(--accent)')}">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          copy ref
+        </button>
+        <div class="stripe"></div>
+        <div class="body">
+          <div class="head">
+            <h3>${escapeHtml(p.vendor)}</h3>
+            <span class="status-badge ${p.status || 'none'}">${statusLabel(p.status)}</span>
+          </div>
+          <div class="program">${escapeHtml(p.program || '')}</div>
+          <div class="tier">${escapeHtml(p.tier || '')}</div>
+          ${p.summary ? `<div class="summary">${escapeHtml(p.summary)}</div>` : ''}
+
+          <div class="facts-row">
+            ${renewal ? `<div class="fact"><div class="label">Renewal</div><div class="val ${renewal.soon ? 'soon' : ''}">${escapeHtml(renewal.text)}</div></div>` : ''}
+            ${p.annual_fee ? `<div class="fact"><div class="label">Annual fee</div><div class="val">${escapeHtml(p.annual_fee)}</div></div>` : ''}
+            ${p.accredited ? `<div class="fact"><div class="label">Accredited</div><div class="val tabular">${p.accredited}</div></div>` : ''}
+          </div>
+
+          ${p.certs_target > 0 ? `
+          <div class="coverage">
+            <div class="section-label">Certification coverage</div>
+            <div class="coverage-bar"><div class="coverage-fill" style="width:${coveragePct}%"></div></div>
+            <div class="coverage-cap"><strong>${p.certs_active}</strong> of ${p.certs_target} target certs (${coveragePct}%)</div>
+          </div>` : ''}
+
+          ${reqRows ? `<div class="section-label">Requirements</div><ul class="reqs">${reqRows}</ul>` : ''}
+
+          ${gapRows ? `<div class="gaps"><div class="section-label">Gaps to close</div><ul>${gapRows}</ul></div>` : ''}
+
+          ${contactRows ? `<div class="section-label">Contacts</div><ul class="mini-list">${contactRows}</ul>` : ''}
+
+          ${actionRows ? `<div class="section-label">Next actions</div><ul class="actions-list">${actionRows}</ul>` : ''}
+
+          ${srcLinks ? `<div class="sources">${srcLinks}</div>` : ''}
+        </div>
+      </article>`;
+  }).join('');
+}
+
+/* ============================================================
+   Sync (read-only fetch, 8s poll)
+   ============================================================ */
+function syncLabel(state) {
+  switch (state) {
+    case 'live': {
+      if (!lastSyncAt) return 'Live';
+      const ago = Math.max(0, Math.floor((Date.now() - lastSyncAt) / 1000));
+      if (ago < 2) return 'Live, just updated';
+      const next = Math.max(0, Math.ceil(POLL_INTERVAL_MS/1000 - ago));
+      return `Updated ${ago}s ago, next in ${next}s`;
+    }
+    case 'syncing': return 'Syncing';
+    case 'error':   return 'Offline, click to retry';
+    default:        return 'Connecting';
+  }
+}
+function setSyncState(state, tooltip='') {
+  syncState = state; syncTooltip = tooltip;
+  const st = $('.sync-status');
+  if (st) { st.dataset.state = state; st.title = tooltip; const l = $('.sync-label', st); if (l) l.textContent = syncLabel(state); }
+}
+function tickSyncLabel() {
+  const st = $('.sync-status'); if (!st) return;
+  const l = $('.sync-label', st); if (l) l.textContent = syncLabel(st.dataset.state || syncState);
+}
+function resetSyncBar() {
+  const f = $('.sync-bar-fill'); if (!f) return;
+  f.style.animation = 'none'; f.offsetHeight; f.style.animation = '';
+}
+
+async function pollVault({ silent=false } = {}) {
+  if (!silent) setSyncState('syncing', 'Reading partners.md...');
+  try {
+    const res = await fetch(SOURCE_FILE, { cache: 'no-store' });
+    if (!res.ok) throw new Error(SOURCE_FILE + ' returned ' + res.status);
+    const md = await res.text();
+    if (md !== lastMd) {
+      lastMd = md;
+      const parsed = parseYamlFrontmatter(md);
+      PARTNERS = (parsed && Array.isArray(parsed.frontmatter.partners)) ? parsed.frontmatter.partners : [];
+      renderWidgets();
+      renderVendors();
+      wireCopyRef(document);
+    }
+    lastSyncAt = Date.now();
+    const ts = new Date().toLocaleTimeString();
+    setSyncState('live', `Live, ${SOURCE_FILE}. ${PARTNERS.length} partners. Last check ${ts}. Polls every ${POLL_INTERVAL_MS/1000}s. Click to refresh now.`);
+    resetSyncBar();
+  } catch (e) {
+    console.warn('Sync failed', e);
+    setSyncState('error', `Cannot fetch ${SOURCE_FILE}. Serve over HTTP (npx serve . in vault root). ${e.message}`);
+  }
+}
+function startPolling() { if (!pollTimer) pollTimer = setInterval(() => pollVault({ silent: true }), POLL_INTERVAL_MS); }
+function startTicker() { if (!tickTimer) tickTimer = setInterval(tickSyncLabel, 1000); }
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.sync-status')) pollVault({ silent: false });
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.classList?.contains('sync-status')) {
+    e.preventDefault(); pollVault({ silent: false });
+  }
+});
+
+/* ============================================================
+   File-watcher push channel (SSE from dash-server.mjs).
+   Sub-second updates when connected, the poll timer relaxes to 30s.
+   Falls back to the 8s timer if SSE is unavailable or drops.
+   ============================================================ */
+function connectEventStream() {
+  if (typeof EventSource === 'undefined') return;
+  let es;
+  try { es = new EventSource('/__events'); } catch (e) { return; }
+  const restartPolling = (ms) => {
+    POLL_INTERVAL_MS = ms;
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    startPolling();
+  };
+  es.addEventListener('open', () => restartPolling(30000));
+  es.addEventListener('change', () => pollVault({ silent: true }));
+  es.addEventListener('error', () => restartPolling(8000));
+}
+
+/* ============================================================
+   Boot
+   ============================================================ */
+(async () => {
+  await pollVault();
+  startPolling();
+  startTicker();
+  connectEventStream();
+})();
+
+/* ===== Theme toggle (DS 0.3.0) ===== */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+document.getElementById('themeToggle').addEventListener('click', function() {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+});
+(function initTheme() {
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  setTheme(t);
+})();
+</script>
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>

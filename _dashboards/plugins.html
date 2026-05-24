@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Claude Code Plugins — Vault Fit Dashboard.   Version: 0.1.3
+  =============================================================================
+  Data: hardcoded (no live fetch — live-fetch wiring deferred; see audit trail).
+  Read-only. No markdown source file wired yet.
+
+  Audit trail:
+    0.1.0 2026-05-22 — migrated into standard family: adopted DESIGN_SYSTEM 0.1.0
+          light tokens, added home button + version pill + audit trail, registered
+          in launcher. Data remains hardcoded; live-fetch wiring deferred.
+    0.1.1 (2026-05-22) — added .card-copy-ref hover buttons + data-card-id
+          (DESIGN_SYSTEM 0.2.0). Plugin cards: id = slugified plugin name.
+    0.1.2 (2026-05-22) — added day/night theme toggle + dark tokens
+          (DESIGN_SYSTEM 0.3.0). Shared localStorage key "dash-theme". FOUC-init.
+    0.1.3 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
+
+  Conventions: see Sales/DASHBOARD_CONTRACT.md "Shared dashboard conventions".
+  Served by _dashboards/_tools/dash-server.mjs (or any HTTP server from vault root).
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code Plugins — Vault Fit Dashboard</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M10 16h4m4 0h4M16 10v4m0 4v4' stroke='%23D97757' stroke-width='2.2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Surfaces — cream paper */
+  --bg-page:   #faf9f5;
+  --bg-elev:   #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint:   #f5f4ef;
+
+  /* Ink scale (1 darkest → 5 lightest) */
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+
+  /* Lines */
+  --line:      #e5e4df;
+  --line-soft: #efede7;
+
+  /* Accent — terracotta */
+  --accent:      #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  /* Status */
+  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;  --gap-tint:  #fbeae6;
+  --idle:      #7a7a76;  --idle-tint: #efeeeb;
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+
+  /* Radius */
+  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
+
+  /* Motion */
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+  --ink-1: #f5f4ef;
+  --ink-2: #d6d4ce;
+  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;
+  --ink-5: #54524d;
+  --line:      #36342f;
+  --line-soft: #2c2a26;
+  --accent:      #e08a6a;
+  --accent-deep: #f0a085;
+  --accent-tint: #3a2a22;
+  --ok:        #5cc08a;  --ok-tint:   #1e3329;
+  --warn:      #d6a94a;  --warn-tint: #352c18;
+  --gap:       #e57c6e;  --gap-tint:  #3a221e;
+  --idle:      #9a9892;  --idle-tint: #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:   #1a1916;
+    --bg-elev:   #232220;
+    --bg-sunken: #2c2a26;
+    --bg-tint:   #262420;
+    --ink-1: #f5f4ef;
+    --ink-2: #d6d4ce;
+    --ink-3: #a8a6a0;
+    --ink-4: #7c7a74;
+    --ink-5: #54524d;
+    --line:      #36342f;
+    --line-soft: #2c2a26;
+    --accent:      #e08a6a;
+    --accent-deep: #f0a085;
+    --accent-tint: #3a2a22;
+    --ok:        #5cc08a;  --ok-tint:   #1e3329;
+    --warn:      #d6a94a;  --warn-tint: #352c18;
+    --gap:       #e57c6e;  --gap-tint:  #3a221e;
+    --idle:      #9a9892;  --idle-tint: #2a2925;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  padding: 28px 24px 80px;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+.wrap { max-width: 1240px; margin: 0 auto; }
+
+/* ===== Masthead ===== */
+.masthead { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  text-decoration: none; padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+.home-link svg { flex-shrink: 0; }
+/* ===== Theme toggle button (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.version-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
+  border-radius: 999px; letter-spacing: 0; text-transform: none;
+}
+.masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; color: var(--ink-1); }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .sub { color: var(--ink-3); max-width: 700px; font-size: 14px; margin-top: 8px; line-height: 1.55; }
+
+/* ===== Toolbar ===== */
+.toolbar { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0 8px; align-items: center; }
+.search { flex: 1; min-width: 200px; position: relative; }
+.search input {
+  width: 100%; background: var(--bg-elev); border: 1px solid var(--line); color: var(--ink-1);
+  padding: 10px 14px 10px 38px; border-radius: var(--radius-l); font-size: 14px;
+  outline: none; transition: border-color var(--t-fast); font-family: inherit;
+}
+.search input:focus { border-color: var(--accent); }
+.search input::placeholder { color: var(--ink-4); }
+.search svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--ink-4); }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.chip {
+  background: var(--bg-elev); border: 1px solid var(--line); color: var(--ink-3);
+  padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 500;
+  cursor: pointer; transition: all var(--t-fast); white-space: nowrap; font-family: inherit;
+}
+.chip:hover { border-color: var(--accent); color: var(--accent-deep); }
+.chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+select.sort {
+  background: var(--bg-elev); border: 1px solid var(--line); color: var(--ink-2);
+  padding: 8px 14px; border-radius: var(--radius-l); font-size: 13px; font-weight: 500;
+  cursor: pointer; outline: none; font-family: inherit;
+}
+select.sort:focus { border-color: var(--accent); }
+.hint { color: var(--ink-4); font-size: 12px; margin-top: 4px; }
+
+/* ===== Tier section ===== */
+.tier-label {
+  display: flex; align-items: center; gap: 10px; margin: 32px 0 14px;
+  font-size: 11px; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--ink-4);
+}
+.tier-label::after { content: ""; flex: 1; height: 1px; background: var(--line); }
+.tier-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+
+/* ===== Cards ===== */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+.card {
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l);
+  padding: 18px 20px; cursor: pointer; transition: all var(--t-fast);
+  position: relative; overflow: visible; display: flex; flex-direction: column; gap: 10px;
+  box-shadow: var(--shadow-1);
+}
+.card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--accent); opacity: 0; transition: opacity var(--t-fast); border-radius: var(--radius-l) 0 0 var(--radius-l); }
+.card:hover { border-color: var(--accent); box-shadow: var(--shadow-2); transform: translateY(-2px); }
+.card:hover::before { opacity: 1; }
+
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+.card-copy-ref {
+  position: absolute;
+  top: 8px; right: 8px;
+  opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.card:hover .card-copy-ref,
+.card:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+.card.hide { display: none; }
+.card-top { display: flex; align-items: center; gap: 10px; }
+.badge-ico { font-size: 22px; line-height: 1; }
+.card h3 { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; display: flex; align-items: center; gap: 7px; color: var(--ink-1); }
+.copy {
+  background: none; border: none; cursor: pointer; opacity: 0; transition: opacity var(--t-fast);
+  padding: 3px; border-radius: var(--radius-s); color: var(--ink-4); display: inline-flex;
+}
+.card:hover .copy { opacity: 0.6; }
+.copy:hover { opacity: 1 !important; color: var(--accent-deep); }
+.copy.done { color: var(--ok); opacity: 1 !important; }
+.score-pill {
+  margin-left: auto; font-size: 12px; font-weight: 700; padding: 4px 9px; border-radius: var(--radius-m);
+  display: flex; align-items: baseline; gap: 2px; border: 1px solid; flex-shrink: 0;
+}
+.score-pill .max { font-size: 10px; font-weight: 500; opacity: 0.6; }
+.sc-hi  { color: var(--ok);   border-color: rgba(31,122,77,.3);  background: var(--ok-tint); }
+.sc-mid { color: #2563a5;     border-color: rgba(37,99,165,.3);  background: #e8eff8; }
+.sc-lo  { color: var(--accent-deep); border-color: rgba(179,90,63,.3); background: var(--accent-tint); }
+.card .what { color: var(--ink-3); font-size: 13.5px; flex: 1; line-height: 1.5; }
+.tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: auto; }
+.tag {
+  font-size: 11px; font-weight: 500; padding: 3px 8px; border-radius: var(--radius-s);
+  background: var(--bg-sunken); color: var(--ink-4); border: 1px solid var(--line-soft);
+}
+.tag.fit { color: var(--ok); border-color: rgba(31,122,77,.3); background: var(--ok-tint); }
+.open-hint { font-size: 11.5px; color: var(--accent-deep); font-weight: 500; opacity: 0; transition: opacity var(--t-fast); }
+.card:hover .open-hint { opacity: 1; }
+
+/* ===== Modal / Overlay ===== */
+.overlay {
+  position: fixed; inset: 0; background: rgba(20,20,19,.55); backdrop-filter: blur(4px);
+  display: none; align-items: flex-start; justify-content: center;
+  padding: 40px 20px; z-index: 50; overflow-y: auto;
+}
+.overlay.show { display: flex; animation: fade .18s ease; }
+@keyframes fade { from { opacity: 0; } to { opacity: 1; } }
+.modal {
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-xl);
+  max-width: 680px; width: 100%; box-shadow: var(--shadow-2);
+  animation: pop .22s cubic-bezier(.2,.8,.3,1.1); overflow: hidden; position: relative;
+}
+@keyframes pop { from { transform: translateY(12px) scale(.97); opacity: 0; } to { transform: none; opacity: 1; } }
+.modal-head {
+  padding: 24px 26px 18px; border-bottom: 1px solid var(--line);
+  background: var(--bg-tint);
+}
+.modal-head .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.modal-head .mico { font-size: 30px; }
+.modal-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.02em; display: flex; align-items: center; gap: 8px; color: var(--ink-1); }
+.modal-head .copy { opacity: 0.5; }
+.m-score {
+  margin-left: auto; text-align: center; padding: 6px 12px;
+  border-radius: var(--radius-m); border: 1px solid;
+}
+.m-score b { font-size: 18px; font-weight: 700; display: block; line-height: 1; }
+.m-score span { font-size: 10px; letter-spacing: .1em; text-transform: uppercase; opacity: .7; }
+.modal-head .what { color: var(--ink-3); margin-top: 10px; font-size: 14px; line-height: 1.55; }
+.close {
+  position: absolute; top: 16px; right: 20px;
+  background: var(--bg-elev); border: 1px solid var(--line); color: var(--ink-3);
+  width: 32px; height: 32px; border-radius: var(--radius-m); font-size: 17px;
+  cursor: pointer; transition: all var(--t-fast); z-index: 2;
+  display: flex; align-items: center; justify-content: center;
+}
+.close:hover { background: var(--gap-tint); color: var(--gap); border-color: var(--gap); }
+.modal-body { padding: 6px 26px 26px; }
+.block { padding: 14px 0; border-bottom: 1px solid var(--line-soft); }
+.block:last-child { border-bottom: 0; }
+.block .lab {
+  font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 7px; display: flex; align-items: center; gap: 6px;
+  color: var(--ink-4);
+}
+.lab.value  { color: var(--ok); }
+.lab.without { color: var(--gap); }
+.lab.ex     { color: var(--accent-deep); }
+.lab.vault  { color: var(--warn); }
+.lab.longev { color: var(--accent); }
+.lab.setup  { color: var(--idle); }
+.block p { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+.block.vaultblock {
+  background: var(--warn-tint); border-radius: var(--radius-m);
+  padding: 14px 16px; border: 1px solid rgba(176,122,24,.2); margin-top: 4px;
+}
+.block.vaultblock p { color: var(--ink-1); }
+.block.setup p, .block.longev p { color: var(--ink-3); font-size: 13.5px; }
+code {
+  background: var(--bg-sunken); padding: 2px 6px; border-radius: var(--radius-s);
+  font-size: .9em; color: var(--accent-deep);
+  font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace;
+}
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(16px);
+  background: var(--ok); color: #fff; font-weight: 600; font-size: 13.5px;
+  padding: 10px 18px; border-radius: var(--radius-l); opacity: 0;
+  transition: all .22s; z-index: 100; pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ===== Misc ===== */
+.empty { display: none; text-align: center; color: var(--ink-4); padding: 60px 0; font-size: 15px; }
+.empty.show { display: block; }
+footer {
+  margin-top: 48px; padding-top: 20px; border-top: 1px solid var(--line);
+  color: var(--ink-4); font-size: 12.5px; text-align: center; line-height: 1.7;
+}
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+<div class="wrap">
+
+  <!-- ===== Masthead ===== -->
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Back to the vault home dashboard">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle"
+              aria-label="Switch to dark theme"
+              title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      <span>Claude Code · 16 Plugins</span>
+      <span class="version-pill">v0.1.2</span>
+    </div>
+    <h1>Plugin <span class="accent">Vault Fit</span> Dashboard</h1>
+    <p class="sub">Every plugin explored on the web, mapped to your Ideas Vault. Click a card for what it does, the added value, how to do it <em>without</em> the plugin, examples, and a longevity score. Click the <b>⧉</b> next to a name to copy it.</p>
+  </header>
+
+  <!-- ===== Toolbar ===== -->
+  <div class="toolbar">
+    <div class="search">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input id="q" type="text" placeholder="Search plugins, domains, use cases…">
+    </div>
+    <div class="filters" id="filters">
+      <span class="chip active" data-f="all">All</span>
+      <span class="chip" data-f="now">Highest leverage</span>
+      <span class="chip" data-f="quality">Workflow quality</span>
+      <span class="chip" data-f="situational">Situational</span>
+    </div>
+    <select class="sort" id="sort">
+      <option value="tier">Sort: Recommended (tier)</option>
+      <option value="score">Sort: Longevity score (high→low)</option>
+      <option value="scoreAsc">Sort: Longevity score (low→high)</option>
+      <option value="az">Sort: A → Z</option>
+    </select>
+  </div>
+  <p class="hint">Longevity score = how well the plugin resists obsolescence (10 = enduring methodology/need · low = tightly coupled to fast-moving internals and likely to be absorbed or superseded).</p>
+
+  <div id="board"></div>
+  <div class="empty" id="empty">No plugins match that search.</div>
+
+  <footer>Research compiled May 2026 · sources: anthropics/claude-code, claude-plugins-official, obra/superpowers, partner repos · vault map via Librarian (read-only)</footer>
+</div>
+
+<!-- ===== Modal ===== -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <button class="close" id="close">&times;</button>
+    <div class="modal-head">
+      <div class="row">
+        <span class="mico" id="m-ico"></span>
+        <h2 id="m-name"></h2>
+        <div class="m-score" id="m-score"><b id="m-score-n"></b><span>longevity</span></div>
+      </div>
+      <p class="what" id="m-what"></p>
+    </div>
+    <div class="modal-body">
+      <div class="block"><div class="lab value">＋ Added value</div><p id="m-value"></p></div>
+      <div class="block"><div class="lab without">⊘ Without this plugin</div><p id="m-without"></p></div>
+      <div class="block"><div class="lab ex">▸ Example use case</div><p id="m-ex"></p></div>
+      <div class="block vaultblock"><div class="lab vault">★ In your vault</div><p id="m-vault"></p></div>
+      <div class="block longev"><div class="lab longev">⏳ Longevity rationale</div><p id="m-longev"></p></div>
+      <div class="block setup"><div class="lab setup">⚙ Setup</div><p id="m-setup"></p></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast">Copied!</div>
+
+<script>
+const PLUGINS = [
+  {ico:"💬", name:"Telegram", tier:"situational", score:6,
+   what:"Bridges a Telegram bot into a live Claude Code session — DM tasks from your phone, get replies, with pairing + allowlist control.",
+   value:"Turns Claude into a phone-controllable agent so you can act on work away from the keyboard, with injection-hardened access control you'd otherwise have to build yourself.",
+   without:"Run Claude Code on a server you SSH into from a mobile terminal app, or use Cowork's first-party <b>Dispatch</b> (mobile → desktop). Both lack the bot-pairing/allowlist convenience.",
+   ex:"From the couch: message your bot \"did the test suite pass? if so, commit and push\" and Claude runs it back at your desk.",
+   vault:"Kick off a <b>Deák Húsüzlet</b> Sprint 3 deploy from your phone and get pinged when <code>staging.deakhus.ro</code> is live — or coordinate <b>Navigátor Podcast</b> publishing while away from the studio.",
+   longev:"The remote-control concept is durable, but Anthropic's first-party Dispatch covers the same niche and may eclipse a community bridge.",
+   setup:"Bun + a @BotFather bot token.", tags:["mobile","ops"]},
+
+  {ico:"#️⃣", name:"Slack", tier:"situational", score:7,
+   what:"Connects your Slack workspace so Claude can search messages, summarize channels, generate standups and draft announcements.",
+   value:"Reads and searches your workspace history as live context and drafts native-formatted messages — saves the copy-paste round trip and surfaces buried decisions.",
+   without:"Manually paste Slack threads into Claude; use Slack's own search + Workflow Builder for standups and reminders.",
+   ex:"Run /standup and Claude drafts your daily update from recent Slack activity.",
+   vault:"<b>Sonrisa/CPS</b> is your most multi-person domain (13 engineers, TAMs per client) — <code>/find-discussions \"MelindaSteel n8n\"</code> pulls prior context; also fits the cross-border <b>Kingdom At Work</b> team (Casey, Manfred).",
+   longev:"Useful as long as Slack is your team's hub; the OAuth/MCP layer is stable and vendor-maintained.",
+   setup:"Slack OAuth, hosted MCP — no API key.", tags:["team","comms"]},
+
+  {ico:"🦾", name:"Superpowers", tier:"situational", score:9,
+   what:"A large skills library imposing disciplined dev methodology — Socratic brainstorming, strict TDD, systematic debugging, planning, and subagent-driven implementation with review.",
+   value:"Encodes senior-engineer discipline (don't code before understanding, tests must fail first, root-cause before fixing) so output quality stops depending on how well you prompt.",
+   without:"Write your own CLAUDE.md rules / a personal methodology skill and manually insist on TDD and root-cause debugging each session.",
+   ex:"Ask for a feature; Claude refuses to code until requirements are clarified, then plans, implements under RED-GREEN-REFACTOR, and self-reviews.",
+   vault:"The <b>Ignis Academy</b> Frappe LMS MVP \"needs a restart\" — <code>brainstorming</code> + <code>writing-plans</code> force a clean design pass first, and <code>using-git-worktrees</code> rebuilds in parallel without touching the old tree.",
+   longev:"It's methodology, not a vendor integration — TDD, systematic debugging and planning don't go obsolete; the highest-durability item here.",
+   setup:"Add the obra/superpowers marketplace; skill-driven, no commands.", tags:["methodology","TDD"]},
+
+  {ico:"📊", name:"Session Report", tier:"quality", score:4,
+   what:"Generates a self-contained interactive HTML dashboard of your Claude Code usage — tokens, cache efficiency, subagents, skills, costliest prompts.",
+   value:"One-glance visibility into where your tokens and cache misses actually go, so you can cut cost on the few workflows that dominate spend.",
+   without:"Parse <code>~/.claude/projects</code> transcripts with a small script of your own, or eyeball the built-in <code>/cost</code> output.",
+   ex:"Run with 30d after a heavy month to see which project burned the most tokens and where caching was poor.",
+   vault:"You run lots of automation (Navigátor's 6-command plugin + YouTube MCP, Sonrisa's daily lead scanner, weekly competitor scans) — a 30d report shows which workflow is actually expensive so you can tune it.",
+   longev:"Tightly bound to current token/cache internals; the most likely of the set to be superseded by built-in usage analytics.",
+   setup:"Node.js; all local, no keys.", tags:["analytics","cost"]},
+
+  {ico:"🛡️", name:"Security Guidance", tier:"quality", score:6,
+   what:"A silent pre-edit hook warning about vulnerability patterns (command injection, eval, XSS, unsafe pickle, GitHub Actions injection) as Claude writes files.",
+   value:"A passive safety net that flags dangerous patterns at write-time, before bad code lands — requires zero discipline or memory from you.",
+   without:"Run a linter / SAST (semgrep, bandit, CodeQL) in CI and add the rules to your CLAUDE.md.",
+   ex:"Claude is about to interpolate ${{ github.event.issue.title }} into a shell run: step — the hook warns about command injection before it lands.",
+   vault:"Across the <b>Frappe (Python)</b> stack shared by Deák Húsüzlet, Ignis Academy and ExarLabs, plus the <b>MelindaSteel n8n</b> automation — it catches unsafe patterns before they ship to <code>deakhus.ro</code> production.",
+   longev:"The vulnerability categories are durable, but this kind of guardrail tends to get absorbed into the core product over time.",
+   setup:"Install only — runs automatically.", tags:["security","hook"]},
+
+  {ico:"🧩", name:"Plugin Dev", tier:"situational", score:6,
+   what:"A full toolkit for building Claude Code plugins — scaffolds and validates skills, commands, agents, hooks and MCP via an 8-phase guided workflow.",
+   value:"Developer-grade scaffolding + validation for every plugin component, so the plugins you author are correct and distributable rather than ad-hoc.",
+   without:"Hand-write plugin files against the docs, or use Cowork's no-code <b>Plugin Create</b> for simple ones (same output format, less rigor).",
+   ex:"/plugin-dev:create-plugin to build a /standup command plus a hook blocking edits to migrations/, then plugin-validator checks structure.",
+   vault:"You already author plugins (Navigátor Podcast, general-utils, personal-utils) — <code>skill-reviewer</code> + <code>plugin-validator</code> harden them, and it'd turn the <b>Sonrisa</b> lead-scanner/competitor-scan workflows into a distributable plugin.",
+   longev:"Tracks an evolving plugin spec; the meta-tool stays relevant only while you keep building plugins, and must update as the format changes.",
+   setup:"Install only.", tags:["meta","authoring"]},
+
+  {ico:"🎛️", name:"Playground", tier:"situational", score:6,
+   what:"Generates a single-file interactive HTML page with live controls + preview and a copyable prompt output, to iterate on a design/data/concept decision.",
+   value:"Externalizes a fuzzy decision into a tweakable UI so you converge on exact values, then exports them as a prompt — faster than describing trade-offs in prose.",
+   without:"Sketch the options in a quick HTML/CodePen yourself, or just iterate verbally with Claude.",
+   ex:"Undecided on a button's spacing/color/type — it builds sliders + live preview and emits a prompt capturing your chosen values.",
+   vault:"For <b>Deák Húsüzlet's</b> screen catalog / Savings Engine widgets, the design-playground template dials in spacing & color before committing to the wireframe; or concept-map to scope the <b>Ignis Academy</b> BMC restart.",
+   longev:"A generic, harness-agnostic technique — modestly durable, neither vendor- nor version-locked.",
+   setup:"Install only, no external services.", tags:["design","prototyping"]},
+
+  {ico:"🎨", name:"Frontend Design", tier:"now", score:8,
+   what:"An auto-invoked skill producing distinctive, non-generic production UI — bold aesthetic direction, distinctive type/color, motion and spatial composition.",
+   value:"Forces an aesthetic point of view before coding so output isn't generic \"AI slop\" — distinctive type/color/motion you'd otherwise have to art-direct by hand.",
+   without:"Use the <code>impeccable</code> skill (same job), a component library plus your own design system, or brief a designer.",
+   ex:"\"Build a landing page for an AI security startup\" yields an art-directed page rather than stock fonts and centered cards.",
+   vault:"Directly applies to your dashboards (<code>navigator.html</code>, <code>sales.html</code>, <code>partnerships.html</code>), the <b>Deák</b> Netlify wireframe gallery, the <b>Sonrisa</b> CMS landing pages, and <b>Ignis'</b> workshop <code>dashboard.html</code>.",
+   longev:"Design principles endure, though this specific skill overlaps heavily with impeccable and Cowork's Design and may converge with them.",
+   setup:"Install, then describe the UI.", tags:["UI","design","fit"]},
+
+  {ico:"🔥", name:"Firebase", tier:"now", score:7,
+   what:"Wraps the Firebase CLI's MCP tools so Claude can manage Firestore, auth, cloud functions, hosting and storage from your workflow.",
+   value:"Lets Claude operate your Firebase backend directly (Firestore/auth/functions/hosting) instead of you context-switching into the console.",
+   without:"Use the Firebase CLI / web console by hand, or wire the firebase-tools MCP server yourself.",
+   ex:"\"Create a Firestore collection plus a Cloud Function triggered on new docs, then deploy.\"",
+   vault:"<b>Deák Húsüzlet</b> already runs <b>Firebase Analytics + UTM/QR tracking</b> — this lets Claude query/configure that stack and manage hosting directly instead of you using the console.",
+   longev:"Stable, mature platform; value persists for as long as you stay on Firebase, but it's vendor-coupled.",
+   setup:"firebase login + Node/npx.", tags:["backend","deploy","fit"]},
+
+  {ico:"⚙️", name:"Feature Dev", tier:"situational", score:8,
+   what:"A rigid multi-phase workflow (explore → architect → scaffold → implement → test → review → finalize) using specialized subagents to build complex features while respecting codebase conventions.",
+   value:"A guardrailed pipeline that explores the codebase and designs before writing, so big features land matching existing conventions instead of bolt-on messes.",
+   without:"Manually run explore → plan → implement → review each time, or use Superpowers' subagent-driven-development.",
+   ex:"/feature-dev to add OAuth to an existing app — from tracing auth code to a design doc to multi-lens review.",
+   vault:"Ideal for <b>Deák Húsüzlet's</b> remaining Sprint 3 features (guest checkout, reorder basket) — <code>code-explorer</code> traces existing Frappe patterns first, so new code matches the ~153-ticket codebase.",
+   longev:"Process-based and codebase-agnostic — explore/design/review is durable regardless of model or framework changes.",
+   setup:"Install only.", tags:["workflow","feature"]},
+
+  {ico:"🔎", name:"Exa", tier:"now", score:7,
+   what:"Exa AI web search + deep-research orchestrator — plans multi-step research, dispatches subagents, and synthesizes a report.",
+   value:"Neural/semantic search plus a research orchestrator that returns clean, synthesized results — better recall on niche queries than keyword search or generic fetch.",
+   without:"Use the WebSearch/WebFetch tools you already have, Perplexity, or paid data providers (ZoomInfo / OPTEN).",
+   ex:"\"Deep dive on the competitive landscape for vector databases\" runs coordinated searches into one synthesized brief.",
+   vault:"Three fits: automate <b>Sonrisa's</b> weekly competitor scans, run guest/topic research for <b>Navigátor Podcast</b> prep (you benchmark vs Csakabaj), and map the <b>Ignis Academy</b> EdTech/LMS landscape for the grant. (See my note on lead-scraping — it helps verification/enrichment, not the Profession.hu blind spot.)",
+   longev:"Search is an enduring need, but it's vendor-coupled to Exa's API and pricing.",
+   setup:"Exa API key.", tags:["research","search","fit"]},
+
+  {ico:"📝", name:"Commit Commands", tier:"now", score:5,
+   what:"Git workflow commands — /commit (style-matched AI message), /commit-push-pr (commit+push+PR), /clean_gone (prune deleted branches).",
+   value:"Style-matched messages + one-shot commit→push→PR + branch cleanup — removes repetitive git ceremony, not capability you lack.",
+   without:"Plain git + gh, a few shell aliases / git hooks, or just asking Claude inline to write a message.",
+   ex:"Finish a feature, run /commit-push-pr to ship it and open the PR in one step.",
+   vault:"Your whole vault is a git repo (auto \"vault backup\" commits) and Deák/Ignis/Sonrisa code lives in git — <code>/commit</code> gives cleaner messages than timestamp-only backups; <code>/commit-push-pr</code> streamlines Frappe branches.",
+   longev:"A thin convenience layer over git — easily replicated and a prime candidate for absorption into the core CLI.",
+   setup:"git + gh for PRs.", tags:["git","fit"]},
+
+  {ico:"🔍", name:"Code Review", tier:"now", score:8,
+   what:"Automated PR review using 4 parallel agents (CLAUDE.md compliance, bug detection, git-history context) with 0–100 confidence scoring to suppress false positives.",
+   value:"Multi-agent parallel review that enforces YOUR CLAUDE.md conventions and filters noise by confidence — far closer to a real reviewer than a single inline pass.",
+   without:"Ask Claude for a review inline (no convention-enforcement or scoring), or rely on human PR review + CI linters.",
+   ex:"/code-review --comment posts only ≥80-confidence findings as a GitHub PR comment.",
+   vault:"Each coding domain has a CLAUDE.md with conventions (Deák, ExarLabs, Ignis Academy, Mikado) — the compliance agents enforce <i>those specific</i> rules on Frappe PRs and the MelindaSteel n8n work.",
+   longev:"Reviewing against your own conventions is durably valuable even as the underlying implementation evolves.",
+   setup:"gh authenticated.", tags:["review","quality","fit"]},
+
+  {ico:"☁️", name:"Cloudflare", tier:"situational", score:7,
+   what:"Skills + commands + MCP for the Cloudflare platform — Workers, Durable Objects, Agents SDK, Wrangler, web-perf audits, email — biased toward current docs.",
+   value:"Skills that fetch CURRENT Cloudflare docs (avoiding stale training knowledge) plus correct Wrangler/Workers/DO patterns and Core Web Vitals audits.",
+   without:"Your own BDOS \"Microsite Factory\" (CF Pages Direct Upload script) + the Wrangler CLI + the CF dashboard. (See my note — they're complementary, not rivals.)",
+   ex:"/build-agent or \"deploy a Durable-Object-backed chat room on Workers\" with correct config and deployment.",
+   vault:"The web-perf skill (Core Web Vitals) is the hit — audit <code>deakhus.ro</code> and the <b>Sonrisa</b> CMS landing pages for LCP/INP/CLS; the Workers/Agents-SDK skills apply if you move a workflow to the edge.",
+   longev:"Platform-coupled, but its docs-fetching design keeps it from going stale — it pulls live docs rather than relying on a training cutoff.",
+   setup:"Cloudflare OAuth on first use.", tags:["edge","deploy"]},
+
+  {ico:"📄", name:"CLAUDE.md Management", tier:"quality", score:5,
+   what:"Maintains your CLAUDE.md files — claude-md-improver audits them with a quality score, /revise-claude-md captures end-of-session learnings as approved diffs.",
+   value:"Audits memory files for quality and captures session learnings as approved diffs, so project memory doesn't silently rot as projects move.",
+   without:"Hand-edit CLAUDE.md, use the built-in /init, or run your own consolidate-memory routine.",
+   ex:"After discovering the test command is pnpm test:ci, run /revise-claude-md to fold it in for next time.",
+   vault:"You maintain ~6 domain CLAUDE.md files (Deák, ExarLabs, Ignis Academy, Mikado, Sonrisa/CPS) — claude-md-improver keeps them in sync as projects move (e.g. Deák Sprint 3 → beta).",
+   longev:"Coupled to the CLAUDE.md mechanism itself, which may be automated or replaced by native persistent memory.",
+   setup:"Install (from claude-plugins-official).", tags:["memory","docs"]},
+
+  {ico:"🤖", name:"Agent SDK Dev", tier:"situational", score:5,
+   what:"Scaffolds and verifies apps built on the Claude Agent SDK — /new-sdk-app sets up a Python/TS project with the latest SDK, env files, and a verifier agent.",
+   value:"Scaffolds a correct, latest-SDK project and verifies SDK usage + security, so you start from a known-good baseline instead of guessing.",
+   without:"Clone an SDK starter template, follow the SDK docs, and npm/pip init by hand.",
+   ex:"/new-sdk-app my-support-bot, pick TypeScript, get a ready-to-run, verified Agent SDK project.",
+   vault:"Your <b>Sonrisa Sales Engine</b> (\"agentic\", 15 validated leads) and the <b>Inference Farm (LLMaaS)</b> unit are natural homes — if you productize either, this scaffolds it correctly from day one.",
+   longev:"The SDK moves fast — scaffolding and verification rules go stale quickly and need constant updating to stay correct.",
+   setup:"Anthropic API key for the resulting app.", tags:["SDK","agents"]},
+];
+
+const TIER = {
+  now:         { label:"Highest leverage now",  color:"var(--ok)" },
+  quality:     { label:"Workflow quality",       color:"#2563a5" },
+  situational: { label:"Situational",            color:"var(--warn)" },
+};
+const ORDER = ["now","quality","situational"];
+
+function scClass(s){ return s>=8?"sc-hi":s>=6?"sc-mid":"sc-lo"; }
+function stripTags(s){ return s.replace(/<[^>]+>/g,""); }
+function toSlug(s){ return String(s).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+
+const COPY_SVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>';
+const DONE_SVG='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>';
+const COPY_REF_SVG='<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+const DASH_STEM = 'plugins';
+
+const board = document.getElementById('board');
+const empty = document.getElementById('empty');
+let activeFilter="all", sortMode="tier";
+
+function copyName(name, btn, e){
+  e.stopPropagation();
+  navigator.clipboard.writeText(name).then(()=>{
+    showToast("Copied: "+name);
+    if(btn){ const o=btn.innerHTML; btn.innerHTML=DONE_SVG; btn.classList.add('done');
+      setTimeout(()=>{ btn.innerHTML=o; btn.classList.remove('done'); },1200); }
+  });
+}
+
+function copyRef(cardId, btn, e){
+  e.stopPropagation();
+  const ref = DASH_STEM + ':' + cardId;
+  navigator.clipboard.writeText(ref).then(()=>{
+    btn.classList.add('copied');
+    setTimeout(()=>btn.classList.remove('copied'), 1600);
+  }).catch(()=>{
+    const ta=document.createElement('textarea');
+    ta.value=ref; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); }catch(ex){}
+    document.body.removeChild(ta);
+    btn.classList.add('copied');
+    setTimeout(()=>btn.classList.remove('copied'), 1600);
+  });
+}
+
+function cardHTML(p){
+  const idx=PLUGINS.indexOf(p);
+  const cardId=toSlug(p.name);
+  const c=document.createElement('div');
+  c.className="card"; c.dataset.tier=p.tier; c.dataset.cardId=cardId;
+  c.dataset.search=(p.name+" "+p.what+" "+p.vault+" "+p.ex+" "+p.value+" "+p.tags.join(" ")).toLowerCase();
+  c.innerHTML=`
+    <button class="card-copy-ref" aria-label="Kártya-azonosító másolása">${COPY_REF_SVG} copy ref</button>
+    <div class="card-top">
+      <span class="badge-ico">${p.ico}</span>
+      <h3>${p.name}<button class="copy" title="Copy name" data-name="${p.name}">${COPY_SVG}</button></h3>
+      <span class="score-pill ${scClass(p.score)}">${p.score}<span class="max">/10</span></span>
+    </div>
+    <p class="what">${stripTags(p.what)}</p>
+    <div class="tags">${p.tags.map(tg=>`<span class="tag ${tg==='fit'?'fit':''}">${tg==='fit'?'★ vault fit':tg}</span>`).join("")}</div>
+    <span class="open-hint">Click for details →</span>`;
+  c.onclick=()=>openModal(idx);
+  c.querySelector('.copy').onclick=function(e){ copyName(p.name,this,e); };
+  c.querySelector('.card-copy-ref').onclick=function(e){ copyRef(cardId,this,e); };
+  return c;
+}
+
+function render(){
+  board.innerHTML="";
+  if(sortMode==="tier"){
+    ORDER.forEach(t=>{
+      const items=PLUGINS.filter(p=>p.tier===t);
+      const sec=document.createElement('div');
+      sec.innerHTML=`<div class="tier-label"><span class="tier-dot" style="background:${TIER[t].color}"></span>${TIER[t].label}</div>`;
+      const grid=document.createElement('div'); grid.className="grid";
+      items.forEach(p=>grid.appendChild(cardHTML(p)));
+      sec.appendChild(grid); board.appendChild(sec);
+    });
+  } else {
+    let items=[...PLUGINS];
+    if(sortMode==="score")     items.sort((a,b)=>b.score-a.score||a.name.localeCompare(b.name));
+    if(sortMode==="scoreAsc")  items.sort((a,b)=>a.score-b.score||a.name.localeCompare(b.name));
+    if(sortMode==="az")        items.sort((a,b)=>a.name.localeCompare(b.name));
+    const grid=document.createElement('div'); grid.className="grid";
+    items.forEach(p=>grid.appendChild(cardHTML(p)));
+    board.appendChild(grid);
+  }
+  applyFilters();
+}
+
+const overlay=document.getElementById('overlay');
+function openModal(i){
+  const p=PLUGINS[i];
+  document.getElementById('m-ico').textContent=p.ico;
+  const nm=document.getElementById('m-name');
+  nm.innerHTML=`${p.name}<button class="copy" title="Copy name">${COPY_SVG}</button>`;
+  nm.querySelector('.copy').onclick=function(e){ copyName(p.name,this,e); };
+  const ms=document.getElementById('m-score');
+  ms.className="m-score "+scClass(p.score);
+  document.getElementById('m-score-n').textContent=p.score+"/10";
+  document.getElementById('m-what').innerHTML=p.what;
+  document.getElementById('m-value').innerHTML=p.value;
+  document.getElementById('m-without').innerHTML=p.without;
+  document.getElementById('m-ex').innerHTML=p.ex;
+  document.getElementById('m-vault').innerHTML=p.vault;
+  document.getElementById('m-longev').innerHTML=p.longev;
+  document.getElementById('m-setup').innerHTML=p.setup;
+  overlay.classList.add('show');
+}
+function closeModal(){ overlay.classList.remove('show'); }
+document.getElementById('close').onclick=closeModal;
+overlay.onclick=e=>{ if(e.target===overlay) closeModal(); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeModal(); });
+
+let toastT;
+function showToast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),1400);
+}
+
+const q=document.getElementById('q');
+q.addEventListener('input',applyFilters);
+document.getElementById('sort').addEventListener('change',e=>{ sortMode=e.target.value; render(); });
+document.querySelectorAll('.chip').forEach(ch=>{
+  ch.onclick=()=>{
+    document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+    ch.classList.add('active'); activeFilter=ch.dataset.f; applyFilters();
+  };
+});
+
+function applyFilters(){
+  const term=q.value.trim().toLowerCase(); let visible=0;
+  document.querySelectorAll('.card').forEach(c=>{
+    const okF=activeFilter==="all"||c.dataset.tier===activeFilter;
+    const okS=!term||c.dataset.search.includes(term);
+    const show=okF&&okS; c.classList.toggle('hide',!show); if(show) visible++;
+  });
+  document.querySelectorAll('#board > div').forEach(sec=>{
+    if(!sec.querySelector('.grid')) return;
+    const any=[...sec.querySelectorAll('.card')].some(c=>!c.classList.contains('hide'));
+    if(sec.querySelector('.tier-label')) sec.style.display=any?"":"none";
+  });
+  empty.classList.toggle('show',visible===0);
+}
+render();
+
+/* ===== Theme toggle (DS 0.3.0) ===== */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+document.getElementById('themeToggle').addEventListener('click', function() {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+});
+(function initTheme() {
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  setTheme(t);
+})();
+</script>
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>

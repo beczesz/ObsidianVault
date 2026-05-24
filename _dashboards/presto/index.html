@@ -1,0 +1,2166 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Presto — Marketing Observatory + Campaign Command Center.   Version: 0.5.1
+  =============================================================================
+  The Presto Dashboard is the representation layer for the BDOS Distribution
+  Cognition Layer (Presto v0.3). It functions as:
+    • Marketing Observatory — makes communication intelligence visible
+    • Campaign Command Center — active campaigns across all projects
+    • Reflection System — strategic learning and audience intelligence
+
+  Data sources (all via 8s poll + SSE push):
+    /00_Prompts/BDOS/agents/presto.md
+        — Presto version + identity
+    /00_Prompts/BDOS/CONSTITUTION_PHASE_2.md
+        — Phase 2 rollout state
+    /_dashboards/00_MARKETING_INDEX.md
+        — cross-project campaign aggregator (Presto index mode maintains)
+    /02_Areas/*/Marketing/MARKETING_ENGINE.md
+        — per-Area brand context (globbed via index)
+    /02_Areas/*/Marketing/Pipeline.md
+        — per-Area campaign kanban
+    /02_Areas/*/Marketing/Campaigns/<slug>/CAMPAIGN.md
+        — individual campaigns
+    /02_Areas/*/Marketing/Campaigns/<slug>/Results-*.md
+        — campaign analytics
+    /02_Areas/*/Marketing/reflections/*.md
+        — per-Area weekly/monthly reflections
+    /00_Prompts/BDOS/agents/presto/audience-learnings/active/*.md
+        — active audience learnings (8 types)
+    /00_Prompts/BDOS/agents/presto/audience-learnings/proposals/*.md
+        — pending proposals
+    /00_Prompts/BDOS/agents/presto/audience-learnings/retired/*.md
+        — retired learnings
+    /00_Prompts/BDOS/agents/presto/reflections/*.md
+        — cross-project strategic reflections
+    /00_Prompts/BDOS/agents/presto/discovery/*.md
+        — platform discovery proposals
+    /02_Areas/Personal Growth/Ideas/_inbox/sage-signals/*.md
+        — resonance signals Presto sent to Sage
+    (Phase 2.B pending) /00_Prompts/BDOS/agents/presto/logs/operational/*.md
+    (Phase 2.B pending) /00_Prompts/BDOS/agents/presto/logs/learning/*.md
+    (Phase 2.B pending) /00_Prompts/BDOS/agents/presto/logs/version/*.md
+
+  Layout (10 panels):
+    1. Phase 2 Status Banner      — rollout pills, Presto v0.3 context
+    2. Campaign Operations        — active campaigns, next 7 days, approvals
+    3. Multi-Project Navigation   — per-Area color identity, platform grouping
+    4. Analytics & Audience Intel — engagement, reach, atomic cross-links
+    5. Strategic Reflection       — weekly/monthly reviews, drift indicators
+    6. Content Lineage            — Sage→adapt→publish→analytics→signal thread
+    7. Operational Intelligence   — token/model/efficiency (Phase 2.C)
+    8. Audience Learnings         — 8-type meta-cognition panel
+    9. Discovery Panel            — platform proposals + 4-filter status
+   10. Sage-Signal Flow           — resonance feedback loop visualization
+
+  Read-only. Edit markdown in Obsidian — dashboard auto-syncs within 8s.
+  Served by _dashboards/_tools/dash-server.mjs (port 4321).
+
+  Phase 2.B NOT complete at time of writing. Log folders for presto do not
+  yet exist. Operational Intelligence panel shows Phase 2.C placeholder.
+  All panels render gracefully with empty-state and clear explanation.
+
+  Audit trail:
+        0.5.0 (2026-05-24) — tend: schema realigned to brief (agent_events → agent_logs).
+          log_level/input_tokens/output_tokens/total_tokens column names, error/critical levels.
+    0.4.0 (2026-05-24) — tend: Logs panel added (agent_observability.db sidecar).
+          Per-agent summary cards: token totals, avg duration, error count, recent
+          events, slowest op, highest-token op. Scoped to LOGS_AGENT='presto'.
+          DS 0.4.0.
+    0.3.0 (2026-05-24) — promote: event-driven live updates (DS 0.4.0).
+          live-updates.js imported. LiveUpdates.subscribe(loadAllData) replaces
+          primary startPolling + connectEventStream. Status indicator pill
+          mounted in masthead toprow. DS 0.4.0.
+    0.2.0 (2026-05-24) — tend: avatar in masthead (live from AGENT_PROFILES.md, emoji 🐰,
+          color #D17A5F). Capabilities panel added (Panel 11) — tools, MCPs, APIs, plugins,
+          slash commands, can_invoke, test_access_trace. 8s auto-refresh. DS 0.3.0.
+    0.1.0 (2026-05-24) — initial build. Third per-agent dashboard in BDOS
+          family. Marketing Observatory + Campaign Command Center + Reflection
+          System for BDOS Distribution Cognition Layer. 10 panels: phase banner,
+          campaign ops, multi-project nav, analytics+audience, strategic reflection,
+          content lineage (Sage→adapt→publish→analytics→signal), operational
+          intelligence (Phase 2.C placeholder), audience learnings (8 types),
+          discovery panel (4-filter), sage-signal flow. Schema-aware parsers:
+          CAMPAIGN.md frontmatter, Results-*.md, presto.sage-signal.v1,
+          presto.audience-learning.v1. Graceful empty-state on all panels.
+          DS 0.3.0 aligned (tokens, dark theme, theme-toggle, FOUC-init,
+          home-link absolute, sync indicator, card-copy-ref). SSE + 8s poll.
+    0.5.1 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
+
+  Conventions: see _dashboards/_design/DESIGN_SYSTEM.md (DS 0.3.0).
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presto — Marketing Observatory</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M8 24 L16 8 L24 24' fill='none' stroke='%23D97757' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M11 19 L21 19' stroke='%23D97757' stroke-width='1.4' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='8' r='2' fill='%23D97757'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Surfaces — cream paper */
+  --bg-page:   #faf9f5;
+  --bg-elev:   #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint:   #f5f4ef;
+
+  /* Ink scale (1 darkest → 5 lightest) */
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+
+  /* Lines */
+  --line:      #e5e4df;
+  --line-soft: #efede7;
+
+  /* Accent — terracotta */
+  --accent:      #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  /* Status */
+  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;  --gap-tint:  #fbeae6;
+  --idle:      #7a7a76;  --idle-tint: #efeeeb;
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+  --shadow-3: 0 12px 32px rgba(20,20,19,.10), 0 4px 12px rgba(20,20,19,.06);
+
+  /* Radius */
+  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
+
+  /* Motion */
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+  --t-slow: 320ms cubic-bezier(.16,.84,.32,1);
+
+  /* Presto-local area-identity tokens (not DS — local extension) */
+  --area-dh:      #2d6a4f;  --area-dh-tint:  #d8f3dc;
+  --area-cps:     #1d4e89;  --area-cps-tint: #dbeafe;
+  --area-exar:    #6b21a8;  --area-exar-tint:#ede9fe;
+  --area-nav:     #b45309;  --area-nav-tint: #fef3c7;
+  --area-ignis:   #c0392b;  --area-ignis-tint:#fbeae6;
+  --area-default: #6d6d6a;  --area-default-tint:#efeeeb;
+
+  /* Learning type color tokens */
+  --lt-narrative:    #1d4e89;  --lt-narrative-tint:    #dbeafe;
+  --lt-format:       #6b21a8;  --lt-format-tint:       #ede9fe;
+  --lt-tone:         #2d6a4f;  --lt-tone-tint:          #d8f3dc;
+  --lt-timing:       #b45309;  --lt-timing-tint:        #fef3c7;
+  --lt-platform:     #D97757;  --lt-platform-tint:      #fbeee6;
+  --lt-rejection:    #c0392b;  --lt-rejection-tint:     #fbeae6;
+  --lt-cross:        #0e7490;  --lt-cross-tint:         #cffafe;
+  --lt-external:     #6d6d6a;  --lt-external-tint:      #efeeeb;
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+  --ink-1: #f5f4ef;
+  --ink-2: #d6d4ce;
+  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;
+  --ink-5: #54524d;
+  --line:      #36342f;
+  --line-soft: #2c2a26;
+  --accent:      #e08a6a;
+  --accent-deep: #f0a085;
+  --accent-tint: #3a2a22;
+  --ok:        #5cc08a;  --ok-tint:   #1e3329;
+  --warn:      #d6a94a;  --warn-tint: #352c18;
+  --gap:       #e57c6e;  --gap-tint:  #3a221e;
+  --idle:      #9a9892;  --idle-tint: #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  --shadow-3: 0 12px 32px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.30);
+  --area-dh:      #4ade80;  --area-dh-tint:  #14532d;
+  --area-cps:     #60a5fa;  --area-cps-tint: #1e3a5f;
+  --area-exar:    #c084fc;  --area-exar-tint:#3b0764;
+  --area-nav:     #fbbf24;  --area-nav-tint: #451a03;
+  --area-ignis:   #e57c6e;  --area-ignis-tint:#3a221e;
+  --area-default: #9a9892;  --area-default-tint:#2a2925;
+  --lt-narrative:    #60a5fa;  --lt-narrative-tint:    #1e3a5f;
+  --lt-format:       #c084fc;  --lt-format-tint:       #3b0764;
+  --lt-tone:         #4ade80;  --lt-tone-tint:          #14532d;
+  --lt-timing:       #fbbf24;  --lt-timing-tint:        #451a03;
+  --lt-platform:     #e08a6a;  --lt-platform-tint:      #3a2a22;
+  --lt-rejection:    #e57c6e;  --lt-rejection-tint:     #3a221e;
+  --lt-cross:        #22d3ee;  --lt-cross-tint:         #164e63;
+  --lt-external:     #9a9892;  --lt-external-tint:      #2a2925;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:   #1a1916; --bg-elev:   #232220; --bg-sunken: #2c2a26; --bg-tint:   #262420;
+    --ink-1: #f5f4ef; --ink-2: #d6d4ce; --ink-3: #a8a6a0; --ink-4: #7c7a74; --ink-5: #54524d;
+    --line: #36342f; --line-soft: #2c2a26;
+    --accent: #e08a6a; --accent-deep: #f0a085; --accent-tint: #3a2a22;
+    --ok: #5cc08a; --ok-tint: #1e3329; --warn: #d6a94a; --warn-tint: #352c18;
+    --gap: #e57c6e; --gap-tint: #3a221e; --idle: #9a9892; --idle-tint: #2a2925;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01','cv11','tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-s); }
+button { font: inherit; background: transparent; border: 0; color: inherit; cursor: pointer; }
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: clamp(24px,4vw,48px) clamp(20px,4vw,40px) 96px;
+}
+
+/* ===== Theme toggle (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+
+/* ===== Home link ===== */
+.home-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  text-decoration: none; padding: 5px 10px;
+  border: 1px solid var(--line); border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast);
+  white-space: nowrap;
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); }
+
+/* ===== Masthead ===== */
+.masthead { margin-bottom: 32px; }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 20px; flex-wrap: wrap;
+}
+.masthead-toprow-left { display: flex; align-items: center; gap: 12px; }
+
+.eyebrow {
+  font-size: 11px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-4); margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; flex-shrink: 0; }
+
+.masthead h1 {
+  font-size: clamp(28px, 3.2vw, 40px); font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.08; color: var(--ink-1);
+  margin-bottom: 10px;
+}
+.masthead h1 .accent { color: var(--accent); }
+.submeta {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  font-size: 13px; color: var(--ink-3);
+}
+.version-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+  background: var(--bg-sunken); color: var(--ink-4);
+  border: 1px solid var(--line); border-radius: var(--radius-s); padding: 2px 6px;
+}
+
+/* ===== Sync indicator ===== */
+.sync-status {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--ink-4); white-space: nowrap; cursor: pointer;
+}
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; background: var(--idle); transition: background var(--t-fast); }
+.sync-dot.ok { background: var(--ok); }
+.sync-dot.error { background: var(--gap); }
+.sync-dot.fetching { background: var(--warn); }
+.sync-bar-wrap { width: 44px; height: 3px; background: var(--line); border-radius: 999px; overflow: hidden; }
+.sync-bar {
+  position: relative; height: 100%; border-radius: 999px; background: var(--ok);
+  animation: sync-countdown 8s linear forwards;
+}
+@keyframes sync-countdown { from { width: 100%; } to { width: 0%; } }
+.sync-shuttle { animation: shuttle 1.2s cubic-bezier(.4,0,.6,1) infinite; width: 40%; background: var(--warn); }
+@keyframes shuttle { 0% { left: 0; } 50% { left: 60%; } 100% { left: 0; } }
+
+/* ===== Section titles ===== */
+.section-title {
+  font-size: 12px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-4); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.count-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500;
+  color: var(--ink-4); background: var(--bg-sunken);
+  border: 1px solid var(--line); border-radius: var(--radius-s); padding: 1px 5px;
+}
+
+/* ===== Phase 2 Banner ===== */
+.phase-banner {
+  background: linear-gradient(135deg, var(--accent-tint) 0%, var(--bg-tint) 100%);
+  border: 1px solid rgba(217,119,87,.25); border-radius: var(--radius-xl);
+  padding: 22px 26px; margin-bottom: 36px; position: relative; overflow: hidden;
+}
+:root[data-theme="dark"] .phase-banner {
+  background: linear-gradient(135deg, var(--accent-tint) 0%, var(--bg-sunken) 100%);
+}
+.phase-banner::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(217,119,87,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.phase-banner-inner { position: relative; }
+.phase-banner-header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 16px; margin-bottom: 12px; flex-wrap: wrap;
+}
+.phase-banner-title {
+  font-size: 13px; font-weight: 700; color: var(--accent-deep);
+  text-transform: uppercase; letter-spacing: .08em;
+}
+.phase-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+.phase-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+  padding: 3px 10px; border-radius: 999px; border: 1px solid transparent;
+}
+.phase-pill.done { background: var(--ok-tint); color: var(--ok); border-color: rgba(31,122,77,.25); }
+.phase-pill.pending { background: var(--warn-tint); color: var(--warn); border-color: rgba(176,122,24,.25); }
+.phase-pill.future { background: var(--bg-tint); color: var(--ink-4); border-color: var(--line); }
+.phase-banner-desc { font-size: 13px; color: var(--ink-2); max-width: 80ch; line-height: 1.6; }
+
+/* ===== Stat strip ===== */
+.stat-strip {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px; margin-bottom: 28px;
+}
+.stat-card {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 16px 18px;
+  box-shadow: var(--shadow-1); display: flex; flex-direction: column; gap: 4px;
+}
+.stat-card.accent-border { border-left: 3px solid var(--accent); }
+.stat-card.ok-border { border-left: 3px solid var(--ok); }
+.stat-card.warn-border { border-left: 3px solid var(--warn); }
+.stat-card.idle-border { border-left: 3px solid var(--idle); }
+.stat-label {
+  font-size: 10px; font-weight: 500; letter-spacing: .1em;
+  text-transform: uppercase; color: var(--ink-4);
+}
+.stat-value {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 22px; font-weight: 600; color: var(--ink-1); line-height: 1.2;
+}
+.stat-sub { font-size: 11px; color: var(--ink-3); }
+
+/* ===== Panel layout ===== */
+.panel {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 20px 22px;
+  box-shadow: var(--shadow-1);
+}
+.panel-full { margin-bottom: 24px; }
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+@media (max-width: 1000px) { .three-col { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 700px) { .two-col, .three-col { grid-template-columns: 1fr; } }
+
+/* ===== Empty state ===== */
+.empty-state {
+  text-align: center; padding: 32px 20px;
+  color: var(--ink-4); font-size: 13px; line-height: 1.7;
+}
+.empty-state .empty-icon { font-size: 28px; margin-bottom: 10px; opacity: 0.5; }
+.empty-state strong { color: var(--ink-3); display: block; margin-bottom: 4px; }
+.pending-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase;
+  background: var(--warn-tint); color: var(--warn);
+  border: 1px solid rgba(176,122,24,.2); border-radius: 999px;
+  padding: 2px 8px; margin-top: 8px;
+}
+
+/* ===== Campaign card ===== */
+.campaign-list { display: flex; flex-direction: column; gap: 10px; }
+.campaign-card {
+  background: var(--bg-tint); border: 1px solid var(--line);
+  border-radius: var(--radius-m); padding: 12px 14px;
+  position: relative; transition: border-color var(--t-fast);
+}
+.campaign-card:hover { border-color: var(--accent); }
+.campaign-card-top {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
+  margin-bottom: 6px;
+}
+.campaign-title {
+  font-size: 13px; font-weight: 600; color: var(--ink-1); line-height: 1.3;
+}
+.area-badge {
+  font-size: 10px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+}
+.area-dh    { background: var(--area-dh-tint);    color: var(--area-dh); }
+.area-cps   { background: var(--area-cps-tint);   color: var(--area-cps); }
+.area-exar  { background: var(--area-exar-tint);  color: var(--area-exar); }
+.area-nav   { background: var(--area-nav-tint);   color: var(--area-nav); }
+.area-ignis { background: var(--area-ignis-tint); color: var(--area-ignis); }
+.area-def   { background: var(--area-default-tint); color: var(--area-default); }
+
+.campaign-meta { font-size: 11px; color: var(--ink-3); display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.stage-chip {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+  padding: 1px 7px; border-radius: 999px;
+}
+.stage-brief    { background: var(--bg-sunken); color: var(--ink-4); }
+.stage-draft    { background: var(--warn-tint);  color: var(--warn); }
+.stage-review   { background: #dbeafe; color: #1d4e89; }
+:root[data-theme="dark"] .stage-review { background: #1e3a5f; color: #60a5fa; }
+.stage-scheduled { background: var(--accent-tint); color: var(--accent-deep); }
+.stage-published { background: var(--ok-tint); color: var(--ok); }
+.stage-measured  { background: var(--idle-tint); color: var(--idle); }
+.stage-archived  { background: var(--bg-sunken); color: var(--ink-5); }
+
+.next-action-row { font-size: 11px; color: var(--ink-3); margin-top: 5px; }
+.next-action-label { font-weight: 600; color: var(--ink-2); }
+
+/* ===== Schedule timeline ===== */
+.timeline { display: flex; flex-direction: column; gap: 8px; }
+.timeline-day {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 8px 10px; border-radius: var(--radius-m);
+  background: var(--bg-tint); border-left: 3px solid var(--line);
+}
+.timeline-day.today { border-left-color: var(--accent); background: var(--accent-tint); }
+.timeline-date { font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500; color: var(--ink-4); min-width: 50px; padding-top: 1px; }
+.timeline-items { flex: 1; }
+.timeline-item { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+
+/* ===== Platform chips ===== */
+.platform-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 6px; }
+.platform-chip {
+  font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 999px;
+  background: var(--bg-sunken); color: var(--ink-3); border: 1px solid var(--line);
+}
+
+/* ===== Analytics table ===== */
+.analytics-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.analytics-table th {
+  text-align: left; font-size: 10px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: .07em; color: var(--ink-4); padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.analytics-table td {
+  padding: 8px 8px; border-bottom: 1px solid var(--line-soft);
+  color: var(--ink-2); vertical-align: top;
+}
+.analytics-table tr:last-child td { border-bottom: 0; }
+.analytics-table .mono { font-size: 12px; color: var(--ink-1); }
+.atomic-link {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  color: var(--accent-deep); background: var(--accent-tint);
+  border-radius: var(--radius-s); padding: 1px 5px;
+  white-space: nowrap;
+}
+
+/* ===== Content Lineage ===== */
+.lineage-thread { display: flex; flex-direction: column; gap: 0; }
+.lineage-entry {
+  border: 1px solid var(--line); border-radius: var(--radius-l);
+  background: var(--bg-elev); margin-bottom: 16px;
+  overflow: hidden; position: relative;
+}
+.lineage-header {
+  padding: 12px 16px; border-bottom: 1px solid var(--line-soft);
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.lineage-title { font-size: 13px; font-weight: 600; color: var(--ink-1); flex: 1; }
+.lineage-body { padding: 12px 16px; }
+.lineage-row {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 7px 0; border-bottom: 1px dashed var(--line-soft);
+}
+.lineage-row:last-child { border-bottom: 0; }
+.lineage-step {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--ink-4); min-width: 90px; padding-top: 1px;
+  flex-shrink: 0;
+}
+.lineage-content { font-size: 12px; color: var(--ink-2); line-height: 1.5; flex: 1; }
+.lineage-arrow {
+  text-align: center; padding: 0 0 12px; color: var(--line);
+  font-size: 18px; line-height: 1; margin-top: -8px;
+}
+
+/* ===== Sage signals ===== */
+.signal-list { display: flex; flex-direction: column; gap: 8px; }
+.signal-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 12px; border-radius: var(--radius-m);
+  background: var(--bg-tint); border: 1px solid var(--line);
+  position: relative;
+}
+.signal-type-chip {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+  padding: 2px 8px; border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+}
+.sig-resonance { background: var(--ok-tint); color: var(--ok); }
+.sig-gap { background: var(--warn-tint); color: var(--warn); }
+.signal-body { flex: 1; }
+.signal-atomic { font-size: 11px; color: var(--accent-deep); font-family: 'JetBrains Mono', monospace; margin-bottom: 3px; }
+.signal-desc { font-size: 12px; color: var(--ink-2); line-height: 1.5; }
+.signal-status {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+  padding: 2px 8px; border-radius: 999px; white-space: nowrap; flex-shrink: 0; align-self: flex-start;
+}
+.sig-open { background: var(--idle-tint); color: var(--idle); }
+.sig-acknowledged { background: var(--warn-tint); color: var(--warn); }
+.sig-acted { background: var(--ok-tint); color: var(--ok); }
+.sig-dismissed { background: var(--bg-sunken); color: var(--ink-5); }
+
+/* ===== Learning type chips ===== */
+.learning-chip {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em;
+  padding: 2px 8px; border-radius: 999px; border: 1px solid transparent; white-space: nowrap;
+}
+.lt-narrative-resonance { background: var(--lt-narrative-tint); color: var(--lt-narrative); }
+.lt-format-fit          { background: var(--lt-format-tint);    color: var(--lt-format); }
+.lt-tone-success        { background: var(--lt-tone-tint);      color: var(--lt-tone); }
+.lt-timing-pattern      { background: var(--lt-timing-tint);    color: var(--lt-timing); }
+.lt-platform-amplification { background: var(--lt-platform-tint); color: var(--lt-platform); }
+.lt-audience-rejection  { background: var(--lt-rejection-tint); color: var(--lt-rejection); }
+.lt-cross-project-pattern { background: var(--lt-cross-tint);  color: var(--lt-cross); }
+.lt-external-context    { background: var(--lt-external-tint);  color: var(--lt-external); }
+
+.learning-card {
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--bg-tint); padding: 12px 14px; margin-bottom: 10px;
+  position: relative;
+}
+.learning-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+.learning-title { font-size: 13px; font-weight: 600; color: var(--ink-1); line-height: 1.3; flex: 1; }
+.learning-desc { font-size: 12px; color: var(--ink-3); line-height: 1.5; }
+.learning-meta { font-size: 11px; color: var(--ink-4); margin-top: 6px; }
+
+/* ===== Discovery cards ===== */
+.discovery-card {
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--bg-tint); padding: 14px 16px; margin-bottom: 12px;
+  position: relative;
+}
+.discovery-title { font-size: 13px; font-weight: 600; color: var(--ink-1); margin-bottom: 8px; }
+.filter-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.filter-item {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 11px; color: var(--ink-3); padding: 4px 8px;
+  background: var(--bg-elev); border-radius: var(--radius-s); border: 1px solid var(--line);
+}
+.filter-icon { font-size: 13px; flex-shrink: 0; }
+.filter-ok { color: var(--ok); }
+.filter-gap { color: var(--gap); }
+.filter-pending { color: var(--warn); }
+
+/* ===== Reflection card ===== */
+.reflection-card {
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--bg-tint); padding: 14px 16px; margin-bottom: 12px;
+}
+.reflection-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.reflection-title { font-size: 13px; font-weight: 600; color: var(--ink-1); }
+.reflection-period { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-4); }
+.reflection-section { margin-bottom: 8px; }
+.reflection-section-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em;
+  color: var(--ink-4); margin-bottom: 4px;
+}
+.reflection-body { font-size: 12px; color: var(--ink-2); line-height: 1.6; }
+
+/* ===== Card copy-ref (DS 0.2.0) ===== */
+.campaign-card, .learning-card, .discovery-card, .signal-row, .lineage-entry { position: relative; }
+.card-copy-ref {
+  position: absolute; top: 8px; right: 8px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.campaign-card:hover .card-copy-ref,
+.learning-card:hover .card-copy-ref,
+.discovery-card:hover .card-copy-ref,
+.signal-row:hover .card-copy-ref,
+.lineage-entry:hover .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ===== Approval queue ===== */
+.approval-queue { display: flex; flex-direction: column; gap: 8px; }
+.approval-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 8px 12px; border-radius: var(--radius-m);
+  background: var(--warn-tint); border: 1px solid rgba(176,122,24,.2);
+}
+.approval-label { flex: 1; font-size: 12px; color: var(--ink-2); }
+.approval-area { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--warn); }
+
+/* ===== Operational Intel placeholder ===== */
+.token-placeholder {
+  background: var(--bg-sunken); border: 1px dashed var(--line);
+  border-radius: var(--radius-m); padding: 18px 20px; text-align: center;
+}
+.token-placeholder-label {
+  font-size: 11px; font-weight: 600; color: var(--ink-4); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+}
+.token-placeholder-value {
+  font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 600; color: var(--ink-5);
+}
+
+/* ===== Area nav strip ===== */
+.area-nav-strip { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+.area-nav-pill {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 5px 12px; border-radius: 999px; border: 1px solid;
+  font-size: 11px; font-weight: 600; cursor: pointer;
+  transition: opacity var(--t-fast);
+}
+.area-nav-pill .area-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* ===== Drift indicator ===== */
+.drift-indicator {
+  display: flex; align-items: center; gap: 8px;
+  padding: 8px 12px; border-radius: var(--radius-m);
+  background: var(--warn-tint); border: 1px solid rgba(176,122,24,.2);
+  font-size: 12px; color: var(--ink-2); margin-bottom: 10px;
+}
+.drift-label { font-weight: 600; color: var(--warn); font-size: 11px; text-transform: uppercase; letter-spacing: .06em; min-width: 60px; }
+
+/* ===== Misc utils ===== */
+.text-muted { color: var(--ink-4); font-size: 12px; }
+.text-ok    { color: var(--ok); }
+.text-warn  { color: var(--warn); }
+.text-gap   { color: var(--gap); }
+.sep { border: 0; border-top: 1px solid var(--line-soft); margin: 16px 0; }
+/* ===== Avatar + Capabilities panel (0.2.0) ===== */
+.agent-avatar { display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; border:1.5px solid; font-size:26px; line-height:1; flex-shrink:0; transition:background .3s,border-color .3s; }
+.cap-panel { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:8px; }
+.cap-section { background:var(--bg-tint); border:1px solid var(--line); border-radius:8px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+.cap-section-label { font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); margin-bottom:2px; }
+.cap-chip { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:10.5px; padding:2px 7px; border-radius:4px; margin:2px 2px 2px 0; border:1px solid transparent; }
+.cap-chip.tool   { background:rgba(99,148,117,.13); border-color:rgba(99,148,117,.3); color:var(--ink-2); }
+.cap-chip.mcp    { background:rgba(91,124,153,.13); border-color:rgba(91,124,153,.3); color:var(--ink-2); }
+.cap-chip.api    { background:rgba(209,122,95,.13);  border-color:rgba(209,122,95,.3); color:var(--ink-2); }
+.cap-chip.plugin { background:rgba(164,117,81,.13);  border-color:rgba(164,117,81,.3); color:var(--ink-2); }
+.cap-chip.cmd    { background:rgba(107,91,149,.13);  border-color:rgba(107,91,149,.3); color:var(--ink-2); user-select:none; }
+.trace-row { display:flex; gap:8px; align-items:baseline; font-size:11px; }
+.trace-key { font-family:'JetBrains Mono',monospace; color:var(--ink-3); min-width:140px; flex-shrink:0; font-size:10.5px; }
+.trace-val { color:var(--ink-2); }
+.cap-panel-badge { font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--ink-4); background:var(--bg-tint); border:1px solid var(--line); padding:2px 8px; border-radius:999px; }
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+<div class="app">
+
+  <!-- ===== MASTHEAD ===== -->
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <div class="masthead-toprow-left">
+        <a class="home-link" href="/_dashboards/index.html">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Ideas Vault
+        </a>
+        <div class="sync-status" id="syncStatus" title="Click to refresh now" onclick="pollNow()">
+          <div class="sync-dot" id="syncDot"></div>
+          <span id="syncLabel" class="mono">loading…</span>
+          <div class="sync-bar-wrap"><div class="sync-bar" id="syncBar"></div></div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="agent-avatar" id="agentAvatar" title="Presto" style="background:rgba(209,122,95,.12);border-color:rgba(209,122,95,.3);">🐰</span>
+        <span id="liveStatusMount"></span>
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
+          <span class="theme-icon">&#9790;</span>
+          <span class="theme-label">Dark</span>
+        </button>
+      </div>
+    </div>
+    <div class="eyebrow"><span class="dot"></span> BDOS · Distribution Cognition Layer</div>
+    <h1>Presto — <span class="accent">Marketing Observatory</span></h1>
+    <div class="submeta">
+      <span class="version-pill mono" id="versionPill">v0.4.0</span>
+      <span>Campaign Command Center + Reflection System</span>
+    </div>
+  </header>
+
+  <!-- ===== PANEL 1: PHASE 2 STATUS BANNER ===== -->
+  <div class="phase-banner" id="phaseBanner">
+    <div class="phase-banner-inner">
+      <div class="phase-banner-header">
+        <div class="phase-banner-title">BDOS Phase 2 — Reflective Nervous System</div>
+        <div class="phase-pills">
+          <span class="phase-pill done">2.A Constitution ✓</span>
+          <span class="phase-pill pending">2.B Log Rollout pending</span>
+          <span class="phase-pill future">2.C Token Intel future</span>
+        </div>
+      </div>
+      <div class="phase-banner-desc" id="phaseBannerDesc">
+        Presto v0.3 — Distribution Cognition Layer. Transforms Sage atomic thoughts into platform-native audience resonance. 12 modes: 7 operational + 5 cognition (adapt, reflect, audience, discover, learn). Sage-integration via permitted-flow: reads Sage outputs, sends resonance signals back via Ideas/_inbox/sage-signals/. Phase 2.B pending — operational logs not yet active; all log-driven panels show graceful empty-state.
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 2: CAMPAIGN OPERATIONS ===== -->
+  <div class="panel panel-full" id="campaignOpsPanel">
+    <div class="section-title">
+      Campaign Operations — Command Center
+      <span class="count-badge" id="campaignCount">0</span>
+    </div>
+
+    <div class="two-col" style="margin-bottom:0">
+
+      <!-- Active campaigns -->
+      <div>
+        <div class="section-title" style="font-size:11px;margin-bottom:10px;">Active Campaigns</div>
+        <div class="campaign-list" id="activeCampaignsList">
+          <div class="empty-state">
+            <div class="empty-icon">&#128196;</div>
+            <strong>No active campaigns detected</strong>
+            Run <span class="mono">00_MARKETING_INDEX.md</span> via Presto <code>index</code> mode to populate.<br>
+            <span class="pending-badge">Presto index mode needed</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: schedule + approvals -->
+      <div>
+        <div class="section-title" style="font-size:11px;margin-bottom:10px;">Next 7 Days</div>
+        <div class="timeline" id="schedule7Days">
+          <div class="empty-state" style="padding:16px 0;text-align:left;">
+            <span class="text-muted">No scheduled publications found in campaigns.</span>
+          </div>
+        </div>
+
+        <hr class="sep">
+
+        <div class="section-title" style="font-size:11px;margin-bottom:10px;">
+          Approval Queue
+          <span class="count-badge" id="approvalCount">0</span>
+        </div>
+        <div class="approval-queue" id="approvalQueue">
+          <div class="text-muted" style="font-size:12px;">No drafts waiting for approval.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ===== PANEL 3: MULTI-PROJECT NAVIGATION ===== -->
+  <div class="panel panel-full" id="multiProjectPanel">
+    <div class="section-title">Multi-Project Navigation</div>
+    <div class="area-nav-strip" id="areaNarNav">
+      <div class="area-nav-pill" style="background:var(--area-dh-tint);color:var(--area-dh);border-color:var(--area-dh)">
+        <div class="area-dot" style="background:var(--area-dh)"></div> Deák Húsüzlet
+      </div>
+      <div class="area-nav-pill" style="background:var(--area-cps-tint);color:var(--area-cps);border-color:var(--area-cps)">
+        <div class="area-dot" style="background:var(--area-cps)"></div> Sonrisa CPS
+      </div>
+      <div class="area-nav-pill" style="background:var(--area-exar-tint);color:var(--area-exar);border-color:var(--area-exar)">
+        <div class="area-dot" style="background:var(--area-exar)"></div> ExarLabs
+      </div>
+      <div class="area-nav-pill" style="background:var(--area-nav-tint);color:var(--area-nav);border-color:var(--area-nav)">
+        <div class="area-dot" style="background:var(--area-nav)"></div> Navigátor
+      </div>
+    </div>
+
+    <div id="projectCampaignStructure">
+      <div class="empty-state" style="padding:20px 0;text-align:left;">
+        <span class="text-muted">Campaign structure loads when <span class="mono">00_MARKETING_INDEX.md</span> exists.
+        Run Presto <code>index</code> mode to generate cross-project aggregator.</span>
+      </div>
+    </div>
+
+    <hr class="sep">
+
+    <div class="section-title" style="font-size:11px;margin-bottom:8px;">Platform Distribution</div>
+    <div class="platform-chips" id="globalPlatformChips">
+      <span class="platform-chip">LinkedIn</span>
+      <span class="platform-chip">X / Twitter</span>
+      <span class="platform-chip">Instagram</span>
+      <span class="platform-chip">YouTube</span>
+      <span class="platform-chip">Email</span>
+      <span class="platform-chip">Blog</span>
+    </div>
+  </div>
+
+  <!-- ===== PANELS 4 + 5: ANALYTICS + STRATEGIC REFLECTION ===== -->
+  <div class="two-col">
+
+    <!-- Panel 4: Analytics & Audience Intelligence -->
+    <div class="panel" id="analyticsPanel">
+      <div class="section-title">
+        Analytics &amp; Audience Intelligence
+        <span class="count-badge" id="analyticsResultCount">0</span>
+      </div>
+      <div id="analyticsContent">
+        <div class="empty-state">
+          <div class="empty-icon">&#128202;</div>
+          <strong>No Results files found</strong>
+          Analytics populate from <span class="mono">Results-*.md</span> files in campaign folders.<br>
+          Run Presto <code>measure</code> mode after campaigns publish.
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="section-title" style="font-size:11px;margin-bottom:10px;">Top Resonating Narratives</div>
+      <div id="resonanceTable">
+        <div class="empty-state" style="padding:12px 0;text-align:left;">
+          <span class="text-muted">Narrative resonance analysis requires Results-*.md data with atomic_links. Run Presto <code>audience</code> mode.</span>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="section-title" style="font-size:11px;margin-bottom:8px;">Platform Effectiveness</div>
+      <div id="platformEffectiveness">
+        <div class="empty-state" style="padding:12px 0;text-align:left;">
+          <span class="text-muted">Platform amplification data accumulates from Results-*.md across campaigns.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 5: Strategic Reflection -->
+    <div class="panel" id="reflectionPanel">
+      <div class="section-title">
+        Strategic Reflection
+        <span class="count-badge" id="reflectionCount">0</span>
+      </div>
+      <div id="reflectionContent">
+        <div class="empty-state">
+          <div class="empty-icon">&#129504;</div>
+          <strong>No reflections yet</strong>
+          Weekly reflections appear from <span class="mono">agents/presto/reflections/YYYY-Www.md</span><br>
+          and per-Area <span class="mono">Marketing/reflections/*.md</span>.<br>
+          Run Presto <code>reflect</code> mode (weekly or monthly).
+          <br><span class="pending-badge">Awaiting first reflect run</span>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="section-title" style="font-size:11px;margin-bottom:8px;">Audience Drift Indicators</div>
+      <div id="driftIndicators">
+        <div class="text-muted" style="font-size:12px;padding:8px 0;">
+          Drift signals only shown when stable patterns detected across 3+ data points. No noise shown here.
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== PANEL 6: CONTENT LINEAGE ===== -->
+  <div class="panel panel-full" id="lineagePanel">
+    <div class="section-title">
+      Content Lineage — Cognition to Distribution Thread
+      <span class="count-badge" id="lineageCount">0</span>
+    </div>
+    <div style="font-size:12px;color:var(--ink-3);margin-bottom:14px;line-height:1.6;">
+      Full lifecycle: <strong>Sage insight → atomic thought → Presto adapt → platform content → publication → analytics → audience-learning → signal back to Sage.</strong>
+      Every metric ties back to a Sage atomic — the brand-narrative coherence anchor.
+    </div>
+
+    <div class="lineage-thread" id="lineageThread">
+      <div class="empty-state">
+        <div class="empty-icon">&#9881;</div>
+        <strong>No content lineage chains yet</strong>
+        Lineage threads are built when a campaign has an <span class="mono">atomic_source</span> link
+        in its CAMPAIGN.md frontmatter AND at least one Results-*.md file.<br>
+        Run Presto <code>adapt</code> mode starting from a Sage atomic to create the first thread.
+        <br><span class="pending-badge">Awaiting first adapt run</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANELS 7 + 8: OPERATIONAL INTELLIGENCE + AUDIENCE LEARNINGS ===== -->
+  <div class="two-col">
+
+    <!-- Panel 7: Operational Intelligence -->
+    <div class="panel" id="operationalPanel">
+      <div class="section-title">Operational Intelligence</div>
+
+      <div class="stat-strip" style="grid-template-columns:1fr 1fr;margin-bottom:16px;">
+        <div class="stat-card idle-border">
+          <div class="stat-label">Token Usage</div>
+          <div class="stat-value mono">—</div>
+          <div class="stat-sub">Phase 2.C pending</div>
+        </div>
+        <div class="stat-card idle-border">
+          <div class="stat-label">Est. Cost</div>
+          <div class="stat-value mono">—</div>
+          <div class="stat-sub">Phase 2.C pending</div>
+        </div>
+      </div>
+
+      <div class="token-placeholder" style="margin-bottom:12px;">
+        <div class="token-placeholder-label">Token Intelligence</div>
+        <div class="token-placeholder-value">Phase 2.C</div>
+        <div class="text-muted" style="margin-top:6px;font-size:11px;">Token capture enables after Phase 2.B log rollout completes.</div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="section-title" style="font-size:11px;margin-bottom:10px;">Campaign Efficiency</div>
+      <div id="efficiencyMetrics">
+        <div class="stat-strip" style="grid-template-columns:1fr 1fr;margin-bottom:0">
+          <div class="stat-card">
+            <div class="stat-label">Campaigns</div>
+            <div class="stat-value mono" id="statTotalCampaigns">0</div>
+            <div class="stat-sub">total tracked</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Published</div>
+            <div class="stat-value mono" id="statPublished">0</div>
+            <div class="stat-sub">this cycle</div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="section-title" style="font-size:11px;margin-bottom:8px;">Thinking Engine Invocations</div>
+      <div id="thinkingEngineMetrics">
+        <div class="text-muted" style="font-size:12px;">
+          Thinking Engine invocations (discover + reflect modes only) logged in operational log.<br>
+          <span class="pending-badge">Phase 2.B pending</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 8: Audience Learnings -->
+    <div class="panel" id="learningsPanel">
+      <div class="section-title">
+        Audience Learnings — Meta-Cognition
+        <span class="count-badge" id="learningActiveCount">0</span>
+      </div>
+
+      <div class="stat-strip" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px;">
+        <div class="stat-card ok-border">
+          <div class="stat-label">Active</div>
+          <div class="stat-value mono" id="statLearningsActive">0</div>
+          <div class="stat-sub">/ 15 cap</div>
+        </div>
+        <div class="stat-card warn-border">
+          <div class="stat-label">Proposals</div>
+          <div class="stat-value mono" id="statLearningsProposed">0</div>
+          <div class="stat-sub">awaiting review</div>
+        </div>
+        <div class="stat-card idle-border">
+          <div class="stat-label">Retired</div>
+          <div class="stat-value mono" id="statLearningsRetired">0</div>
+          <div class="stat-sub">lifecycle done</div>
+        </div>
+      </div>
+
+      <div class="section-title" style="font-size:11px;margin-bottom:8px;">Learning Types</div>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;" id="learningTypeChips">
+        <span class="learning-chip lt-narrative-resonance">narrative-resonance</span>
+        <span class="learning-chip lt-format-fit">format-fit</span>
+        <span class="learning-chip lt-tone-success">tone-success</span>
+        <span class="learning-chip lt-timing-pattern">timing-pattern</span>
+        <span class="learning-chip lt-platform-amplification">platform-amplification</span>
+        <span class="learning-chip lt-audience-rejection">audience-rejection</span>
+        <span class="learning-chip lt-cross-project-pattern">cross-project</span>
+        <span class="learning-chip lt-external-context">external-context</span>
+      </div>
+
+      <div class="section-title" style="font-size:11px;margin-bottom:10px;">Recent Active Learnings</div>
+      <div id="activeLearningsList">
+        <div class="empty-state" style="padding:16px 0;text-align:left;">
+          <strong>No active learnings yet</strong>
+          <span class="text-muted">Learnings accumulate in <span class="mono">agents/presto/audience-learnings/active/*.md</span>.</span><br>
+          <span class="text-muted">Use Presto <code>learn</code> mode (<code>/pres-learning-accept</code>) to promote proposals.</span>
+          <br><span class="pending-badge">Awaiting first learn cycle</span>
+        </div>
+      </div>
+
+      <hr class="sep">
+
+      <div class="section-title" style="font-size:11px;margin-bottom:8px;">
+        Pending Proposals
+        <span class="count-badge" id="proposalCount">0</span>
+      </div>
+      <div id="proposalsList">
+        <div class="text-muted" style="font-size:12px;">No proposals awaiting review.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== PANEL 9: DISCOVERY PANEL ===== -->
+  <div class="panel panel-full" id="discoveryPanel">
+    <div class="section-title">
+      Discovery Panel — Platform Exploration
+      <span class="count-badge" id="discoveryCount">0</span>
+    </div>
+    <div style="font-size:12px;color:var(--ink-3);margin-bottom:14px;line-height:1.6;">
+      Open platform-discovery proposals. Each must pass the 4-filter before becoming an active experiment:
+      <strong>audience overlap</strong> · <strong>strategic relevance</strong> · <strong>operational feasibility</strong> · <strong>long-term value</strong>.
+    </div>
+    <div id="discoveryList">
+      <div class="empty-state">
+        <div class="empty-icon">&#128269;</div>
+        <strong>No discovery proposals yet</strong>
+        Discovery proposals appear from <span class="mono">agents/presto/discovery/*.md</span>.<br>
+        Run Presto <code>discover</code> mode to generate platform scanning proposals.
+        <br><span class="pending-badge">Awaiting first discover run</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PANEL 10: SAGE-SIGNAL FLOW ===== -->
+  <div class="panel panel-full" id="sageSignalPanel">
+    <div class="section-title">
+      Sage-Signal Flow — Resonance Feedback Loop
+      <span class="count-badge" id="signalCount">0</span>
+    </div>
+    <div style="font-size:12px;color:var(--ink-3);margin-bottom:14px;line-height:1.6;">
+      Signals Presto sent to Sage (<span class="mono">Ideas/_inbox/sage-signals/</span>). Schema: <span class="mono">presto.sage-signal.v1</span>.
+      Types: <strong>atomic-resonance</strong> (a concept 10x-performed — Sage may elevate to crystallized) ·
+      <strong>audience-gap</strong> (audience asks for X but no atomic exists — new atomic request).
+      Sage curates these signals and updates status on acknowledgment.
+    </div>
+    <div class="signal-list" id="signalFlowList">
+      <div class="empty-state">
+        <div class="empty-icon">&#128257;</div>
+        <strong>No signals sent to Sage yet</strong>
+        Resonance signals appear here when Presto detects strong audience response
+        to a specific Sage atomic and writes to <span class="mono">Ideas/_inbox/sage-signals/</span>.<br>
+        Audience-gap signals appear when campaigns surface topics not yet in Sage's atomic library.
+        <br><span class="pending-badge">Loop not yet active</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Panel 11: Capabilities (added 0.2.0 — live from AGENT_PROFILES.md) ===== -->
+  <div class="panel full" id="capPanel">
+    <div class="panel-head serif">Capabilities <span class="badge">live from AGENT_PROFILES.md</span> <span class="cap-panel-badge">auto-refresh 8s</span></div>
+    <div class="cap-panel" id="capContent">
+      <div style="grid-column:1/-1;text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Loading capability profile…</div>
+    </div>
+  </div>
+
+  <!-- ===== Panel 12: Logs (added 0.4.0 — agent_observability sidecar) ===== -->
+  <div class="panel full" id="logsPanel">
+    <div class="panel-head serif">Logs <span class="badge" id="logsPanelBadge">loading…</span></div>
+    <div id="logsContent"><div style="text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Loading sidecar…</div></div>
+  </div>
+
+</div><!-- /.app -->
+
+<script>
+/* ===================================================================
+   PRESTO DASHBOARD — JavaScript
+   v0.1.0 — 2026-05-24
+   All data live-fetched. No hardcoded operational state.
+   =================================================================== */
+
+const DASH_STEM = 'presto';
+
+/* ---------- Source files ---------- */
+const MARKETING_INDEX_FILE = '/_dashboards/00_MARKETING_INDEX.md';
+const PRESTO_AGENT_FILE    = '/00_Prompts/BDOS/agents/presto.md';
+const CONSTITUTION_FILE    = '/00_Prompts/BDOS/CONSTITUTION_PHASE_2.md';
+
+/* Audience learnings paths */
+const LEARNINGS_ACTIVE_BASE   = '/00_Prompts/BDOS/agents/presto/audience-learnings/active/';
+const LEARNINGS_PROPOSALS_BASE = '/00_Prompts/BDOS/agents/presto/audience-learnings/proposals/';
+const LEARNINGS_RETIRED_BASE  = '/00_Prompts/BDOS/agents/presto/audience-learnings/retired/';
+
+/* Discovery + reflections paths */
+const PRESTO_REFLECTIONS_BASE = '/00_Prompts/BDOS/agents/presto/reflections/';
+const PRESTO_DISCOVERY_BASE   = '/00_Prompts/BDOS/agents/presto/discovery/';
+
+/* Sage signals path */
+const SAGE_SIGNALS_BASE = '/02_Areas/Personal Growth/Ideas/_inbox/sage-signals/';
+
+/* Agent profiles (0.2.0) */
+const AGENT_PROFILES_FILE    = '/00_Prompts/BDOS/AGENT_PROFILES.md';
+const AGENT_NAME_IN_PROFILES = 'Presto';
+let lastProfilesContent = null;
+
+/* ---------- Global state ---------- */
+let G = {
+  marketingIndex: null,
+  campaigns: [],
+  learnings: { active: [], proposals: [], retired: [] },
+  reflections: [],
+  discoveries: [],
+  signals: []
+};
+
+let lastPollContent = {};
+let pollTimer = null;
+let tickTimer = null;
+let nextPollIn = 8;
+let isSSEConnected = false;
+
+/* ---------- Utilities ---------- */
+function toSlug(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function formatDate(d) {
+  if (!d) return '—';
+  const dt = new Date(d);
+  if (isNaN(dt.getTime())) return d;
+  return dt.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function daysFromNow(d) {
+  if (!d) return null;
+  const dt = new Date(d);
+  const now = new Date();
+  now.setHours(0,0,0,0);
+  dt.setHours(0,0,0,0);
+  return Math.round((dt - now) / 86400000);
+}
+
+function getAreaClass(area) {
+  if (!area) return 'area-def';
+  const a = area.toLowerCase();
+  if (a.includes('deák') || a.includes('deak') || a.includes('dh')) return 'area-dh';
+  if (a.includes('sonrisa') || a.includes('cps')) return 'area-cps';
+  if (a.includes('exar')) return 'area-exar';
+  if (a.includes('navigátor') || a.includes('navigator') || a.includes('podcast')) return 'area-nav';
+  if (a.includes('ignis')) return 'area-ignis';
+  return 'area-def';
+}
+
+function getLearningTypeClass(type) {
+  const map = {
+    'narrative-resonance': 'lt-narrative-resonance',
+    'format-fit': 'lt-format-fit',
+    'tone-success': 'lt-tone-success',
+    'timing-pattern': 'lt-timing-pattern',
+    'platform-amplification': 'lt-platform-amplification',
+    'audience-rejection': 'lt-audience-rejection',
+    'cross-project-pattern': 'lt-cross-project-pattern',
+    'external-context': 'lt-external-context'
+  };
+  return map[type] || 'lt-external-context';
+}
+
+/* ---------- YAML frontmatter parser (from partnerships.html) ---------- */
+function parseYamlFrontmatter(md) {
+  if (!md) return {};
+  const fmMatch = md.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (!fmMatch) return {};
+  const raw = fmMatch[1];
+  const result = {};
+  const lines = raw.split('\n');
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    // Strip inline comment (quote-aware)
+    const stripped = line.replace(/(["'])(?:(?!\1)[^\\]|\\.)*\1(*SKIP)(*FAIL)|#.*$/g, '').trimEnd();
+    const m = stripped.match(/^(\w[\w\- ]*):\s*(.*)/);
+    if (!m) { i++; continue; }
+    const key = m[1].trim();
+    const val = m[2].trim();
+    if (val === '' || val === '|' || val === '>') {
+      // block scalar or block sequence
+      const blockLines = [];
+      i++;
+      while (i < lines.length && /^\s+/.test(lines[i])) {
+        blockLines.push(lines[i].trim());
+        i++;
+      }
+      result[key] = blockLines.join('\n');
+    } else if (val.startsWith('[')) {
+      try { result[key] = JSON.parse(val.replace(/'/g,'"')); } catch(e) { result[key] = val; }
+      i++;
+    } else {
+      result[key] = val.replace(/^['"]|['"]$/g, '');
+      i++;
+    }
+  }
+  return result;
+}
+
+/* ---------- Markdown section parser ---------- */
+function parseMarkdownSections(md) {
+  if (!md) return {};
+  const body = md.replace(/^---[\s\S]*?---\n/, '');
+  const sections = {};
+  const parts = body.split(/^(#{1,3} .+)$/m);
+  let current = '_root';
+  sections[current] = '';
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    if (/^#{1,3} /.test(p)) {
+      current = p.replace(/^#+\s*/, '').trim();
+      sections[current] = '';
+    } else {
+      sections[current] = (sections[current] || '') + p;
+    }
+  }
+  return sections;
+}
+
+/* ---------- YAML block parser (for log files — bdos.*.log.v1) ---------- */
+function parseYamlBlocks(md) {
+  if (!md) return [];
+  const blocks = [];
+  const re = /```yaml\n([\s\S]*?)```/g;
+  let m;
+  while ((m = re.exec(md)) !== null) {
+    try {
+      blocks.push(parseSimpleYamlBlock(m[1]));
+    } catch(e) {}
+  }
+  return blocks;
+}
+
+function parseSimpleYamlBlock(raw) {
+  const result = {};
+  const lines = raw.split('\n');
+  for (const line of lines) {
+    const m = line.match(/^(\w[\w_]*):\s*(.*)/);
+    if (m) {
+      const v = m[2].trim().replace(/^['"]|['"]$/g, '');
+      result[m[1]] = v === 'null' ? null : v;
+    }
+  }
+  return result;
+}
+
+/* ---------- Fetch with cache-busting ---------- */
+async function fetchMd(url) {
+  try {
+    const r = await fetch(url + '?_=' + Date.now(), { cache: 'no-store' });
+    if (!r.ok) return null;
+    return await r.text();
+  } catch(e) {
+    return null;
+  }
+}
+
+/* ---------- Parse MARKETING_INDEX.md for campaigns ---------- */
+function parseMarketingIndex(md) {
+  if (!md) return [];
+  const campaigns = [];
+  // Parse markdown table rows from "Active campaigns" section
+  const sections = parseMarkdownSections(md);
+  const activeSec = sections['Active campaigns (cross-project)'] || sections['Active campaigns'] || '';
+  const tableLines = activeSec.split('\n').filter(l => l.trim().startsWith('|') && !l.includes('---'));
+  let headerParsed = false;
+  let headers = [];
+  for (const line of tableLines) {
+    const cells = line.split('|').map(c => c.trim()).filter(c => c !== '');
+    if (!headerParsed) {
+      headers = cells.map(c => c.toLowerCase().replace(/\s+/g, '_'));
+      headerParsed = true;
+      continue;
+    }
+    const obj = {};
+    headers.forEach((h, i) => { obj[h] = cells[i] || ''; });
+    if (obj.campaign || obj.title) campaigns.push(obj);
+  }
+  return campaigns;
+}
+
+/* ---------- Parse individual CAMPAIGN.md ---------- */
+function parseCampaign(md, area, slug) {
+  const fm = parseYamlFrontmatter(md);
+  const sections = parseMarkdownSections(md);
+  const tasks = [];
+  const reviewSection = sections['Review'] || '';
+  // Extract open tasks from Tasks section
+  const taskSection = sections['Tasks'] || '';
+  const taskLines = taskSection.split('\n').filter(l => l.trim().startsWith('- ['));
+  for (const tl of taskLines) {
+    const done = tl.includes('[x]') || tl.includes('[X]');
+    const text = tl.replace(/^.*\[.\]\s*/, '').trim();
+    tasks.push({ done, text });
+  }
+  return {
+    area: fm.area || area || '',
+    title: fm.title || slug || '',
+    stage: fm.stage || '',
+    status: fm.status || '',
+    channels: fm.channels || [],
+    publish_date: fm.publish_date || '',
+    next_action: fm.next_action || '',
+    due: fm.due || '',
+    atomic_source: fm.atomic_source || fm.atomic_links || '',
+    kpi_targets: fm.kpi_targets || {},
+    tasks,
+    has_review: reviewSection.trim().length > 0,
+    sections
+  };
+}
+
+/* ---------- Parse audience learning file ---------- */
+function parseLearning(md, slug) {
+  const fm = parseYamlFrontmatter(md);
+  const sections = parseMarkdownSections(md);
+  return {
+    slug: fm.slug || slug || '',
+    type: fm.type || 'external-context',
+    title: fm.title || slug || '',
+    context: fm.context || '',
+    area: fm.area || '',
+    date: fm.date || '',
+    evidence: fm.evidence || '',
+    body: (sections['Body'] || sections['_root'] || '').trim().substring(0, 200)
+  };
+}
+
+/* ---------- Parse sage-signal file ---------- */
+function parseSageSignal(md, slug) {
+  const fm = parseYamlFrontmatter(md);
+  const sections = parseMarkdownSections(md);
+  return {
+    slug: slug,
+    schema: fm.schema || 'presto.sage-signal.v1',
+    type: fm.type || 'atomic-resonance',
+    date: fm.date || '',
+    source_campaign: fm.source_campaign || '',
+    target_atomic: fm.target_atomic || '',
+    status: fm.status || 'open',
+    platform: (fm.audience_evidence || '').split('\n').find(l => l.includes('platform'))?.split(':')[1]?.trim() || '',
+    body: (sections['Body'] || '').trim().substring(0, 200)
+  };
+}
+
+/* ---------- Parse discovery proposal ---------- */
+function parseDiscovery(md, slug) {
+  const fm = parseYamlFrontmatter(md);
+  const sections = parseMarkdownSections(md);
+  return {
+    slug: fm.slug || slug || '',
+    title: fm.title || slug || '',
+    date: fm.date || '',
+    area: fm.area || '',
+    platform: fm.platform || '',
+    audience_overlap: fm.audience_overlap || null,
+    strategic_relevance: fm.strategic_relevance || null,
+    operational_feasibility: fm.operational_feasibility || null,
+    long_term_value: fm.long_term_value || null,
+    status: fm.status || 'open',
+    body: (sections['Summary'] || sections['Body'] || '').trim().substring(0, 200)
+  };
+}
+
+/* ---------- Parse reflection file ---------- */
+function parseReflection(md, slug) {
+  const fm = parseYamlFrontmatter(md);
+  const sections = parseMarkdownSections(md);
+  return {
+    slug: slug,
+    period: fm.period || slug || '',
+    date: fm.date || '',
+    area: fm.area || 'cross-project',
+    resonated: (sections['What resonated'] || '').trim().substring(0, 300),
+    failed: (sections['What failed'] || '').trim().substring(0, 200),
+    drift: (sections['Audience drift signals'] || '').trim().substring(0, 200),
+    adjustments: (sections['Recommended adjustments'] || '').trim().substring(0, 300),
+    body: (sections['_root'] || '').trim().substring(0, 100)
+  };
+}
+
+/* ---------- Glob-like: fetch an index/listing of files ---------- */
+// We use the marketing index and known path conventions. For learnings/signals/discoveries,
+// we attempt to fetch a _listing.md or enumerate expected names via date patterns.
+// Graceful: if folder doesn't exist, returns [].
+
+async function fetchFileListing(basePath) {
+  // Try fetching a listing file
+  const listingMd = await fetchMd(basePath + '_listing.md');
+  if (listingMd) {
+    return listingMd.split('\n')
+      .map(l => l.trim())
+      .filter(l => l.endsWith('.md') && !l.startsWith('_'));
+  }
+  return [];
+}
+
+async function fetchFilesFromListing(basePath) {
+  const names = await fetchFileListing(basePath);
+  const results = [];
+  for (const name of names) {
+    const md = await fetchMd(basePath + name);
+    if (md) results.push({ name, md });
+  }
+  return results;
+}
+
+/* ---------- Main data loader ---------- */
+/* ===== Agent profile helpers (0.2.0) ===== */
+function parseAgentProfile(md, agentName) {
+  if (!md) return null;
+  const escaped = agentName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('^## ' + escaped + '\\s*\\n+```yaml\\n([\\s\\S]*?)\\n```', 'm');
+  const m = md.match(re);
+  if (!m) return null;
+  const yaml = m[1];
+  const obj = {};
+  const emojiM = yaml.match(/^\s*emoji:\s*["']?([^"'\n]+?)["']?\s*$/m);
+  const colorM = yaml.match(/^\s*color:\s*["']?(#[0-9a-fA-F]{3,8})["']?\s*$/m);
+  obj.emoji = emojiM ? emojiM[1].trim() : '?';
+  obj.color = colorM ? colorM[1].trim() : '#D97757';
+  function parseList(key) {
+    const re2 = new RegExp('\\n\\s{0,4}' + key + ':\\s*\\n((?:\\s+- [^\\n]*\\n?)*)', '');
+    const mm = yaml.match(re2);
+    if (!mm) return [];
+    return mm[1].split('\n').map(l => l.replace(/^\s+-\s*/, '').trim()).filter(Boolean);
+  }
+  obj.tools = parseList('tools');
+  obj.connectors_mcp = parseList('connectors_mcp');
+  obj.apis = parseList('apis');
+  obj.plugins = parseList('plugins');
+  obj.own_commands = parseList('own_commands');
+  obj.can_invoke = parseList('can_invoke');
+  const cntM = yaml.match(/own_commands_count:\s*(\d+)/);
+  obj.own_commands_count = cntM ? parseInt(cntM[1]) : obj.own_commands.length;
+  const lastUpdM = yaml.match(/last_updated:\s*(\S+)/);
+  const chromeM  = yaml.match(/chrome_mcp_used:\s*(\S+)/);
+  const thinkM   = yaml.match(/thinking_engine_used:\s*(\S+)/);
+  obj.last_updated = lastUpdM ? lastUpdM[1] : '—';
+  obj.chrome_mcp_used = chromeM ? chromeM[1] : '—';
+  obj.thinking_engine_used = thinkM ? thinkM[1] : '—';
+  obj.plugin_skills_invoked = parseList('plugin_skills_invoked');
+  return obj;
+}
+
+function hexToRgba(hex, alpha) {
+  const h = hex.replace('#','');
+  const r = parseInt(h.slice(0,2),16);
+  const g = parseInt(h.slice(2,4),16);
+  const b = parseInt(h.slice(4,6),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function renderCapabilities(profile) {
+  const avatarEl = document.getElementById('agentAvatar');
+  const capEl    = document.getElementById('capContent');
+  if (!profile) {
+    if (capEl) capEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Could not parse Presto section from AGENT_PROFILES.md</div>';
+    return;
+  }
+  if (avatarEl) {
+    avatarEl.textContent = profile.emoji;
+    avatarEl.style.background  = hexToRgba(profile.color, 0.12);
+    avatarEl.style.borderColor = hexToRgba(profile.color, 0.35);
+    avatarEl.style.color       = profile.color;
+  }
+  function chips(arr, cls) {
+    if (!arr || !arr.length) return '<span style="opacity:.45;font-size:11px;">none</span>';
+    return arr.map(v => `<span class="cap-chip ${cls}">${escHtml(v)}</span>`).join('');
+  }
+  if (capEl) capEl.innerHTML = `
+    <div class="cap-section">
+      <div class="cap-section-label">Tools</div>
+      <div>${chips(profile.tools,'tool')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">MCPs / Connectors</div>
+      <div>${chips(profile.connectors_mcp,'mcp')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">APIs</div>
+      <div>${chips(profile.apis,'api')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Plugins</div>
+      <div>${chips(profile.plugins,'plugin')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Own slash commands (${profile.own_commands_count})</div>
+      <div>${chips(profile.own_commands,'cmd')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Can invoke</div>
+      <div>${chips(profile.can_invoke,'cmd')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Test access trace</div>
+      <div class="trace-row"><span class="trace-key">last_updated</span><span class="trace-val">${escHtml(profile.last_updated)}</span></div>
+      <div class="trace-row"><span class="trace-key">chrome_mcp_used</span><span class="trace-val">${escHtml(profile.chrome_mcp_used)}</span></div>
+      <div class="trace-row"><span class="trace-key">thinking_engine_used</span><span class="trace-val">${escHtml(profile.thinking_engine_used)}</span></div>
+      <div class="trace-row"><span class="trace-key">plugin_skills_invoked</span><span class="trace-val">${profile.plugin_skills_invoked.length ? escHtml(profile.plugin_skills_invoked.join(', ')) : 'none'}</span></div>
+    </div>`;
+  capEl.querySelectorAll('.cap-chip.cmd').forEach(chip => {
+    chip.title = 'click to copy';
+    chip.style.cursor = 'pointer';
+    chip.addEventListener('click', () => {
+      const orig = chip.textContent;
+      navigator.clipboard.writeText(orig).catch(()=>{});
+      chip.textContent = 'copied!';
+      setTimeout(() => { chip.textContent = orig; }, 1200);
+    });
+  });
+}
+
+async function loadAllData() {
+  setSyncState('fetching');
+
+  // 1. Marketing Index (primary campaign source)
+  const indexMd = await fetchMd(MARKETING_INDEX_FILE);
+  G.marketingIndex = indexMd;
+
+  // 2. Audience learnings
+  const [activeFiles, proposalFiles, retiredFiles] = await Promise.all([
+    fetchFilesFromListing(LEARNINGS_ACTIVE_BASE),
+    fetchFilesFromListing(LEARNINGS_PROPOSALS_BASE),
+    fetchFilesFromListing(LEARNINGS_RETIRED_BASE)
+  ]);
+  G.learnings.active   = activeFiles.map(f => parseLearning(f.md, f.name.replace('.md','')));
+  G.learnings.proposals = proposalFiles.map(f => parseLearning(f.md, f.name.replace('.md','')));
+  G.learnings.retired  = retiredFiles.map(f => parseLearning(f.md, f.name.replace('.md','')));
+
+  // 3. Reflections
+  const reflFiles = await fetchFilesFromListing(PRESTO_REFLECTIONS_BASE);
+  G.reflections = reflFiles.map(f => parseReflection(f.md, f.name.replace('.md','')));
+
+  // 4. Discoveries
+  const discFiles = await fetchFilesFromListing(PRESTO_DISCOVERY_BASE);
+  G.discoveries = discFiles.map(f => parseDiscovery(f.md, f.name.replace('.md','')));
+
+  // 5. Sage signals
+  const sigFiles = await fetchFilesFromListing(SAGE_SIGNALS_BASE);
+  G.signals = sigFiles.map(f => parseSageSignal(f.md, f.name.replace('.md','')));
+
+  // 6. Parse campaigns from marketing index
+  if (indexMd) {
+    G.campaigns = parseMarketingIndex(indexMd);
+  }
+
+  // 7. Agent profiles (capabilities panel — 0.2.0)
+  const profilesMd = await fetchMd(AGENT_PROFILES_FILE).catch(() => null);
+  if (profilesMd !== lastProfilesContent) {
+    lastProfilesContent = profilesMd;
+    renderCapabilities(profilesMd ? parseAgentProfile(profilesMd, AGENT_NAME_IN_PROFILES) : null);
+  }
+
+  renderAll();
+  setSyncState('ok');
+}
+
+/* ---------- Render all panels ---------- */
+function renderAll() {
+  renderCampaignOps();
+  renderAnalytics();
+  renderReflection();
+  renderLineage();
+  renderOperational();
+  renderLearnings();
+  renderDiscovery();
+  renderSageSignals();
+}
+
+/* ---------- Panel 2: Campaign Operations ---------- */
+function renderCampaignOps() {
+  const campaigns = G.campaigns;
+  document.getElementById('campaignCount').textContent = campaigns.length;
+  document.getElementById('statTotalCampaigns').textContent = campaigns.length;
+
+  const active = campaigns.filter(c => {
+    const s = (c.stage || c.status || '').toLowerCase();
+    return !['archived','measured'].includes(s);
+  });
+  const published = campaigns.filter(c => (c.stage||'').toLowerCase() === 'published').length;
+  document.getElementById('statPublished').textContent = published;
+
+  // Active campaigns list
+  const listEl = document.getElementById('activeCampaignsList');
+  if (active.length === 0) {
+    listEl.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">&#128196;</div>
+      <strong>No active campaigns detected</strong>
+      Run Presto <code>index</code> mode to populate <span class="mono">00_MARKETING_INDEX.md</span>.
+      <br><span class="pending-badge">Presto index mode needed</span>
+    </div>`;
+  } else {
+    listEl.innerHTML = active.map(c => {
+      const areaClass = getAreaClass(c.area || c.area_name || '');
+      const stage = c.stage || c.status || '';
+      const due = c.due || c.publish_date || '';
+      const daysLeft = daysFromNow(due);
+      const daysStr = daysLeft !== null
+        ? (daysLeft === 0 ? ' — today' : daysLeft < 0 ? ` — ${Math.abs(daysLeft)}d overdue` : ` — ${daysLeft}d`)
+        : '';
+      const slug = toSlug(c.campaign || c.title || 'campaign');
+      return `<div class="campaign-card" data-card-id="${DASH_STEM}/campaign/${slug}">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          copy ref
+        </button>
+        <div class="campaign-card-top">
+          <div class="campaign-title">${escHtml(c.campaign || c.title || slug)}</div>
+          <span class="area-badge ${areaClass}">${escHtml(c.area || c.area_name || 'Unknown')}</span>
+        </div>
+        <div class="campaign-meta">
+          <span class="stage-chip stage-${escHtml(stage)}">${escHtml(stage)}</span>
+          ${due ? `<span class="mono" style="font-size:11px;">${escHtml(due)}${daysStr}</span>` : ''}
+        </div>
+        ${c.next_action ? `<div class="next-action-row"><span class="next-action-label">Next:</span> ${escHtml(c.next_action)}</div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  // Schedule: next 7 days
+  const schedEl = document.getElementById('schedule7Days');
+  const upcoming = campaigns
+    .filter(c => {
+      const d = daysFromNow(c.publish_date || c.due);
+      return d !== null && d >= 0 && d <= 7;
+    })
+    .sort((a, b) => new Date(a.publish_date || a.due) - new Date(b.publish_date || b.due));
+
+  if (upcoming.length === 0) {
+    schedEl.innerHTML = `<div class="text-muted" style="font-size:12px;padding:8px 0;">No publications scheduled in the next 7 days.</div>`;
+  } else {
+    const today = new Date(); today.setHours(0,0,0,0);
+    schedEl.innerHTML = upcoming.map(c => {
+      const d = new Date(c.publish_date || c.due);
+      const isToday = daysFromNow(c.publish_date || c.due) === 0;
+      return `<div class="timeline-day${isToday ? ' today' : ''}">
+        <div class="timeline-date mono">${d.toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div>
+        <div class="timeline-items">
+          <div class="timeline-item"><strong>${escHtml(c.campaign||c.title||'')}</strong> — ${escHtml(c.area||'')}</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // Approval queue: campaigns in "review" stage
+  const reviewCampaigns = campaigns.filter(c => (c.stage||'').toLowerCase() === 'review');
+  const approvalEl = document.getElementById('approvalQueue');
+  document.getElementById('approvalCount').textContent = reviewCampaigns.length;
+  if (reviewCampaigns.length === 0) {
+    approvalEl.innerHTML = `<div class="text-muted" style="font-size:12px;">No drafts waiting for approval.</div>`;
+  } else {
+    approvalEl.innerHTML = reviewCampaigns.map(c => `
+      <div class="approval-row">
+        <div class="approval-label">${escHtml(c.campaign||c.title||'')}</div>
+        <span class="approval-area">${escHtml(c.area||'')}</span>
+      </div>`).join('');
+  }
+
+  wireCopyRef(document.getElementById('activeCampaignsList'));
+}
+
+/* ---------- Panel 4: Analytics ---------- */
+function renderAnalytics() {
+  const analyticsEl = document.getElementById('analyticsContent');
+  document.getElementById('analyticsResultCount').textContent = '0';
+  // Analytics require Results-*.md files fetched per-campaign
+  // Currently no Results files are loaded (requires per-campaign lazy fetch)
+  // Empty state is graceful — will populate as data arrives
+  analyticsEl.innerHTML = `<div class="empty-state" style="padding:16px 0;text-align:left;">
+    <strong>Analytics require Results-*.md files</strong>
+    <span class="text-muted">Per-campaign results load lazily. Run Presto <code>measure</code> mode after campaigns publish, then check back.</span>
+  </div>`;
+}
+
+/* ---------- Panel 5: Strategic Reflection ---------- */
+function renderReflection() {
+  const reflEl = document.getElementById('reflectionContent');
+  const driftEl = document.getElementById('driftIndicators');
+  document.getElementById('reflectionCount').textContent = G.reflections.length;
+
+  if (G.reflections.length === 0) {
+    reflEl.innerHTML = `<div class="empty-state" style="padding:16px 0;text-align:left;">
+      <strong>No reflections yet</strong>
+      <span class="text-muted">Reflections from <span class="mono">agents/presto/reflections/YYYY-Www.md</span> appear here.</span>
+      <br><span class="pending-badge">Awaiting first reflect run</span>
+    </div>`;
+    driftEl.innerHTML = `<div class="text-muted" style="font-size:12px;padding:8px 0;">No drift signals. Drift only shown when 3+ stable data points align.</div>`;
+    return;
+  }
+
+  // Show most recent reflections
+  const sorted = [...G.reflections].sort((a, b) => (b.date||b.period||'').localeCompare(a.date||a.period||''));
+  reflEl.innerHTML = sorted.slice(0, 3).map(r => `
+    <div class="reflection-card">
+      <div class="reflection-header">
+        <div class="reflection-title">${escHtml(r.area)} — ${escHtml(r.period)}</div>
+        <span class="reflection-period mono">${escHtml(r.date||r.period)}</span>
+      </div>
+      ${r.resonated ? `<div class="reflection-section">
+        <div class="reflection-section-label">Resonated</div>
+        <div class="reflection-body">${escHtml(r.resonated)}</div>
+      </div>` : ''}
+      ${r.adjustments ? `<div class="reflection-section">
+        <div class="reflection-section-label">Recommended Adjustments</div>
+        <div class="reflection-body">${escHtml(r.adjustments)}</div>
+      </div>` : ''}
+    </div>`).join('');
+
+  // Drift indicators: only show if explicit drift signals in reflection
+  const withDrift = sorted.filter(r => r.drift && r.drift.trim().length > 0);
+  if (withDrift.length === 0) {
+    driftEl.innerHTML = `<div class="text-muted" style="font-size:12px;padding:8px 0;">No stable drift signals detected yet.</div>`;
+  } else {
+    driftEl.innerHTML = withDrift.slice(0, 2).map(r => `
+      <div class="drift-indicator">
+        <span class="drift-label">Drift</span>
+        <span>${escHtml(r.drift.substring(0,120))}…</span>
+      </div>`).join('');
+  }
+}
+
+/* ---------- Panel 6: Content Lineage ---------- */
+function renderLineage() {
+  const threadEl = document.getElementById('lineageThread');
+  document.getElementById('lineageCount').textContent = '0';
+
+  // Lineage requires campaigns with atomic_source AND matching signals
+  const campaignsWithAtomic = G.campaigns.filter(c => c.atomic_source);
+  document.getElementById('lineageCount').textContent = campaignsWithAtomic.length;
+
+  if (campaignsWithAtomic.length === 0) {
+    threadEl.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">&#9881;</div>
+      <strong>No content lineage chains yet</strong>
+      Threads build when CAMPAIGN.md has <span class="mono">atomic_source:</span> frontmatter field.<br>
+      Run Presto <code>adapt</code> mode from a Sage atomic to create the first thread.
+      <br><span class="pending-badge">Awaiting first adapt run</span>
+    </div>`;
+    return;
+  }
+
+  threadEl.innerHTML = campaignsWithAtomic.slice(0, 5).map(c => {
+    const slug = toSlug(c.title || 'campaign');
+    const areaClass = getAreaClass(c.area || '');
+    // Find matching signals for this campaign
+    const matchingSignals = G.signals.filter(s =>
+      s.source_campaign && s.source_campaign.includes(slug)
+    );
+    return `<div class="lineage-entry" data-card-id="${DASH_STEM}/lineage/${slug}">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy ref
+      </button>
+      <div class="lineage-header">
+        <div class="lineage-title">${escHtml(c.title || slug)}</div>
+        <span class="area-badge ${areaClass}">${escHtml(c.area||'')}</span>
+        <span class="stage-chip stage-${escHtml(c.stage||'')} mono" style="font-size:10px;">${escHtml(c.stage||'')}</span>
+      </div>
+      <div class="lineage-body">
+        <div class="lineage-row">
+          <div class="lineage-step">Sage Source</div>
+          <div class="lineage-content">
+            ${c.atomic_source
+              ? `<span class="atomic-link">${escHtml(c.atomic_source)}</span>`
+              : '<span class="text-muted">atomic source not linked</span>'}
+          </div>
+        </div>
+        <div class="lineage-row">
+          <div class="lineage-step">Adapt</div>
+          <div class="lineage-content">
+            ${(c.channels && c.channels.length > 0)
+              ? c.channels.map(ch => `<span class="platform-chip">${escHtml(ch)}</span>`).join(' ')
+              : '<span class="text-muted">no channels specified</span>'}
+          </div>
+        </div>
+        <div class="lineage-row">
+          <div class="lineage-step">Publish</div>
+          <div class="lineage-content">
+            ${c.publish_date
+              ? `<span class="mono" style="font-size:11px;">${escHtml(c.publish_date)}</span>`
+              : '<span class="text-muted">not yet published</span>'}
+          </div>
+        </div>
+        <div class="lineage-row">
+          <div class="lineage-step">Analytics</div>
+          <div class="lineage-content">
+            <span class="text-muted">Results-*.md pending — run Presto measure mode after publish</span>
+          </div>
+        </div>
+        <div class="lineage-row">
+          <div class="lineage-step">Sage Signal</div>
+          <div class="lineage-content">
+            ${matchingSignals.length > 0
+              ? matchingSignals.map(s => `<span class="signal-type-chip ${s.type==='atomic-resonance'?'sig-resonance':'sig-gap'}">${escHtml(s.type)}</span> ${escHtml(s.body.substring(0,80))}`).join('<br>')
+              : '<span class="text-muted">no signal sent yet</span>'}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('<div class="lineage-arrow">&#8595;</div>');
+
+  wireCopyRef(threadEl);
+}
+
+/* ---------- Panel 7: Operational Intelligence ---------- */
+function renderOperational() {
+  // Token data is null until Phase 2.C — placeholder already in HTML
+  // Campaign counts are updated in renderCampaignOps
+}
+
+/* ---------- Panel 8: Audience Learnings ---------- */
+function renderLearnings() {
+  const active = G.learnings.active;
+  const proposals = G.learnings.proposals;
+  const retired = G.learnings.retired;
+
+  document.getElementById('learningActiveCount').textContent = active.length;
+  document.getElementById('statLearningsActive').textContent = active.length;
+  document.getElementById('statLearningsProposed').textContent = proposals.length;
+  document.getElementById('statLearningsRetired').textContent = retired.length;
+  document.getElementById('proposalCount').textContent = proposals.length;
+
+  const listEl = document.getElementById('activeLearningsList');
+  if (active.length === 0) {
+    listEl.innerHTML = `<div class="empty-state" style="padding:16px 0;text-align:left;">
+      <strong>No active learnings yet</strong>
+      <span class="text-muted">Learnings accumulate in <span class="mono">agents/presto/audience-learnings/active/*.md</span>.</span>
+      <br><span class="pending-badge">Awaiting first learn cycle</span>
+    </div>`;
+  } else {
+    listEl.innerHTML = active.map(l => {
+      const slug = toSlug(l.slug || l.title || 'learning');
+      return `<div class="learning-card" data-card-id="${DASH_STEM}/learning/${slug}">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          copy ref
+        </button>
+        <div class="learning-card-top">
+          <div class="learning-title">${escHtml(l.title)}</div>
+          <span class="learning-chip ${getLearningTypeClass(l.type)}">${escHtml(l.type)}</span>
+        </div>
+        ${l.body ? `<div class="learning-desc">${escHtml(l.body.substring(0,150))}…</div>` : ''}
+        <div class="learning-meta">
+          ${l.area ? `${escHtml(l.area)} · ` : ''}${l.date ? escHtml(l.date) : ''}
+        </div>
+      </div>`;
+    }).join('');
+    wireCopyRef(listEl);
+  }
+
+  // Proposals
+  const propEl = document.getElementById('proposalsList');
+  if (proposals.length === 0) {
+    propEl.innerHTML = `<div class="text-muted" style="font-size:12px;">No proposals awaiting review.</div>`;
+  } else {
+    propEl.innerHTML = proposals.map(l => `
+      <div class="learning-card" style="background:var(--warn-tint);border-color:rgba(176,122,24,.2);">
+        <div class="learning-card-top">
+          <div class="learning-title">${escHtml(l.title)}</div>
+          <span class="learning-chip ${getLearningTypeClass(l.type)}">${escHtml(l.type)}</span>
+        </div>
+        ${l.body ? `<div class="learning-desc">${escHtml(l.body.substring(0,100))}…</div>` : ''}
+        <div class="learning-meta">Use <span class="mono">/pres-learning-accept ${escHtml(l.slug)}</span> to promote</div>
+      </div>`).join('');
+  }
+}
+
+/* ---------- Panel 9: Discovery ---------- */
+function renderDiscovery() {
+  const discEl = document.getElementById('discoveryList');
+  document.getElementById('discoveryCount').textContent = G.discoveries.length;
+
+  if (G.discoveries.length === 0) {
+    discEl.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">&#128269;</div>
+      <strong>No discovery proposals yet</strong>
+      <span class="text-muted">Run Presto <code>discover</code> mode to generate platform scanning proposals.</span>
+      <br><span class="pending-badge">Awaiting first discover run</span>
+    </div>`;
+    return;
+  }
+
+  function filterIcon(val) {
+    if (val === 'true' || val === true) return '<span class="filter-ok">&#10003;</span>';
+    if (val === 'false' || val === false) return '<span class="filter-gap">&#10007;</span>';
+    return '<span class="filter-pending">?</span>';
+  }
+
+  discEl.innerHTML = G.discoveries.map(d => {
+    const slug = toSlug(d.slug || d.title);
+    return `<div class="discovery-card" data-card-id="${DASH_STEM}/discovery/${slug}">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy ref
+      </button>
+      <div class="discovery-title">${escHtml(d.title || d.platform || slug)}</div>
+      ${d.body ? `<div class="learning-desc" style="margin-bottom:10px;">${escHtml(d.body.substring(0,150))}</div>` : ''}
+      <div class="filter-grid">
+        <div class="filter-item"><span class="filter-icon">${filterIcon(d.audience_overlap)}</span> Audience overlap</div>
+        <div class="filter-item"><span class="filter-icon">${filterIcon(d.strategic_relevance)}</span> Strategic relevance</div>
+        <div class="filter-item"><span class="filter-icon">${filterIcon(d.operational_feasibility)}</span> Op. feasibility</div>
+        <div class="filter-item"><span class="filter-icon">${filterIcon(d.long_term_value)}</span> Long-term value</div>
+      </div>
+      <div class="learning-meta" style="margin-top:8px;">${d.area ? escHtml(d.area)+' · ' : ''}${escHtml(d.date||'')} · status: ${escHtml(d.status||'open')}</div>
+    </div>`;
+  }).join('');
+
+  wireCopyRef(discEl);
+}
+
+/* ---------- Panel 10: Sage-Signal Flow ---------- */
+function renderSageSignals() {
+  const listEl = document.getElementById('signalFlowList');
+  document.getElementById('signalCount').textContent = G.signals.length;
+
+  if (G.signals.length === 0) {
+    listEl.innerHTML = `<div class="empty-state">
+      <div class="empty-icon">&#128257;</div>
+      <strong>No signals sent to Sage yet</strong>
+      <span class="text-muted">Resonance signals appear when Presto detects strong audience response and writes to <span class="mono">Ideas/_inbox/sage-signals/</span>.</span>
+      <br><span class="pending-badge">Loop not yet active</span>
+    </div>`;
+    return;
+  }
+
+  listEl.innerHTML = G.signals.map(s => {
+    const slug = toSlug(s.slug || s.type);
+    const statusClass = { open: 'sig-open', 'sage-acknowledged': 'sig-acknowledged', 'sage-acted': 'sig-acted', dismissed: 'sig-dismissed' }[s.status] || 'sig-open';
+    return `<div class="signal-row" data-card-id="${DASH_STEM}/signal/${slug}">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy ref
+      </button>
+      <span class="signal-type-chip ${s.type==='atomic-resonance'?'sig-resonance':'sig-gap'}">${escHtml(s.type)}</span>
+      <div class="signal-body">
+        ${s.target_atomic ? `<div class="signal-atomic">${escHtml(s.target_atomic)}</div>` : ''}
+        ${s.body ? `<div class="signal-desc">${escHtml(s.body.substring(0,180))}</div>` : ''}
+        <div class="learning-meta" style="margin-top:4px;">
+          ${s.source_campaign ? escHtml(s.source_campaign)+' · ' : ''}${escHtml(s.date||'')}
+          ${s.platform ? ' · '+escHtml(s.platform) : ''}
+        </div>
+      </div>
+      <span class="signal-status ${statusClass}">${escHtml(s.status||'open')}</span>
+    </div>`;
+  }).join('');
+
+  wireCopyRef(listEl);
+}
+
+/* ===== Card copy-ref wiring (DS 0.2.0) ===== */
+function copyText(text, el) {
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  });
+}
+
+function wireCopyRef(containerEl) {
+  if (!containerEl) return;
+  containerEl.querySelectorAll('.card-copy-ref').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const card = btn.closest('[data-card-id]');
+      if (!card) return;
+      copyText(DASH_STEM + ':' + card.dataset.cardId, btn);
+    };
+  });
+}
+
+/* ===== Sync indicator ===== */
+function setSyncState(state) {
+  const dot = document.getElementById('syncDot');
+  const bar = document.getElementById('syncBar');
+  const label = document.getElementById('syncLabel');
+  dot.className = 'sync-dot ' + state;
+  if (state === 'fetching') {
+    bar.className = 'sync-bar sync-shuttle';
+    label.textContent = 'syncing…';
+  } else if (state === 'ok') {
+    bar.className = 'sync-bar';
+    label.textContent = 'live';
+    nextPollIn = isSSEConnected ? 30 : 8;
+    resetSyncBar();
+  } else if (state === 'error') {
+    label.textContent = 'error';
+  }
+}
+
+function resetSyncBar() {
+  const bar = document.getElementById('syncBar');
+  bar.className = '';
+  void bar.offsetWidth;
+  bar.style.animationDuration = nextPollIn + 's';
+  bar.className = 'sync-bar';
+}
+
+function tickSyncLabel() {
+  const label = document.getElementById('syncLabel');
+  if (!label.textContent.includes('s')) {
+    nextPollIn = isSSEConnected ? 30 : 8;
+    return;
+  }
+  nextPollIn = Math.max(0, nextPollIn - 1);
+  label.textContent = 'next in ' + nextPollIn + 's';
+}
+
+/* ===== Polling ===== */
+function pollNow() {
+  clearTimeout(pollTimer);
+  loadAllData().then(() => {
+    pollTimer = setTimeout(pollNow, (isSSEConnected ? 30 : 8) * 1000);
+    resetSyncBar();
+    nextPollIn = isSSEConnected ? 30 : 8;
+  });
+}
+
+/* ===== Polling (fallback only — primary is LiveUpdates SSE) ===== */
+function startPolling() {
+  pollTimer = setTimeout(pollNow, 8000);
+  tickTimer = setInterval(tickSyncLabel, 1000);
+}
+
+/* ===== Theme toggle (DS 0.3.0) ===== */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+
+document.getElementById('themeToggle').addEventListener('click', function() {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+});
+
+(function initTheme() {
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) {
+    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  setTheme(t);
+})();
+
+/* ===== LOGS PANEL — agent_observability sidecar (0.4.0) ===== */
+const LOGS_AGENT = 'presto';
+const LOGS_SIDECAR_URL = '/_dashboards/_design/agent_logs.json';
+let logsLastTs = null;
+
+function renderLogsPanel(events) {
+  const agentEvents = events.filter(e => e.agent === LOGS_AGENT);
+  const badge = document.getElementById('logsPanelBadge');
+  const wrap  = document.getElementById('logsContent');
+  if (!agentEvents.length) {
+    if (badge) badge.textContent = '0 events';
+    if (wrap) wrap.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--ink-4);font-size:12.5px;">No log events yet for ' + LOGS_AGENT + '.<br><span style="font-size:11px;color:var(--ink-5);">Events appear once agent invocations are recorded in agent_observability.db.</span></div>';
+    return;
+  }
+  const errs    = agentEvents.filter(e => ['error','critical'].includes(e.log_level)).length;
+  const hasDur  = agentEvents.filter(e => e.duration_ms != null);
+  const avgDur  = hasDur.length ? Math.round(hasDur.reduce((s,e)=>s+(e.duration_ms||0),0)/hasDur.length) : null;
+  const totIn   = agentEvents.reduce((s,e)=>s+(e.input_tokens||0),0);
+  const totOut  = agentEvents.reduce((s,e)=>s+(e.output_tokens||0),0);
+  const totCost = agentEvents.reduce((s,e)=>s+(e.estimated_cost||0),0);
+  const slowest = [...agentEvents].filter(e=>e.duration_ms!=null).sort((a,b)=>b.duration_ms-a.duration_ms)[0];
+  const hiTok   = [...agentEvents].filter(e=>(e.input_tokens||0)+(e.output_tokens||0)>0).sort((a,b)=>((b.input_tokens||0)+(b.output_tokens||0))-((a.input_tokens||0)+(a.output_tokens||0)))[0];
+  const recent  = [...agentEvents].sort((a,b)=>b.id-a.id).slice(0,50).reverse();
+  if (badge) badge.textContent = agentEvents.length + ' events';
+  const LEVEL_CHIP = lv => {
+    const colors={ok:'var(--ok)',warn:'var(--warn)',gap:'var(--gap)',idle:'var(--ink-4)'};
+    const tints={ok:'var(--ok-tint)',warn:'var(--warn-tint)',gap:'var(--gap-tint)',idle:'var(--idle-tint)'};
+    const cls={'debug':'idle','info':'ok','notice':'info','warning':'warn','error':'gap','critical':'gap'}[lv]||'idle';
+    return `<span style="font-size:10px;font-weight:700;text-transform:uppercase;padding:1px 6px;border-radius:3px;background:${tints[cls]};color:${colors[cls]}">${escHtml(lv||'?')}</span>`;
+  };
+  if (wrap) wrap.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px;">
+      ${[['Total',agentEvents.length,''],['Errors',errs,errs?'color:var(--gap)':''],['Avg dur',avgDur!=null?avgDur+'ms':'—',''],['Tok in',totIn?totIn.toLocaleString():'—',''],['Tok out',totOut?totOut.toLocaleString():'—',''],['Cost',totCost>0?'$'+totCost.toFixed(4):'—','']].map(([l,v,s])=>`<div style="background:var(--bg-elev);border:1px solid var(--line);border-radius:8px;padding:12px 14px;box-shadow:var(--shadow-1)"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);font-weight:600;margin-bottom:4px">${l}</div><div style="font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;${s}">${v}</div></div>`).join('')}
+    </div>
+    ${slowest||hiTok?`<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">${slowest?`<div style="background:var(--warn-tint);border:1px solid rgba(176,122,24,.25);border-radius:6px;padding:8px 12px;font-size:12px;"><strong style="color:var(--warn);">Slowest:</strong> ${escHtml(slowest.message||'?')} — ${slowest.duration_ms}ms</div>`:''} ${hiTok?`<div style="background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-size:12px;"><strong>Highest-token:</strong> ${escHtml(hiTok.message||'?')} — ${((hiTok.input_tokens||0)+(hiTok.output_tokens||0)).toLocaleString()} tok</div>`:''}</div>`:''}
+    <div style="overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg-elev);box-shadow:var(--shadow-1);">
+      <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+        <thead><tr style="background:var(--bg-sunken);">
+          ${['Timestamp','Mode','Level','Event','Message','Dur ms','Tokens'].map(h=>`<th style="padding:8px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);border-bottom:1px solid var(--line);white-space:nowrap;font-family:'JetBrains Mono',monospace;">${h}</th>`).join('')}
+        </tr></thead>
+        <tbody>${recent.map(ev=>{
+          const ts=(ev.timestamp||'').replace('T',' ').replace('Z','').slice(0,19);
+          const rowBg=ev.log_level==='error'||ev.log_level==='critical'?'background:var(--gap-tint);':ev.log_level==='warning'?'background:var(--warn-tint);':'';
+          const tok=ev.total_tokens||(((ev.input_tokens||0)+(ev.output_tokens||0)));
+          return `<tr style="${rowBg}"><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;">${escHtml(ts)}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);color:var(--ink-3);font-family:'JetBrains Mono',monospace;font-size:11px;">${escHtml(ev.mode||'—')}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);">${LEVEL_CHIP(ev.log_level)}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);font-size:10.5px;color:var(--ink-4);font-family:'JetBrains Mono',monospace;white-space:nowrap;">${escHtml(ev.event_type||'?')}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);max-width:360px;white-space:normal;word-break:break-word;font-size:12px;">${escHtml(ev.message||'')}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);text-align:right;color:var(--ink-3);font-family:'JetBrains Mono',monospace;font-size:11px;">${ev.duration_ms!=null?ev.duration_ms.toLocaleString():''}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);text-align:right;color:var(--ink-3);font-family:'JetBrains Mono',monospace;font-size:11px;">${tok>0?tok.toLocaleString():''}</td></tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>
+    <div style="font-size:11px;color:var(--ink-4);margin-top:8px;text-align:right;font-family:'JetBrains Mono',monospace;">Showing ${recent.length} of ${agentEvents.length} · sidecar: /_dashboards/_design/agent_logs.json</div>`;
+}
+
+async function loadLogsPanel() {
+  try {
+    const r = await fetch(LOGS_SIDECAR_URL, { cache: 'no-store' });
+    if (!r.ok) return;
+    const data = await r.json();
+    if (data.generated_at === logsLastTs) return;
+    logsLastTs = data.generated_at;
+    renderLogsPanel(data.events || []);
+  } catch(e) {}
+}
+
+/* ===== Boot — DS 0.4.0 event-driven live updates ===== */
+loadAllData();
+loadLogsPanel();
+LiveUpdates.subscribe(() => { loadAllData(); loadLogsPanel(); });
+LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
+</script>
+<script src="/_dashboards/_design/live-updates.js"></script>
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>

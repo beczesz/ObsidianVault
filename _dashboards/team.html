@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  CPS Team, team & delivery-unit board.   Version: 0.1.4
+  =============================================================================
+  Renders from:
+    /02_Areas/Sonrisa/CPS/Team/team.md  (single YAML frontmatter file)
+  Single-frontmatter-file data pattern (Partnerships family).
+  Live via SSE file-watcher push (dash-server.mjs), 8s/30s poll fallback.
+  Read-only. Edit team.md in Obsidian.
+
+  Audit trail:
+    0.1.0 (2026-05-22) initial board: headcount/units/margin/risk widgets,
+          delivery-unit cards (TAM, members, margin bar, status), team roster
+          grouped by role tier (TAM + standout badges, level/location/skills/
+          unit chips), recruitment pipeline + alumni strips. SSE push + poll.
+    0.1.1 2026-05-22 — reviewed against DESIGN_SYSTEM 0.1.0; functional extras (--info) retained pending promote
+    0.1.2 (2026-05-22) — added .card-copy-ref hover buttons + data-card-id
+          (DESIGN_SYSTEM 0.2.0). Unit cards: id = slugified client name.
+          Person cards: id = "member/" + slugified member name.
+    0.1.3 (2026-05-22) — added day/night theme toggle + dark tokens
+          (DESIGN_SYSTEM 0.3.0). Shared localStorage key "dash-theme". FOUC-init.
+    0.1.4 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
+
+  Conventions: see 02_Areas/Sonrisa/CPS/Sales/DASHBOARD_CONTRACT.md
+  "Shared dashboard conventions". Served by _dashboards/_tools/dash-server.mjs.
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPS Team</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Ccircle cx='12' cy='13' r='3.2' fill='none' stroke='%23D97757' stroke-width='2'/%3E%3Ccircle cx='21' cy='13' r='3.2' fill='none' stroke='%23D97757' stroke-width='2'/%3E%3Cpath d='M7 24c0-3 2.2-5 5-5s5 2 5 5M16 24c0-3 2.2-5 5-5s5 2 5 5' fill='none' stroke='%23D97757' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-page: #faf9f5;
+  --bg-elev: #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint: #f5f4ef;
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+  --line: #e5e4df;
+  --line-soft: #efede7;
+  --accent: #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  --ok:        #1f7a4d;
+  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;
+  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;
+  --gap-tint:  #fbeae6;
+  --info:      #0e7490;
+  --info-tint: #e0f2f7;
+  --idle:      #7a7a76;
+  --idle-tint: #efeeeb;
+
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 10px;
+  --radius-xl: 14px;
+
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+  --ink-1: #f5f4ef;
+  --ink-2: #d6d4ce;
+  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;
+  --ink-5: #54524d;
+  --line:      #36342f;
+  --line-soft: #2c2a26;
+  --accent:      #e08a6a;
+  --accent-deep: #f0a085;
+  --accent-tint: #3a2a22;
+  --ok:        #5cc08a;  --ok-tint:   #1e3329;
+  --warn:      #d6a94a;  --warn-tint: #352c18;
+  --gap:       #e57c6e;  --gap-tint:  #3a221e;
+  --info:      #38bcd4;  --info-tint: #0e2a30;
+  --idle:      #9a9892;  --idle-tint: #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:   #1a1916;
+    --bg-elev:   #232220;
+    --bg-sunken: #2c2a26;
+    --bg-tint:   #262420;
+    --ink-1: #f5f4ef;
+    --ink-2: #d6d4ce;
+    --ink-3: #a8a6a0;
+    --ink-4: #7c7a74;
+    --ink-5: #54524d;
+    --line:      #36342f;
+    --line-soft: #2c2a26;
+    --accent:      #e08a6a;
+    --accent-deep: #f0a085;
+    --accent-tint: #3a2a22;
+    --ok:        #5cc08a;  --ok-tint:   #1e3329;
+    --warn:      #d6a94a;  --warn-tint: #352c18;
+    --gap:       #e57c6e;  --gap-tint:  #3a221e;
+    --info:      #38bcd4;  --info-tint: #0e2a30;
+    --idle:      #9a9892;  --idle-tint: #2a2925;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+a { color: inherit; text-decoration: none; }
+
+.app { max-width: 1200px; margin: 0 auto; padding: 28px 36px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { padding-bottom: 22px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+/* ===== Theme toggle button (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.version-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
+  border-radius: 999px; letter-spacing: 0; text-transform: none;
+}
+.masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta {
+  margin-top: 10px; font-size: 14px; color: var(--ink-3);
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+}
+.masthead .submeta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-5); }
+.masthead .submeta strong { color: var(--ink-1); font-weight: 600; }
+
+/* ===== Sync indicator ===== */
+.sync-status {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 11px;
+  color: var(--ink-3); font-weight: 500; cursor: pointer;
+  padding: 3px 6px; margin: -3px -6px; border-radius: 6px; transition: background var(--t-fast); user-select: none;
+}
+.sync-status:hover { background: rgba(20,20,19,.04); }
+.sync-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-4); flex-shrink: 0; transition: background var(--t-fast); }
+.sync-status[data-state="live"] .dot { background: var(--ok); box-shadow: 0 0 0 3px rgba(31,122,77,.16); }
+.sync-status[data-state="syncing"] .dot { background: var(--warn); animation: pulse-sync 1s ease-in-out infinite; }
+.sync-status[data-state="error"] .dot, .sync-status[data-state="offline"] .dot { background: var(--ink-5); }
+@keyframes pulse-sync { 0%,100% { opacity:1; transform:scale(1);} 50% { opacity:.35; transform:scale(.7);} }
+.sync-bar { width: 46px; height: 3px; background: rgba(20,20,19,.08); border-radius: 999px; overflow: hidden; flex-shrink: 0; }
+.sync-bar-fill { display: block; height: 100%; background: var(--ok); width: 0%; border-radius: 999px; transform-origin: left center; }
+.sync-status[data-state="live"] .sync-bar-fill { animation: sync-countdown 8s linear forwards; }
+.sync-status[data-state="syncing"] .sync-bar-fill { animation: sync-shuttle .9s ease-in-out infinite; background: var(--warn); width: 30%; }
+@keyframes sync-countdown { 0% { width: 0%; } 100% { width: 100%; } }
+@keyframes sync-shuttle { 0% { transform: translateX(0%);} 50% { transform: translateX(160%);} 100% { transform: translateX(0%);} }
+
+/* ===== Widgets ===== */
+.widgets { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 34px; }
+.widget { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 18px 20px 16px; }
+.widget h2 { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); font-weight: 600; margin-bottom: 12px; }
+.widget .big { font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.widget .big .of { font-size: 16px; color: var(--ink-4); font-weight: 500; }
+.widget .cap { margin-top: 8px; font-size: 12.5px; color: var(--ink-3); }
+.widget .cap strong { color: var(--ink-1); font-weight: 600; }
+.widget.is-gap .big { color: var(--gap); }
+.widget.is-ok .big { color: var(--ok); }
+
+/* ===== Section heading ===== */
+.section-head { display: flex; align-items: baseline; gap: 12px; margin: 0 0 16px; }
+.section-head h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; }
+.section-head .count { font-size: 12px; color: var(--ink-4); font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+.section { margin-bottom: 38px; }
+
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+.unit, .person { position: relative; }
+.card-copy-ref {
+  position: absolute;
+  top: 10px; right: 10px;
+  opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.unit:hover .card-copy-ref,
+.unit:focus-within .card-copy-ref,
+.person:hover .card-copy-ref,
+.person:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ===== Unit cards ===== */
+.units { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.unit {
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-xl);
+  overflow: visible; display: flex; flex-direction: column;
+  transition: transform var(--t-med), box-shadow var(--t-med), border-color var(--t-med);
+}
+.unit:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--ink-5); }
+.unit .stripe { height: 4px; background: var(--unit-accent, var(--accent)); border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+.unit .body { padding: 18px 20px 18px; display: flex; flex-direction: column; flex-grow: 1; }
+.unit .head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; margin-bottom: 4px; }
+.unit h3 { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.15; }
+.unit .pkg { font-size: 12px; color: var(--ink-4); margin-bottom: 14px; }
+
+.status-badge {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em;
+  padding: 4px 9px; border-radius: 4px; white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.status-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.status-badge.healthy { color: var(--ok); background: var(--ok-tint); }
+.status-badge.watch   { color: var(--warn); background: var(--warn-tint); }
+.status-badge.risk    { color: var(--gap); background: var(--gap-tint); }
+.status-badge.new     { color: var(--info); background: var(--info-tint); }
+.status-badge.blocked { color: var(--idle); background: var(--idle-tint); }
+
+.unit .tam-row { font-size: 12.5px; color: var(--ink-3); margin-bottom: 12px; }
+.unit .tam-row .lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-4); font-weight: 600; display: block; margin-bottom: 3px; }
+.unit .tam-row .nm { font-size: 14px; font-weight: 600; color: var(--ink-1); }
+.unit .tam-row .nm.tbd { color: var(--ink-4); font-style: italic; }
+
+.member-chips { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 14px; }
+.member-chip {
+  font-size: 11.5px; font-weight: 500; color: var(--ink-2);
+  background: var(--bg-sunken); border-radius: 999px; padding: 3px 10px;
+}
+.member-chips .none { font-size: 12px; color: var(--ink-4); font-style: italic; }
+
+/* margin bar */
+.margin { margin-bottom: 14px; }
+.margin .section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-4); font-weight: 700; margin-bottom: 6px; }
+.margin-bar { height: 8px; background: var(--bg-sunken); border-radius: 999px; overflow: hidden; margin-bottom: 6px; }
+.margin-fill { height: 100%; border-radius: 999px; transition: width var(--t-med); }
+.margin-fill.hi { background: var(--ok); }
+.margin-fill.mid { background: var(--warn); }
+.margin-fill.lo { background: var(--gap); }
+.margin-cap { font-size: 12px; color: var(--ink-3); }
+.margin-cap strong { color: var(--ink-1); font-weight: 600; }
+.margin .unknown { font-size: 12px; color: var(--ink-4); font-style: italic; }
+
+.unit .note { font-size: 12.5px; color: var(--ink-3); line-height: 1.5; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--line-soft); }
+.unit .note .src { display: inline-block; margin-top: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-4); transition: color var(--t-fast); }
+.unit .note .src:hover { color: var(--accent-deep); }
+
+/* ===== Roster ===== */
+.roster-group { margin-bottom: 26px; }
+.roster-group .grp-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .1em; font-weight: 700;
+  color: var(--ink-3); margin-bottom: 12px; display: flex; align-items: center; gap: 8px;
+}
+.roster-group .grp-label .n { color: var(--ink-4); font-weight: 500; font-family: 'JetBrains Mono', monospace; font-size: 10.5px; }
+.people { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+.person {
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l);
+  padding: 16px 16px 14px; display: flex; flex-direction: column;
+  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.person:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--ink-5); }
+.person .p-head { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 3px; }
+.avatar {
+  width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 12.5px; font-weight: 700; color: var(--accent-deep);
+  background: var(--accent-tint); border: 1px solid #f0d4c6;
+  font-family: 'JetBrains Mono', monospace;
+}
+.person .p-name { font-size: 14.5px; font-weight: 700; letter-spacing: -0.005em; line-height: 1.2; }
+.person .p-title { font-size: 12px; color: var(--ink-3); margin-top: 1px; }
+.person .badges { display: flex; gap: 5px; margin-left: auto; flex-shrink: 0; }
+.mini-badge {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  padding: 3px 6px; border-radius: 3px; white-space: nowrap;
+}
+.mini-badge.tam { color: var(--accent-deep); background: var(--accent-tint); }
+.mini-badge.star { color: var(--warn); background: var(--warn-tint); }
+
+.person .p-meta { display: flex; gap: 10px; flex-wrap: wrap; margin: 10px 0 8px; font-size: 11.5px; color: var(--ink-3); }
+.person .p-meta .m { display: inline-flex; align-items: center; gap: 4px; }
+.person .p-meta .m .k { color: var(--ink-4); }
+.person .p-meta .m .v { font-weight: 600; color: var(--ink-1); font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+
+.skill-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.skill-chip { font-size: 10.5px; font-weight: 500; color: var(--ink-3); border: 1px solid var(--line); border-radius: 4px; padding: 2px 7px; }
+.unit-chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 10px; }
+.unit-chip { font-size: 10.5px; font-weight: 500; color: var(--info); background: var(--info-tint); border-radius: 999px; padding: 2px 8px; }
+
+.person .p-note { font-size: 12px; color: var(--ink-3); line-height: 1.5; margin-top: auto; padding-top: 10px; border-top: 1px solid var(--line-soft); }
+
+/* ===== Bottom strips ===== */
+.strips { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.strip { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 18px 20px; }
+.strip h3 { font-size: 13px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.strip h3 .n { font-size: 10.5px; color: var(--ink-4); font-weight: 500; font-family: 'JetBrains Mono', monospace; }
+.strip ul { list-style: none; }
+.strip li { display: flex; align-items: baseline; gap: 8px; padding: 7px 0; border-bottom: 1px solid var(--line-soft); font-size: 12.5px; }
+.strip li:last-child { border-bottom: none; }
+.strip li .nm { font-weight: 600; color: var(--ink-1); }
+.strip li .rl { color: var(--ink-3); line-height: 1.45; }
+.pill {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  padding: 2px 7px; border-radius: 999px; white-space: nowrap; flex-shrink: 0;
+}
+.pill.planned { color: var(--info); background: var(--info-tint); }
+.pill.paused  { color: var(--idle); background: var(--idle-tint); }
+.pill.gone    { color: var(--ink-4); background: var(--bg-sunken); }
+
+.empty-note { font-size: 12.5px; color: var(--ink-4); font-style: italic; padding: 4px 0 12px; }
+
+@media (max-width: 980px) {
+  .widgets { grid-template-columns: repeat(2, 1fr); }
+  .units, .people { grid-template-columns: repeat(2, 1fr); }
+  .strips { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .app { padding: 18px 16px 80px; }
+  .widgets, .units, .people { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+<div class="app">
+
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Back to the vault home dashboard">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle"
+              aria-label="Switch to dark theme"
+              title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      <span>CPS Team</span>
+      <span class="version-pill">v0.1.3</span>
+    </div>
+    <h1>The Backstage Crew <span class="accent">.</span></h1>
+    <div class="submeta">
+      <span><strong id="headCount">0</strong> on the crew</span>
+      <span class="dot"></span>
+      <span><strong id="unitCount">0</strong> delivery units</span>
+      <span class="dot"></span>
+      <span class="sync-status" data-state="offline" role="button" tabindex="0" title="">
+        <span class="dot"></span>
+        <span class="sync-label">Connecting</span>
+        <span class="sync-bar"><span class="sync-bar-fill"></span></span>
+      </span>
+    </div>
+  </header>
+
+  <section class="widgets" id="widgets" aria-label="Team overview"></section>
+
+  <section class="section">
+    <div class="section-head"><h2>Delivery Units</h2><span class="count" id="unitsSub"></span></div>
+    <div class="units" id="units" aria-label="Client delivery units"></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>Team Roster</h2><span class="count" id="rosterSub"></span></div>
+    <div id="roster" aria-label="Team roster"></div>
+  </section>
+
+  <section class="section">
+    <div class="strips" id="strips" aria-label="Recruitment and alumni"></div>
+  </section>
+
+</div>
+
+<script>
+/* ============================================================
+   Minimal YAML frontmatter parser (shared pattern with the
+   Sales / Partnerships dashboards). Supports scalars, inline +
+   block arrays, block objects, arrays of objects with nested arrays.
+   ============================================================ */
+function parseYamlFrontmatter(md) {
+  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  if (!m) return null;
+  const lines = m[1].split('\n');
+  const root = {};
+  const stack = [{ indent: -1, container: root, key: null }];
+
+  const stripComment = (line) => {
+    let q = null;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (q) { if (c === q && line[i-1] !== '\\') q = null; }
+      else if (c === '"' || c === "'") q = c;
+      else if (c === '#' && (i === 0 || /\s/.test(line[i-1]))) return line.slice(0, i).replace(/\s+$/, '');
+    }
+    return line.replace(/\s+$/, '');
+  };
+  const sv = (raw) => {
+    let v = raw.trim();
+    if (v === '') return '';
+    if (v === 'null' || v === '~') return null;
+    if (v === 'true') return true;
+    if (v === 'false') return false;
+    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) return v.slice(1, -1);
+    if (v.startsWith('[') && v.endsWith(']')) {
+      const inner = v.slice(1, -1).trim();
+      return inner ? inner.split(',').map(s => sv(s)) : [];
+    }
+    if (/^-?\d+$/.test(v)) return parseInt(v, 10);
+    if (/^-?\d+\.\d+$/.test(v)) return parseFloat(v);
+    return v;
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    if (!raw || /^\s*$/.test(raw)) continue;
+    const nc = stripComment(raw);
+    if (!nc.trim()) continue;
+    const indent = nc.match(/^(\s*)/)[1].length;
+    const trimmed = nc.trim();
+    while (stack.length > 1 && indent <= stack[stack.length-1].indent) stack.pop();
+    const top = stack[stack.length-1];
+
+    if (trimmed.startsWith('- ')) {
+      const item = trimmed.slice(2).trim();
+      if (!Array.isArray(top.container)) continue;
+      if (item.includes(':')) {
+        const obj = {};
+        top.container.push(obj);
+        const ci = item.indexOf(':');
+        const k = item.slice(0, ci).trim();
+        const val = item.slice(ci+1).trim();
+        if (val !== '') obj[k] = sv(val);
+        stack.push({ indent, container: obj, key: null });
+      } else {
+        top.container.push(sv(item));
+      }
+      continue;
+    }
+
+    const ci = trimmed.indexOf(':');
+    if (ci === -1) continue;
+    const key = trimmed.slice(0, ci).trim();
+    const val = trimmed.slice(ci+1).trim();
+    const parent = top.container;
+    if (val === '') {
+      let ni = i + 1;
+      while (ni < lines.length && /^\s*(#.*)?$/.test(lines[ni])) ni++;
+      const nl = lines[ni] || '';
+      const nIndent = nl.match(/^(\s*)/)[1].length;
+      const nTrim = nl.trim();
+      if (nTrim.startsWith('- ') && nIndent > indent) {
+        const arr = []; if (Array.isArray(parent)) parent.push(arr); else parent[key] = arr;
+        stack.push({ indent, container: arr, key });
+      } else if (nIndent > indent && nTrim.includes(':')) {
+        const obj = {}; if (Array.isArray(parent)) parent.push(obj); else parent[key] = obj;
+        stack.push({ indent, container: obj, key });
+      } else {
+        if (Array.isArray(parent)) parent.push(null); else parent[key] = null;
+      }
+    } else {
+      const value = sv(val);
+      if (Array.isArray(parent)) parent.push({ [key]: value }); else parent[key] = value;
+    }
+  }
+  return { frontmatter: root, body: md.slice(m[0].length) };
+}
+
+/* ============================================================
+   State + helpers
+   ============================================================ */
+const $ = (s, r=document) => r.querySelector(s);
+const OBSIDIAN_VAULT = 'ideas-vault';
+const VAULT_BASE = '02_Areas/Sonrisa/CPS/';
+const SOURCE_FILE = '/02_Areas/Sonrisa/CPS/Team/team.md';
+const DASH_STEM = 'team';
+let POLL_INTERVAL_MS = 8000;
+
+let MEMBERS = [], UNITS = [], ALUMNI = [], RECRUIT = [];
+let syncState = 'offline', syncTooltip = '', lastMd = null;
+let pollTimer = null, lastSyncAt = null, tickTimer = null;
+
+const GROUP_ORDER = ['Leadership', 'Architect', 'Sales Engineer', 'Experienced', 'Young Talent', 'Contractor'];
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escapeAttr(s) {
+  return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function obsidianOpen(filePath) {
+  return `obsidian://open?vault=${encodeURIComponent(OBSIDIAN_VAULT)}&file=${encodeURIComponent(filePath)}`;
+}
+function toSlug(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+function copyText(text, el) {
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  });
+}
+function wireCopyRef(container) {
+  container.querySelectorAll('.card-copy-ref').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const card = btn.closest('[data-card-id]');
+      if (!card) return;
+      copyText(DASH_STEM + ':' + card.dataset.cardId, btn);
+    };
+  });
+}
+const COPY_BTN_HTML = `<button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>`;
+function initials(name) {
+  const parts = String(name || '').replace(/[,(].*$/, '').trim().split(/\s+/).filter(Boolean);
+  if (!parts.length) return '?';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[parts.length-1][0]).toUpperCase();
+}
+function tamAssigned(t) { return t && String(t).trim() && String(t).trim().toUpperCase() !== 'TBD'; }
+
+/* ============================================================
+   Render: widgets
+   ============================================================ */
+function renderWidgets() {
+  const total = MEMBERS.length;
+  const contractors = MEMBERS.filter(m => m.group === 'Contractor').length;
+  const engineers = total - contractors;
+  const tams = MEMBERS.filter(m => m.tam).length;
+  const unitCovered = UNITS.filter(u => tamAssigned(u.tam)).length;
+  const profits = UNITS.map(u => u.profit).filter(p => typeof p === 'number');
+  const avgProfit = profits.length ? Math.round(profits.reduce((a,b)=>a+b,0) / profits.length) : null;
+  const risks = UNITS.filter(u => u.status === 'risk' || u.status === 'blocked').length;
+
+  $('#headCount').textContent = total;
+  $('#unitCount').textContent = UNITS.length;
+
+  $('#widgets').innerHTML = `
+    <div class="widget">
+      <h2>Headcount</h2>
+      <div class="big tabular">${total}</div>
+      <div class="cap"><strong>${engineers}</strong> engineers + <strong>${contractors}</strong> contractor</div>
+    </div>
+    <div class="widget">
+      <h2>Delivery units</h2>
+      <div class="big tabular">${UNITS.length}<span class="of"> / ${unitCovered} TAM'd</span></div>
+      <div class="cap"><strong>${tams}</strong> people hold a TAM hat</div>
+    </div>
+    <div class="widget is-ok">
+      <h2>Avg margin</h2>
+      <div class="big tabular">${avgProfit != null ? avgProfit + '%' : '—'}</div>
+      <div class="cap">${profits.length} unit${profits.length===1?'':'s'} with reported margin</div>
+    </div>
+    <div class="widget ${risks ? 'is-gap' : ''}">
+      <h2>At risk</h2>
+      <div class="big tabular">${risks}</div>
+      <div class="cap">risk or blocked units</div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   Render: delivery units
+   ============================================================ */
+function statusLabel(s) {
+  return ({ healthy:'Healthy', watch:'Watch', risk:'Risk', new:'New', blocked:'Blocked' })[s] || s || '—';
+}
+function marginClass(p) { return p >= 60 ? 'hi' : p >= 45 ? 'mid' : 'lo'; }
+
+function renderUnits() {
+  const wrap = $('#units');
+  $('#unitsSub').textContent = `${UNITS.length} clients`;
+  if (!UNITS.length) { wrap.innerHTML = `<div class="empty-note">No unit data. Check Team/team.md.</div>`; return; }
+
+  wrap.innerHTML = UNITS.map(u => {
+    const members = Array.isArray(u.members) ? u.members : [];
+    const memberChips = members.length
+      ? members.map(m => `<span class="member-chip">${escapeHtml(m)}</span>`).join('')
+      : `<span class="none">members TBD</span>`;
+    const tamHtml = tamAssigned(u.tam)
+      ? `<span class="nm">${escapeHtml(u.tam)}</span>`
+      : `<span class="nm tbd">unassigned</span>`;
+    const hasProfit = typeof u.profit === 'number';
+    const marginHtml = hasProfit ? `
+        <div class="margin-bar"><div class="margin-fill ${marginClass(u.profit)}" style="width:${Math.min(100, u.profit)}%"></div></div>
+        <div class="margin-cap"><strong>${u.profit}%</strong> margin</div>`
+      : `<div class="unknown">margin not reported</div>`;
+    const srcLink = u.source_file
+      ? `<a class="src" href="${obsidianOpen(VAULT_BASE + u.source_file)}">${escapeHtml(u.source_file.split('/').pop())} ↗</a>`
+      : '';
+
+    return `
+      <article class="unit" data-card-id="${escapeHtml(toSlug(u.client || 'unit'))}" style="--unit-accent:${escapeAttr(u.accent || 'var(--accent)')}">
+        ${COPY_BTN_HTML}
+        <div class="stripe"></div>
+        <div class="body">
+          <div class="head">
+            <h3>${escapeHtml(u.client)}</h3>
+            <span class="status-badge ${u.status || 'healthy'}">${statusLabel(u.status)}</span>
+          </div>
+          <div class="pkg">${escapeHtml(u.package || '')}</div>
+          <div class="tam-row"><span class="lbl">TAM</span>${tamHtml}</div>
+          <div class="member-chips">${memberChips}</div>
+          <div class="margin"><div class="section-label">Profitability</div>${marginHtml}</div>
+          ${u.note ? `<div class="note">${escapeHtml(u.note)}${srcLink}</div>` : (srcLink ? `<div class="note">${srcLink}</div>` : '')}
+        </div>
+      </article>`;
+  }).join('');
+}
+
+/* ============================================================
+   Render: team roster grouped by role tier
+   ============================================================ */
+function renderRoster() {
+  const wrap = $('#roster');
+  $('#rosterSub').textContent = `${MEMBERS.length} people`;
+  if (!MEMBERS.length) { wrap.innerHTML = `<div class="empty-note">No roster data. Check Team/team.md.</div>`; return; }
+
+  const groups = {};
+  MEMBERS.forEach(m => { (groups[m.group || 'Other'] = groups[m.group || 'Other'] || []).push(m); });
+  const order = [...GROUP_ORDER.filter(g => groups[g]), ...Object.keys(groups).filter(g => !GROUP_ORDER.includes(g))];
+
+  wrap.innerHTML = order.map(g => {
+    const people = groups[g];
+    const cards = people.map(m => {
+      const badges = [
+        m.tam ? `<span class="mini-badge tam" title="Technical Account Manager">TAM</span>` : '',
+        m.star ? `<span class="mini-badge star" title="Standout">★</span>` : ''
+      ].join('');
+      const meta = [
+        m.level ? `<span class="m"><span class="k">level</span> <span class="v">${escapeHtml(m.level)}</span></span>` : '',
+        m.location ? `<span class="m"><span class="k">@</span> <span class="v">${escapeHtml(m.location)}</span></span>` : ''
+      ].join('');
+      const skills = Array.isArray(m.skills) && m.skills.length
+        ? `<div class="skill-chips">${m.skills.map(s => `<span class="skill-chip">${escapeHtml(s)}</span>`).join('')}</div>` : '';
+      const units = Array.isArray(m.units) && m.units.length
+        ? `<div class="unit-chips">${m.units.map(u => `<span class="unit-chip">${escapeHtml(u)}</span>`).join('')}</div>` : '';
+      return `
+        <article class="person" data-card-id="member/${escapeHtml(toSlug(m.name || 'member'))}">
+          ${COPY_BTN_HTML}
+          <div class="p-head">
+            <span class="avatar">${escapeHtml(initials(m.name))}</span>
+            <div>
+              <div class="p-name">${escapeHtml(m.name)}</div>
+              <div class="p-title">${escapeHtml(m.title || '')}</div>
+            </div>
+            <div class="badges">${badges}</div>
+          </div>
+          ${meta ? `<div class="p-meta">${meta}</div>` : ''}
+          ${skills}
+          ${units}
+          ${m.note ? `<div class="p-note">${escapeHtml(m.note)}</div>` : ''}
+        </article>`;
+    }).join('');
+    return `
+      <div class="roster-group">
+        <div class="grp-label">${escapeHtml(g)} <span class="n">${people.length}</span></div>
+        <div class="people">${cards}</div>
+      </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   Render: recruitment + alumni strips
+   ============================================================ */
+function renderStrips() {
+  const recruitRows = RECRUIT.length
+    ? RECRUIT.map(r => `<li><span class="pill ${r.status || 'planned'}">${escapeHtml(r.status || 'planned')}</span><span><span class="nm">${escapeHtml(r.name)}</span> <span class="rl">${escapeHtml(r.note || '')}</span></span></li>`).join('')
+    : `<li class="rl">No open roles.</li>`;
+  const alumniRows = ALUMNI.length
+    ? ALUMNI.map(a => `<li><span class="pill gone">left</span><span><span class="nm">${escapeHtml(a.name)}</span> <span class="rl">${escapeHtml(a.reason || '')}</span></span></li>`).join('')
+    : `<li class="rl">No alumni recorded.</li>`;
+
+  $('#strips').innerHTML = `
+    <div class="strip">
+      <h3>Recruitment pipeline <span class="n">${RECRUIT.length}</span></h3>
+      <ul>${recruitRows}</ul>
+    </div>
+    <div class="strip">
+      <h3>Alumni <span class="n">${ALUMNI.length}</span></h3>
+      <ul>${alumniRows}</ul>
+    </div>
+  `;
+}
+
+function renderAll() { renderWidgets(); renderUnits(); renderRoster(); renderStrips(); wireCopyRef(document); }
+
+/* ============================================================
+   Sync (read-only fetch, 8s poll)
+   ============================================================ */
+function syncLabel(state) {
+  switch (state) {
+    case 'live': {
+      if (!lastSyncAt) return 'Live';
+      const ago = Math.max(0, Math.floor((Date.now() - lastSyncAt) / 1000));
+      if (ago < 2) return 'Live, just updated';
+      const next = Math.max(0, Math.ceil(POLL_INTERVAL_MS/1000 - ago));
+      return `Updated ${ago}s ago, next in ${next}s`;
+    }
+    case 'syncing': return 'Syncing';
+    case 'error':   return 'Offline, click to retry';
+    default:        return 'Connecting';
+  }
+}
+function setSyncState(state, tooltip='') {
+  syncState = state; syncTooltip = tooltip;
+  const st = $('.sync-status');
+  if (st) { st.dataset.state = state; st.title = tooltip; const l = $('.sync-label', st); if (l) l.textContent = syncLabel(state); }
+}
+function tickSyncLabel() {
+  const st = $('.sync-status'); if (!st) return;
+  const l = $('.sync-label', st); if (l) l.textContent = syncLabel(st.dataset.state || syncState);
+}
+function resetSyncBar() {
+  const f = $('.sync-bar-fill'); if (!f) return;
+  f.style.animation = 'none'; f.offsetHeight; f.style.animation = '';
+}
+
+async function pollVault({ silent=false } = {}) {
+  if (!silent) setSyncState('syncing', 'Reading team.md...');
+  try {
+    const res = await fetch(SOURCE_FILE, { cache: 'no-store' });
+    if (!res.ok) throw new Error(SOURCE_FILE + ' returned ' + res.status);
+    const md = await res.text();
+    if (md !== lastMd) {
+      lastMd = md;
+      const parsed = parseYamlFrontmatter(md);
+      const fm = parsed ? parsed.frontmatter : {};
+      MEMBERS = Array.isArray(fm.members) ? fm.members : [];
+      UNITS   = Array.isArray(fm.units) ? fm.units : [];
+      ALUMNI  = Array.isArray(fm.alumni) ? fm.alumni : [];
+      RECRUIT = Array.isArray(fm.recruitment) ? fm.recruitment : [];
+      renderAll();
+    }
+    lastSyncAt = Date.now();
+    const ts = new Date().toLocaleTimeString();
+    setSyncState('live', `Live, ${SOURCE_FILE}. ${MEMBERS.length} people, ${UNITS.length} units. Last check ${ts}. Polls every ${POLL_INTERVAL_MS/1000}s. Click to refresh now.`);
+    resetSyncBar();
+  } catch (e) {
+    console.warn('Sync failed', e);
+    setSyncState('error', `Cannot fetch ${SOURCE_FILE}. Serve over HTTP (start the dash server or npx serve . in vault root). ${e.message}`);
+  }
+}
+function startPolling() { if (!pollTimer) pollTimer = setInterval(() => pollVault({ silent: true }), POLL_INTERVAL_MS); }
+function startTicker() { if (!tickTimer) tickTimer = setInterval(tickSyncLabel, 1000); }
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.sync-status')) pollVault({ silent: false });
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.classList?.contains('sync-status')) {
+    e.preventDefault(); pollVault({ silent: false });
+  }
+});
+
+/* ============================================================
+   File-watcher push channel (SSE from dash-server.mjs).
+   ============================================================ */
+function connectEventStream() {
+  if (typeof EventSource === 'undefined') return;
+  let es;
+  try { es = new EventSource('/__events'); } catch (e) { return; }
+  const restartPolling = (ms) => {
+    POLL_INTERVAL_MS = ms;
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    startPolling();
+  };
+  es.addEventListener('open', () => restartPolling(30000));
+  es.addEventListener('change', () => pollVault({ silent: true }));
+  es.addEventListener('error', () => restartPolling(8000));
+}
+
+/* ============================================================
+   Boot
+   ============================================================ */
+(async () => {
+  await pollVault();
+  startPolling();
+  startTicker();
+  connectEventStream();
+})();
+
+/* ===== Theme toggle (DS 0.3.0) ===== */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+document.getElementById('themeToggle').addEventListener('click', function() {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+});
+(function initTheme() {
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  setTheme(t);
+})();
+</script>
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>

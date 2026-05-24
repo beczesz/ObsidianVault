@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Broker — Sales Engine Observatory.   Version: 0.5.1
+  =============================================================================
+  The Broker Dashboard is the representation layer for the BDOS Sales Engine
+  Executor (Broker v0.2). It functions as:
+    • Cross-project sales pipeline view
+    • Lead-level action queue (today's priorities)
+    • Sales learnings meta-cognition
+    • Presto sibling cross-link (distribution layer duality)
+
+  Sister dashboard: Presto (/_dashboards/presto/index.html)
+  Broker = sales one-to-one  ↔  Presto = marketing one-to-many
+
+  Data sources (all via 8s poll + SSE push):
+    /00_Prompts/BDOS/agents/broker.md
+        — Broker version + identity
+    /_dashboards/00_SALES_INDEX.md
+        — cross-project sales index (likely doesn't exist yet — empty state)
+    /02_Areas/*/Sales/Pipeline.md
+        — per-Area pipeline kanban (probably none exist yet — empty state)
+    /02_Areas/*/Sales/Cohorts/*/COHORT.md
+        — individual cohort state files
+    /02_Areas/*/Sales/Cohorts/*/Results-*.md
+        — cohort analytics
+    /00_Prompts/BDOS/agents/broker/sales-learnings/active/*.md
+        — active sales learnings (8 types)
+    /00_Prompts/BDOS/agents/broker/sales-learnings/proposals/*.md
+        — pending learning proposals
+    /00_Prompts/BDOS/agents/broker/sales-learnings/retired/*.md
+        — retired learnings
+    /00_Prompts/BDOS/agents/broker/reflections/*.md
+        — weekly/monthly sales reflections
+    (Phase 2.B) /00_Prompts/BDOS/agents/broker/logs/operational/*.md
+        — operational logs (currently empty)
+
+  Layout (10 panels):
+    1.  Header strip          — version, active cohorts, total leads, win rate
+    2.  Sales Pipeline Overview — cross-project stages (empty state)
+    3.  Today's Sales Actions — lead-level priorities (empty state)
+    4.  Active Cohorts Grid   — per-Area color-identity coded
+    5.  Lead Conversion Funnel — visual funnel (empty state)
+    6.  Sales Learnings       — 8 types with active/proposed/retired counts
+    7.  Recent Outreach Drafts — drafts awaiting send (empty state)
+    8.  Reflection Panel      — latest weekly/monthly reflection
+    9.  Cross-link with Presto — sister dashboard reference
+   10.  Operational Intelligence — Phase 2.C placeholder
+
+  Read-only. Edit markdown in Obsidian — dashboard auto-syncs within 8s.
+  Served by _dashboards/_tools/dash-server.mjs (port 4321).
+
+  Visual tone: pipeline/CRM adjacent, clean. Stage-colored funnel.
+
+  Audit trail:
+        0.5.0 (2026-05-24) — tend: schema realigned to brief (agent_events → agent_logs).
+          log_level/input_tokens/output_tokens/total_tokens column names, error/critical levels.
+    0.4.0 (2026-05-24) — tend: Logs panel added (agent_observability.db sidecar).
+          Per-agent summary cards: token totals, avg duration, error count, recent
+          events, slowest op, highest-token op. Scoped to LOGS_AGENT='broker'.
+          DS 0.4.0.
+    0.3.0 (2026-05-24) — promote: event-driven live updates (DS 0.4.0).
+          live-updates.js imported. LiveUpdates.subscribe(pollVault) replaces
+          primary startPolling + connectEventStream. Status indicator pill
+          mounted in masthead toprow. DS 0.4.0.
+    0.2.0 (2026-05-24) — tend: avatar in masthead (live from AGENT_PROFILES.md, emoji 🤝,
+          color #A47551). Capabilities panel added (Panel 11) — tools, MCPs, APIs, plugins,
+          slash commands, can_invoke, test_access_trace. 8s auto-refresh. DS 0.3.0.
+    0.1.0 (2026-05-24) — initial build. Sales Engine Observatory for BDOS
+          Broker v0.2. 10 panels: header strip, cross-project pipeline (empty
+          state), today's action queue (empty state), active cohorts grid
+          (area-identity tokens), lead conversion funnel (empty state), sales
+          learnings (8-type lifecycle meta-cognition), outreach drafts (empty),
+          reflection panel (empty), Presto cross-link, operational intelligence
+          (Phase 2.C placeholder). Schema-aware parsers: COHORT.md frontmatter,
+          broker.sales-learning.v1. Graceful empty-state on all panels.
+          Area-identity tokens from Presto family. DS 0.3.0 aligned.
+    0.5.1 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
+
+  Conventions: see _dashboards/_design/DESIGN_SYSTEM.md (DS 0.3.0).
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Broker — Sales Engine Observatory</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M8 24V14l8-10 8 10v10' fill='none' stroke='%23D97757' stroke-width='1.8' stroke-linejoin='round'/%3E%3Crect x='12' y='18' width='8' height='6' rx='1' fill='%23D97757' opacity='.4'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Surfaces — cream paper */
+  --bg-page:   #faf9f5;
+  --bg-elev:   #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint:   #f5f4ef;
+
+  /* Ink scale */
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+
+  /* Lines */
+  --line:      #e5e4df;
+  --line-soft: #efede7;
+
+  /* Accent */
+  --accent:      #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  /* Status */
+  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;  --gap-tint:  #fbeae6;
+  --idle:      #7a7a76;  --idle-tint: #efeeeb;
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+
+  /* Radius */
+  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
+
+  /* Motion */
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+
+  /* Broker-local area-identity tokens (family from Presto) */
+  --area-dh:      #2d6a4f;  --area-dh-tint:  #d8f3dc;
+  --area-cps:     #1d4e89;  --area-cps-tint: #dbeafe;
+  --area-exar:    #6b21a8;  --area-exar-tint:#ede9fe;
+  --area-nav:     #b45309;  --area-nav-tint: #fef3c7;
+  --area-ignis:   #c0392b;  --area-ignis-tint:#fbeae6;
+  --area-default: #6d6d6a;  --area-default-tint:#efeeeb;
+
+  /* Pipeline stage tokens */
+  --stage-qual:     #0e7490;  --stage-qual-tint:  #e0f2f7;
+  --stage-disc:     #1d4e89;  --stage-disc-tint:  #dbeafe;
+  --stage-prop:     #b45309;  --stage-prop-tint:  #fef3c7;
+  --stage-neg:      #b07a18;  --stage-neg-tint:   #fbf2dc;
+  --stage-won:      #1f7a4d;  --stage-won-tint:   #e6f3ec;
+  --stage-lost:     #7a7a76;  --stage-lost-tint:  #efeeeb;
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page: #1a1916; --bg-elev: #232220; --bg-sunken: #2c2a26; --bg-tint: #262420;
+  --ink-1: #f5f4ef; --ink-2: #d6d4ce; --ink-3: #a8a6a0; --ink-4: #7c7a74; --ink-5: #54524d;
+  --line: #36342f; --line-soft: #2c2a26;
+  --accent: #e08a6a; --accent-deep: #f0a085; --accent-tint: #3a2a22;
+  --ok: #5cc08a; --ok-tint: #1e3329; --warn: #d6a94a; --warn-tint: #352c18;
+  --gap: #e57c6e; --gap-tint: #3a221e; --idle: #9a9892; --idle-tint: #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  --area-dh-tint: #1a3325; --area-cps-tint: #1a2a40; --area-exar-tint: #2a1a40;
+  --area-nav-tint: #302010; --area-ignis-tint: #3a1a18;
+  --stage-qual-tint: #0e2a30; --stage-disc-tint: #1a2a40; --stage-prop-tint: #302010;
+  --stage-neg-tint: #352c18; --stage-won-tint: #1e3329; --stage-lost-tint: #2a2925;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page: #1a1916; --bg-elev: #232220; --bg-sunken: #2c2a26; --bg-tint: #262420;
+    --ink-1: #f5f4ef; --ink-2: #d6d4ce; --ink-3: #a8a6a0; --ink-4: #7c7a74; --ink-5: #54524d;
+    --line: #36342f; --line-soft: #2c2a26;
+    --accent: #e08a6a; --accent-deep: #f0a085; --accent-tint: #3a2a22;
+    --ok: #5cc08a; --ok-tint: #1e3329; --warn: #d6a94a; --warn-tint: #352c18;
+    --gap: #e57c6e; --gap-tint: #3a221e; --idle: #9a9892; --idle-tint: #2a2925;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1); background: var(--bg-page);
+  line-height: 1.45; min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Consolas, monospace; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-s); }
+button { font: inherit; background: transparent; border: 0; color: inherit; cursor: pointer; }
+
+.app { max-width: 1200px; margin: 0 auto; padding: 28px 36px 96px; }
+
+/* ===== Theme toggle (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+
+/* ===== Home link ===== */
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line);
+  padding: 5px 12px; border-radius: 999px;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); }
+
+/* ===== Masthead ===== */
+.masthead { padding-bottom: 28px; margin-bottom: 32px; border-bottom: 1px solid var(--line); }
+.masthead-toprow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: var(--ink-4); font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.eyebrow .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; font-weight: 500; }
+.masthead h1 { font-size: clamp(28px, 3.2vw, 42px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; color: var(--ink-1); margin-bottom: 10px; }
+.masthead h1 .accent { color: var(--accent); }
+.submeta { font-size: 14px; color: var(--ink-3); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+/* ===== Phase 2 Banner ===== */
+.phase-banner {
+  background: var(--warn-tint); border: 1px solid rgba(176,122,24,.25); border-radius: var(--radius-l);
+  padding: 10px 16px; margin-bottom: 24px; font-size: 12.5px; color: var(--warn);
+  display: flex; align-items: center; gap: 10px;
+}
+
+/* ===== Sync indicator ===== */
+.sync-status { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--ink-4); margin-top: 14px; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex-shrink: 0; transition: background var(--t-fast); }
+.sync-dot.syncing { background: var(--warn); animation: pulse 1s ease-in-out infinite; }
+.sync-dot.error { background: var(--gap); }
+.sync-bar-wrap { width: 64px; height: 3px; background: var(--line); border-radius: 99px; overflow: hidden; cursor: pointer; }
+.sync-bar { height: 100%; background: var(--accent); border-radius: 99px; transition: width linear 1s; width: 100%; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* ===== Widget strip ===== */
+.widget-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+.widget { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 16px 18px 14px; }
+.widget-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); font-weight: 500; margin-bottom: 6px; }
+.widget-value { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 500; color: var(--ink-1); line-height: 1.1; }
+.widget-sub { font-size: 11.5px; color: var(--ink-4); margin-top: 4px; }
+
+/* ===== Panels ===== */
+.panel { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 20px 22px; margin-bottom: 24px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.grid-2 .panel { margin-bottom: 0; }
+.panel-head { font-size: 14px; font-weight: 600; color: var(--ink-1); margin-bottom: 16px; padding-bottom: 10px; border-bottom: 1px solid var(--line-soft); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.panel-head .badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-4); background: var(--bg-sunken); border: 1px solid var(--line); padding: 1px 6px; border-radius: 99px; font-weight: 500; }
+
+/* ===== Pipeline stages ===== */
+.pipeline-stages { display: grid; grid-template-columns: repeat(6, 1fr); gap: 8px; }
+.stage-card { border-radius: var(--radius-m); padding: 12px 14px; text-align: center; border: 1px solid transparent; }
+.stage-card.qualification { background: var(--stage-qual-tint); border-color: rgba(14,116,144,.2); }
+.stage-card.discovery     { background: var(--stage-disc-tint); border-color: rgba(29,78,137,.2); }
+.stage-card.proposal      { background: var(--stage-prop-tint); border-color: rgba(180,83,9,.2); }
+.stage-card.negotiation   { background: var(--stage-neg-tint); border-color: rgba(176,122,24,.2); }
+.stage-card.won           { background: var(--stage-won-tint); border-color: rgba(31,122,77,.2); }
+.stage-card.lost          { background: var(--stage-lost-tint); border-color: rgba(122,122,118,.2); }
+.stage-name { font-size: 10px; text-transform: uppercase; letter-spacing: .08em; font-weight: 600; margin-bottom: 6px; }
+.stage-card.qualification .stage-name { color: var(--stage-qual); }
+.stage-card.discovery     .stage-name { color: var(--stage-disc); }
+.stage-card.proposal      .stage-name { color: var(--stage-prop); }
+.stage-card.negotiation   .stage-name { color: var(--stage-neg); }
+.stage-card.won           .stage-name { color: var(--stage-won); }
+.stage-card.lost          .stage-name { color: var(--stage-idle, var(--idle)); }
+.stage-count { font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; color: var(--ink-1); }
+.stage-sub { font-size: 10.5px; color: var(--ink-4); margin-top: 2px; }
+
+/* ===== Cohort grid ===== */
+.cohort-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.cohort-card {
+  border-radius: var(--radius-m); padding: 14px 16px; border-left: 3px solid;
+  background: var(--bg-sunken); border-top: 1px solid var(--line); border-right: 1px solid var(--line); border-bottom: 1px solid var(--line);
+}
+.cohort-card.area-dh   { border-left-color: var(--area-dh); }
+.cohort-card.area-cps  { border-left-color: var(--area-cps); }
+.cohort-card.area-exar { border-left-color: var(--area-exar); }
+.cohort-card.area-nav  { border-left-color: var(--area-nav); }
+.cohort-card.area-ignis{ border-left-color: var(--area-ignis); }
+.cohort-card.area-default { border-left-color: var(--area-default); }
+.cohort-area { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; font-weight: 600; margin-bottom: 4px; }
+.cohort-card.area-dh   .cohort-area { color: var(--area-dh); }
+.cohort-card.area-cps  .cohort-area { color: var(--area-cps); }
+.cohort-card.area-exar .cohort-area { color: var(--area-exar); }
+.cohort-card.area-nav  .cohort-area { color: var(--area-nav); }
+.cohort-card.area-ignis .cohort-area { color: var(--area-ignis); }
+.cohort-name { font-size: 13px; font-weight: 600; color: var(--ink-1); margin-bottom: 3px; }
+.cohort-meta { font-size: 11.5px; color: var(--ink-4); font-family: 'JetBrains Mono', monospace; }
+
+/* ===== Funnel ===== */
+.funnel { display: flex; flex-direction: column; gap: 6px; align-items: center; }
+.funnel-step {
+  border-radius: var(--radius-m); height: 44px; display: flex; align-items: center;
+  justify-content: space-between; padding: 0 18px; position: relative;
+  transition: width var(--t-med);
+}
+.funnel-step .funnel-label { font-size: 12px; font-weight: 500; color: var(--ink-1); }
+.funnel-step .funnel-count { font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500; color: var(--ink-2); }
+
+/* ===== Learning types ===== */
+.learning-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.learning-card { background: var(--bg-sunken); border: 1px solid var(--line-soft); border-radius: var(--radius-m); padding: 10px 12px; }
+.learning-type { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--accent-deep); font-weight: 500; margin-bottom: 4px; }
+.learning-counts { display: flex; gap: 4px; align-items: center; }
+.lc-badge { font-size: 10px; font-weight: 600; padding: 1px 6px; border-radius: 99px; }
+.lc-badge.active   { background: var(--ok-tint); color: var(--ok); }
+.lc-badge.proposed { background: var(--warn-tint); color: var(--warn); }
+.lc-badge.retired  { background: var(--idle-tint); color: var(--idle); }
+
+/* ===== Today's actions ===== */
+.action-list { list-style: none; }
+.action-item { display: flex; align-items: flex-start; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line-soft); font-size: 13px; }
+.action-item:last-child { border-bottom: none; }
+.action-num { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); font-weight: 600; width: 18px; flex-shrink: 0; }
+.action-lead { font-weight: 600; color: var(--ink-1); }
+.action-task { color: var(--ink-3); margin-left: 3px; }
+
+/* ===== Sibling cross-link ===== */
+.sibling-card {
+  display: flex; align-items: center; gap: 18px; padding: 18px 20px;
+  background: var(--accent-tint); border: 1px solid rgba(217,119,87,.2);
+  border-radius: var(--radius-l); text-decoration: none; color: inherit;
+  transition: border-color var(--t-fast), background var(--t-fast);
+}
+.sibling-card:hover { border-color: var(--accent); background: #f8e8df; }
+[data-theme="dark"] .sibling-card:hover { background: #4a2a1e; }
+.sibling-icon { font-size: 28px; opacity: .6; }
+.sibling-info { flex: 1; }
+.sibling-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--accent-deep); font-weight: 600; margin-bottom: 4px; }
+.sibling-name { font-size: 15px; font-weight: 700; color: var(--ink-1); margin-bottom: 3px; }
+.sibling-desc { font-size: 12.5px; color: var(--ink-3); }
+.sibling-arrow { font-size: 20px; color: var(--accent); opacity: .5; }
+
+/* ===== Empty state ===== */
+.empty-state { text-align: center; padding: 28px 20px; color: var(--ink-4); }
+.empty-state .empty-icon { font-size: 26px; margin-bottom: 8px; opacity: .4; }
+.empty-state p { font-size: 12.5px; line-height: 1.6; }
+.empty-state .setup-hint { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-5); margin-top: 6px; }
+.empty-state .cmd-chip {
+  display: inline-flex; align-items: center;
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+  color: var(--accent-deep); background: var(--accent-tint);
+  border: 1px solid rgba(217,119,87,.25); border-radius: var(--radius-s);
+  padding: 2px 8px; margin: 2px;
+}
+
+/* ===== Ops intel ===== */
+.ops-intel { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.ops-cell { background: var(--bg-sunken); border: 1px solid var(--line-soft); border-radius: var(--radius-m); padding: 12px 14px; }
+.ops-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-4); font-weight: 500; margin-bottom: 6px; }
+.ops-value { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 500; color: var(--ink-1); }
+.ops-sub { font-size: 11px; color: var(--ink-5); margin-top: 3px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 960px) {
+  .app { padding: 20px 18px 64px; }
+  .widget-strip { grid-template-columns: repeat(2, 1fr); }
+  .pipeline-stages { grid-template-columns: repeat(3, 1fr); }
+  .cohort-grid { grid-template-columns: repeat(2, 1fr); }
+  .grid-2 { grid-template-columns: 1fr; }
+  .learning-grid { grid-template-columns: repeat(2, 1fr); }
+  .ops-intel { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .pipeline-stages { grid-template-columns: repeat(2, 1fr); }
+  .cohort-grid { grid-template-columns: 1fr; }
+  .learning-grid { grid-template-columns: 1fr; }
+}
+/* ===== Avatar + Capabilities panel (0.2.0) ===== */
+.agent-avatar { display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; border:1.5px solid; font-size:26px; line-height:1; flex-shrink:0; transition:background .3s,border-color .3s; }
+.cap-panel { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:8px; }
+.cap-section { background:var(--bg-tint); border:1px solid var(--line); border-radius:8px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
+.cap-section-label { font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); margin-bottom:2px; }
+.cap-chip { display:inline-block; font-family:'JetBrains Mono',monospace; font-size:10.5px; padding:2px 7px; border-radius:4px; margin:2px 2px 2px 0; border:1px solid transparent; }
+.cap-chip.tool   { background:rgba(99,148,117,.13); border-color:rgba(99,148,117,.3); color:var(--ink-2); }
+.cap-chip.mcp    { background:rgba(91,124,153,.13); border-color:rgba(91,124,153,.3); color:var(--ink-2); }
+.cap-chip.api    { background:rgba(209,122,95,.13);  border-color:rgba(209,122,95,.3); color:var(--ink-2); }
+.cap-chip.plugin { background:rgba(164,117,81,.13);  border-color:rgba(164,117,81,.3); color:var(--ink-2); }
+.cap-chip.cmd    { background:rgba(107,91,149,.13);  border-color:rgba(107,91,149,.3); color:var(--ink-2); user-select:none; }
+.trace-row { display:flex; gap:8px; align-items:baseline; font-size:11px; }
+.trace-key { font-family:'JetBrains Mono',monospace; color:var(--ink-3); min-width:140px; flex-shrink:0; font-size:10.5px; }
+.trace-val { color:var(--ink-2); }
+.cap-panel-badge { font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--ink-4); background:var(--bg-tint); border:1px solid var(--line); padding:2px 8px; border-radius:999px; }
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+<div class="app">
+
+  <!-- ===== Masthead ===== -->
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ideas Vault
+      </a>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="agent-avatar" id="agentAvatar" title="Broker" style="background:rgba(164,117,81,.12);border-color:rgba(164,117,81,.3);">🤝</span>
+        <span id="liveStatusMount"></span>
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
+          <span class="theme-icon">&#9790;</span>
+          <span class="theme-label">Dark</span>
+        </button>
+      </div>
+    </div>
+    <div class="eyebrow">
+      <span class="dot"></span>
+      BDOS · Distribution Layer · Sales Engine
+      <span class="version-pill mono" id="versionPill">v0.4.0</span>
+    </div>
+    <h1>Broker <span class="accent">Observatory</span></h1>
+    <div class="submeta">
+      <span>Sales one-to-one — leads, cohorts, outreach, follow-ups</span>
+      <span id="agentVersion">agent v0.2</span>
+      <span id="lastActivity">loading…</span>
+    </div>
+    <div class="sync-status">
+      <span class="sync-dot" id="syncDot"></span>
+      <span id="syncLabel">loading…</span>
+      <div class="sync-bar-wrap" id="syncBarWrap" title="Click to refresh now">
+        <div class="sync-bar" id="syncBar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Phase 2 Banner ===== -->
+  <div class="phase-banner">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span><strong>Phase 2.B active — Broker v0.2 placeholder.</strong> Pipeline state files (<span class="mono" style="font-size:11px">00_SALES_INDEX.md</span>, <span class="mono" style="font-size:11px">Sales/Pipeline.md</span>, <span class="mono" style="font-size:11px">Cohorts/</span>) not yet created. All panels render gracefully. First invocation of <span class="mono" style="font-size:11px">/brk-plan</span> will scaffold the state structure. Phase 2.C (token intelligence) pending.</span>
+  </div>
+
+  <!-- ===== Panel 1: Header strip ===== -->
+  <div class="widget-strip">
+    <div class="widget">
+      <div class="widget-label">Active Cohorts</div>
+      <div class="widget-value mono" id="activeCohorts">0</div>
+      <div class="widget-sub" id="cohortsDetail">pipeline not yet created</div>
+    </div>
+    <div class="widget">
+      <div class="widget-label">Total Leads</div>
+      <div class="widget-value mono" id="totalLeads">0</div>
+      <div class="widget-sub">across all cohorts</div>
+    </div>
+    <div class="widget">
+      <div class="widget-label">Win Rate</div>
+      <div class="widget-value mono" id="winRate">—</div>
+      <div class="widget-sub">closed-won / total closed</div>
+    </div>
+    <div class="widget">
+      <div class="widget-label">Broker Agent</div>
+      <div class="widget-value mono" id="brokerVersion">v0.2</div>
+      <div class="widget-sub">9 modes · 11 slash commands</div>
+    </div>
+  </div>
+
+  <!-- ===== Panel 2: Sales Pipeline Overview ===== -->
+  <div class="panel">
+    <div class="panel-head">
+      Cross-Project Pipeline
+      <span class="badge" id="pipelineBadge">0 open leads</span>
+    </div>
+    <div class="pipeline-stages">
+      <div class="stage-card qualification">
+        <div class="stage-name">Qualification</div>
+        <div class="stage-count mono" id="stageQual">0</div>
+        <div class="stage-sub">leads</div>
+      </div>
+      <div class="stage-card discovery">
+        <div class="stage-name">Discovery</div>
+        <div class="stage-count mono" id="stageDisc">0</div>
+        <div class="stage-sub">leads</div>
+      </div>
+      <div class="stage-card proposal">
+        <div class="stage-name">Proposal</div>
+        <div class="stage-count mono" id="stageProp">0</div>
+        <div class="stage-sub">leads</div>
+      </div>
+      <div class="stage-card negotiation">
+        <div class="stage-name">Negotiation</div>
+        <div class="stage-count mono" id="stageNeg">0</div>
+        <div class="stage-sub">leads</div>
+      </div>
+      <div class="stage-card won">
+        <div class="stage-name">Closed-Won</div>
+        <div class="stage-count mono" id="stageWon">0</div>
+        <div class="stage-sub">leads</div>
+      </div>
+      <div class="stage-card lost">
+        <div class="stage-name">Closed-Lost</div>
+        <div class="stage-count mono" id="stageLost">0</div>
+        <div class="stage-sub">leads</div>
+      </div>
+    </div>
+    <div style="margin-top:14px;font-size:12px;color:var(--ink-4);">
+      Source: <span class="mono" style="font-size:11px">/_dashboards/00_SALES_INDEX.md</span> ·
+      Create with <span class="mono" style="font-size:11px">/brk-index</span>
+    </div>
+  </div>
+
+  <!-- ===== Panels 3 & 5: Today's Actions + Funnel ===== -->
+  <div class="grid-2">
+
+    <!-- Panel 3: Today's Sales Actions -->
+    <div class="panel">
+      <div class="panel-head">
+        Today's Sales Actions
+        <span class="badge" id="todayBadge">0 actions</span>
+      </div>
+      <div id="todayContent">
+        <div class="empty-state">
+          <div class="empty-icon">&#128197;</div>
+          <p>No active cohorts yet — today's queue will populate once Pipeline.md files exist.</p>
+          <p>Start with: <span class="cmd-chip">/brk-plan</span> to scaffold your first cohort.</p>
+          <p class="setup-hint">State file: 02_Areas/&lt;Area&gt;/Sales/Cohorts/&lt;slug&gt;/COHORT.md</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 5: Lead Conversion Funnel -->
+    <div class="panel">
+      <div class="panel-head">
+        Conversion Funnel
+        <span class="badge">visual — when data exists</span>
+      </div>
+      <div id="funnelContent">
+        <div class="empty-state">
+          <div class="empty-icon">&#128200;</div>
+          <p>Funnel will render once leads exist in the pipeline.</p>
+          <p>Stages: Qualification → Discovery → Proposal → Negotiation → Closed</p>
+          <p class="setup-hint">Conversion rate and drop-off percentage per stage</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== Panel 4: Active Cohorts Grid ===== -->
+  <div class="panel">
+    <div class="panel-head">
+      Active Cohorts
+      <span class="badge" id="cohortBadge">0 cohorts</span>
+    </div>
+    <div id="cohortContent">
+      <div class="empty-state">
+        <div class="empty-icon">&#127959;</div>
+        <p>No cohorts defined yet. A cohort groups a set of leads from one Area into a sales initiative.</p>
+        <p>Create with <span class="cmd-chip">/brk-plan --area=&lt;name&gt; --cohort="Q3 enterprise prospects"</span></p>
+        <p class="setup-hint">State: 02_Areas/&lt;Area&gt;/Sales/Cohorts/&lt;slug&gt;/COHORT.md</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Panel 6: Sales Learnings ===== -->
+  <div class="panel">
+    <div class="panel-head">
+      Sales Learnings
+      <span class="badge" id="learningsBadge">0 active</span>
+    </div>
+    <div class="learning-grid" id="learningGrid">
+      <!-- 8 learning types — rendered by JS, static fallback below -->
+      <div class="learning-card">
+        <div class="learning-type">objection-pattern</div>
+        <div class="learning-counts">
+          <span class="lc-badge active" id="lc-objection-active">0</span>
+          <span class="lc-badge proposed" id="lc-objection-proposed">0</span>
+          <span class="lc-badge retired" id="lc-objection-retired">0</span>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-type">cycle-timing</div>
+        <div class="learning-counts">
+          <span class="lc-badge active" id="lc-timing-active">0</span>
+          <span class="lc-badge proposed" id="lc-timing-proposed">0</span>
+          <span class="lc-badge retired" id="lc-timing-retired">0</span>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-type">cohort-signal</div>
+        <div class="learning-counts">
+          <span class="lc-badge active" id="lc-cohort-active">0</span>
+          <span class="lc-badge proposed" id="lc-cohort-proposed">0</span>
+          <span class="lc-badge retired" id="lc-cohort-retired">0</span>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-type">outreach-tone</div>
+        <div class="learning-counts">
+          <span class="lc-badge active" id="lc-tone-active">0</span>
+          <span class="lc-badge proposed" id="lc-tone-proposed">0</span>
+          <span class="lc-badge retired" id="lc-tone-retired">0</span>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-type">qualification-criteria</div>
+        <div class="learning-counts">
+          <span class="lc-badge active" id="lc-qual-active">0</span>
+          <span class="lc-badge proposed" id="lc-qual-proposed">0</span>
+          <span class="lc-badge retired" id="lc-qual-retired">0</span>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-type">competitor-context</div>
+        <div class="learning-counts">
+          <span class="lc-badge active" id="lc-comp-active">0</span>
+          <span class="lc-badge proposed" id="lc-comp-proposed">0</span>
+          <span class="lc-badge retired" id="lc-comp-retired">0</span>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-type">loss-pattern</div>
+        <div class="learning-counts">
+          <span class="lc-badge active" id="lc-loss-active">0</span>
+          <span class="lc-badge proposed" id="lc-loss-proposed">0</span>
+          <span class="lc-badge retired" id="lc-loss-retired">0</span>
+        </div>
+      </div>
+      <div class="learning-card">
+        <div class="learning-type">referral-mechanic</div>
+        <div class="learning-counts">
+          <span class="lc-badge active" id="lc-referral-active">0</span>
+          <span class="lc-badge proposed" id="lc-referral-proposed">0</span>
+          <span class="lc-badge retired" id="lc-referral-retired">0</span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;margin-top:12px;font-size:11px;color:var(--ink-4);">
+      <span><span class="lc-badge active">A</span> active</span>
+      <span><span class="lc-badge proposed">P</span> proposed</span>
+      <span><span class="lc-badge retired">R</span> retired</span>
+      <span style="margin-left:auto;">Cap: 15 active · 2000 token preamble</span>
+    </div>
+    <div style="font-size:11.5px;color:var(--ink-4);margin-top:6px;">
+      Source: <span class="mono" style="font-size:11px">/00_Prompts/BDOS/agents/broker/sales-learnings/active|proposals|retired/*.md</span>
+    </div>
+  </div>
+
+  <!-- ===== Panels 7 & 8: Outreach Drafts + Reflection ===== -->
+  <div class="grid-2">
+
+    <!-- Panel 7: Recent Outreach Drafts -->
+    <div class="panel">
+      <div class="panel-head">
+        Outreach Drafts Awaiting Send
+        <span class="badge" id="draftsBadge">0 pending</span>
+      </div>
+      <div id="draftsContent">
+        <div class="empty-state">
+          <div class="empty-icon">&#128394;</div>
+          <p>No outreach drafts pending.</p>
+          <p>Drafts are created by <span class="cmd-chip">/brk-run</span> and saved to <span class="mono" style="font-size:11px">Cohorts/&lt;slug&gt;/drafts/</span> awaiting your send.</p>
+          <p class="setup-hint">Human always sends — Broker only drafts.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel 8: Reflection Panel -->
+    <div class="panel">
+      <div class="panel-head">
+        Latest Reflection
+        <span class="badge" id="reflectionBadge">no reflections yet</span>
+      </div>
+      <div id="reflectionContent">
+        <div class="empty-state">
+          <div class="empty-icon">&#128161;</div>
+          <p>No sales reflections yet.</p>
+          <p>Run <span class="cmd-chip">/brk-reflect --period=weekly</span> after your first cohort has data to surface conversion patterns, cohort drift, and recommended adjustments.</p>
+          <p class="setup-hint">Source: /00_Prompts/BDOS/agents/broker/reflections/*.md</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== Panel 9: Cross-link with Presto ===== -->
+  <div class="panel">
+    <div class="panel-head">
+      Distribution Layer — Sister Dashboard
+    </div>
+    <a class="sibling-card" href="/_dashboards/presto/index.html">
+      <div class="sibling-icon">&#127892;</div>
+      <div class="sibling-info">
+        <div class="sibling-label">Sister dashboard · one-to-many marketing</div>
+        <div class="sibling-name">Presto — Marketing Observatory</div>
+        <div class="sibling-desc">Campaign command center, audience intelligence, content lineage (Sage→adapt→publish→signal), audience learnings (8 types), discovery panel. Presto handles broadcast distribution — Broker handles one-to-one sales.</div>
+      </div>
+      <div class="sibling-arrow">→</div>
+    </a>
+    <div style="margin-top:14px;font-size:12.5px;color:var(--ink-3);">
+      <strong>Distribution layer duality:</strong>
+      Presto = marketing one-to-many (campaigns, channels, audience-scale) ↔ Broker = sales one-to-one (leads, deals, outreach, follow-up).
+      Both agents respect the cognition/distribution wall — neither writes to Sage's output, both can send resonance signals to
+      <span class="mono" style="font-size:11px">Ideas/_inbox/sage-signals/</span>.
+    </div>
+  </div>
+
+  <!-- ===== Panel 10: Operational Intelligence (Phase 2.C) ===== -->
+  <div class="panel">
+    <div class="panel-head">
+      Operational Intelligence
+      <span class="badge">Phase 2.C — pending</span>
+    </div>
+    <div class="ops-intel">
+      <div class="ops-cell">
+        <div class="ops-label">Token Usage</div>
+        <div class="ops-value mono">—</div>
+        <div class="ops-sub">Phase 2.C pending — all token fields null until measurement is wired</div>
+      </div>
+      <div class="ops-cell">
+        <div class="ops-label">Invocations (30d)</div>
+        <div class="ops-value mono" id="invocCount">—</div>
+        <div class="ops-sub">from operational log (Phase 2.B empty)</div>
+      </div>
+      <div class="ops-cell">
+        <div class="ops-label">Thinking Engine</div>
+        <div class="ops-value mono">—</div>
+        <div class="ops-sub">auto-invoked only in reflect mode (not yet configured)</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;font-size:12px;color:var(--ink-4);">
+      Operational logs: <span class="mono" style="font-size:11px">/00_Prompts/BDOS/agents/broker/logs/operational/</span> · Phase 2.B skeleton created, awaiting first invocations.
+    </div>
+  </div>
+
+  <!-- ===== Panel 11: Capabilities (added 0.2.0 — live from AGENT_PROFILES.md) ===== -->
+  <div class="panel full" id="capPanel">
+    <div class="panel-head serif">Capabilities <span class="badge">live from AGENT_PROFILES.md</span> <span class="cap-panel-badge">auto-refresh 8s</span></div>
+    <div class="cap-panel" id="capContent">
+      <div style="grid-column:1/-1;text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Loading capability profile…</div>
+    </div>
+  </div>
+
+  <!-- ===== Panel 12: Logs (added 0.4.0 — agent_observability sidecar) ===== -->
+  <div class="panel full" id="logsPanel">
+    <div class="panel-head serif">Logs <span class="badge" id="logsPanelBadge">loading…</span></div>
+    <div id="logsContent"><div style="text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Loading sidecar…</div></div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+/* ===== DASH STEM ===== */
+const DASH_STEM = 'broker';
+
+/* ===== SOURCE FILES ===== */
+const BROKER_FILE           = '/00_Prompts/BDOS/agents/broker.md';
+const SALES_INDEX_FILE      = '/_dashboards/00_SALES_INDEX.md';
+const LEARNINGS_BASE        = '/00_Prompts/BDOS/agents/broker/sales-learnings/';
+const AGENT_PROFILES_FILE   = '/00_Prompts/BDOS/AGENT_PROFILES.md';
+const AGENT_NAME_IN_PROFILES = 'Broker';
+
+/* ===== DATA STATE ===== */
+let lastBrokerContent   = null;
+let lastSalesContent    = null;
+let lastProfilesContent = null;
+
+/* ===== HELPERS ===== */
+function el(id) { return document.getElementById(id); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ===== SYNC INDICATOR ===== */
+let syncTicker = null;
+let syncNextIn = 8;
+let syncUpdatedAgo = 0;
+let syncConnected = false;
+const POLL_INTERVAL = 8000;
+const SSE_POLL_INTERVAL = 30000;
+
+function setSyncState(state) {
+  const dot = el('syncDot');
+  if (!dot) return;
+  dot.className = 'sync-dot' + (state === 'syncing' ? ' syncing' : state === 'error' ? ' error' : '');
+}
+function tickSyncLabel() {
+  syncUpdatedAgo++;
+  syncNextIn = Math.max(0, syncNextIn - 1);
+  if (el('syncLabel')) el('syncLabel').textContent = `Updated ${syncUpdatedAgo}s ago, next in ${syncNextIn}s`;
+  const pct = syncConnected ? (1 - syncNextIn/(SSE_POLL_INTERVAL/1000))*100 : (1 - syncNextIn/(POLL_INTERVAL/1000))*100;
+  if (el('syncBar')) el('syncBar').style.width = Math.max(0,Math.min(100,pct))+'%';
+}
+function resetSyncBar(interval) {
+  syncNextIn = interval/1000; syncUpdatedAgo = 0;
+  if (el('syncBar')) { el('syncBar').style.width = '0%'; setTimeout(()=>{ if(el('syncBar')) el('syncBar').style.width='100%'; },50); }
+}
+if (el('syncBarWrap')) el('syncBarWrap').onclick = () => { pollVault(); resetSyncBar(POLL_INTERVAL); };
+
+/* ===== YAML FRONTMATTER PARSER ===== */
+function parseYamlFrontmatter(md) {
+  if (!md) return {};
+  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!m) return {};
+  const yaml = m[1];
+  const result = {};
+  const lines = yaml.split('\n');
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    const kv = line.match(/^(\w[\w-]*):\s*(.*)/);
+    if (!kv) { i++; continue; }
+    const key = kv[1];
+    let val = kv[2].trim();
+    if (val === '' && i+1 < lines.length && lines[i+1].startsWith('  -')) {
+      const arr = []; i++;
+      while (i < lines.length && lines[i].match(/^\s+-/)) { arr.push(lines[i].replace(/^\s+-\s*/,'').trim()); i++; }
+      result[key] = arr; continue;
+    }
+    if (val.startsWith('[') && val.endsWith(']')) {
+      result[key] = val.slice(1,-1).split(',').map(x=>x.trim().replace(/^['"]|['"]$/g,''));
+    } else {
+      val = val.replace(/#(?![0-9a-fA-F]{3,6}\b).*/,'').trim().replace(/^['"]|['"]$/g,'');
+      result[key] = val;
+    }
+    i++;
+  }
+  return result;
+}
+
+/* ===== PARSE SALES INDEX ===== */
+function parseSalesIndex(md) {
+  if (!md) return { stages: {}, cohorts: [], totalLeads: 0 };
+  const stages = { qualification: 0, discovery: 0, proposal: 0, negotiation: 0, won: 0, lost: 0 };
+  const cohorts = [];
+  // Try to parse stage counts from a table or summary
+  const stagePatterns = [
+    ['qualification', /qualification[^0-9]*(\d+)/i],
+    ['discovery',     /discovery[^0-9]*(\d+)/i],
+    ['proposal',      /proposal[^0-9]*(\d+)/i],
+    ['negotiation',   /negotiation[^0-9]*(\d+)/i],
+    ['won',           /closed.won[^0-9]*(\d+)/i],
+    ['lost',          /closed.lost[^0-9]*(\d+)/i],
+  ];
+  for (const [key, re] of stagePatterns) {
+    const m = md.match(re);
+    if (m) stages[key] = parseInt(m[1]);
+  }
+  const totalLeads = Object.values(stages).reduce((a,b)=>a+b,0);
+  return { stages, cohorts, totalLeads };
+}
+
+function renderPipeline(data) {
+  const total = data.totalLeads;
+  el('stageQual').textContent = data.stages.qualification || 0;
+  el('stageDisc').textContent = data.stages.discovery || 0;
+  el('stageProp').textContent = data.stages.proposal || 0;
+  el('stageNeg').textContent  = data.stages.negotiation || 0;
+  el('stageWon').textContent  = data.stages.won || 0;
+  el('stageLost').textContent = data.stages.lost || 0;
+  const openLeads = (data.stages.qualification||0) + (data.stages.discovery||0) + (data.stages.proposal||0) + (data.stages.negotiation||0);
+  el('pipelineBadge').textContent = openLeads + ' open leads';
+  el('totalLeads').textContent = total;
+  if (data.stages.won > 0 || data.stages.lost > 0) {
+    const closed = data.stages.won + data.stages.lost;
+    el('winRate').textContent = Math.round(data.stages.won / closed * 100) + '%';
+  }
+}
+
+/* ===== PARSE LEARNINGS ===== */
+async function fetchLearningCounts() {
+  const types = ['active', 'proposals', 'retired'];
+  // We just try fetching a directory listing or known files
+  // Since we can't glob easily from client-side, we mark all as 0 unless
+  // the sales-learnings index exists
+  // For now graceful — all stay 0 until files exist
+  return { active: {}, proposed: {}, retired: {} };
+}
+
+/* ===== FETCH HELPER ===== */
+async function fetchFile(path) {
+  try {
+    const r = await fetch(path, { cache: 'no-store' });
+    if (!r.ok) return null;
+    return await r.text();
+  } catch(e) { return null; }
+}
+
+/* ===== RENDER FUNNEL ===== */
+function renderFunnel(stages) {
+  const funnelEl = el('funnelContent');
+  const steps = [
+    { key: 'qualification', label: 'Qualification', color: 'var(--stage-qual-tint)', border: 'var(--stage-qual)' },
+    { key: 'discovery',     label: 'Discovery',     color: 'var(--stage-disc-tint)', border: 'var(--stage-disc)' },
+    { key: 'proposal',      label: 'Proposal',      color: 'var(--stage-prop-tint)', border: 'var(--stage-prop)' },
+    { key: 'negotiation',   label: 'Negotiation',   color: 'var(--stage-neg-tint)',  border: 'var(--stage-neg)'  },
+    { key: 'won',           label: 'Closed-Won',    color: 'var(--stage-won-tint)',  border: 'var(--stage-won)'  },
+  ];
+  const max = Math.max(...steps.map(s => stages[s.key] || 0), 1);
+  const totalOpen = steps.slice(0,4).reduce((a,s) => a + (stages[s.key]||0), 0);
+  if (totalOpen === 0) return; // keep empty state
+  const html = `<div class="funnel">` + steps.map(s => {
+    const count = stages[s.key] || 0;
+    const pct = Math.max(30, Math.round(count / max * 100));
+    return `<div class="funnel-step" style="width:${pct}%;background:${s.color};border:1px solid ${s.border};">
+      <span class="funnel-label">${s.label}</span>
+      <span class="funnel-count mono">${count}</span>
+    </div>`;
+  }).join('') + `</div>`;
+  funnelEl.innerHTML = html;
+}
+
+/* ===== Agent profile helpers (0.2.0) ===== */
+function parseAgentProfile(md, agentName) {
+  if (!md) return null;
+  const escaped = agentName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('^## ' + escaped + '\\s*\\n+```yaml\\n([\\s\\S]*?)\\n```', 'm');
+  const m = md.match(re);
+  if (!m) return null;
+  const yaml = m[1];
+  const obj = {};
+  const emojiM = yaml.match(/^\s*emoji:\s*["']?([^"'\n]+?)["']?\s*$/m);
+  const colorM = yaml.match(/^\s*color:\s*["']?(#[0-9a-fA-F]{3,8})["']?\s*$/m);
+  obj.emoji = emojiM ? emojiM[1].trim() : '?';
+  obj.color = colorM ? colorM[1].trim() : '#D97757';
+  function parseList(key) {
+    const re2 = new RegExp('\\n\\s{0,4}' + key + ':\\s*\\n((?:\\s+- [^\\n]*\\n?)*)', '');
+    const mm = yaml.match(re2);
+    if (!mm) return [];
+    return mm[1].split('\n').map(l => l.replace(/^\s+-\s*/, '').trim()).filter(Boolean);
+  }
+  obj.tools = parseList('tools');
+  obj.connectors_mcp = parseList('connectors_mcp');
+  obj.apis = parseList('apis');
+  obj.plugins = parseList('plugins');
+  obj.own_commands = parseList('own_commands');
+  obj.can_invoke = parseList('can_invoke');
+  const cntM = yaml.match(/own_commands_count:\s*(\d+)/);
+  obj.own_commands_count = cntM ? parseInt(cntM[1]) : obj.own_commands.length;
+  const lastUpdM = yaml.match(/last_updated:\s*(\S+)/);
+  const chromeM  = yaml.match(/chrome_mcp_used:\s*(\S+)/);
+  const thinkM   = yaml.match(/thinking_engine_used:\s*(\S+)/);
+  obj.last_updated = lastUpdM ? lastUpdM[1] : '—';
+  obj.chrome_mcp_used = chromeM ? chromeM[1] : '—';
+  obj.thinking_engine_used = thinkM ? thinkM[1] : '—';
+  obj.plugin_skills_invoked = parseList('plugin_skills_invoked');
+  return obj;
+}
+
+function hexToRgba(hex, alpha) {
+  const h = hex.replace('#','');
+  const r = parseInt(h.slice(0,2),16);
+  const g = parseInt(h.slice(2,4),16);
+  const b = parseInt(h.slice(4,6),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function renderCapabilities(profile) {
+  const avatarEl = document.getElementById('agentAvatar');
+  const capEl    = document.getElementById('capContent');
+  if (!profile) {
+    if (capEl) capEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Could not parse Broker section from AGENT_PROFILES.md</div>';
+    return;
+  }
+  if (avatarEl) {
+    avatarEl.textContent = profile.emoji;
+    avatarEl.style.background  = hexToRgba(profile.color, 0.12);
+    avatarEl.style.borderColor = hexToRgba(profile.color, 0.35);
+    avatarEl.style.color       = profile.color;
+  }
+  function chips(arr, cls) {
+    if (!arr || !arr.length) return '<span style="opacity:.45;font-size:11px;">none</span>';
+    return arr.map(v => `<span class="cap-chip ${cls}">${escHtml(v)}</span>`).join('');
+  }
+  if (capEl) capEl.innerHTML = `
+    <div class="cap-section">
+      <div class="cap-section-label">Tools</div>
+      <div>${chips(profile.tools,'tool')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">MCPs / Connectors</div>
+      <div>${chips(profile.connectors_mcp,'mcp')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">APIs</div>
+      <div>${chips(profile.apis,'api')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Plugins</div>
+      <div>${chips(profile.plugins,'plugin')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Own slash commands (${profile.own_commands_count})</div>
+      <div>${chips(profile.own_commands,'cmd')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Can invoke</div>
+      <div>${chips(profile.can_invoke,'cmd')}</div>
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Test access trace</div>
+      <div class="trace-row"><span class="trace-key">last_updated</span><span class="trace-val">${escHtml(profile.last_updated)}</span></div>
+      <div class="trace-row"><span class="trace-key">chrome_mcp_used</span><span class="trace-val">${escHtml(profile.chrome_mcp_used)}</span></div>
+      <div class="trace-row"><span class="trace-key">thinking_engine_used</span><span class="trace-val">${escHtml(profile.thinking_engine_used)}</span></div>
+      <div class="trace-row"><span class="trace-key">plugin_skills_invoked</span><span class="trace-val">${profile.plugin_skills_invoked.length ? escHtml(profile.plugin_skills_invoked.join(', ')) : 'none'}</span></div>
+    </div>`;
+  capEl.querySelectorAll('.cap-chip.cmd').forEach(chip => {
+    chip.title = 'click to copy';
+    chip.style.cursor = 'pointer';
+    chip.addEventListener('click', () => {
+      const orig = chip.textContent;
+      navigator.clipboard.writeText(orig).catch(()=>{});
+      chip.textContent = 'copied!';
+      setTimeout(() => { chip.textContent = orig; }, 1200);
+    });
+  });
+}
+
+/* ===== POLL VAULT ===== */
+async function pollVault() {
+  setSyncState('syncing');
+
+  const [brokerContent, salesContent, profilesContent] = await Promise.all([
+    fetchFile(BROKER_FILE),
+    fetchFile(SALES_INDEX_FILE),
+    fetchFile(AGENT_PROFILES_FILE),
+  ]);
+
+  if (brokerContent !== lastBrokerContent) {
+    lastBrokerContent = brokerContent;
+    if (brokerContent) {
+      const fm = parseYamlFrontmatter(brokerContent);
+      if (fm.version) el('brokerVersion').textContent = 'v' + fm.version;
+    }
+  }
+
+  if (salesContent !== lastSalesContent) {
+    lastSalesContent = salesContent;
+    if (salesContent) {
+      const data = parseSalesIndex(salesContent);
+      renderPipeline(data);
+      renderFunnel(data.stages);
+    }
+  }
+
+  if (profilesContent !== lastProfilesContent) {
+    lastProfilesContent = profilesContent;
+    renderCapabilities(profilesContent ? parseAgentProfile(profilesContent, AGENT_NAME_IN_PROFILES) : null);
+  }
+
+  setSyncState('ok');
+  resetSyncBar(POLL_INTERVAL);
+  if (el('lastActivity')) el('lastActivity').textContent = 'updated ' + new Date().toLocaleTimeString();
+}
+
+/* ===== POLL LOOP (fallback only — primary is LiveUpdates SSE) ===== */
+function startPolling(interval) {
+  return setInterval(() => { pollVault(); resetSyncBar(interval); }, interval);
+}
+
+/* ===== THEME TOGGLE (DS 0.3.0) ===== */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = el('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+el('themeToggle').addEventListener('click', function() {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+});
+(function initTheme() {
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  setTheme(t);
+})();
+
+/* ===== TICKER ===== */
+syncTicker = setInterval(tickSyncLabel, 1000);
+
+/* ===== LOGS PANEL — agent_observability sidecar (0.4.0) ===== */
+const LOGS_AGENT = 'broker';
+const LOGS_SIDECAR_URL = '/_dashboards/_design/agent_logs.json';
+let logsLastTs = null;
+
+function renderLogsPanel(events) {
+  const agentEvents = events.filter(e => e.agent === LOGS_AGENT);
+  const badge = document.getElementById('logsPanelBadge');
+  const wrap  = document.getElementById('logsContent');
+  if (!agentEvents.length) {
+    if (badge) badge.textContent = '0 events';
+    if (wrap) wrap.innerHTML = '<div style="text-align:center;padding:32px 0;color:var(--ink-4);font-size:12.5px;">No log events yet for ' + LOGS_AGENT + '.<br><span style="font-size:11px;color:var(--ink-5);">Events appear once agent invocations are recorded in agent_observability.db.</span></div>';
+    return;
+  }
+  const errs    = agentEvents.filter(e => ['error','critical'].includes(e.log_level)).length;
+  const hasDur  = agentEvents.filter(e => e.duration_ms != null);
+  const avgDur  = hasDur.length ? Math.round(hasDur.reduce((s,e)=>s+(e.duration_ms||0),0)/hasDur.length) : null;
+  const totIn   = agentEvents.reduce((s,e)=>s+(e.input_tokens||0),0);
+  const totOut  = agentEvents.reduce((s,e)=>s+(e.output_tokens||0),0);
+  const totCost = agentEvents.reduce((s,e)=>s+(e.estimated_cost||0),0);
+  const slowest = [...agentEvents].filter(e=>e.duration_ms!=null).sort((a,b)=>b.duration_ms-a.duration_ms)[0];
+  const hiTok   = [...agentEvents].filter(e=>(e.input_tokens||0)+(e.output_tokens||0)>0).sort((a,b)=>((b.input_tokens||0)+(b.output_tokens||0))-((a.input_tokens||0)+(a.output_tokens||0)))[0];
+  const recent  = [...agentEvents].sort((a,b)=>b.id-a.id).slice(0,50).reverse();
+  if (badge) badge.textContent = agentEvents.length + ' events';
+  const LEVEL_CHIP = lv => {
+    const colors={ok:'var(--ok)',warn:'var(--warn)',gap:'var(--gap)',idle:'var(--ink-4)'};
+    const tints={ok:'var(--ok-tint)',warn:'var(--warn-tint)',gap:'var(--gap-tint)',idle:'var(--idle-tint)'};
+    const cls={'debug':'idle','info':'ok','notice':'info','warning':'warn','error':'gap','critical':'gap'}[lv]||'idle';
+    return `<span style="font-size:10px;font-weight:700;text-transform:uppercase;padding:1px 6px;border-radius:3px;background:${tints[cls]};color:${colors[cls]}">${escHtml(lv||'?')}</span>`;
+  };
+  if (wrap) wrap.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px;">
+      ${[['Total',agentEvents.length,''],['Errors',errs,errs?'color:var(--gap)':''],['Avg dur',avgDur!=null?avgDur+'ms':'—',''],['Tok in',totIn?totIn.toLocaleString():'—',''],['Tok out',totOut?totOut.toLocaleString():'—',''],['Cost',totCost>0?'$'+totCost.toFixed(4):'—','']].map(([l,v,s])=>`<div style="background:var(--bg-elev);border:1px solid var(--line);border-radius:8px;padding:12px 14px;box-shadow:var(--shadow-1)"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);font-weight:600;margin-bottom:4px">${l}</div><div style="font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;${s}">${v}</div></div>`).join('')}
+    </div>
+    ${slowest||hiTok?`<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">${slowest?`<div style="background:var(--warn-tint);border:1px solid rgba(176,122,24,.25);border-radius:6px;padding:8px 12px;font-size:12px;"><strong style="color:var(--warn);">Slowest:</strong> ${escHtml(slowest.message||'?')} — ${slowest.duration_ms}ms</div>`:''} ${hiTok?`<div style="background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-size:12px;"><strong>Highest-token:</strong> ${escHtml(hiTok.message||'?')} — ${((hiTok.input_tokens||0)+(hiTok.output_tokens||0)).toLocaleString()} tok</div>`:''}</div>`:''}
+    <div style="overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg-elev);box-shadow:var(--shadow-1);">
+      <table style="width:100%;border-collapse:collapse;font-size:11.5px;">
+        <thead><tr style="background:var(--bg-sunken);">
+          ${['Timestamp','Mode','Level','Event','Message','Dur ms','Tokens'].map(h=>`<th style="padding:8px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);border-bottom:1px solid var(--line);white-space:nowrap;font-family:'JetBrains Mono',monospace;">${h}</th>`).join('')}
+        </tr></thead>
+        <tbody>${recent.map(ev=>{
+          const ts=(ev.timestamp||'').replace('T',' ').replace('Z','').slice(0,19);
+          const rowBg=ev.log_level==='error'||ev.log_level==='critical'?'background:var(--gap-tint);':ev.log_level==='warning'?'background:var(--warn-tint);':'';
+          const tok=ev.total_tokens||(((ev.input_tokens||0)+(ev.output_tokens||0)));
+          return `<tr style="${rowBg}"><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap;font-family:'JetBrains Mono',monospace;font-size:11px;">${escHtml(ts)}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);color:var(--ink-3);font-family:'JetBrains Mono',monospace;font-size:11px;">${escHtml(ev.mode||'—')}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);">${LEVEL_CHIP(ev.log_level)}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);font-size:10.5px;color:var(--ink-4);font-family:'JetBrains Mono',monospace;white-space:nowrap;">${escHtml(ev.event_type||'?')}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);max-width:360px;white-space:normal;word-break:break-word;font-size:12px;">${escHtml(ev.message||'')}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);text-align:right;color:var(--ink-3);font-family:'JetBrains Mono',monospace;font-size:11px;">${ev.duration_ms!=null?ev.duration_ms.toLocaleString():''}</td><td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);text-align:right;color:var(--ink-3);font-family:'JetBrains Mono',monospace;font-size:11px;">${tok>0?tok.toLocaleString():''}</td></tr>`;
+        }).join('')}</tbody>
+      </table>
+    </div>
+    <div style="font-size:11px;color:var(--ink-4);margin-top:8px;text-align:right;font-family:'JetBrains Mono',monospace;">Showing ${recent.length} of ${agentEvents.length} · sidecar: /_dashboards/_design/agent_logs.json</div>`;
+}
+
+async function loadLogsPanel() {
+  try {
+    const r = await fetch(LOGS_SIDECAR_URL, { cache: 'no-store' });
+    if (!r.ok) return;
+    const data = await r.json();
+    if (data.generated_at === logsLastTs) return;
+    logsLastTs = data.generated_at;
+    renderLogsPanel(data.events || []);
+  } catch(e) {}
+}
+
+/* ===== BOOT — DS 0.4.0 event-driven live updates ===== */
+pollVault();
+loadLogsPanel();
+LiveUpdates.subscribe(() => { pollVault(); loadLogsPanel(); });
+LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
+</script>
+<script src="/_dashboards/_design/live-updates.js"></script>
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>

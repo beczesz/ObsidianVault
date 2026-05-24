@@ -1,0 +1,4773 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  CPS Sales Pipeline Dashboard, live HTML view.   Version: 0.7.4
+  =============================================================================
+  Audit trail:
+    0.1.0  initial kanban + drawer
+    0.2.0  today panel from TODAY.md
+    0.3.0  live read-only multi-file sync (Pipeline.md + leads.md + TODAY.md)
+    0.4.0  per-lead NOTES.md schema as primary source, source_url CTA
+    0.5.0  sync indicator with countdown + click-to-refresh
+    0.6.0  kanban overlap fix, home button to vault launcher
+    0.7.0  moved to _dashboards/, absolute fetch paths, SSE file-watcher push
+           (dash-server.mjs) with the poll timer as fallback
+    0.7.1  2026-05-22 — aligned :root to DESIGN_SYSTEM 0.1.0 (shadow-2, t-med); added version pill
+    0.7.2  (2026-05-22) — added .card-copy-ref hover buttons + data-card-id to lead cards
+           (DESIGN_SYSTEM 0.2.0). Reference format: sales:<lead-id>.
+    0.7.3  (2026-05-22) — added day/night theme toggle + dark tokens (DESIGN_SYSTEM
+           0.3.0). Shared localStorage key "dash-theme". FOUC-init. Dark variants
+           for pipeline-stage tokens + industry tag overrides.
+    0.7.4  (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
+           ops-header.js + #bdos-ops-header mount. Five system pills above masthead.
+  Conventions: see Sales/DASHBOARD_CONTRACT.md "Shared dashboard conventions".
+  =============================================================================
+  Renders from:
+    ../TODAY.md                          (today's action queue)
+    Pipeline.md                          (Obsidian Kanban board)
+    Sales Enablement/leads.md            (per-lead research dossiers)
+  Polled every 8 seconds via fetch().
+
+  ---------------------------------------------------------------------------
+  IMPORTANT: this HTML file does NOT need to be edited when sales data changes.
+  Edit the three markdown files above instead. The dashboard rebuilds itself.
+
+  Only edit this file to:
+    - Add a new widget or change visual / interaction design
+    - Update a parser when the markdown format evolves
+    - Add a new source file to VAULT_FILES
+
+  When you do, update Sales/DASHBOARD_CONTRACT.md in the same change.
+  ---------------------------------------------------------------------------
+
+  Format contract: Sales/DASHBOARD_CONTRACT.md
+  Must be served over HTTP (e.g. `npx serve` from vault root) for live sync,
+  file:// blocks fetch and the dashboard falls back to the hardcoded snapshot
+  baked into LEADS_HARDCODED_FALLBACK below.
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPS Sales Pipeline</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M8 22V10h3.5l4 7 4-7H23v12h-3v-7l-3 5h-1l-3-5v7z' fill='%23D97757'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-page: #faf9f5;
+  --bg-elev: #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint: #f5f4ef;
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+  --line: #e5e4df;
+  --line-soft: #efede7;
+  --accent: #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  --hot:        #c0392b;
+  --hot-tint:   #fbeae6;
+  --warm:       #b07a18;
+  --warm-tint:  #fbf2dc;
+  --cold:       #4a5568;
+  --cold-tint:  #edf0f4;
+  --contact:    #2563a5;
+  --contact-tint:#e8eff8;
+  --discovery:  #6b46c1;
+  --discovery-tint:#f1eafd;
+  --proposal:   #3f489d;
+  --proposal-tint:#ebedf8;
+  --won:        #1f7a4d;
+  --won-tint:   #e6f3ec;
+  --lost:       #7a7a76;
+  --lost-tint:  #efeeeb;
+
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+  --shadow-3: 0 12px 32px rgba(20,20,19,.10), 0 4px 12px rgba(20,20,19,.06);
+
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 10px;
+  --radius-xl: 14px;
+
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+  --t-slow: 320ms cubic-bezier(.16,.84,.32,1);
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+  --ink-1: #f5f4ef;
+  --ink-2: #d6d4ce;
+  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;
+  --ink-5: #54524d;
+  --line:      #36342f;
+  --line-soft: #2c2a26;
+  --accent:      #e08a6a;
+  --accent-deep: #f0a085;
+  --accent-tint: #3a2a22;
+  /* Pipeline stage tokens — dark variants */
+  --hot:        #e57c6e;  --hot-tint:   #3a221e;
+  --warm:       #d6a94a;  --warm-tint:  #352c18;
+  --cold:       #8a9ab5;  --cold-tint:  #1e2530;
+  --contact:    #6aa3e0;  --contact-tint:#1e2a3a;
+  --discovery:  #a585e0;  --discovery-tint:#2a1e3a;
+  --proposal:   #8890d0;  --proposal-tint:#1e2038;
+  --won:        #5cc08a;  --won-tint:   #1e3329;
+  --lost:       #9a9892;  --lost-tint:  #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:   #1a1916;
+    --bg-elev:   #232220;
+    --bg-sunken: #2c2a26;
+    --bg-tint:   #262420;
+    --ink-1: #f5f4ef;
+    --ink-2: #d6d4ce;
+    --ink-3: #a8a6a0;
+    --ink-4: #7c7a74;
+    --ink-5: #54524d;
+    --line:      #36342f;
+    --line-soft: #2c2a26;
+    --accent:      #e08a6a;
+    --accent-deep: #f0a085;
+    --accent-tint: #3a2a22;
+    --hot:        #e57c6e;  --hot-tint:   #3a221e;
+    --warm:       #d6a94a;  --warm-tint:  #352c18;
+    --cold:       #8a9ab5;  --cold-tint:  #1e2530;
+    --contact:    #6aa3e0;  --contact-tint:#1e2a3a;
+    --discovery:  #a585e0;  --discovery-tint:#2a1e3a;
+    --proposal:   #8890d0;  --proposal-tint:#1e2038;
+    --won:        #5cc08a;  --won-tint:   #1e3329;
+    --lost:       #9a9892;  --lost-tint:  #2a2925;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+    --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+
+.tabular { font-variant-numeric: tabular-nums; }
+.mono { font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Consolas, monospace; }
+
+/* ===== App shell ===== */
+
+.app {
+  max-width: 1480px;
+  margin: 0 auto;
+  padding: 28px 36px 96px;
+}
+
+/* ===== Masthead ===== */
+
+.masthead {
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 28px;
+}
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-3);
+  text-decoration: none;
+  padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--bg-elev);
+  transition: all var(--t-fast);
+}
+.home-link:hover {
+  color: var(--accent-deep);
+  border-color: var(--accent);
+  background: var(--accent-tint);
+  transform: translateX(-2px);
+}
+.home-link svg { flex-shrink: 0; }
+/* ===== Theme toggle button (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--ink-4);
+  font-weight: 500;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.version-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
+  border-radius: 999px; letter-spacing: 0; text-transform: none;
+}
+.masthead h1 {
+  font-size: clamp(28px, 3.2vw, 40px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--ink-1);
+}
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--ink-3);
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.masthead .submeta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-5); }
+.masthead .submeta strong { color: var(--ink-1); font-weight: 600; }
+
+.actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.view-switch {
+  display: inline-flex;
+  background: var(--bg-sunken);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+.view-switch button {
+  appearance: none;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-3);
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background var(--t-fast), color var(--t-fast);
+}
+.view-switch button:hover { color: var(--ink-1); }
+.view-switch button.is-active {
+  background: var(--bg-elev);
+  color: var(--ink-1);
+  box-shadow: 0 1px 2px rgba(20,20,19,.05);
+}
+.btn-ghost {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  color: var(--ink-2);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
+}
+.btn-ghost:hover { border-color: var(--ink-4); color: var(--ink-1); }
+
+/* ===== Widgets row ===== */
+
+.widgets {
+  display: grid;
+  grid-template-columns: 1.15fr 1.15fr 1.4fr 1.0fr;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.widget {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 18px 20px 16px;
+  position: relative;
+}
+.widget h2 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--ink-4);
+  font-weight: 600;
+  margin-bottom: 14px;
+}
+
+/* Widget: Pipeline value */
+.w-pipeline .figure {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.w-pipeline .figure .lo {
+  font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+}
+.w-pipeline .figure .sep { color: var(--ink-4); font-size: 18px; }
+.w-pipeline .figure .hi {
+  font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+  color: var(--accent);
+}
+.w-pipeline .figure .unit { font-size: 13px; color: var(--ink-3); margin-left: 4px; }
+.w-pipeline .range-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: var(--bg-sunken);
+  margin-bottom: 10px;
+}
+.w-pipeline .range-bar span {
+  display: block;
+}
+.w-pipeline .legend {
+  display: flex;
+  gap: 14px;
+  font-size: 12px;
+  color: var(--ink-3);
+  flex-wrap: wrap;
+}
+.w-pipeline .legend .swatch {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 2px;
+  margin-right: 5px;
+  vertical-align: 1px;
+}
+
+/* Widget: stage breakdown */
+.w-stages .stage-row {
+  display: grid;
+  grid-template-columns: 80px 1fr 60px;
+  gap: 10px;
+  align-items: center;
+  padding: 4px 0;
+  font-size: 12.5px;
+}
+.w-stages .stage-row .label {
+  color: var(--ink-2);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-size: 11px;
+}
+.w-stages .stage-row .track {
+  height: 6px;
+  background: var(--bg-sunken);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.w-stages .stage-row .fill {
+  height: 100%;
+  border-radius: 999px;
+}
+.w-stages .stage-row .count {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-2);
+  font-weight: 500;
+  font-size: 12px;
+}
+
+/* Widget: velocity */
+.w-velocity .bars {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+  align-items: end;
+  height: 78px;
+  margin-bottom: 10px;
+}
+.w-velocity .bar {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  position: relative;
+  height: 100%;
+}
+.w-velocity .bar .target {
+  width: 100%;
+  background: var(--bg-sunken);
+  border-radius: 3px 3px 0 0;
+}
+.w-velocity .bar .actual {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: var(--accent);
+  border-radius: 3px 3px 0 0;
+}
+.w-velocity .bar .label {
+  text-align: center;
+  font-size: 10px;
+  color: var(--ink-4);
+  margin-top: 4px;
+  font-variant-numeric: tabular-nums;
+}
+.w-velocity .caption {
+  font-size: 12px;
+  color: var(--ink-3);
+  display: flex;
+  justify-content: space-between;
+}
+.w-velocity .caption strong { color: var(--ink-1); font-weight: 600; }
+
+/* Widget: 90-day */
+.w-plan .progress {
+  position: relative;
+  height: 28px;
+  margin: 6px 0 12px;
+}
+.w-plan .track {
+  position: absolute;
+  inset: 11px 0;
+  background: var(--bg-sunken);
+  border-radius: 999px;
+}
+.w-plan .phase {
+  position: absolute;
+  top: 11px;
+  bottom: 11px;
+  border-radius: 999px;
+  font-size: 0;
+}
+.w-plan .phase.p1 { left: 0; right: calc(2/3 * 100%); background: var(--accent); opacity: .9; }
+.w-plan .phase.p2 { left: calc(1/3 * 100%); right: calc(1/3 * 100%); background: var(--accent); opacity: .35; }
+.w-plan .phase.p3 { left: calc(2/3 * 100%); right: 0; background: var(--accent); opacity: .15; }
+.w-plan .marker {
+  position: absolute;
+  top: 2px;
+  width: 2px; height: 24px;
+  background: var(--ink-1);
+  border-radius: 2px;
+}
+.w-plan .ticks {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  font-size: 11px;
+  color: var(--ink-4);
+  font-weight: 500;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.w-plan .ticks span:nth-child(2) { text-align: center; }
+.w-plan .ticks span:nth-child(3) { text-align: right; }
+.w-plan .caption {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.w-plan .caption strong { color: var(--ink-1); font-weight: 600; }
+
+/* ===== Today panel ===== */
+
+.today {
+  background: linear-gradient(180deg, #fdf6ea 0%, #fbf2dc 100%);
+  border: 1px solid #f0e0b8;
+  border-radius: var(--radius-xl);
+  padding: 22px 26px 24px;
+  margin-bottom: 28px;
+  position: relative;
+}
+.today-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #ecdcaf;
+}
+.today-head .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--warm);
+  font-weight: 700;
+  background: rgba(176, 122, 24, 0.12);
+  padding: 4px 10px;
+  border-radius: 4px;
+}
+.today-head .date {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--ink-1);
+}
+.today-head .day {
+  font-size: 14px;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+.today-head .counter {
+  font-size: 12.5px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.today-head .counter strong { color: var(--ink-1); font-weight: 600; }
+
+.today-head .right-block {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.sync-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--ink-3);
+  font-weight: 500;
+  letter-spacing: .02em;
+  cursor: pointer;
+  padding: 3px 6px;
+  margin: -3px -6px;
+  border-radius: 6px;
+  transition: background var(--t-fast);
+  user-select: none;
+}
+.sync-status:hover { background: rgba(20,20,19,.04); }
+.sync-status[data-state="offline"], .sync-status[data-state="error"] { cursor: pointer; }
+.sync-status .sync-bar {
+  width: 46px;
+  height: 3px;
+  background: rgba(20, 20, 19, 0.08);
+  border-radius: 999px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.sync-status .sync-bar-fill {
+  display: block;
+  height: 100%;
+  background: var(--won);
+  width: 0%;
+  border-radius: 999px;
+  transform-origin: left center;
+}
+.sync-status[data-state="live"] .sync-bar-fill {
+  animation: sync-countdown 8s linear forwards;
+}
+.sync-status[data-state="syncing"] .sync-bar-fill {
+  animation: sync-shuttle 0.9s ease-in-out infinite;
+  background: var(--warm);
+  width: 30%;
+}
+.sync-status[data-state="error"] .sync-bar-fill,
+.sync-status[data-state="offline"] .sync-bar-fill {
+  width: 0%;
+  animation: none;
+}
+@keyframes sync-countdown {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+@keyframes sync-shuttle {
+  0% { transform: translateX(0%); }
+  50% { transform: translateX(160%); }
+  100% { transform: translateX(0%); }
+}
+.sync-status .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--ink-4);
+  flex-shrink: 0;
+  transition: background var(--t-fast);
+}
+.sync-status[data-state="live"] .dot {
+  background: var(--won);
+  box-shadow: 0 0 0 3px rgba(31, 122, 77, .16);
+}
+.sync-status[data-state="syncing"] .dot {
+  background: var(--warm);
+  animation: pulse-sync 1s ease-in-out infinite;
+}
+.sync-status[data-state="error"] .dot, .sync-status[data-state="offline"] .dot { background: var(--ink-5); }
+
+@keyframes pulse-sync {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: .35; transform: scale(.7); }
+}
+
+.today-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 1.4fr 1fr;
+  gap: 28px;
+}
+.today-col h4 {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--ink-3);
+  font-weight: 700;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.today-col h4 .pin {
+  display: inline-block;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ink-4);
+}
+.today-col.is-decisions h4 .pin { background: var(--hot); }
+.today-col.is-today h4 .pin { background: var(--warm); }
+.today-col.is-tomorrow h4 .pin { background: var(--ink-4); }
+
+.task-list { list-style: none; }
+.task {
+  display: flex;
+  gap: 10px;
+  padding: 8px 10px 8px 8px;
+  border-radius: var(--radius-m);
+  cursor: pointer;
+  transition: background var(--t-fast);
+  align-items: flex-start;
+  margin-bottom: 2px;
+}
+.task:hover { background: rgba(176, 122, 24, 0.08); }
+.task[data-clickable="true"] {
+  cursor: pointer;
+}
+.task[data-clickable="false"] {
+  cursor: default;
+}
+.task[data-clickable="false"]:hover { background: transparent; }
+
+.task .check {
+  flex-shrink: 0;
+  width: 16px; height: 16px;
+  border: 1.5px solid #ccb678;
+  border-radius: 4px;
+  background: rgba(255,255,255,.5);
+  margin-top: 2px;
+  position: relative;
+  transition: all var(--t-fast);
+}
+.task.is-done .check {
+  background: var(--won);
+  border-color: var(--won);
+}
+.task.is-done .check::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 4px;
+  width: 8px; height: 4px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg);
+}
+.task .body {
+  flex: 1;
+  min-width: 0;
+}
+.task .text {
+  font-size: 13.5px;
+  color: var(--ink-1);
+  line-height: 1.45;
+}
+.task.is-done .text { color: var(--ink-4); text-decoration: line-through; }
+.task .meta-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: var(--ink-3);
+  flex-wrap: wrap;
+}
+.task .lead-ref {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10.5px;
+  color: var(--ink-2);
+  background: rgba(255,255,255,.7);
+  border: 1px solid rgba(20,20,19,.08);
+  padding: 1px 7px;
+  border-radius: 3px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+.task .lead-ref::before {
+  content: '→';
+  color: var(--accent);
+  font-weight: 700;
+}
+.task .ttag {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-4);
+  font-weight: 500;
+}
+
+.task.is-overdue .check { border-color: var(--hot); }
+.task.is-overdue .text::before {
+  content: 'OVERDUE';
+  display: inline-block;
+  font-size: 9.5px;
+  font-weight: 700;
+  color: white;
+  background: var(--hot);
+  padding: 1px 5px;
+  border-radius: 3px;
+  margin-right: 6px;
+  letter-spacing: .06em;
+  vertical-align: 1px;
+}
+
+.today-empty {
+  font-size: 12.5px;
+  color: var(--ink-4);
+  font-style: italic;
+  padding: 6px 8px;
+}
+
+.today-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--warm);
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+.today-link:hover { color: var(--accent-deep); }
+.today-link::after { content: '→'; }
+
+@media (max-width: 1100px) {
+  .today-grid { grid-template-columns: 1fr 1fr; }
+  .today-col.is-tomorrow { grid-column: 1 / -1; padding-top: 8px; border-top: 1px solid #ecdcaf; }
+}
+@media (max-width: 720px) {
+  .today-grid { grid-template-columns: 1fr; }
+  .today-col.is-tomorrow { border-top: 1px solid #ecdcaf; padding-top: 14px; }
+}
+
+/* ===== Filter bar ===== */
+
+.filterbar {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.chip-label {
+  font-size: 11px;
+  color: var(--ink-4);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-weight: 500;
+  margin-right: 4px;
+}
+.chip {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  font: inherit;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all var(--t-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+}
+.chip .count {
+  background: var(--bg-sunken);
+  color: var(--ink-3);
+  padding: 1px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+.chip:hover { border-color: var(--ink-4); }
+.chip.is-active {
+  background: var(--ink-1);
+  border-color: var(--ink-1);
+  color: var(--bg-page);
+}
+.chip.is-active .count {
+  background: rgba(255,255,255,.18);
+  color: var(--bg-page);
+}
+
+.search {
+  position: relative;
+  width: 300px;
+}
+.search input {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  padding: 8px 12px 8px 34px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 13.5px;
+  color: var(--ink-1);
+  transition: border-color var(--t-fast);
+}
+.search input::placeholder { color: var(--ink-4); }
+.search input:focus { outline: none; border-color: var(--accent); }
+.search::before {
+  content: '';
+  position: absolute;
+  left: 11px; top: 50%;
+  width: 14px; height: 14px;
+  transform: translateY(-50%);
+  background: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%239c9c98' stroke-width='2'><circle cx='11' cy='11' r='7'/><path d='M21 21l-4.3-4.3'/></svg>") center/contain no-repeat;
+}
+
+/* ===== Board ===== */
+
+.board {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.stage-section {
+  display: block;
+}
+.stage-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.stage-header h3 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--stage-color, var(--ink-2));
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.stage-header h3::before {
+  content: '';
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--stage-color, var(--ink-4));
+}
+.stage-header .subline {
+  font-size: 13px;
+  color: var(--ink-3);
+}
+.stage-header .subline strong { color: var(--ink-1); font-weight: 600; }
+.stage-header .stage-mrr {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.card {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 16px 16px 14px;
+  cursor: pointer;
+  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 168px;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+  border-color: var(--ink-5);
+}
+.card:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.card .row1 {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.card .company {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink-1);
+  line-height: 1.25;
+}
+.card .score {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--stage-color, var(--ink-2));
+  background: var(--stage-tint, var(--bg-sunken));
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+.card .score .of { color: var(--ink-4); font-weight: 500; font-size: 11px; }
+
+.card .teaser {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  margin-bottom: 12px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.card .next-action {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+  padding: 5px 10px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.card .next-action::before {
+  content: '→';
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.card .meta {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+  min-width: 0;
+}
+.card .package {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-1);
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  line-height: 1.4;
+}
+.card .package .pkg-name {
+  font-weight: 500;
+  color: var(--ink-3);
+  margin-left: 6px;
+}
+.card .due {
+  font-size: 11.5px;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.card .due.is-soon { color: var(--accent); font-weight: 600; }
+.card .due.is-overdue { color: var(--hot); font-weight: 600; }
+
+.card .tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.tag {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--ink-3);
+  background: var(--bg-tint);
+  padding: 2px 7px;
+  border-radius: 4px;
+  font-weight: 500;
+  border: 1px solid transparent;
+}
+.tag.t-fintech { color: #1f5391; background: #e8eff8; }
+.tag.t-startup { color: #6b46c1; background: #f1eafd; }
+.tag.t-insurance { color: #3f489d; background: #ebedf8; }
+.tag.t-iot { color: #1f7a4d; background: #e6f3ec; }
+.tag.t-pharma { color: #6b6526; background: #f3f1dc; }
+.tag.t-ai { color: #aa3a82; background: #fbe6f1; }
+.tag.t-payments { color: #1f5391; background: #e8eff8; }
+.tag.t-romania, .tag.t-hungary { color: var(--ink-3); background: var(--bg-tint); }
+/* Dark overrides for hardcoded industry tag colors (DS 0.3.0) */
+:root[data-theme="dark"] .tag.t-fintech,
+:root:not([data-theme="light"]):where(:root[data-theme="dark"]) .tag.t-fintech { color: #6aa3e0; background: #1e2a3a; }
+:root[data-theme="dark"] .tag.t-startup { color: #a585e0; background: #2a1e3a; }
+:root[data-theme="dark"] .tag.t-insurance { color: #8890d0; background: #1e2038; }
+:root[data-theme="dark"] .tag.t-iot { color: #5cc08a; background: #1e3329; }
+:root[data-theme="dark"] .tag.t-pharma { color: #c8b86a; background: #2e2a18; }
+:root[data-theme="dark"] .tag.t-ai { color: #d880b8; background: #3a1e30; }
+:root[data-theme="dark"] .tag.t-payments { color: #6aa3e0; background: #1e2a3a; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .tag.t-fintech { color: #6aa3e0; background: #1e2a3a; }
+  :root:not([data-theme="light"]) .tag.t-startup { color: #a585e0; background: #2a1e3a; }
+  :root:not([data-theme="light"]) .tag.t-insurance { color: #8890d0; background: #1e2038; }
+  :root:not([data-theme="light"]) .tag.t-iot { color: #5cc08a; background: #1e3329; }
+  :root:not([data-theme="light"]) .tag.t-pharma { color: #c8b86a; background: #2e2a18; }
+  :root:not([data-theme="light"]) .tag.t-ai { color: #d880b8; background: #3a1e30; }
+  :root:not([data-theme="light"]) .tag.t-payments { color: #6aa3e0; background: #1e2a3a; }
+}
+
+.card.is-placeholder {
+  border: 1px dashed var(--line);
+  background: transparent;
+  color: var(--ink-4);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 13px;
+  cursor: default;
+}
+.card.is-placeholder:hover { transform: none; box-shadow: none; border-color: var(--line); }
+
+/* Kanban view */
+.board.is-kanban {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(280px, 1fr));
+  gap: 14px;
+  overflow-x: auto;
+  align-items: start;
+}
+.board.is-kanban .stage-section { background: var(--bg-tint); border-radius: var(--radius-l); padding: 14px 12px 16px; min-width: 0; }
+.board.is-kanban .stage-header { border-bottom: 1px solid var(--line); margin-bottom: 12px; padding-bottom: 8px; }
+.board.is-kanban .stage-header .stage-mrr { display: none; }
+.board.is-kanban .cards { grid-template-columns: minmax(0, 1fr); min-width: 0; }
+.board.is-kanban .card { min-height: auto; padding: 12px 13px; min-width: 0; max-width: 100%; overflow: hidden; }
+.board.is-kanban .card .teaser { -webkit-line-clamp: 2; font-size: 12.5px; }
+.board.is-kanban .card .company { min-width: 0; overflow: hidden; text-overflow: ellipsis; word-break: break-word; }
+.board.is-kanban .card .row1 { min-width: 0; }
+
+.empty-stage {
+  font-size: 12.5px;
+  color: var(--ink-4);
+  padding: 14px;
+  text-align: center;
+  font-style: italic;
+}
+
+/* ===== Drawer ===== */
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  background: rgba(20,20,19,.36);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--t-med);
+  z-index: 50;
+}
+.scrim.is-open { opacity: 1; pointer-events: auto; }
+
+.drawer {
+  position: fixed;
+  top: 0; right: 0;
+  height: 100vh;
+  width: min(640px, 96vw);
+  background: var(--bg-page);
+  box-shadow: var(--shadow-3);
+  z-index: 51;
+  transform: translateX(100%);
+  transition: transform var(--t-slow);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.drawer.is-open { transform: translateX(0); }
+
+.drawer-head {
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid var(--line);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: start;
+  flex-shrink: 0;
+  background: var(--bg-page);
+}
+.drawer-head .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+.stage-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 4px;
+  color: var(--stage-color);
+  background: var(--stage-tint);
+}
+.stage-pill::before {
+  content: '';
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--stage-color);
+}
+.drawer-head h2 {
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--ink-1);
+}
+.drawer-head .submeta {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--ink-3);
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.drawer-head .submeta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--ink-5); }
+.drawer-close {
+  appearance: none;
+  border: 1px solid var(--line);
+  background: var(--bg-elev);
+  width: 32px; height: 32px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-2);
+  transition: all var(--t-fast);
+}
+.drawer-close:hover { border-color: var(--ink-4); color: var(--ink-1); }
+
+.drawer-body {
+  padding: 24px 28px 32px;
+  overflow-y: auto;
+  flex-grow: 1;
+  scrollbar-gutter: stable;
+}
+.drawer-body::-webkit-scrollbar { width: 10px; }
+.drawer-body::-webkit-scrollbar-thumb { background: var(--ink-5); border-radius: 999px; border: 2px solid var(--bg-page); }
+.drawer-body::-webkit-scrollbar-track { background: transparent; }
+
+.section {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.section:last-child { border-bottom: none; }
+.section > h4 {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--ink-4);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.section p, .section li {
+  font-size: 14px;
+  color: var(--ink-2);
+  line-height: 1.6;
+}
+.section p + p { margin-top: 10px; }
+.section ul { list-style: none; }
+.section li {
+  position: relative;
+  padding-left: 16px;
+  margin-bottom: 4px;
+}
+.section li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 11px;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--ink-4);
+}
+.section .signal-source {
+  font-size: 12px;
+  color: var(--ink-4);
+  margin-bottom: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.section .signal-source code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg-tint);
+  padding: 1px 6px;
+  border-radius: 3px;
+  font-size: 11.5px;
+  color: var(--ink-2);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 6px 18px;
+  font-size: 13.5px;
+}
+.facts dt {
+  color: var(--ink-4);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  font-weight: 500;
+  padding-top: 1px;
+}
+.facts dd { color: var(--ink-1); }
+.facts dd .accent { color: var(--accent-deep); font-weight: 500; }
+
+.stack-tags {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+}
+.stack-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11.5px;
+  color: var(--ink-2);
+  background: var(--bg-tint);
+  border: 1px solid var(--line);
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  margin-top: 14px;
+  margin-bottom: 8px;
+}
+.score-cell {
+  padding: 10px 8px;
+  text-align: center;
+  background: var(--bg-tint);
+  border-radius: var(--radius-m);
+  border: 1px solid var(--line-soft);
+}
+.score-cell .val {
+  font-size: 18px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  display: block;
+  margin-bottom: 2px;
+  color: var(--accent-deep);
+}
+.score-cell .val .of { color: var(--ink-4); font-weight: 500; font-size: 11px; }
+.score-cell .name {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--ink-3);
+  font-weight: 500;
+}
+
+.package-box {
+  background: var(--accent-tint);
+  border: 1px solid #f0d3c0;
+  border-radius: var(--radius-l);
+  padding: 16px 18px;
+  margin-bottom: 14px;
+}
+.package-box .pkg-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--accent-deep);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.package-box .pkg-name {
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--ink-1);
+  margin-bottom: 4px;
+}
+.package-box .pkg-monthly {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent-deep);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+.package-box .pkg-monthly .unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-3);
+  margin-left: 4px;
+}
+.package-box .pkg-breakdown {
+  margin-top: 8px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+}
+
+.contacts-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+.contacts-table th {
+  text-align: left;
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-4);
+  font-weight: 600;
+  padding: 4px 8px 8px 0;
+  border-bottom: 1px solid var(--line);
+}
+.contacts-table td {
+  padding: 10px 8px 10px 0;
+  vertical-align: top;
+  border-bottom: 1px solid var(--line-soft);
+  color: var(--ink-2);
+}
+.contacts-table td:first-child { font-weight: 600; color: var(--ink-1); }
+.contacts-table tr:last-child td { border-bottom: none; }
+
+.channels {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.channel {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  font-weight: 500;
+}
+.channel.is-primary {
+  background: var(--ink-1);
+  color: var(--bg-page);
+  border-color: var(--ink-1);
+}
+
+.outreach-block {
+  margin-top: 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  overflow: hidden;
+}
+.outreach-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  background: var(--bg-tint);
+  border-bottom: 1px solid var(--line);
+}
+.outreach-head .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--ink-2);
+  font-weight: 600;
+}
+.outreach-head .lang {
+  font-size: 11px;
+  color: var(--ink-4);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+.copy-btn {
+  appearance: none;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  font: inherit;
+  font-size: 11.5px;
+  color: var(--ink-2);
+  padding: 4px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all var(--t-fast);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.copy-btn:hover { border-color: var(--ink-4); color: var(--ink-1); }
+.copy-btn.is-copied {
+  background: var(--won-tint);
+  color: var(--won);
+  border-color: var(--won);
+}
+.outreach-body {
+  padding: 16px 18px 18px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.action-items {
+  list-style: none;
+}
+.action-items li {
+  padding-left: 28px;
+  position: relative;
+  margin-bottom: 8px;
+  font-size: 13.5px;
+  color: var(--ink-2);
+  line-height: 1.5;
+}
+.action-items li::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 2px;
+  width: 16px; height: 16px;
+  border: 1.5px solid var(--ink-5);
+  border-radius: 4px;
+  background: var(--bg-elev);
+}
+.action-items li.is-done { color: var(--ink-4); text-decoration: line-through; }
+.action-items li.is-done::before {
+  background: var(--won);
+  border-color: var(--won);
+}
+.action-items li.is-done::after {
+  content: '';
+  position: absolute;
+  left: 3px; top: 5px;
+  width: 9px; height: 5px;
+  border-left: 2px solid white;
+  border-bottom: 2px solid white;
+  transform: rotate(-45deg);
+}
+
+.drawer-footer {
+  border-top: 1px solid var(--line);
+  padding: 14px 28px;
+  display: flex;
+  gap: 8px;
+  background: var(--bg-page);
+  flex-shrink: 0;
+}
+
+.source-cta {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 18px;
+  margin: 0 0 18px 0;
+  background: linear-gradient(180deg, var(--accent-tint) 0%, #f8e2d2 100%);
+  border: 1.5px solid #e8c0a3;
+  border-radius: var(--radius-l);
+  color: var(--ink-1);
+  text-decoration: none;
+  transition: all var(--t-fast);
+  cursor: pointer;
+}
+.source-cta:hover {
+  border-color: var(--accent);
+  background: linear-gradient(180deg, #fae3d2 0%, #f5d2bb 100%);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-2);
+}
+.source-cta.is-missing {
+  background: var(--bg-tint);
+  border: 1.5px dashed var(--line);
+  cursor: default;
+}
+.source-cta.is-missing:hover {
+  border-color: var(--line);
+  background: var(--bg-tint);
+  transform: none;
+  box-shadow: none;
+}
+.source-cta-icon {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  background: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent-deep);
+  border: 1px solid #ecd2bd;
+  flex-shrink: 0;
+}
+.source-cta.is-missing .source-cta-icon { color: var(--ink-4); border-color: var(--line); }
+.source-cta-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+}
+.source-cta-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--accent-deep);
+}
+.source-cta.is-missing .source-cta-label { color: var(--ink-3); }
+.source-cta-url {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12.5px;
+  color: var(--ink-1);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 3px;
+}
+.source-cta.is-missing .source-cta-url {
+  font-family: 'Inter', sans-serif;
+  font-size: 12px;
+  font-style: italic;
+  color: var(--ink-4);
+}
+.source-cta.is-missing .source-cta-url code {
+  font-family: 'JetBrains Mono', monospace;
+  font-style: normal;
+  background: white;
+  padding: 1px 6px;
+  border-radius: 3px;
+  border: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--ink-2);
+}
+.source-cta-arrow {
+  color: var(--accent-deep);
+  font-weight: 700;
+  font-size: 18px;
+  transition: transform var(--t-fast);
+}
+.source-cta:hover .source-cta-arrow { transform: translateX(4px); }
+
+.sources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.source-link {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  text-decoration: none;
+  color: var(--ink-1);
+  font-size: 13px;
+  transition: all var(--t-fast);
+}
+.source-link:hover {
+  border-color: var(--accent);
+  background: var(--accent-tint);
+}
+.source-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-1);
+}
+.source-kind {
+  font-size: 12px;
+  color: var(--ink-3);
+}
+.source-arrow {
+  color: var(--accent);
+  font-weight: 700;
+  font-size: 14px;
+  transition: transform var(--t-fast);
+}
+.source-link:hover .source-arrow { transform: translateX(3px); }
+.btn-primary {
+  appearance: none;
+  background: var(--ink-1);
+  color: var(--bg-page);
+  border: 1px solid var(--ink-1);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background var(--t-fast);
+}
+.btn-primary:hover { background: var(--ink-2); }
+
+.callout {
+  background: var(--warm-tint);
+  border-left: none;
+  border: 1px solid #e8d6a8;
+  padding: 12px 14px;
+  border-radius: var(--radius-m);
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-2);
+  line-height: 1.55;
+}
+.callout strong { color: var(--ink-1); }
+.callout.is-warn { background: var(--hot-tint); border-color: #f0c4bf; }
+
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+.card-copy-ref {
+  position: absolute;
+  top: 10px; right: 10px;
+  opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 6px;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.card:hover .card-copy-ref,
+.card:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint, #e6f3ec); border-color: rgba(31,122,77,.3); color: var(--won); opacity: 1; }
+
+/* ===== Responsive ===== */
+
+@media (max-width: 1100px) {
+  .widgets { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 720px) {
+  .app { padding: 18px 16px 80px; }
+  .widgets { grid-template-columns: 1fr; }
+  .masthead { grid-template-columns: 1fr; }
+  .actions { justify-content: flex-end; }
+  .filterbar { grid-template-columns: 1fr; }
+  .search { width: 100%; }
+  .drawer { width: 100vw; }
+  .board.is-kanban { grid-template-columns: 1fr; }
+}
+
+/* ===== Print ===== */
+
+@media print {
+  body { background: white; }
+  .actions, .filterbar, .scrim, .drawer, .drawer-footer { display: none !important; }
+  .widgets { page-break-inside: avoid; }
+  .stage-section { page-break-inside: avoid; }
+  .card { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+  .cards { grid-template-columns: repeat(3, 1fr); }
+}
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+<div class="app">
+
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Back to the vault home dashboard">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle"
+              aria-label="Switch to dark theme"
+              title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div>
+      <div class="eyebrow">CPS Sales Engine, Sprint 1 <span class="version-pill">v0.7.3</span></div>
+      <h1>Sales Pipeline <span class="accent">.</span></h1>
+      <div class="submeta">
+        <span><strong id="leadCount">15</strong> active leads</span>
+        <span class="dot"></span>
+        <span>EUR <strong id="mrrLo">17.6k</strong> to <strong id="mrrHi">28.9k</strong> potential MRR</span>
+        <span class="dot"></span>
+        <span>Day <strong>1</strong> of 90, Phase 1</span>
+        <span class="dot"></span>
+        <span class="mono" id="todayStamp"></span>
+      </div>
+    </div>
+  </header>
+
+  <section class="widgets" aria-label="Pipeline overview">
+    <div class="widget w-pipeline">
+      <h2>Pipeline value</h2>
+      <div class="figure">
+        <span class="lo tabular">17.6k</span>
+        <span class="sep">to</span>
+        <span class="hi tabular">28.9k</span>
+        <span class="unit">EUR / month</span>
+      </div>
+      <div class="range-bar" id="pipelineRange"></div>
+      <div class="legend" id="pipelineLegend"></div>
+    </div>
+
+    <div class="widget w-stages">
+      <h2>By stage</h2>
+      <div id="stageBreakdown"></div>
+    </div>
+
+    <div class="widget w-velocity">
+      <h2>Outreach velocity, weeks 1 to 8</h2>
+      <div class="bars" id="velocityBars"></div>
+      <div class="caption">
+        <span>This week, <strong>1 of 5</strong> sent</span>
+        <span>Target ramp 5 to 25 / week</span>
+      </div>
+    </div>
+
+    <div class="widget w-plan">
+      <h2>90-day plan</h2>
+      <div class="progress">
+        <div class="track"></div>
+        <div class="phase p3"></div>
+        <div class="phase p2"></div>
+        <div class="phase p1"></div>
+        <div class="marker" id="planMarker" style="left: 1.1%"></div>
+      </div>
+      <div class="ticks">
+        <span>P1 Activate</span>
+        <span>P2 Scale</span>
+        <span>P3 Compound</span>
+      </div>
+      <div class="caption">
+        <strong>Day 1</strong> of 90, 89 remaining. First discovery call target, day 35.
+      </div>
+    </div>
+  </section>
+
+  <section class="today" id="todayPanel" aria-label="Today's action queue"></section>
+
+  <section class="filterbar">
+    <div class="chips" id="chips">
+      <span class="chip-label">Stage</span>
+      <button class="chip is-active" data-filter-group="stage" data-filter-value="all">All <span class="count" id="cnt-all">15</span></button>
+      <button class="chip" data-filter-group="stage" data-filter-value="hot">Hot <span class="count" id="cnt-hot">4</span></button>
+      <button class="chip" data-filter-group="stage" data-filter-value="warm">Warm <span class="count" id="cnt-warm">4</span></button>
+      <button class="chip" data-filter-group="stage" data-filter-value="cold">Cold <span class="count" id="cnt-cold">5</span></button>
+      <button class="chip" data-filter-group="stage" data-filter-value="contacted">Contacted <span class="count" id="cnt-contacted">1</span></button>
+      <button class="chip" data-filter-group="stage" data-filter-value="lost">Lost <span class="count" id="cnt-lost">2</span></button>
+      <span class="chip-label" style="margin-left: 8px;">Geo</span>
+      <button class="chip" data-filter-group="geo" data-filter-value="HU">Hungary</button>
+      <button class="chip" data-filter-group="geo" data-filter-value="RO">Romania</button>
+      <button class="chip" data-filter-group="geo" data-filter-value="NL">Netherlands</button>
+      <span class="chip-label" style="margin-left: 8px;">Tag</span>
+      <button class="chip" data-filter-group="tag" data-filter-value="fintech">Fintech</button>
+      <button class="chip" data-filter-group="tag" data-filter-value="engine-b">Engine B</button>
+      <button class="chip" data-filter-group="tag" data-filter-value="lang-hu">HU outreach</button>
+      <button class="chip" data-filter-group="tag" data-filter-value="lang-en">EN outreach</button>
+    </div>
+    <div class="search">
+      <input type="text" id="searchInput" placeholder="Search companies, tags, signals" autocomplete="off">
+    </div>
+  </section>
+
+  <main class="board" id="board"></main>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" role="dialog" aria-label="Lead detail"></aside>
+
+<script>
+/* ============================================================
+   Data: 15 active leads + 2 lost.
+   Source: Pipeline.md (2026-05-11), leads.md, dossiers, Strategy v2.0.
+   ============================================================ */
+
+const STAGES = {
+  hot:        { label: 'HOT', sub: 'Outreach this week', color: 'var(--hot)', tint: 'var(--hot-tint)' },
+  warm:       { label: 'WARM', sub: 'Outreach this sprint', color: 'var(--warm)', tint: 'var(--warm-tint)' },
+  cold:       { label: 'COLD', sub: 'Research, low priority', color: 'var(--cold)', tint: 'var(--cold-tint)' },
+  contacted:  { label: 'CONTACTED', sub: 'Awaiting reply', color: 'var(--contact)', tint: 'var(--contact-tint)' },
+  discovery:  { label: 'DISCOVERY', sub: 'Call booked', color: 'var(--discovery)', tint: 'var(--discovery-tint)' },
+  proposal:   { label: 'PROPOSAL', sub: 'Proposal sent', color: 'var(--proposal)', tint: 'var(--proposal-tint)' },
+  won:        { label: 'WON', sub: 'Closed, onboarding', color: 'var(--won)', tint: 'var(--won-tint)' },
+  lost:       { label: 'LOST / PARKED', sub: 'No signal, paused', color: 'var(--lost)', tint: 'var(--lost-tint)' }
+};
+
+// Fallback dataset, used when fetch is unavailable (e.g. file:// origin).
+// In server-served mode, LEADS is rebuilt every poll from Pipeline.md + leads.md.
+const LEADS_HARDCODED_FALLBACK = [
+  /* ==================== HOT ==================== */
+  {
+    id: 'chemaxon',
+    company: 'Chemaxon',
+    stage: 'hot',
+    score: 9,
+    tags: ['engine-b', 'pharma', 'lang-en'],
+    geo: 'HU',
+    due: '2026-05-12',
+    teaser: 'Active Senior DevOps Engineer on chemaxon.com careers. Compute-heavy pharma/chem SaaS, AWS-native, IaC mature.',
+    signal: {
+      source: 'Career page',
+      url: 'chemaxon.com/careers',
+      title: 'Senior DevOps Engineer',
+      asOf: '2026-05-11',
+      blurb: 'Confirmed live on chemaxon.com careers. AWS, Terraform, Docker, GitLab CI in requirements.'
+    },
+    whatTheyWant: ['AWS (production)', 'Terraform', 'Docker', 'GitLab CI', '4+ years infra'],
+    profile: {
+      industry: 'Pharma / chemistry SaaS',
+      hq: 'Budapest, HU',
+      founded: '2002',
+      employees: '~150',
+      stack: ['AWS', 'Terraform', 'Docker', 'GitLab CI', 'Python'],
+      icp: 'Profile #2, scaling product company'
+    },
+    whyInteresting: 'Compute-heavy chemistry/AI workloads on AWS, classic FinOps surface area. Mature engineering culture, posting visible for weeks, signals real need not aspirational hiring. Pharma SaaS revenue funds proper engagement.',
+    scoreBreakdown: { maturity: 3, posting: 2, aws: 2, gap: 1, geo: 3 },
+    pains: [
+      'Compute-heavy AWS workloads, unmanaged optimization spend likely 20 to 30%',
+      'IaC mature but ops capacity probably stretched (single posting open for weeks)',
+      'Pharma compliance overhead, audit trails are infrastructure work'
+    ],
+    offer: {
+      package: 'Essential',
+      monthly: 2000,
+      addons: [{ name: 'FinOps', eur: 500 }],
+      total: 2500,
+      valueProps: [
+        '40h / month covers monitoring, IaC maintenance, GitLab CI ops, incident response',
+        'FinOps add-on at EUR 500 pays for itself on a single Reserved Instance pass',
+        'Compute-heavy chemistry workloads = our exact area of strength (Spot, EKS scaling, S3 lifecycle)'
+      ]
+    },
+    contacts: [
+      { name: 'CTO (research pending)', role: 'CTO', approach: 'LinkedIn, technical peer-level conversation' },
+      { name: 'Head of Engineering (research pending)', role: 'Head of Eng', approach: 'Direct technical pitch, ROI focused' }
+    ],
+    channels: ['LinkedIn DM', 'Career page application angle', 'Direct email'],
+    primaryChannel: 'LinkedIn DM',
+    strategy: {
+      angle: 'You posted a Senior DevOps role. We can deliver that capacity in 2 weeks instead of 3 to 6 months, at a known monthly cost, and the role can become permanent later if you want.',
+      timing: 'This week. Posting is fresh, no candidate decisions yet.',
+      redFlags: [
+        'May prefer in-house hire for control. Counter, fixed cost vs uncertain salary band.',
+        'Pharma compliance may delay procurement. Mitigate with 1 month pilot.'
+      ]
+    },
+    drafts: [
+      {
+        lang: 'EN',
+        label: 'Option A, LinkedIn to CTO',
+        text: `Hi {name},
+
+I saw the Senior DevOps role open on chemaxon.com. Strong infra engineers in Budapest are a multi-month search right now, and AWS spend on compute-heavy workloads typically has 20 to 30% slack until someone owns FinOps.
+
+We run CPS, a managed AWS operations team at Sonrisa (300+ engineers, Budapest, 19 years in business). For roles like this we ship a team of 3 to 4 engineers in 2 weeks, fixed monthly cost, with FinOps embedded.
+
+Worth a 20 minute call to compare numbers? I can come prepared with rough estimates on your stack.
+
+Szabolcs`
+      }
+    ],
+    actions: [
+      { text: 'Find CTO / Head of Eng on LinkedIn', done: false },
+      { text: 'Confirm posting still live, screenshot for record', done: false },
+      { text: 'Send LinkedIn DM, target 2026-05-12', done: false },
+      { text: 'If response, propose 30 min discovery + cost health check offer', done: false }
+    ]
+  },
+  {
+    id: 'seon',
+    company: 'SEON',
+    stage: 'hot',
+    score: 14,
+    tags: ['engine-b', 'fintech', 'lang-en'],
+    geo: 'HU',
+    due: '2026-05-12',
+    teaser: 'Senior Manager SRE (leadership, EU CET) + Senior Platform Engineer open on Profession.hu. Two infra roles at once, classic CPS territory.',
+    signal: {
+      source: 'Profession.hu',
+      url: 'profession.hu',
+      title: 'Senior Manager SRE + Senior Platform Engineer',
+      asOf: '2026-05-11',
+      blurb: 'Two infrastructure roles open simultaneously, 300+ employees, SOC 2 + ISO 27001 certified fraud / AML SaaS.'
+    },
+    whatTheyWant: ['AWS', 'Kubernetes', 'Terraform', 'Prometheus', 'Grafana', 'Jenkins', 'SRE leadership'],
+    profile: {
+      industry: 'Fintech, fraud detection / AML SaaS',
+      hq: 'Budapest, HU',
+      founded: '2017',
+      employees: '300+',
+      stack: ['AWS', 'Kubernetes', 'Terraform', 'Jenkins', 'Prometheus', 'Grafana'],
+      icp: 'Profile #2, scaled SaaS with compliance burden'
+    },
+    whyInteresting: 'Two infra roles open at once means current SRE bench is overstretched. SOC 2 + ISO 27001 means ops maturity is required, not optional. Fraud/AML is mission critical, 24/7 demand. Their MRR per customer is high enough to fund Growth + DevSecOps without flinching.',
+    scoreBreakdown: { maturity: 3, posting: 3, aws: 3, gap: 2, geo: 3 },
+    pains: [
+      'Two infra roles open simultaneously = stretched team',
+      'SOC 2 + ISO 27001 compliance burden on infra side, audit prep work',
+      'Fraud detection latency = SRE leadership matters now'
+    ],
+    offer: {
+      package: 'Growth',
+      monthly: 4000,
+      addons: [{ name: 'DevSecOps', eur: 700 }],
+      total: 4700,
+      valueProps: [
+        '80h / month with a senior SRE lead on day 1, no recruiting cycle',
+        'DevSecOps add-on aligns with SOC 2 + ISO 27001 surface',
+        'Sonrisa has Lufthansa / Oracle audit history, compliance posture credible'
+      ]
+    },
+    contacts: [
+      { name: 'CTO / VPE (research pending)', role: 'CTO or VPE', approach: 'LinkedIn, peer-level, lead with "two roles open" observation' }
+    ],
+    channels: ['LinkedIn DM', 'Direct email to engineering leadership'],
+    primaryChannel: 'LinkedIn DM',
+    strategy: {
+      angle: 'You are hiring two infra roles at once. We can fill that capacity in 2 weeks with a SOC 2-aware team, and you keep both hires for the work only an in-house team can do (product, vendor specifics, on-call ownership).',
+      timing: 'This week. Both roles are fresh on profession.hu.',
+      redFlags: [
+        'Late-stage fintech may have procurement and security review (4 to 8 weeks). Mitigate with NDA + light pilot scope.',
+        'May already use AWS Premier partner. Counter, we are not a generic MSP, fixed price, EU-based, no offshore.'
+      ]
+    },
+    drafts: [
+      {
+        lang: 'EN',
+        label: 'Option A, LinkedIn to VPE',
+        text: `Hi {name},
+
+I noticed SEON has both a Senior Manager SRE and a Senior Platform Engineer open right now. Hiring two infra leads at the same time is one of the harder hiring stretches in the EU market.
+
+I lead CPS at Sonrisa (300+ engineers, Budapest, SOC 2 / ISO ready). We provide managed AWS operations teams at a fixed monthly price. For a SOC 2 + ISO 27001 environment we typically run an embedded team of 3 to 4 engineers with 24/7 on-call, ready in 2 weeks.
+
+The math usually lands at EUR 50 to 60K / year below two senior hires, with no recruiting drag. Worth a 20 minute call to compare?
+
+Szabolcs`
+      }
+    ],
+    actions: [
+      { text: 'Find VPE / Head of SRE on LinkedIn', done: false },
+      { text: 'Verify both postings still live on profession.hu', done: false },
+      { text: 'Prepare SOC 2 / ISO credentials one-pager', done: false },
+      { text: 'Send LinkedIn DM, 2026-05-12', done: false }
+    ]
+  },
+  {
+    id: 'kboss',
+    company: 'KBOSS / Szamlazz.hu',
+    stage: 'hot',
+    score: 14,
+    tags: ['profile1', 'fintech', 'lang-hu'],
+    geo: 'HU',
+    due: '2026-05-13',
+    teaser: 'Persistent DevOps hiring for 12+ months. Visma owner does NOT centralize DevOps. ~50 emp running platform for 100K+ businesses. AWS confirmed.',
+    signal: {
+      source: 'Career page + Profession.hu history',
+      url: 'szamlazz.hu/karrier',
+      title: 'Üzemeltető / DevOps (recurring)',
+      asOf: '2026-05-11',
+      blurb: 'Career page currently shows full-stack roles, but devops postings recurred 2025 to 2026. Thesis: developers absorbed DevOps work, persistent unmet need.'
+    },
+    whatTheyWant: ['AWS ops', 'IaC', 'GitLab CI/CD', '24/7 on-call'],
+    profile: {
+      industry: 'Fintech, online invoicing SaaS (NAV integration)',
+      hq: 'Budapest, HU',
+      founded: '2004',
+      employees: '~50',
+      stack: ['AWS (EC2/EKS likely)', 'RDS', 'S3', 'CloudFront', 'GitLab CI'],
+      icp: 'Profile #1 SUPER HOT, Visma confirmed not centralizing'
+    },
+    whyInteresting: '100K+ businesses depend on this platform. 50 people running it. Persistent 12+ month hiring proves they cannot find or retain a DevOps person. Visma is hands-off so the autonomy is real. Estimated cloud spend EUR 5K to 20K / month, FinOps surface alone justifies engagement.',
+    scoreBreakdown: { maturity: 3, posting: 3, aws: 2, gap: 3, geo: 3 },
+    pains: [
+      '12+ month hiring track record = cannot find or retain DevOps',
+      'Single point of failure on platform serving 100K+ businesses',
+      'Likely 20 to 35% cloud cost waste without FinOps discipline',
+      'NAV / GDPR / fintech compliance audits land on devs by default'
+    ],
+    offer: {
+      package: 'Essential',
+      monthly: 2000,
+      addons: [{ name: 'FinOps', eur: 500 }],
+      total: 2500,
+      valueProps: [
+        'Team of 3 to 4 in 2 weeks, ends the recruiting fatigue',
+        'FinOps add-on, likely pays for itself in month 1 on EUR 5 to 20K cloud spend',
+        '24/7 add-on available later for the 100K-business uptime claim'
+      ]
+    },
+    contacts: [
+      { name: 'CTO / Head of Eng (research pending)', role: 'CTO', approach: 'LinkedIn, HU language, persistent-hiring angle' }
+    ],
+    channels: ['LinkedIn DM (HU)', 'Direct email', 'Visma alumni network (long shot)'],
+    primaryChannel: 'LinkedIn DM (HU)',
+    strategy: {
+      angle: 'KBOSS has been trying to hire DevOps for over a year. The market is not going to deliver one fast enough. A team of 3 to 4 engineers in 2 weeks ends the recruiting fatigue, with FinOps embedded.',
+      timing: 'Tuesday or Wednesday this week, HU language.',
+      redFlags: [
+        'Visma may eventually centralize, watch for signals. Mitigate by anchoring contract value in months 1 to 3.',
+        'Small team means decision can come from CTO directly, good for speed.'
+      ]
+    },
+    drafts: [
+      {
+        lang: 'HU',
+        label: 'Option A, LinkedIn (HU) az inkubator angle',
+        text: `Szia {name},
+
+Eszrevettem, hogy a Szamlazz.hu mar tobb mint egy eve hirdet DevOps poziciot a profession.hu-n, idokozonkent visszateroleg. A HU piacon ez nem ritka, jo mernokot 6 honap alatt sem konnyu talalni.
+
+Szabolcs vagyok, CPS-t (Cloud Platform Services) vezetem a Sonrisa-nal (300+ mernok, Budapest, 19 ev a piacon). Megoldjuk, amit a hiring nem old meg, fix havi aron uzemeltetjuk a teljes AWS infrat 3 to 4 fos csapattal, 2 het alatt elindulunk.
+
+Mas Visma cegekkel mar dolgoztunk, az autonomia tortenelmileg adott. Erdekelne egy 20 perces hivas, hogy beszeljunk a konkret stack-rol es a koltsegrol?
+
+Udv,
+Szabolcs`
+      }
+    ],
+    actions: [
+      { text: 'Confirm DevOps posting status on profession.hu', done: false },
+      { text: 'Find CTO / Head of Eng on LinkedIn', done: false },
+      { text: 'Verify Visma autonomy with mutual contact if possible', done: false },
+      { text: 'Send LinkedIn DM (HU), 2026-05-13', done: false }
+    ]
+  },
+  {
+    id: 'colossyan',
+    company: 'Colossyan',
+    stage: 'hot',
+    score: 10,
+    tags: ['engine-b', 'ai', 'lang-en'],
+    geo: 'HU',
+    due: '2026-05-13',
+    teaser: 'Platform Engineer role on Jobera, posted 2024-11. Six months old, openness uncertain. AWS EKS, GPU media pipelines, AI video.',
+    signal: {
+      source: 'Jobera',
+      url: 'jobera.io',
+      title: 'Platform Engineer',
+      asOf: 'posted 2024-11-04, still listed 2026-05-11',
+      blurb: 'AWS EKS, Kubernetes, Flux, GitHub Actions. AI video synthesis, GPU media pipelines.'
+    },
+    whatTheyWant: ['AWS EKS', 'Kubernetes', 'Flux (GitOps)', 'GitHub Actions', 'GPU workloads experience'],
+    profile: {
+      industry: 'AI video synthesis SaaS',
+      hq: 'London / HU presence',
+      founded: '2021',
+      employees: '~50',
+      stack: ['AWS EKS', 'Flux', 'GitHub Actions', 'GPU instances'],
+      icp: 'Profile #2, scaling AI startup, GPU cost surface'
+    },
+    whyInteresting: 'AI video means GPU-heavy AWS spend. GitOps + EKS means mature ops practice. Posting age is a concern but listing is still public. FinOps angle on GPU instances alone is a strong pitch.',
+    scoreBreakdown: { maturity: 2, posting: 1, aws: 3, gap: 2, geo: 2 },
+    pains: [
+      'GPU spend on AWS is the largest cost line for AI video',
+      'EKS + Flux requires constant cluster upgrade discipline',
+      'Posting may signal stalled hire, classic CPS opening'
+    ],
+    offer: {
+      package: 'Essential',
+      monthly: 2000,
+      addons: [{ name: 'FinOps', eur: 500 }],
+      total: 2500,
+      valueProps: [
+        'EKS upgrade cadence and GPU FinOps both in scope',
+        'Faster than restarting the 6 month old hiring process'
+      ]
+    },
+    contacts: [
+      { name: 'Head of Platform / CTO (research pending)', role: 'CTO', approach: 'LinkedIn, GPU FinOps hook' }
+    ],
+    channels: ['LinkedIn DM', 'Career page contact'],
+    primaryChannel: 'LinkedIn DM',
+    strategy: {
+      angle: 'GPU spend on AI video is the cost line that hurts most. EKS upgrade cadence is the ops work nobody owns. We do both.',
+      timing: 'This week, EN language.',
+      redFlags: [
+        'Posting age suggests possible role cancellation or stalled hire',
+        'Verify posting still active before reaching out, may be ghost listing'
+      ]
+    },
+    drafts: [
+      {
+        lang: 'EN',
+        label: 'Option A, LinkedIn',
+        text: `Hi {name},
+
+I saw the Platform Engineer role still listed for Colossyan. Six months is the point where most teams stop looking and start absorbing the work. EKS upgrades and GPU FinOps are usually the first things to slip.
+
+I lead CPS at Sonrisa (300+ engineers, Budapest). For AI video shops we typically run a team that owns EKS lifecycle plus GPU instance optimization, Essential plan EUR 2K/month + FinOps add-on. Ramp in 2 weeks.
+
+Open to a 20 min call to compare?
+
+Szabolcs`
+      }
+    ],
+    actions: [
+      { text: 'Verify Jobera posting still active', done: false },
+      { text: 'Find Head of Platform on LinkedIn', done: false },
+      { text: 'Prep GPU FinOps quick numbers (typical 25 to 40% savings)', done: false },
+      { text: 'Send DM 2026-05-13', done: false }
+    ]
+  },
+
+  /* ==================== WARM ==================== */
+  {
+    id: 'allonic',
+    company: 'Allonic',
+    stage: 'warm',
+    score: 7,
+    tags: ['profile2', 'startup', 'lang-en'],
+    geo: 'HU',
+    due: '2026-05-14',
+    teaser: 'Robotics startup, $7.2M pre-seed (largest HU ever). 15 emp scaling. Active Robotics / SWE hiring. NO DevOps role. Fractional platform pitch.',
+    signal: {
+      source: 'LinkedIn hiring (Feb 2026)',
+      url: 'linkedin.com/company/allonic',
+      title: 'Robotics + SWE + Operations roles (no DevOps)',
+      asOf: '2026-02',
+      blurb: 'Pre-seed $7.2M reportedly largest Hungarian pre-seed ever. Visionaries Club + OpenAI / Hugging Face angels. Scaling from 15 to 25-30.'
+    },
+    whatTheyWant: ['Robotics Engineer', 'SWE', 'Operations'],
+    profile: {
+      industry: 'Robotics infrastructure',
+      hq: 'Budapest, HU',
+      founded: '2025',
+      employees: '~15 (growing to 25-30)',
+      stack: ['Cloud (AWS or GCP, unconfirmed)', 'Container orchestration likely', 'CI/CD'],
+      icp: 'Profile #2, scaling startup, latent platform need'
+    },
+    whyInteresting: 'Largest HU pre-seed ever. Robotics infra needs heavy cloud ops (control planes, data pipelines, edge-cloud sync). They have NO DevOps role open which means founders/devs are doing it. Classic fractional platform team pitch.',
+    scoreBreakdown: { maturity: 0, posting: 0, aws: 1, gap: 3, geo: 3 },
+    pains: [
+      'Founders / developers doing infra instead of robotics product',
+      'No DevOps discipline as team scales from 15 to 30',
+      'Robotics = compute + data + edge complexity beyond startup capacity'
+    ],
+    offer: {
+      package: 'Safety Net',
+      monthly: 990,
+      addons: [],
+      total: 990,
+      valueProps: [
+        'Fractional platform team, not a hire',
+        '6h / month of senior cloud ops is enough to keep them honest at this size',
+        'Grow to Essential when they hit 25 engineers and the first enterprise customer'
+      ]
+    },
+    contacts: [
+      { name: 'Founders (research on LinkedIn pending)', role: 'CEO / CTO co-founders', approach: 'LinkedIn, peer-to-peer, scaling-bottleneck angle' }
+    ],
+    channels: ['LinkedIn DM', 'Founder warm intro through HU startup ecosystem'],
+    primaryChannel: 'LinkedIn DM',
+    strategy: {
+      angle: 'Your developers should be building robots, not managing AWS instances. We are the platform team you do not have to hire yet.',
+      timing: 'This sprint, EN language.',
+      redFlags: [
+        'No active DevOps posting = need to create the need before they feel it',
+        'May choose to hire when they hit 20 emp. Counter, we de-risk the gap until then'
+      ]
+    },
+    drafts: [
+      {
+        lang: 'EN',
+        label: 'Option A, LinkedIn to CEO',
+        text: `Hi {name},
+
+Congrats on the $7.2M pre-seed, biggest HU round on record. From the outside it looks like the team is heads-down on robotics, which is exactly where it should be.
+
+Scaling robotics infra typically means containers, data pipelines, edge-cloud sync, monitoring, all the stuff that pulls founders away from product. I run CPS at Sonrisa, we operate as a fractional platform team for Series A / pre-seed companies, EUR 990 / month for 6h of senior cloud ops, ramping up only when you need it.
+
+If it makes sense, happy to share what a starter scope looks like.
+
+Szabolcs`
+      }
+    ],
+    actions: [
+      { text: 'Research founders on LinkedIn', done: false },
+      { text: 'Identify cloud stack (GitHub, founder posts)', done: false },
+      { text: 'Draft fractional-platform-team outreach', done: false },
+      { text: 'Send DM, target 2026-05-14', done: false }
+    ]
+  },
+  {
+    id: 'lensa',
+    company: 'Lensa',
+    stage: 'warm',
+    score: 8,
+    tags: ['engine-b', 'lang-hu'],
+    geo: 'HU',
+    due: '2026-05-14',
+    teaser: 'Active Mid-Level Data Engineer role, AWS-based ecosystem (pipelines + infra). No ops-titled role. Latent DevOps gap.',
+    signal: {
+      source: 'career.lensa.com',
+      url: 'career.lensa.com',
+      title: 'Mid-Level Data Engineer',
+      asOf: '2026-05-11',
+      blurb: 'AWS data pipelines + infra responsibilities, but title is Data Engineer not DevOps. Latent platform need.'
+    },
+    whatTheyWant: ['AWS data engineering', 'Pipelines', 'Infra'],
+    profile: {
+      industry: 'Job search SaaS',
+      hq: 'Budapest, HU',
+      founded: '2016',
+      employees: '~80',
+      stack: ['AWS', 'Data pipelines'],
+      icp: 'Profile #2 latent, no infra-titled hire'
+    },
+    whyInteresting: 'AWS-native ecosystem, data engineering posting implies infra is hidden in data team. Classic CPS opening, data engineers do not enjoy infra ownership.',
+    scoreBreakdown: { maturity: 2, posting: 2, aws: 2, gap: 1, geo: 3 },
+    pains: ['Data engineers covering infra', 'No on-call structure visible', 'Pipeline reliability vs feature velocity tradeoff'],
+    offer: {
+      package: 'Essential',
+      monthly: 2000,
+      addons: [],
+      total: 2000,
+      valueProps: ['Free data engineer from infra ownership', '24/7 add-on if pipelines are revenue-critical']
+    },
+    contacts: [{ name: 'CTO / Head of Data (research pending)', role: 'CTO', approach: 'LinkedIn, HU, data-team-relief angle' }],
+    channels: ['LinkedIn DM (HU)', 'Career page contact'],
+    primaryChannel: 'LinkedIn DM (HU)',
+    strategy: {
+      angle: 'Your data engineers are doing infra work. Give them their job back.',
+      timing: 'This sprint, HU language.',
+      redFlags: ['May not feel the pain yet, latent need']
+    },
+    drafts: [
+      {
+        lang: 'HU',
+        label: 'Option A, LinkedIn (HU)',
+        text: `Szia {name},
+
+A Lensa karrieroldalon eppen Data Engineer-t kerestek AWS pipeline-okhoz. Ami fel szokott merulni ilyenkor, az hogy a data engineer-ek vegul az infrat is csinaljak, de nem azt akarjak csinalni.
+
+CPS-t (Cloud Platform Services) vezetem a Sonrisa-nal. Fix havi 2K EUR-ert atvesszuk az AWS uzemeltetest, hogy a data csapat a feature-okre koncentralhasson.
+
+Erdekelne egy 20 perces hivas?
+
+Szabolcs`
+      }
+    ],
+    actions: [
+      { text: 'Research Lensa engineering leadership', done: false },
+      { text: 'Validate AWS depth, check if data team has on-call', done: false }
+    ]
+  },
+  {
+    id: 'loxon',
+    company: 'Loxon Solutions',
+    stage: 'warm',
+    score: 6,
+    tags: ['engine-ab', 'fintech', 'lang-hu'],
+    geo: 'HU',
+    due: '2026-05-15',
+    teaser: 'DEMOTED 2026-05-11. Only SysOps role visible (no DevOps/SRE/Cloud/Platform). Banking software 25 years, DORA pressure 2026 still valid.',
+    signal: {
+      source: 'loxon.eu/career',
+      url: 'loxon.eu/career',
+      title: 'SysOps (no DevOps posting visible)',
+      asOf: '2026-05-11',
+      blurb: 'Demoted from HOT after Perplexity validation pass. SysOps role only. Banking compliance angle remains valid.'
+    },
+    whatTheyWant: ['SysOps', 'Banking infra (Linux, traditional ops)'],
+    profile: {
+      industry: 'Banking software (lending platforms)',
+      hq: 'Budapest, HU',
+      founded: '2000',
+      employees: '~250',
+      stack: ['On-prem + AWS hybrid likely', 'Banking compliance (DORA)'],
+      icp: 'Profile #1 borderline, large org, slow procurement'
+    },
+    whyInteresting: 'DORA compliance hits banking software in 2026. Loxon is the largest HU banking software vendor. Long sales cycle but high contract value if won.',
+    scoreBreakdown: { maturity: 3, posting: 1, aws: 1, gap: 0, geo: 3 },
+    pains: ['DORA compliance landing 2026', 'Hybrid infra modernization', 'Audit trails on banking workloads'],
+    offer: {
+      package: 'Essential',
+      monthly: 2000,
+      addons: [{ name: 'DevSecOps', eur: 700 }],
+      total: 2700,
+      valueProps: ['DORA-aware ops practice', 'Lufthansa / Oracle audit history in our background']
+    },
+    contacts: [{ name: 'Head of IT (research pending)', role: 'Head of IT', approach: 'LinkedIn HU, compliance angle' }],
+    channels: ['LinkedIn (HU)', 'Direct email', 'Banking industry events'],
+    primaryChannel: 'LinkedIn (HU)',
+    strategy: {
+      angle: 'DORA compliance in 2026 changes operational expectations on banking software vendors. We bring 19 years of audit-ready posture.',
+      timing: 'This sprint, HU language.',
+      redFlags: ['Long procurement cycle (4 to 8 weeks)', 'May want in-house ops for sovereignty']
+    },
+    drafts: [
+      {
+        lang: 'HU',
+        label: 'Option A, LinkedIn (HU) compliance angle',
+        text: `Szia {name},
+
+A DORA megfeleloseg 2026-ban a banking software szallitokat is eri. Sonrisa-nal a CPS csapat 19 ev audit-ready hatterrel dolgozik (Lufthansa, Oracle), fix havi aron uzemelteti az AWS / hibrid infrat.
+
+Erdekelne egy 30 perces beszelgetes a DORA-felkeszultsegrol?
+
+Szabolcs`
+      }
+    ],
+    actions: [
+      { text: 'Verify whether DevOps posting reappears in 2 weeks', done: false },
+      { text: 'Find Head of IT on LinkedIn', done: false }
+    ]
+  },
+  {
+    id: 'eosfaktor',
+    company: 'EOS Faktor',
+    stage: 'warm',
+    score: 9,
+    tags: ['fintech', 'lang-hu'],
+    geo: 'HU',
+    due: '2026-05-15',
+    teaser: 'DEMOTED 2026-05-11. April DevOps posting gone. Otto Group / EOS Group gateway angle remains the only reason.',
+    signal: {
+      source: 'Career page (posting closed)',
+      url: 'eosfaktor.hu',
+      title: 'DevOps Engineer (no longer visible)',
+      asOf: '2026-05-11',
+      blurb: 'Demoted after April posting disappeared. Worth pursuing only as gateway to Otto Group / EOS Group umbrella.'
+    },
+    whatTheyWant: ['Nginx', 'CI/CD (Jenkins, GitLab)', 'IaC', 'Linux', 'Python', 'Docker', 'Prometheus'],
+    profile: {
+      industry: 'Financial receivables management',
+      hq: 'Budapest, HU (Váci út 30)',
+      founded: '2008',
+      employees: '~226',
+      stack: ['AWS (advantage, not required)', 'Jenkins / GitLab CI', 'Docker', 'Prometheus'],
+      icp: 'Profile #1 borderline, group IT may centralize'
+    },
+    whyInteresting: 'Hungarian leader in receivables. Otto Group / EOS Group has 30K+ employees globally. Even if HU local is centralized, gateway to bigger contracts.',
+    scoreBreakdown: { maturity: 3, posting: 1, aws: 1, gap: 1, geo: 3 },
+    pains: ['Posting closed = either hire made or paused', 'Group IT centralization risk'],
+    offer: {
+      package: 'Safety Net',
+      monthly: 990,
+      addons: [],
+      total: 990,
+      valueProps: ['Low-friction entry as backup support', 'Gateway pricing for Otto Group conversation']
+    },
+    contacts: [{ name: 'Head of IT (research pending)', role: 'Head of IT', approach: 'LinkedIn HU' }],
+    channels: ['LinkedIn (HU)'],
+    primaryChannel: 'LinkedIn (HU)',
+    strategy: {
+      angle: 'Skip the DevOps role conversation, lead with Otto Group / EOS Group strategic dialogue if approachable.',
+      timing: 'Low priority this sprint.',
+      redFlags: ['Posting disappeared, signal weak', 'Group IT may already own this']
+    },
+    drafts: [],
+    actions: [
+      { text: 'Check if April posting reappears', done: false },
+      { text: 'Research Otto Group HU IT structure', done: false }
+    ]
+  },
+
+  /* ==================== COLD ==================== */
+  {
+    id: 'barion',
+    company: 'Barion Payment',
+    stage: 'cold',
+    score: 5,
+    tags: ['fintech', 'engine-b', 'payments'],
+    geo: 'HU',
+    teaser: 'No current DevOps posting found. Fintech compliance angle. Pain-based approach needed.',
+    signal: { source: 'Pain-based outbound', url: 'barion.com', title: 'No active posting', asOf: '2026-05-11', blurb: 'Engine B pain-based, not job-posting based.' },
+    whatTheyWant: ['Unknown, no active posting'],
+    profile: { industry: 'Online payments', hq: 'Budapest, HU', founded: '2015', employees: '~80', stack: ['AWS (likely)'], icp: 'Profile #3, cloud cost pain hypothesis' },
+    whyInteresting: 'Online payment processor, compliance + uptime needs are real. Cloud spend likely material. Worth a pain-based touch.',
+    scoreBreakdown: { maturity: 2, posting: 0, aws: 1, gap: 1, geo: 3 },
+    pains: ['PCI-DSS / PSD2 compliance', 'Payment uptime tolerance is zero'],
+    offer: { package: 'Safety Net', monthly: 990, addons: [], total: 990, valueProps: ['Compliance-aware ops', 'Payment industry experience'] },
+    contacts: [],
+    channels: ['LinkedIn (HU)', 'Hungarian fintech network'],
+    primaryChannel: 'Research first',
+    strategy: { angle: 'Compliance + cloud cost pain hypothesis, not job-posting reactive.', timing: 'After HOT/WARM cleared.', redFlags: ['No active hiring signal'] },
+    drafts: [],
+    actions: [{ text: 'Engine B research, identify CTO + cloud spend', done: false }]
+  },
+  {
+    id: 'pentech',
+    company: 'Pentech',
+    stage: 'cold',
+    score: 4,
+    tags: ['fintech', 'engine-b'],
+    geo: 'HU',
+    teaser: 'No career page. Small (30-60 emp). Digital factoring. Safety Net entry via founders on LinkedIn.',
+    signal: { source: 'Engine B inference', url: 'pentech.hu', title: 'No active posting', asOf: '2026-05-11', blurb: 'Digital factoring, fintech compliance angle.' },
+    whatTheyWant: ['Unknown'],
+    profile: { industry: 'Digital factoring fintech', hq: 'Budapest, HU', employees: '30-60', stack: ['Cloud (unconfirmed)'], icp: 'Profile #3, hypothesis-driven' },
+    whyInteresting: 'Small fintech, founder-led, may respond to direct LinkedIn from founder.',
+    scoreBreakdown: { maturity: 2, posting: 0, aws: 0, gap: 1, geo: 3 },
+    pains: ['Fintech compliance', 'Cloud cost discipline rare in small fintechs'],
+    offer: { package: 'Safety Net', monthly: 990, addons: [], total: 990, valueProps: ['Founder-friendly fixed cost', 'Compliance posture'] },
+    contacts: [],
+    channels: ['LinkedIn to founder'],
+    primaryChannel: 'LinkedIn to founder',
+    strategy: { angle: 'Founder-to-founder, fixed cost angle.', timing: 'Low priority.', redFlags: ['No public signal, cold approach'] },
+    drafts: [],
+    actions: [{ text: 'Find founders on LinkedIn', done: false }]
+  },
+  {
+    id: 'abz',
+    company: 'ABZ Innovation',
+    stage: 'cold',
+    score: 4,
+    tags: ['engine-b'],
+    geo: 'HU',
+    teaser: 'No career page found. Small company, EUR 7M funding. Fractional team pitch.',
+    signal: { source: 'Engine B inference', url: '', title: 'No active posting', asOf: '2026-05-11', blurb: 'Funding implies scaling.' },
+    whatTheyWant: ['Unknown'],
+    profile: { industry: 'Tech (unspecified)', hq: 'HU', stack: [], icp: 'Profile #2 hypothesis' },
+    whyInteresting: 'Funding signal suggests scaling activity.',
+    scoreBreakdown: { maturity: 1, posting: 0, aws: 0, gap: 1, geo: 3 },
+    pains: ['Scaling without platform team'],
+    offer: { package: 'Safety Net', monthly: 990, addons: [], total: 990, valueProps: [] },
+    contacts: [],
+    channels: ['LinkedIn'],
+    primaryChannel: 'LinkedIn',
+    strategy: { angle: 'Fractional platform team for funded HU scaler.', timing: 'After higher priorities.', redFlags: ['Unknown stack'] },
+    drafts: [],
+    actions: [{ text: 'Research founders and stack', done: false }]
+  },
+  {
+    id: 'netopia',
+    company: 'NETOPIA Payments',
+    stage: 'cold',
+    score: 9,
+    tags: ['romania', 'payments', 'fintech'],
+    geo: 'RO',
+    teaser: 'Junior DevOps posting in Bucharest. AWS, Terraform. Romania = Tier 3 geo. Score 9/15 (Profile #1).',
+    signal: { source: 'Romanian job boards', url: 'netopia-payments.com', title: 'Junior DevOps Engineer', asOf: '2026-03-20', blurb: 'AWS, Terraform, Jenkins, Grafana in requirements. Junior level signal = no existing senior infra capacity.' },
+    whatTheyWant: ['AWS', 'Terraform', 'Jenkins', 'Grafana', 'Linux'],
+    profile: { industry: 'Online payments', hq: 'Bucharest, RO', founded: '2003', employees: '29-55', stack: ['AWS', 'Terraform', 'Jenkins', 'Grafana'], icp: 'Profile #1, payment processor' },
+    whyInteresting: 'Romania largest online payment processor. 25K+ businesses depend on platform. Hiring Junior = no senior DevOps. Critical gap for a payment processor.',
+    scoreBreakdown: { maturity: 3, posting: 1, aws: 2, gap: 2, geo: 1 },
+    pains: ['Payment processor with junior-only DevOps capacity', 'PCI-DSS / PSD2 compliance', 'Zero-downtime requirement'],
+    offer: { package: 'Essential', monthly: 2000, addons: [{ name: '24/7 On-Call', eur: 2000 }], total: 4000, valueProps: ['Senior team replaces junior search', '24/7 for payment uptime', 'PSD2 + PCI-DSS competence'] },
+    contacts: [{ name: 'CEO / CTO (research pending)', role: 'CTO', approach: 'LinkedIn RO/EN' }],
+    channels: ['LinkedIn', 'Romanian fintech network'],
+    primaryChannel: 'LinkedIn',
+    strategy: { angle: 'Junior DevOps cannot be the only owner of a payment platform. We provide a team with 24/7 coverage.', timing: 'After HOT cleared. RO is Tier 3 geo.', redFlags: ['RO market cultural unfamiliarity', 'Tier 3 priority'] },
+    drafts: [{
+      lang: 'EN',
+      label: 'Option A, LinkedIn EN to CTO',
+      text: `Hi {name},
+
+NETOPIA processes payments for 25K+ Romanian businesses. The current DevOps Engineer posting is junior level, which usually means the senior capacity is missing or stretched thin.
+
+I lead Cloud Platform Services at Sonrisa (300+ engineers, Budapest, 19 years). We provide managed AWS operations teams at fixed monthly cost. For a payment processor with PSD2 + PCI-DSS posture, we typically run a team of 3 to 4 engineers plus 24/7 on-call, ready in 2 weeks.
+
+A junior hire would take 3 to 6 months and would still need senior backup. We can de-risk that gap. Open to a 20 min call?
+
+Szabolcs`
+    }],
+    actions: [{ text: 'Research NETOPIA CEO/CTO on LinkedIn', done: false }]
+  },
+  {
+    id: 'safefleet',
+    company: 'SafeFleet Telematics',
+    stage: 'cold',
+    score: 10,
+    tags: ['romania', 'iot'],
+    geo: 'RO',
+    teaser: 'Timisoara, Romania. Fleet telematics/IoT. AWS required in posting. Score 10/15.',
+    signal: { source: 'RO job board', url: 'safefleet.eu', title: 'DevOps Engineer', asOf: '2026-03-27', blurb: 'Strong Linux & AWS experience required. 110,000+ vehicles monitored.' },
+    whatTheyWant: ['Strong Linux', 'AWS', 'Telemetry-scale ops'],
+    profile: { industry: 'Fleet telematics / IoT M2M', hq: 'Timisoara, RO', founded: '1994', employees: '~52', stack: ['AWS', 'Linux'], icp: 'Profile #1, IoT SaaS' },
+    whyInteresting: 'Fleet telematics = real-time data + high availability. 52 employees total means a sole DevOps owner. Branches in Italy, Poland, Hungary, regional reach.',
+    scoreBreakdown: { maturity: 3, posting: 1, aws: 2, gap: 2, geo: 2 },
+    pains: ['Sole DevOps owner', 'Telemetry uptime', 'Multi-region expansion ops'],
+    offer: { package: 'Essential', monthly: 2000, addons: [], total: 2000, valueProps: ['IoT SaaS reliability', 'Multi-region AWS experience'] },
+    contacts: [],
+    channels: ['LinkedIn'],
+    primaryChannel: 'LinkedIn',
+    strategy: { angle: 'You have one DevOps, we are a team.', timing: 'After HOT/WARM.', redFlags: ['RO tier 3'] },
+    drafts: [],
+    actions: [{ text: 'Validate AWS depth', done: false }]
+  },
+
+  /* ==================== CONTACTED ==================== */
+  {
+    id: 'cigpannonia',
+    company: 'CIG Pannonia',
+    stage: 'contacted',
+    score: 8,
+    tags: ['insurance', 'fintech', 'lang-hu'],
+    geo: 'HU',
+    due: '2026-05-15',
+    teaser: 'Attila Zankai (Head of IT). LinkedIn connect sent 2026-05-12 (150 char HU teaser). Day-5 nudge target 2026-05-15. Day-7 secondary Laszlo Pataki.',
+    signal: { source: 'LinkedIn connect request', url: 'linkedin.com/in/zankaiattila', title: 'Head of IT', asOf: '2026-05-12', blurb: 'Connect note sent 2026-05-12. Awaiting acceptance.' },
+    whatTheyWant: ['Cloud + compliance expertise'],
+    profile: { industry: 'Insurance', hq: 'Budapest, HU', founded: '1939 (current form 2007)', employees: '~217', stack: ['Cloud (research pending)'], icp: 'Profile #1, regulated insurance' },
+    whyInteresting: 'NIS2 / DORA compliance hits insurance in 2026. Mid-sized regulated entity. Zankai accessible on LinkedIn.',
+    scoreBreakdown: { maturity: 3, posting: 0, aws: 1, gap: 1, geo: 3 },
+    pains: ['NIS2 / DORA compliance', 'Legacy insurance IT modernization'],
+    offer: { package: 'Essential', monthly: 2000, addons: [{ name: 'DevSecOps', eur: 700 }], total: 2700, valueProps: ['Compliance-aware', '19 year track record'] },
+    contacts: [
+      { name: 'Attila Zankai', role: 'Head of IT', approach: 'LinkedIn DM (HU), already connected request' },
+      { name: 'Laszlo Pataki', role: 'Head of IT Ops', approach: 'Day-7 secondary if Zankai unresponsive' }
+    ],
+    channels: ['LinkedIn DM (HU)', 'Email follow-up'],
+    primaryChannel: 'LinkedIn DM (HU)',
+    strategy: {
+      angle: 'NIS2 / DORA hits insurance 2026. We bring 19 year compliance-aware infra posture.',
+      timing: 'Day-5 nudge 2026-05-15, Day-7 secondary 2026-05-18.',
+      redFlags: ['CPS has NO NIS2 certification, do not advertise it. Position as NIS2-aware, not certified.', 'Previous outreach (2026-03-24 career page application) had no response']
+    },
+    drafts: [
+      {
+        lang: 'HU',
+        label: 'Day-5 nudge (post-accept DM)',
+        text: `Szia Attila,
+
+Koszonom, hogy elfogadtad. Roviden, Sonrisa CPS-nel (Cloud Platform Services) fix havi aron uzemeltetjuk a felho infrat a koztes-meretu cegeknek (50 to 300 fo).
+
+A 2026-os NIS2 es DORA megfeleloseg eppen a biztositoknal jelenti a legtobb operativ teendot. 19 ev compliance-aware mernoki hatter (Lufthansa, Oracle audit) all mogottunk.
+
+Lenne ertelme egy 20 perces hivasnak a CIG Pannonia konkret helyzeterol?
+
+Szabolcs`
+      }
+    ],
+    actions: [
+      { text: 'LinkedIn connect note sent', done: true },
+      { text: 'Day-5 nudge 2026-05-15', done: false },
+      { text: 'Day-7 secondary Laszlo Pataki 2026-05-18', done: false }
+    ]
+  },
+
+  /* ==================== LOST ==================== */
+  {
+    id: 'greenergy',
+    company: 'Greenergy-Service Kft',
+    stage: 'lost',
+    score: 0,
+    tags: ['lang-hu'],
+    geo: 'HU',
+    due: '2026-05-11',
+    teaser: 'Marked Lost 2026-05-11. Perplexity validation: no public DevOps signal, no career page found. Prior LinkedIn connect to Marko Tamas had no response.',
+    signal: { source: 'Validation pass', url: '', title: 'Signal evaporated', asOf: '2026-05-11', blurb: 'Originally targeted Gergely Geczi as fresh approach but underlying company signal evaporated.' },
+    whatTheyWant: ['Unknown'],
+    profile: { industry: 'Energy services', hq: 'HU', stack: [], icp: 'No longer ICP fit' },
+    whyInteresting: '',
+    scoreBreakdown: { maturity: 0, posting: 0, aws: 0, gap: 0, geo: 3 },
+    pains: [],
+    offer: { package: '', monthly: 0, addons: [], total: 0, valueProps: [] },
+    contacts: [],
+    channels: [],
+    primaryChannel: '',
+    strategy: { angle: '', timing: '', redFlags: ['No signal'] },
+    drafts: [],
+    actions: []
+  },
+  {
+    id: 'cigpannonia-old',
+    company: 'CIG Pannonia (prior touch)',
+    stage: 'lost',
+    score: 0,
+    tags: ['lang-hu'],
+    geo: 'HU',
+    teaser: 'Career page application 2026-03-24, no response. Note: CIG Pannonia ITSELF is back in CONTACTED as of 2026-05-12, this entry refers only to the prior failed touch.',
+    signal: { source: 'Career page app', url: '', title: 'No response', asOf: '2026-03-24', blurb: 'Failed prior touch. Recent fresh LinkedIn approach lives in CONTACTED.' },
+    whatTheyWant: [],
+    profile: { industry: 'Insurance', hq: 'Budapest, HU', stack: [], icp: 'See active CIG Pannonia card' },
+    whyInteresting: '',
+    scoreBreakdown: { maturity: 0, posting: 0, aws: 0, gap: 0, geo: 3 },
+    pains: [],
+    offer: { package: '', monthly: 0, addons: [], total: 0, valueProps: [] },
+    contacts: [],
+    channels: [],
+    primaryChannel: '',
+    strategy: { angle: '', timing: '', redFlags: [] },
+    drafts: [],
+    actions: []
+  }
+];
+
+// Live working set. Replaced by buildLeadsFromMd() when fetch is available.
+let LEADS = LEADS_HARDCODED_FALLBACK.map(l => ({ ...l }));
+
+// Obsidian deep link config. Vault name is the folder name (case-sensitive).
+const OBSIDIAN_VAULT = 'ideas-vault';
+const VAULT_BASE = '02_Areas/Sonrisa/CPS/';
+
+/* ============================================================
+   TODO queue.
+   Live data comes from ../TODAY.md via the File System Access API
+   (see two-way sync code below). This object is the fallback
+   shown when sync is not connected or unsupported.
+   ============================================================ */
+
+const TODO_FALLBACK = {
+  asOf: '2026-05-12',
+  decisions: [
+    {
+      text: 'Chemaxon language, HU (HU HQ rule) or EN (international team, global pharma customers)? Affects v2 #2 outreach draft.',
+      tag: 'decision',
+      due: '2026-05-11',
+      leadId: 'chemaxon'
+    },
+    {
+      text: '5th WARM slot, Perplexity HU SaaS deep-pass for fresh candidate, or promote one of Barion / Pentech / ABZ Innovation from COLD?',
+      tag: 'decision',
+      due: '2026-05-11'
+    }
+  ],
+  today: {
+    date: '2026-05-12',
+    weekday: 'Tuesday',
+    section: 'HOT batch send, cohort 1',
+    tasks: [
+      { text: 'Chemaxon, find VP Engineering / Head of Platform on LinkedIn, send connect (+email when known).', tag: 'lead', leadId: 'chemaxon', due: '2026-05-12' },
+      { text: 'SEON, find VP Engineering / Head of Platform / Director of Engineering on LinkedIn, send connect (EN).', tag: 'lead', leadId: 'seon', due: '2026-05-12' },
+      { text: 'CIG Pannonia follow-up, if connect accepted overnight, send LinkedIn DM with the full pitch.', tag: 'followup', leadId: 'cigpannonia', due: '2026-05-12' }
+    ]
+  },
+  tomorrow: {
+    date: '2026-05-13',
+    weekday: 'Wednesday',
+    section: 'HOT batch send, cohort 2',
+    tasks: [
+      { text: 'KBOSS / Szamlazz.hu, find CTO / Head of Engineering on LinkedIn, send connect (HU).', tag: 'lead', leadId: 'kboss', due: '2026-05-13' },
+      { text: 'Colossyan, find CTO / VP Engineering on LinkedIn, send connect (EN).', tag: 'lead', leadId: 'colossyan', due: '2026-05-13' },
+      { text: 'CIG Pannonia email fallback, if no LinkedIn acceptance by AM, send full email to attila.zankai@cig.eu.', tag: 'followup', leadId: 'cigpannonia', due: '2026-05-13' }
+    ]
+  },
+  later: [
+    { date: '2026-05-14', weekday: 'Thu', summary: 'WARM cohort 1: Allonic (EN), Lensa (HU). Draft 5 WARM messages first.' },
+    { date: '2026-05-15', weekday: 'Fri', summary: 'Loxon (HU), EOS Faktor (HU), 5th WARM. CIG Day-5 nudge. Milestone, all 9 viable HOT+WARM contacted.' },
+    { date: '2026-05-18', weekday: 'Mon', summary: 'CIG secondary outreach to Laszlo Pataki. Week 1 review.' }
+  ]
+};
+
+// Live sync state, read-only via fetch
+let currentTodayView = TODO_FALLBACK;
+let syncState = 'offline'; // offline | live | syncing | error
+let syncTooltip = '';
+let lastTodayMd = null;
+let lastPipelineMd = null;
+let pollTimer = null;
+let lastSuccessfulSyncAt = null; // Date.now() timestamp of most recent successful sync
+let syncLabelTickTimer = null;   // interval for updating the "Xs ago" label
+let lastPerLeadHits = 0;         // persisted across polls so the tooltip stays informative
+let lastTotalCards = 0;
+
+// Paths relative to dashboard.html, used by fetch
+const VAULT_FILES = {
+  today:    '/02_Areas/Sonrisa/CPS/TODAY.md',
+  pipeline: '/02_Areas/Sonrisa/CPS/Sales/Pipeline.md',
+  leads:    '/02_Areas/Sonrisa/CPS/Sales/Sales Enablement/leads.md'
+};
+let POLL_INTERVAL_MS = 8000;
+
+/* ============================================================ */
+
+const TODAY = new Date('2026-05-12');
+const PLAN_START = new Date('2026-05-11');
+const PLAN_DAYS = 90;
+
+const STAGE_ORDER = ['hot','warm','cold','contacted','discovery','proposal','won','lost'];
+
+const $ = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => Array.from(root.querySelectorAll(sel));
+
+function fmtEUR(n) {
+  if (n >= 1000) return (n/1000).toFixed(n % 1000 === 0 ? 0 : 1) + 'k';
+  return String(n);
+}
+function dueLabel(due) {
+  if (!due) return '';
+  const d = new Date(due);
+  const diff = Math.round((d - TODAY) / 86400000);
+  if (diff < 0) return `OVERDUE ${due.slice(5)}`;
+  if (diff === 0) return `DUE TODAY`;
+  if (diff === 1) return `DUE TOMORROW`;
+  if (diff < 7) return `DUE IN ${diff}D`;
+  return `DUE ${due.slice(5)}`;
+}
+function dueClass(due) {
+  if (!due) return '';
+  const d = new Date(due);
+  const diff = Math.round((d - TODAY) / 86400000);
+  if (diff < 0) return 'is-overdue';
+  if (diff <= 2) return 'is-soon';
+  return '';
+}
+
+function stageColor(stage) { return STAGES[stage].color; }
+function stageTint(stage)  { return STAGES[stage].tint;  }
+
+/* ============================================================
+   Render: widgets
+   ============================================================ */
+
+function renderWidgets() {
+  // Counts
+  const counts = {};
+  STAGE_ORDER.forEach(s => counts[s] = LEADS.filter(l => l.stage === s).length);
+  $('#cnt-all').textContent = LEADS.filter(l => l.stage !== 'lost').length;
+  $('#cnt-hot').textContent = counts.hot;
+  $('#cnt-warm').textContent = counts.warm;
+  $('#cnt-cold').textContent = counts.cold;
+  $('#cnt-contacted').textContent = counts.contacted;
+  $('#cnt-lost').textContent = counts.lost;
+
+  $('#leadCount').textContent = LEADS.filter(l => !['lost'].includes(l.stage)).length;
+  $('#todayStamp').textContent = TODAY.toISOString().slice(0,10);
+
+  // Pipeline value range bar
+  // Use lows and highs from each stage. Active leads only.
+  const active = LEADS.filter(l => !['lost', 'won'].includes(l.stage));
+  const totalActive = active.reduce((a,l) => a + (l.offer.total || 0), 0);
+  // We render by stage as a stacked horizontal bar.
+  const range = $('#pipelineRange');
+  range.innerHTML = '';
+  const stagesInBar = ['hot','warm','cold','contacted'];
+  stagesInBar.forEach(s => {
+    const sum = LEADS.filter(l => l.stage === s).reduce((a,l) => a + (l.offer.total || 0), 0);
+    if (sum === 0) return;
+    const seg = document.createElement('span');
+    seg.style.flexGrow = sum;
+    seg.style.background = STAGES[s].color;
+    seg.title = `${STAGES[s].label}: EUR ${sum.toLocaleString()}/mo`;
+    range.appendChild(seg);
+  });
+
+  const legend = $('#pipelineLegend');
+  legend.innerHTML = '';
+  stagesInBar.forEach(s => {
+    const sum = LEADS.filter(l => l.stage === s).reduce((a,l) => a + (l.offer.total || 0), 0);
+    if (sum === 0) return;
+    const node = document.createElement('span');
+    node.innerHTML = `<span class="swatch" style="background:${STAGES[s].color}"></span>${STAGES[s].label} <strong>EUR ${(sum/1000).toFixed(1)}k</strong>`;
+    legend.appendChild(node);
+  });
+
+  // Stage breakdown widget (bars)
+  const breakdown = $('#stageBreakdown');
+  breakdown.innerHTML = '';
+  const maxCount = Math.max(...stagesInBar.map(s => counts[s]));
+  stagesInBar.forEach(s => {
+    const c = counts[s];
+    const sum = LEADS.filter(l => l.stage === s).reduce((a,l) => a + (l.offer.total || 0), 0);
+    const row = document.createElement('div');
+    row.className = 'stage-row';
+    const pct = maxCount > 0 ? (c / maxCount * 100) : 0;
+    row.innerHTML = `
+      <span class="label" style="color:${STAGES[s].color}">${STAGES[s].label}</span>
+      <div class="track"><div class="fill" style="width:${pct}%; background:${STAGES[s].color}"></div></div>
+      <span class="count">${c} <span style="color:var(--ink-4)">/ ${(sum/1000).toFixed(1)}k</span></span>
+    `;
+    breakdown.appendChild(row);
+  });
+
+  // Velocity bars (8 weeks)
+  // Pulled from Dashboard.md: W1 target 5, W2 10, W3 15, W4 20, W5-W8 25.
+  // Actual: W1 = 1 (from current state).
+  const targets = [5, 10, 15, 20, 25, 25, 25, 25];
+  const actuals = [1, 0, 0, 0, 0, 0, 0, 0];
+  const max = Math.max(...targets);
+  const bars = $('#velocityBars');
+  bars.innerHTML = '';
+  for (let i = 0; i < 8; i++) {
+    const bar = document.createElement('div');
+    bar.className = 'bar';
+    const tH = (targets[i] / max * 100);
+    const aH = (actuals[i] / max * 100);
+    bar.innerHTML = `
+      <div class="target" style="height:${tH}%"></div>
+      <div class="actual" style="height:${aH}%"></div>
+    `;
+    const labelWrap = document.createElement('div');
+    labelWrap.style.gridColumn = (i+1).toString();
+    bars.appendChild(bar);
+  }
+  // Add labels under each bar
+  const labelRow = document.createElement('div');
+  labelRow.style.display = 'contents';
+  for (let i = 0; i < 8; i++) {
+    const lbl = document.createElement('div');
+    lbl.className = 'label';
+    lbl.textContent = `W${i+1}`;
+    lbl.style.gridColumn = (i+1).toString();
+    // Append to bars (we use the same grid)
+  }
+  // Append labels via a sibling. Remove any previous one so polling re-renders are idempotent.
+  const existingLabels = bars.parentElement.querySelector('.velocity-labels');
+  if (existingLabels) existingLabels.remove();
+  const captions = document.createElement('div');
+  captions.className = 'velocity-labels';
+  captions.style.display = 'grid';
+  captions.style.gridTemplateColumns = 'repeat(8, 1fr)';
+  captions.style.gap = '6px';
+  captions.style.marginTop = '4px';
+  captions.style.marginBottom = '6px';
+  for (let i = 0; i < 8; i++) {
+    const lbl = document.createElement('div');
+    lbl.className = 'label';
+    lbl.style.fontSize = '10px';
+    lbl.style.color = 'var(--ink-4)';
+    lbl.style.textAlign = 'center';
+    lbl.style.fontVariantNumeric = 'tabular-nums';
+    lbl.textContent = `W${i+1}`;
+    captions.appendChild(lbl);
+  }
+  bars.after(captions);
+
+  // 90-day marker
+  const dayDiff = Math.max(0, Math.round((TODAY - PLAN_START) / 86400000));
+  const pct = Math.min(100, dayDiff / PLAN_DAYS * 100);
+  $('#planMarker').style.left = `${pct}%`;
+
+  // Compute total MRR ranges from leads
+  const hotWarmActive = LEADS.filter(l => ['hot','warm','cold','contacted'].includes(l.stage));
+  const totalLow = hotWarmActive.reduce((a,l) => a + (l.offer.total ? l.offer.total : 0), 0);
+  // Use a +30% upside heuristic
+  $('#mrrLo').textContent = (totalLow/1000).toFixed(1) + 'k';
+  $('#mrrHi').textContent = (totalLow * 1.4 / 1000).toFixed(1) + 'k';
+}
+
+/* ============================================================
+   Render: Today panel
+   ============================================================ */
+
+function renderTodayPanel() {
+  const panel = $('#todayPanel');
+  if (!panel) return;
+
+  const view = currentTodayView;
+  if (!view) return;
+
+  const total = (view.decisions?.length || 0) + (view.today?.tasks?.filter(t => !t.done).length || 0);
+
+  const decisionsList = view.decisions?.length
+    ? `<ul class="task-list">${view.decisions.map((t, i) => renderTask(t, `dec-${i}`)).join('')}</ul>`
+    : `<div class="today-empty">No open decisions</div>`;
+
+  const todayList = view.today?.tasks?.length
+    ? `<ul class="task-list">${view.today.tasks.map((t, i) => renderTask(t, `today-${i}`)).join('')}</ul>`
+    : `<div class="today-empty">Inbox zero for today</div>`;
+
+  const tomorrowList = view.tomorrow?.tasks?.length
+    ? `<ul class="task-list">${view.tomorrow.tasks.map((t, i) => renderTask(t, `tom-${i}`)).join('')}</ul>`
+    : `<div class="today-empty">No tasks scheduled</div>`;
+
+  const laterPreview = (view.later || []).map(d =>
+    `<div style="font-size:11.5px;color:var(--ink-3);line-height:1.5;margin-bottom:6px;"><strong style="color:var(--ink-1);font-weight:600;">${d.weekday} ${d.date.slice(5)}</strong>, ${d.summary || ''}</div>`
+  ).join('');
+
+  panel.innerHTML = `
+    <div class="today-head">
+      <span class="label">Today</span>
+      <span class="date">${view.today?.date || ''}</span>
+      <span class="day">${view.today?.weekday || ''}${view.today?.section ? ', ' + escapeHtml(view.today.section) : ''}</span>
+      <div class="right-block">
+        <span class="counter"><strong>${total}</strong> open ${total === 1 ? 'item' : 'items'}</span>
+        <span class="sync-status" data-state="${syncState}" title="${escapeAttr(syncTooltip)}" role="button" tabindex="0">
+          <span class="dot"></span>
+          <span class="sync-label">${syncLabel(syncState)}</span>
+          <span class="sync-bar" aria-hidden="true"><span class="sync-bar-fill"></span></span>
+        </span>
+      </div>
+    </div>
+    <div class="today-grid">
+      <div class="today-col is-decisions">
+        <h4><span class="pin"></span>Decisions blocking sends</h4>
+        ${decisionsList}
+      </div>
+      <div class="today-col is-today">
+        <h4><span class="pin"></span>Outreach to send today</h4>
+        ${todayList}
+      </div>
+      <div class="today-col is-tomorrow">
+        <h4><span class="pin"></span>Tomorrow${view.tomorrow?.weekday ? ', ' + view.tomorrow.weekday : ''}</h4>
+        ${tomorrowList}
+        ${laterPreview ? `<div style="margin-top:14px;padding-top:12px;border-top:1px solid #ecdcaf;"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--ink-4);font-weight:700;margin-bottom:8px;">Later this week</div>${laterPreview}</div>` : ''}
+      </div>
+    </div>
+  `;
+
+  // Wire click-to-refresh on the sync status indicator
+  const syncEl = $('.sync-status', panel);
+  if (syncEl) {
+    const triggerRefresh = (e) => {
+      e.preventDefault();
+      // Re-poll immediately
+      pollVault({ silent: false });
+    };
+    syncEl.addEventListener('click', triggerRefresh);
+    syncEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') triggerRefresh(e);
+    });
+  }
+
+  // Wire task interactions
+  $$('.task', panel).forEach(taskEl => {
+    const leadId = taskEl.dataset.leadId;
+    taskEl.addEventListener('click', (e) => {
+      const checkEl = e.target.closest('.check');
+      if (checkEl) {
+        e.stopPropagation();
+        handleCheckToggle(taskEl);
+        return;
+      }
+      if (leadId) openDrawer(leadId);
+    });
+  });
+}
+
+function syncLabel(state) {
+  switch (state) {
+    case 'live': {
+      if (!lastSuccessfulSyncAt) return 'Live';
+      const ago = Math.max(0, Math.floor((Date.now() - lastSuccessfulSyncAt) / 1000));
+      if (ago < 2) return 'Live, just updated';
+      const nextIn = Math.max(0, Math.ceil((POLL_INTERVAL_MS / 1000) - ago));
+      return `Updated ${ago}s ago, next in ${nextIn}s`;
+    }
+    case 'syncing': return 'Syncing now...';
+    case 'error':   return 'Offline, click to retry';
+    default:        return 'Connecting...';
+  }
+}
+
+function tickSyncLabel() {
+  // Only update the text content of the existing label, no full re-render
+  const status = $('.sync-status');
+  if (!status) return;
+  const label = $('.sync-label', status);
+  if (label) label.textContent = syncLabel(status.dataset.state || syncState);
+}
+
+function resetSyncBarAnimation() {
+  const fill = $('.sync-bar-fill');
+  if (!fill) return;
+  // Restart the CSS animation by stripping and re-adding it
+  fill.style.animation = 'none';
+  // Force reflow so the browser picks up the change
+  // eslint-disable-next-line no-unused-expressions
+  fill.offsetHeight;
+  fill.style.animation = '';
+}
+
+function startSyncLabelTicker() {
+  if (syncLabelTickTimer) return;
+  syncLabelTickTimer = setInterval(tickSyncLabel, 1000);
+}
+
+function renderTask(t, id) {
+  const isOverdue = t.due && t.due < (currentTodayView.asOf || new Date().toISOString().slice(0,10)) && !t.done;
+  const lead = t.leadId ? LEADS.find(l => l.id === t.leadId) : null;
+  const leadRef = lead ? `<span class="lead-ref">${escapeHtml(lead.company)}</span>` : '';
+  const tagChip = t.tag ? `<span class="ttag">#${escapeHtml(t.tag)}</span>` : '';
+  return `
+    <li class="task ${isOverdue ? 'is-overdue' : ''} ${t.done ? 'is-done' : ''}"
+        data-clickable="${t.leadId ? 'true' : 'false'}"
+        data-lead-id="${t.leadId || ''}"
+        data-task-id="${id}">
+      <span class="check" role="checkbox" aria-checked="${t.done ? 'true' : 'false'}"></span>
+      <div class="body">
+        <div class="text">${escapeHtml(t.text)}</div>
+        <div class="meta-row">
+          ${leadRef}
+          ${tagChip}
+          ${t.due ? `<span class="ttag tabular">${t.due.slice(5)}</span>` : ''}
+        </div>
+      </div>
+    </li>
+  `;
+}
+
+const DASH_STEM = 'sales';
+const COPY_REF_SVG = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+function copyText(text, el) {
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
+  });
+}
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+function escapeAttr(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g, '&amp;')
+    .replace(/"/g, '&quot;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+}
+
+function handleCheckToggle(taskEl) {
+  // Visual only, session-local. Edit the markdown in Obsidian for persistence.
+  taskEl.classList.toggle('is-done');
+}
+
+/* ============================================================
+   TODAY.md parser
+   ============================================================ */
+
+function parseTodayMd(md) {
+  const lines = md.split('\n');
+  const daySections = [];
+  let currentDay = null;
+  let currentSub = null;
+
+  const dayHeaderLabelRe = /^##\s+(Today|Tomorrow):\s+(\d{4}-\d{2}-\d{2})(?:\s*\(([^)]+)\))?/i;
+  const dayHeaderWeekdayRe = /^##\s+(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday):\s+(\d{4}-\d{2}-\d{2})/i;
+  const subHeaderRe = /^###\s+(.+)$/;
+  const taskRe = /^(\s*)-\s+\[([x ])\]\s+(.+)$/i;
+  const anyH2Re = /^##\s+/;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    let date = null, weekday = null;
+    let m = line.match(dayHeaderLabelRe);
+    if (m) {
+      weekday = m[3] || m[1];
+      date = m[2];
+    } else {
+      m = line.match(dayHeaderWeekdayRe);
+      if (m) { weekday = m[1]; date = m[2]; }
+    }
+
+    if (date) {
+      currentDay = { date, weekday, headerLine: i, subsections: [] };
+      currentSub = null;
+      daySections.push(currentDay);
+      continue;
+    }
+
+    if (anyH2Re.test(line) && currentDay) {
+      currentDay = null;
+      currentSub = null;
+      continue;
+    }
+
+    if (currentDay) {
+      const sm = line.match(subHeaderRe);
+      if (sm) {
+        currentSub = { name: sm[1].trim(), headerLine: i, tasks: [] };
+        currentDay.subsections.push(currentSub);
+        continue;
+      }
+
+      if (currentSub) {
+        const tm = line.match(taskRe);
+        if (tm) {
+          const done = tm[2].toLowerCase() === 'x';
+          const taskText = tm[3];
+
+          const tags = [...taskText.matchAll(/#([\w-]+)/g)].map(x => x[1]);
+          const dueMatch = taskText.match(/📅\s*(\d{4}-\d{2}-\d{2})/);
+          const doneMatch = taskText.match(/✅\s*(\d{4}-\d{2}-\d{2})/);
+          const companyMatch = taskText.match(/\*\*([^*]+)\*\*/);
+
+          currentSub.tasks.push({
+            lineIndex: i,
+            rawLine: line,
+            done,
+            fullText: taskText,
+            company: companyMatch ? companyMatch[1].trim() : null,
+            tags,
+            due: dueMatch ? dueMatch[1] : null,
+            doneDate: doneMatch ? doneMatch[1] : null,
+            isDecision: tags.includes('decision') || /decisions needed/i.test(currentSub.name)
+          });
+        }
+      }
+    }
+  }
+
+  return { raw: md, daySections };
+}
+
+function buildViewFromParsed(parsed) {
+  const todayStr = new Date().toISOString().slice(0, 10);
+  const days = parsed.daySections;
+
+  // Pick the section matching today, or the next future, or the last past
+  let idx = days.findIndex(d => d.date === todayStr);
+  if (idx === -1) idx = days.findIndex(d => d.date >= todayStr);
+  if (idx === -1) idx = Math.max(0, days.length - 1);
+
+  const todayDay = days[idx] || null;
+  const tomorrowDay = days[idx + 1] || null;
+  const laterDays = days.slice(idx + 2);
+
+  const decisions = [];
+  const todayTasks = [];
+
+  if (todayDay) {
+    todayDay.subsections.forEach(sub => {
+      sub.tasks.forEach(task => {
+        const item = taskToItem(task, sub.name);
+        if (item.isDecision) decisions.push(item);
+        else todayTasks.push(item);
+      });
+    });
+  }
+
+  const tomorrowTasks = [];
+  if (tomorrowDay) {
+    tomorrowDay.subsections.forEach(sub => {
+      sub.tasks.forEach(task => {
+        tomorrowTasks.push(taskToItem(task, sub.name));
+      });
+    });
+  }
+
+  const firstNonDecisionSubName = todayDay
+    ? (todayDay.subsections.find(s => !/decisions needed/i.test(s.name))?.name || '')
+    : '';
+
+  return {
+    asOf: todayStr,
+    decisions,
+    today: todayDay ? {
+      date: todayDay.date,
+      weekday: todayDay.weekday,
+      section: firstNonDecisionSubName,
+      tasks: todayTasks
+    } : null,
+    tomorrow: tomorrowDay ? {
+      date: tomorrowDay.date,
+      weekday: tomorrowDay.weekday,
+      section: tomorrowDay.subsections[0]?.name || '',
+      tasks: tomorrowTasks
+    } : null,
+    later: laterDays.slice(0, 5).map(d => ({
+      date: d.date,
+      weekday: (d.weekday || '').slice(0, 3),
+      summary: d.subsections
+        .flatMap(s => s.tasks)
+        .filter(t => !t.done)
+        .map(t => t.company || stripMd(t.fullText).slice(0, 50))
+        .slice(0, 3)
+        .join(', ')
+    }))
+  };
+}
+
+function stripMd(s) {
+  return s
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/📅\s*\d{4}-\d{2}-\d{2}/g, '')
+    .replace(/✅\s*\d{4}-\d{2}-\d{2}/g, '')
+    .replace(/#[\w-]+/g, '')
+    .replace(/\[\[[^\]]+\]\]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function taskToItem(task, subName) {
+  let text = task.fullText
+    .replace(/📅\s*\d{4}-\d{2}-\d{2}/g, '')
+    .replace(/✅\s*\d{4}-\d{2}-\d{2}/g, '')
+    .replace(/#[\w-]+/g, '')
+    .replace(/\[\[[^\]]*\|[^\]]*\]\]/g, '')
+    .replace(/\[\[[^\]]+\]\]/g, '')
+    .replace(/\([Nn][Oo][Tt][Ee][Ss]\s+[Tt][Bb][Dd]\)/g, '')
+    .replace(/→/g, ' ')
+    .replace(/·/g, ' ')
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const leadId = task.company ? findLeadId(task.company) : null;
+
+  let tag = 'task';
+  for (const t of ['decision', 'followup', 'milestone', 'review', 'drafting', 'lead']) {
+    if (task.tags.includes(t)) { tag = t; break; }
+  }
+
+  return {
+    text,
+    tag,
+    due: task.due,
+    leadId,
+    rawLine: task.rawLine,
+    done: task.done,
+    isDecision: task.isDecision
+  };
+}
+
+function findLeadId(companyName) {
+  const norm = (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '');
+  const target = norm(companyName);
+  if (!target) return null;
+  for (const lead of LEADS) {
+    const c1 = norm(lead.company);
+    const c2 = norm(lead.id);
+    if (c1 === target || target === c2) return lead.id;
+    if (target.length >= 4 && (c1.includes(target) || target.includes(c1))) return lead.id;
+    if (target.length >= 4 && (c2.includes(target) || target.includes(c2))) return lead.id;
+  }
+  return null;
+}
+
+/* ============================================================
+   Pipeline.md parser
+   Reads the Obsidian Kanban file, returns leads grouped by stage.
+   ============================================================ */
+
+function parsePipelineMd(md) {
+  const lines = md.split('\n');
+  const stages = { hot: [], warm: [], cold: [], contacted: [], discovery: [], proposal: [], won: [], lost: [] };
+  let currentStage = null;
+
+  const stagePrefix = (col) => {
+    const c = col.toLowerCase().trim();
+    if (c.startsWith('hot'))        return 'hot';
+    if (c.startsWith('warm'))       return 'warm';
+    if (c.startsWith('cold'))       return 'cold';
+    if (c.startsWith('contacted'))  return 'contacted';
+    if (c.startsWith('discovery'))  return 'discovery';
+    if (c.startsWith('proposal'))   return 'proposal';
+    if (c.startsWith('won'))        return 'won';
+    if (c.startsWith('lost'))       return 'lost';
+    return null;
+  };
+
+  for (const line of lines) {
+    const h2 = line.match(/^##\s+(.+)$/);
+    if (h2) {
+      currentStage = stagePrefix(h2[1]);
+      continue;
+    }
+    if (!currentStage) continue;
+
+    const task = line.match(/^-\s+\[[ xX]\]\s+(.+)$/);
+    if (!task) continue;
+
+    const text = task[1];
+    const companyMatch = text.match(/\*\*([^*]+)\*\*/);
+    if (!companyMatch) continue;
+
+    const company = companyMatch[1].trim();
+    const tags = [...text.matchAll(/#([\w-]+)/g)].map(m => m[1]);
+    const dueMatch = text.match(/@\{(\d{4}-\d{2}-\d{2})\}/);
+    const due = dueMatch ? dueMatch[1] : null;
+
+    const teaser = text
+      .replace(/\*\*[^*]+\*\*/, '')
+      .replace(/#[\w-]+/g, '')
+      .replace(/@\{[^}]+\}/g, '')
+      .replace(/\[\[[^\]]+\]\]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    stages[currentStage].push({ company, tags, due, teaser });
+  }
+  return stages;
+}
+
+const STAGE_TAG_NAMES = new Set(['hot','warm','cold','contacted','discovery','proposal','won','lost']);
+
+function normalizeCompanyName(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '');
+}
+
+// Smart key for cross-file matching. Strips corporate suffixes, parens,
+// path-style alternates so that "KBOSS / Szamlazz.hu" (Pipeline.md) and
+// "KBOSS.hu Kft. (Szamlazz.hu)" (leads.md) both resolve to "kboss".
+function leadDossierKey(s) {
+  let v = String(s);
+  v = v.replace(/\s*\([^)]*\)\s*/g, ' ');     // remove parenthetical
+  v = v.split(/\s*\/\s*/)[0];                  // take side before /
+  const skip = /^(the|a|an|kft|zrt|inc|ltd|llc|gmbh|ag|sa|srl|bv|nv|hu|com|io|ai|sas|spa|pte|plc)\.?$/i;
+  const tokens = v.split(/[\s.,;:]+/).filter(t => t && !skip.test(t));
+  if (!tokens.length) return normalizeCompanyName(s);
+  // Take first 2 significant tokens, or just 1 if it's long enough to be discriminative
+  const chosen = tokens[0].length >= 6 ? [tokens[0]] : tokens.slice(0, 2);
+  return normalizeCompanyName(chosen.join(''));
+}
+
+/* ============================================================
+   leads.md parser
+   Format expected: ### Company Name (optional "-- Score: X/15 -- LABEL")
+   followed by - **Field:** value bullet lines.
+   ============================================================ */
+
+function parseLeadsMd(md) {
+  const lines = md.split('\n');
+  const dossiers = {}; // keyed by normalized company name
+
+  let current = null;
+
+  const h3Re = /^###\s+(.+?)\s*$/;
+  const fieldRe = /^-\s+\*\*([^:*]+):\*\*\s*(.*)$/;
+  const scoreInHeadingRe = /\s+--\s+Score:\s+(\d+)\s*\/\s*15/i;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // New ## terminates current dossier scope (we cross into another category)
+    if (/^##\s+/.test(line) && !/^###/.test(line)) {
+      current = null;
+      continue;
+    }
+
+    const h3 = line.match(h3Re);
+    if (h3) {
+      let label = h3[1].trim();
+      let score = null;
+      const scoreMatch = label.match(scoreInHeadingRe);
+      if (scoreMatch) {
+        score = parseInt(scoreMatch[1], 10);
+        label = label.replace(scoreInHeadingRe, '');
+      }
+      // Strip any trailing " -- TAG" segments
+      label = label.replace(/\s+--\s+.+$/, '').trim();
+      // Strip trailing "(...) " annotations like "(Jira: ...)"
+      const canonical = label.replace(/\s*\([^)]*\)\s*$/, '').trim();
+      const key = leadDossierKey(canonical);
+      if (!key) continue;
+      current = {
+        company: canonical,
+        rawHeading: h3[1].trim(),
+        score,
+        fields: {}
+      };
+      dossiers[key] = current;
+      continue;
+    }
+
+    if (!current) continue;
+
+    const fm = line.match(fieldRe);
+    if (fm) {
+      const key = fm[1].trim();
+      const value = fm[2].trim();
+      current.fields[key] = value;
+    }
+  }
+
+  return dossiers;
+}
+
+function parseScoring(text) {
+  // "Maturity 3/3 | Posting age 3/3 | AWS confirmed 2/3 | Team gap 3/3 | Geo fit 3/3"
+  const out = { maturity: 0, posting: 0, aws: 0, gap: 0, geo: 0 };
+  text.split('|').forEach(part => {
+    const m = part.trim().match(/^([A-Za-z][A-Za-z\s]*?)\s+(\d+)\s*\/\s*3/);
+    if (!m) return;
+    const name = m[1].toLowerCase();
+    const val = parseInt(m[2], 10);
+    if (name.includes('matur'))    out.maturity = val;
+    else if (name.includes('post')) out.posting = val;
+    else if (name.includes('aws'))  out.aws = val;
+    else if (name.includes('gap'))  out.gap = val;
+    else if (name.includes('geo'))  out.geo = val;
+  });
+  return out;
+}
+
+function parsePackageText(text) {
+  // Examples:
+  //   "Essential EUR 2,000/mo + FinOps EUR 500/mo"
+  //   "Safety Net (EUR 990/mo)"
+  //   "Growth EUR 4,000/mo with DevSecOps EUR 700/mo"
+  const out = { package: '', monthly: 0, addons: [], total: 0, valueProps: [] };
+  if (!text) return out;
+
+  const tierMatch = text.match(/(Safety Net|Essential|Growth|Scale)/i);
+  if (tierMatch) out.package = tierMatch[1];
+
+  const allEur = [...text.matchAll(/EUR\s+([\d,]+)/g)].map(m => parseInt(m[1].replace(/,/g, ''), 10));
+  if (allEur.length) {
+    out.monthly = allEur[0];
+    out.total = allEur.reduce((a, b) => a + b, 0);
+    // Detect add-on names like FinOps, DevSecOps, 24/7
+    const addonRe = /(FinOps|DevSecOps|24\/7[^,]*|Solution Architect)\s+EUR\s+([\d,]+)/gi;
+    const matches = [...text.matchAll(addonRe)];
+    out.addons = matches.map(m => ({ name: m[1].trim(), eur: parseInt(m[2].replace(/,/g, ''), 10) }));
+  }
+  return out;
+}
+
+function parsePains(text) {
+  if (!text) return [];
+  // Format: "(1) Cannot find/retain DevOps. (2) Single point of failure. (3) Cloud waste."
+  const numbered = [...text.matchAll(/\(\d+\)\s*([^()]+?)(?=\s*\(\d+\)|$)/g)].map(m => m[1].replace(/\.$/, '').trim());
+  if (numbered.length) return numbered;
+  // Otherwise split on period or semicolon, keep substantial chunks
+  return text.split(/[.;]/).map(s => s.trim()).filter(s => s.length > 10);
+}
+
+function buildProfileFromFields(fields) {
+  const hq = fields['Location'] || '';
+  const companyDesc = fields['Company'] || '';
+
+  let founded = '';
+  let employees = '';
+  const fMatch = companyDesc.match(/Founded\s+(\d{4})/i);
+  if (fMatch) founded = fMatch[1];
+  const eMatch = companyDesc.match(/[~]?(\d[\d,]*\+?)\s*employees/i);
+  if (eMatch) employees = eMatch[1];
+
+  let industry = '';
+  // Heuristic: first sentence of Company description
+  const firstSentence = companyDesc.split(/[.]/)[0];
+  if (firstSentence && firstSentence.length < 160) industry = firstSentence.trim();
+
+  const stackText = fields['AWS stack'] || fields['Reverse-engineered cloud setup'] || '';
+  const stack = [];
+  const knownTech = ['AWS', 'EKS', 'EC2', 'Kubernetes', 'K8s', 'Terraform', 'Docker', 'GitLab CI', 'GitHub Actions', 'Jenkins', 'Prometheus', 'Grafana', 'Linux', 'Python', 'PHP', 'MySQL', 'PostgreSQL', 'OpenSearch', 'Redis', 'Lambda', 'CloudFront', 'RDS', 'S3', 'Flux', 'GPU'];
+  knownTech.forEach(t => {
+    if (new RegExp(`\\b${t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i').test(stackText)) {
+      stack.push(t);
+    }
+  });
+
+  return { industry, hq, founded, employees, stack, icp: fields['ICP fit'] || fields['ICP Profile'] || '' };
+}
+
+function buildSignalFromFields(fields, pipelineCard) {
+  const text = fields['Signal'] || fields['Signal history'] || '';
+  if (!text) return null;
+  return {
+    source: 'leads.md',
+    url: '',
+    title: '',
+    asOf: fields['Added / validated'] || fields['Added'] || fields['Validated'] || '',
+    blurb: text
+  };
+}
+
+function parseStackFromText(text) {
+  if (!text) return [];
+  // Extract "AWS, Terraform, Docker, GitLab CI" style lists
+  const list = text.match(/\(([^)]+)\)/);
+  if (list) {
+    return list[1].split(/[,\/]/).map(s => s.trim()).filter(Boolean);
+  }
+  return text.split(/[,\/]/).map(s => s.trim()).filter(s => s.length < 40).slice(0, 8);
+}
+
+function buildLeadFromSources(pipelineCard, stage, dossier) {
+  const id = normalizeCompanyName(pipelineCard.company);
+  const fields = dossier?.fields || {};
+
+  const filteredTags = pipelineCard.tags.filter(t => !STAGE_TAG_NAMES.has(t));
+  const geo = pipelineCard.tags.includes('romania') ? 'RO'
+            : pipelineCard.tags.includes('netherlands') ? 'NL'
+            : pipelineCard.tags.includes('lang-en') && !pipelineCard.tags.includes('lang-hu') ? 'INT'
+            : 'HU';
+
+  const packageText = fields['Recommended package'] || fields['Suggested package'] || '';
+  const offer = parsePackageText(packageText);
+  if (fields['Best outreach angle']) offer.valueProps = [fields['Best outreach angle']];
+
+  const profile = buildProfileFromFields(fields);
+  const signal = buildSignalFromFields(fields, pipelineCard);
+  const pains = parsePains(fields['Pain points'] || '');
+  const scoreBreakdown = fields['Scoring'] ? parseScoring(fields['Scoring']) : null;
+  const stackForWhatTheyWant = parseStackFromText(fields['AWS stack'] || fields['Signal'] || '');
+
+  return {
+    id,
+    company: pipelineCard.company,
+    stage,
+    score: dossier?.score ?? null,
+    tags: filteredTags,
+    geo,
+    due: pipelineCard.due,
+    teaser: pipelineCard.teaser,
+    profile,
+    signal,
+    whatTheyWant: stackForWhatTheyWant,
+    whyInteresting: fields['CPS fit'] || fields['Best outreach angle'] || '',
+    scoreBreakdown,
+    pains,
+    offer,
+    contacts: fields['Decision-maker'] ? [{ name: fields['Decision-maker'], role: '', approach: '' }] : [],
+    channels: [],
+    primaryChannel: '',
+    strategy: {
+      angle: fields['Best outreach angle'] || '',
+      timing: fields['Where it lives now'] || '',
+      redFlags: fields['Key Risks'] || fields['Caveats'] ? [fields['Key Risks'] || fields['Caveats']] : []
+    },
+    drafts: [],
+    actions: [],
+    fields,                  // full raw fields for fallback rendering
+    sources: {
+      pipeline: VAULT_BASE + 'Sales/Pipeline.md',
+      leadsMd:  dossier ? VAULT_BASE + 'Sales/Sales Enablement/leads.md' : null,
+      notesGuess: VAULT_BASE + 'Accounts/Leads/' + deriveNotesFolder(pipelineCard.company) + '/NOTES.md'
+    },
+    nextStep: fields['Next step'] || ''
+  };
+}
+
+function deriveNotesFolder(company) {
+  let name = company.split(' / ')[0];
+  name = name.replace(/\s*\([^)]*\)\s*$/, '');
+  name = name.replace(/\s+(Kft|Zrt|S\.R\.L\.|S\.A\.|GmbH|AG|Inc|Ltd|LLC|B\.V\.|N\.V\.|SRL)\.?$/i, '');
+  name = name.replace(/[-\s]+/g, '_');
+  return name;
+}
+
+function buildLeadsFromMd(pipelineMd, leadsMd) {
+  // Synchronous fallback build (no per-lead NOTES.md fetches).
+  // Used as immediate result; async enrichment may follow.
+  const pipelineStages = parsePipelineMd(pipelineMd);
+  const dossiers = leadsMd ? parseLeadsMd(leadsMd) : {};
+
+  const built = [];
+  for (const [stage, cards] of Object.entries(pipelineStages)) {
+    for (const card of cards) {
+      const dossier = dossiers[leadDossierKey(card.company)];
+      built.push(buildLeadFromSources(card, stage, dossier));
+    }
+  }
+  return built;
+}
+
+// Async: rebuild LEADS with per-lead NOTES.md as the primary source.
+// Returns a new array. Each card in Pipeline.md becomes one lead.
+// For each, tries to fetch a per-lead NOTES.md. If it has `type: lead`
+// frontmatter, parse that as the rich source. Otherwise fall back to
+// the dossier from leads.md (legacy enrichment).
+async function buildLeadsAsync(pipelineMd, leadsMd) {
+  const pipelineStages = parsePipelineMd(pipelineMd);
+  const dossiers = leadsMd ? parseLeadsMd(leadsMd) : {};
+
+  // Flatten with stage
+  const cards = [];
+  for (const [stage, list] of Object.entries(pipelineStages)) {
+    for (const c of list) cards.push({ card: c, stage });
+  }
+
+  // Fetch all NOTES.md in parallel
+  const fetched = await Promise.all(cards.map(({ card }) => fetchLeadNotes(card.company).catch(() => null)));
+
+  const built = [];
+  let perLeadHits = 0;
+  for (let i = 0; i < cards.length; i++) {
+    const { card, stage } = cards[i];
+    const notes = fetched[i];
+
+    if (notes && notes.text) {
+      const parsed = parseYamlFrontmatter(notes.text);
+      if (parsed && parsed.frontmatter && parsed.frontmatter.type === 'lead') {
+        const { sections, subsections } = parseMarkdownSections(parsed.body);
+        const lead = buildLeadFromNotes(card, stage, parsed.frontmatter, sections, subsections, notes.path);
+        built.push(lead);
+        perLeadHits++;
+        continue;
+      }
+    }
+    // Fallback: legacy enrichment from leads.md
+    const dossier = dossiers[leadDossierKey(card.company)];
+    built.push(buildLeadFromSources(card, stage, dossier));
+  }
+  built._perLeadHits = perLeadHits;
+  built._totalCards = cards.length;
+  return built;
+}
+
+function obsidianOpen(filePath) {
+  return `obsidian://open?vault=${encodeURIComponent(OBSIDIAN_VAULT)}&file=${encodeURIComponent(filePath)}`;
+}
+
+function obsidianSearch(query) {
+  return `obsidian://search?vault=${encodeURIComponent(OBSIDIAN_VAULT)}&query=${encodeURIComponent(query)}`;
+}
+
+/* ============================================================
+   Per-lead NOTES.md schema (primary source for each lead)
+   See Sales/DASHBOARD_CONTRACT.md for the full spec.
+   ============================================================ */
+
+// Minimal YAML parser tuned for the per-lead frontmatter schema.
+// Supports: top-level scalars, inline arrays [a, b], block arrays of scalars,
+// block objects, arrays of objects (with subkey indentation).
+function parseYamlFrontmatter(md) {
+  // Extract the block between leading --- and the next ---
+  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  if (!m) return null;
+  const lines = m[1].split('\n');
+  const root = {};
+  // Stack of {indent, container, key} for tracking nesting
+  const stack = [{ indent: -1, container: root, key: null }];
+
+  const stripValue = (raw) => {
+    let v = raw.trim();
+    if (v === '') return '';
+    if (v === 'null' || v === '~') return null;
+    if (v === 'true') return true;
+    if (v === 'false') return false;
+    // Quoted strings
+    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) {
+      return v.slice(1, -1);
+    }
+    // Inline array
+    if (v.startsWith('[') && v.endsWith(']')) {
+      const inner = v.slice(1, -1).trim();
+      if (!inner) return [];
+      return inner.split(',').map(s => stripValue(s));
+    }
+    // Number
+    if (/^-?\d+$/.test(v)) return parseInt(v, 10);
+    if (/^-?\d+\.\d+$/.test(v)) return parseFloat(v);
+    // Date-looking strings stay strings (YYYY-MM-DD)
+    return v;
+  };
+
+  // Quote-aware comment stripper, leaves # inside "..." or '...' alone
+  const stripComment = (line) => {
+    let inQuote = null;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (inQuote) {
+        if (c === inQuote && line[i-1] !== '\\') inQuote = null;
+      } else {
+        if (c === '"' || c === "'") inQuote = c;
+        else if (c === '#' && (i === 0 || /\s/.test(line[i-1]))) {
+          return line.slice(0, i).replace(/\s+$/, '');
+        }
+      }
+    }
+    return line.replace(/\s+$/, '');
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    if (!raw || /^\s*$/.test(raw)) continue;
+    const noComment = stripComment(raw);
+    if (!noComment.trim()) continue;
+
+    const indent = noComment.match(/^(\s*)/)[1].length;
+    const trimmed = noComment.trim();
+
+    // Pop stack until we are at the right indent level
+    while (stack.length > 1 && indent <= stack[stack.length - 1].indent) {
+      stack.pop();
+    }
+    const top = stack[stack.length - 1];
+
+    if (trimmed.startsWith('- ')) {
+      // List item
+      const item = trimmed.slice(2).trim();
+      if (!Array.isArray(top.container)) continue; // misformatted
+      if (item.includes(':')) {
+        // Item is the start of an object
+        const obj = {};
+        top.container.push(obj);
+        const [k, ...rest] = item.split(':');
+        const val = rest.join(':').trim();
+        if (val !== '') {
+          obj[k.trim()] = stripValue(val);
+        }
+        stack.push({ indent, container: obj, key: null });
+      } else {
+        top.container.push(stripValue(item));
+      }
+      continue;
+    }
+
+    // Key: value or Key: (block)
+    const colonIdx = trimmed.indexOf(':');
+    if (colonIdx === -1) continue;
+    const key = trimmed.slice(0, colonIdx).trim();
+    const val = trimmed.slice(colonIdx + 1).trim();
+
+    const parent = top.container;
+    if (val === '') {
+      // Block-style nested object or array. Peek next non-empty line.
+      let nextIdx = i + 1;
+      while (nextIdx < lines.length && /^\s*(#.*)?$/.test(lines[nextIdx])) nextIdx++;
+      const nextLine = lines[nextIdx] || '';
+      const nextIndent = nextLine.match(/^(\s*)/)[1].length;
+      const nextTrim = nextLine.trim();
+      if (nextTrim.startsWith('- ') && nextIndent > indent) {
+        const arr = [];
+        if (Array.isArray(parent)) parent.push(arr);
+        else parent[key] = arr;
+        stack.push({ indent, container: arr, key });
+      } else if (nextIndent > indent && nextTrim.includes(':')) {
+        const obj = {};
+        if (Array.isArray(parent)) parent.push(obj);
+        else parent[key] = obj;
+        stack.push({ indent, container: obj, key });
+      } else {
+        // Empty value, treat as null
+        if (Array.isArray(parent)) parent.push(null);
+        else parent[key] = null;
+      }
+    } else {
+      const value = stripValue(val);
+      if (Array.isArray(parent)) parent.push({ [key]: value });
+      else parent[key] = value;
+    }
+  }
+
+  // Return both frontmatter and the body that comes after
+  const fmEnd = m[0].length;
+  return { frontmatter: root, body: md.slice(fmEnd) };
+}
+
+// Parse the markdown body into named sections (by H2) with optional H3 sub-sections.
+// Recognizes:
+//   - bullet lists (- item or * item)
+//   - checklist items (- [ ] / - [x])
+//   - markdown tables
+//   - fenced code blocks (```)
+function parseMarkdownSections(body) {
+  if (!body) return { sections: {}, subsections: {} };
+
+  const lines = body.split('\n');
+  const sections = {}; // H2 name -> { prose: string, bullets: string[], checkItems: [{text, done}], table: rows[], codeBlocks: [{lang, text, heading}] }
+  const subsections = {}; // "H2 > H3" -> same shape
+
+  let currentH2 = null;
+  let currentH3 = null;
+  let currentKey = null; // current section key, either H2 name or "H2 > H3"
+  let inCodeBlock = false;
+  let codeLang = '';
+  let codeBuffer = [];
+  let codeHeading = ''; // last H3 before the code block
+
+  const ensureSection = (key) => {
+    const map = key.includes(' > ') ? subsections : sections;
+    if (!map[key]) {
+      map[key] = { prose: [], bullets: [], checkItems: [], table: [], codeBlocks: [] };
+    }
+    return map[key];
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    // Code blocks first, they are opaque
+    const codeFence = line.match(/^```(\w*)/);
+    if (codeFence) {
+      if (!inCodeBlock) {
+        inCodeBlock = true;
+        codeLang = codeFence[1] || '';
+        codeBuffer = [];
+        codeHeading = currentH3 || '';
+        continue;
+      } else {
+        inCodeBlock = false;
+        if (currentKey) {
+          const sect = ensureSection(currentKey);
+          sect.codeBlocks.push({ lang: codeLang, text: codeBuffer.join('\n'), heading: codeHeading });
+        }
+        codeBuffer = [];
+        continue;
+      }
+    }
+    if (inCodeBlock) {
+      codeBuffer.push(line);
+      continue;
+    }
+
+    // Headings
+    const h2 = line.match(/^##\s+(.+?)\s*$/);
+    if (h2 && !/^###/.test(line)) {
+      currentH2 = h2[1].trim();
+      currentH3 = null;
+      currentKey = currentH2;
+      ensureSection(currentKey);
+      continue;
+    }
+    const h3 = line.match(/^###\s+(.+?)\s*$/);
+    if (h3) {
+      currentH3 = h3[1].trim();
+      currentKey = currentH2 ? `${currentH2} > ${currentH3}` : null;
+      if (currentKey) ensureSection(currentKey);
+      continue;
+    }
+    if (!currentKey) continue;
+    const sect = ensureSection(currentKey);
+
+    // Checklist
+    const check = line.match(/^\s*[-*]\s+\[([ xX])\]\s+(.+?)\s*$/);
+    if (check) {
+      sect.checkItems.push({ text: check[2], done: check[1].toLowerCase() === 'x' });
+      continue;
+    }
+    // Bullet
+    const bullet = line.match(/^\s*[-*]\s+(.+?)\s*$/);
+    if (bullet) {
+      sect.bullets.push(bullet[1]);
+      continue;
+    }
+    // Table row
+    const tableRow = line.match(/^\s*\|(.+)\|\s*$/);
+    if (tableRow) {
+      const cells = tableRow[1].split('|').map(c => c.trim());
+      // Skip the alignment row, e.g. |---|---|
+      if (cells.every(c => /^:?-+:?$/.test(c))) continue;
+      sect.table.push(cells);
+      continue;
+    }
+    // Prose
+    if (line.trim()) {
+      sect.prose.push(line);
+    } else if (sect.prose.length && sect.prose[sect.prose.length - 1] !== '') {
+      sect.prose.push('');
+    }
+  }
+
+  // Normalize prose to a string per section
+  const finalize = (map) => {
+    for (const k of Object.keys(map)) {
+      map[k].prose = map[k].prose.join('\n').trim();
+    }
+  };
+  finalize(sections);
+  finalize(subsections);
+
+  return { sections, subsections };
+}
+
+/* ============================================================
+   Per-lead folder name derivation
+   Tries multiple candidate folder names so that both new
+   (mechanical) and legacy (existing) folder names resolve.
+   ============================================================ */
+
+function leadFolderCandidates(company) {
+  const seen = new Set();
+  const out = [];
+  const add = (name) => {
+    name = name.replace(/_+$/, '').replace(/[^A-Za-z0-9_.]/g, '');
+    if (name && !seen.has(name)) { seen.add(name); out.push(name); }
+  };
+
+  let base = String(company);
+  base = base.replace(/\s*\([^)]*\)\s*/g, ' ').trim(); // strip parens
+
+  // Candidate 1: full mechanical, keep both sides of "/" joined by "_"
+  let c1 = base;
+  c1 = c1.replace(/\.(hu|com|io|ai|eu|net|org|ro)\b/gi, '');
+  c1 = c1.replace(/\s+(Kft|Zrt|SRL|S\.R\.L\.|GmbH|AG|Inc|Ltd|LLC|BV|NV|SA)\.?\s*$/i, '');
+  c1 = c1.replace(/[\s/\-]+/g, '_');
+  add(c1);
+
+  // Candidate 2: first word only (handles cases where legacy folder is just the first token)
+  const firstWord = base.split(/[\s/\-]/)[0];
+  if (firstWord) add(firstWord);
+
+  // Candidate 3: full normalization with spaces->underscore but no TLD/suffix strip
+  let c3 = base.replace(/[\s/\-]+/g, '_');
+  add(c3);
+
+  return out;
+}
+
+async function fetchLeadNotes(company) {
+  const candidates = leadFolderCandidates(company);
+  for (const folder of candidates) {
+    const path = `/02_Areas/Sonrisa/CPS/Accounts/Leads/${folder}/NOTES.md`;
+    try {
+      const res = await fetch(path, { cache: 'no-store' });
+      if (res.ok) {
+        const text = await res.text();
+        return { text, path, folder };
+      }
+    } catch (e) {
+      // try next candidate
+    }
+  }
+  return null;
+}
+
+/* ============================================================
+   Build a lead from a parsed per-lead NOTES.md
+   ============================================================ */
+
+function buildLeadFromNotes(pipelineCard, stage, fm, sections, subsections, sourcePath) {
+  const id = normalizeCompanyName(pipelineCard.company);
+  const filteredTags = (fm.tags && Array.isArray(fm.tags))
+    ? fm.tags.filter(t => !STAGE_TAG_NAMES.has(t))
+    : pipelineCard.tags.filter(t => !STAGE_TAG_NAMES.has(t));
+
+  const geo = fm.geo
+    || (pipelineCard.tags.includes('romania') ? 'RO'
+      : pipelineCard.tags.includes('netherlands') ? 'NL'
+      : pipelineCard.tags.includes('lang-en') && !pipelineCard.tags.includes('lang-hu') ? 'INT'
+      : 'HU');
+
+  // Package from frontmatter
+  let offer = { package: '', monthly: 0, addons: [], total: 0, valueProps: [] };
+  if (fm.package) {
+    offer.package = fm.package.tier || '';
+    offer.monthly = fm.package.monthly_eur || 0;
+    offer.addons = (fm.package.addons || []).map(a => ({ name: a.name || '', eur: a.eur || 0 }));
+    offer.total = fm.package.total_eur || (offer.monthly + offer.addons.reduce((s, a) => s + (a.eur || 0), 0));
+  }
+  if (sections['Value Propositions']) {
+    offer.valueProps = sections['Value Propositions'].bullets;
+  }
+
+  // Profile
+  const profile = {
+    industry: fm.industry || '',
+    hq: fm.location || '',
+    founded: fm.founded ? String(fm.founded) : '',
+    employees: fm.employees || '',
+    stack: [],
+    icp: fm.icp || ''
+  };
+  // Parse stack from "About the Company" prose: line starting with "Stack:"
+  if (sections['About the Company']) {
+    const proseLines = sections['About the Company'].prose.split('\n');
+    for (const ln of proseLines) {
+      const m = ln.match(/^\s*Stack:\s*(.+)$/i);
+      if (m) {
+        profile.stack = m[1].split(/[,;]/).map(s => s.trim()).filter(Boolean).slice(0, 12);
+        break;
+      }
+    }
+  }
+
+  // Signal
+  let signal = null;
+  if (sections['Signal']) {
+    signal = {
+      source: fm.sources?.posting ? 'Posting' : (fm.sources?.career_page ? 'Career page' : 'Lead notes'),
+      url: fm.source_url || fm.sources?.posting || fm.sources?.career_page || '',
+      title: '',
+      asOf: fm.last_signal_check || fm.validated || fm.created || '',
+      blurb: sections['Signal'].prose
+    };
+  }
+
+  // What they want, parsed from bullets
+  const whatTheyWant = sections['What They Want']?.bullets || [];
+
+  // Why this is interesting
+  const whyInteresting = sections['Why This Is Interesting']?.prose || '';
+
+  // Pain hypotheses (sub-section of Why This Is Interesting)
+  const painsSect = subsections['Why This Is Interesting > Pain Hypotheses'];
+  const pains = painsSect ? painsSect.bullets : [];
+
+  // Contacts table
+  let contacts = [];
+  if (sections['Key Contacts']?.table) {
+    const rows = sections['Key Contacts'].table;
+    // Skip header row if it has "Name" etc.
+    const dataRows = rows.length > 0 && /name/i.test(rows[0][0] || '') ? rows.slice(1) : rows;
+    contacts = dataRows.map(r => ({
+      name: r[0] || '',
+      role: r[1] || '',
+      linkedin: r[2] || '',
+      approach: r[3] || '',
+      status: r[4] || ''
+    })).filter(c => c.name);
+  }
+
+  // Channels
+  const channels = Array.isArray(fm.channels) ? fm.channels : [];
+  const primaryChannel = fm.primary_channel || '';
+
+  // Strategy
+  const strategy = {
+    angle: sections['The Angle']?.prose || '',
+    timing: sections['Timing']?.prose || '',
+    redFlags: sections['Red Flags']?.bullets || []
+  };
+
+  // Drafts: typically each draft is in a fenced code block under a sub-section like
+  // "### Option A, LinkedIn (HU)". Walk both the Drafts section's own code blocks
+  // (rare) and any subsections under Drafts.
+  const drafts = [];
+  const detectLang = (label) => /\b(HU|hu|Hungarian)\b/.test(label) ? 'HU'
+                              : /\b(EN|en|English)\b/.test(label) ? 'EN'
+                              : '';
+  if (sections['Drafts']) {
+    for (const cb of sections['Drafts'].codeBlocks) {
+      drafts.push({
+        lang: detectLang(cb.heading || ''),
+        label: cb.heading || 'Draft',
+        text: cb.text
+      });
+    }
+  }
+  for (const key of Object.keys(subsections)) {
+    if (!key.startsWith('Drafts > ')) continue;
+    const subname = key.slice('Drafts > '.length);
+    for (const cb of subsections[key].codeBlocks) {
+      drafts.push({
+        lang: detectLang(subname),
+        label: subname,
+        text: cb.text
+      });
+    }
+  }
+
+  // Action items
+  const actions = sections['Action Items']?.checkItems || [];
+
+  return {
+    id,
+    company: fm.company || pipelineCard.company,
+    stage,
+    score: typeof fm.score === 'number' ? fm.score : null,
+    tags: filteredTags,
+    geo,
+    due: fm.due || pipelineCard.due,
+    teaser: pipelineCard.teaser,
+    nextAction: fm.next_action || '',
+    status: fm.status || '',
+    profile,
+    signal,
+    whatTheyWant,
+    whyInteresting,
+    scoreBreakdown: fm.score_breakdown ? {
+      maturity: fm.score_breakdown.maturity ?? 0,
+      posting:  fm.score_breakdown.posting ?? 0,
+      aws:      fm.score_breakdown.aws ?? 0,
+      gap:      fm.score_breakdown.team_gap ?? fm.score_breakdown.gap ?? 0,
+      geo:      fm.score_breakdown.geo_fit ?? fm.score_breakdown.geo ?? 0
+    } : null,
+    pains,
+    offer,
+    contacts,
+    channels,
+    primaryChannel,
+    strategy,
+    drafts,
+    actions,
+    nextStep: sections['Next Step']?.prose || '',
+    sourceUrl: fm.source_url || '',
+    extraSources: {
+      posting: fm.sources?.posting || '',
+      career_page: fm.sources?.career_page || '',
+      linkedin: fm.sources?.linkedin || '',
+      jira: fm.sources?.jira || '',
+      validation_pass: fm.sources?.validation_pass || ''
+    },
+    sources: {
+      pipeline: VAULT_BASE + 'Sales/Pipeline.md',
+      notes: sourcePath ? sourcePath.replace(/^\//, '') : null,
+      leadsMd: null
+    },
+    createdAt: fm.created || '',
+    validatedAt: fm.validated || '',
+    lastSignalCheck: fm.last_signal_check || '',
+    schemaVersion: 2
+  };
+}
+
+/* ============================================================
+   Read-only fetch sync, 8s poll
+   Works when dashboard is served over HTTP (Claude Preview, any
+   local static server). Falls back to hardcoded data on file://.
+   ============================================================ */
+
+function setSyncState(state, tooltip = '') {
+  syncState = state;
+  syncTooltip = tooltip;
+  const status = $('.sync-status');
+  if (status) {
+    status.dataset.state = state;
+    status.title = tooltip;
+    const label = $('.sync-label', status);
+    if (label) label.textContent = syncLabel(state);
+  }
+}
+
+async function fetchVaultFile(path) {
+  const res = await fetch(path, { cache: 'no-store' });
+  if (!res.ok) throw new Error(`${path} returned ${res.status}`);
+  return await res.text();
+}
+
+let lastLeadsMd = null;
+
+async function pollVault({ silent = false } = {}) {
+  if (!silent) setSyncState('syncing', 'Reading vault files...');
+  let anyOk = false;
+  let anyError = null;
+  let todayChanged = false;
+  let pipelineOrLeadsChanged = false;
+
+  // Fetch all three in parallel
+  const [todayRes, pipelineRes, leadsRes] = await Promise.allSettled([
+    fetchVaultFile(VAULT_FILES.today),
+    fetchVaultFile(VAULT_FILES.pipeline),
+    fetchVaultFile(VAULT_FILES.leads)
+  ]);
+
+  if (todayRes.status === 'fulfilled') {
+    anyOk = true;
+    if (todayRes.value !== lastTodayMd) {
+      lastTodayMd = todayRes.value;
+      const parsed = parseTodayMd(todayRes.value);
+      currentTodayView = buildViewFromParsed(parsed);
+      todayChanged = true;
+    }
+  } else {
+    anyError = todayRes.reason;
+  }
+
+  if (pipelineRes.status === 'fulfilled') {
+    anyOk = true;
+    if (pipelineRes.value !== lastPipelineMd) {
+      lastPipelineMd = pipelineRes.value;
+      pipelineOrLeadsChanged = true;
+    }
+  } else {
+    anyError = anyError || pipelineRes.reason;
+  }
+
+  if (leadsRes.status === 'fulfilled') {
+    anyOk = true;
+    if (leadsRes.value !== lastLeadsMd) {
+      lastLeadsMd = leadsRes.value;
+      pipelineOrLeadsChanged = true;
+    }
+  } else {
+    // leads.md is optional, do not fail sync if missing
+  }
+
+  // Rebuild LEADS from MD when either Pipeline.md or leads.md changed.
+  // If Pipeline.md is available, it is the authoritative source of which leads exist.
+  if (pipelineOrLeadsChanged && lastPipelineMd) {
+    try {
+      const rebuilt = await buildLeadsAsync(lastPipelineMd, lastLeadsMd);
+      LEADS = rebuilt;
+      lastPerLeadHits = rebuilt._perLeadHits || 0;
+      lastTotalCards = rebuilt._totalCards || rebuilt.length;
+    } catch (e) {
+      // Async build failed, fall back to sync rebuild
+      console.warn('Async per-lead build failed, falling back to sync', e);
+      LEADS = buildLeadsFromMd(lastPipelineMd, lastLeadsMd);
+    }
+  }
+  const perLeadHits = lastPerLeadHits;
+  const totalCards = lastTotalCards;
+
+  if (todayChanged) renderTodayPanel();
+  if (pipelineOrLeadsChanged) {
+    renderBoard();
+    renderWidgets();
+  }
+
+  if (anyOk) {
+    const ts = new Date().toLocaleTimeString();
+    const filesLoaded = [
+      todayRes.status === 'fulfilled' ? 'TODAY.md' : null,
+      pipelineRes.status === 'fulfilled' ? 'Pipeline.md' : null,
+      leadsRes.status === 'fulfilled' ? 'leads.md' : null
+    ].filter(Boolean).join(' + ');
+    const enrichLabel = totalCards > 0 ? `, ${perLeadHits}/${totalCards} from per-lead NOTES.md` : '';
+    lastSuccessfulSyncAt = Date.now();
+    setSyncState('live', `Live, ${filesLoaded}${enrichLabel}. ${LEADS.length} leads. Last check ${ts}. Polls every ${POLL_INTERVAL_MS / 1000}s. Click the indicator to refresh now.`);
+    resetSyncBarAnimation();
+  } else {
+    setSyncState('error', `Cannot fetch vault files. Open this dashboard via a local HTTP server (file:// blocks fetch). Showing hardcoded fallback snapshot. ${anyError ? '(' + anyError.message + ')' : ''} Click to retry.`);
+  }
+}
+
+function startVaultPolling() {
+  if (pollTimer) return;
+  pollTimer = setInterval(() => pollVault({ silent: true }), POLL_INTERVAL_MS);
+}
+
+async function initSync() {
+  await pollVault();
+  startVaultPolling();
+}
+
+/* ============================================================
+   Render: board
+   ============================================================ */
+
+let activeFilters = { stage: 'all', geo: null, tag: null };
+let searchTerm = '';
+
+function leadMatches(lead) {
+  if (activeFilters.stage !== 'all' && lead.stage !== activeFilters.stage) return false;
+  if (activeFilters.geo && lead.geo !== activeFilters.geo) return false;
+  if (activeFilters.tag && !lead.tags.includes(activeFilters.tag)) return false;
+  if (searchTerm) {
+    const s = searchTerm.toLowerCase();
+    const hay = [lead.company, lead.teaser, ...lead.tags, lead.profile?.industry || '', lead.profile?.hq || '', lead.whyInteresting || ''].join(' ').toLowerCase();
+    if (!hay.includes(s)) return false;
+  }
+  return true;
+}
+
+function renderBoard() {
+  const board = $('#board');
+  board.classList.add('is-kanban');
+  board.innerHTML = '';
+
+  // Kanban shows all primary stages as lanes. If a stage filter is active,
+  // show only that lane. Otherwise show the canonical five.
+  const lanes = activeFilters.stage === 'all'
+    ? ['hot','warm','cold','contacted','lost']
+    : [activeFilters.stage];
+
+  lanes.forEach(stage => {
+    const matching = LEADS.filter(l => l.stage === stage && leadMatches(l));
+
+    const section = document.createElement('section');
+    section.className = 'stage-section';
+    section.style.setProperty('--stage-color', STAGES[stage].color);
+
+    const sum = matching.reduce((a,l) => a + (l.offer.total || 0), 0);
+    section.innerHTML = `
+      <div class="stage-header">
+        <h3>${STAGES[stage].label}</h3>
+        <div class="subline">${STAGES[stage].sub} <strong>· ${matching.length}</strong></div>
+        ${sum > 0 ? `<div class="stage-mrr tabular">EUR ${(sum).toLocaleString()} / mo</div>` : ''}
+      </div>
+      <div class="cards"></div>
+    `;
+    const cards = $('.cards', section);
+    if (matching.length === 0) {
+      cards.innerHTML = `<div class="empty-stage">No leads</div>`;
+    } else {
+      matching.forEach(lead => cards.appendChild(renderCard(lead)));
+    }
+    board.appendChild(section);
+  });
+}
+
+function renderCard(lead) {
+  const card = document.createElement('article');
+  card.className = 'card';
+  card.tabIndex = 0;
+  card.setAttribute('role', 'button');
+  card.setAttribute('aria-label', `Open ${lead.company} detail`);
+  card.style.setProperty('--stage-color', STAGES[lead.stage].color);
+  card.style.setProperty('--stage-tint', STAGES[lead.stage].tint);
+  card.dataset.cardId = lead.id;
+
+  const pkgEur = lead.offer.total ? `EUR ${lead.offer.total.toLocaleString()}` : '';
+  const pkgName = lead.offer.package
+    ? `${lead.offer.package}${lead.offer.addons?.length ? ` + ${lead.offer.addons.map(a => a.name).join(' + ')}` : ''}`
+    : '';
+
+  const dueHtml = lead.due ? `<div class="due ${dueClass(lead.due)}">${dueLabel(lead.due)}</div>` : '';
+
+  const nextActionHtml = lead.nextAction
+    ? `<div class="next-action" title="Next action">${escapeHtml(lead.nextAction)}</div>`
+    : '';
+
+  card.innerHTML = `
+    <div class="row1">
+      <div class="company">${escapeHtml(lead.company)}</div>
+      ${lead.score > 0 ? `<div class="score"><span>${lead.score}</span><span class="of"> / 15</span></div>` : ''}
+    </div>
+    <div class="tags">
+      ${lead.tags.slice(0,4).map(t => `<span class="tag t-${escapeAttr(t)}">${escapeHtml(t.replace('lang-','').replace('-',' '))}</span>`).join('')}
+    </div>
+    <div class="teaser">${escapeHtml(lead.teaser || '')}</div>
+    ${nextActionHtml}
+    <div class="meta">
+      <div class="package">${pkgEur}${pkgName ? `<span class="pkg-name">${escapeHtml(pkgName)}</span>` : ''}</div>
+      ${dueHtml}
+    </div>
+  `;
+
+  const copyBtn = document.createElement('button');
+  copyBtn.className = 'card-copy-ref';
+  copyBtn.setAttribute('aria-label', 'Kártya-azonosító másolása');
+  copyBtn.innerHTML = COPY_REF_SVG + ' copy ref';
+  copyBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    copyText(DASH_STEM + ':' + lead.id, copyBtn);
+  });
+  card.insertBefore(copyBtn, card.firstChild);
+
+  card.addEventListener('click', () => openDrawer(lead.id));
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openDrawer(lead.id);
+    }
+  });
+  return card;
+}
+
+/* ============================================================
+   Drawer
+   ============================================================ */
+
+function openDrawer(leadId) {
+  const lead = LEADS.find(l => l.id === leadId);
+  if (!lead) return;
+  const drawer = $('#drawer');
+  const scrim = $('#scrim');
+
+  drawer.style.setProperty('--stage-color', STAGES[lead.stage].color);
+  drawer.style.setProperty('--stage-tint', STAGES[lead.stage].tint);
+  drawer.innerHTML = renderDrawerContent(lead);
+  drawer.classList.add('is-open');
+  scrim.classList.add('is-open');
+  drawer.setAttribute('aria-hidden', 'false');
+  drawer.dataset.leadId = leadId;
+
+  // Wire up copy buttons
+  $$('.copy-btn', drawer).forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const text = btn.parentElement.parentElement.querySelector('.outreach-body').textContent;
+      try {
+        await navigator.clipboard.writeText(text);
+        btn.classList.add('is-copied');
+        const orig = btn.innerHTML;
+        btn.innerHTML = 'Copied';
+        setTimeout(() => { btn.classList.remove('is-copied'); btn.innerHTML = orig; }, 1800);
+      } catch (e) {
+        btn.textContent = 'Press Ctrl-C';
+      }
+    });
+  });
+
+  // Wire up action items
+  $$('.action-items li', drawer).forEach(li => {
+    li.addEventListener('click', () => li.classList.toggle('is-done'));
+  });
+
+  // Close handlers
+  $('.drawer-close', drawer).addEventListener('click', closeDrawer);
+}
+
+function closeDrawer() {
+  $('#drawer').classList.remove('is-open');
+  $('#scrim').classList.remove('is-open');
+  $('#drawer').setAttribute('aria-hidden', 'true');
+}
+
+function renderDrawerContent(lead) {
+  const score = lead.scoreBreakdown || {};
+  const profile = lead.profile || {};
+  const offer = lead.offer || {};
+
+  const factsRows = [
+    ['Industry', profile.industry],
+    ['Headquarters', profile.hq],
+    ['Founded', profile.founded],
+    ['Employees', profile.employees],
+    ['ICP fit', profile.icp]
+  ].filter(([_, v]) => v).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('');
+
+  const stack = (profile.stack || []).map(s => `<span class="stack-tag">${s}</span>`).join('');
+
+  const scoreCells = ['maturity','posting','aws','gap','geo']
+    .map(k => `<div class="score-cell"><span class="val tabular">${score[k] || 0}<span class="of"> / 3</span></span><span class="name">${k}</span></div>`)
+    .join('');
+
+  const contactsRows = (lead.contacts || []).map(c => `
+    <tr><td>${c.name}</td><td>${c.role}</td><td>${c.approach}</td></tr>
+  `).join('');
+
+  const channelChips = (lead.channels || []).map(c =>
+    `<span class="channel${c === lead.primaryChannel ? ' is-primary' : ''}">${c}</span>`
+  ).join('');
+
+  const drafts = (lead.drafts || []).map(d => `
+    <div class="outreach-block">
+      <div class="outreach-head">
+        <span class="label">${d.label}</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="lang">${d.lang}</span>
+          <button class="copy-btn">Copy</button>
+        </div>
+      </div>
+      <div class="outreach-body">${d.text}</div>
+    </div>
+  `).join('');
+
+  const actionList = (lead.actions || []).map(a => `<li class="${a.done ? 'is-done' : ''}">${a.text}</li>`).join('');
+
+  const redFlags = (lead.strategy?.redFlags || []).map(r => `<li>${r}</li>`).join('');
+  const pains = (lead.pains || []).map(p => `<li>${p}</li>`).join('');
+  const valueProps = (offer.valueProps || []).map(v => `<li>${v}</li>`).join('');
+
+  const dueHtml = lead.due ? `<span class="dot"></span><span>${dueLabel(lead.due)}</span>` : '';
+
+  return `
+    <div class="drawer-head">
+      <div>
+        <div class="eyebrow">
+          <span class="stage-pill">${STAGES[lead.stage].label}</span>
+          ${lead.score > 0 ? `<span style="font-size:11px;color:var(--ink-4);text-transform:uppercase;letter-spacing:.1em;font-weight:600;">Score ${lead.score} / 15</span>` : ''}
+        </div>
+        <h2>${lead.company}</h2>
+        <div class="submeta">
+          <span>${profile.industry || ''}</span>
+          ${profile.hq ? `<span class="dot"></span><span>${profile.hq}</span>` : ''}
+          ${profile.employees ? `<span class="dot"></span><span>${profile.employees} employees</span>` : ''}
+          ${dueHtml}
+        </div>
+      </div>
+      <button class="drawer-close" aria-label="Close detail">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-body">
+      ${lead.sourceUrl ? `
+      <a class="source-cta" href="${escapeAttr(lead.sourceUrl)}" target="_blank" rel="noopener">
+        <span class="source-cta-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M21 3l-10 10"/><path d="M5 5v14h14v-7"/></svg>
+        </span>
+        <span class="source-cta-body">
+          <span class="source-cta-label">Original opportunity</span>
+          <span class="source-cta-url">${escapeHtml(lead.sourceUrl)}</span>
+        </span>
+        <span class="source-cta-arrow">&rarr;</span>
+      </a>` : `
+      <div class="source-cta is-missing" title="No source_url set in this lead's NOTES.md frontmatter">
+        <span class="source-cta-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4"/><path d="M12 16h.01"/></svg>
+        </span>
+        <span class="source-cta-body">
+          <span class="source-cta-label">Original opportunity URL missing</span>
+          <span class="source-cta-url">Add <code>source_url</code> to this lead's NOTES.md frontmatter</span>
+        </span>
+      </div>`}
+
+      ${lead.signal ? `
+      <div class="section">
+        <h4>Signal source</h4>
+        <p class="signal-source"><strong>${escapeHtml(lead.signal.title || '')}</strong> &nbsp; via <code>${escapeHtml(lead.signal.source)}</code> &nbsp; ${escapeHtml(lead.signal.asOf || '')}</p>
+        <p>${escapeHtml(lead.signal.blurb || '')}</p>
+        ${lead.signal.url ? `<p class="signal-source"><code>${escapeHtml(lead.signal.url)}</code></p>` : ''}
+      </div>` : ''}
+
+      ${lead.whatTheyWant && lead.whatTheyWant.length ? `
+      <div class="section">
+        <h4>What they want</h4>
+        <div class="stack-tags">${lead.whatTheyWant.map(w => `<span class="stack-tag">${w}</span>`).join('')}</div>
+      </div>` : ''}
+
+      <div class="section">
+        <h4>About the company</h4>
+        <dl class="facts">${factsRows}</dl>
+        ${stack ? `<div style="margin-top:14px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-4);font-weight:500;margin-bottom:6px;">Stack</div><div class="stack-tags">${stack}</div></div>` : ''}
+      </div>
+
+      ${lead.whyInteresting ? `
+      <div class="section">
+        <h4>Why this is interesting</h4>
+        <p>${lead.whyInteresting}</p>
+        ${pains ? `<div style="margin-top:14px;"><div style="font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-4);font-weight:500;margin-bottom:6px;">Pain hypotheses</div><ul>${pains}</ul></div>` : ''}
+        ${score.maturity !== undefined ? `<div class="score-grid">${scoreCells}</div>` : ''}
+      </div>` : ''}
+
+      ${offer.package ? `
+      <div class="section">
+        <h4>What we can offer</h4>
+        <div class="package-box">
+          <div class="pkg-label">Recommended package</div>
+          <div class="pkg-name">${offer.package}${offer.addons?.length ? ` &nbsp;+&nbsp; ${offer.addons.map(a => a.name).join(' + ')}` : ''}</div>
+          <div class="pkg-monthly tabular">EUR ${offer.total.toLocaleString()}<span class="unit">/ month</span></div>
+          <div class="pkg-breakdown">${offer.package} EUR ${offer.monthly.toLocaleString()}${offer.addons?.map(a => ` + ${a.name} EUR ${a.eur.toLocaleString()}`).join('') || ''}</div>
+        </div>
+        ${valueProps ? `<ul>${valueProps}</ul>` : ''}
+      </div>` : ''}
+
+      ${contactsRows ? `
+      <div class="section">
+        <h4>Key contacts</h4>
+        <table class="contacts-table">
+          <thead><tr><th>Name</th><th>Role</th><th>Approach</th></tr></thead>
+          <tbody>${contactsRows}</tbody>
+        </table>
+      </div>` : ''}
+
+      ${channelChips ? `
+      <div class="section">
+        <h4>Sales channels</h4>
+        <div class="channels">${channelChips}</div>
+      </div>` : ''}
+
+      ${(lead.strategy?.angle || drafts) ? `
+      <div class="section">
+        <h4>Sales strategy</h4>
+        ${lead.strategy.angle ? `<p><strong>The angle.</strong> ${lead.strategy.angle}</p>` : ''}
+        ${lead.strategy.timing ? `<p><strong>Timing.</strong> ${lead.strategy.timing}</p>` : ''}
+        ${redFlags ? `<div class="callout is-warn"><strong>Watch out:</strong><ul style="margin-top:6px;">${redFlags}</ul></div>` : ''}
+        ${drafts ? `<div style="margin-top:6px;">${drafts}</div>` : ''}
+      </div>` : ''}
+
+      ${actionList ? `
+      <div class="section">
+        <h4>Action items</h4>
+        <ul class="action-items">${actionList}</ul>
+      </div>` : ''}
+
+      ${lead.nextStep ? `
+      <div class="section">
+        <h4>Next step</h4>
+        <p>${escapeHtml(lead.nextStep)}</p>
+      </div>` : ''}
+
+      ${renderSources(lead)}
+    </div>
+
+    <div class="drawer-footer">
+      <a class="btn-primary" href="${obsidianOpen(lead.sources?.pipeline || (VAULT_BASE + 'Sales/Pipeline.md'))}" style="text-decoration:none;display:inline-flex;align-items:center;gap:8px;">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3h7v7"/><path d="M21 3l-10 10"/><path d="M5 5v14h14v-7"/></svg>
+        Edit in Obsidian
+      </a>
+      <button class="btn-ghost" onclick="closeDrawer()">Close</button>
+    </div>
+  `;
+}
+
+function renderSources(lead) {
+  const src = lead.sources || {};
+  const items = [];
+  if (src.pipeline) items.push({ label: 'Pipeline.md', href: obsidianOpen(src.pipeline), kind: 'kanban entry' });
+  if (src.leadsMd) items.push({ label: 'leads.md', href: obsidianOpen(src.leadsMd), kind: 'research dossier' });
+  if (src.notesGuess) items.push({ label: 'NOTES.md (best guess)', href: obsidianOpen(src.notesGuess), kind: 'account notes' });
+  items.push({ label: 'Search Obsidian', href: obsidianSearch(lead.company), kind: 'find any mention' });
+
+  return `
+    <div class="section">
+      <h4>Sources, edit in Obsidian</h4>
+      <div class="sources-list">
+        ${items.map(it => `
+          <a class="source-link" href="${it.href}">
+            <span class="source-label">${escapeHtml(it.label)}</span>
+            <span class="source-kind">${escapeHtml(it.kind)}</span>
+            <span class="source-arrow">&rarr;</span>
+          </a>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+/* ============================================================
+   Filters
+   ============================================================ */
+
+function wireFilters() {
+  $$('.chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const group = chip.dataset.filterGroup;
+      const value = chip.dataset.filterValue;
+
+      // Stage group is single-select with 'all'
+      if (group === 'stage') {
+        $$('.chip[data-filter-group="stage"]').forEach(c => c.classList.remove('is-active'));
+        chip.classList.add('is-active');
+        activeFilters.stage = value;
+      } else {
+        // Geo and tag are toggle (single-select, toggle off if same)
+        const isActive = chip.classList.contains('is-active');
+        $$(`.chip[data-filter-group="${group}"]`).forEach(c => c.classList.remove('is-active'));
+        if (isActive) {
+          activeFilters[group] = null;
+        } else {
+          chip.classList.add('is-active');
+          activeFilters[group] = value;
+        }
+      }
+      renderBoard();
+    });
+  });
+
+  $('#searchInput').addEventListener('input', (e) => {
+    searchTerm = e.target.value.trim();
+    renderBoard();
+  });
+}
+
+/* ============================================================
+   Global handlers
+   ============================================================ */
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeDrawer();
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    $('#searchInput').focus();
+  }
+});
+document.addEventListener('click', (e) => {
+  if (e.target.id === 'scrim') closeDrawer();
+});
+
+/* ============================================================
+   Boot
+   ============================================================ */
+
+renderWidgets();
+renderTodayPanel();
+renderBoard();
+wireFilters();
+
+// Kick off live read-only sync with TODAY.md + Pipeline.md + per-lead NOTES.md
+initSync();
+
+// Live-tick the "Updated Xs ago" label once per second
+startSyncLabelTicker();
+
+/* ============================================================
+   File-watcher push channel (SSE from dash-server.mjs).
+   When connected, markdown edits update the dashboard sub-second
+   and the poll timer relaxes to a 30s heartbeat. If the server is
+   not the watcher (plain static serve) or the connection drops,
+   the 8s timer keeps the dashboard live on its own.
+   ============================================================ */
+function connectEventStream() {
+  if (typeof EventSource === 'undefined') return;
+  let es;
+  try { es = new EventSource('/__events'); } catch (e) { return; }
+  const restartPolling = (ms) => {
+    POLL_INTERVAL_MS = ms;
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    startVaultPolling();
+  };
+  es.addEventListener('open', () => restartPolling(30000));
+  es.addEventListener('change', () => pollVault({ silent: true }));
+  es.addEventListener('error', () => restartPolling(8000));
+}
+connectEventStream();
+
+/* ===== Theme toggle (DS 0.3.0) ===== */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+document.getElementById('themeToggle').addEventListener('click', function() {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+});
+(function initTheme() {
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  setTheme(t);
+})();
+
+</script>
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>

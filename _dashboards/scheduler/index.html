@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  BDOS System Status — Scheduler & Observability Dashboard.  Version: 0.1.1
+  =============================================================================
+  Standalone dashboard AND reusable drawer (embedded via iframe from ops-header.js).
+  Three tabs: Health · Jobs · Logcat
+
+  Data sources:
+    /_dashboards/_design/agent_logs.json   — sidecar JSON (last 500 events)
+    http://localhost:4322/health           — events_server health
+    http://localhost:4321/                 — dash-server ping (HEAD)
+
+  Health tab:  Five pills (Watchdog · Server · DB · Scheduler · Index)
+               + historical event count + quick-link to events_server /health.
+  Jobs tab:    scheduled_jobs rendered from sidecar events tagged 'scheduler'
+               (job_id, agent_name, schedule, last dispatch, status, next_run_at).
+  Logcat tab:  Filterable event stream (agent, level, event_type, text search).
+               Auto-refreshes every 5 s. Sticky "live" toggle.
+
+  Read-only. Served by dash-server.mjs (port 4321) or opened as iframe overlay.
+
+  Audit trail:
+    0.1.0 (2026-05-24) — initial build. Phase B scheduler + ops-header.
+          Three-tab layout: Health / Jobs / Logcat.
+          Reads agent_logs.json sidecar; no server-side Python required.
+          Embedded-mode support (?embedded=1 hides ops-header strip).
+          DS 0.5.0 (ops-header component added).
+    0.1.1 (2026-05-24) — Phase B-redux schema correction. Column headers updated:
+          job_runs vocabulary aligned to brief (claimed_by_device, completed_at,
+          failed_at, result_summary, error_message, metadata_json). Jobs table
+          header updated: Agent → agent_name, Status → status (9-state).
+
+  Conventions: see _dashboards/_design/DESIGN_SYSTEM.md
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BDOS System Status</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23D97757' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2.5' fill='%23D97757'/%3E%3Cpath d='M16 9v2M16 21v2M9 16h2M21 16h2' stroke='%23D97757' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-page:   #faf9f5;
+  --bg-elev:   #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint:   #f5f4ef;
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+  --line:      #e5e4df;
+  --line-soft: #efede7;
+  --accent:      #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;  --gap-tint:  #fbeae6;
+  --idle:      #7a7a76;  --idle-tint: #efeeeb;
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+  --ink-1: #f5f4ef;  --ink-2: #d6d4ce;  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;  --ink-5: #54524d;
+  --line:      #36342f;  --line-soft: #2c2a26;
+  --accent:      #e08a6a;  --accent-deep: #f0a085;  --accent-tint: #3a2a22;
+  --ok:        #5cc08a;  --ok-tint:   #1e3329;
+  --warn:      #d6a94a;  --warn-tint: #352c18;
+  --gap:       #e57c6e;  --gap-tint:  #3a221e;
+  --idle:      #9a9892;  --idle-tint: #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:#1a1916;--bg-elev:#232220;--bg-sunken:#2c2a26;--bg-tint:#262420;
+    --ink-1:#f5f4ef;--ink-2:#d6d4ce;--ink-3:#a8a6a0;--ink-4:#7c7a74;--ink-5:#54524d;
+    --line:#36342f;--line-soft:#2c2a26;--accent:#e08a6a;--accent-deep:#f0a085;--accent-tint:#3a2a22;
+    --ok:#5cc08a;--ok-tint:#1e3329;--warn:#d6a94a;--warn-tint:#352c18;
+    --gap:#e57c6e;--gap-tint:#3a221e;--idle:#9a9892;--idle-tint:#2a2925;
+    --shadow-1:0 1px 2px rgba(0,0,0,.30),0 1px 1px rgba(0,0,0,.20);
+    --shadow-2:0 4px 14px rgba(0,0,0,.40),0 2px 4px rgba(0,0,0,.25);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg-page);
+  color: var(--ink-1);
+  line-height: 1.45;
+  min-height: 100vh;
+}
+
+.app { max-width: 1100px; margin: 0 auto; padding: 24px 32px 80px; }
+
+/* Masthead */
+.masthead { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.masthead-toprow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 12px; }
+.home-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11.5px; font-weight: 500; color: var(--ink-3);
+  padding: 4px 10px; border: 1px solid var(--line);
+  border-radius: 999px; text-decoration: none;
+  background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); }
+.eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-4); margin-bottom: 6px; }
+.masthead h1 { font-size: clamp(24px,2.8vw,36px); font-weight: 700; letter-spacing: -.02em; line-height: 1.15; }
+.masthead h1 .accent { color: var(--accent); }
+.submeta { margin-top: 8px; font-size: 13px; color: var(--ink-3); display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.dot { color: var(--line); }
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10px; font-weight: 500; color: var(--ink-4); background: var(--bg-sunken); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 2px 6px; }
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast);
+  cursor: pointer;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+
+/* Sync */
+.sync-row { display: flex; align-items: center; gap: 8px; margin-bottom: 20px; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); flex-shrink: 0; }
+.sync-label { font-size: 11.5px; color: var(--ink-3); }
+
+/* Tabs */
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.tab-btn {
+  padding: 8px 16px;
+  font-size: 13px; font-weight: 500;
+  color: var(--ink-3);
+  border: none; border-bottom: 2px solid transparent;
+  background: transparent; cursor: pointer;
+  transition: color var(--t-fast), border-color var(--t-fast);
+  margin-bottom: -1px;
+}
+.tab-btn:hover { color: var(--ink-1); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* Health pills */
+.health-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-bottom: 24px; }
+.health-card {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 14px 16px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.health-card .hc-name { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); font-weight: 600; }
+.health-card .hc-status { font-size: 18px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.health-card .hc-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.health-card .hc-detail { font-size: 11.5px; color: var(--ink-3); font-family: 'JetBrains Mono', monospace; }
+.health-card.ok  { border-color: rgba(31,122,77,.3); }
+.health-card.ok  .hc-dot { background: var(--ok); }
+.health-card.ok  .hc-status { color: var(--ok); }
+.health-card.warn { border-color: rgba(176,122,24,.3); }
+.health-card.warn .hc-dot { background: var(--warn); }
+.health-card.warn .hc-status { color: var(--warn); }
+.health-card.gap  { border-color: rgba(192,57,43,.3); }
+.health-card.gap  .hc-dot { background: var(--gap); }
+.health-card.gap  .hc-status { color: var(--gap); }
+.health-card.idle { border-color: var(--line); }
+.health-card.idle .hc-dot { background: var(--ink-4); }
+.health-card.idle .hc-status { color: var(--ink-3); }
+
+/* Jobs table */
+.jobs-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.jobs-table th {
+  text-align: left; padding: 8px 12px; font-size: 10.5px; font-weight: 600;
+  text-transform: uppercase; letter-spacing: .08em; color: var(--ink-4);
+  border-bottom: 1px solid var(--line); background: var(--bg-tint);
+}
+.jobs-table td { padding: 10px 12px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+.jobs-table tr:last-child td { border-bottom: none; }
+.jobs-table tr:hover td { background: var(--bg-tint); }
+.mono { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; }
+.badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 7px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 600; font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+.badge.ok    { color: var(--ok);   background: var(--ok-tint);   }
+.badge.warn  { color: var(--warn); background: var(--warn-tint); }
+.badge.gap   { color: var(--gap);  background: var(--gap-tint);  }
+.badge.idle  { color: var(--idle); background: var(--idle-tint); }
+.badge.run   { color: var(--accent-deep); background: var(--accent-tint); }
+.badge-dot   { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+
+/* Logcat */
+.logcat-toolbar {
+  display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+  margin-bottom: 12px;
+}
+.logcat-toolbar input, .logcat-toolbar select {
+  padding: 5px 10px; font-size: 12.5px;
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--bg-elev); color: var(--ink-1);
+  font-family: inherit;
+}
+.logcat-toolbar input { flex: 1; min-width: 160px; }
+.logcat-toolbar .live-btn {
+  padding: 5px 12px; font-size: 12px; font-weight: 500;
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--bg-elev); color: var(--ink-3);
+  cursor: pointer; transition: all var(--t-fast);
+}
+.logcat-toolbar .live-btn.active {
+  background: var(--ok-tint); border-color: rgba(31,122,77,.3);
+  color: var(--ok);
+}
+.logcat-list {
+  font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+  background: var(--bg-sunken); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 2px 0;
+  max-height: 520px; overflow-y: auto;
+}
+.log-row {
+  display: grid;
+  grid-template-columns: 130px 70px 80px 140px 1fr;
+  gap: 0;
+  padding: 4px 12px;
+  border-bottom: 1px solid transparent;
+  align-items: baseline;
+  transition: background var(--t-fast);
+}
+.log-row:hover { background: var(--bg-tint); }
+.log-row .lr-ts  { color: var(--ink-4); font-size: 10.5px; }
+.log-row .lr-lv  { font-weight: 600; font-size: 10.5px; }
+.log-row .lr-lv.debug    { color: var(--ink-4); }
+.log-row .lr-lv.info     { color: var(--accent); }
+.log-row .lr-lv.notice   { color: #2563a5; }
+.log-row .lr-lv.warning  { color: var(--warn); }
+.log-row .lr-lv.error    { color: var(--gap); }
+.log-row .lr-lv.critical { color: var(--gap); font-size: 11px; }
+.log-row .lr-agent { color: var(--ink-3); }
+.log-row .lr-type  { color: var(--ink-3); }
+.log-row .lr-msg   { color: var(--ink-2); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.logcat-empty { padding: 32px; text-align: center; color: var(--ink-4); font-size: 13px; }
+
+/* Misc */
+.section-title { font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 12px; }
+.card { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 16px 18px; margin-bottom: 16px; }
+.refresh-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 12px; color: var(--ink-4); }
+.refresh-btn {
+  padding: 4px 10px; font-size: 11.5px; font-weight: 500;
+  border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--bg-elev); color: var(--ink-3); cursor: pointer;
+  transition: all var(--t-fast); font-family: inherit;
+}
+.refresh-btn:hover { border-color: var(--accent); color: var(--accent-deep); }
+
+/* Embedded mode (iframe): hide header chrome */
+body.embedded .app { padding-top: 12px; }
+body.embedded .masthead { display: none; }
+body.embedded .tabs { margin-top: 0; }
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+
+<div class="app">
+  <!-- Masthead -->
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">BDOS Infrastructure</div>
+    <h1>System <span class="accent">Status</span></h1>
+    <div class="submeta">
+      <span>Scheduler &amp; Observability</span>
+      <span class="dot">·</span>
+      <span class="version-pill mono">v0.1.1</span>
+      <span class="dot">·</span>
+      <span id="lastRefresh" style="font-size:12px;color:var(--ink-4)">Loading...</span>
+    </div>
+  </header>
+
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="health">Health</button>
+    <button class="tab-btn" data-tab="jobs">Jobs</button>
+    <button class="tab-btn" data-tab="logcat">Logcat</button>
+  </div>
+
+  <!-- Health Tab -->
+  <div id="tab-health" class="tab-panel active">
+    <div class="refresh-row">
+      <button class="refresh-btn" id="refreshBtn">Refresh</button>
+      <span id="healthRefreshTs">—</span>
+    </div>
+    <div class="health-grid" id="healthGrid">
+      <!-- Cards injected by JS -->
+    </div>
+    <div class="card">
+      <div class="section-title">Events Server</div>
+      <div id="healthExtra" style="font-size:13px;color:var(--ink-3)">Checking...</div>
+    </div>
+  </div>
+
+  <!-- Jobs Tab -->
+  <div id="tab-jobs" class="tab-panel">
+    <div class="refresh-row">
+      <button class="refresh-btn" id="jobsRefreshBtn">Refresh</button>
+      <span id="jobsRefreshTs">—</span>
+    </div>
+    <div class="section-title">Registered Jobs</div>
+    <div style="overflow-x:auto">
+      <table class="jobs-table" id="jobsTable">
+        <thead>
+          <tr>
+            <th>job_id</th>
+            <th>agent_name</th>
+            <th>schedule_type</th>
+            <th>last_run_at</th>
+            <th>status</th>
+            <th>next_run_at</th>
+          </tr>
+        </thead>
+        <tbody id="jobsTbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--ink-4);padding:24px">Loading...</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:20px">
+      <div class="section-title">Recent Job Runs (from sidecar)</div>
+      <div class="logcat-list" id="jobRunsList" style="max-height:320px">
+        <div class="logcat-empty">No run events yet.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logcat Tab -->
+  <div id="tab-logcat" class="tab-panel">
+    <div class="logcat-toolbar">
+      <input type="search" id="logSearch" placeholder="Filter message...">
+      <select id="logAgent">
+        <option value="">All agents</option>
+        <option value="librarian">librarian</option>
+        <option value="maestro">maestro</option>
+        <option value="curator">curator</option>
+        <option value="sage">sage</option>
+        <option value="presto">presto</option>
+        <option value="broker">broker</option>
+      </select>
+      <select id="logLevel">
+        <option value="">All levels</option>
+        <option value="debug">debug</option>
+        <option value="info">info</option>
+        <option value="notice">notice</option>
+        <option value="warning">warning</option>
+        <option value="error">error</option>
+        <option value="critical">critical</option>
+      </select>
+      <select id="logEventType">
+        <option value="">All types</option>
+        <option value="task_started">task_started</option>
+        <option value="task_completed">task_completed</option>
+        <option value="tool_call">tool_call</option>
+        <option value="error">error</option>
+        <option value="dashboard_update">dashboard_update</option>
+        <option value="index_update">index_update</option>
+        <option value="reflection">reflection</option>
+      </select>
+      <button class="live-btn active" id="liveBtn" title="Auto-refresh every 5s">Live</button>
+    </div>
+    <div class="logcat-list" id="logcatList">
+      <div class="logcat-empty">Loading events...</div>
+    </div>
+    <div style="margin-top:8px;font-size:11px;color:var(--ink-4);text-align:right" id="logcatCount">—</div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// Config
+// ============================================================
+const SIDECAR_PATH  = '/_dashboards/_design/agent_logs.json';
+const EVENTS_SERVER = 'http://localhost:4322';
+const DASH_SERVER   = 'http://localhost:4321';
+const LOGCAT_REFRESH_MS = 5000;
+const HEALTH_REFRESH_MS = 30000;
+const SCHEDULER_STALE_MS = 5 * 60 * 1000;
+const INDEX_STALE_MS     = 24 * 60 * 60 * 1000;
+
+// ============================================================
+// Embedded mode detection
+// ============================================================
+const params = new URLSearchParams(location.search);
+if (params.get('embedded') === '1') {
+  document.body.classList.add('embedded');
+}
+
+// ============================================================
+// Theme toggle (DS 0.3.0)
+// ============================================================
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+document.getElementById('themeToggle').addEventListener('click', function() {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+});
+(function() {
+  var t; try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  setTheme(t);
+})();
+
+// ============================================================
+// Tabs
+// ============================================================
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.tab).classList.add('active');
+  });
+});
+
+// ============================================================
+// Data fetch
+// ============================================================
+let _sidecar = null;
+
+async function loadSidecar() {
+  const r = await fetch(SIDECAR_PATH + '?_=' + Date.now(), { signal: AbortSignal.timeout(6000) });
+  _sidecar = await r.json();
+  return _sidecar;
+}
+
+// ============================================================
+// Health Tab
+// ============================================================
+const HEALTH_CHECKS = [
+  { key: 'watchdog',  label: 'Watchdog',  check: checkWatchdog  },
+  { key: 'server',    label: 'Server',    check: checkServer    },
+  { key: 'db',        label: 'DB',        check: checkDB        },
+  { key: 'scheduler', label: 'Scheduler', check: checkScheduler },
+  { key: 'index',     label: 'Index',     check: checkIndex     },
+];
+const hState = {};
+HEALTH_CHECKS.forEach(c => { hState[c.key] = { status: 'idle', detail: '—' }; });
+
+async function checkWatchdog() {
+  try {
+    const r = await fetch(EVENTS_SERVER + '/health', { signal: AbortSignal.timeout(4000) });
+    const j = await r.json();
+    hState.watchdog = j.ok
+      ? { status: 'ok',   detail: `clients: ${j.clients} · db_exists: ${j.db_exists}` }
+      : { status: 'warn', detail: 'unhealthy response' };
+    document.getElementById('healthExtra').innerHTML =
+      `<span style="color:var(--ok)">ok</span> &nbsp;clients: <b>${j.clients}</b> &nbsp;db_exists: <b>${j.db_exists}</b> &nbsp;mtime: <b>${j.db_mtime}</b>`;
+  } catch(e) {
+    hState.watchdog = { status: 'gap', detail: 'offline — ' + e.message.slice(0,40) };
+    document.getElementById('healthExtra').innerHTML =
+      `<span style="color:var(--gap)">events_server offline</span> — ${e.message}`;
+  }
+}
+
+async function checkServer() {
+  try {
+    const r = await fetch(DASH_SERVER + '/', { method: 'HEAD', signal: AbortSignal.timeout(4000) });
+    hState.server = {
+      status: (r.ok || r.status===301 || r.status===302) ? 'ok' : 'warn',
+      detail: `HTTP ${r.status}`,
+    };
+  } catch(e) {
+    hState.server = { status: 'gap', detail: 'offline' };
+  }
+}
+
+async function checkDB() {
+  if (!_sidecar) { hState.db = { status: 'idle', detail: 'no data' }; return; }
+  const ageMs = Date.now() - new Date(_sidecar.generated_at).getTime();
+  hState.db = ageMs < 5 * 60 * 1000
+    ? { status: 'ok',   detail: `${_sidecar.total_rows} rows · ${fmtAgo(ageMs)} ago` }
+    : { status: 'warn', detail: `stale sidecar (${fmtAgo(ageMs)} ago)` };
+}
+
+async function checkScheduler() {
+  if (!_sidecar) { hState.scheduler = { status: 'idle', detail: 'no data' }; return; }
+  const events = (_sidecar.events || []).filter(e => {
+    try {
+      const tags = typeof e.tags === 'string' ? JSON.parse(e.tags) : (e.tags || []);
+      return Array.isArray(tags) && tags.includes('scheduler');
+    } catch(_) { return false; }
+  });
+  if (!events.length) { hState.scheduler = { status: 'idle', detail: 'no events yet' }; return; }
+  const latest = events[events.length - 1];
+  const ageMs  = Date.now() - new Date(latest.timestamp).getTime();
+  hState.scheduler = ageMs < SCHEDULER_STALE_MS
+    ? { status: 'ok',   detail: `active · last: ${fmtAgo(ageMs)} ago` }
+    : { status: 'warn', detail: `last: ${fmtAgo(ageMs)} ago` };
+}
+
+async function checkIndex() {
+  if (!_sidecar) { hState.index = { status: 'idle', detail: 'no data' }; return; }
+  const ageMs = Date.now() - new Date(_sidecar.generated_at).getTime();
+  hState.index = ageMs < INDEX_STALE_MS
+    ? { status: 'ok',   detail: `fresh (${fmtAgo(ageMs)} ago)` }
+    : { status: 'warn', detail: `${fmtAgo(ageMs)} ago` };
+}
+
+function renderHealth() {
+  const grid = document.getElementById('healthGrid');
+  grid.innerHTML = HEALTH_CHECKS.map(({ key, label }) => {
+    const s = hState[key];
+    return `<div class="health-card ${s.status}">
+      <div class="hc-name">${label}</div>
+      <div class="hc-status"><span class="hc-dot"></span>${s.status.toUpperCase()}</div>
+      <div class="hc-detail">${s.detail}</div>
+    </div>`;
+  }).join('');
+  document.getElementById('healthRefreshTs').textContent = 'Updated ' + new Date().toLocaleTimeString();
+}
+
+async function refreshHealth() {
+  await loadSidecar().catch(() => {});
+  await Promise.allSettled(HEALTH_CHECKS.map(c => c.check()));
+  renderHealth();
+}
+
+document.getElementById('refreshBtn').addEventListener('click', refreshHealth);
+setInterval(refreshHealth, HEALTH_REFRESH_MS);
+refreshHealth();
+
+// ============================================================
+// Jobs Tab
+// ============================================================
+function fmtAgo(ms) {
+  if (ms < 60000) return `${Math.round(ms/1000)}s`;
+  if (ms < 3600000) return `${Math.floor(ms/60000)}m`;
+  return `${Math.floor(ms/3600000)}h`;
+}
+
+function fmtTs(iso) {
+  if (!iso) return '—';
+  const d = new Date(iso);
+  return isNaN(d) ? iso : d.toLocaleString();
+}
+
+async function refreshJobs() {
+  let sidecar;
+  try { sidecar = await loadSidecar(); } catch(e) {
+    document.getElementById('jobsTbody').innerHTML =
+      `<tr><td colspan="6" style="text-align:center;color:var(--gap)">Failed to load sidecar: ${e.message}</td></tr>`;
+    return;
+  }
+
+  // Extract job state from scheduler-tagged events
+  const events = (sidecar.events || []).filter(e => {
+    try {
+      const tags = typeof e.tags === 'string' ? JSON.parse(e.tags) : (e.tags || []);
+      return Array.isArray(tags) && tags.some(t => t.startsWith('job:'));
+    } catch(_) { return false; }
+  });
+
+  // Build job map: job_id → latest event
+  const jobMap = {};
+  events.forEach(e => {
+    try {
+      const tags = typeof e.tags === 'string' ? JSON.parse(e.tags) : (e.tags || []);
+      const jobTag = tags.find(t => t.startsWith('job:'));
+      if (!jobTag) return;
+      const jid = jobTag.slice(4);
+      if (!jobMap[jid] || new Date(e.timestamp) > new Date(jobMap[jid].timestamp)) {
+        jobMap[jid] = e;
+      }
+    } catch(_) {}
+  });
+
+  // Known jobs (at minimum show Sage jobs)
+  const KNOWN_JOBS = [
+    { job_id: 'sage-daily-harvest',  agent: 'sage', schedule: 'daily 04:00 UTC' },
+    { job_id: 'sage-weekly-curate',  agent: 'sage', schedule: 'weekly Mon 04:05 UTC' },
+  ];
+  // Merge with any extra jobs seen in events
+  const seenIds = new Set(KNOWN_JOBS.map(j => j.job_id));
+  Object.keys(jobMap).forEach(jid => {
+    if (!seenIds.has(jid)) {
+      KNOWN_JOBS.push({ job_id: jid, agent: '?', schedule: '?' });
+    }
+  });
+
+  const tbody = document.getElementById('jobsTbody');
+  tbody.innerHTML = KNOWN_JOBS.map(job => {
+    const latest = jobMap[job.job_id];
+    const status  = latest ? (latest.status || latest.event_type || '?') : 'no events';
+    const lastRun = latest ? fmtTs(latest.timestamp) : '—';
+    const badgeClass = !latest ? 'idle' :
+      (status === 'success' || status === 'task_completed') ? 'ok' :
+      (status === 'failure' || status === 'error') ? 'gap' :
+      (status === 'running' || status === 'task_started') ? 'run' : 'warn';
+    return `<tr>
+      <td class="mono">${job.job_id}</td>
+      <td><span class="badge idle">${job.agent}</span></td>
+      <td class="mono" style="font-size:11px">${job.schedule}</td>
+      <td class="mono" style="font-size:11px">${lastRun}</td>
+      <td><span class="badge ${badgeClass}"><span class="badge-dot"></span>${status}</span></td>
+      <td class="mono" style="font-size:11px;color:var(--ink-4)">—</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="6" style="text-align:center;color:var(--ink-4);padding:20px">No jobs registered.</td></tr>`;
+
+  // Recent job runs
+  const runs = events.filter(e => e.event_type === 'task_completed' || e.event_type === 'task_started');
+  const jobRunsEl = document.getElementById('jobRunsList');
+  if (!runs.length) {
+    jobRunsEl.innerHTML = '<div class="logcat-empty">No run events yet.</div>';
+  } else {
+    jobRunsEl.innerHTML = runs.slice(-50).reverse().map(e => {
+      const lv = e.log_level || 'info';
+      const tags = (() => { try { return typeof e.tags === 'string' ? JSON.parse(e.tags) : (e.tags||[]); } catch(_){return[];} })();
+      const jobTag = tags.find(t=>t.startsWith('job:'))||'';
+      return `<div class="log-row">
+        <span class="lr-ts">${(e.timestamp||'').slice(11,19)}</span>
+        <span class="lr-lv ${lv}">${lv}</span>
+        <span class="lr-agent">${e.agent_name||'?'}</span>
+        <span class="lr-type">${jobTag}</span>
+        <span class="lr-msg" title="${(e.message||'').replace(/"/g,"&quot;")}">${e.message||''}</span>
+      </div>`;
+    }).join('');
+  }
+  document.getElementById('jobsRefreshTs').textContent = 'Updated ' + new Date().toLocaleTimeString();
+}
+
+document.getElementById('jobsRefreshBtn').addEventListener('click', refreshJobs);
+
+// ============================================================
+// Logcat Tab
+// ============================================================
+let liveEnabled = true;
+let logcatTimer = null;
+
+document.getElementById('liveBtn').addEventListener('click', function() {
+  liveEnabled = !liveEnabled;
+  this.classList.toggle('active', liveEnabled);
+  if (liveEnabled) startLogcatLoop(); else stopLogcatLoop();
+});
+
+function renderLogcat() {
+  if (!_sidecar) return;
+  const search  = document.getElementById('logSearch').value.toLowerCase();
+  const agent   = document.getElementById('logAgent').value;
+  const level   = document.getElementById('logLevel').value;
+  const evtype  = document.getElementById('logEventType').value;
+
+  let events = (_sidecar.events || []).filter(e => {
+    if (agent  && e.agent_name  !== agent)  return false;
+    if (level  && e.log_level   !== level)  return false;
+    if (evtype && e.event_type  !== evtype) return false;
+    if (search && !(e.message||'').toLowerCase().includes(search) &&
+                 !(e.title||'').toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  const listEl = document.getElementById('logcatList');
+  if (!events.length) {
+    listEl.innerHTML = '<div class="logcat-empty">No events match the current filter.</div>';
+    document.getElementById('logcatCount').textContent = '0 events';
+    return;
+  }
+
+  listEl.innerHTML = events.slice().reverse().map(e => {
+    const lv = e.log_level || 'info';
+    return `<div class="log-row">
+      <span class="lr-ts">${(e.timestamp||'').slice(0,19).replace('T',' ')}</span>
+      <span class="lr-lv ${lv}">${lv}</span>
+      <span class="lr-agent">${e.agent_name||'?'}</span>
+      <span class="lr-type">${e.event_type||'?'}</span>
+      <span class="lr-msg" title="${(e.message||'').replace(/"/g,"&quot;")}">${(e.title||e.message||'').slice(0,120)}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('logcatCount').textContent = `${events.length} of ${_sidecar.total_rows} total`;
+}
+
+document.getElementById('logSearch').addEventListener('input', renderLogcat);
+document.getElementById('logAgent').addEventListener('change', renderLogcat);
+document.getElementById('logLevel').addEventListener('change', renderLogcat);
+document.getElementById('logEventType').addEventListener('change', renderLogcat);
+
+async function logcatRefreshCycle() {
+  await loadSidecar().catch(()=>{});
+  renderLogcat();
+}
+
+function startLogcatLoop() {
+  if (logcatTimer) clearInterval(logcatTimer);
+  logcatTimer = setInterval(logcatRefreshCycle, LOGCAT_REFRESH_MS);
+}
+function stopLogcatLoop() {
+  if (logcatTimer) clearInterval(logcatTimer);
+  logcatTimer = null;
+}
+
+// Initial load
+logcatRefreshCycle();
+startLogcatLoop();
+
+// ============================================================
+// Update lastRefresh
+// ============================================================
+setInterval(() => {
+  document.getElementById('lastRefresh').textContent =
+    'Refreshed ' + new Date().toLocaleTimeString();
+}, 5000);
+document.getElementById('lastRefresh').textContent = 'Loading...';
+</script>
+
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>

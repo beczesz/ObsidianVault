@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Agent Team — Cheat Sheet.   Version: 0.2.1
+  =============================================================================
+  Renders from:
+    /00_Prompts/BDOS/00_AGENTS_INDEX.md  (## Active agents section)
+  Command detail lazy-fetched on drawer open:
+    /.claude/commands/<command-name>.md  (YAML frontmatter description + body example)
+  Live via SSE file-watcher push (dash-server.mjs), 8s/30s poll fallback.
+  Read-only. Edit 00_AGENTS_INDEX.md in Obsidian.
+
+  Audit trail:
+    0.1.0 (2026-05-22) — initial build: Agent Team cheat sheet,
+          parses 00_AGENTS_INDEX.md. Three active agents rendered:
+          Librarian (v0.5), Maestro (v0.1), Curator (v0.2). Card layout
+          with mode chips, copyable slash-command chips, copyable
+          example invocations, autonomy caution callout, closing
+          summary band derived from parsed data.
+    0.1.1 (2026-05-22) — added .card-copy-ref hover buttons + data-card-id
+          (DESIGN_SYSTEM 0.2.0). Agent cards: id = slugified agent name.
+    0.1.2 (2026-05-22) — added day/night theme toggle + dark tokens
+          (DESIGN_SYSTEM 0.3.0). Shared localStorage key "dash-theme". FOUC-init.
+    0.2.0 (2026-05-24) — agent cards now clickable; detail drawer shows full
+          description, all 9 modes/4 agents, and per-slash-command frontmatter
+          description + one example invocation (lazy-fetched from
+          .claude/commands/*.md). Maintains markdown-driven principle.
+    0.2.1 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
+          Card collapsed view uses Pozíció one-liner (replaces longer Felelősség
+          block). Drawer: keyboard-accessible (Enter/Space), Esc + scrim-click
+          close, stopPropagation on copy-ref. Command file cache in JS memory.
+          Server confirmed to serve .claude/ files (HTTP 200).
+
+  Conventions: see Sales/DASHBOARD_CONTRACT.md "Shared dashboard conventions".
+  Served by _dashboards/_tools/dash-server.mjs (or any HTTP server from vault root).
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Team — Cheat Sheet</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Ccircle cx='10' cy='13' r='4' fill='none' stroke='%23D97757' stroke-width='2'/%3E%3Ccircle cx='22' cy='13' r='4' fill='none' stroke='%23D97757' stroke-width='2'/%3E%3Cpath d='M4 26c0-4 2.7-6 6-6h12c3.3 0 6 2 6 6' fill='none' stroke='%23D97757' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Surfaces — cream paper */
+  --bg-page:   #faf9f5;
+  --bg-elev:   #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint:   #f5f4ef;
+
+  /* Ink scale (1 darkest → 5 lightest) */
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+
+  /* Lines */
+  --line:      #e5e4df;
+  --line-soft: #efede7;
+
+  /* Accent — terracotta */
+  --accent:      #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  /* Status */
+  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;  --gap-tint:  #fbeae6;
+  --idle:      #7a7a76;  --idle-tint: #efeeeb;
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+  --shadow-3: 0 12px 32px rgba(20,20,19,.10), 0 4px 12px rgba(20,20,19,.06);
+
+  /* Radius */
+  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
+
+  /* Motion */
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+  --t-slow: 320ms cubic-bezier(.16,.84,.32,1);
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+  --ink-1: #f5f4ef;
+  --ink-2: #d6d4ce;
+  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;
+  --ink-5: #54524d;
+  --line:      #36342f;
+  --line-soft: #2c2a26;
+  --accent:      #e08a6a;
+  --accent-deep: #f0a085;
+  --accent-tint: #3a2a22;
+  --ok:        #5cc08a;  --ok-tint:   #1e3329;
+  --warn:      #d6a94a;  --warn-tint: #352c18;
+  --gap:       #e57c6e;  --gap-tint:  #3a221e;
+  --idle:      #9a9892;  --idle-tint: #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:   #1a1916;
+    --bg-elev:   #232220;
+    --bg-sunken: #2c2a26;
+    --bg-tint:   #262420;
+    --ink-1: #f5f4ef;
+    --ink-2: #d6d4ce;
+    --ink-3: #a8a6a0;
+    --ink-4: #7c7a74;
+    --ink-5: #54524d;
+    --line:      #36342f;
+    --line-soft: #2c2a26;
+    --accent:      #e08a6a;
+    --accent-deep: #f0a085;
+    --accent-tint: #3a2a22;
+    --ok:        #5cc08a;  --ok-tint:   #1e3329;
+    --warn:      #d6a94a;  --warn-tint: #352c18;
+    --gap:       #e57c6e;  --gap-tint:  #3a221e;
+    --idle:      #9a9892;  --idle-tint: #2a2925;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+    --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+a { color: inherit; text-decoration: none; }
+
+.app { max-width: 1200px; margin: 0 auto; padding: 28px 36px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { padding-bottom: 22px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+/* ===== Theme toggle button (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.version-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
+  border-radius: 999px; letter-spacing: 0; text-transform: none;
+}
+.masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta {
+  margin-top: 10px; font-size: 14px; color: var(--ink-3);
+  display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+}
+.masthead .submeta .dot { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-5); }
+.masthead .submeta strong { color: var(--ink-1); font-weight: 600; }
+
+/* ===== Sync indicator ===== */
+.sync-status {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 11px;
+  color: var(--ink-3); font-weight: 500; cursor: pointer;
+  padding: 3px 6px; margin: -3px -6px; border-radius: 6px; transition: background var(--t-fast); user-select: none;
+}
+.sync-status:hover { background: rgba(20,20,19,.04); }
+.sync-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-4); flex-shrink: 0; transition: background var(--t-fast); }
+.sync-status[data-state="live"] .dot { background: var(--ok); box-shadow: 0 0 0 3px rgba(31,122,77,.16); }
+.sync-status[data-state="syncing"] .dot { background: var(--warn); animation: pulse-sync 1s ease-in-out infinite; }
+.sync-status[data-state="error"] .dot, .sync-status[data-state="offline"] .dot { background: var(--ink-5); }
+@keyframes pulse-sync { 0%,100% { opacity:1; transform:scale(1);} 50% { opacity:.35; transform:scale(.7);} }
+.sync-bar { width: 46px; height: 3px; background: rgba(20,20,19,.08); border-radius: 999px; overflow: hidden; flex-shrink: 0; }
+.sync-bar-fill { display: block; height: 100%; background: var(--ok); width: 0%; border-radius: 999px; transform-origin: left center; }
+.sync-status[data-state="live"] .sync-bar-fill { animation: sync-countdown 8s linear forwards; }
+.sync-status[data-state="syncing"] .sync-bar-fill { animation: sync-shuttle .9s ease-in-out infinite; background: var(--warn); width: 30%; }
+@keyframes sync-countdown { 0% { width: 0%; } 100% { width: 100%; } }
+@keyframes sync-shuttle { 0% { transform: translateX(0%);} 50% { transform: translateX(160%);} 100% { transform: translateX(0%);} }
+
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+.agent-card { position: relative; }
+.card-copy-ref {
+  position: absolute;
+  top: 10px; right: 10px;
+  opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.agent-card:hover .card-copy-ref,
+.agent-card:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ===== Agent cards grid ===== */
+.agents-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+/* Cards are clickable — keyboard + mouse */
+.agent-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--t-med), box-shadow var(--t-med), border-color var(--t-med);
+  cursor: pointer;
+  outline: none;
+}
+.agent-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-2); border-color: var(--ink-5); }
+.agent-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.agent-card:active { transform: translateY(0); }
+
+.agent-card .stripe { height: 4px; background: var(--accent); }
+
+.agent-card .card-body { padding: 22px 22px 20px; display: flex; flex-direction: column; flex-grow: 1; gap: 0; }
+
+/* Card header */
+.agent-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+.agent-name { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
+.status-badge {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  padding: 3px 8px; border-radius: var(--radius-s); white-space: nowrap;
+  display: inline-flex; align-items: center; gap: 5px; color: var(--ok); background: var(--ok-tint);
+}
+.status-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.agent-version-line { font-size: 12px; color: var(--ink-4); margin-bottom: 12px; }
+
+/* Role / description — card collapsed view uses Pozíció one-liner */
+.agent-role { font-size: 13px; color: var(--ink-3); line-height: 1.5; margin-bottom: 16px; }
+
+/* "Click to view detail" hint */
+.card-detail-hint {
+  font-size: 11px; color: var(--ink-5); margin-top: auto; padding-top: 12px;
+  display: flex; align-items: center; gap: 5px;
+  transition: color var(--t-fast);
+}
+.agent-card:hover .card-detail-hint { color: var(--accent-deep); }
+.card-detail-hint svg { flex-shrink: 0; }
+
+/* Section labels */
+.section-label {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-4); font-weight: 700; margin-bottom: 8px; margin-top: 14px;
+}
+.section-label:first-child { margin-top: 0; }
+
+/* Mode chips */
+.chips-row { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
+.chip {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+  color: var(--ink-2); background: var(--bg-tint); border: 1px solid var(--line);
+  border-radius: var(--radius-s); padding: 2px 8px; white-space: nowrap;
+}
+
+/* Copyable chips (slash commands) */
+.chip-copyable {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 500;
+  color: var(--accent-deep); background: var(--accent-tint); border: 1px solid rgba(217,119,87,.25);
+  border-radius: var(--radius-s); padding: 2px 8px; white-space: nowrap;
+  cursor: pointer; display: inline-flex; align-items: center; gap: 5px;
+  transition: background var(--t-fast), border-color var(--t-fast);
+  user-select: none;
+}
+.chip-copyable:hover { background: #f4d5c6; border-color: var(--accent); }
+.chip-copyable .copy-icon { opacity: 0.5; flex-shrink: 0; }
+.chip-copyable.copied { color: var(--ok); background: var(--ok-tint); border-color: rgba(31,122,77,.3); }
+.chip-copyable.copied .copy-icon { opacity: 0.7; }
+
+/* Copyable invocation rows */
+.invocations { list-style: none; margin-bottom: 4px; }
+.invocation-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 7px 10px; margin-bottom: 4px;
+  background: var(--bg-sunken); border-radius: var(--radius-m);
+  cursor: pointer; transition: background var(--t-fast);
+  border: 1px solid transparent;
+}
+.invocation-row:hover { background: var(--bg-tint); border-color: var(--line); }
+.invocation-row.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.2); }
+.invocation-code {
+  font-family: 'JetBrains Mono', monospace; font-size: 11.5px; font-weight: 500;
+  color: var(--accent-deep); flex-shrink: 0; min-width: 0; word-break: break-all;
+}
+.invocation-sep { color: var(--ink-5); flex-shrink: 0; font-size: 11px; }
+.invocation-desc { font-size: 11.5px; color: var(--ink-3); line-height: 1.4; flex-grow: 1; }
+.copy-hint { font-size: 10px; color: var(--ink-5); flex-shrink: 0; font-family: 'JetBrains Mono', monospace; }
+.invocation-row:hover .copy-hint { color: var(--ink-4); }
+.invocation-row.copied .invocation-code { color: var(--ok); }
+.invocation-row.copied .copy-hint { color: var(--ok); }
+
+/* Autonomy / caution callout */
+.caution-callout {
+  background: var(--warn-tint); border: 1px solid rgba(176,122,24,.25);
+  border-radius: var(--radius-m); padding: 10px 12px; margin-top: 14px;
+}
+.caution-callout .caution-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--warn); margin-bottom: 4px;
+}
+.caution-callout p { font-size: 12px; color: var(--ink-2); line-height: 1.45; }
+
+/* Capability line */
+.cap-line { font-size: 12px; color: var(--ink-3); margin-top: 6px; line-height: 1.45; }
+
+/* Empty / error state */
+.empty-note {
+  grid-column: 1 / -1;
+  font-size: 13px; color: var(--ink-4); font-style: italic;
+  padding: 32px 24px; text-align: center;
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l);
+}
+
+/* ===== Summary band ===== */
+.summary-band {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 22px 24px; margin-bottom: 24px;
+}
+.summary-band h2 {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-4); font-weight: 600; margin-bottom: 16px;
+}
+.summary-stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 16px;
+}
+.summary-stat .big {
+  font-size: 30px; font-weight: 700; letter-spacing: -0.02em; line-height: 1;
+  color: var(--ink-1); font-variant-numeric: tabular-nums;
+}
+.summary-stat .cap { margin-top: 6px; font-size: 12px; color: var(--ink-3); }
+.summary-links {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  padding-top: 16px; border-top: 1px solid var(--line-soft);
+  font-size: 12.5px; color: var(--ink-3);
+}
+.summary-links .link-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-3);
+  border: 1px solid var(--line); border-radius: var(--radius-s); padding: 3px 8px;
+  transition: all var(--t-fast);
+}
+.summary-links .link-pill:hover { border-color: var(--accent); color: var(--accent-deep); background: var(--accent-tint); }
+.summary-auto-note {
+  font-size: 11px; color: var(--ink-5); margin-top: 10px; font-style: italic;
+}
+
+/* ===== Drawer + Scrim ===== */
+.scrim {
+  position: fixed; inset: 0;
+  background: rgba(20,20,19,.36);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--t-med);
+  z-index: 50;
+}
+.scrim.is-open { opacity: 1; pointer-events: auto; }
+
+.drawer {
+  position: fixed; top: 0; right: 0;
+  height: 100vh; width: min(600px, 96vw);
+  background: var(--bg-page);
+  box-shadow: var(--shadow-3);
+  z-index: 51;
+  transform: translateX(100%);
+  transition: transform var(--t-slow);
+  display: flex; flex-direction: column; overflow: hidden;
+}
+.drawer.is-open { transform: translateX(0); }
+
+.drawer-head {
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 12px; align-items: start;
+  flex-shrink: 0; background: var(--bg-page);
+}
+.drawer-head h2 {
+  font-size: 26px; font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.15; color: var(--ink-1);
+}
+.drawer-head .drawer-meta {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px;
+}
+.drawer-close {
+  appearance: none; border: 1px solid var(--line); background: var(--bg-elev);
+  width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink-2); transition: all var(--t-fast); flex-shrink: 0;
+}
+.drawer-close:hover { border-color: var(--ink-4); color: var(--ink-1); }
+.drawer-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.drawer-body {
+  padding: 24px 28px 40px; overflow-y: auto; flex-grow: 1; scrollbar-gutter: stable;
+}
+.drawer-body::-webkit-scrollbar { width: 10px; }
+.drawer-body::-webkit-scrollbar-thumb { background: var(--ink-5); border-radius: 999px; border: 2px solid var(--bg-page); }
+.drawer-body::-webkit-scrollbar-track { background: transparent; }
+
+/* Drawer sections */
+.drawer-section {
+  padding: 18px 0; border-bottom: 1px solid var(--line-soft);
+}
+.drawer-section:last-child { border-bottom: none; }
+.drawer-section-label {
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 700; margin-bottom: 10px;
+}
+
+/* Pozíció one-liner in drawer (larger) */
+.drawer-pozicio {
+  font-size: 15px; color: var(--ink-2); line-height: 1.55; font-weight: 500;
+  margin-bottom: 2px;
+}
+
+/* Description text (capabilities bullet content) */
+.drawer-desc {
+  font-size: 13px; color: var(--ink-2); line-height: 1.6;
+}
+.drawer-desc code {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  background: var(--bg-sunken); border: 1px solid var(--line);
+  border-radius: var(--radius-s); padding: 1px 5px; color: var(--accent-deep);
+}
+.drawer-desc ul { list-style: disc; padding-left: 18px; }
+.drawer-desc li { margin-bottom: 4px; }
+
+/* Per-command rows in drawer */
+.cmd-block {
+  margin-bottom: 14px; padding: 12px 14px;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+.cmd-block:last-child { margin-bottom: 0; }
+.cmd-name-row {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+.cmd-name {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600;
+  color: var(--accent-deep); cursor: pointer; user-select: none;
+  padding: 2px 8px; background: var(--accent-tint); border: 1px solid rgba(217,119,87,.25);
+  border-radius: var(--radius-s); display: inline-flex; align-items: center; gap: 5px;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+.cmd-name:hover { background: #f4d5c6; border-color: var(--accent); }
+.cmd-name.copied { color: var(--ok); background: var(--ok-tint); border-color: rgba(31,122,77,.3); }
+.cmd-desc { font-size: 12px; color: var(--ink-3); line-height: 1.45; margin-bottom: 8px; }
+.cmd-example-label {
+  font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-5); margin-bottom: 4px;
+}
+.cmd-loading { font-size: 11px; color: var(--ink-5); font-style: italic; padding: 4px 0; }
+.cmd-no-example { font-size: 11px; color: var(--ink-5); font-style: italic; }
+
+/* Capability link in drawer */
+.drawer-cap-link {
+  font-size: 12px; color: var(--ink-3); line-height: 1.5;
+  padding: 10px 12px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+}
+.drawer-cap-link code {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  background: var(--bg-sunken); border: 1px solid var(--line);
+  border-radius: var(--radius-s); padding: 1px 5px; color: var(--accent-deep);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 980px) {
+  .agents-grid { grid-template-columns: 1fr; }
+  .summary-stats { grid-template-columns: repeat(2, 1fr); }
+  .drawer { width: 100vw; }
+}
+@media (max-width: 560px) {
+  .app { padding: 18px 16px 80px; }
+  .summary-stats { grid-template-columns: repeat(2, 1fr); }
+}
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+<div class="app">
+
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Back to the vault home dashboard">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle"
+              aria-label="Switch to dark theme"
+              title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      <span>BDOS · Agent Team</span>
+      <span class="version-pill">v0.2.0</span>
+    </div>
+    <h1>Agent Team <span class="accent">.</span></h1>
+    <div class="submeta">
+      <span><strong id="activeCount">0</strong> active agents</span>
+      <span class="dot"></span>
+      <span><strong id="modesCount">0</strong> operation modes total</span>
+      <span class="dot"></span>
+      <span class="sync-status" data-state="offline" role="button" tabindex="0" title="">
+        <span class="dot"></span>
+        <span class="sync-label">Connecting</span>
+        <span class="sync-bar"><span class="sync-bar-fill"></span></span>
+      </span>
+    </div>
+  </header>
+
+  <section class="agents-grid" id="agentsGrid" aria-label="Active agents"></section>
+
+  <section id="summarySection" style="display:none">
+    <div class="summary-band">
+      <h2>Team Summary</h2>
+      <div class="summary-stats" id="summaryStats"></div>
+      <div class="summary-links">
+        <span>Új agent hozzáadása: lásd</span>
+        <a class="link-pill" href="obsidian://open?vault=ideas-vault&file=00_Prompts%2FBDOS%2F00_AGENTS_INDEX.md">00_AGENTS_INDEX.md checklist</a>
+        <span class="dot" style="width:4px;height:4px;border-radius:50%;background:var(--ink-5);"></span>
+        <span>BDOS belépő:</span>
+        <a class="link-pill" href="obsidian://open?vault=ideas-vault&file=00_Prompts%2FBDOS%2FCLAUDE.md">00_Prompts/BDOS/CLAUDE.md</a>
+      </div>
+      <p class="summary-auto-note">Auto-refreshes from <span class="mono" style="font-size:10px;background:var(--bg-tint);padding:1px 5px;border-radius:3px;">00_AGENTS_INDEX.md</span> every 8 seconds via live fetch.</p>
+    </div>
+  </section>
+
+</div>
+
+<!-- Scrim + Drawer (same pattern as sales.html) -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" role="dialog" aria-label="Agent detail"></aside>
+
+<script>
+/* ============================================================
+   Parser: extract active agents from 00_AGENTS_INDEX.md
+   Parses the "## Active agents" section only.
+   Stops at the next ## heading.
+   Per-agent block: ### <Name> — v<version>
+   followed by a bullet list. Stops at next ### or end of section.
+   ============================================================ */
+function parseAgentsIndex(md) {
+  // Extract the ## Active agents section only
+  const sectionMatch = md.match(/^## Active agents\s*\n([\s\S]*?)(?=^## |\Z)/m);
+  if (!sectionMatch) return [];
+  const section = sectionMatch[1];
+
+  // Split into agent blocks at ### headings
+  const agentBlocks = [];
+  const agentRegex = /^### ([^\n]+)\n([\s\S]*?)(?=^### |\z)/gm;
+  let match;
+  while ((match = agentRegex.exec(section)) !== null) {
+    const header = match[1].trim();
+    const body = match[2];
+
+    // Skip non-agent blocks (e.g., "Tier-2 scoped indexes")
+    const agentHeader = header.match(/^(.+?)\s+[—-]+\s+v([\d.]+)$/);
+    if (!agentHeader) continue;
+
+    const name = agentHeader[1].trim();
+    const version = agentHeader[2].trim();
+
+    const agent = { name, version, raw: body };
+
+    // Parse bullet fields from body
+    const lines = body.split('\n');
+    let currentKey = null;
+    let inEjemplos = false;
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const trimmed = line.trim();
+
+      // Top-level bullet: "- **Key:** value"
+      const topBullet = trimmed.match(/^-\s+\*\*([^*]+)\*\*:?\s*(.*)/);
+      if (topBullet) {
+        inEjemplos = false;
+        currentKey = topBullet[1].trim();
+        const val = topBullet[2].trim();
+
+        if (currentKey.startsWith('Status')) {
+          agent.status = val;
+        } else if (currentKey.startsWith('Operation modes')) {
+          agent.modes = [];
+          const modeCount = currentKey.match(/\((\d+)\)/);
+          if (modeCount) agent.modeCount = parseInt(modeCount[1]);
+          const modeMatches = val.matchAll(/`([^`]+)`/g);
+          for (const m of modeMatches) agent.modes.push(m[1]);
+          if (agent.modes.length === 0) {
+            agent.modes = val.split(',').map(s => s.trim()).filter(Boolean);
+          }
+          // Capture mode descriptions from Operation modes line (the full line)
+          // The modes value often includes domain labels like "**Brand-to-Site domain (5):**"
+          agent.modesRaw = val;
+        } else if (currentKey.startsWith('Slash commands')) {
+          agent.slashCommands = [];
+          const cmds = val.matchAll(/`([^`]+)`/g);
+          for (const m of cmds) agent.slashCommands.push(m[1]);
+          if (agent.slashCommands.length === 0 && val) {
+            agent.slashCommands = [val];
+          }
+        } else if (currentKey.startsWith('Példa-hívások')) {
+          agent.examples = [];
+          inEjemplos = true;
+          currentKey = 'Példa-hívások';
+        } else if (currentKey === 'Pozíció') {
+          // One-liner for card view
+          agent.pozicio = val;
+        } else if (currentKey.startsWith('Felelősség')) {
+          agent.felelosseg = val;
+        } else if (currentKey.startsWith('Autonómia')) {
+          agent.autonomy = val;
+        } else if (currentKey.startsWith('Capabilities') || currentKey.startsWith('Capability')) {
+          // Capabilities may be the multi-line rich description (Capabilities (vX.Y):)
+          if (currentKey.match(/Capabilities \(v[\d.]+\)/)) {
+            agent.capabilityDetail = val;
+          } else {
+            agent.capability = val;
+          }
+        } else if (currentKey.startsWith('Model')) {
+          agent.model = val;
+        } else if (currentKey === 'Verzió-szinkron OK') {
+          agent.syncOk = val;
+        }
+        continue;
+      }
+
+      // Sub-bullet under Példa-hívások (indented dash)
+      if (inEjemplos) {
+        const subBullet = trimmed.match(/^-\s+(.*)/);
+        if (subBullet && line.match(/^\s{2,}/)) {
+          const raw = subBullet[1].trim();
+          const sepIdx = raw.indexOf(' — ');
+          if (sepIdx !== -1) {
+            const code = raw.slice(0, sepIdx).replace(/^`|`$/g, '');
+            const desc = raw.slice(sepIdx + 3).trim();
+            if (!agent.examples) agent.examples = [];
+            agent.examples.push({ code, desc });
+          } else {
+            if (!agent.examples) agent.examples = [];
+            agent.examples.push({ code: raw.replace(/^`|`$/g, ''), desc: '' });
+          }
+        } else if (trimmed && !trimmed.startsWith('-')) {
+          inEjemplos = false;
+        }
+      }
+    }
+
+    agentBlocks.push(agent);
+  }
+
+  return agentBlocks;
+}
+
+/* ============================================================
+   Command file cache + lazy fetch
+   Cache: { '<cmd-name>': { description, example } }
+   Fetched on drawer open, per command, cached in memory.
+   ============================================================ */
+const CMD_CACHE = {};
+
+function parseFrontmatter(text) {
+  const match = text.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (!match) return {};
+  const fm = {};
+  for (const line of match[1].split('\n')) {
+    const m = line.match(/^(\w+):\s*(.*)/);
+    if (m) fm[m[1].trim()] = m[2].trim();
+  }
+  return fm;
+}
+
+function extractExample(text) {
+  // Remove frontmatter first
+  const body = text.replace(/^---[\s\S]*?---\s*\n?/, '');
+
+  // Strategy a: section header "## Példa-hívások" or "## Examples"
+  const sectionMatch = body.match(/##\s*(Példa-hívások|Examples)\s*\n([\s\S]*?)(?=\n##|\s*$)/i);
+  if (sectionMatch) {
+    const sub = sectionMatch[2];
+    const codeBlock = sub.match(/```[^\n]*\n([\s\S]*?)```/);
+    if (codeBlock) return codeBlock[1].trim();
+  }
+
+  // Strategy b: first fenced code-block anywhere in body
+  const anyCode = body.match(/```[^\n]*\n([\s\S]*?)```/);
+  if (anyCode) return anyCode[1].trim();
+
+  // Strategy c: first "- `command ...`" bullet
+  const bullet = body.match(/^-\s+(`[^`]+`[^\n]*)/m);
+  if (bullet) return bullet[1].trim();
+
+  // Strategy d: nothing found
+  return null;
+}
+
+async function fetchCommandFile(cmdName) {
+  if (CMD_CACHE[cmdName] !== undefined) return CMD_CACHE[cmdName];
+
+  // Derive file name: slash commands start with "/" — strip it
+  const fileName = cmdName.replace(/^\//, '');
+  const url = `/.claude/commands/${fileName}.md`;
+
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const text = await res.text();
+    const fm = parseFrontmatter(text);
+    const example = extractExample(text);
+    const result = {
+      description: fm.description || '',
+      example: example
+    };
+    CMD_CACHE[cmdName] = result;
+    return result;
+  } catch (e) {
+    const result = { description: '', example: null, error: true };
+    CMD_CACHE[cmdName] = result;
+    return result;
+  }
+}
+
+/* ============================================================
+   State + helpers
+   ============================================================ */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+
+const SOURCE_FILE = '/00_Prompts/BDOS/00_AGENTS_INDEX.md';
+const DASH_STEM = 'agents';
+let POLL_INTERVAL_MS = 8000;
+
+let AGENTS = [];
+let syncState = 'offline';
+let syncTooltip = '';
+let lastMd = null;
+let pollTimer = null;
+let lastSyncAt = null;
+let tickTimer = null;
+
+// Currently open agent name (so drawer doesn't auto-overwrite while open)
+let drawerOpenFor = null;
+
+function escapeHtml(s) {
+  return String(s == null ? '' : s)
+    .replace(/&/g,'&amp;').replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function toSlug(s) {
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+}
+
+/* ============================================================
+   Copy to clipboard utility
+   ============================================================ */
+function copyText(text, el) {
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  });
+}
+
+/* ============================================================
+   Render — Card view
+   Card shows: name, version, status, Pozíció one-liner,
+   mode chips, slash-command chips. NO full capability block.
+   ============================================================ */
+function renderAgents() {
+  const grid = $('#agentsGrid');
+  const summarySection = $('#summarySection');
+
+  if (!AGENTS.length) {
+    grid.innerHTML = `<div class="empty-note">No agent data found. Check 00_AGENTS_INDEX.md — looking for ## Active agents section.</div>`;
+    summarySection.style.display = 'none';
+    return;
+  }
+
+  // Update masthead counts
+  const totalModes = AGENTS.reduce((sum, a) => sum + (a.modeCount || (a.modes ? a.modes.length : 0)), 0);
+  const el = $('#activeCount');
+  if (el) el.textContent = AGENTS.length;
+  const me = $('#modesCount');
+  if (me) me.textContent = totalModes;
+
+  grid.innerHTML = AGENTS.map(agent => renderAgentCard(agent)).join('');
+
+  renderSummary();
+  summarySection.style.display = '';
+
+  wireCopyHandlers();
+  wireCardClickHandlers();
+}
+
+function renderAgentCard(agent) {
+  const modesHtml = (agent.modes && agent.modes.length)
+    ? `<div class="section-label">Operation modes</div>
+       <div class="chips-row">${agent.modes.map(m => `<span class="chip">${escapeHtml(m)}</span>`).join('')}</div>`
+    : '';
+
+  const cmdsHtml = (agent.slashCommands && agent.slashCommands.length)
+    ? `<div class="section-label">Slash commands</div>
+       <div class="chips-row">${agent.slashCommands.map(cmd => `
+         <span class="chip-copyable" data-copy="${escapeHtml(cmd)}" title="Click to copy">
+           ${escapeHtml(cmd)}
+           <svg class="copy-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+         </span>`).join('')}
+       </div>`
+    : '';
+
+  // Card collapsed view: Pozíció one-liner (primary), fall back to felelosseg prefix
+  const roleText = agent.pozicio || agent.felelosseg || '';
+  const roleHtml = roleText ? `<div class="agent-role">${escapeHtml(roleText)}</div>` : '';
+
+  const cardId = toSlug(agent.name);
+  return `
+    <article class="agent-card" data-card-id="${escapeHtml(cardId)}" data-agent-name="${escapeHtml(agent.name)}"
+             role="button" tabindex="0" aria-label="Open ${escapeHtml(agent.name)} detail">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy ref
+      </button>
+      <div class="stripe"></div>
+      <div class="card-body">
+        <div class="agent-head">
+          <span class="agent-name">${escapeHtml(agent.name)}</span>
+          <span class="status-badge">${escapeHtml(agent.status || 'active')}</span>
+        </div>
+        <div class="agent-version-line mono">v${escapeHtml(agent.version)}</div>
+        ${roleHtml}
+        ${modesHtml}
+        ${cmdsHtml}
+        <div class="card-detail-hint">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Click for full detail + command examples
+        </div>
+      </div>
+    </article>`;
+}
+
+function renderSummary() {
+  const totalModes = AGENTS.reduce((sum, a) => sum + (a.modeCount || (a.modes ? a.modes.length : 0)), 0);
+  const totalCmds = AGENTS.reduce((sum, a) => sum + (a.slashCommands ? a.slashCommands.length : 0), 0);
+  const totalExamples = AGENTS.reduce((sum, a) => sum + (a.examples ? a.examples.length : 0), 0);
+
+  $('#summaryStats').innerHTML = `
+    <div class="summary-stat">
+      <div class="big tabular">${AGENTS.length}</div>
+      <div class="cap">active agents</div>
+    </div>
+    <div class="summary-stat">
+      <div class="big tabular">${totalModes}</div>
+      <div class="cap">operation modes total</div>
+    </div>
+    <div class="summary-stat">
+      <div class="big tabular">${totalCmds}</div>
+      <div class="cap">slash commands</div>
+    </div>
+    <div class="summary-stat">
+      <div class="big tabular">${totalExamples}</div>
+      <div class="cap">example invocations</div>
+    </div>
+  `;
+}
+
+function wireCopyHandlers() {
+  $$('.chip-copyable').forEach(el => {
+    el.onclick = (e) => { e.stopPropagation(); copyText(el.dataset.copy, el); };
+  });
+  $$('.card-copy-ref').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation(); // critical: prevents opening drawer
+      const card = btn.closest('[data-card-id]');
+      if (!card) return;
+      copyText(DASH_STEM + ':' + card.dataset.cardId, btn);
+    };
+  });
+}
+
+function wireCardClickHandlers() {
+  $$('.agent-card').forEach(card => {
+    // Mouse click
+    card.addEventListener('click', (e) => {
+      // Ignore if the click originated on copy-ref button (stopPropagation handles it above,
+      // but double-check to be safe)
+      if (e.target.closest('.card-copy-ref')) return;
+      const name = card.dataset.agentName;
+      if (name) openDrawer(name);
+    });
+    // Keyboard: Enter or Space
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        const name = card.dataset.agentName;
+        if (name) openDrawer(name);
+      }
+    });
+  });
+}
+
+/* ============================================================
+   Drawer: open / close / render
+   ============================================================ */
+function openDrawer(agentName) {
+  const agent = AGENTS.find(a => a.name === agentName);
+  if (!agent) return;
+
+  drawerOpenFor = agentName;
+
+  const drawer = $('#drawer');
+  const scrim = $('#scrim');
+
+  drawer.innerHTML = renderDrawerSkeleton(agent);
+  drawer.classList.add('is-open');
+  scrim.classList.add('is-open');
+  drawer.setAttribute('aria-hidden', 'false');
+  drawer.dataset.agentName = agentName;
+
+  // Wire close button
+  const closeBtn = $('.drawer-close', drawer);
+  if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+
+  // Wire copy-ref in drawer header
+  $$('.cmd-name', drawer).forEach(el => {
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      copyText(el.dataset.copy, el);
+    });
+  });
+
+  // Lazy fetch command files
+  loadCommandDetails(agent, drawer);
+}
+
+function closeDrawer() {
+  const drawer = $('#drawer');
+  const scrim = $('#scrim');
+  drawer.classList.remove('is-open');
+  scrim.classList.remove('is-open');
+  drawer.setAttribute('aria-hidden', 'true');
+  drawerOpenFor = null;
+}
+
+function renderDrawerSkeleton(agent) {
+  // Header
+  const pozicioHtml = agent.pozicio
+    ? `<div class="drawer-pozicio">${escapeHtml(agent.pozicio)}</div>`
+    : '';
+
+  // Full description: capabilityDetail if present
+  const descHtml = agent.capabilityDetail
+    ? `<div class="drawer-section">
+         <div class="drawer-section-label">Capabilities</div>
+         <div class="drawer-desc">${renderInlineMarkdown(agent.capabilityDetail)}</div>
+       </div>`
+    : '';
+
+  // Felelősség
+  const felHtml = agent.felelosseg
+    ? `<div class="drawer-section">
+         <div class="drawer-section-label">Felelősség</div>
+         <div class="drawer-desc">${escapeHtml(agent.felelosseg)}</div>
+       </div>`
+    : '';
+
+  // Autonómia
+  const autoHtml = agent.autonomy
+    ? `<div class="drawer-section">
+         <div class="caution-callout">
+           <div class="caution-label">Autonómia / Gate</div>
+           <p>${escapeHtml(agent.autonomy)}</p>
+         </div>
+       </div>`
+    : '';
+
+  // Operation modes
+  const modesHtml = (agent.modes && agent.modes.length)
+    ? `<div class="drawer-section">
+         <div class="drawer-section-label">Operation modes (${agent.modeCount || agent.modes.length})</div>
+         <div class="chips-row">${agent.modes.map(m => `<span class="chip">${escapeHtml(m)}</span>`).join('')}</div>
+       </div>`
+    : '';
+
+  // Slash commands — skeleton (loading state)
+  const cmdsSkeletonHtml = (agent.slashCommands && agent.slashCommands.length)
+    ? `<div class="drawer-section" id="drawerCmdsSection">
+         <div class="drawer-section-label">Slash commands (${agent.slashCommands.length})</div>
+         <div id="drawerCmdsBody">
+           ${agent.slashCommands.map(cmd => `
+             <div class="cmd-block" id="cmd-block-${escapeHtml(toSlug(cmd))}">
+               <div class="cmd-name-row">
+                 <span class="cmd-name chip-copyable" data-copy="${escapeHtml(cmd)}">${escapeHtml(cmd)}
+                   <svg class="copy-icon" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                 </span>
+               </div>
+               <p class="cmd-desc cmd-loading">Loading command info…</p>
+             </div>`).join('')}
+         </div>
+       </div>`
+    : '';
+
+  // Capability link
+  const capLinkHtml = agent.capability
+    ? `<div class="drawer-section">
+         <div class="drawer-section-label">Capability reference</div>
+         <div class="drawer-cap-link"><code>${escapeHtml(agent.capability)}</code></div>
+       </div>`
+    : '';
+
+  return `
+    <div class="drawer-head">
+      <div>
+        <h2>${escapeHtml(agent.name)}</h2>
+        <div class="drawer-meta">
+          <span class="version-pill mono">v${escapeHtml(agent.version)}</span>
+          <span class="status-badge">${escapeHtml(agent.status || 'active')}</span>
+        </div>
+      </div>
+      <button class="drawer-close" aria-label="Close detail">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="drawer-body">
+      ${pozicioHtml}
+      ${descHtml}
+      ${felHtml}
+      ${autoHtml}
+      ${modesHtml}
+      ${cmdsSkeletonHtml}
+      ${capLinkHtml}
+    </div>`;
+}
+
+/* Render inline markdown: backtick code spans → <code>, simple bullets */
+function renderInlineMarkdown(text) {
+  // Escape HTML first
+  let html = escapeHtml(text);
+  // Then convert backtick spans to <code>
+  html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Convert " — " separated lines or sub-bullets
+  return html;
+}
+
+/* ============================================================
+   Lazy command detail loader
+   Called after drawer skeleton is shown.
+   Fetches each command file and updates the cmd-block in DOM.
+   ============================================================ */
+async function loadCommandDetails(agent, drawer) {
+  if (!agent.slashCommands || !agent.slashCommands.length) return;
+
+  const fetches = agent.slashCommands.map(async (cmd) => {
+    const info = await fetchCommandFile(cmd);
+    const blockId = 'cmd-block-' + toSlug(cmd);
+    const block = document.getElementById(blockId);
+    if (!block) return; // drawer closed
+
+    // Update description
+    const descEl = block.querySelector('.cmd-desc');
+    if (descEl) {
+      if (info.description) {
+        descEl.className = 'cmd-desc';
+        descEl.textContent = info.description;
+      } else if (info.error) {
+        descEl.className = 'cmd-desc cmd-no-example';
+        descEl.textContent = '(command file not found)';
+      } else {
+        descEl.className = 'cmd-desc cmd-no-example';
+        descEl.textContent = '(no description in frontmatter)';
+      }
+    }
+
+    // Inject example
+    const existingExample = block.querySelector('.cmd-example-wrap');
+    if (existingExample) existingExample.remove();
+
+    const exampleWrap = document.createElement('div');
+    exampleWrap.className = 'cmd-example-wrap';
+
+    if (info.example) {
+      exampleWrap.innerHTML = `
+        <div class="cmd-example-label">Example</div>
+        <div class="invocation-row" data-copy="${escapeHtml(info.example)}" title="Click to copy example">
+          <span class="invocation-code">${escapeHtml(info.example.split('\n')[0])}</span>
+          ${info.example.split('\n').length > 1 ? `<span class="invocation-sep">…</span>` : ''}
+          <span class="copy-hint">copy</span>
+        </div>`;
+      const row = exampleWrap.querySelector('.invocation-row');
+      if (row) row.onclick = () => copyText(info.example, row);
+    } else {
+      exampleWrap.innerHTML = `<div class="cmd-example-label">Example</div><div class="cmd-no-example">(nincs példa megadva)</div>`;
+    }
+
+    block.appendChild(exampleWrap);
+
+    // Wire copy on cmd-name chip in this block
+    const cmdNameEl = block.querySelector('.cmd-name');
+    if (cmdNameEl) {
+      cmdNameEl.onclick = (e) => {
+        e.stopPropagation();
+        copyText(cmd, cmdNameEl);
+      };
+    }
+  });
+
+  await Promise.all(fetches);
+}
+
+/* ============================================================
+   Sync (read-only fetch, 8s poll)
+   ============================================================ */
+function syncLabel(state) {
+  switch (state) {
+    case 'live': {
+      if (!lastSyncAt) return 'Live';
+      const ago = Math.max(0, Math.floor((Date.now() - lastSyncAt) / 1000));
+      if (ago < 2) return 'Live, just updated';
+      const next = Math.max(0, Math.ceil(POLL_INTERVAL_MS/1000 - ago));
+      return `Updated ${ago}s ago, next in ${next}s`;
+    }
+    case 'syncing': return 'Syncing';
+    case 'error':   return 'Offline, click to retry';
+    default:        return 'Connecting';
+  }
+}
+function setSyncState(state, tooltip='') {
+  syncState = state; syncTooltip = tooltip;
+  const st = $('.sync-status');
+  if (st) {
+    st.dataset.state = state; st.title = tooltip;
+    const l = $('.sync-label', st); if (l) l.textContent = syncLabel(state);
+  }
+}
+function tickSyncLabel() {
+  const st = $('.sync-status'); if (!st) return;
+  const l = $('.sync-label', st); if (l) l.textContent = syncLabel(st.dataset.state || syncState);
+}
+function resetSyncBar() {
+  const f = $('.sync-bar-fill'); if (!f) return;
+  f.style.animation = 'none'; f.offsetHeight; f.style.animation = '';
+}
+
+async function pollVault({ silent=false } = {}) {
+  if (!silent) setSyncState('syncing', 'Reading 00_AGENTS_INDEX.md...');
+  try {
+    const res = await fetch(SOURCE_FILE, { cache: 'no-store' });
+    if (!res.ok) throw new Error(SOURCE_FILE + ' returned ' + res.status);
+    const md = await res.text();
+    if (md !== lastMd) {
+      lastMd = md;
+      AGENTS = parseAgentsIndex(md);
+      // Only re-render cards if drawer is NOT open (avoid jank)
+      // If drawer open, new data will be picked up next time drawer opens
+      if (!drawerOpenFor) {
+        renderAgents();
+      } else {
+        // Update counts only (non-destructive)
+        const totalModes = AGENTS.reduce((sum, a) => sum + (a.modeCount || (a.modes ? a.modes.length : 0)), 0);
+        const elC = $('#activeCount'); if (elC) elC.textContent = AGENTS.length;
+        const elM = $('#modesCount'); if (elM) elM.textContent = totalModes;
+      }
+    }
+    lastSyncAt = Date.now();
+    const ts = new Date().toLocaleTimeString();
+    setSyncState('live', `Live, ${SOURCE_FILE}. ${AGENTS.length} agents. Last check ${ts}. Polls every ${POLL_INTERVAL_MS/1000}s. Click to refresh now.`);
+    resetSyncBar();
+  } catch (e) {
+    console.warn('Sync failed', e);
+    setSyncState('error', `Cannot fetch ${SOURCE_FILE}. Serve over HTTP (node _dashboards/_tools/dash-server.mjs in vault root). ${e.message}`);
+  }
+}
+function startPolling() { if (!pollTimer) pollTimer = setInterval(() => pollVault({ silent: true }), POLL_INTERVAL_MS); }
+function startTicker() { if (!tickTimer) tickTimer = setInterval(tickSyncLabel, 1000); }
+
+document.addEventListener('click', (e) => {
+  if (e.target.closest('.sync-status')) pollVault({ silent: false });
+});
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.classList?.contains('sync-status')) {
+    e.preventDefault(); pollVault({ silent: false });
+  }
+  // Esc closes drawer
+  if (e.key === 'Escape' && drawerOpenFor) closeDrawer();
+});
+
+// Scrim click closes drawer
+document.getElementById('scrim').addEventListener('click', closeDrawer);
+
+/* ============================================================
+   File-watcher push channel (SSE from dash-server.mjs).
+   Sub-second updates when connected; poll timer relaxes to 30s.
+   Falls back to 8s timer if SSE is unavailable or drops.
+   ============================================================ */
+function connectEventStream() {
+  if (typeof EventSource === 'undefined') return;
+  let es;
+  try { es = new EventSource('/__events'); } catch (e) { return; }
+  const restartPolling = (ms) => {
+    POLL_INTERVAL_MS = ms;
+    if (pollTimer) { clearInterval(pollTimer); pollTimer = null; }
+    startPolling();
+  };
+  es.addEventListener('open', () => restartPolling(30000));
+  es.addEventListener('change', () => pollVault({ silent: true }));
+  es.addEventListener('error', () => restartPolling(8000));
+}
+
+/* ============================================================
+   Boot
+   ============================================================ */
+(async () => {
+  await pollVault();
+  startPolling();
+  startTicker();
+  connectEventStream();
+})();
+
+/* ===== Theme toggle (DS 0.3.0) ===== */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+document.getElementById('themeToggle').addEventListener('click', function() {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+});
+(function initTheme() {
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  setTheme(t);
+})();
+</script>
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>

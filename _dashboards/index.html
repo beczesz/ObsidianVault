@@ -1,0 +1,2151 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Ideas Vault, dashboard launcher. Lives in _dashboards/ (served at / by
+  _dashboards/_tools/dash-server.mjs).
+  =============================================================================
+  Version: 0.8.0
+  Bump rules:
+    - 0.x.0  new top-level Area or major layout change
+    - 0.0.x  new sub-Area, new leaf, copy change, small visual tweak
+    - 1.0.0  reserved for when this index is the canonical "vault launcher"
+             across multiple devices / users
+  Audit trail:
+    - 0.1.0 (2026-05-19) initial tree layout, Sonrisa + ExarLabs + 3 standalones,
+            CPS expanded as 4-branch sub-tree (Partnerships, AI Ops, Sales,
+            Marketing).
+    - 0.2.0 (2026-05-20) Partnerships dashboard went live, leaf flipped from
+            TBD to Open.
+    - 0.3.0 (2026-05-20) Consolidated all dashboard code into _dashboards/.
+            Launcher + sales.html + partnerships.html + _tools/ (server,
+            run scripts) now live here. Links use absolute paths. Data
+            markdown stays in the Areas. Served by dash-server.mjs.
+    - 0.4.0 (2026-05-21) Navigátor Podcast Area added (navigator.html went
+            live): episode roster + platform status + task kanban. New --nav
+            accent. Server WATCH_DIRS now includes "02_Areas/Navigátor Podcast".
+    - 0.5.0 (2026-05-22) CPS AI Ops leaf flipped from TBD to live (aiops.html):
+            AI-Native Operating System strategy board, 3 pillar cards +
+            open-questions strip. Source: Strategy/AI Ops/aiops.md.
+    - 0.6.0 (2026-05-22) CPS Team leaf added live (team.html): headcount/units/
+            margin/risk widgets, delivery-unit cards, role-tier roster,
+            recruitment + alumni strips. CPS sub-tree now 5 branches.
+            Source: Team/team.md.
+    - 0.6.1 2026-05-22 — synced comment version to pill; added canonical status token group from DESIGN_SYSTEM 0.1.0; area-brand tokens preserved; plugins.html registered in launcher.
+    - 0.6.2 2026-05-22 — agents.html registered in launcher (BDOS · Agent Team cheat sheet).
+    - 0.6.3 (2026-05-22) — added .card-copy-ref hover buttons + data-card-id to all leaf
+            articles (DESIGN_SYSTEM 0.2.0). Reference format: index:<card-id>.
+    - 0.6.4 (2026-05-22) — added day/night theme toggle + dark tokens (DESIGN_SYSTEM
+            0.3.0). Shared localStorage key "dash-theme". FOUC-init. System-aware default.
+    - 0.6.5 (2026-05-24) — Sage Cognition Curator dashboard registered (standalone/sage).
+            First per-agent dashboard in BDOS family. Source: sage/index.html.
+    - 0.7.0 (2026-05-24) — Top-level tab switcher: Tab 1 "Areas" (existing hierarchy)
+            + Tab 2 "Agents" (force-directed graph of BDOS agent family). Tab state
+            persists in URL fragment (#areas / #agents). Agents graph reads live from
+            /00_Prompts/BDOS/00_AGENTS_INDEX.md (8s poll). 6-node graph (Librarian,
+            Maestro, Curator, Sage, Presto, Broker — auto-includes Broker once present).
+            Force-directed physics via D3.js v7 CDN. Non-Sage agent cards show
+            "coming soon" overlay on click. Sage card links to /_dashboards/sage/index.html.
+    - 0.7.1 (2026-05-24) — Maestro Observatory dashboard registered (standalone/maestro).
+            Second per-agent dashboard in BDOS family. Phase 2 Reflective Nervous System
+            era. AGENT_DASHBOARD_URLS updated: maestro → /_dashboards/maestro/index.html.
+            Agents graph Maestro node now links live (no longer "coming soon").
+    - 0.7.2 (2026-05-24) — Presto Marketing Observatory registered (standalone/presto).
+            Third per-agent dashboard in BDOS family. Distribution Cognition Layer.
+            AGENT_DASHBOARD_URLS updated: presto → /_dashboards/presto/index.html.
+            Presto node now links live in Agents graph (no longer "coming soon").
+    - 0.7.5 (2026-05-24) — promote: event-driven live updates (DS 0.4.0). live-updates.js
+            imported. LiveUpdates.subscribe(fetchAndDraw) replaces SSE IIFE. Status
+            indicator pill mounted in masthead. agents graph setInterval kept for
+            graph-specific polling; SSE connectEventStream IIFE removed.
+    - 0.7.4 (2026-05-24) — tend: agent avatars on graph nodes (emoji + color accent, live
+            from AGENT_PROFILES.md). Detail panel on click shows capability summary (tools,
+            MCPs, APIs, plugins count). parseAgentProfile + hexToRgba helpers added.
+            gAvatarMap populated on each poll cycle. 8s auto-refresh. DS 0.3.0.
+    - 0.7.3 (2026-05-24) — Librarian, Curator, Broker dashboards registered (standalone
+            row). All 6 agent nodes in Agents graph now link to live dashboards — no
+            more "coming soon" overlays for any agent. AGENT_DASHBOARD_URLS updated:
+            librarian → /_dashboards/librarian/index.html,
+            curator → /_dashboards/curator/index.html,
+            broker → /_dashboards/broker/index.html.
+    - 0.8.0 (2026-05-24) — promote: ops-header strip injected above all mastheads
+            (DS 0.5.0). ops-header.js + #bdos-ops-header mount. Scheduler dashboard
+            registered (standalone/scheduler).
+  ============================================================================= -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ideas Vault</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M16 6L9 12v8l7 6 7-6v-8z' fill='none' stroke='%23D97757' stroke-width='1.8' stroke-linejoin='round'/%3E%3Ccircle cx='16' cy='16' r='2.2' fill='%23D97757'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-page:     #faf9f5;
+  --bg-elev:     #ffffff;
+  --bg-sunken:   #f3f1ea;
+  --bg-tint:     #f5f4ef;
+  --ink-1:       #141413;
+  --ink-2:       #3a3a37;
+  --ink-3:       #6d6d6a;
+  --ink-4:       #9c9c98;
+  --ink-5:       #c8c8c2;
+  --line:        #e5e4df;
+  --line-soft:   #efede7;
+  --branch:      #d4d2cc;
+  --accent:      #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  --sonrisa:     #b35a3f;
+  --sonrisa-tint:#fbeee6;
+  --exar:        #2563a5;
+  --exar-tint:   #e8eff8;
+  --media:       #6b46c1;
+  --media-tint:  #f1eafd;
+  --vez:         #1f7a4d;
+  --vez-tint:    #e6f3ec;
+  --ignis:       #b07a18;
+  --ignis-tint:  #fbf2dc;
+  --nav:         #0e7490;
+  --nav-tint:    #e0f2f7;
+
+  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;  --gap-tint:  #fbeae6;
+  --idle:      #7a7a76;  --idle-tint: #efeeeb;
+
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 10px;
+  --radius-xl: 14px;
+
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+  --ink-1: #f5f4ef;
+  --ink-2: #d6d4ce;
+  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;
+  --ink-5: #54524d;
+  --line:      #36342f;
+  --line-soft: #2c2a26;
+  --branch:    #4a4844;
+  --accent:      #e08a6a;
+  --accent-deep: #f0a085;
+  --accent-tint: #3a2a22;
+  /* Area-brand tokens — lightened for dark bg */
+  --sonrisa:     #f0a085;  --sonrisa-tint: #3a2a22;
+  --exar:        #6aa3e0;  --exar-tint:    #1e2a3a;
+  --media:       #a585e0;  --media-tint:   #2a1e3a;
+  --vez:         #5cc08a;  --vez-tint:     #1e3329;
+  --ignis:       #d6a94a;  --ignis-tint:   #352c18;
+  --nav:         #38bcd4;  --nav-tint:     #0e2a30;
+  --ok:        #5cc08a;  --ok-tint:   #1e3329;
+  --warn:      #d6a94a;  --warn-tint: #352c18;
+  --gap:       #e57c6e;  --gap-tint:  #3a221e;
+  --idle:      #9a9892;  --idle-tint: #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:   #1a1916;
+    --bg-elev:   #232220;
+    --bg-sunken: #2c2a26;
+    --bg-tint:   #262420;
+    --ink-1: #f5f4ef;
+    --ink-2: #d6d4ce;
+    --ink-3: #a8a6a0;
+    --ink-4: #7c7a74;
+    --ink-5: #54524d;
+    --line:      #36342f;
+    --line-soft: #2c2a26;
+    --branch:    #4a4844;
+    --accent:      #e08a6a;
+    --accent-deep: #f0a085;
+    --accent-tint: #3a2a22;
+    --sonrisa:     #f0a085;  --sonrisa-tint: #3a2a22;
+    --exar:        #6aa3e0;  --exar-tint:    #1e2a3a;
+    --media:       #a585e0;  --media-tint:   #2a1e3a;
+    --vez:         #5cc08a;  --vez-tint:     #1e3329;
+    --ignis:       #d6a94a;  --ignis-tint:   #352c18;
+    --nav:         #38bcd4;  --nav-tint:     #0e2a30;
+    --ok:        #5cc08a;  --ok-tint:   #1e3329;
+    --warn:      #d6a94a;  --warn-tint: #352c18;
+    --gap:       #e57c6e;  --gap-tint:  #3a221e;
+    --idle:      #9a9892;  --idle-tint: #2a2925;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+
+.mono { font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Consolas, monospace; }
+
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: var(--radius-s);
+}
+
+button { font: inherit; background: transparent; border: 0; color: inherit; cursor: pointer; }
+
+/* ============= App shell ============= */
+
+.app {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 40px) 96px;
+}
+
+/* ===== Theme toggle button (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+
+/* ============= Masthead ============= */
+
+.masthead {
+  padding-bottom: 28px;
+  margin-bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.eyebrow {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--ink-4);
+  font-weight: 500;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.eyebrow .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+
+.version-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  color: var(--ink-3);
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  border-radius: 999px;
+  letter-spacing: 0;
+  text-transform: none;
+  font-weight: 500;
+}
+
+.masthead h1 {
+  font-size: clamp(30px, 4.2vw, 52px);
+  font-weight: 700;
+  letter-spacing: -0.022em;
+  line-height: 1.05;
+  color: var(--ink-1);
+  margin-bottom: 14px;
+}
+.masthead h1 .weekday { color: var(--ink-1); }
+.masthead h1 .rest { color: var(--ink-3); font-weight: 500; }
+
+.masthead .subtitle {
+  font-size: 16px;
+  color: var(--ink-3);
+  max-width: 62ch;
+  line-height: 1.55;
+}
+
+/* ============= Tab switcher ============= */
+
+.tab-bar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 28px;
+  margin-bottom: 36px;
+  padding-bottom: 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink-3);
+  border-radius: var(--radius-m) var(--radius-m) 0 0;
+  border: 1px solid transparent;
+  border-bottom: none;
+  position: relative;
+  bottom: -1px;
+  background: transparent;
+  cursor: pointer;
+  transition: color var(--t-fast), background var(--t-fast);
+  user-select: none;
+}
+.tab-btn:hover { color: var(--ink-1); background: var(--bg-tint); }
+.tab-btn.active {
+  color: var(--ink-1);
+  background: var(--bg-page);
+  border-color: var(--line);
+  border-bottom-color: var(--bg-page);
+}
+.tab-btn .tab-icon {
+  width: 15px; height: 15px;
+  opacity: 0.6;
+}
+.tab-btn.active .tab-icon { opacity: 1; }
+
+.tab-hint {
+  margin-left: auto;
+  font-size: 11px;
+  color: var(--ink-4);
+  padding-bottom: 10px;
+}
+
+/* ============= Tab panels ============= */
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ============= Area trees ============= */
+
+.area-tree {
+  margin-bottom: 40px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  background: var(--bg-elev);
+  overflow: hidden;
+  transition: border-color var(--t-med);
+}
+.area-tree:hover { border-color: var(--ink-5); }
+
+.trunk-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 16px;
+  padding: 22px 28px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--bg-elev);
+  position: relative;
+}
+.trunk-header:hover { background: var(--bg-tint); }
+
+.trunk-header .chevron {
+  width: 18px; height: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-3);
+  transition: transform var(--t-med);
+}
+.area-tree[data-expanded="false"] .trunk-header .chevron { transform: rotate(-90deg); }
+
+.trunk-header .titlebar { min-width: 0; }
+.trunk-header h2 {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink-1);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.trunk-header .tag {
+  font-size: 10.5px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  padding: 3px 9px;
+  border-radius: 4px;
+  color: var(--ink-3);
+  background: var(--bg-sunken);
+}
+.trunk-header .role {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  margin-top: 4px;
+  line-height: 1.5;
+  max-width: 65ch;
+}
+.trunk-header .branch-count {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-weight: 600;
+  color: var(--ink-4);
+  white-space: nowrap;
+}
+
+/* Top-stripe accent per area */
+.area-tree.sonrisa .trunk-header { border-top: 3px solid var(--sonrisa); }
+.area-tree.exar    .trunk-header { border-top: 3px solid var(--exar); }
+.area-tree.media   .trunk-header { border-top: 3px solid var(--media); }
+.area-tree.vez     .trunk-header { border-top: 3px solid var(--vez); }
+.area-tree.ignis   .trunk-header { border-top: 3px solid var(--ignis); }
+.area-tree.nav     .trunk-header { border-top: 3px solid var(--nav); }
+
+.area-tree.sonrisa h2::before,
+.area-tree.exar h2::before,
+.area-tree.media h2::before,
+.area-tree.vez h2::before,
+.area-tree.ignis h2::before,
+.area-tree.nav h2::before {
+  content: '';
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+.area-tree.sonrisa h2::before { background: var(--sonrisa); }
+.area-tree.exar h2::before    { background: var(--exar); }
+.area-tree.media h2::before   { background: var(--media); }
+.area-tree.vez h2::before     { background: var(--vez); }
+.area-tree.ignis h2::before   { background: var(--ignis); }
+.area-tree.nav h2::before     { background: var(--nav); }
+
+/* Branches container */
+.branches {
+  padding: 0 28px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.area-tree[data-expanded="false"] .branches { display: none; }
+
+/* ============= 4-branch sub-tree (org-chart style for CPS) ============= */
+
+.sub-tree {
+  position: relative;
+  background: var(--bg-tint);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 20px 22px 24px;
+}
+
+.sub-tree-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  user-select: none;
+}
+.sub-tree-header h3 {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--ink-1);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sub-tree-header .role {
+  font-size: 13px;
+  color: var(--ink-3);
+  margin-top: 3px;
+  line-height: 1.45;
+}
+.sub-tree-header .branch-count {
+  font-size: 10.5px;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  font-weight: 600;
+  color: var(--ink-4);
+}
+.sub-tree-header .chevron {
+  width: 16px; height: 16px;
+  color: var(--ink-3);
+  transition: transform var(--t-med);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.sub-tree[data-expanded="false"] .sub-tree-header .chevron { transform: rotate(-90deg); }
+
+.leaves {
+  display: grid;
+  gap: 14px;
+  padding-top: 36px;
+  position: relative;
+}
+.sub-tree[data-expanded="false"] .leaves { display: none; }
+
+.leaves-1 { grid-template-columns: 1fr; }
+.leaves-2 { grid-template-columns: repeat(2, 1fr); }
+.leaves-3 { grid-template-columns: repeat(3, 1fr); }
+.leaves-4 { grid-template-columns: repeat(4, 1fr); }
+.leaves-5 { grid-template-columns: repeat(5, 1fr); }
+
+/* Vertical stub coming down from the sub-tree header to the horizontal line */
+.leaves::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 18px;
+  background: var(--branch);
+}
+
+/* Horizontal connector line across the children. */
+.leaves::after {
+  content: '';
+  position: absolute;
+  top: 18px;
+  height: 1px;
+  background: var(--branch);
+}
+.leaves-1::after { display: none; }
+.leaves-2::after { left: 25%;     right: 25%; }
+.leaves-3::after { left: 16.67%;  right: 16.67%; }
+.leaves-4::after { left: 12.5%;   right: 12.5%; }
+.leaves-5::after { left: 10%;     right: 10%; }
+
+/* Per-leaf vertical stub from horizontal line down to the leaf */
+.leaves .leaf {
+  position: relative;
+}
+.leaves .leaf::before {
+  content: '';
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  width: 1px;
+  height: 18px;
+  background: var(--branch);
+}
+
+/* ============= Leaves (cards) ============= */
+
+.leaf {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 18px 18px 16px;
+  display: flex;
+  flex-direction: column;
+  min-height: 168px;
+  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.leaf:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-2);
+  border-color: var(--ink-5);
+}
+
+.leaf h4, .leaf h3 {
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: -0.005em;
+  color: var(--ink-1);
+  margin-bottom: 8px;
+}
+.leaf .role {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.5;
+  margin-bottom: 18px;
+  flex-grow: 1;
+}
+.leaf .actions {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 9px 14px;
+  background: var(--accent);
+  color: white;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-m);
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background var(--t-fast), border-color var(--t-fast);
+  white-space: nowrap;
+  width: 100%;
+}
+.btn-primary:hover {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+}
+.btn-primary .arrow { transition: transform var(--t-fast); }
+.btn-primary:hover .arrow { transform: translateX(3px); }
+
+.tbd-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  align-self: flex-start;
+  padding: 6px 12px;
+  background: var(--bg-tint);
+  border: 1px dashed var(--ink-5);
+  border-radius: var(--radius-m);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+.tbd-pill::before {
+  content: '';
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: var(--ink-5);
+}
+
+.leaf.is-tbd {
+  background: var(--bg-tint);
+  border-style: dashed;
+}
+.leaf.is-tbd h4, .leaf.is-tbd h3 { color: var(--ink-2); }
+.leaf.is-tbd .role { color: var(--ink-4); }
+.leaf.is-tbd:hover { box-shadow: none; transform: none; border-color: var(--ink-5); }
+
+/* Solo branches */
+.branch-row {
+  display: grid;
+  gap: 14px;
+}
+.branch-row.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.branch-row.cols-3 { grid-template-columns: repeat(3, 1fr); }
+
+/* Standalone Areas compact strip at the bottom */
+.standalone-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 24px;
+}
+.standalone-row .leaf { min-height: 144px; }
+.standalone-row .leaf::before { content: none; }
+
+/* ============= Card copy-ref button (DS 0.2.0) ============= */
+.leaf { position: relative; }
+.card-copy-ref {
+  position: absolute;
+  top: 10px; right: 10px;
+  opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 6px;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.leaf:hover .card-copy-ref,
+.leaf:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ============= Footnote ============= */
+
+.footnote {
+  margin-top: 64px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 11.5px;
+  color: var(--ink-4);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+}
+.footnote .mono {
+  background: var(--bg-tint);
+  padding: 2px 7px;
+  border-radius: var(--radius-s);
+  font-size: 11px;
+  color: var(--ink-2);
+}
+
+/* ============= Agents Tab ============= */
+
+.agents-tab-layout {
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 24px;
+  min-height: 560px;
+}
+
+/* Graph container */
+.graph-container {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  position: relative;
+  overflow: hidden;
+  min-height: 500px;
+}
+.graph-container svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Sync strip for agents tab */
+.agents-sync-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--bg-tint);
+  border-bottom: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--ink-4);
+}
+.agents-sync-strip .sync-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--ok);
+  flex-shrink: 0;
+}
+.agents-sync-strip .sync-dot.stale { background: var(--warn); }
+.agents-sync-strip .sync-dot.error { background: var(--gap); }
+
+/* Agent node cards (SVG foreignObject) */
+.agent-node-card {
+  background: var(--bg-elev);
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 12px 14px 10px;
+  cursor: pointer;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast), transform var(--t-fast);
+  position: relative;
+  user-select: none;
+  box-shadow: var(--shadow-1);
+  width: 148px;
+}
+.agent-node-card:hover {
+  border-color: var(--accent);
+  box-shadow: var(--shadow-2);
+  transform: translateY(-1px);
+}
+.agent-node-card.has-dashboard {
+  border-color: var(--accent);
+  border-width: 1.5px;
+}
+.agent-node-card.placeholder {
+  opacity: 0.65;
+  border-style: dashed;
+}
+.agent-node-card.placeholder:hover {
+  opacity: 0.85;
+}
+.agent-node-card .node-name {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink-1);
+  margin-bottom: 3px;
+}
+.agent-node-card .node-desc {
+  font-size: 11px;
+  color: var(--ink-3);
+  line-height: 1.4;
+  margin-bottom: 7px;
+}
+.agent-node-card .node-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.node-version {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9.5px;
+  font-weight: 500;
+  color: var(--ink-3);
+  background: var(--bg-tint);
+  border: 1px solid var(--line);
+  padding: 1px 6px;
+  border-radius: 999px;
+}
+.node-status-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.node-status-dot.live { background: var(--ok); }
+.node-status-dot.placeholder-status { background: var(--warn); }
+.node-status-dot.scheduling { background: var(--accent); }
+.node-status-label {
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+}
+
+/* Right-side agent detail panel */
+.agent-detail-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.agent-detail-card {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.agent-detail-empty {
+  padding: 40px 24px;
+  text-align: center;
+  color: var(--ink-4);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.agent-detail-empty .empty-icon {
+  font-size: 28px;
+  margin-bottom: 12px;
+  opacity: 0.4;
+}
+
+.agent-detail-header {
+  padding: 20px 22px 16px;
+  border-bottom: 1px solid var(--line);
+}
+.agent-detail-header .detail-name {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--ink-1);
+  margin-bottom: 6px;
+}
+.agent-detail-header .detail-desc {
+  font-size: 13px;
+  color: var(--ink-3);
+  line-height: 1.55;
+  margin-bottom: 10px;
+}
+.agent-detail-header .detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.detail-version-pill {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: var(--bg-tint);
+  border: 1px solid var(--line);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+.detail-status-chip {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid;
+}
+.detail-status-chip.live {
+  color: var(--ok);
+  background: var(--ok-tint);
+  border-color: rgba(31,122,77,.2);
+}
+.detail-status-chip.placeholder {
+  color: var(--warn);
+  background: var(--warn-tint);
+  border-color: rgba(176,122,24,.2);
+}
+.detail-status-chip.scheduling {
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+  border-color: rgba(217,119,87,.2);
+}
+
+.agent-detail-body {
+  padding: 16px 22px 20px;
+}
+
+.detail-connections {
+  margin-bottom: 14px;
+}
+.detail-connections h5 {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink-4);
+  margin-bottom: 8px;
+}
+.connection-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11.5px;
+  color: var(--ink-2);
+  background: var(--bg-tint);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 3px 9px;
+  margin: 2px 3px 2px 0;
+}
+.connection-chip .conn-arrow { color: var(--ink-4); font-size: 10px; }
+
+.detail-open-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background: var(--accent);
+  color: white;
+  border: 1px solid var(--accent);
+  border-radius: var(--radius-m);
+  font-size: 12.5px;
+  font-weight: 600;
+  transition: background var(--t-fast), border-color var(--t-fast);
+  width: 100%;
+  margin-top: 14px;
+  text-align: center;
+  cursor: pointer;
+}
+.detail-open-btn:hover {
+  background: var(--accent-deep);
+  border-color: var(--accent-deep);
+}
+.detail-open-btn.coming-soon {
+  background: var(--bg-tint);
+  color: var(--ink-4);
+  border-color: var(--line);
+  border-style: dashed;
+  cursor: default;
+}
+.detail-open-btn.coming-soon:hover {
+  background: var(--bg-tint);
+  border-color: var(--ink-5);
+}
+
+/* Legend strip */
+.graph-legend {
+  padding: 10px 16px;
+  background: var(--bg-tint);
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: var(--ink-4);
+}
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.legend-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.legend-line {
+  width: 20px; height: 1.5px;
+  background: var(--ink-4);
+  flex-shrink: 0;
+}
+.legend-line.dotted {
+  background: none;
+  border-top: 1.5px dashed var(--ink-4);
+}
+
+/* Coming-soon tooltip overlay */
+.coming-soon-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(20,20,19,.45);
+  backdrop-filter: blur(2px);
+  align-items: center;
+  justify-content: center;
+}
+.coming-soon-overlay.visible {
+  display: flex;
+}
+.coming-soon-modal {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  padding: 32px 36px;
+  max-width: 360px;
+  width: 90%;
+  box-shadow: var(--shadow-2);
+  text-align: center;
+}
+.coming-soon-modal h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--ink-1);
+  margin-bottom: 10px;
+}
+.coming-soon-modal p {
+  font-size: 13.5px;
+  color: var(--ink-3);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.coming-soon-modal .modal-hint {
+  font-size: 11.5px;
+  color: var(--ink-4);
+  margin-bottom: 20px;
+}
+.coming-soon-modal .modal-hint a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+.modal-close-btn {
+  padding: 8px 20px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-2);
+  background: var(--bg-tint);
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+.modal-close-btn:hover { background: var(--bg-sunken); border-color: var(--ink-4); }
+
+/* ============= Responsive ============= */
+
+@media (max-width: 1080px) {
+  .agents-tab-layout {
+    grid-template-columns: 1fr;
+  }
+  .agent-detail-panel {
+    order: -1;
+  }
+}
+
+@media (max-width: 980px) {
+  .leaves-4, .leaves-5 { grid-template-columns: repeat(2, 1fr); }
+  .leaves-4::after, .leaves-5::after { left: 25%; right: 25%; }
+  .branch-row.cols-2, .branch-row.cols-3 { grid-template-columns: 1fr; }
+  .standalone-row { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .leaves-2, .leaves-3, .leaves-4, .leaves-5 { grid-template-columns: 1fr; padding-top: 16px; }
+  .leaves::before, .leaves::after { display: none; }
+  .leaves .leaf::before { display: none; }
+  .masthead h1 { font-size: 30px; }
+  .tab-btn { font-size: 13px; padding: 8px 12px 9px; }
+}
+/* ===== Node avatar chip (0.7.4) ===== */
+.node-avatar { display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; border:1.5px solid; font-size:17px; line-height:1; flex-shrink:0; margin:0 auto 4px; transition:background .3s,border-color .3s; }
+/* Detail panel cap summary */
+.detail-cap-summary { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
+.detail-cap-chip { font-family:'JetBrains Mono',monospace; font-size:10px; padding:2px 7px; border-radius:4px; border:1px solid var(--line); background:var(--bg-tint); color:var(--ink-3); }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- ============= Masthead ============= -->
+
+  <header class="masthead">
+    <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;">
+      <div class="eyebrow" style="margin-bottom:0;">
+        <span class="dot"></span>
+        <span>Ideas Vault</span>
+        <span class="version-pill" id="versionPill">v0.7.5</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <span id="liveStatusMount"></span>
+        <button class="theme-toggle" id="themeToggle"
+                aria-label="Switch to dark theme"
+                title="Toggle day / night theme">
+          <span class="theme-icon">&#9790;</span>
+          <span class="theme-label">Dark</span>
+        </button>
+      </div>
+    </div>
+    <h1 id="dateLine"><span class="weekday">Today</span></h1>
+    <p class="subtitle">
+      Open a dashboard. Markdown is the source. Edits go in Obsidian.
+    </p>
+  </header>
+
+  <!-- ============= Tab bar ============= -->
+
+  <nav class="tab-bar" role="tablist" aria-label="Vault views">
+    <button class="tab-btn" id="tab-areas" role="tab" aria-selected="true" aria-controls="panel-areas">
+      <svg class="tab-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="7" height="7" rx="1.5"/>
+        <rect x="11" y="2" width="7" height="7" rx="1.5"/>
+        <rect x="2" y="11" width="7" height="7" rx="1.5"/>
+        <rect x="11" y="11" width="7" height="7" rx="1.5"/>
+      </svg>
+      Areas
+    </button>
+    <button class="tab-btn" id="tab-agents" role="tab" aria-selected="false" aria-controls="panel-agents">
+      <svg class="tab-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="10" cy="10" r="2.5"/>
+        <circle cx="3.5" cy="5" r="1.8"/>
+        <circle cx="16.5" cy="5" r="1.8"/>
+        <circle cx="3.5" cy="15" r="1.8"/>
+        <circle cx="16.5" cy="15" r="1.8"/>
+        <line x1="5.2" y1="5.8" x2="7.8" y2="8.5"/>
+        <line x1="14.8" y1="5.8" x2="12.2" y2="8.5"/>
+        <line x1="5.2" y1="14.2" x2="7.8" y2="11.5"/>
+        <line x1="14.8" y1="14.2" x2="12.2" y2="11.5"/>
+      </svg>
+      Agents
+    </button>
+    <span class="tab-hint" id="agentsSyncHint" style="display:none;">Live from <span class="mono" style="font-size:10.5px;background:var(--bg-tint);padding:1px 5px;border-radius:3px;">00_AGENTS_INDEX.md</span></span>
+  </nav>
+
+  <!-- ============= Tab 1: Areas ============= -->
+
+  <div class="tab-panel active" id="panel-areas" role="tabpanel" aria-labelledby="tab-areas">
+
+    <!-- ============= SONRISA ============= -->
+
+    <section class="area-tree sonrisa" data-expanded="true" aria-labelledby="sonrisa-head">
+      <header class="trunk-header" role="button" tabindex="0" aria-expanded="true">
+        <span class="chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </span>
+        <div class="titlebar">
+          <h2 id="sonrisa-head">Sonrisa</h2>
+          <p class="role">CPS unit and Vision Corner. The operating business and the long-horizon thinking surface.</p>
+        </div>
+        <span class="branch-count">2 branches</span>
+      </header>
+      <div class="branches">
+
+        <!-- CPS sub-tree, 5 strategic directions -->
+        <section class="sub-tree" data-expanded="true" aria-labelledby="cps-head">
+          <header class="sub-tree-header" role="button" tabindex="0" aria-expanded="true">
+            <span class="chevron">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+            </span>
+            <div>
+              <h3 id="cps-head">CPS, Cloud Platform Services</h3>
+              <p class="role">The operating unit. Four parallel strategic directions to keep an eye on.</p>
+            </div>
+            <span class="branch-count">5 branches</span>
+          </header>
+
+          <div class="leaves leaves-5">
+            <article class="leaf" data-card-id="cps/partnerships">
+              <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+              <h4>Partnerships</h4>
+              <p class="role">AWS, Oracle, Azure partner health. Tiers, cert coverage, renewals, gaps.</p>
+              <div class="actions">
+                <a class="btn-primary" href="/_dashboards/partnerships.html">
+                  Open <span class="arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <article class="leaf" data-card-id="cps/aiops">
+              <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+              <h4>AI Ops</h4>
+              <p class="role">AI-Native Operating System. Three pillars: inference substrate, agentic AIOps, FinOps automation.</p>
+              <div class="actions">
+                <a class="btn-primary" href="/_dashboards/aiops.html">
+                  Open <span class="arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <article class="leaf" data-card-id="cps/sales">
+              <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+              <h4>Sales</h4>
+              <p class="role">Live kanban. Lead pipeline, today's queue, KPI ramp. The 90-day clock.</p>
+              <div class="actions">
+                <a class="btn-primary" href="/_dashboards/sales.html">
+                  Open <span class="arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <article class="leaf" data-card-id="cps/team">
+              <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+              <h4>Team</h4>
+              <p class="role">The backstage crew. Headcount, delivery units (TAM + members + margin), role-tier roster, recruitment.</p>
+              <div class="actions">
+                <a class="btn-primary" href="/_dashboards/team.html">
+                  Open <span class="arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
+            <article class="leaf is-tbd" data-card-id="cps/marketing">
+              <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+              <h4>Marketing</h4>
+              <p class="role">Channel mix, content cadence, lead-magnet performance, microsite factory output.</p>
+              <span class="tbd-pill">Dashboard TBD</span>
+            </article>
+          </div>
+        </section>
+
+        <!-- Vision Corner as a sibling leaf to CPS -->
+        <div class="branch-row cols-2">
+          <article class="leaf" data-card-id="sonrisa/vision-corner">
+            <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+            <h3>Vision Corner</h3>
+            <p class="role">Long-horizon framing. Founder-level thinking surface for direction across all Sonrisa units.</p>
+            <div class="actions">
+              <a class="btn-primary" href="/02_Areas/Sonrisa/Vision Corner/dashboard.html">
+                Open <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============= EXARLABS ============= -->
+
+    <section class="area-tree exar" data-expanded="true" aria-labelledby="exar-head">
+      <header class="trunk-header" role="button" tabindex="0" aria-expanded="true">
+        <span class="chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </span>
+        <div class="titlebar">
+          <h2 id="exar-head">ExarLabs</h2>
+          <p class="role">Another universe. Operating client work, services, and funding tracks.</p>
+        </div>
+        <span class="branch-count">3 branches</span>
+      </header>
+      <div class="branches">
+        <div class="branch-row cols-3">
+
+          <article class="leaf" data-card-id="exar/deak">
+            <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+            <h3>Deák</h3>
+            <p class="role">Húsüzlet client engagement. Sprint board, product roadmap, ops surface.</p>
+            <div class="actions">
+              <a class="btn-primary" href="/02_Areas/Deák Húsüzlet/BIN/dashboard.html">
+                Open <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="leaf" data-card-id="exar/services">
+            <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+            <h3>Services</h3>
+            <p class="role">Microsite Factory marketing — az első élő service. Facebook-first stratégia + KPI dashboard. (Később: webshop builds, ERP integrations.)</p>
+            <div class="actions">
+              <a class="btn-primary" href="/02_Areas/ExarLabs/marketing/dashboard.html">
+                Open <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+
+          <article class="leaf is-tbd" data-card-id="exar/palyzat">
+            <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+            <h3>Pályázat</h3>
+            <p class="role">Grant and funding application tracking. Deadlines, requirements, status.</p>
+            <span class="tbd-pill">Dashboard TBD</span>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= NAVIGÁTOR PODCAST ============= -->
+
+    <section class="area-tree nav" data-expanded="true" aria-labelledby="nav-head">
+      <header class="trunk-header" role="button" tabindex="0" aria-expanded="true">
+        <span class="chevron">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+        </span>
+        <div class="titlebar">
+          <h2 id="nav-head">Navigátor Podcast</h2>
+          <p class="role">Magyar vállalkozói mélyinterjú-podcast. Epizód roster, platform-státusz (YouTube + Spotify) és a feladat-kanban egy helyen.</p>
+        </div>
+        <span class="branch-count">1 branch</span>
+      </header>
+      <div class="branches">
+        <div class="branch-row cols-2">
+          <article class="leaf" data-card-id="standalone/navigator">
+            <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+            <h3>Epizód &amp; Platform Pult</h3>
+            <p class="role">EP01–EP42 élő roster, szűrhető/rendezhető, Spotify dátum + feltöltés státusz, TOP performerek, és a TODO kanban board.</p>
+            <div class="actions">
+              <a class="btn-primary" href="/_dashboards/navigator.html">
+                Open <span class="arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============= Standalone Areas ============= -->
+
+    <div class="standalone-row">
+
+      <article class="leaf is-tbd" data-card-id="standalone/media-muhely">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Média Műhely</h3>
+        <p class="role">Media studio. Client work, internal systems, recurring delivery.</p>
+        <span class="tbd-pill">Dashboard TBD</span>
+      </article>
+
+      <article class="leaf is-tbd" data-card-id="standalone/vezetok">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Vezetők Imája</h3>
+        <p class="role">Leadership formation programme. Cohort cadence, content surface.</p>
+        <span class="tbd-pill">Dashboard TBD</span>
+      </article>
+
+      <article class="leaf is-tbd" data-card-id="standalone/ignis">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Ignis Academy</h3>
+        <p class="role">Education programme. Pályázat track, cohort cadence, curriculum.</p>
+        <span class="tbd-pill">Dashboard TBD</span>
+      </article>
+
+      <article class="leaf" data-card-id="standalone/plugins">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Claude Code Plugins</h3>
+        <p class="role">16 plugins mapped to the vault. Longevity scores, vault-fit tags, setup notes. Hardcoded snapshot; live-fetch deferred.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/plugins.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="leaf" data-card-id="standalone/agents">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Agent Team</h3>
+        <p class="role">BDOS cheat sheet. Librarian, Maestro, Curator — modes, slash commands, and copyable example invocations. Live from 00_AGENTS_INDEX.md.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/agents.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="leaf" data-card-id="standalone/sage">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Sage</h3>
+        <p class="role">Cognition Curator — last harvest, thoughts feed, atomic notes, inbox, learnings, journal timeline. Live from state/last_run.md + Ideas/.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/sage/index.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="leaf" data-card-id="standalone/maestro">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Maestro Observatory</h3>
+        <p class="role">BDOS Organizational Observatory — Phase 2 Reflective Nervous System. Agent overview, time navigation, token intelligence (Phase 2.C), org intelligence, evolution tracking, reflection layer. Live from agents/*/logs/ + AGENTS_INDEX.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/maestro/index.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="leaf" data-card-id="standalone/presto">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Presto — Marketing Observatory</h3>
+        <p class="role">Distribution Cognition Layer — campaign command center, analytics + audience intelligence, content lineage (Sage→adapt→publish→signal), audience learnings (8 types), discovery panel (4-filter), Sage-signal flow. Live from 00_MARKETING_INDEX.md + agents/presto/.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/presto/index.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="leaf" data-card-id="standalone/librarian">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Librarian — Knowledge Manager</h3>
+        <p class="role">Knowledge Manager Observatory — tier-1 global index (PARA distribution), tier-2 scoped units (11 active), knowledge map, open questions, gaps, 6 operation modes reference. Live from 00_INDEX.md + 00_AGENTS_INDEX.md.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/librarian/index.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="leaf" data-card-id="standalone/curator">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Curator — Dashboard Family</h3>
+        <p class="role">Self-referential dashboard about dashboards. Family grid (all 12), design system overview + promote history (DS 0.3.0), 7 modes reference, audit backlog, recent builds from index audit log. Live from 00_DASHBOARD_INDEX.md.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/curator/index.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="leaf" data-card-id="standalone/broker">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Broker — Sales Observatory</h3>
+        <p class="role">Sales Engine Observatory — cross-project pipeline (6 stages), cohort grid (area-identity colors), conversion funnel, sales learnings (8 types), outreach drafts, Presto sister cross-link. Phase 2.B: graceful empty-state until first /brk-plan.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/broker/index.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+
+  </div><!-- /panel-areas -->
+
+  <!-- ============= Tab 2: Agents ============= -->
+
+  <div class="tab-panel" id="panel-agents" role="tabpanel" aria-labelledby="tab-agents">
+
+    <div class="agents-tab-layout">
+
+      <!-- Graph + sync strip -->
+      <div style="display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--radius-xl);overflow:hidden;background:var(--bg-elev);">
+        <div class="agents-sync-strip">
+          <span class="sync-dot" id="agentSyncDot"></span>
+          <span id="agentSyncLabel">Loading agent family…</span>
+        </div>
+        <div class="graph-container" id="graphContainer" style="flex:1;border:none;border-radius:0;">
+          <svg id="agentGraphSvg"></svg>
+        </div>
+        <div class="graph-legend">
+          <span class="legend-item">
+            <span class="legend-dot" style="background:var(--ok);"></span>
+            LIVE agent
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot" style="background:var(--accent);"></span>
+            Scheduling pending
+          </span>
+          <span class="legend-item">
+            <span class="legend-dot" style="background:var(--warn);"></span>
+            Placeholder
+          </span>
+          <span class="legend-item">
+            <span class="legend-line"></span>
+            Orchestrates / builds
+          </span>
+          <span class="legend-item">
+            <span class="legend-line dotted"></span>
+            Permitted flow (wall)
+          </span>
+        </div>
+      </div>
+
+      <!-- Detail panel -->
+      <div class="agent-detail-panel">
+        <div class="agent-detail-card" id="agentDetailCard">
+          <div class="agent-detail-empty">
+            <div class="empty-icon">&#9671;</div>
+            <div>Click an agent node<br>to see details.</div>
+          </div>
+        </div>
+        <div style="font-size:11.5px;color:var(--ink-4);line-height:1.6;padding:0 2px;">
+          The Agents view is the <strong style="color:var(--ink-3);">dynamic view</strong> of the vault — who does what, how agents relate. The Areas tab is the <strong style="color:var(--ink-3);">static view</strong> — what content lives where. Two aspects of the same library.
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /panel-agents -->
+
+  <!-- ============= Footnote ============= -->
+
+  <footer class="footnote">
+    <span>Served from localhost. <span class="mono">npx serve .</span> in the vault root.</span>
+    <span>All edits happen in Obsidian. The dashboard is read-only.</span>
+  </footer>
+
+</div>
+
+<!-- Coming-soon modal -->
+<div class="coming-soon-overlay" id="comingSoonOverlay" role="dialog" aria-modal="true" aria-labelledby="comingSoonTitle">
+  <div class="coming-soon-modal">
+    <h3 id="comingSoonTitle"></h3>
+    <p id="comingSoonBody"></p>
+    <p class="modal-hint">Sage already has a dashboard — <a href="/_dashboards/sage/index.html">open it as a reference</a>.</p>
+    <button class="modal-close-btn" id="comingSoonClose">Close</button>
+  </div>
+</div>
+
+<!-- D3.js v7 for force-directed layout -->
+<script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+
+<script>
+  // ============= Date headline =============
+  const MONTHS_EN = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+  const WEEKDAYS_EN = [
+    "Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"
+  ];
+  const now = new Date();
+  const yyyy = now.getFullYear();
+  const dd = String(now.getDate()).padStart(2, "0");
+  const monthName = MONTHS_EN[now.getMonth()];
+  const weekday = WEEKDAYS_EN[now.getDay()];
+  const headline = document.getElementById("dateLine");
+  headline.innerHTML =
+    '<span class="weekday">' + weekday + '</span>'
+    + '<span class="rest">, ' + dd + " " + monthName + " " + yyyy + '</span>';
+  document.title = "Ideas Vault · " + weekday + ", " + dd + " " + monthName;
+
+  // ============= Tab switcher =============
+  const tabBtns = document.querySelectorAll('.tab-btn');
+  const tabPanels = document.querySelectorAll('.tab-panel');
+  const agentsSyncHint = document.getElementById('agentsSyncHint');
+
+  function activateTab(tabId) {
+    tabBtns.forEach(b => {
+      const active = b.id === tabId;
+      b.classList.toggle('active', active);
+      b.setAttribute('aria-selected', String(active));
+    });
+    tabPanels.forEach(p => {
+      p.classList.toggle('active', p.id === 'panel-' + tabId.replace('tab-', ''));
+    });
+    agentsSyncHint.style.display = (tabId === 'tab-agents') ? '' : 'none';
+
+    // Update URL fragment
+    const fragment = tabId === 'tab-agents' ? 'agents' : 'areas';
+    history.replaceState(null, '', '#' + fragment);
+
+    // Initialise graph if switching to agents for first time
+    if (tabId === 'tab-agents' && !graphInitialised) {
+      initAgentsGraph();
+    }
+  }
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener('click', () => activateTab(btn.id));
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activateTab(btn.id); }
+    });
+  });
+
+  // Restore tab from URL fragment
+  (function restoreTab() {
+    const hash = location.hash.replace('#', '');
+    if (hash === 'agents') activateTab('tab-agents');
+    else activateTab('tab-areas');
+  })();
+
+  // ============= Expand / collapse (Areas tree) =============
+  function bindToggle(headerSelector, parentSelector) {
+    document.querySelectorAll(headerSelector).forEach(h => {
+      const onActivate = (e) => {
+        if (e.target.closest('a, button[data-no-toggle]')) return;
+        const tree = h.closest(parentSelector);
+        if (!tree) return;
+        const next = tree.getAttribute('data-expanded') === 'true' ? 'false' : 'true';
+        tree.setAttribute('data-expanded', next);
+        h.setAttribute('aria-expanded', next);
+      };
+      h.addEventListener('click', onActivate);
+      h.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onActivate(e); }
+      });
+    });
+  }
+  bindToggle('.area-tree > .trunk-header', '.area-tree');
+  bindToggle('.sub-tree > .sub-tree-header', '.sub-tree');
+
+  // ============= Card copy-ref (DS 0.2.0) =============
+  const DASH_STEM = 'index';
+  function copyText(text, el) {
+    navigator.clipboard.writeText(text).then(() => {
+      el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
+    }).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); } catch(e) {}
+      document.body.removeChild(ta);
+      el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
+    });
+  }
+  document.querySelectorAll('.card-copy-ref').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const card = btn.closest('[data-card-id]');
+      if (!card) return;
+      copyText(DASH_STEM + ':' + card.dataset.cardId, btn);
+    });
+  });
+
+  // ============= Theme toggle (DS 0.3.0) =============
+  function setTheme(t) {
+    document.documentElement.dataset.theme = t;
+    try { localStorage.setItem('dash-theme', t); } catch(e) {}
+    const btn = document.getElementById('themeToggle');
+    if (btn) {
+      btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+      btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+      btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+    }
+  }
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+  });
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+  });
+  (function initTheme() {
+    var t;
+    try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+    if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+    setTheme(t);
+  })();
+
+  // ============= Agents Graph =============
+
+  const AGENTS_INDEX_FILE = '/00_Prompts/BDOS/00_AGENTS_INDEX.md';
+  const POLL_INTERVAL = 8000;
+
+  // Static description distillations (supplement live data)
+  const AGENT_DESCRIPTIONS = {
+    'librarian':  'Knowledge manager, vault retrieval',
+    'maestro':    'Conductor — projects and team',
+    'curator':    'Representation layer dashboards',
+    'sage':       'Cognition curator, thought harvest',
+    'presto':     'Marketing executor, distribution',
+    'broker':     'Sales executor, one-to-one'
+  };
+
+  // All 6 agent dashboards now live (0.7.4).
+  const AGENT_DASHBOARD_URLS = {
+    'sage':      '/_dashboards/sage/index.html',
+    'maestro':   '/_dashboards/maestro/index.html',
+    'presto':    '/_dashboards/presto/index.html',
+    'librarian': '/_dashboards/librarian/index.html',
+    'curator':   '/_dashboards/curator/index.html',
+    'broker':    '/_dashboards/broker/index.html'
+  };
+
+  // Agent profiles — avatars fetched live (0.7.4)
+  const AGENT_PROFILES_FILE = '/00_Prompts/BDOS/AGENT_PROFILES.md';
+  let gAvatarMap = {}; // id (lowercase) → { emoji, color }
+  let lastProfilesMd = null;
+
+  function parseAgentProfile(md, agentName) {
+    if (!md) return null;
+    const escaped = agentName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp('^## ' + escaped + '\\s*\\n+```yaml\\n([\\s\\S]*?)\\n```', 'm');
+    const m = md.match(re);
+    if (!m) return null;
+    const yaml = m[1];
+    const emojiM = yaml.match(/^\s*emoji:\s*["']?([^"'\n]+?)["']?\s*$/m);
+    const colorM = yaml.match(/^\s*color:\s*["']?(#[0-9a-fA-F]{3,8})["']?\s*$/m);
+    function parseList(key) {
+      const re2 = new RegExp('\\n\\s{0,4}' + key + ':\\s*\\n((?:\\s+- [^\\n]*\\n?)*)', '');
+      const mm = yaml.match(re2);
+      if (!mm) return [];
+      return mm[1].split('\n').map(l => l.replace(/^\s+-\s*/, '').trim()).filter(Boolean);
+    }
+    return {
+      emoji: emojiM ? emojiM[1].trim() : '?',
+      color: colorM ? colorM[1].trim() : '#D97757',
+      tools: parseList('tools'),
+      connectors_mcp: parseList('connectors_mcp'),
+      apis: parseList('apis'),
+      plugins: parseList('plugins'),
+    };
+  }
+
+  function hexToRgba(hex, alpha) {
+    const h = hex.replace('#','');
+    const r = parseInt(h.slice(0,2),16);
+    const g = parseInt(h.slice(2,4),16);
+    const b = parseInt(h.slice(4,6),16);
+    return `rgba(${r},${g},${b},${alpha})`;
+  }
+
+  function buildAvatarMap(md) {
+    if (!md) return;
+    ['Librarian','Maestro','Curator','Sage','Presto','Broker'].forEach(name => {
+      const p = parseAgentProfile(md, name);
+      if (p) gAvatarMap[name.toLowerCase()] = p;
+    });
+  }
+
+  // Edge definitions (static relationship map from canonicals).
+  // Type: 'orchestrates' | 'representation' | 'permitted-flow' | 'sibling'
+  const STATIC_EDGES = [
+    { source: 'maestro', target: 'librarian',  type: 'orchestrates',    label: 'team-*' },
+    { source: 'maestro', target: 'curator',    type: 'orchestrates',    label: 'team-*' },
+    { source: 'maestro', target: 'sage',        type: 'orchestrates',    label: 'team-*' },
+    { source: 'maestro', target: 'presto',      type: 'orchestrates',    label: 'team-*' },
+    { source: 'maestro', target: 'broker',      type: 'orchestrates',    label: 'team-*' },
+    { source: 'sage',    target: 'librarian',   type: 'orchestrates',    label: 'curate→' },
+    { source: 'sage',    target: 'presto',      type: 'permitted-flow',  label: 'cognition→dist' },
+    { source: 'sage',    target: 'broker',      type: 'permitted-flow',  label: 'cognition→dist' },
+    { source: 'presto',  target: 'broker',      type: 'sibling',         label: 'sibling' },
+    { source: 'curator', target: 'librarian',   type: 'representation',  label: 'renders' },
+    { source: 'curator', target: 'maestro',     type: 'representation',  label: 'static↔dynamic' },
+    { source: 'curator', target: 'sage',        type: 'representation',  label: 'renders' },
+    { source: 'curator', target: 'presto',      type: 'representation',  label: 'renders' },
+    { source: 'curator', target: 'broker',      type: 'representation',  label: 'renders' }
+  ];
+
+  let graphInitialised = false;
+  let lastIndexContent = null;
+  let selectedAgent = null;
+  let parsedAgents = [];
+  let simulation = null;
+
+  // ---------- Parse agents from 00_AGENTS_INDEX.md ----------
+  function parseAgentsIndex(md) {
+    const agents = [];
+    // Match sections like: ### Librarian — v0.5
+    const sectionRe = /^### ([^\n\r—]+?)(?:\s*—\s*v(\S+))?\s*$/gm;
+    let m;
+    while ((m = sectionRe.exec(md)) !== null) {
+      const rawName = m[1].trim();
+      const name = rawName.toLowerCase().replace(/\s+/g, '-');
+      const version = m[2] || '0.1';
+      const sectionStart = m.index;
+      // Find end of section (next ### or ##)
+      const sectionEnd = md.indexOf('\n### ', sectionStart + 1);
+      const body = sectionEnd === -1 ? md.slice(sectionStart) : md.slice(sectionStart, sectionEnd);
+
+      // Extract status
+      let status = 'active';
+      const statusM = body.match(/\*\*Status:\*\*\s*([^\n\r]+)/);
+      if (statusM) {
+        const s = statusM[1].toLowerCase();
+        if (s.includes('scheduling')) status = 'scheduling';
+        else if (s.includes('planned') || s.includes('tervezett')) status = 'placeholder';
+      }
+
+      agents.push({
+        id: name,
+        displayName: rawName,
+        version,
+        status,
+        description: AGENT_DESCRIPTIONS[name] || ''
+      });
+    }
+    return agents;
+  }
+
+  // ---------- Fetch & render loop ----------
+  async function fetchAgents() {
+    try {
+      const resp = await fetch(AGENTS_INDEX_FILE, { cache: 'no-store' });
+      if (!resp.ok) throw new Error('HTTP ' + resp.status);
+      const text = await resp.text();
+      if (text === lastIndexContent) return null; // no change
+      lastIndexContent = text;
+      return parseAgentsIndex(text);
+    } catch(e) {
+      return null;
+    }
+  }
+
+  function setSyncState(state, msg) {
+    const dot = document.getElementById('agentSyncDot');
+    const label = document.getElementById('agentSyncLabel');
+    if (!dot || !label) return;
+    dot.className = 'sync-dot' + (state === 'ok' ? '' : state === 'warn' ? ' stale' : ' error');
+    label.textContent = msg;
+  }
+
+  // ---------- D3 Force Graph ----------
+  function getStyleVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+
+  function initAgentsGraph() {
+    graphInitialised = true;
+    renderGraph([]);
+    fetchAndDraw();
+    setInterval(fetchAndDraw, POLL_INTERVAL);
+  }
+
+  async function fetchAndDraw() {
+    const [agents, profilesMd] = await Promise.all([
+      fetchAgents(),
+      fetch(AGENT_PROFILES_FILE, { cache: 'no-store' }).then(r => r.ok ? r.text() : null).catch(() => null),
+    ]);
+
+    if (profilesMd !== lastProfilesMd) {
+      lastProfilesMd = profilesMd;
+      buildAvatarMap(profilesMd);
+    }
+
+    if (agents === null) {
+      if (parsedAgents.length === 0) {
+        setSyncState('error', 'Could not load 00_AGENTS_INDEX.md — is the server running?');
+      } else {
+        setSyncState('ok', 'Agent family — ' + parsedAgents.length + ' agents. Next refresh in 8s.');
+      }
+      return;
+    }
+    parsedAgents = agents;
+    setSyncState('ok', 'Agent family — ' + agents.length + ' agent' + (agents.length !== 1 ? 's' : '') + '. Live from 00_AGENTS_INDEX.md.');
+    renderGraph(agents);
+  }
+
+  function renderGraph(agents) {
+    const container = document.getElementById('graphContainer');
+    const svgEl = document.getElementById('agentGraphSvg');
+    if (!container || !svgEl) return;
+
+    const W = container.clientWidth || 680;
+    const H = container.clientHeight || 480;
+
+    // Clear previous content
+    d3.select(svgEl).selectAll('*').remove();
+
+    if (agents.length === 0) {
+      // Empty state
+      const svg = d3.select(svgEl).attr('width', W).attr('height', H);
+      svg.append('text')
+        .attr('x', W / 2).attr('y', H / 2)
+        .attr('text-anchor', 'middle')
+        .attr('fill', getStyleVar('--ink-4'))
+        .attr('font-size', '13')
+        .attr('font-family', 'Inter, sans-serif')
+        .text('No agents found — check 00_AGENTS_INDEX.md');
+      return;
+    }
+
+    // Build nodes & edges from parsed agents + static edge definitions
+    const nodeIds = new Set(agents.map(a => a.id));
+    const nodes = agents.map(a => ({ ...a }));
+
+    // Only include edges where both endpoints are present
+    const links = STATIC_EDGES.filter(e => nodeIds.has(e.source) && nodeIds.has(e.target))
+      .map(e => ({ ...e }));
+
+    const svg = d3.select(svgEl)
+      .attr('width', W)
+      .attr('height', H);
+
+    // Defs for arrowheads
+    const defs = svg.append('defs');
+
+    function addMarker(id, color) {
+      defs.append('marker')
+        .attr('id', id)
+        .attr('viewBox', '0 -4 8 8')
+        .attr('refX', 72)  // offset to not overlap card
+        .attr('refY', 0)
+        .attr('markerWidth', 6)
+        .attr('markerHeight', 6)
+        .attr('orient', 'auto')
+        .append('path')
+        .attr('d', 'M0,-4L8,0L0,4')
+        .attr('fill', color);
+    }
+
+    const inkLine = getStyleVar('--ink-4') || '#9c9c98';
+    const accentColor = getStyleVar('--accent') || '#D97757';
+    const warnColor = getStyleVar('--warn') || '#b07a18';
+    const okColor = getStyleVar('--ok') || '#1f7a4d';
+
+    addMarker('arrow-orchestrates', inkLine);
+    addMarker('arrow-representation', accentColor);
+    addMarker('arrow-permitted', warnColor);
+    addMarker('arrow-sibling', inkLine);
+
+    // Edge group
+    const linkGroup = svg.append('g').attr('class', 'links');
+
+    // Node group
+    const nodeGroup = svg.append('g').attr('class', 'nodes');
+
+    // Card dimensions
+    const CARD_W = 148;
+    const CARD_H = 86;
+
+    // D3 force simulation
+    if (simulation) simulation.stop();
+    simulation = d3.forceSimulation(nodes)
+      .force('link', d3.forceLink(links).id(d => d.id).distance(200).strength(0.4))
+      .force('charge', d3.forceManyBody().strength(-420))
+      .force('center', d3.forceCenter(W / 2, H / 2))
+      .force('collide', d3.forceCollide().radius(100).strength(0.8))
+      .force('x', d3.forceX(W / 2).strength(0.05))
+      .force('y', d3.forceY(H / 2).strength(0.05));
+
+    // Links
+    const linkEls = linkGroup.selectAll('line')
+      .data(links)
+      .enter()
+      .append('line')
+      .attr('stroke', d => {
+        if (d.type === 'representation') return accentColor;
+        if (d.type === 'permitted-flow') return warnColor;
+        return inkLine;
+      })
+      .attr('stroke-width', d => d.type === 'sibling' ? 1.5 : 1.2)
+      .attr('stroke-dasharray', d => d.type === 'permitted-flow' ? '4,3' : (d.type === 'sibling' ? '2,2' : null))
+      .attr('stroke-opacity', 0.55)
+      .attr('marker-end', d => {
+        if (d.type === 'representation') return 'url(#arrow-representation)';
+        if (d.type === 'permitted-flow') return 'url(#arrow-permitted)';
+        if (d.type === 'sibling') return null;
+        return 'url(#arrow-orchestrates)';
+      });
+
+    // Nodes as foreignObject
+    const nodeEls = nodeGroup.selectAll('foreignObject')
+      .data(nodes)
+      .enter()
+      .append('foreignObject')
+      .attr('width', CARD_W)
+      .attr('height', CARD_H)
+      .style('overflow', 'visible')
+      .call(d3.drag()
+        .on('start', (event, d) => {
+          if (!event.active) simulation.alphaTarget(0.3).restart();
+          d.fx = d.x; d.fy = d.y;
+        })
+        .on('drag', (event, d) => {
+          d.fx = event.x; d.fy = event.y;
+        })
+        .on('end', (event, d) => {
+          if (!event.active) simulation.alphaTarget(0);
+          d.fx = null; d.fy = null;
+        })
+      );
+
+    nodeEls.each(function(d) {
+      const fo = d3.select(this);
+      const hasDash = !!AGENT_DASHBOARD_URLS[d.id];
+      const isPlaceholder = d.status === 'placeholder';
+
+      const card = document.createElement('div');
+      card.className = 'agent-node-card' +
+        (hasDash ? ' has-dashboard' : '') +
+        (isPlaceholder ? ' placeholder' : '');
+
+      const av = gAvatarMap[d.id];
+      const avatarHtml = av
+        ? '<div class="node-avatar" style="background:' + hexToRgba(av.color, 0.12) + ';border-color:' + hexToRgba(av.color, 0.3) + ';color:' + av.color + ';">' + av.emoji + '</div>'
+        : '';
+      card.innerHTML =
+        avatarHtml +
+        '<div class="node-name">' + escHtml(d.displayName) + '</div>' +
+        '<div class="node-desc">' + escHtml(d.description) + '</div>' +
+        '<div class="node-meta">' +
+          '<span class="node-status-dot ' + statusClass(d.status) + '"></span>' +
+          '<span class="node-version">v' + escHtml(d.version) + '</span>' +
+          '<span class="node-status-label">' + statusLabel(d.status) + '</span>' +
+        '</div>';
+
+      card.addEventListener('click', () => onNodeClick(d));
+      fo.node().appendChild(card);
+    });
+
+    // Tick
+    simulation.on('tick', () => {
+      linkEls
+        .attr('x1', d => clamp(d.source.x, 0, W))
+        .attr('y1', d => clamp(d.source.y, 0, H))
+        .attr('x2', d => clamp(d.target.x, 0, W))
+        .attr('y2', d => clamp(d.target.y, 0, H));
+
+      nodeEls
+        .attr('x', d => clamp(d.x, CARD_W / 2, W - CARD_W / 2) - CARD_W / 2)
+        .attr('y', d => clamp(d.y, CARD_H / 2, H - CARD_H / 2) - CARD_H / 2);
+    });
+  }
+
+  function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+
+  function escHtml(s) {
+    return String(s)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function statusClass(s) {
+    if (s === 'scheduling') return 'scheduling';
+    if (s === 'placeholder') return 'placeholder-status';
+    return 'live';
+  }
+
+  function statusLabel(s) {
+    if (s === 'scheduling') return 'scheduling';
+    if (s === 'placeholder') return 'placeholder';
+    return 'live';
+  }
+
+  // ---------- Node click → detail panel ----------
+  function onNodeClick(agent) {
+    selectedAgent = agent;
+    const panel = document.getElementById('agentDetailCard');
+    if (!panel) return;
+
+    const hasDash = !!AGENT_DASHBOARD_URLS[agent.id];
+    const url = AGENT_DASHBOARD_URLS[agent.id] || null;
+
+    // Connections from STATIC_EDGES
+    const outgoing = STATIC_EDGES.filter(e => e.source === agent.id && parsedAgents.some(a => a.id === e.target));
+    const incoming = STATIC_EDGES.filter(e => e.target === agent.id && parsedAgents.some(a => a.id === e.source));
+
+    const connHtml = (outgoing.length + incoming.length > 0) ? `
+      <div class="detail-connections">
+        <h5>Connections</h5>
+        ${incoming.map(e => `
+          <span class="connection-chip">
+            <span class="conn-arrow">←</span>
+            ${escHtml(capitalize(e.source))}
+            <span style="font-size:9.5px;color:var(--ink-4);">(${escHtml(e.label)})</span>
+          </span>`).join('')}
+        ${outgoing.map(e => `
+          <span class="connection-chip">
+            <span class="conn-arrow">→</span>
+            ${escHtml(capitalize(e.target))}
+            <span style="font-size:9.5px;color:var(--ink-4);">(${escHtml(e.label)})</span>
+          </span>`).join('')}
+      </div>` : '';
+
+    const btnHtml = hasDash
+      ? `<a class="detail-open-btn" href="${url}">Open dashboard <span>→</span></a>`
+      : `<button class="detail-open-btn coming-soon" onclick="showComingSoon('${escHtml(agent.displayName)}')">Detail page coming soon</button>`;
+
+    const av = gAvatarMap[agent.id];
+    const avatarHeaderHtml = av
+      ? `<span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:1.5px solid ${hexToRgba(av.color,0.3)};background:${hexToRgba(av.color,0.12)};color:${av.color};font-size:22px;margin-bottom:6px;">${av.emoji}</span>`
+      : '';
+    const capSummaryHtml = av ? `
+      <div class="detail-cap-summary">
+        ${av.tools.length ? `<span class="detail-cap-chip">${av.tools.length} tools</span>` : ''}
+        ${av.connectors_mcp.length ? `<span class="detail-cap-chip">${av.connectors_mcp.length} MCP${av.connectors_mcp.length > 1 ? 's' : ''}</span>` : ''}
+        ${av.apis.length ? `<span class="detail-cap-chip">${av.apis.length} API${av.apis.length > 1 ? 's' : ''}</span>` : ''}
+        ${av.plugins.length ? `<span class="detail-cap-chip">${av.plugins.length} plugin${av.plugins.length > 1 ? 's' : ''}</span>` : ''}
+        <span class="detail-cap-chip" style="opacity:.6;font-size:9px;">live from AGENT_PROFILES.md</span>
+      </div>` : '';
+
+    panel.innerHTML = `
+      <div class="agent-detail-header">
+        ${avatarHeaderHtml}
+        <div class="detail-name">${escHtml(agent.displayName)}</div>
+        <div class="detail-desc">${escHtml(agent.description)}</div>
+        <div class="detail-meta">
+          <span class="detail-version-pill">v${escHtml(agent.version)}</span>
+          <span class="detail-status-chip ${statusClass(agent.status)}">${statusLabel(agent.status)}</span>
+        </div>
+        ${capSummaryHtml}
+      </div>
+      <div class="agent-detail-body">
+        ${connHtml}
+        ${btnHtml}
+      </div>`;
+  }
+
+  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  // ---------- Coming-soon modal ----------
+  function showComingSoon(name) {
+    const overlay = document.getElementById('comingSoonOverlay');
+    document.getElementById('comingSoonTitle').textContent = name + ' — detail page';
+    document.getElementById('comingSoonBody').textContent =
+      'The ' + name + ' agent dashboard has not been built yet. ' +
+      'Sage is the reference implementation. Check back after the next build session.';
+    overlay.classList.add('visible');
+  }
+
+  document.getElementById('comingSoonClose').addEventListener('click', () => {
+    document.getElementById('comingSoonOverlay').classList.remove('visible');
+  });
+  document.getElementById('comingSoonOverlay').addEventListener('click', (e) => {
+    if (e.target === e.currentTarget) e.currentTarget.classList.remove('visible');
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.getElementById('comingSoonOverlay').classList.remove('visible');
+    }
+  });
+
+  // Expose showComingSoon globally (called from inline onclick)
+  window.showComingSoon = showComingSoon;
+
+  // ---------- Re-render graph on theme change (colors update) ----------
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'dash-theme' && graphInitialised && parsedAgents.length > 0) {
+      setTimeout(() => renderGraph(parsedAgents), 50);
+    }
+  });
+  document.getElementById('themeToggle').addEventListener('click', function() {
+    if (graphInitialised && parsedAgents.length > 0) {
+      setTimeout(() => renderGraph(parsedAgents), 100);
+    }
+  });
+
+  // DS 0.4.0 — event-driven live updates
+  LiveUpdates.subscribe(fetchAndDraw);
+  LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
+
+</script>
+<script src="/_dashboards/_design/live-updates.js"></script>
+</body>
+</html>

@@ -1,0 +1,1082 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Navigátor Podcast, episode + ops dashboard.   Version: 0.1.4
+  =============================================================================
+  Two tabs in one renderer:
+    - Epizódok : sortable/filterable roster of EP01–EP42, platform status
+                 (YouTube + Spotify), analytics, clusters, TOP performers.
+                 Click a row -> drawer enriched live from the matching
+                 Synthesis/Podcast/EP*.md (per-record pattern, like Sales NOTES.md).
+    - Kanban   : task board parsed from TODO.md (Obsidian Kanban), cards by lane.
+
+  Renders from (single source of truth, edit in Obsidian, NOT this HTML):
+    /02_Areas/Navigátor Podcast/EPISODES.md   (frontmatter `episodes` array)
+    /02_Areas/Navigátor Podcast/TODO.md       (Obsidian Kanban board)
+    /02_Areas/Navigátor Podcast/Synthesis/Podcast/<synthesis>.md  (drawer enrichment)
+
+  Live via SSE file-watcher push (dash-server.mjs), 8s/30s poll fallback.
+  Read-only. Light + dark mode (toggle persisted in localStorage).
+  Conventions: see 02_Areas/Sonrisa/CPS/Sales/DASHBOARD_CONTRACT.md.
+
+  Audit trail:
+    0.1.0 (2026-05-21) initial build. Episode roster grid + drawer + kanban,
+          dark mode, filters, sort, widgets, YAML + kanban + markdown parsers,
+          SSE push + poll fallback.
+    0.1.1 2026-05-22 — reviewed against DESIGN_SYSTEM 0.1.0; functional extras (--info, dark-mode) retained pending promote
+    0.1.2 (2026-05-22) — added .card-copy-ref hover buttons + data-card-id
+          (DESIGN_SYSTEM 0.2.0). Episode rows: id = ep01..epNN. Kanban cards:
+          id = kanban/<lane-slug>/<title-slug>.
+    0.1.3 (2026-05-22) — added day/night theme toggle + dark tokens (DESIGN_SYSTEM
+          0.3.0). Canonical shared localStorage key "dash-theme" (replaces
+          bespoke "nav-dash-theme"). FOUC-init added. Cross-dashboard storage sync.
+    0.1.4 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
+  =============================================================================
+-->
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigátor Podcast</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M16 5L7 11v10l9 6 9-6V11z' fill='none' stroke='%23D97757' stroke-width='1.8' stroke-linejoin='round'/%3E%3Cpath d='M16 11l3 5-3 5-3-5z' fill='%23D97757'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) {
+    t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+  }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-page: #faf9f5;
+  --bg-elev: #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint: #f5f4ef;
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+  --line: #e5e4df;
+  --line-soft: #efede7;
+  --accent: #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  --ok:        #1f7a4d;
+  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;
+  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;
+  --gap-tint:  #fbeae6;
+  --idle:      #7a7a76;
+  --idle-tint: #efeeeb;
+  --info:      #2563a5;
+  --info-tint: #e8eff8;
+
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+  --shadow-3: 0 18px 50px rgba(20,20,19,.18), 0 6px 16px rgba(20,20,19,.10);
+
+  --radius-s: 4px;
+  --radius-m: 6px;
+  --radius-l: 10px;
+  --radius-xl: 14px;
+
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  /* Surfaces — warm dark paper */
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+
+  /* Ink scale */
+  --ink-1: #f5f4ef;
+  --ink-2: #d6d4ce;
+  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;
+  --ink-5: #54524d;
+
+  /* Lines */
+  --line:      #36342f;
+  --line-soft: #2c2a26;
+
+  /* Accent */
+  --accent:      #e08a6a;
+  --accent-deep: #f0a085;
+  --accent-tint: #3a2a22;
+
+  /* Status */
+  --ok:        #5cc08a;  --ok-tint:   #1e3329;
+  --warn:      #d6a94a;  --warn-tint: #352c18;
+  --gap:       #e57c6e;  --gap-tint:  #3a221e;
+  --idle:      #9a9892;  --idle-tint: #2a2925;
+
+  /* Navigator-specific extras (pending promote) */
+  --info:      #6aa3e0;  --info-tint: #1e2a3a;
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  --shadow-3: 0 18px 50px rgba(0,0,0,.55), 0 6px 16px rgba(0,0,0,.40);
+}
+
+/* System-aware fallback (DS 0.3.0) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:   #1a1916;
+    --bg-elev:   #232220;
+    --bg-sunken: #2c2a26;
+    --bg-tint:   #262420;
+    --ink-1: #f5f4ef;
+    --ink-2: #d6d4ce;
+    --ink-3: #a8a6a0;
+    --ink-4: #7c7a74;
+    --ink-5: #54524d;
+    --line:      #36342f;
+    --line-soft: #2c2a26;
+    --accent:      #e08a6a;
+    --accent-deep: #f0a085;
+    --accent-tint: #3a2a22;
+    --ok:        #5cc08a;  --ok-tint:   #1e3329;
+    --warn:      #d6a94a;  --warn-tint: #352c18;
+    --gap:       #e57c6e;  --gap-tint:  #3a221e;
+    --idle:      #9a9892;  --idle-tint: #2a2925;
+    --info:      #6aa3e0;  --info-tint: #1e2a3a;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+    --shadow-3: 0 18px 50px rgba(0,0,0,.55), 0 6px 16px rgba(0,0,0,.40);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; background: transparent; border: 0; color: inherit; cursor: pointer; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-s);
+}
+
+.app { max-width: 1240px; margin: 0 auto; padding: 26px 32px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { padding-bottom: 20px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
+.masthead .toprow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+/* ===== Theme toggle button (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px;
+}
+.eyebrow .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+.version-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
+  border-radius: 999px; letter-spacing: 0; text-transform: none;
+}
+.masthead h1 { font-size: clamp(26px, 3.2vw, 38px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta {
+  margin-top: 10px; font-size: 13.5px; color: var(--ink-3);
+  display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+}
+.masthead .submeta .sep { width: 4px; height: 4px; border-radius: 50%; background: var(--ink-5); }
+.masthead .submeta strong { color: var(--ink-1); font-weight: 600; }
+
+/* ===== Sync indicator ===== */
+.sync-status {
+  display: inline-flex; align-items: center; gap: 8px; font-size: 11px;
+  color: var(--ink-3); font-weight: 500; cursor: pointer;
+  padding: 3px 6px; margin: -3px -6px; border-radius: 6px; transition: background var(--t-fast); user-select: none;
+}
+.sync-status:hover { background: rgba(127,127,127,.10); }
+.sync-status .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-4); flex-shrink: 0; transition: background var(--t-fast); }
+.sync-status[data-state="live"] .dot { background: var(--ok); box-shadow: 0 0 0 3px rgba(31,122,77,.16); }
+.sync-status[data-state="syncing"] .dot { background: var(--warn); animation: pulse-sync 1s ease-in-out infinite; }
+.sync-status[data-state="error"] .dot, .sync-status[data-state="offline"] .dot { background: var(--ink-5); }
+@keyframes pulse-sync { 0%,100% { opacity:1; transform:scale(1);} 50% { opacity:.35; transform:scale(.7);} }
+.sync-bar { width: 46px; height: 3px; background: rgba(127,127,127,.18); border-radius: 999px; overflow: hidden; flex-shrink: 0; }
+.sync-bar-fill { display: block; height: 100%; background: var(--ok); width: 0%; border-radius: 999px; transform-origin: left center; }
+.sync-status[data-state="live"] .sync-bar-fill { animation: sync-countdown 8s linear forwards; }
+.sync-status[data-state="syncing"] .sync-bar-fill { animation: sync-shuttle .9s ease-in-out infinite; background: var(--warn); width: 30%; }
+@keyframes sync-countdown { 0% { width: 0%; } 100% { width: 100%; } }
+@keyframes sync-shuttle { 0% { transform: translateX(0%);} 50% { transform: translateX(160%);} 100% { transform: translateX(0%);} }
+
+/* ===== Tabs ===== */
+.tabs { display: inline-flex; gap: 4px; padding: 4px; background: var(--bg-sunken); border-radius: var(--radius-l); margin-bottom: 24px; }
+.tab {
+  padding: 8px 18px; font-size: 13.5px; font-weight: 600; color: var(--ink-3);
+  border-radius: var(--radius-m); transition: all var(--t-fast); display: inline-flex; align-items: center; gap: 7px;
+}
+.tab:hover { color: var(--ink-1); }
+.tab[aria-selected="true"] { background: var(--bg-elev); color: var(--ink-1); box-shadow: var(--shadow-1); }
+.tab .count { font-size: 11px; color: var(--ink-4); font-family: 'JetBrains Mono', monospace; }
+.tab[aria-selected="true"] .count { color: var(--accent); }
+.view { display: none; }
+.view.active { display: block; }
+
+/* ===== Widgets ===== */
+.widgets { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; margin-bottom: 26px; }
+.widget { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 16px 18px 14px; }
+.widget h2 { font-size: 10.5px; text-transform: uppercase; letter-spacing: .09em; color: var(--ink-4); font-weight: 600; margin-bottom: 10px; }
+.widget .big { font-size: 27px; font-weight: 700; letter-spacing: -0.02em; line-height: 1; }
+.widget .big .of { font-size: 14px; color: var(--ink-4); font-weight: 500; }
+.widget .cap { margin-top: 7px; font-size: 12px; color: var(--ink-3); }
+.widget.is-warn .big { color: var(--warn); }
+.widget.is-gap .big { color: var(--gap); }
+.widget.is-ok .big { color: var(--ok); }
+
+/* ===== Controls ===== */
+.controls { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 18px; }
+.search-box { position: relative; flex: 1; min-width: 200px; }
+.search-box svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--ink-4); }
+.search-box input {
+  width: 100%; padding: 9px 12px 9px 34px; font-size: 13.5px; color: var(--ink-1);
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-m); transition: border-color var(--t-fast);
+}
+.search-box input::placeholder { color: var(--ink-4); }
+.search-box input:focus { border-color: var(--accent); outline: none; }
+.filter-sel {
+  padding: 9px 30px 9px 12px; font-size: 13px; color: var(--ink-2); cursor: pointer;
+  background: var(--bg-elev) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239c9c98' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
+  border: 1px solid var(--line); border-radius: var(--radius-m); appearance: none; -webkit-appearance: none;
+}
+.filter-sel:hover { border-color: var(--ink-5); }
+
+/* ===== Episode table ===== */
+.table-wrap { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-xl); overflow: hidden; }
+table.eps { width: 100%; border-collapse: collapse; font-size: 13px; }
+table.eps thead th {
+  text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--ink-4);
+  font-weight: 600; padding: 12px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; background: var(--bg-tint);
+  cursor: pointer; user-select: none; position: sticky; top: 0;
+}
+table.eps thead th.no-sort { cursor: default; }
+table.eps thead th .arr { color: var(--accent); font-size: 9px; margin-left: 3px; opacity: 0; }
+table.eps thead th[data-dir="asc"] .arr, table.eps thead th[data-dir="desc"] .arr { opacity: 1; }
+table.eps thead th[data-dir="desc"] .arr { transform: rotate(180deg); display: inline-block; }
+table.eps tbody tr { border-bottom: 1px solid var(--line-soft); cursor: pointer; transition: background var(--t-fast); }
+table.eps tbody tr:last-child { border-bottom: none; }
+table.eps tbody tr:hover { background: var(--bg-tint); }
+table.eps td { padding: 11px 14px; vertical-align: middle; color: var(--ink-2); }
+table.eps td.epnum { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--ink-1); white-space: nowrap; }
+table.eps td.guest { font-weight: 600; color: var(--ink-1); }
+table.eps td .topic { font-size: 12px; color: var(--ink-3); margin-top: 2px; line-height: 1.4; max-width: 360px; }
+table.eps td.num { font-family: 'JetBrains Mono', monospace; text-align: right; white-space: nowrap; }
+.top-star { color: var(--accent); margin-left: 5px; }
+tr.is-top td.guest { }
+.cluster-chip {
+  display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 999px;
+  background: var(--bg-sunken); color: var(--ink-3); white-space: nowrap;
+}
+.pf { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; font-weight: 600; white-space: nowrap; }
+.pf .ic { width: 14px; height: 14px; display: inline-flex; }
+.badge {
+  display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .04em; padding: 3px 8px; border-radius: 999px; white-space: nowrap;
+}
+.badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+.badge.ok { color: var(--ok); background: var(--ok-tint); }
+.badge.date_fix { color: var(--warn); background: var(--warn-tint); }
+.badge.missing { color: var(--gap); background: var(--gap-tint); }
+.badge.unverified { color: var(--idle); background: var(--idle-tint); }
+.badge.prio { color: var(--accent-deep); background: var(--accent-tint); }
+.yt-ok { color: var(--ok); }
+.empty-note { font-size: 13px; color: var(--ink-4); font-style: italic; padding: 24px; text-align: center; }
+
+/* ===== Kanban ===== */
+.kanban { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(248px, 1fr); gap: 14px; overflow-x: auto; padding-bottom: 12px; align-items: start; }
+.kcol { background: var(--bg-tint); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 12px; min-width: 0; }
+.kcol-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 11px; padding: 0 2px; }
+.kcol-head .nm { font-size: 13px; font-weight: 700; color: var(--ink-1); display: flex; align-items: center; gap: 6px; }
+.kcol-head .ct { font-size: 11px; font-family: 'JetBrains Mono', monospace; color: var(--ink-4); background: var(--bg-elev); border: 1px solid var(--line); border-radius: 999px; padding: 1px 7px; }
+.kcol::before { content: ''; display: block; height: 3px; border-radius: 999px; margin: -2px 2px 11px; background: var(--lane-accent, var(--ink-5)); }
+.kcard {
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-m); padding: 10px 12px;
+  margin-bottom: 9px; transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.kcard:last-child { margin-bottom: 0; }
+.kcard:hover { transform: translateY(-1px); box-shadow: var(--shadow-1); border-color: var(--ink-5); }
+.kcard.done { opacity: .62; }
+.kcard .ttl { font-size: 12.5px; font-weight: 600; color: var(--ink-1); line-height: 1.35; }
+.kcard.done .ttl { text-decoration: line-through; color: var(--ink-3); }
+.kcard .teaser { font-size: 11.5px; color: var(--ink-3); margin-top: 4px; line-height: 1.4; }
+.kcard .meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; align-items: center; }
+.ktag { font-size: 10px; font-weight: 600; color: var(--ink-3); background: var(--bg-sunken); border-radius: 999px; padding: 1px 7px; font-family: 'JetBrains Mono', monospace; }
+.ktag.prio { color: var(--accent-deep); background: var(--accent-tint); }
+.kdue { font-size: 10px; font-weight: 600; color: var(--info); background: var(--info-tint); border-radius: 999px; padding: 1px 7px; font-family: 'JetBrains Mono', monospace; }
+.kdue.overdue { color: var(--gap); background: var(--gap-tint); }
+
+/* ===== Drawer ===== */
+.scrim { position: fixed; inset: 0; background: rgba(20,20,19,.42); opacity: 0; pointer-events: none; transition: opacity var(--t-med); z-index: 40; }
+.scrim.open { opacity: 1; pointer-events: auto; }
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; width: min(640px, 94vw); background: var(--bg-page);
+  border-left: 1px solid var(--line); box-shadow: var(--shadow-3); z-index: 50;
+  transform: translateX(100%); transition: transform var(--t-med); display: flex; flex-direction: column;
+}
+.drawer.open { transform: translateX(0); }
+.drawer-head { padding: 20px 24px 16px; border-bottom: 1px solid var(--line); background: var(--bg-elev); }
+.drawer-head .row1 { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+.drawer-head .epbadge { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--accent); }
+.drawer-head h2 { font-size: 20px; font-weight: 700; letter-spacing: -0.01em; margin-top: 4px; line-height: 1.2; }
+.drawer-head .sub { font-size: 13px; color: var(--ink-3); margin-top: 5px; line-height: 1.45; }
+.drawer-close { width: 30px; height: 30px; border-radius: var(--radius-m); display: inline-flex; align-items: center; justify-content: center; color: var(--ink-3); flex-shrink: 0; transition: all var(--t-fast); }
+.drawer-close:hover { background: var(--bg-sunken); color: var(--ink-1); }
+.drawer-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.drawer-cta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.cta {
+  display: inline-flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; padding: 7px 13px;
+  border-radius: var(--radius-m); border: 1px solid var(--line); color: var(--ink-2); background: var(--bg-elev); transition: all var(--t-fast);
+}
+.cta:hover { border-color: var(--accent); color: var(--accent-deep); background: var(--accent-tint); }
+.cta.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+.cta.primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); color: #fff; }
+.drawer-body { padding: 20px 24px 60px; overflow-y: auto; flex-grow: 1; }
+.drawer-body .loading { font-size: 13px; color: var(--ink-4); font-style: italic; }
+/* rendered markdown */
+.md h1, .md h2, .md h3, .md h4 { line-height: 1.3; margin: 18px 0 8px; font-weight: 700; color: var(--ink-1); }
+.md h1 { font-size: 19px; } .md h2 { font-size: 16px; padding-top: 6px; border-top: 1px solid var(--line-soft); } .md h3 { font-size: 14px; } .md h4 { font-size: 13px; color: var(--ink-2); }
+.md p { font-size: 13px; color: var(--ink-2); line-height: 1.6; margin: 7px 0; }
+.md ul { margin: 7px 0 7px 4px; list-style: none; }
+.md li { font-size: 13px; color: var(--ink-2); line-height: 1.55; padding-left: 16px; position: relative; margin: 3px 0; }
+.md li::before { content: '–'; position: absolute; left: 0; color: var(--accent); }
+.md strong { color: var(--ink-1); font-weight: 700; }
+.md em { font-style: italic; }
+.md table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 10px 0; }
+.md th, .md td { text-align: left; padding: 6px 9px; border: 1px solid var(--line); color: var(--ink-2); }
+.md th { background: var(--bg-tint); font-weight: 600; color: var(--ink-1); }
+.md hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
+.md code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--bg-sunken); padding: 1px 5px; border-radius: 4px; }
+
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+.kcard { position: relative; }
+table.eps tr[data-card-id] { position: relative; }
+.card-copy-ref {
+  position: absolute;
+  top: 6px; right: 6px;
+  opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 2px 6px;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 10px; font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.kcard:hover .card-copy-ref,
+.kcard:focus-within .card-copy-ref { opacity: 1; }
+tr[data-card-id]:hover .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+@media (max-width: 1080px) { .widgets { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 760px) {
+  .app { padding: 18px 16px 80px; }
+  .widgets { grid-template-columns: repeat(2, 1fr); }
+  table.eps td .topic { display: none; }
+  table.eps th.col-topic, table.eps td.col-topic, table.eps th.col-cluster, table.eps td.col-cluster, table.eps th.col-dur, table.eps td.col-dur { display: none; }
+}
+@media (max-width: 480px) { .widgets { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+<div class="app">
+
+  <header class="masthead">
+    <div class="toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Vissza a vault főoldalra">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle"
+              aria-label="Switch to dark theme"
+              title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      <span class="dot"></span>
+      <span>Navigátor Podcast</span>
+      <span class="version-pill">v0.1.3</span>
+    </div>
+    <h1>Epizód &amp; Platform Pult <span class="accent">.</span></h1>
+    <div class="submeta">
+      <span><strong id="epTotal">0</strong> epizód</span>
+      <span class="sep"></span>
+      <span><strong id="spDateFix">0</strong> Spotify dátumjavítás</span>
+      <span class="sep"></span>
+      <span><strong id="spMissing">0</strong> feltöltésre vár</span>
+      <span class="sep"></span>
+      <span class="sync-status" data-state="offline" role="button" tabindex="0" title="">
+        <span class="dot"></span>
+        <span class="sync-label">Kapcsolódás…</span>
+        <span class="sync-bar"><span class="sync-bar-fill"></span></span>
+      </span>
+    </div>
+  </header>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" aria-selected="true" data-view="episodes">Epizódok <span class="count" id="tabEpCount">0</span></button>
+    <button class="tab" role="tab" aria-selected="false" data-view="kanban">Kanban <span class="count" id="tabKanCount">0</span></button>
+  </div>
+
+  <!-- ===== Episodes view ===== -->
+  <section class="view active" id="view-episodes" role="tabpanel">
+    <div class="widgets" id="widgets"></div>
+    <div class="controls">
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
+        <input type="text" id="search" placeholder="Keresés vendég, téma vagy EP szám szerint…">
+      </div>
+      <select class="filter-sel" id="fCluster"><option value="">Minden klaszter</option></select>
+      <select class="filter-sel" id="fSpotify">
+        <option value="">Minden Spotify státusz</option>
+        <option value="ok">✅ Kész</option>
+        <option value="date_fix">🟡 Dátum javítandó</option>
+        <option value="missing">🔴 Hiányzik</option>
+        <option value="unverified">⚪ Ellenőrzendő</option>
+      </select>
+      <select class="filter-sel" id="fTop">
+        <option value="">Összes epizód</option>
+        <option value="top">⭐ Csak TOP performerek</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table class="eps">
+        <thead>
+          <tr>
+            <th data-sort="ep" class="col-ep">EP <span class="arr">▲</span></th>
+            <th data-sort="guest" class="col-guest">Vendég <span class="arr">▲</span></th>
+            <th class="no-sort col-topic">Téma</th>
+            <th class="no-sort col-cluster">Klaszter</th>
+            <th data-sort="duration" class="no-sort col-dur">Hossz</th>
+            <th data-sort="youtube_date" class="col-yt">YouTube <span class="arr">▲</span></th>
+            <th data-sort="spotify" class="col-sp">Spotify <span class="arr">▲</span></th>
+            <th data-sort="views" class="num col-views">Nézések <span class="arr">▲</span></th>
+          </tr>
+        </thead>
+        <tbody id="epRows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ===== Kanban view ===== -->
+  <section class="view" id="view-kanban" role="tabpanel">
+    <div class="kanban" id="kanban"></div>
+  </section>
+
+</div>
+
+<!-- ===== Drawer ===== -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head" id="drawerHead"></div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<script>
+/* ============================================================
+   YAML frontmatter parser (copied from the partnerships /
+   sales dashboards). Scalars, inline + block arrays, block
+   objects, arrays of objects with nested arrays.
+   ============================================================ */
+function parseYamlFrontmatter(md) {
+  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
+  if (!m) return null;
+  const lines = m[1].split('\n');
+  const root = {};
+  const stack = [{ indent: -1, container: root, key: null }];
+  const stripComment = (line) => {
+    let q = null;
+    for (let i = 0; i < line.length; i++) {
+      const c = line[i];
+      if (q) { if (c === q && line[i-1] !== '\\') q = null; }
+      else if (c === '"' || c === "'") q = c;
+      else if (c === '#' && (i === 0 || /\s/.test(line[i-1]))) return line.slice(0, i).replace(/\s+$/, '');
+    }
+    return line.replace(/\s+$/, '');
+  };
+  const sv = (raw) => {
+    let v = raw.trim();
+    if (v === '') return '';
+    if (v === 'null' || v === '~') return null;
+    if (v === 'true') return true;
+    if (v === 'false') return false;
+    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) return v.slice(1, -1);
+    if (v.startsWith('[') && v.endsWith(']')) {
+      const inner = v.slice(1, -1).trim();
+      return inner ? inner.split(',').map(s => sv(s)) : [];
+    }
+    if (/^-?\d+$/.test(v)) return parseInt(v, 10);
+    if (/^-?\d+\.\d+$/.test(v)) return parseFloat(v);
+    return v;
+  };
+  for (let i = 0; i < lines.length; i++) {
+    const raw = lines[i];
+    if (!raw || /^\s*$/.test(raw)) continue;
+    const nc = stripComment(raw);
+    if (!nc.trim()) continue;
+    const indent = nc.match(/^(\s*)/)[1].length;
+    const trimmed = nc.trim();
+    while (stack.length > 1 && indent <= stack[stack.length-1].indent) stack.pop();
+    const top = stack[stack.length-1];
+    if (trimmed.startsWith('- ')) {
+      const item = trimmed.slice(2).trim();
+      if (!Array.isArray(top.container)) continue;
+      if (item.includes(':')) {
+        const obj = {};
+        top.container.push(obj);
+        const ci = item.indexOf(':');
+        const k = item.slice(0, ci).trim();
+        const val = item.slice(ci+1).trim();
+        if (val !== '') obj[k] = sv(val);
+        stack.push({ indent, container: obj, key: null });
+      } else {
+        top.container.push(sv(item));
+      }
+      continue;
+    }
+    const ci = trimmed.indexOf(':');
+    if (ci === -1) continue;
+    const key = trimmed.slice(0, ci).trim();
+    const val = trimmed.slice(ci+1).trim();
+    const parent = top.container;
+    if (val === '') {
+      let ni = i + 1;
+      while (ni < lines.length && /^\s*(#.*)?$/.test(lines[ni])) ni++;
+      const nl = lines[ni] || '';
+      const nIndent = nl.match(/^(\s*)/)[1].length;
+      const nTrim = nl.trim();
+      if (nTrim.startsWith('- ') && nIndent > indent) {
+        const arr = []; if (Array.isArray(parent)) parent.push(arr); else parent[key] = arr;
+        stack.push({ indent, container: arr, key });
+      } else if (nIndent > indent && nTrim.includes(':')) {
+        const obj = {}; if (Array.isArray(parent)) parent.push(obj); else parent[key] = obj;
+        stack.push({ indent, container: obj, key });
+      } else {
+        if (Array.isArray(parent)) parent.push(null); else parent[key] = null;
+      }
+    } else {
+      const value = sv(val);
+      if (Array.isArray(parent)) parent.push({ [key]: value }); else parent[key] = value;
+    }
+  }
+  return { frontmatter: root, body: md.slice(m[0].length) };
+}
+
+/* ============================================================
+   Obsidian Kanban parser. `## Lane` headers, `- [ ] **Title**
+   #tag @{date} teaser` cards. Ignores the %% settings block.
+   ============================================================ */
+function parseKanban(md) {
+  const body = md.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n?/, '');
+  const lines = body.split('\n');
+  const cols = [];
+  let cur = null;
+  for (const line of lines) {
+    if (/^%%/.test(line.trim())) break;
+    const h = line.match(/^##\s+(.*)$/);
+    if (h) { cur = { name: h[1].trim(), cards: [] }; cols.push(cur); continue; }
+    const c = line.match(/^\s*-\s*\[([ xX])\]\s+(.*)$/);
+    if (c && cur) {
+      const done = c[1].toLowerCase() === 'x';
+      let text = c[2];
+      const bm = text.match(/\*\*(.+?)\*\*/);
+      const title = bm ? bm[1] : text.trim();
+      let rest = bm ? (text.slice(0, bm.index) + text.slice(bm.index + bm[0].length)) : '';
+      const tags = [];
+      rest = rest.replace(/(^|\s)#([\p{L}0-9_-]+)/gu, (m, p, t) => { tags.push(t); return ' '; });
+      let due = null;
+      rest = rest.replace(/@\{(\d{4}-\d{2}-\d{2})\}/, (m, d) => { due = d; return ''; });
+      rest = rest.replace(/[📅✅]\s*\d{4}-\d{2}-\d{2}/g, '');
+      const teaser = rest.replace(/\s+/g, ' ').trim();
+      cur.cards.push({ done, title, tags, due, teaser });
+    }
+  }
+  return cols;
+}
+
+/* ============================================================
+   Minimal markdown -> HTML for the drawer body. Handles
+   headings, bold/italic, inline code, bullet lists, tables,
+   hr, paragraphs. Not a full CommonMark parser, intentionally.
+   ============================================================ */
+function inlineMd(s) {
+  s = escapeHtml(s);
+  s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[^*])\*(?!\s)(.+?)\*(?!\*)/g, '$1<em>$2</em>');
+  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+  return s;
+}
+function mdToHtml(md) {
+  const lines = md.replace(/\r/g, '').split('\n');
+  const out = [];
+  let i = 0;
+  let inList = false, inCode = false;
+  const closeList = () => { if (inList) { out.push('</ul>'); inList = false; } };
+  while (i < lines.length) {
+    const line = lines[i];
+    if (/^```/.test(line.trim())) {
+      if (!inCode) { closeList(); out.push('<pre><code>'); inCode = true; }
+      else { out.push('</code></pre>'); inCode = false; }
+      i++; continue;
+    }
+    if (inCode) { out.push(escapeHtml(line)); i++; continue; }
+    if (/^\s*$/.test(line)) { closeList(); i++; continue; }
+    const hm = line.match(/^(#{1,4})\s+(.*)$/);
+    if (hm) { closeList(); const lvl = hm[1].length; out.push(`<h${lvl}>${inlineMd(hm[2])}</h${lvl}>`); i++; continue; }
+    if (/^\s*(-{3,}|\*{3,})\s*$/.test(line)) { closeList(); out.push('<hr>'); i++; continue; }
+    // table: a line with | and the next line is a separator |---|
+    if (/\|/.test(line) && i + 1 < lines.length && /^\s*\|?[\s:|-]+\|[\s:|-]*$/.test(lines[i+1]) && /-/.test(lines[i+1])) {
+      closeList();
+      const header = line.split('|').map(c => c.trim()).filter((c, idx, a) => !(idx === 0 && c === '') && !(idx === a.length-1 && c === ''));
+      i += 2;
+      const rows = [];
+      while (i < lines.length && /\|/.test(lines[i]) && !/^\s*$/.test(lines[i])) {
+        const cells = lines[i].split('|').map(c => c.trim()).filter((c, idx, a) => !(idx === 0 && c === '') && !(idx === a.length-1 && c === ''));
+        rows.push(cells); i++;
+      }
+      let t = '<table><thead><tr>' + header.map(h => `<th>${inlineMd(h)}</th>`).join('') + '</tr></thead><tbody>';
+      t += rows.map(r => '<tr>' + r.map(c => `<td>${inlineMd(c)}</td>`).join('') + '</tr>').join('');
+      t += '</tbody></table>';
+      out.push(t); continue;
+    }
+    const lm = line.match(/^\s*[-*]\s+(.*)$/);
+    if (lm) { if (!inList) { out.push('<ul>'); inList = true; } out.push(`<li>${inlineMd(lm[1])}</li>`); i++; continue; }
+    const nm = line.match(/^\s*\d+\.\s+(.*)$/);
+    if (nm) { if (!inList) { out.push('<ul>'); inList = true; } out.push(`<li>${inlineMd(nm[1])}</li>`); i++; continue; }
+    closeList();
+    out.push(`<p>${inlineMd(line)}</p>`);
+    i++;
+  }
+  closeList(); if (inCode) out.push('</code></pre>');
+  return out.join('\n');
+}
+
+/* ============================================================
+   State + helpers
+   ============================================================ */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const OBSIDIAN_VAULT = 'ideas-vault';
+const AREA = '02_Areas/Navigátor Podcast';
+const EPISODES_FILE = '/' + AREA + '/EPISODES.md';
+const TODO_FILE = '/' + AREA + '/TODO.md';
+const SYNTH_DIR = AREA + '/Synthesis/Podcast/';
+const DASH_STEM = 'navigator';
+let POLL_INTERVAL_MS = 8000;
+
+let EPISODES = [];
+let COLUMNS = [];
+let filters = { q: '', cluster: '', spotify: '', top: '' };
+let sortKey = 'ep', sortDir = 'asc';
+let lastEpMd = null, lastTodoMd = null;
+let syncState = 'offline', syncTooltip = '', pollTimer = null, lastSyncAt = null, tickTimer = null;
+const synthCache = {};
+
+function escapeHtml(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escapeAttr(s) { return String(s == null ? '' : s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function obsidianOpen(filePath) { return `obsidian://open?vault=${encodeURIComponent(OBSIDIAN_VAULT)}&file=${encodeURIComponent(filePath)}`; }
+function durToSec(d) { if (!d) return 0; const p = String(d).replace('~','').split(':').map(n => parseInt(n,10) || 0); return p.length === 3 ? p[0]*3600+p[1]*60+p[2] : p.length === 2 ? p[0]*60+p[1] : 0; }
+function fmtViews(v) { if (!v) return '—'; if (v >= 1000) return (v/1000).toFixed(v >= 10000 ? 0 : 1) + 'k'; return String(v); }
+function toSlug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
+function copyText(text, el) {
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
+  });
+}
+const COPY_REF_BTN = `<button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>`;
+function wireCopyRef(container) {
+  container.querySelectorAll('.card-copy-ref').forEach(btn => {
+    btn.onclick = (e) => {
+      e.stopPropagation();
+      const card = btn.closest('[data-card-id]');
+      if (!card) return;
+      copyText(DASH_STEM + ':' + card.dataset.cardId, btn);
+    };
+  });
+}
+
+const SP_LABEL = { ok: 'Kész', date_fix: 'Dátum javítandó', missing: 'Hiányzik', unverified: 'Ellenőrzendő' };
+const SP_ORDER = { missing: 0, date_fix: 1, unverified: 2, ok: 3 };
+const YT_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M23 12s0-3.8-.5-5.6a3 3 0 0 0-2.1-2.1C18.6 3.8 12 3.8 12 3.8s-6.6 0-8.4.5A3 3 0 0 0 1.5 6.4C1 8.2 1 12 1 12s0 3.8.5 5.6a3 3 0 0 0 2.1 2.1c1.8.5 8.4.5 8.4.5s6.6 0 8.4-.5a3 3 0 0 0 2.1-2.1C23 15.8 23 12 23 12zM9.8 15.3V8.7l5.7 3.3z"/></svg>';
+const SP_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm4.6 14.4a.62.62 0 0 1-.86.21c-2.35-1.43-5.3-1.76-8.79-.96a.62.62 0 1 1-.28-1.21c3.8-.87 7.07-.49 9.71 1.12.3.18.39.57.22.84zm1.23-2.74a.78.78 0 0 1-1.07.26c-2.69-1.65-6.79-2.13-9.97-1.17a.78.78 0 1 1-.45-1.49c3.64-1.1 8.16-.57 11.24 1.33.36.22.48.7.25 1.07zm.1-2.85C14.84 8.96 9.3 8.77 6.2 9.71a.93.93 0 1 1-.54-1.78c3.56-1.08 9.68-.87 13.5 1.4a.93.93 0 1 1-.95 1.6z"/></svg>';
+
+/* ============================================================
+   Episodes view
+   ============================================================ */
+function renderWidgets() {
+  const total = EPISODES.length;
+  const dateFix = EPISODES.filter(e => e.spotify === 'date_fix').length;
+  const missing = EPISODES.filter(e => e.spotify === 'missing').length;
+  const onSpotify = EPISODES.filter(e => e.spotify === 'ok' || e.spotify === 'date_fix' || e.spotify === 'unverified').length;
+  const totalViews = EPISODES.reduce((a, e) => a + (e.views || 0), 0);
+
+  $('#epTotal').textContent = total;
+  $('#spDateFix').textContent = dateFix;
+  $('#spMissing').textContent = missing;
+  $('#tabEpCount').textContent = total;
+
+  $('#widgets').innerHTML = `
+    <div class="widget"><h2>Epizódok</h2><div class="big tabular">${total}</div><div class="cap">EP01–EP${String(total).padStart(2,'0')} · YouTube ✅</div></div>
+    <div class="widget is-ok"><h2>Spotify-on</h2><div class="big tabular">${onSpotify}<span class="of"> / ${total}</span></div><div class="cap">${total - onSpotify} hiányzik</div></div>
+    <div class="widget is-warn"><h2>Dátumjavítás</h2><div class="big tabular">${dateFix}</div><div class="cap">Spotify dátum hibás</div></div>
+    <div class="widget is-gap"><h2>Feltöltésre vár</h2><div class="big tabular">${missing}</div><div class="cap">audio (MP3) kell</div></div>
+    <div class="widget"><h2>Összes nézés</h2><div class="big tabular">${fmtViews(totalViews)}</div><div class="cap">YouTube, mért epizódok</div></div>
+  `;
+}
+
+function populateClusterFilter() {
+  const sel = $('#fCluster');
+  const clusters = [...new Set(EPISODES.map(e => e.cluster).filter(Boolean))].sort();
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Minden klaszter</option>' + clusters.map(c => `<option value="${escapeAttr(c)}">${escapeHtml(c)}</option>`).join('');
+  sel.value = cur;
+}
+
+function filteredSorted() {
+  let list = EPISODES.filter(e => {
+    if (filters.cluster && e.cluster !== filters.cluster) return false;
+    if (filters.spotify && e.spotify !== filters.spotify) return false;
+    if (filters.top === 'top' && !e.top) return false;
+    if (filters.q) {
+      const q = filters.q.toLowerCase();
+      const hay = `ep${e.ep} ep ${e.ep} ${e.guest} ${e.topic} ${e.cluster}`.toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  const dir = sortDir === 'asc' ? 1 : -1;
+  list.sort((a, b) => {
+    let va, vb;
+    switch (sortKey) {
+      case 'guest': va = (a.guest||'').toLowerCase(); vb = (b.guest||'').toLowerCase(); break;
+      case 'views': va = a.views||0; vb = b.views||0; break;
+      case 'duration': va = durToSec(a.duration); vb = durToSec(b.duration); break;
+      case 'youtube_date': va = a.youtube_date||''; vb = b.youtube_date||''; break;
+      case 'spotify': va = SP_ORDER[a.spotify] ?? 9; vb = SP_ORDER[b.spotify] ?? 9; break;
+      default: va = a.ep; vb = b.ep;
+    }
+    if (va < vb) return -1*dir; if (va > vb) return 1*dir; return (a.ep - b.ep);
+  });
+  return list;
+}
+
+function renderEpisodes() {
+  const tbody = $('#epRows');
+  const list = filteredSorted();
+  if (!list.length) { tbody.innerHTML = `<tr><td colspan="8"><div class="empty-note">Nincs találat. Módosítsd a szűrőket, vagy ellenőrizd az EPISODES.md fájlt.</div></td></tr>`; return; }
+  const epSlug = (ep) => 'ep' + String(ep).padStart(2, '0');
+  tbody.innerHTML = list.map(e => {
+    const sp = e.spotify || 'unverified';
+    const spDates = sp === 'date_fix' ? `<div class="topic mono">${escapeHtml(e.spotify_current)} → ${escapeHtml(e.spotify_correct)}</div>` : '';
+    const prio = e.priority ? ' <span class="badge prio">prio</span>' : '';
+    return `
+      <tr data-ep="${e.ep}" data-card-id="${epSlug(e.ep)}" class="${e.top ? 'is-top' : ''}">
+        <td class="epnum col-ep">EP${String(e.ep).padStart(2,'0')}</td>
+        <td class="guest col-guest">${escapeHtml(e.guest)}${e.top ? '<span class="top-star" title="TOP performer">★</span>' : ''}</td>
+        <td class="col-topic"><div class="topic">${escapeHtml(e.topic||'')}</div></td>
+        <td class="col-cluster">${e.cluster ? `<span class="cluster-chip">${escapeHtml(e.cluster)}</span>` : ''}</td>
+        <td class="col-dur mono" style="color:var(--ink-3);white-space:nowrap;">${escapeHtml(e.duration||'—')}</td>
+        <td class="col-yt"><span class="pf yt-ok"><span class="ic">${YT_ICON}</span>${e.youtube_date ? '<span class="mono" style="color:var(--ink-3);font-weight:500;">'+escapeHtml(e.youtube_date)+'</span>' : '✅'}</span></td>
+        <td class="col-sp"><span class="badge ${sp}">${SP_LABEL[sp]}</span>${prio}${spDates}</td>
+        <td class="num col-views" style="position:relative;">${fmtViews(e.views)}${COPY_REF_BTN}</td>
+      </tr>`;
+  }).join('');
+  $$('#epRows tr[data-ep]').forEach(tr => tr.addEventListener('click', () => openDrawer(parseInt(tr.dataset.ep, 10))));
+  wireCopyRef(tbody);
+}
+
+function setSortHeaders() {
+  $$('table.eps thead th[data-sort]').forEach(th => {
+    if (th.dataset.sort === sortKey) th.dataset.dir = sortDir; else th.removeAttribute('data-dir');
+  });
+}
+
+/* ============================================================
+   Drawer (per-record enrichment from Synthesis/Podcast/*.md)
+   ============================================================ */
+async function openDrawer(ep) {
+  const e = EPISODES.find(x => x.ep === ep);
+  if (!e) return;
+  const sp = e.spotify || 'unverified';
+  const head = $('#drawerHead');
+  const ytUrl = e.youtube_id ? `https://www.youtube.com/watch?v=${encodeURIComponent(e.youtube_id)}` : '';
+  const synthPath = e.synthesis ? (SYNTH_DIR + e.synthesis + '.md') : '';
+  head.innerHTML = `
+    <div class="row1">
+      <div>
+        <div class="epbadge">EP${String(e.ep).padStart(2,'0')}${e.top ? ' · ⭐ TOP' : ''}</div>
+        <h2>${escapeHtml(e.guest)}</h2>
+        <div class="sub">${escapeHtml(e.topic||'')}</div>
+      </div>
+      <button class="drawer-close" id="drawerClose" title="Bezárás (Esc)">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="drawer-meta">
+      <span class="badge ${sp}">Spotify: ${SP_LABEL[sp]}</span>
+      ${e.priority ? '<span class="badge prio">prioritás</span>' : ''}
+      <span class="cluster-chip">${escapeHtml(e.cluster||'—')}</span>
+      <span class="cluster-chip mono">${escapeHtml(e.duration||'—')}</span>
+      <span class="cluster-chip mono">${fmtViews(e.views)} nézés</span>
+    </div>
+    ${sp === 'date_fix' ? `<div class="drawer-meta"><span class="badge date_fix">Spotify dátum: ${escapeHtml(e.spotify_current)} → ${escapeHtml(e.spotify_correct)}</span></div>` : ''}
+    ${sp === 'missing' ? `<div class="drawer-meta"><span class="badge missing">Feltöltendő · publikálási dátum: ${escapeHtml(e.spotify_correct)}</span></div>` : ''}
+    <div class="drawer-cta">
+      ${ytUrl ? `<a class="cta primary" href="${ytUrl}" target="_blank" rel="noopener">▶ YouTube</a>` : ''}
+      ${synthPath ? `<a class="cta" href="${obsidianOpen(synthPath)}">Szintézis (Obsidian)</a>` : ''}
+      <a class="cta" href="${obsidianOpen(AREA + '/EPISODES.md')}">EPISODES.md</a>
+    </div>`;
+  $('#drawerClose').addEventListener('click', closeDrawer);
+
+  const body = $('#drawerBody');
+  if (!synthPath) {
+    body.innerHTML = `<p class="loading">Ehhez az epizódhoz még nincs szintézis fájl a Synthesis/Podcast mappában.</p>`;
+  } else if (synthCache[synthPath]) {
+    body.innerHTML = `<div class="md">${synthCache[synthPath]}</div>`;
+  } else {
+    body.innerHTML = `<p class="loading">Szintézis betöltése…</p>`;
+    try {
+      const res = await fetch(encodeURI(synthPath), { cache: 'no-store' });
+      if (!res.ok) throw new Error(res.status);
+      const md = await res.text();
+      const parsed = parseYamlFrontmatter(md);
+      const bodyMd = parsed ? parsed.body : md;
+      const html = mdToHtml(bodyMd);
+      synthCache[synthPath] = html;
+      // only update if still the same episode open
+      if ($('#drawer').dataset.ep === String(ep)) body.innerHTML = `<div class="md">${html}</div>`;
+    } catch (err) {
+      body.innerHTML = `<p class="loading">Nem sikerült betölteni a szintézist (${escapeHtml(String(err.message||err))}). Nyisd meg Obsidianban a fenti gombbal.</p>`;
+    }
+  }
+  const dr = $('#drawer'); dr.dataset.ep = String(ep);
+  dr.classList.add('open'); dr.setAttribute('aria-hidden', 'false');
+  $('#scrim').classList.add('open');
+}
+function closeDrawer() {
+  $('#drawer').classList.remove('open'); $('#drawer').setAttribute('aria-hidden', 'true');
+  $('#scrim').classList.remove('open');
+}
+
+/* ============================================================
+   Kanban view
+   ============================================================ */
+function laneAccent(name) {
+  const n = name.toLowerCase();
+  if (n.includes('kész') || n.includes('done')) return 'var(--ok)';
+  if (n.includes('folyamat') || n.includes('progress')) return 'var(--info)';
+  if (n.includes('dátum')) return 'var(--warn)';
+  if (n.includes('feltölt')) return 'var(--gap)';
+  if (n.includes('youtube')) return 'var(--accent)';
+  return 'var(--ink-5)';
+}
+function dueLabel(d) {
+  if (!d) return '';
+  const days = Math.round((new Date(d) - new Date()) / 86400000);
+  const overdue = days < 0;
+  const txt = overdue ? `lejárt ${Math.abs(days)}n` : (days === 0 ? 'ma' : `${days}n`);
+  return `<span class="kdue ${overdue ? 'overdue' : ''}" title="${escapeAttr(d)}">${txt}</span>`;
+}
+function renderKanban() {
+  const wrap = $('#kanban');
+  const totalCards = COLUMNS.reduce((a, c) => a + c.cards.length, 0);
+  $('#tabKanCount').textContent = totalCards;
+  if (!COLUMNS.length) { wrap.innerHTML = `<div class="empty-note">Nincs Kanban adat. Ellenőrizd a TODO.md fájlt.</div>`; return; }
+  wrap.innerHTML = COLUMNS.map(col => `
+    <div class="kcol" style="--lane-accent:${laneAccent(col.name)}">
+      <div class="kcol-head"><span class="nm">${escapeHtml(col.name)}</span><span class="ct">${col.cards.length}</span></div>
+      ${col.cards.map(c => `
+        <div class="kcard ${c.done ? 'done' : ''}" data-card-id="kanban/${toSlug(col.name)}/${toSlug(c.title)}">
+          ${COPY_REF_BTN}
+          <div class="ttl">${escapeHtml(c.title)}</div>
+          ${c.teaser ? `<div class="teaser">${escapeHtml(c.teaser)}</div>` : ''}
+          <div class="meta">
+            ${dueLabel(c.due)}
+            ${c.tags.filter(t => !/^ep\d+$/i.test(t)).map(t => `<span class="ktag ${t==='priority'?'prio':''}">#${escapeHtml(t)}</span>`).join('')}
+          </div>
+        </div>`).join('')}
+    </div>`).join('');
+  wireCopyRef(wrap);
+}
+
+/* ============================================================
+   Sync (read-only fetch, 8s poll, both files)
+   ============================================================ */
+function syncLabel(state) {
+  switch (state) {
+    case 'live': {
+      if (!lastSyncAt) return 'Élő';
+      const ago = Math.max(0, Math.floor((Date.now() - lastSyncAt) / 1000));
+      if (ago < 2) return 'Élő, most frissült';
+      const next = Math.max(0, Math.ceil(POLL_INTERVAL_MS/1000 - ago));
+      return `Frissítve ${ago}s, köv. ${next}s`;
+    }
+    case 'syncing': return 'Szinkronizálás';
+    case 'error':   return 'Offline, kattints újra';
+    default:        return 'Kapcsolódás';
+  }
+}
+function setSyncState(state, tooltip='') {
+  syncState = state; syncTooltip = tooltip;
+  const st = $('.sync-status');
+  if (st) { st.dataset.state = state; st.title = tooltip; const l = $('.sync-label', st); if (l) l.textContent = syncLabel(state); }
+}
+function tickSyncLabel() { const st = $('.sync-status'); if (!st) return; const l = $('.sync-label', st); if (l) l.textContent = syncLabel(st.dataset.state || syncState); }
+function resetSyncBar() { const f = $('.sync-bar-fill'); if (!f) return; f.style.animation = 'none'; f.offsetHeight; f.style.animation = ''; }
+
+async function pollVault({ silent=false } = {}) {
+  if (!silent) setSyncState('syncing', 'EPISODES.md + TODO.md olvasása…');
+  let okAny = false, errMsg = '';
+  try {
+    const res = await fetch(encodeURI(EPISODES_FILE), { cache: 'no-store' });
+    if (res.ok) {
+      const md = await res.text();
+      if (md !== lastEpMd) {
+        lastEpMd = md;
+        const parsed = parseYamlFrontmatter(md);
+        EPISODES = (parsed && Array.isArray(parsed.frontmatter.episodes)) ? parsed.frontmatter.episodes : [];
+        renderWidgets(); populateClusterFilter(); setSortHeaders(); renderEpisodes();
+      }
+      okAny = true;
+    } else errMsg = 'EPISODES.md ' + res.status;
+  } catch (e) { errMsg = e.message; }
+  try {
+    const res = await fetch(encodeURI(TODO_FILE), { cache: 'no-store' });
+    if (res.ok) {
+      const md = await res.text();
+      if (md !== lastTodoMd) { lastTodoMd = md; COLUMNS = parseKanban(md); renderKanban(); }
+      okAny = true;
+    } else if (!errMsg) errMsg = 'TODO.md ' + res.status;
+  } catch (e) { if (!errMsg) errMsg = e.message; }
+
+  if (okAny) {
+    lastSyncAt = Date.now();
+    const ts = new Date().toLocaleTimeString('hu-HU');
+    setSyncState('live', `Élő. ${EPISODES.length} epizód, ${COLUMNS.reduce((a,c)=>a+c.cards.length,0)} kártya. Utolsó: ${ts}. ${POLL_INTERVAL_MS/1000}s poll. Kattints a frissítéshez.`);
+    resetSyncBar();
+  } else {
+    setSyncState('error', `Nem érhető el a forrás (${errMsg}). Indítsd a szervert: node _dashboards/_tools/dash-server.mjs`);
+  }
+}
+function startPolling() { if (!pollTimer) pollTimer = setInterval(() => pollVault({ silent: true }), POLL_INTERVAL_MS); }
+function startTicker() { if (!tickTimer) tickTimer = setInterval(tickSyncLabel, 1000); }
+
+function connectEventStream() {
+  if (typeof EventSource === 'undefined') return;
+  let es;
+  try { es = new EventSource('/__events'); } catch (e) { return; }
+  const restartPolling = (ms) => { POLL_INTERVAL_MS = ms; if (pollTimer) { clearInterval(pollTimer); pollTimer = null; } startPolling(); };
+  es.addEventListener('open', () => restartPolling(30000));
+  es.addEventListener('change', () => pollVault({ silent: true }));
+  es.addEventListener('error', () => restartPolling(8000));
+}
+
+/* ============================================================
+   Wiring
+   ============================================================ */
+/* ===== Theme toggle (DS 0.3.0) — shared dash-theme key ===== */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = document.getElementById('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+$('#themeToggle').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
+window.addEventListener('storage', (e) => { if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue); });
+
+$$('.tab').forEach(tab => tab.addEventListener('click', () => {
+  $$('.tab').forEach(t => t.setAttribute('aria-selected', t === tab ? 'true' : 'false'));
+  $$('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + tab.dataset.view));
+}));
+
+$('#search').addEventListener('input', e => { filters.q = e.target.value.trim(); renderEpisodes(); });
+$('#fCluster').addEventListener('change', e => { filters.cluster = e.target.value; renderEpisodes(); });
+$('#fSpotify').addEventListener('change', e => { filters.spotify = e.target.value; renderEpisodes(); });
+$('#fTop').addEventListener('change', e => { filters.top = e.target.value; renderEpisodes(); });
+$$('table.eps thead th[data-sort]').forEach(th => th.addEventListener('click', () => {
+  const k = th.dataset.sort;
+  if (sortKey === k) sortDir = sortDir === 'asc' ? 'desc' : 'asc';
+  else { sortKey = k; sortDir = (k === 'views') ? 'desc' : 'asc'; }
+  setSortHeaders(); renderEpisodes();
+}));
+
+$('#scrim').addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+document.addEventListener('click', e => { if (e.target.closest('.sync-status')) pollVault({ silent: false }); });
+document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === ' ') && document.activeElement?.classList?.contains('sync-status')) { e.preventDefault(); pollVault({ silent: false }); } });
+
+/* ============================================================
+   Boot
+   ============================================================ */
+(function initTheme() {
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  setTheme(t);
+})();
+(async () => { await pollVault(); startPolling(); startTicker(); connectEventStream(); })();
+</script>
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>

@@ -1,0 +1,1314 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Librarian — Knowledge Manager Observatory.   Version: 0.5.1
+  =============================================================================
+  The Librarian Dashboard is the representation layer for the BDOS Knowledge
+  Manager (Librarian v0.6). It visualizes the vault's retrieval infrastructure:
+    • Tier-1 global indexes (vault root)
+    • Tier-2 scoped unit indexes (11 active units)
+    • Open questions, gaps, knowledge map
+    • Operational log (Phase 2.B — currently empty)
+    • 6 operation modes reference
+
+  Data sources (all via 8s poll + SSE push):
+    /00_Prompts/BDOS/agents/librarian.md
+        — Librarian version + identity
+    /00_INDEX.md
+        — Tier-1 vault root index (PARA distribution)
+    /00_KNOWLEDGE_MAP.md
+        — Cross-domain knowledge map
+    /00_DECISIONS_INDEX.md
+        — Global decision index
+    /00_OPEN_QUESTIONS.md
+        — Open questions vault-wide
+    /00_GAPS.md
+        — Vault inconsistencies and gaps
+    /00_Prompts/BDOS/00_AGENTS_INDEX.md
+        — Tier-2 scope counts table
+    (Phase 2.B) /00_Prompts/BDOS/agents/librarian/logs/operational/*.md
+        — Operational logs (currently empty)
+
+  Layout (9 panels):
+    1. Header strip          — version, last activity, total files indexed, tier-2 count
+    2. Tier-1 Index Overview — file counts per global index, PARA distribution
+    3. Tier-2 Scoped Units   — 11 units with file counts, index version, freshness
+    4. Tier-2 Candidates     — Ignis Academy (22), Média Műhely (21)
+    5. Knowledge Map         — top domains + cross-reference counts
+    6. Open Questions        — currently open questions from 00_OPEN_QUESTIONS.md
+    7. Gaps Panel            — vault inconsistencies from 00_GAPS.md
+    8. Recent Activity       — last 10 operational log entries (Phase 2.B empty)
+    9. Operations Reference  — 6 modes with one-line descriptions
+
+  Read-only. Edit markdown in Obsidian — dashboard auto-syncs within 8s.
+  Served by _dashboards/_tools/dash-server.mjs (port 4321).
+
+  Visual tone: library / archivist — calm, organized, structured.
+
+  Audit trail:
+        0.5.0 (2026-05-24) — tend: schema realigned to brief (agent_events → agent_logs).
+          log_level/input_tokens/output_tokens/total_tokens column names, error/critical levels,
+          15 event types. query_duration_ms exposed in Logs panel (Librarian perf metric).
+    0.4.0 (2026-05-24) — tend: Logs panel (Phase B observability). Sidecar
+          /_dashboards/_design/agent_logs.json read; filtered to agent=librarian.
+          6 summary cards (total, errors, avg_dur, tokens_in, tokens_out, cost).
+          Slowest + highest-token callout rows. Compact table (last 50, newest first).
+          loadLogsPanel() wired into LiveUpdates.subscribe boot.
+    0.3.0 (2026-05-24) — promote: event-driven live updates (DS 0.4.0).
+          live-updates.js imported. LiveUpdates.subscribe(pollVault) replaces
+          primary startPolling + connectEventStream. Status indicator pill
+          mounted in masthead toprow. DS 0.4.0.
+    0.2.0 (2026-05-24) — tend: avatar + Capabilities panel. Agent profile
+          (emoji 📚, color #8B6F4E) fetched live from AGENT_PROFILES.md.
+          Avatar circle (64px) added to masthead toprow. Capabilities panel
+          (tools, MCPs, APIs, plugins, slash commands, test access trace)
+          added as last panel — parsed live, 8s auto-refresh.
+    0.1.0 (2026-05-24) — initial build. Library Knowledge Manager Observatory.
+          9 panels: header strip, tier-1 overview (PARA distribution), tier-2
+          units grid (11 units, freshness dots), tier-2 candidates, knowledge
+          map domains, open questions, gaps, recent activity (Phase 2.B empty),
+          operations modes reference (6 modes). Schema-aware parsers for tier-2
+          table from 00_AGENTS_INDEX.md. Graceful never_run empty-state on all
+          log-driven panels. DS 0.3.0 aligned.
+    0.5.1 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
+
+  Conventions: see _dashboards/_design/DESIGN_SYSTEM.md (DS 0.3.0).
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Librarian — Knowledge Manager</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Crect x='7' y='8' width='18' height='2' rx='1' fill='%23D97757'/%3E%3Crect x='7' y='13' width='18' height='2' rx='1' fill='%23D97757' opacity='.7'/%3E%3Crect x='7' y='18' width='12' height='2' rx='1' fill='%23D97757' opacity='.4'/%3E%3Crect x='7' y='23' width='8' height='2' rx='1' fill='%23D97757' opacity='.2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Lora:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  /* Surfaces — cream paper */
+  --bg-page:   #faf9f5;
+  --bg-elev:   #ffffff;
+  --bg-sunken: #f3f1ea;
+  --bg-tint:   #f5f4ef;
+
+  /* Ink scale (1 darkest → 5 lightest) */
+  --ink-1: #141413;
+  --ink-2: #3a3a37;
+  --ink-3: #6d6d6a;
+  --ink-4: #9c9c98;
+  --ink-5: #c8c8c2;
+
+  /* Lines */
+  --line:      #e5e4df;
+  --line-soft: #efede7;
+
+  /* Accent — terracotta */
+  --accent:      #D97757;
+  --accent-deep: #b35a3f;
+  --accent-tint: #fbeee6;
+
+  /* Status */
+  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
+  --warn:      #b07a18;  --warn-tint: #fbf2dc;
+  --gap:       #c0392b;  --gap-tint:  #fbeae6;
+  --idle:      #7a7a76;  --idle-tint: #efeeeb;
+
+  /* Elevation */
+  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
+  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
+
+  /* Radius */
+  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
+
+  /* Motion */
+  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
+  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+  --bg-page:   #1a1916;
+  --bg-elev:   #232220;
+  --bg-sunken: #2c2a26;
+  --bg-tint:   #262420;
+  --ink-1: #f5f4ef;
+  --ink-2: #d6d4ce;
+  --ink-3: #a8a6a0;
+  --ink-4: #7c7a74;
+  --ink-5: #54524d;
+  --line:      #36342f;
+  --line-soft: #2c2a26;
+  --accent:      #e08a6a;
+  --accent-deep: #f0a085;
+  --accent-tint: #3a2a22;
+  --ok:        #5cc08a;  --ok-tint:   #1e3329;
+  --warn:      #d6a94a;  --warn-tint: #352c18;
+  --gap:       #e57c6e;  --gap-tint:  #3a221e;
+  --idle:      #9a9892;  --idle-tint: #2a2925;
+  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-page:   #1a1916; --bg-elev:   #232220; --bg-sunken: #2c2a26; --bg-tint:   #262420;
+    --ink-1: #f5f4ef; --ink-2: #d6d4ce; --ink-3: #a8a6a0; --ink-4: #7c7a74; --ink-5: #54524d;
+    --line: #36342f; --line-soft: #2c2a26;
+    --accent: #e08a6a; --accent-deep: #f0a085; --accent-tint: #3a2a22;
+    --ok: #5cc08a; --ok-tint: #1e3329; --warn: #d6a94a; --warn-tint: #352c18;
+    --gap: #e57c6e; --gap-tint: #3a221e; --idle: #9a9892; --idle-tint: #2a2925;
+    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
+    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.serif { font-family: 'Lora', Georgia, 'Times New Roman', serif; }
+.mono { font-family: 'JetBrains Mono', ui-monospace, "SF Mono", Consolas, monospace; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-s); }
+button { font: inherit; background: transparent; border: 0; color: inherit; cursor: pointer; }
+
+.app {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 28px 36px 96px;
+}
+
+/* ===== Theme toggle (DS 0.3.0) ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+
+/* ===== Home link ===== */
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase;
+  color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line);
+  padding: 5px 12px; border-radius: 999px;
+  transition: color var(--t-fast), border-color var(--t-fast);
+  text-decoration: none;
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); }
+.home-link svg { opacity: .5; }
+
+/* ===== Masthead ===== */
+.masthead { padding-bottom: 28px; margin-bottom: 32px; border-bottom: 1px solid var(--line); }
+.masthead-toprow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 20px; }
+.eyebrow { font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: var(--ink-4); font-weight: 500; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+.eyebrow .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; font-weight: 500; }
+.masthead h1 { font-family: 'Lora', Georgia, serif; font-size: clamp(28px, 3.2vw, 42px); font-weight: 600; letter-spacing: -0.01em; line-height: 1.1; color: var(--ink-1); margin-bottom: 10px; }
+.masthead h1 .accent { color: var(--accent); }
+.submeta { font-size: 14px; color: var(--ink-3); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.submeta-item { display: flex; align-items: center; gap: 5px; }
+
+/* ===== Phase 2 Banner ===== */
+.phase-banner {
+  background: var(--warn-tint); border: 1px solid rgba(176,122,24,.25); border-radius: var(--radius-l);
+  padding: 10px 16px; margin-bottom: 24px; font-size: 12.5px; color: var(--warn);
+  display: flex; align-items: center; gap: 10px;
+}
+.phase-banner strong { font-weight: 600; }
+
+/* ===== Sync status ===== */
+.sync-status { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--ink-4); margin-top: 14px; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--ok); transition: background var(--t-fast); flex-shrink: 0; }
+.sync-dot.syncing { background: var(--warn); animation: pulse 1s ease-in-out infinite; }
+.sync-dot.error { background: var(--gap); }
+.sync-bar-wrap { width: 64px; height: 3px; background: var(--line); border-radius: 99px; overflow: hidden; cursor: pointer; }
+.sync-bar { height: 100%; background: var(--accent); border-radius: 99px; transition: width linear 1s; width: 100%; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* ===== Section heading ===== */
+.section-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 14px; }
+.section-head h2 { font-family: 'Lora', Georgia, serif; font-size: 18px; font-weight: 600; color: var(--ink-1); }
+.section-head .count-badge { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-4); background: var(--bg-sunken); border: 1px solid var(--line); padding: 1px 7px; border-radius: 999px; }
+
+/* ===== Widget strip ===== */
+.widget-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+.widget { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 16px 18px 14px; }
+.widget-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); font-weight: 500; margin-bottom: 6px; }
+.widget-value { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 500; color: var(--ink-1); line-height: 1.1; }
+.widget-sub { font-size: 11.5px; color: var(--ink-4); margin-top: 4px; }
+
+/* ===== Grid panels ===== */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+.panel { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 20px 22px; }
+.panel.full { margin-bottom: 24px; }
+.panel-head { font-family: 'Lora', Georgia, serif; font-size: 14px; font-weight: 600; color: var(--ink-1); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line-soft); display: flex; align-items: center; gap: 8px; }
+.panel-head .badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-4); background: var(--bg-sunken); border: 1px solid var(--line); padding: 1px 6px; border-radius: 99px; font-weight: 500; }
+
+/* ===== Tier-2 table ===== */
+.tier2-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tier2-table th { font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-4); font-weight: 500; padding: 0 10px 8px 0; text-align: left; border-bottom: 1px solid var(--line); }
+.tier2-table td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
+.tier2-table tr:last-child td { border-bottom: none; }
+.scope-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-2); }
+.file-count { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-1); font-weight: 500; }
+.index-version { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-4); }
+.fresh-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.fresh-dot.fresh { background: var(--ok); }
+.fresh-dot.stale { background: var(--warn); }
+.fresh-dot.very-stale { background: var(--gap); }
+
+/* ===== PARA bar ===== */
+.para-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.para-item { background: var(--bg-sunken); border: 1px solid var(--line-soft); border-radius: var(--radius-m); padding: 10px 12px; }
+.para-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-4); font-weight: 500; margin-bottom: 4px; }
+.para-item-value { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 500; color: var(--ink-1); }
+.para-item-sub { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
+.para-bar-row { margin-top: 10px; }
+.para-bar-label { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-3); margin-bottom: 4px; }
+.para-bar-track { height: 6px; background: var(--bg-sunken); border-radius: 99px; overflow: hidden; }
+.para-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width var(--t-med); }
+
+/* ===== Domain list ===== */
+.domain-list { list-style: none; }
+.domain-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--line-soft); font-size: 13px; }
+.domain-item:last-child { border-bottom: none; }
+.domain-name { color: var(--ink-2); font-weight: 500; }
+.domain-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-4); background: var(--bg-sunken); padding: 1px 7px; border-radius: 99px; }
+
+/* ===== Questions / Gaps list ===== */
+.qg-list { list-style: none; }
+.qg-item { padding: 8px 0; border-bottom: 1px solid var(--line-soft); font-size: 13px; color: var(--ink-2); line-height: 1.4; }
+.qg-item:last-child { border-bottom: none; }
+.qg-item .qg-domain { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-4); background: var(--bg-sunken); padding: 1px 6px; border-radius: 4px; margin-right: 6px; }
+
+/* ===== Candidate chips ===== */
+.candidates-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+.candidate-card { background: var(--bg-sunken); border: 1px solid var(--line); border-radius: var(--radius-m); padding: 12px 16px; flex: 1; min-width: 160px; }
+.candidate-name { font-size: 13px; font-weight: 600; color: var(--ink-1); margin-bottom: 4px; }
+.candidate-count { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 500; color: var(--accent); }
+.candidate-label { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
+.candidate-bar-track { height: 4px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+.candidate-bar-fill { height: 100%; border-radius: 99px; }
+.candidate-bar-fill.approaching { background: var(--warn); }
+
+/* ===== Mode reference ===== */
+.mode-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.mode-item { background: var(--bg-sunken); border: 1px solid var(--line-soft); border-radius: var(--radius-m); padding: 10px 14px; }
+.mode-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-deep); font-weight: 500; margin-bottom: 3px; }
+.mode-desc { font-size: 12.5px; color: var(--ink-3); line-height: 1.4; }
+.mode-slash { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-5); margin-top: 3px; }
+
+/* ===== Activity log ===== */
+.activity-empty { text-align: center; padding: 32px 20px; color: var(--ink-4); }
+.activity-empty .empty-icon { font-size: 28px; margin-bottom: 8px; opacity: .4; }
+.activity-empty p { font-size: 13px; line-height: 1.5; }
+.activity-empty .phase-note { font-size: 11.5px; color: var(--ink-5); margin-top: 6px; font-family: 'JetBrains Mono', monospace; }
+
+/* ===== Chips ===== */
+.chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; font-weight: 500; padding: 2px 8px; border-radius: 99px; }
+.chip.ok { background: var(--ok-tint); color: var(--ok); }
+.chip.warn { background: var(--warn-tint); color: var(--warn); }
+.chip.idle { background: var(--idle-tint); color: var(--idle); }
+
+/* ===== Agent avatar (added 0.2.0) ===== */
+.agent-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 32px; flex-shrink: 0;
+  border: 2px solid transparent;
+  transition: box-shadow var(--t-fast);
+}
+.agent-avatar:hover { box-shadow: var(--shadow-2); }
+
+/* ===== Capabilities panel (added 0.2.0) ===== */
+.cap-section { margin-bottom: 16px; }
+.cap-section-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-4); font-weight: 600; margin-bottom: 6px;
+}
+.cap-chip {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 11.5px; color: var(--ink-2);
+  background: var(--bg-sunken); border: 1px solid var(--line);
+  border-radius: var(--radius-m); padding: 3px 9px;
+  margin: 2px 3px 2px 0;
+}
+.cap-chip.tool { color: var(--accent-deep); background: var(--accent-tint); border-color: rgba(217,119,87,.2); }
+.cap-chip.mcp  { color: #2563a5; background: #e8eff8; border-color: rgba(37,99,165,.2); }
+:root[data-theme="dark"] .cap-chip.mcp { color: #93c5fd; background: #1e2a3a; }
+.cap-chip.api  { color: var(--ok); background: var(--ok-tint); border-color: rgba(31,122,77,.2); }
+.cap-chip.plugin { color: var(--warn); background: var(--warn-tint); border-color: rgba(176,122,24,.2); }
+.cap-chip.cmd  { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--accent-deep); background: var(--accent-tint); border-color: rgba(217,119,87,.2); cursor: pointer; }
+.cap-chip.cmd:hover { background: #f4d5c6; border-color: var(--accent); }
+.cap-chip.cmd.copied { color: var(--ok); background: var(--ok-tint); border-color: rgba(31,122,77,.3); }
+.trace-row { font-size: 12.5px; color: var(--ink-3); padding: 5px 0; border-bottom: 1px solid var(--line-soft); display: flex; gap: 10px; }
+.trace-row:last-child { border-bottom: none; }
+.trace-key { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-4); min-width: 160px; }
+.trace-val { color: var(--ink-2); }
+.trace-val.yes { color: var(--ok); font-weight: 600; }
+.trace-val.no  { color: var(--ink-5); }
+
+/* ===== Responsive ===== */
+@media (max-width: 900px) {
+  .app { padding: 20px 18px 64px; }
+  .widget-strip { grid-template-columns: repeat(2, 1fr); }
+  .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  .mode-list { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="bdos-ops-header"></div>
+<div class="app">
+
+  <!-- ===== Masthead ===== -->
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ideas Vault
+      </a>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <span class="agent-avatar" id="agentAvatar" title="Librarian" style="background:rgba(139,111,78,.12);border-color:rgba(139,111,78,.3);">📚</span>
+        <span id="liveStatusMount"></span>
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
+          <span class="theme-icon">&#9790;</span>
+          <span class="theme-label">Dark</span>
+        </button>
+      </div>
+    </div>
+    <div class="eyebrow">
+      <span class="dot"></span>
+      BDOS · Knowledge Manager
+      <span class="version-pill mono" id="versionPill">v0.4.0</span>
+    </div>
+    <h1 class="serif">Librarian <span class="accent">Observatory</span></h1>
+    <div class="submeta">
+      <span class="submeta-item">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Knowledge Manager — vault retrieval layer
+      </span>
+      <span class="submeta-item" id="agentVersion">agent v0.6</span>
+      <span class="submeta-item" id="lastActivity">loading…</span>
+    </div>
+    <div class="sync-status">
+      <span class="sync-dot" id="syncDot"></span>
+      <span id="syncLabel">loading…</span>
+      <div class="sync-bar-wrap" id="syncBarWrap" title="Click to refresh now">
+        <div class="sync-bar" id="syncBar"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ===== Phase 2 Banner ===== -->
+  <div class="phase-banner">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span><strong>Phase 2.B active.</strong> Structured logging schemas live. Operational logs folder exists but is currently empty — activity will appear here after Librarian's first logged invocation. Phase 2.C (token intelligence) pending.</span>
+  </div>
+
+  <!-- ===== Panel 1: Header strip widgets ===== -->
+  <div class="widget-strip" id="widgetStrip">
+    <div class="widget">
+      <div class="widget-label">Total Files Indexed</div>
+      <div class="widget-value mono" id="totalFiles">—</div>
+      <div class="widget-sub">across all tier-2 units</div>
+    </div>
+    <div class="widget">
+      <div class="widget-label">Tier-2 Units Active</div>
+      <div class="widget-value mono" id="tier2Count">11</div>
+      <div class="widget-sub">scoped indexes live</div>
+    </div>
+    <div class="widget">
+      <div class="widget-label">Librarian Version</div>
+      <div class="widget-value mono" id="libVersion">v0.6</div>
+      <div class="widget-sub" id="libModes">6 operation modes</div>
+    </div>
+    <div class="widget">
+      <div class="widget-label">Index Freshness</div>
+      <div class="widget-value mono" id="freshCount">—</div>
+      <div class="widget-sub">units with fresh index (&lt;30d)</div>
+    </div>
+  </div>
+
+  <!-- ===== Panels 2 & 3: Tier-1 + Tier-2 ===== -->
+  <div class="grid-2">
+
+    <!-- Panel 2: Tier-1 Index Overview -->
+    <div class="panel">
+      <div class="panel-head serif">
+        Tier-1 Global Index
+        <span class="badge">vault root</span>
+      </div>
+      <div id="tier1Content">
+        <div class="para-grid" id="paraGrid">
+          <div class="para-item">
+            <div class="para-item-label">01 Projects</div>
+            <div class="para-item-value mono" id="paraProjects">—</div>
+            <div class="para-item-sub">active project files</div>
+          </div>
+          <div class="para-item">
+            <div class="para-item-label">02 Areas</div>
+            <div class="para-item-value mono" id="paraAreas">—</div>
+            <div class="para-item-sub">ongoing responsibilities</div>
+          </div>
+          <div class="para-item">
+            <div class="para-item-label">03 Resources</div>
+            <div class="para-item-value mono" id="paraResources">—</div>
+            <div class="para-item-sub">reference material</div>
+          </div>
+          <div class="para-item">
+            <div class="para-item-label">04 Archive</div>
+            <div class="para-item-value mono" id="paraArchive">—</div>
+            <div class="para-item-sub">inactive / closed</div>
+          </div>
+        </div>
+        <div class="para-bar-row" style="margin-top:14px;">
+          <div class="para-bar-label"><span>Vault distribution</span><span id="totalVaultFiles">total: —</span></div>
+          <div class="para-bar-track"><div class="para-bar-fill" id="areasBar" style="width:60%"></div></div>
+        </div>
+        <div style="font-size:11.5px;color:var(--ink-4);margin-top:6px" id="indexMeta">Source: <span class="mono">/00_INDEX.md</span></div>
+      </div>
+    </div>
+
+    <!-- Panel 5 (side): Knowledge Map top domains -->
+    <div class="panel">
+      <div class="panel-head serif">
+        Knowledge Map
+        <span class="badge">cross-domain</span>
+      </div>
+      <ul class="domain-list" id="domainList">
+        <li class="domain-item" style="color:var(--ink-4);font-size:12.5px;border:none;">loading knowledge map…</li>
+      </ul>
+      <div style="font-size:11.5px;color:var(--ink-4);margin-top:10px;">Source: <span class="mono">/00_KNOWLEDGE_MAP.md</span></div>
+    </div>
+
+  </div>
+
+  <!-- Panel 3: Tier-2 Scoped Units -->
+  <div class="panel full">
+    <div class="section-head">
+      <h2 class="serif">Tier-2 Scoped Units</h2>
+      <span class="count-badge mono" id="tier2Badge">11 active</span>
+    </div>
+    <table class="tier2-table">
+      <thead>
+        <tr>
+          <th>Scope</th>
+          <th>Files</th>
+          <th>Index Version</th>
+          <th>Last Run</th>
+          <th>Freshness</th>
+        </tr>
+      </thead>
+      <tbody id="tier2Body">
+        <tr><td colspan="5" style="color:var(--ink-4);font-size:12.5px;padding:12px 0;">loading tier-2 units…</td></tr>
+      </tbody>
+    </table>
+    <div style="font-size:11px;color:var(--ink-5);margin-top:10px;">
+      Freshness: <span style="color:var(--ok)">●</span> fresh (&lt;30d) &nbsp; <span style="color:var(--warn)">●</span> stale (30-90d) &nbsp; <span style="color:var(--gap)">●</span> very stale (&gt;90d)
+      &nbsp;&nbsp;Source: <span class="mono">/00_Prompts/BDOS/00_AGENTS_INDEX.md</span>
+    </div>
+  </div>
+
+  <!-- Panel 4: Tier-2 Candidates -->
+  <div class="panel full" style="margin-bottom:24px;">
+    <div class="panel-head serif">
+      Tier-2 Candidates
+      <span class="badge">approaching threshold</span>
+    </div>
+    <p style="font-size:12.5px;color:var(--ink-3);margin-bottom:14px;">Units approaching the 30-file threshold for scoped indexing. Once they exceed 30 files or gain a <span class="mono" style="font-size:11px">01_PROJECT_STATE.md</span>, they qualify for a dedicated tier-2 index.</p>
+    <div class="candidates-grid" id="candidatesGrid">
+      <div class="candidate-card">
+        <div class="candidate-name">Ignis Academy</div>
+        <div class="candidate-count">22</div>
+        <div class="candidate-label">files (threshold: 30)</div>
+        <div class="candidate-bar-track"><div class="candidate-bar-fill approaching" style="width:73%"></div></div>
+      </div>
+      <div class="candidate-card">
+        <div class="candidate-name">Média Műhely</div>
+        <div class="candidate-count">21</div>
+        <div class="candidate-label">files (threshold: 30)</div>
+        <div class="candidate-bar-track"><div class="candidate-bar-fill approaching" style="width:70%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panels 6 & 7: Open Questions + Gaps -->
+  <div class="grid-2">
+
+    <!-- Panel 6: Open Questions -->
+    <div class="panel">
+      <div class="panel-head serif">
+        Open Questions
+        <span class="badge" id="questionsCount">loading…</span>
+      </div>
+      <ul class="qg-list" id="questionsList">
+        <li class="qg-item" style="color:var(--ink-4);">loading…</li>
+      </ul>
+      <div style="font-size:11.5px;color:var(--ink-4);margin-top:10px;">Source: <span class="mono">/00_OPEN_QUESTIONS.md</span></div>
+    </div>
+
+    <!-- Panel 7: Gaps -->
+    <div class="panel">
+      <div class="panel-head serif">
+        Vault Gaps
+        <span class="badge" id="gapsCount">loading…</span>
+      </div>
+      <ul class="qg-list" id="gapsList">
+        <li class="qg-item" style="color:var(--ink-4);">loading…</li>
+      </ul>
+      <div style="font-size:11.5px;color:var(--ink-4);margin-top:10px;">Source: <span class="mono">/00_GAPS.md</span></div>
+    </div>
+
+  </div>
+
+  <!-- Panel 8: Recent Activity (Phase 2.B) -->
+  <div class="panel full">
+    <div class="panel-head serif">
+      Recent Activity
+      <span class="badge">Phase 2.B operational log</span>
+    </div>
+    <div id="activityContent">
+      <div class="activity-empty">
+        <div class="empty-icon">&#128218;</div>
+        <p>No operational log entries yet.</p>
+        <p>The log folder exists at <span class="mono" style="font-size:11px">/00_Prompts/BDOS/agents/librarian/logs/operational/</span> and is ready to receive entries.</p>
+        <p class="phase-note">Phase 2.B active — logs will appear here after Librarian's first invocation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 9: Operations Modes Reference -->
+  <div class="panel full">
+    <div class="panel-head serif">
+      Operation Modes Reference
+      <span class="badge">Librarian v0.6 — 6 modes</span>
+    </div>
+    <div class="mode-list">
+      <div class="mode-item">
+        <div class="mode-name">index</div>
+        <div class="mode-desc">Reads a scope, generates 5 index files (INDEX, KNOWLEDGE_MAP, DECISIONS_INDEX, OPEN_QUESTIONS, GAPS). Rare — weekly or monthly.</div>
+        <div class="mode-slash mono">/lib-index</div>
+      </div>
+      <div class="mode-item">
+        <div class="mode-name">retrieve</div>
+        <div class="mode-desc">Context-protection mode. Reads vault on behalf of caller — returns filtered summary. Two-tier algorithm: tier-1 for global queries, tier-2 for unit-specific.</div>
+        <div class="mode-slash mono">/lib-find</div>
+      </div>
+      <div class="mode-item">
+        <div class="mode-name">tidy</div>
+        <div class="mode-desc">Housekeeping — orphan files, broken links, byte-identical duplicates. Dry-run default. Logs every action with undo commands.</div>
+        <div class="mode-slash mono">/lib-tidy</div>
+      </div>
+      <div class="mode-item">
+        <div class="mode-name">audit</div>
+        <div class="mode-desc">Vault health report — stale files, missing frontmatter, structure anomalies, agent meta-index maintenance. Monthly cadence.</div>
+        <div class="mode-slash mono">/lib-audit</div>
+      </div>
+      <div class="mode-item">
+        <div class="mode-name">integrate</div>
+        <div class="mode-desc">Surveys external folders (Downloads, Desktop, Documents) and proposes vault-integration for relevant files. Never moves anything autonomously.</div>
+        <div class="mode-slash mono">/lib-integrate</div>
+      </div>
+      <div class="mode-item">
+        <div class="mode-name">deep-clean</div>
+        <div class="mode-desc">Deep cleanup — byte-identical duplicates, empty files, temp files, stale-status archives. Cross-reference check before every move/delete. Dry-run default.</div>
+        <div class="mode-slash mono">/lib-deepclean</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 10: Capabilities (added 0.2.0 — live from AGENT_PROFILES.md) -->
+  <div class="panel full" id="capPanel">
+    <div class="panel-head serif">
+      Capabilities
+      <span class="badge">live from AGENT_PROFILES.md</span>
+    </div>
+    <div id="capContent">
+      <div class="activity-empty">
+        <div class="empty-icon">📚</div>
+        <p>Loading capability profile…</p>
+        <p class="phase-note">Fetching <span class="mono" style="font-size:11px">/00_Prompts/BDOS/AGENT_PROFILES.md</span></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Panel 11: Logs (added 0.4.0 — agent_observability sidecar) -->
+  <div class="panel full" id="logsPanel">
+    <div class="panel-head serif">
+      Logs
+      <span class="badge" id="logsPanelBadge">loading…</span>
+    </div>
+    <div id="logsContent">
+      <div class="activity-empty"><div class="empty-icon">◎</div><p>Loading sidecar…</p></div>
+    </div>
+  </div>
+
+</div><!-- /app -->
+
+<script>
+/* ===== DASH STEM ===== */
+const DASH_STEM = 'librarian';
+
+/* ===== SOURCE FILES ===== */
+const AGENTS_INDEX_FILE  = '/00_Prompts/BDOS/00_AGENTS_INDEX.md';
+const INDEX_FILE         = '/00_INDEX.md';
+const KNOWLEDGE_MAP_FILE = '/00_KNOWLEDGE_MAP.md';
+const OPEN_Q_FILE        = '/00_OPEN_QUESTIONS.md';
+const GAPS_FILE          = '/00_GAPS.md';
+const LIBRARIAN_FILE     = '/00_Prompts/BDOS/agents/librarian.md';
+const OPS_LOG_GLOB_BASE  = '/00_Prompts/BDOS/agents/librarian/logs/operational/';
+const AGENT_PROFILES_FILE = '/00_Prompts/BDOS/AGENT_PROFILES.md';
+const AGENT_NAME_IN_PROFILES = 'Librarian';
+
+/* ===== DATA STATE ===== */
+let lastAgentsContent   = null;
+let lastIndexContent    = null;
+let lastKmapContent     = null;
+let lastQContent        = null;
+let lastGapsContent     = null;
+let lastProfilesContent = null;
+
+/* ===== YAML FRONTMATTER PARSER ===== */
+function parseYamlFrontmatter(md) {
+  if (!md) return {};
+  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (!m) return {};
+  const yaml = m[1];
+  const result = {};
+  const lines = yaml.split('\n');
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    const kv = line.match(/^(\w[\w-]*):\s*(.*)/);
+    if (!kv) { i++; continue; }
+    const key = kv[1];
+    let val = kv[2].trim();
+    if (val === '' && i + 1 < lines.length && lines[i+1].startsWith('  -')) {
+      const arr = [];
+      i++;
+      while (i < lines.length && lines[i].match(/^\s+-/)) {
+        arr.push(lines[i].replace(/^\s+-\s*/, '').trim());
+        i++;
+      }
+      result[key] = arr; continue;
+    }
+    if (val.startsWith('[') && val.endsWith(']')) {
+      result[key] = val.slice(1,-1).split(',').map(x => x.trim().replace(/^['"]|['"]$/g,''));
+    } else {
+      val = val.replace(/#(?![0-9a-fA-F]{3,6}\b).*/,'').trim().replace(/^['"]|['"]$/g,'');
+      result[key] = val;
+    }
+    i++;
+  }
+  return result;
+}
+
+/* ===== MARKDOWN SECTION PARSER ===== */
+function parseMarkdownSections(body) {
+  const sections = {};
+  const lines = body.split('\n');
+  let current = null;
+  for (const line of lines) {
+    const h = line.match(/^#{1,3}\s+(.*)/);
+    if (h) { current = h[1].trim(); sections[current] = []; continue; }
+    if (current) sections[current].push(line);
+  }
+  return sections;
+}
+
+/* ===== HELPERS ===== */
+function el(id) { return document.getElementById(id); }
+function escHtml(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ===== SYNC INDICATOR ===== */
+let syncTicker = null;
+let syncNextIn = 8;
+let syncUpdatedAgo = 0;
+let syncConnected = false;
+const POLL_INTERVAL = 8000;
+const SSE_POLL_INTERVAL = 30000;
+
+function setSyncState(state) {
+  const dot = el('syncDot');
+  dot.className = 'sync-dot' + (state === 'syncing' ? ' syncing' : state === 'error' ? ' error' : '');
+}
+function tickSyncLabel() {
+  syncUpdatedAgo++;
+  syncNextIn = Math.max(0, syncNextIn - 1);
+  el('syncLabel').textContent = `Updated ${syncUpdatedAgo}s ago, next in ${syncNextIn}s`;
+  const pct = syncConnected
+    ? (1 - syncNextIn / (SSE_POLL_INTERVAL/1000)) * 100
+    : (1 - syncNextIn / (POLL_INTERVAL/1000)) * 100;
+  el('syncBar').style.width = Math.max(0, Math.min(100, pct)) + '%';
+}
+function resetSyncBar(interval) {
+  syncNextIn = interval / 1000;
+  syncUpdatedAgo = 0;
+  el('syncBar').style.width = '0%';
+  setTimeout(() => { if(el('syncBar')) el('syncBar').style.width = '100%'; }, 50);
+}
+if (el('syncBarWrap')) el('syncBarWrap').onclick = () => { pollVault(); resetSyncBar(POLL_INTERVAL); };
+
+/* ===== TIER-2 PARSER ===== */
+function parseTier2FromAgentsIndex(md) {
+  const units = [];
+  const tableRegex = /\|\s*`?([^|`]+)`?\s*\|\s*(\d+)\s*\|\s*([^|]+)\|\s*([^|]+)\|/g;
+  let m;
+  // Find the tier-2 table section
+  const tier2Section = md.match(/### Tier-2 scoped indexes[\s\S]*?(?=###|$)/);
+  if (!tier2Section) return units;
+  const section = tier2Section[0];
+  while ((m = tableRegex.exec(section)) !== null) {
+    const scope = m[1].trim();
+    const files = parseInt(m[2]);
+    const version = m[3].trim();
+    const lastRun = m[4].trim();
+    if (scope.startsWith('Scope') || scope === '---') continue;
+    units.push({ scope, files, version, lastRun });
+  }
+  return units;
+}
+
+function getFreshness(lastRun) {
+  // Parse date from "2026-05-11" format
+  const d = new Date(lastRun.replace(/\s.*/,''));
+  if (isNaN(d)) return 'unknown';
+  const now = new Date('2026-05-24');
+  const daysDiff = Math.floor((now - d) / (1000 * 86400));
+  if (daysDiff < 30) return 'fresh';
+  if (daysDiff < 90) return 'stale';
+  return 'very-stale';
+}
+
+function renderTier2(units) {
+  const tbody = el('tier2Body');
+  if (!units.length) {
+    tbody.innerHTML = '<tr><td colspan="5" style="color:var(--ink-4);font-size:12.5px;padding:12px 0;">No tier-2 units found in AGENTS_INDEX.</td></tr>';
+    return;
+  }
+  let total = 0;
+  let freshCount = 0;
+  let html = '';
+  units.forEach(u => {
+    total += u.files;
+    const f = getFreshness(u.lastRun);
+    if (f === 'fresh') freshCount++;
+    const dotClass = f === 'fresh' ? 'fresh' : f === 'stale' ? 'stale' : 'very-stale';
+    html += `<tr>
+      <td><span class="scope-name">${escHtml(u.scope)}</span></td>
+      <td><span class="file-count">${u.files}</span></td>
+      <td><span class="index-version">${escHtml(u.version)}</span></td>
+      <td style="font-size:12px;color:var(--ink-3);" class="mono">${escHtml(u.lastRun)}</td>
+      <td><span class="fresh-dot ${dotClass}" title="${f}"></span></td>
+    </tr>`;
+  });
+  tbody.innerHTML = html;
+  el('totalFiles').textContent = total.toLocaleString();
+  el('freshCount').textContent = freshCount + '/' + units.length;
+  el('tier2Count').textContent = units.length;
+  el('tier2Badge').textContent = units.length + ' active';
+}
+
+/* ===== PARSE 00_INDEX.MD for PARA distribution ===== */
+function parseIndexForPARA(md) {
+  const result = { projects: '—', areas: '—', resources: '—', archive: '—', total: '—' };
+  if (!md) return result;
+  // Look for file count patterns like "180 files" or "| 180 |"
+  const projectsM = md.match(/01[_\s]Projects[^\n]*?(\d+)\s*files?/i) || md.match(/Projects[^\n]*\|\s*(\d+)/i);
+  const areasM    = md.match(/02[_\s]Areas[^\n]*?(\d+)\s*files?/i)    || md.match(/Areas[^\n]*\|\s*(\d+)/i);
+  const resourcesM= md.match(/03[_\s]Resources[^\n]*?(\d+)\s*files?/i)|| md.match(/Resources[^\n]*\|\s*(\d+)/i);
+  const archiveM  = md.match(/04[_\s]Archive[^\n]*?(\d+)\s*files?/i)  || md.match(/Archive[^\n]*\|\s*(\d+)/i);
+  const totalM    = md.match(/file_count:\s*(\d+)/i)                  || md.match(/total[^:]*:\s*(\d+)/i);
+  if (projectsM) result.projects = projectsM[1];
+  if (areasM)    result.areas    = areasM[1];
+  if (resourcesM)result.resources= resourcesM[1];
+  if (archiveM)  result.archive  = archiveM[1];
+  if (totalM)    result.total    = totalM[1];
+  return result;
+}
+
+function renderTier1(md) {
+  const para = parseIndexForPARA(md);
+  el('paraProjects').textContent  = para.projects;
+  el('paraAreas').textContent     = para.areas;
+  el('paraResources').textContent = para.resources;
+  el('paraArchive').textContent   = para.archive;
+  el('totalVaultFiles').textContent = para.total !== '—' ? 'total: ' + para.total : 'total: —';
+  // Area bar width
+  if (para.areas !== '—' && para.total !== '—') {
+    const pct = Math.round(parseInt(para.areas) / parseInt(para.total) * 100);
+    el('areasBar').style.width = pct + '%';
+  }
+  el('indexMeta').innerHTML = `Source: <span class="mono">/00_INDEX.md</span>`;
+}
+
+/* ===== PARSE KNOWLEDGE MAP domains ===== */
+function parseKnowledgeMap(md) {
+  const domains = [];
+  if (!md) return domains;
+  // Look for domain entries like "**Sonrisa** (N refs)" or table rows
+  const patterns = [
+    /\|\s*\*?\*?([^|*]+)\*?\*?\s*\|\s*(\d+)/g,
+    /[-*]\s+\*?\*?([^*:(]+)\*?\*?[^(]*\((\d+)\s*refs?\)/gi,
+    /\*?\*?([A-Za-záéíóöőüű\s]+)\*?\*?[:\s]+(\d+)\s*refs?/gi,
+  ];
+  for (const re of patterns) {
+    let m;
+    while ((m = re.exec(md)) !== null) {
+      const name = m[1].trim();
+      const count = parseInt(m[2]);
+      if (name && count > 0 && !name.includes('---') && name.length < 40) {
+        domains.push({ name, count });
+      }
+    }
+    if (domains.length >= 3) break;
+  }
+  domains.sort((a,b) => b.count - a.count);
+  return domains.slice(0, 10);
+}
+
+function renderKnowledgeMap(md) {
+  const domains = parseKnowledgeMap(md);
+  const list = el('domainList');
+  if (!domains.length) {
+    list.innerHTML = '<li class="domain-item" style="color:var(--ink-4);font-size:12.5px;border:none;">Knowledge map loaded — domain count data not in parseable format. Open <span class="mono" style="font-size:11px">/00_KNOWLEDGE_MAP.md</span> to view.</li>';
+    return;
+  }
+  list.innerHTML = domains.map(d =>
+    `<li class="domain-item"><span class="domain-name">${escHtml(d.name)}</span><span class="domain-count">${d.count}</span></li>`
+  ).join('');
+}
+
+/* ===== PARSE OPEN QUESTIONS ===== */
+function parseOpenQuestions(md) {
+  const items = [];
+  if (!md) return items;
+  const lines = md.split('\n');
+  let currentDomain = '';
+  for (const line of lines) {
+    const h = line.match(/^#{1,3}\s+(.*)/);
+    if (h) { currentDomain = h[1].trim(); continue; }
+    const q = line.match(/^[-*]\s+(.+)/);
+    if (q) items.push({ domain: currentDomain, text: q[1].trim() });
+    const checkbox = line.match(/^-\s+\[ \]\s+(.+)/);
+    if (checkbox) items.push({ domain: currentDomain, text: checkbox[1].trim() });
+  }
+  return items.slice(0, 12);
+}
+
+function renderOpenQuestions(md) {
+  const items = parseOpenQuestions(md);
+  const list = el('questionsList');
+  const badge = el('questionsCount');
+  if (!items.length) {
+    list.innerHTML = '<li class="qg-item" style="color:var(--ink-4);">No open questions found, or file is empty.</li>';
+    badge.textContent = '0';
+    return;
+  }
+  badge.textContent = items.length;
+  list.innerHTML = items.map(i =>
+    `<li class="qg-item">${i.domain ? `<span class="qg-domain">${escHtml(i.domain.substring(0,20))}</span>` : ''}${escHtml(i.text)}</li>`
+  ).join('');
+}
+
+/* ===== PARSE GAPS ===== */
+function parseGaps(md) {
+  const items = [];
+  if (!md) return items;
+  const lines = md.split('\n');
+  let currentDomain = '';
+  for (const line of lines) {
+    const h = line.match(/^#{1,3}\s+(.*)/);
+    if (h) { currentDomain = h[1].trim(); continue; }
+    const g = line.match(/^[-*]\s+(.+)/);
+    if (g) items.push({ domain: currentDomain, text: g[1].trim() });
+  }
+  return items.slice(0, 10);
+}
+
+function renderGaps(md) {
+  const items = parseGaps(md);
+  const list = el('gapsList');
+  const badge = el('gapsCount');
+  if (!items.length) {
+    list.innerHTML = '<li class="qg-item" style="color:var(--ink-4);">No gaps found, or file is empty.</li>';
+    badge.textContent = '0';
+    return;
+  }
+  badge.textContent = items.length;
+  list.innerHTML = items.map(i =>
+    `<li class="qg-item">${i.domain ? `<span class="qg-domain">${escHtml(i.domain.substring(0,20))}</span>` : ''}${escHtml(i.text)}</li>`
+  ).join('');
+}
+
+/* ===== FETCH HELPER ===== */
+async function fetchFile(path) {
+  try {
+    const r = await fetch(path, { cache: 'no-store' });
+    if (!r.ok) return null;
+    return await r.text();
+  } catch(e) { return null; }
+}
+
+/* ===== POLL VAULT ===== */
+async function pollVault() {
+  setSyncState('syncing');
+  let changed = false;
+
+  const [agentsContent, indexContent, kmapContent, qContent, gapsContent, profilesContent] = await Promise.all([
+    fetchFile(AGENTS_INDEX_FILE),
+    fetchFile(INDEX_FILE),
+    fetchFile(KNOWLEDGE_MAP_FILE),
+    fetchFile(OPEN_Q_FILE),
+    fetchFile(GAPS_FILE),
+    fetchFile(AGENT_PROFILES_FILE),
+  ]);
+
+  if (agentsContent !== lastAgentsContent) {
+    lastAgentsContent = agentsContent;
+    changed = true;
+    if (agentsContent) {
+      const units = parseTier2FromAgentsIndex(agentsContent);
+      renderTier2(units);
+      // Parse librarian version
+      const vm = agentsContent.match(/### Librarian[^#]*version[^:]*:\s*([^\n]+)/i);
+      if (vm) el('libVersion').textContent = 'v' + vm[1].trim().replace(/^v/,'');
+    }
+  }
+
+  if (indexContent !== lastIndexContent) {
+    lastIndexContent = indexContent;
+    changed = true;
+    if (indexContent) renderTier1(indexContent);
+  }
+
+  if (kmapContent !== lastKmapContent) {
+    lastKmapContent = kmapContent;
+    changed = true;
+    if (kmapContent) renderKnowledgeMap(kmapContent);
+    else el('domainList').innerHTML = '<li class="domain-item" style="color:var(--ink-4);font-size:12.5px;border:none;">00_KNOWLEDGE_MAP.md not found — run <span class="mono" style="font-size:11px">/lib-index</span> to generate.</li>';
+  }
+
+  if (qContent !== lastQContent) {
+    lastQContent = qContent;
+    changed = true;
+    if (qContent) renderOpenQuestions(qContent);
+    else { el('questionsList').innerHTML = '<li class="qg-item" style="color:var(--ink-4);">00_OPEN_QUESTIONS.md not found.</li>'; el('questionsCount').textContent = '—'; }
+  }
+
+  if (gapsContent !== lastGapsContent) {
+    lastGapsContent = gapsContent;
+    changed = true;
+    if (gapsContent) renderGaps(gapsContent);
+    else { el('gapsList').innerHTML = '<li class="qg-item" style="color:var(--ink-4);">00_GAPS.md not found.</li>'; el('gapsCount').textContent = '—'; }
+  }
+
+  if (profilesContent !== lastProfilesContent) {
+    lastProfilesContent = profilesContent;
+    renderCapabilities(profilesContent ? parseAgentProfile(profilesContent, AGENT_NAME_IN_PROFILES) : null);
+  }
+
+  setSyncState('ok');
+  resetSyncBar(POLL_INTERVAL);
+  el('lastActivity').textContent = 'updated ' + new Date().toLocaleTimeString();
+}
+
+/* ===== POLL LOOP (fallback only — primary is LiveUpdates SSE) ===== */
+function startPolling(interval) {
+  return setInterval(() => {
+    pollVault();
+    resetSyncBar(interval);
+  }, interval);
+}
+
+/* ===== THEME TOGGLE (DS 0.3.0) ===== */
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  try { localStorage.setItem('dash-theme', t); } catch(e) {}
+  const btn = el('themeToggle');
+  if (btn) {
+    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
+    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
+    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+  }
+}
+el('themeToggle').addEventListener('click', function() {
+  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
+});
+window.addEventListener('storage', function(e) {
+  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
+});
+(function initTheme() {
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  setTheme(t);
+})();
+
+/* ===== CLIPBOARD HELPER ===== */
+function copyText(text, elBtn) {
+  navigator.clipboard.writeText(text).then(() => {
+    elBtn.classList.add('copied');
+    setTimeout(() => elBtn.classList.remove('copied'), 1600);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    elBtn.classList.add('copied');
+    setTimeout(() => elBtn.classList.remove('copied'), 1600);
+  });
+}
+
+/* ===== AGENT PROFILES — parser + renderer (added 0.2.0) ===== */
+function parseAgentProfile(md, agentName) {
+  if (!md) return null;
+  const escaped = agentName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('^## ' + escaped + '\\s*\\n+```yaml\\n([\\s\\S]*?)\\n```', 'm');
+  const m = md.match(re);
+  if (!m) return null;
+  const yaml = m[1];
+  const obj = {};
+  // Avatar
+  const emojiM  = yaml.match(/^\s*emoji:\s*["']?([^"'\n]+?)["']?\s*$/m);
+  const colorM  = yaml.match(/^\s*color:\s*["']?(#[0-9a-fA-F]{3,8})["']?\s*$/m);
+  obj.emoji = emojiM ? emojiM[1].trim() : '?';
+  obj.color = colorM ? colorM[1].trim() : '#D97757';
+  // Parse list under a key: collects "- item" lines after "key:" until next key
+  function parseList(key) {
+    const re2 = new RegExp('\\n\\s{0,4}' + key + ':\\s*\\n((?:\\s+- [^\\n]*\\n?)*)', '');
+    const mm = yaml.match(re2);
+    if (!mm) return [];
+    return mm[1].split('\n').map(l => l.replace(/^\s+-\s*/, '').trim()).filter(Boolean);
+  }
+  obj.tools             = parseList('tools');
+  obj.connectors_mcp    = parseList('connectors_mcp');
+  obj.apis              = parseList('apis');
+  obj.plugins           = parseList('plugins');
+  obj.own_commands      = parseList('own_commands');
+  obj.can_invoke        = parseList('can_invoke');
+  // own_commands_count scalar
+  const cntM = yaml.match(/own_commands_count:\s*(\d+)/);
+  obj.own_commands_count = cntM ? parseInt(cntM[1]) : obj.own_commands.length;
+  // test_access_trace scalars
+  const lastUpdM = yaml.match(/last_updated:\s*(\S+)/);
+  const chromeM  = yaml.match(/chrome_mcp_used:\s*(\S+)/);
+  const thinkM   = yaml.match(/thinking_engine_used:\s*(\S+)/);
+  obj.last_updated          = lastUpdM ? lastUpdM[1] : '—';
+  obj.chrome_mcp_used       = chromeM  ? chromeM[1]  : '—';
+  obj.thinking_engine_used  = thinkM   ? thinkM[1]   : '—';
+  obj.plugin_skills_invoked = parseList('plugin_skills_invoked');
+  return obj;
+}
+
+function hexToRgba(hex, alpha) {
+  const h = hex.replace('#','');
+  const r = parseInt(h.slice(0,2),16);
+  const g = parseInt(h.slice(2,4),16);
+  const b = parseInt(h.slice(4,6),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function renderCapabilities(profile) {
+  const wrap = el('capContent');
+  if (!profile) {
+    wrap.innerHTML = '<div class="activity-empty"><div class="empty-icon">—</div><p style="font-size:13px;color:var(--ink-4);">Profile not found in AGENT_PROFILES.md.</p></div>';
+    return;
+  }
+  // Update avatar in masthead
+  const av = el('agentAvatar');
+  if (av) {
+    av.textContent = profile.emoji;
+    av.style.background = hexToRgba(profile.color, 0.12);
+    av.style.borderColor = hexToRgba(profile.color, 0.35);
+  }
+
+  function chipList(items, cls) {
+    if (!items || !items.length) return '<span style="color:var(--ink-5);font-size:12px;">—</span>';
+    return items.map(i => `<span class="cap-chip ${cls}">${escHtml(i)}</span>`).join('');
+  }
+  function cmdChips(items) {
+    if (!items || !items.length) return '<span style="color:var(--ink-5);font-size:12px;">—</span>';
+    return items.map(i => `<button class="cap-chip cmd" data-copy="${escHtml(i)}" title="Click to copy">${escHtml(i)}</button>`).join('');
+  }
+  const traceYN = (v) => v === 'true' ? '<span class="trace-val yes">yes</span>' : v === 'false' ? '<span class="trace-val no">no</span>' : `<span class="trace-val">${escHtml(String(v))}</span>`;
+
+  wrap.innerHTML = `
+    <div class="cap-section">
+      <div class="cap-section-label">Tools (registered)</div>
+      ${chipList(profile.tools, 'tool')}
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Connectors / MCPs</div>
+      ${chipList(profile.connectors_mcp, 'mcp')}
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">APIs</div>
+      ${profile.apis && profile.apis.length ? chipList(profile.apis, 'api') : '<span style="color:var(--ink-5);font-size:12px;">none</span>'}
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Plugins</div>
+      ${profile.plugins && profile.plugins.length ? chipList(profile.plugins, 'plugin') : '<span style="color:var(--ink-5);font-size:12px;">none</span>'}
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Own slash commands (${profile.own_commands_count})</div>
+      ${cmdChips(profile.own_commands)}
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Can invoke</div>
+      ${profile.can_invoke && profile.can_invoke.length ? chipList(profile.can_invoke, '') : '<span style="color:var(--ink-5);font-size:12px;">none</span>'}
+    </div>
+    <div class="cap-section">
+      <div class="cap-section-label">Test access trace</div>
+      <div>
+        <div class="trace-row"><span class="trace-key">last_updated</span><span class="trace-val">${escHtml(profile.last_updated)}</span></div>
+        <div class="trace-row"><span class="trace-key">chrome_mcp_used</span>${traceYN(profile.chrome_mcp_used)}</div>
+        <div class="trace-row"><span class="trace-key">thinking_engine_used</span>${traceYN(profile.thinking_engine_used)}</div>
+        <div class="trace-row"><span class="trace-key">plugin_skills_invoked</span><span class="trace-val">${profile.plugin_skills_invoked.length ? escHtml(profile.plugin_skills_invoked.join(', ')) : '<span style="color:var(--ink-5)">none</span>'}</span></div>
+      </div>
+    </div>
+    <div style="font-size:11.5px;color:var(--ink-4);margin-top:10px;">Source: <span class="mono">/00_Prompts/BDOS/AGENT_PROFILES.md</span> · auto-refresh 8s</div>`;
+
+  // Wire cmd chip copy
+  wrap.querySelectorAll('.cap-chip.cmd').forEach(btn => {
+    btn.onclick = () => copyText(btn.dataset.copy, btn);
+  });
+}
+
+/* ===== TICKER ===== */
+syncTicker = setInterval(tickSyncLabel, 1000);
+
+/* ===== LOGS PANEL — agent_observability sidecar (0.4.0) ===== */
+const LOGS_AGENT = 'librarian';
+const LOGS_SIDECAR_URL = '/_dashboards/_design/agent_logs.json';
+let logsLastTs = null;
+
+function renderLogsPanel(events) {
+  const agentEvents = events.filter(e => e.agent === LOGS_AGENT);
+  const badge = document.getElementById('logsPanelBadge');
+  const wrap  = document.getElementById('logsContent');
+  if (!agentEvents.length) {
+    if (badge) badge.textContent = '0 events';
+    if (wrap) wrap.innerHTML = '<div class="activity-empty"><div class="empty-icon">◎</div><p>No log events yet for ' + LOGS_AGENT + '.</p><p class="phase-note">Events appear here once agent invocations are recorded in agent_observability.db.</p></div>';
+    return;
+  }
+  const errs    = agentEvents.filter(e => ['error','critical'].includes(e.log_level)).length;
+  const hasDur  = agentEvents.filter(e => e.duration_ms != null);
+  const avgDur  = hasDur.length ? Math.round(hasDur.reduce((s,e)=>s+(e.duration_ms||0),0)/hasDur.length) : null;
+  const totIn   = agentEvents.reduce((s,e)=>s+(e.input_tokens||0),0);
+  const totOut  = agentEvents.reduce((s,e)=>s+(e.output_tokens||0),0);
+  const totCost = agentEvents.reduce((s,e)=>s+(e.estimated_cost||0),0);
+  const slowest  = [...agentEvents].filter(e=>e.duration_ms!=null).sort((a,b)=>b.duration_ms-a.duration_ms)[0];
+  const slowQuery= [...agentEvents].filter(e=>e.query_duration_ms!=null).sort((a,b)=>b.query_duration_ms-a.query_duration_ms)[0];
+  const hiTok   = [...agentEvents].filter(e=>(e.input_tokens||0)+(e.output_tokens||0)>0).sort((a,b)=>((b.input_tokens||0)+(b.output_tokens||0))-((a.input_tokens||0)+(a.output_tokens||0)))[0];
+  const recent  = [...agentEvents].sort((a,b)=>b.id-a.id).slice(0,50).reverse();
+
+  if (badge) badge.textContent = agentEvents.length + ' events';
+
+  const LEVEL_CHIP = lv => {
+    const cls = {'debug':'idle','info':'ok','notice':'info','warning':'warn','error':'gap','critical':'gap'}[lv]||'idle';
+    const colors = {ok:'var(--ok)',warn:'var(--warn)',gap:'var(--gap)',idle:'var(--ink-4)'};
+    const tints  = {ok:'var(--ok-tint)',warn:'var(--warn-tint)',gap:'var(--gap-tint)',idle:'var(--idle-tint)'};
+    return `<span style="font-size:10px;font-weight:700;text-transform:uppercase;padding:1px 6px;border-radius:3px;background:${tints[cls]||'var(--idle-tint)'};color:${colors[cls]||'var(--ink-4)'}">${escHtml(lv||'?')}</span>`;
+  };
+
+  if (wrap) wrap.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;margin-bottom:20px;">
+      ${[
+        ['Total events', agentEvents.length, ''],
+        ['Errors', errs, errs?'color:var(--gap)':''],
+        ['Avg duration', avgDur!=null?avgDur+'ms':'—', ''],
+        ['Tokens in', totIn?totIn.toLocaleString():'—', ''],
+        ['Tokens out', totOut?totOut.toLocaleString():'—', ''],
+        ['Est. cost', totCost>0?'$'+totCost.toFixed(4):'—', ''],
+      ].map(([label,val,style])=>`<div style="background:var(--bg-elev);border:1px solid var(--line);border-radius:8px;padding:12px 14px;box-shadow:var(--shadow-1)"><div style="font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);font-weight:600;margin-bottom:4px">${label}</div><div style="font-size:20px;font-weight:700;font-family:'JetBrains Mono',monospace;${style}">${val}</div></div>`).join('')}
+    </div>
+    ${slowest||slowQuery||hiTok?`<div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;">
+      ${slowest?`<div style="background:var(--warn-tint);border:1px solid rgba(176,122,24,.25);border-radius:6px;padding:8px 12px;font-size:12px;"><strong style="color:var(--warn);">Slowest op:</strong> ${escHtml(slowest.message||'?')} — ${slowest.duration_ms}ms</div>`:''}
+      ${slowQuery?`<div style="background:var(--accent-tint);border:1px solid rgba(217,119,87,.2);border-radius:6px;padding:8px 12px;font-size:12px;"><strong style="color:var(--accent-deep);">Slowest query:</strong> ${escHtml(slowQuery.message||'?')} — ${slowQuery.query_duration_ms}ms <span style="font-size:10px;color:var(--ink-4)">(query_duration_ms)</span></div>`:''}
+      ${hiTok?`<div style="background:var(--bg-sunken);border:1px solid var(--line);border-radius:6px;padding:8px 12px;font-size:12px;"><strong>Highest-token:</strong> ${escHtml(hiTok.message||'?')} — ${((hiTok.input_tokens||0)+(hiTok.output_tokens||0)).toLocaleString()} tok</div>`:''}
+    </div>`:''}
+    <div style="overflow-x:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg-elev);box-shadow:var(--shadow-1);">
+      <table style="width:100%;border-collapse:collapse;font-size:11.5px;font-family:'JetBrains Mono',monospace;">
+        <thead><tr style="background:var(--bg-sunken);">
+          <th style="padding:8px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);border-bottom:1px solid var(--line);white-space:nowrap;">Timestamp</th>
+          <th style="padding:8px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);border-bottom:1px solid var(--line);">Mode</th>
+          <th style="padding:8px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);border-bottom:1px solid var(--line);">Level</th>
+          <th style="padding:8px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);border-bottom:1px solid var(--line);">Event</th>
+          <th style="padding:8px 10px;text-align:left;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);border-bottom:1px solid var(--line);font-family:'Inter',sans-serif;max-width:360px;">Message</th>
+          <th style="padding:8px 10px;text-align:right;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);border-bottom:1px solid var(--line);">Dur ms</th>
+          <th style="padding:8px 10px;text-align:right;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent-deep);border-bottom:1px solid var(--line);" title="query_duration_ms — Librarian DB/index query latency">Q ms</th>
+          <th style="padding:8px 10px;text-align:right;font-size:9.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--ink-4);border-bottom:1px solid var(--line);">Tokens</th>
+        </tr></thead>
+        <tbody>
+          ${recent.map(ev=>{
+            const ts=(ev.timestamp||'').replace('T',' ').replace('Z','').slice(0,19);
+            const rowBg=ev.log_level==='error'||ev.log_level==='critical'?'background:var(--gap-tint);':ev.log_level==='warning'?'background:var(--warn-tint);':'';
+            const tok=ev.total_tokens||(((ev.input_tokens||0)+(ev.output_tokens||0)));
+            const qdur=ev.query_duration_ms!=null?`<span style="color:var(--accent-deep);font-weight:600">${ev.query_duration_ms.toLocaleString()}</span>`:'';
+            return `<tr style="${rowBg}">
+              <td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap;">${escHtml(ts)}</td>
+              <td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap;color:var(--ink-3)">${escHtml(ev.mode||'—')}</td>
+              <td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);">${LEVEL_CHIP(ev.log_level)}</td>
+              <td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);white-space:nowrap;font-size:10.5px;color:var(--ink-4)">${escHtml(ev.event_type||'?')}</td>
+              <td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);max-width:360px;white-space:normal;word-break:break-word;font-family:'Inter',sans-serif;font-size:12px;color:var(--ink-1)">${escHtml(ev.message||'')}</td>
+              <td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);text-align:right;color:var(--ink-3)">${ev.duration_ms!=null?ev.duration_ms.toLocaleString():''}</td>
+              <td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);text-align:right">${qdur}</td>
+              <td style="padding:6px 10px;border-bottom:1px solid var(--line-soft);text-align:right;color:var(--ink-3)">${tok>0?tok.toLocaleString():''}</td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div style="font-size:11px;color:var(--ink-4);margin-top:8px;text-align:right;font-family:'JetBrains Mono',monospace;">Showing ${recent.length} of ${agentEvents.length} events · sidecar: /_dashboards/_design/agent_logs.json</div>
+  `;
+}
+
+async function loadLogsPanel() {
+  try {
+    const r = await fetch(LOGS_SIDECAR_URL, { cache: 'no-store' });
+    if (!r.ok) return;
+    const data = await r.json();
+    if (data.generated_at === logsLastTs) return;
+    logsLastTs = data.generated_at;
+    renderLogsPanel(data.events || []);
+  } catch(e) {}
+}
+
+/* ===== BOOT — DS 0.4.0 event-driven live updates ===== */
+pollVault();
+loadLogsPanel();
+LiveUpdates.subscribe(() => { pollVault(); loadLogsPanel(); });
+LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
+</script>
+<script src="/_dashboards/_design/live-updates.js"></script>
+<!-- ops-header.js (DS 0.5.0) -->
+<script src="/_dashboards/_design/ops-header.js"></script>
+</body>
+</html>
