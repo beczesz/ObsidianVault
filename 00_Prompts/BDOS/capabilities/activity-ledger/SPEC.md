@@ -11,7 +11,30 @@ index_schema_version: 1
 bdos_index: true
 ---
 
-# Activity Ledger — capability spec (draft v0.1.0)
+# Activity Ledger capability spec
+
+## 0. Resolved architecture (2026-05-29, v0.2, supersedes the analysis below)
+
+A multi-device sync constraint forced a redesign. The vault syncs across 2 machines (Obsidian/Drive), so:
+
+- **Git is OUT** as the ledger source: it is a local-per-machine repo, not synced across machines.
+- **The synced binary DB is OUT** as the ledger source: a binary SQLite under file-sync can lose an entire machine's writes (last-writer-wins) or produce an unusable `.conflict` copy. Worse failure mode than markdown.
+- **The ledger is markdown, per-machine sharded** (the BUILT design):
+  - Path: `02_Areas/Personal Growth/Alfred/activity/YYYY-MM.<machine-slug>.md`
+  - Each machine appends ONLY to its own shard, so two machines never write the same file → zero sync conflicts.
+  - Append-only, BIG events only. One line: `- <ISO> · <source> · <category> · <summary>`.
+  - Markdown is source of truth (BDOS law); degrades gracefully under sync.
+- **The DB is demoted** to a lossy live-cache for dashboards only (losing a few telemetry rows is acceptable; it is NOT the ledger).
+- **Feeds** (no git): (1) session-end hook = primary automatic feed (one summary per session, inherently big-grained), (2) agents append on meaningful mode completion, (3) manual capture.
+- **Recap** (`/alf-recap`) reads ALL shards, merges by timestamp, narrates. Source-of-truth read, no git/DB.
+
+**Built + tested 2026-05-29:** `ledger_append.sh` (write primitive), `recap_harvest.sh` (shard reader/merger), `/alf-recap` command, `session_end_log.py` + SessionEnd hook in `.claude/settings.json` (Haiku summary via Anthropic API; certifi SSL context; graceful fallback; never blocks session end). Multi-machine merge verified by simulation.
+
+**Known caveat:** the SessionEnd hook command uses `python3`; the Windows machine may need `python` (the command has a `|| python` fallback, but cross-shell var expansion `$CLAUDE_PROJECT_DIR` should be verified on Windows).
+
+---
+
+## (Original draft v0.1.0 analysis — retained for context)
 
 ## 1. Cél és motiváció
 

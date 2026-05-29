@@ -1,0 +1,14 @@
+{
+  "hooks": {
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PROJECT_DIR/00_Prompts/BDOS/agents/alfred/session_end_log.py\" || python \"$CLAUDE_PROJECT_DIR/00_Prompts/BDOS/agents/alfred/session_end_log.py\""
+          }
+        ]
+      }
+    ]
+  }
+}

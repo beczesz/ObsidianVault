@@ -581,12 +581,14 @@ def seed_alfred_cognition_jobs():
     + winter drift.  Daily 06:00 local summer = 04:00 UTC.
     Weekly Monday 06:05 local summer = 04:05 UTC (weekday=0, Mon=0).
 
-    NOTE: The former sage-daily-harvest and sage-weekly-curate jobs remain in the
-    DB if already seeded (their rows are not deleted here — they will simply
-    never fire again once the Sage cron scripts are removed). A manual SQL DELETE
-    can clean them up:
-        DELETE FROM scheduled_jobs WHERE job_id IN
-          ('sage-daily-harvest', 'sage-weekly-curate');
+    Registered DISABLED (enabled=0): the cron scripts run `claude -p "/alf-harvest"`
+    headless, which fails with a 401 ("Invalid authentication credentials") because
+    the claude CLI cannot authenticate in the unattended cron context. Until that
+    auth is sorted, harvest/curate are interactive-only (run /alf-harvest manually).
+    Re-enable by flipping `enabled` to 1 once headless auth works.
+
+    The deprecated sage-daily-harvest / sage-weekly-curate jobs are deleted here
+    (Sage was merged into Alfred 2026-05-28).
     """
     vault = str(Path(__file__).resolve().parent.parent.parent.parent.parent)
     daily_cmd  = f'{vault}/00_Prompts/BDOS/agents/alfred/cron/run_daily_harvest.sh'
@@ -594,6 +596,12 @@ def seed_alfred_cognition_jobs():
 
     con = _db()
     try:
+        # Remove deprecated Sage jobs (merged into Alfred 2026-05-28).
+        con.execute("""
+            DELETE FROM scheduled_jobs
+            WHERE job_id IN ('sage-daily-harvest', 'sage-weekly-curate')
+        """)
+
         con.execute("""
             INSERT OR IGNORE INTO scheduled_jobs
               (job_id, job_name, agent_name, schedule_type,
@@ -602,7 +610,7 @@ def seed_alfred_cognition_jobs():
             VALUES
               ('alfred-daily-harvest', 'Alfred Daily Harvest', 'alfred',
                'daily', 4, 0, NULL,
-               ?, 0, 600, 1)
+               ?, 0, 600, 0)
         """, (daily_cmd,))
 
         con.execute("""
@@ -613,7 +621,7 @@ def seed_alfred_cognition_jobs():
             VALUES
               ('alfred-weekly-curate', 'Alfred Weekly Curate', 'alfred',
                'weekly', 4, 5, 0,
-               ?, 0, 1800, 1)
+               ?, 0, 1800, 0)
         """, (weekly_cmd,))
 
         con.commit()
