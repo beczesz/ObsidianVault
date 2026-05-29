@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Alfred — Executive Cognition Layer. Personal operations observatory: cognitive
+  inbox, tasks-by-scope, sync-ritual, daily briefing, priorities.   Version: 0.4.4
+  =============================================================================
+  Renders from (read-only):
+    • /02_Areas/Personal Growth/Alfred/state/last_run.md   (status strip + sync summary + today briefing)
+    • /02_Areas/Personal Growth/Alfred/todos/<scope>.md    (tasks-by-scope — checkbox parser)
+    • /02_Areas/Personal Growth/Alfred/inbox.md            (cognitive inbox — unprocessed items)
+    • /02_Areas/Personal Growth/Alfred/priorities.md       (personal + family priorities)
+  Write endpoints:
+    • POST /api/alfred/process {"text":"…"} — Haiku 4.5 parse: scope, title, due, priority, tags
+      extracted, then writes a formatted checkbox task line to todos/<scope>.md under ## Active.
+      Fallback: if AI unavailable or parse fails, appends raw text to inbox.md (capture-only).
+      Response: { ok, mode: 'process'|'capture-fallback', scope, task: {title,due,priority,tags}, line }
+    • POST /api/alfred/capture {"text":"…"} — legacy append-only, raw line to inbox.md.
+
+  Shared engine (DS 0.8.14): tokens.css + theme.js + clipboard.js + markdown-parser.js
+    + dom-utils.js + admin-bar.js + live-updates.js.
+
+  See: /_dashboards/CLAUDE.md · /_dashboards/_design/ARCHITECTURE.md · /_dashboards/_design/lint.mjs
+
+  Audit trail:
+    0.4.4 (2026-05-29) tend: Added Alfred processor tier indicator pill to the masthead eyebrow.
+      wireProcessorPill() fetches /health and shows the active capture-box tier (Sonnet / Haiku /
+      capture-only / szerver offline) with state colors (--ok / --warn / --ink-3). New .alfred-proc-pill
+      CSS (token-only). Surfaces whether the always-on launchd server has the Sonnet tier live.
+    0.4.3 (2026-05-29) tend: Capture box upgraded for the Sonnet decomposition tier. The /api/alfred/process
+      endpoint now returns {mode: process-cc|process-haiku|capture-fallback, count, files[], tasks[]} (one
+      paste decomposes into N tasks across scope files). Result chip shows "N task felveve (scopes)" plus a
+      [Haiku] marker on fallback; a "Feldolgozas (Claude Code)..." status is shown while waiting (CC tier is
+      slower than the old single Haiku call). No markup/CSS change beyond the status text.
+    0.4.2 (2026-05-29) tend: Panel 08 Gyors capture updated to POST /api/alfred/process (Haiku 4.5
+      immediate processing). Helper text updated: explains AI parse (scope, boundary, priority) with
+      inbox fallback. Success chip: green "Task felvéve: <scope> · <due>" on mode:process, amber
+      "AI nem elerheto, inboxba mentve." on mode:capture-fallback, red on HTTP error. Submit handler
+      points to /api/alfred/process. Cmd/Ctrl+Enter shortcut and disabled-during-submit preserved.
+      capture-status now has amber (.warn) variant. Comment header updated.
+    0.4.1 (2026-05-29) tend: version-pill normalized family-wide. CSS: font-size 10.5px, padding 2px 8px, font-weight 500, border-radius 999px (was 10px, 1px 7px, no weight). Markup: mono class added. Pixel-identical to maestro reference.
+    0.4.0 (2026-05-29) tend: three changes. (1) Title changed to "Alfréd a személyi
+      asszisztens"; .accent color aligned to canonical var(--accent) terracotta
+      (was var(--alfred) slate-blue, which broke visual consistency with the family).
+      Version pill updated. (2) Placeholder Task A/B/C entries removed from
+      todos/personal.md and todos/family.md — these were scaffold examples, not real
+      tasks. (3) Capture box added (panel 08): textarea + Submit button that POSTs
+      to the new /api/alfred/capture endpoint in dash-server.mjs. Append-only to
+      inbox.md with ISO timestamp. Capture-only semantics: actual triage/routing
+      happens when Alfred runs sync mode later; no live AI processing from the box.
+    0.3.1 (2026-05-28) tend: masthead avatar now shows the real Pixar portrait
+      (/00_Prompts/BDOS/agents/alfred/avatar.png) inside the eyebrow chip, rounded
+      26px with --alfred ring; emoji 🤵 kept as 404 fallback.
+    0.3.0 (2026-05-28) audit+tend: DS 0.9.0 compliance pass. (1) Panel Anchor System
+      (DS §9) added: [id^="panel-"] scroll-margin-top:42px, .panel-anchor CSS,
+      id="panel-N-slug" + .panel-anchor-host + #N anchor badge on panels 2-7
+      (panel-1-header-strip id only, no badge per DS §9 convention).
+      (2) Stale Sage content removed from about footer: routing list updated
+      (Sage/Presto/Broker/Forge -> Presto/Broker/Forge), "nem curál idea-tudást
+      (az Sage)" attribution replaced with Alfred v0.3 cognition-curator note.
+      (3) Version bump 0.2.1 -> 0.3.0 (structural: panel system + content update).
+    0.2.1 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app -> .app-main + .app-shell layout. alfred-tasks.js added.
+    0.2.0 (2026-05-28) Tasks-by-scope panel added (panel 02). Reads todos/<scope>.md checkbox
+      lists; parses status/due/priority; due-state chips (overdue/today/soon); per-scope grouping
+      with open + archive counts. TODO_SCOPES config + parseTasks/dueState helpers. Panels
+      renumbered (sync-ritual → 06, modes → 07). markdown-native TODO store, no DB.
+    0.1.0 (2026-05-28) initial build from _design/_template/. First Alfred dashboard.
+      8 panels: status strip, sync-ritual architecture, cognitive inbox (live from inbox.md
+      Unprocessed section), today briefing (last_run.md), priorities (3 buckets), v0.1+v0.2 modes,
+      about footer. Graceful never_run empty-state on every data-driven panel. Alfred tokens
+      (--alfred/-deep/-tint) local in :root (light + dark). Card-copy-ref (DS §4a) on all cards.
+  =============================================================================
+-->
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alfred — Executive Cognition Layer</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M16 7l7 4v5c0 4-3 7-7 9-4-2-7-5-7-9v-5z' fill='none' stroke='%235b6b8c' stroke-width='2.2' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS §1b) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<!-- Canonical tokens (DS §1 + §1a) — DO NOT inline :root canonical tokens. -->
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
+<style>
+/* Alfred domain tokens (local extension — butler / executive slate-blue) */
+:root {
+  --alfred: #5b6b8c;
+  --alfred-deep: #3d4a63;
+  --alfred-tint: rgba(91,107,140,.10);
+}
+:root[data-theme="dark"] {
+  --alfred: #93a3c4;
+  --alfred-deep: #b6c2dc;
+  --alfred-tint: rgba(147,163,196,.14);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+.app-main { max-width: 1200px; padding: 28px 36px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  text-decoration: none; padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+.home-link svg { flex-shrink: 0; }
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.eyebrow .avatar {
+  position: relative; display: inline-flex; overflow: hidden; flex-shrink: 0;
+  width: 26px; height: 26px; border-radius: 7px;
+  border: 1px solid var(--alfred); background: var(--bg-sunken);
+}
+.eyebrow .avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.eyebrow .avatar .avatar-emoji { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; font-size: 14px; }
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; letter-spacing: 0; font-weight: 500; }
+.status-pill-scaffold {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--alfred-deep);
+  background: var(--alfred-tint); border: 1px solid var(--alfred); padding: 1px 7px;
+  border-radius: 999px; letter-spacing: 0; text-transform: none;
+}
+.alfred-proc-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
+  border-radius: 999px; letter-spacing: 0; text-transform: none;
+}
+.alfred-proc-pill[data-tier="sonnet"] { color: var(--ok); border-color: var(--ok); }
+.alfred-proc-pill[data-tier="haiku"]  { color: var(--warn); border-color: var(--warn); }
+.alfred-proc-pill[data-tier="capture"], .alfred-proc-pill[data-tier="offline"] { color: var(--ink-3); border-color: var(--line); }
+.masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; color: var(--ink-1); }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta { color: var(--ink-3); max-width: 760px; font-size: 14px; margin-top: 8px; line-height: 1.55; }
+
+/* ===== Panels ===== */
+.panel { margin-top: 34px; }
+.panel-head { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; }
+.panel-head h2 { font-size: 17px; font-weight: 700; letter-spacing: -0.01em; color: var(--ink-1); }
+.panel-head .panel-num { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--alfred); font-weight: 500; }
+.panel-sub { font-size: 13px; color: var(--ink-3); margin-bottom: 14px; max-width: 720px; line-height: 1.5; }
+
+/* ===== Stat strip ===== */
+.strip { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px; }
+.stat {
+  position: relative;
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l);
+  padding: 16px 18px; box-shadow: var(--shadow-1);
+}
+.stat .stat-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-4); font-weight: 500; }
+.stat .stat-value { font-size: 24px; font-weight: 700; color: var(--ink-1); margin-top: 6px; letter-spacing: -0.02em; }
+.stat .stat-value.muted { color: var(--ink-4); font-weight: 600; font-size: 18px; }
+.stat .stat-foot { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+
+/* ===== Card grid ===== */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; }
+.grid.flow { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.card {
+  position: relative;
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l);
+  padding: 18px 20px 16px; box-shadow: var(--shadow-1);
+  transition: box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.card:hover { box-shadow: var(--shadow-2); border-color: var(--line); }
+.card h3 { font-size: 14px; font-weight: 600; color: var(--ink-1); margin-bottom: 6px; display: flex; align-items: center; gap: 7px; }
+.card h3 .step { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--alfred); border: 1px solid var(--alfred); border-radius: 999px; padding: 1px 6px; }
+.card p { font-size: 13px; color: var(--ink-3); line-height: 1.5; }
+.card .mode-name { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--alfred-deep); font-weight: 600; }
+.card.tbd { border-style: dashed; opacity: .82; }
+.card.tbd h3 .step { color: var(--ink-4); border-color: var(--line); }
+
+/* inbox / priority list items */
+.itemlist { display: flex; flex-direction: column; gap: 8px; }
+.lineitem {
+  position: relative;
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-m);
+  padding: 11px 14px; font-size: 13px; color: var(--ink-2); line-height: 1.5;
+}
+.lineitem .li-meta { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-4); margin-right: 8px; }
+
+.bucket-title { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--alfred-deep); margin: 18px 0 8px; }
+.bucket-title:first-child { margin-top: 0; }
+
+/* ===== Tasks by scope ===== */
+.task-scope { margin-top: 20px; }
+.task-scope:first-child { margin-top: 0; }
+.task-scope-head { display: flex; align-items: baseline; gap: 8px; margin-bottom: 9px; }
+.task-scope-head .ts-name { font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: var(--alfred-deep); }
+.task-scope-head .ts-count { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-4); }
+.task-row {
+  position: relative; display: flex; align-items: flex-start; gap: 10px;
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-m);
+  padding: 10px 14px; margin-bottom: 8px; transition: border-color var(--t-fast);
+}
+.task-row:hover { border-color: var(--alfred); }
+.task-row.done { opacity: .58; }
+.task-box {
+  flex-shrink: 0; width: 16px; height: 16px; margin-top: 1px;
+  border: 1.5px solid var(--ink-4); border-radius: 4px;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--ok); line-height: 1;
+}
+.task-row.done .task-box { border-color: var(--ok); background: var(--ok-tint); }
+.task-main { flex: 1; min-width: 0; }
+.task-text { font-size: 13px; color: var(--ink-2); line-height: 1.45; }
+.task-row.done .task-text { text-decoration: line-through; color: var(--ink-4); }
+.task-meta { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; align-items: center; }
+.due-chip {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; padding: 1px 7px;
+  border-radius: 999px; border: 1px solid var(--line); color: var(--ink-3); background: var(--bg-sunken);
+}
+.due-chip.overdue { color: var(--gap); border-color: rgba(192,57,43,.3); background: var(--gap-tint); }
+.due-chip.today { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); }
+.due-chip.soon { color: var(--alfred-deep); border-color: var(--alfred); background: var(--alfred-tint); }
+.prio-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; padding: 1px 7px; border-radius: 999px; }
+.prio-tag.high { color: var(--gap); background: var(--gap-tint); }
+.prio-tag.med { color: var(--alfred-deep); background: var(--alfred-tint); }
+.prio-tag.low { color: var(--ink-4); background: var(--bg-sunken); }
+
+/* ===== Card copy-ref (DS §4a, MANDATORY) ===== */
+.card-copy-ref {
+  position: absolute; top: 10px; right: 10px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 500; color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.card:hover .card-copy-ref, .card:focus-within .card-copy-ref,
+.stat:hover .card-copy-ref, .stat:focus-within .card-copy-ref,
+.lineitem:hover .card-copy-ref, .lineitem:focus-within .card-copy-ref,
+.task-row:hover .card-copy-ref, .task-row:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ===== Panel Anchor System (DS 0.8.0) ===== */
+[id^="panel-"] { scroll-margin-top: 42px; }
+.panel-anchor {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600; color: var(--ink-5);
+  background: transparent; border: none; padding: 1px 4px;
+  border-radius: var(--radius-s); text-decoration: none;
+  opacity: 0; transition: opacity var(--t-fast), color var(--t-fast), background var(--t-fast);
+  white-space: nowrap; cursor: pointer; line-height: 1; flex-shrink: 0;
+}
+.panel.panel-anchor-host:hover .panel-anchor,
+.panel.panel-anchor-host:focus-within .panel-anchor { opacity: 1; }
+.panel-anchor:hover { color: var(--accent-deep); background: var(--accent-tint); }
+.panel-head .panel-anchor { margin-left: 2px; }
+
+/* ===== Empty / error states ===== */
+.state {
+  text-align: center; padding: 40px 20px; color: var(--ink-4);
+  border: 1px dashed var(--line-soft); border-radius: var(--radius-l);
+  font-size: 14px;
+}
+.state.error { color: var(--gap); border-color: rgba(192,57,43,.25); background: var(--gap-tint); }
+
+/* ===== Capture box (DS §4 — write-permitted exception, append-only to inbox.md) ===== */
+.capture-form { display: flex; flex-direction: column; gap: 12px; max-width: 720px; }
+.capture-textarea {
+  width: 100%; min-height: 80px; padding: 12px 14px;
+  font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.5;
+  color: var(--ink-1); background: var(--bg-elev);
+  border: 1px solid var(--line); border-radius: var(--radius-l);
+  resize: vertical; transition: border-color var(--t-fast), box-shadow var(--t-fast);
+  outline: none;
+}
+.capture-textarea:focus { border-color: var(--alfred); box-shadow: 0 0 0 3px var(--alfred-tint); }
+.capture-row { display: flex; align-items: center; gap: 12px; }
+.capture-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 18px; font-size: 13px; font-weight: 600;
+  color: var(--bg-elev); background: var(--alfred);
+  border: none; border-radius: var(--radius-l); cursor: pointer;
+  transition: background var(--t-fast), opacity var(--t-fast);
+}
+.capture-btn:hover { background: var(--alfred-deep); }
+.capture-btn:disabled { opacity: .55; cursor: not-allowed; }
+.capture-status {
+  font-size: 12px; font-family: 'JetBrains Mono', monospace;
+  padding: 4px 10px; border-radius: 999px; border: 1px solid transparent;
+}
+.capture-status.ok { color: var(--ok); background: var(--ok-tint); border-color: rgba(31,122,77,.25); }
+.capture-status.warn { color: var(--warn); background: var(--warn-tint); border-color: rgba(176,122,24,.25); }
+.capture-status.err { color: var(--gap); background: var(--gap-tint); border-color: rgba(192,57,43,.25); }
+.capture-note { font-size: 12px; color: var(--ink-4); line-height: 1.5; }
+
+/* ===== About footer ===== */
+.about {
+  margin-top: 44px; border: 1px solid var(--line); border-radius: var(--radius-l);
+  background: var(--bg-sunken); padding: 0 20px;
+}
+.about > summary {
+  list-style: none; cursor: pointer; padding: 16px 0; font-weight: 600;
+  font-size: 14px; color: var(--ink-2); display: flex; align-items: center; gap: 8px;
+}
+.about > summary::-webkit-details-marker { display: none; }
+.about > summary::before { content: '▸'; color: var(--alfred); transition: transform var(--t-fast); }
+.about[open] > summary::before { transform: rotate(90deg); }
+.about .about-body { padding: 0 0 20px; font-size: 13px; color: var(--ink-3); line-height: 1.6; max-width: 760px; }
+.about .about-body p { margin-bottom: 10px; }
+.about .about-body strong { color: var(--ink-2); }
+.about .about-body code { font-family: 'JetBrains Mono', monospace; font-size: 12px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-s); padding: 1px 5px; }
+</style>
+</head>
+<body>
+<!-- Admin bar mount-point (DS §5c) — first body element, before content. -->
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<main class="app-main">
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Vissza az Ideas Vault launcherhez">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Téma váltása" title="Nappali / éjszakai téma">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Sötét</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      <span class="avatar"><img src="/00_Prompts/BDOS/agents/alfred/avatar.png" alt="Alfred" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="avatar-emoji" aria-hidden="true">🤵</span></span> ALFRED · EXECUTIVE COGNITION LAYER
+      <span class="version-pill mono">v0.4.4</span>
+      <span class="status-pill-scaffold">scaffold</span>
+      <span class="alfred-proc-pill" id="alfred-proc-pill" data-tier="offline" title="Alfred feldolgozo motor (capture box). Sonnet = Claude Code dekompozicio, Haiku = egyszeru parse, capture = csak mentes.">⚙ ...</span>
+    </div>
+    <h1><span class="accent">Alfréd</span> a személyi asszisztens</h1>
+    <div class="submeta">Súrlódásmentes cognitive inbox (raw capture → processing → structured operational), sync-rituáléval (NEM realtime). Alfred összegyűjt, rendszerez, reflektál, priorizál és összeköt — nem old meg mindent. Maestro a rendszerre néz; Alfred az emberre.</div>
+  </header>
+
+  <section id="content">
+    <div class="state" id="loading">Betöltés…</div>
+  </section>
+</main><!-- end .app-main -->
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
+
+<!-- ============================================================ -->
+<!-- Shared engine — DO NOT inline equivalents of these.          -->
+<!-- ============================================================ -->
+<script src="/_dashboards/_design/live-updates.js"></script>
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<script src="/_dashboards/_design/markdown-parser.js"></script>
+<script src="/_dashboards/_design/dom-utils.js"></script>
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
+
+<script>
+// ============================================================
+// PER-DASHBOARD CONFIG
+// ============================================================
+const DASH_STEM   = 'alfred';
+const STATE_URL   = '/02_Areas/Personal Growth/Alfred/state/last_run.md';
+const INBOX_URL   = '/02_Areas/Personal Growth/Alfred/inbox.md';
+const PRIOS_URL   = '/02_Areas/Personal Growth/Alfred/priorities.md';
+const TODOS_BASE  = '/02_Areas/Personal Growth/Alfred/todos/';
+// Known scopes (v0.3: auto-discover from todos/00_TODOS.md). Missing files are skipped gracefully.
+const TODO_SCOPES = [
+  { scope: 'personal',  label: 'Személyes', file: TODOS_BASE + 'personal.md' },
+  { scope: 'family',    label: 'Családi',   file: TODOS_BASE + 'family.md' },
+  { scope: 'cps',       label: 'CPS',       file: TODOS_BASE + 'cps.md' },
+  { scope: 'navigator',  label: 'Navigátor',  file: TODOS_BASE + 'navigator.md' },
+  { scope: 'exarlabs',   label: 'ExarLabs',   file: TODOS_BASE + 'exarlabs.md' },
+  { scope: 'fokuszpont', label: 'Fókuszpont', file: TODOS_BASE + 'fokuszpont.md' },
+];
+
+// ============================================================
+// Helpers
+// ============================================================
+function stripFrontmatter(md) {
+  if (!md) return '';
+  const m = md.match(/^---\n[\s\S]*?\n---\n?/);
+  return m ? md.slice(m[0].length) : md;
+}
+
+// Grab the lines under a "## Heading" until the next "## " heading.
+function getSection(body, headingText) {
+  if (!body) return '';
+  const lines = body.split('\n');
+  let out = [], capturing = false;
+  for (const ln of lines) {
+    const h = ln.match(/^##\s+(.*)$/);
+    if (h) {
+      if (capturing) break;
+      if (h[1].trim().toLowerCase().startsWith(headingText.toLowerCase())) { capturing = true; }
+      continue;
+    }
+    if (capturing) out.push(ln);
+  }
+  return out.join('\n').trim();
+}
+
+// Bullet lines, skipping HTML comments and italic placeholders like _(...)_
+function bulletItems(sectionText) {
+  if (!sectionText) return [];
+  return sectionText.split('\n')
+    .map(l => l.trim())
+    .filter(l => /^[-*]\s+/.test(l))
+    .map(l => l.replace(/^[-*]\s+/, '').trim())
+    .filter(l => l && !/^_\(.*\)_$/.test(l));
+}
+
+function isPlaceholder(sectionText) {
+  // A section is "empty" if it only contains an italic placeholder _( ... )_ and/or comments.
+  const meaningful = (sectionText || '').split('\n')
+    .map(l => l.trim())
+    .filter(l => l && !l.startsWith('<!--') && !/^_\(.*\)_$/.test(l) && !l.startsWith('<!'));
+  return meaningful.length === 0;
+}
+
+// Parse a todos/<scope>.md body into {active:[{done,text,due,prio}], archiveCount}
+function parseTasks(body) {
+  const parseLines = (text) => (text || '').split('\n').map(l => l.trim())
+    .map(l => l.match(/^- \[([ xX])\]\s+(.*)$/))
+    .filter(Boolean)
+    .map(m => {
+      const done = m[1].toLowerCase() === 'x';
+      const raw = m[2];
+      const dueM = raw.match(/(?:📅\s*|due::\s*)(\d{4}-\d{2}-\d{2})/);
+      const due = dueM ? dueM[1] : null;
+      let prio = null;
+      if (raw.indexOf('⏫') !== -1) prio = 'high';
+      else if (raw.indexOf('🔼') !== -1) prio = 'med';
+      else if (raw.indexOf('🔽') !== -1 || raw.indexOf('⏬') !== -1) prio = 'low';
+      const text = raw
+        .replace(/📅\s*\d{4}-\d{2}-\d{2}/g, '')
+        .replace(/\(?due::\s*\d{4}-\d{2}-\d{2}\)?/g, '')
+        .replace(/[⏫🔼🔽⏬]/g, '')
+        .replace(/#[^\s#]+/g, '')
+        .replace(/\s{2,}/g, ' ').trim();
+      return { done, text, due, prio };
+    });
+  return { active: parseLines(getSection(body, 'Active')), archiveCount: parseLines(getSection(body, 'Archive')).length };
+}
+
+// Due-date state relative to today (live clock).
+function dueState(dateStr) {
+  if (!dateStr) return { cls: 'none', label: 'nincs határidő' };
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const d = new Date(dateStr + 'T00:00:00');
+  if (isNaN(d.getTime())) return { cls: 'none', label: dateStr };
+  const days = Math.round((d - today) / 86400000);
+  if (days < 0) return { cls: 'overdue', label: 'lejárt ' + (-days) + ' napja' };
+  if (days === 0) return { cls: 'today', label: 'ma' };
+  if (days <= 7) return { cls: 'soon', label: days + ' nap múlva' };
+  return { cls: 'planned', label: dateStr };
+}
+
+function copyRefBtn() {
+  return `<button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation()">
+    <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    ref</button>`;
+}
+
+// ============================================================
+// Panels
+// ============================================================
+function panelStatus(fm) {
+  const sync = fm.last_sync && fm.last_sync !== 'never' ? escapeHtml(String(fm.last_sync)) : null;
+  const brief = fm.last_briefing && fm.last_briefing !== 'never' ? escapeHtml(String(fm.last_briefing)) : null;
+  const backlog = fm.inbox_backlog != null ? String(fm.inbox_backlog) : '0';
+  const routes = fm.pending_routes != null ? String(fm.pending_routes) : '0';
+  const cell = (id, label, valueHtml, foot) => `
+    <div class="stat" data-card-id="status/${id}" tabindex="0">
+      ${copyRefBtn()}
+      <div class="stat-label">${label}</div>
+      <div class="stat-value ${valueHtml.muted ? 'muted' : ''}">${valueHtml.text}</div>
+      ${foot ? `<div class="stat-foot">${foot}</div>` : ''}
+    </div>`;
+  return `<section class="panel" id="panel-1-header-strip">
+    <div class="panel-head"><span class="panel-num">01</span><h2>Állapot</h2></div>
+    <div class="panel-sub">Az utolsó sync-rituálé és briefing pillanatképe — Alfred <code>state/last_run.md</code>-jéből élőben.</div>
+    <div class="strip">
+      ${cell('last-sync', 'Utolsó sync', { text: sync || 'soha', muted: !sync }, sync ? 'sync-rituálé' : 'még nem futott')}
+      ${cell('last-briefing', 'Utolsó briefing', { text: brief || 'soha', muted: !brief }, brief ? 'napi briefing' : 'még nem futott')}
+      ${cell('inbox-backlog', 'Inbox backlog', { text: backlog, muted: backlog === '0' }, 'feldolgozatlan tétel')}
+      ${cell('pending-routes', 'Függő routingok', { text: routes, muted: routes === '0' }, 'megerősítésre vár')}
+    </div>
+  </section>`;
+}
+
+function panelTasks(scopeResults) {
+  const withTasks = scopeResults.filter(s => s.tasks && (s.tasks.active.length || s.tasks.archiveCount));
+  let inner;
+  if (withTasks.length === 0) {
+    inner = `<div class="state">Még nincs feladat. Mondd: „Alfréd, vegyél fel egy taskot…", vagy „Alfréd, nézd át ezt a szöveget és nézd meg mit kell csinálnom".</div>`;
+  } else {
+    const prioLabel = { high: 'magas', med: 'közepes', low: 'alacsony' };
+    inner = withTasks.map(s => {
+      const open = s.tasks.active.filter(t => !t.done).length;
+      const rows = s.tasks.active.map(t => {
+        const ds = dueState(t.due);
+        const dueChip = `<span class="due-chip ${ds.cls}">${escapeHtml(ds.label)}</span>`;
+        const prioTag = t.prio ? `<span class="prio-tag ${t.prio}">${prioLabel[t.prio]}</span>` : '';
+        return `<div class="task-row ${t.done ? 'done' : ''}" data-card-id="task/${escapeHtml(s.scope)}/${toSlug(t.text.slice(0, 40) || 'task')}" tabindex="0">
+          ${copyRefBtn()}
+          <span class="task-box">${t.done ? '✓' : ''}</span>
+          <div class="task-main">
+            <div class="task-text">${escapeHtml(t.text)}</div>
+            <div class="task-meta">${dueChip}${prioTag}</div>
+          </div>
+        </div>`;
+      }).join('');
+      const archived = s.tasks.archiveCount ? ` · ${s.tasks.archiveCount} archív` : '';
+      return `<div class="task-scope">
+        <div class="task-scope-head"><span class="ts-name">${escapeHtml(s.label)}</span><span class="ts-count">${open} nyitott${archived}</span></div>
+        ${rows || '<div class="state">Nincs aktív feladat ebben a scope-ban.</div>'}
+      </div>`;
+    }).join('');
+  }
+  return `<section class="panel panel-anchor-host" id="panel-2-tasks">
+    <div class="panel-head"><span class="panel-num">02</span><h2>Feladatok scope szerint</h2><a class="panel-anchor" href="#panel-2-tasks" title="Másolás vágólapra">#2</a></div>
+    <div class="panel-sub">Markdown-natív TODO-k (sima Obsidian checkbox) — Alfred kezeli, sosem törli. Élőben a <code>todos/&lt;scope&gt;.md</code> fájlokból; lejárt/mai kiemelve. Minden projektnek külön feladatai.</div>
+    ${inner}
+  </section>`;
+}
+
+function panelSyncRitual() {
+  const steps = [
+    { n: '1', name: 'Raw capture', desc: 'A cognitive inbox — bemondott/leírt nyers dump. Semmi struktúra. Vault-side <code>inbox.md</code> + on-the-go ChatGPT "Alfred Inbox" chat (Chrome MCP harvest).' },
+    { n: '2', name: 'Processing', desc: 'A sync-rituálé: Alfred triázsol (idea/todo/reminder/family/priority/mood/insight), routingot javasol, és <strong>confirmation-gate</strong> előtt semmit nem szór szét.' },
+    { n: '3', name: 'Structured operational', desc: 'A megerősített kimenet: TODO-k, prioritások, agent-signalok, napi briefing, dashboard-state. Vagy egyszerűen archív — nem minden tétel akar struktúrává válni.' },
+  ];
+  const cards = steps.map(s => `
+    <article class="card" data-card-id="layer/${toSlug(s.name)}">
+      ${copyRefBtn()}
+      <h3><span class="step">${s.n}</span> ${escapeHtml(s.name)}</h3>
+      <p>${s.desc}</p>
+    </article>`).join('');
+  return `<section class="panel panel-anchor-host" id="panel-6-sync-ritual">
+    <div class="panel-head"><span class="panel-num">06</span><h2>Sync-rituálé</h2><a class="panel-anchor" href="#panel-6-sync-ritual" title="Másolás vágólapra">#6</a></div>
+    <div class="panel-sub"><strong>NEM realtime.</strong> Kadencia: reggel (briefing) · délután (capture-feldolgozás) · este (lezárás) · dashboard-indításkor (opportunista). A cél: semmi ne vesszen el, de a feldolgozás egészséges ritmusban történjen.</div>
+    <div class="grid flow">${cards}</div>
+  </section>`;
+}
+
+function panelInbox(body) {
+  const section = getSection(body, 'Unprocessed');
+  const items = bulletItems(section);
+  let inner;
+  if (items.length === 0) {
+    inner = `<div class="state">Az inbox tiszta — nincs feldolgozatlan tétel. Mondj/írj be valamit, és a következő <code>sync</code> triázsolja.</div>`;
+  } else {
+    inner = `<div class="itemlist">${items.map(it => {
+      const tm = it.match(/^\[([^\]]+)\]\s*(.*)$/);
+      const meta = tm ? `<span class="li-meta">${escapeHtml(tm[1])}</span>` : '';
+      const txt = tm ? tm[2] : it;
+      return `<div class="lineitem" data-card-id="inbox/${toSlug(txt.slice(0,40))}" tabindex="0">${copyRefBtn()}${meta}${escapeHtml(txt)}</div>`;
+    }).join('')}</div>`;
+  }
+  return `<section class="panel panel-anchor-host" id="panel-3-inbox">
+    <div class="panel-head"><span class="panel-num">03</span><h2>Cognitive Inbox</h2><a class="panel-anchor" href="#panel-3-inbox" title="Másolás vágólapra">#3</a></div>
+    <div class="panel-sub">A raw capture réteg — feldolgozatlan dump-ok. Élőben <code>inbox.md</code> „Unprocessed" szekciójából.</div>
+    ${inner}
+  </section>`;
+}
+
+function panelBriefing(body) {
+  const section = getSection(body, 'Mai briefing');
+  let inner;
+  if (isPlaceholder(section)) {
+    inner = `<div class="state">Ma még nem futott <code>today</code> briefing. Itt jelenik majd meg: naptár-kivonat + minden agent „ma mit lát feladatként" + top prioritások.</div>`;
+  } else {
+    const items = bulletItems(section);
+    inner = items.length
+      ? `<div class="itemlist">${items.map(it => `<div class="lineitem" data-card-id="briefing/${toSlug(it.slice(0,40))}" tabindex="0">${copyRefBtn()}${escapeHtml(it)}</div>`).join('')}</div>`
+      : `<div class="lineitem" data-card-id="briefing/note" tabindex="0">${copyRefBtn()}${escapeHtml(section)}</div>`;
+  }
+  return `<section class="panel panel-anchor-host" id="panel-4-briefing">
+    <div class="panel-head"><span class="panel-num">04</span><h2>Mai briefing</h2><a class="panel-anchor" href="#panel-4-briefing" title="Másolás vágólapra">#4</a></div>
+    <div class="panel-sub">Read-only napi nézet: naptár + agent-today-k + prioritások egy priorizált listában.</div>
+    ${inner}
+  </section>`;
+}
+
+function panelPriorities(body) {
+  const buckets = [
+    { key: 'Most aktív', label: 'Most aktív (top fókusz)' },
+    { key: 'Családi', label: 'Családi' },
+    { key: 'Figyelni', label: 'Figyelni / háttérben' },
+  ];
+  let any = false;
+  const blocks = buckets.map(b => {
+    const items = bulletItems(getSection(body, b.key));
+    if (items.length === 0) return '';
+    any = true;
+    return `<div class="bucket-title">${escapeHtml(b.label)}</div>
+      <div class="itemlist">${items.map(it => `<div class="lineitem" data-card-id="priority/${toSlug(it.slice(0,40))}" tabindex="0">${copyRefBtn()}${escapeHtml(it)}</div>`).join('')}</div>`;
+  }).join('');
+  const inner = any ? blocks : `<div class="state">Még nincs rögzített prioritás. A <code>sync</code> vagy kézi szerkesztés tölti fel <code>priorities.md</code>-t.</div>`;
+  return `<section class="panel panel-anchor-host" id="panel-5-priorities">
+    <div class="panel-head"><span class="panel-num">05</span><h2>Prioritások</h2><a class="panel-anchor" href="#panel-5-priorities" title="Másolás vágólapra">#5</a></div>
+    <div class="panel-sub">A gazda személyes + családi fókusza. Nem cég-stratégia (az Maestro + gazda) — itt az attention-fókusz él.</div>
+    ${inner}
+  </section>`;
+}
+
+function panelModes() {
+  const core = [
+    { m: 'capture "…"', d: 'Legalacsonyabb-súrlódású belépő. Nyers dump → inbox, timestamp-pel, semmi strukturálás. Az egyetlen mód, ami megerősítés nélkül ír (append-only).' },
+    { m: 'sync', d: 'A sync-rituálé: olvas, triázsol, routingot javasol, confirmation-gate, végrehajt, logol, state-et frissít. Csend default.' },
+    { m: 'today / briefing', d: 'Read-only napi briefing: naptár + agent-today-k + prioritások priorizált nézetben.' },
+    { m: 'status', d: 'Read-only áttekintés: inbox-backlog, utolsó sync, függő routingok, never_run figyelmeztetés.' },
+  ];
+  const planned = [
+    { m: 'triage <kat>', d: 'Fókuszált feldolgozás egy részhalmazra (csak TODO-k / csak family).' },
+    { m: 'reflect', d: 'Heti reflexió az operatív ritmusra: mi torlódik, mi esik le, figyelem-minták. Javaslat-only.' },
+    { m: 'learn', d: 'Learning-lifecycle (proposals → active → retired). Alfred a gazda mintáit tanulja. Cap 15 active.' },
+    { m: 'index', d: 'Alfred személyes operatív indexének regenerálása.' },
+    { m: 'family ops', d: 'Családi dashboardok / prioritások kezelése.' },
+  ];
+  const render = (arr, tbd) => arr.map(x => `
+    <article class="card ${tbd ? 'tbd' : ''}" data-card-id="mode/${toSlug(x.m)}">
+      ${copyRefBtn()}
+      <h3><span class="step">${tbd ? 'v0.2' : 'v0.1'}</span> <span class="mode-name">${escapeHtml(x.m)}</span></h3>
+      <p>${escapeHtml(x.d)}</p>
+    </article>`).join('');
+  return `<section class="panel panel-anchor-host" id="panel-7-modes">
+    <div class="panel-head"><span class="panel-num">07</span><h2>Módok</h2><a class="panel-anchor" href="#panel-7-modes" title="Másolás vágólapra">#7</a></div>
+    <div class="panel-sub">v0.1 mag (definiált) + v0.2 várható. Slash prefix foglalt: <code>alf-</code>. Konfirmáció kötelező minden mutáció előtt (kivéve <code>capture</code> + read-only módok).</div>
+    <div class="grid">${render(core, false)}${render(planned, true)}</div>
+  </section>`;
+}
+
+function panelCapture() {
+  return `<section class="panel panel-anchor-host" id="panel-8-capture">
+    <div class="panel-head"><span class="panel-num">08</span><h2>Gyors capture</h2><a class="panel-anchor" href="#panel-8-capture" title="Másolás vágólapra">#8</a></div>
+    <div class="panel-sub">Írj be bármit — feladatot, emlékeztetőt, ötletet. A beküldés <strong>azonnal feldolgozza</strong> Haiku 4.5-tel: scope, határidő és prioritás kinyerése, taskká alakítás. Ha az AI nem elérhető, az inboxba kerül.</div>
+    <div class="capture-form" id="capture-form">
+      <textarea class="capture-textarea" id="capture-input" rows="3" placeholder="pl. Kérdezd meg Jánost a határidőről holnap · Fogászat csütörtök 10-kor (family) · Podcast reklám ötlet jövő hétre…" aria-label="Capture szöveg"></textarea>
+      <div class="capture-row">
+        <button class="capture-btn" id="capture-submit" type="button">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2L15 22 11 13 2 9l20-7z"/></svg>
+          Feldolgoz és ment
+        </button>
+        <span class="capture-status" id="capture-status" style="display:none"></span>
+      </div>
+      <p class="capture-note">Azonnal feldolgozza (Haiku 4.5): scope, határidő és prioritás kinyerése, taskká alakítás a <code>todos/&lt;scope&gt;.md</code> fájlba. Érvényes scope-ok: personal, family, fokuszpont (ismeretlen scope esetén personal). Ha az AI nem elérhető vagy a parse sikertelen, az <code>inbox.md</code>-be kerül. Cmd/Ctrl+Enter = gyors beküldés.</p>
+    </div>
+  </section>`;
+}
+
+function panelAbout() {
+  return `<details class="about">
+    <summary>Ki Alfred, és hogyan használd</summary>
+    <div class="about-body">
+      <p><strong>Alfred = Executive Cognition Layer</strong> — a BDOS human interface rétege. A felismerés, amiből született: nem az AI-capability hiányzik, hanem hogy az emberi gondolatok nem tudnak súrlódásmentesen bekerülni a rendszerbe (a jó ötlet az utcán, autóban, séta közben születik).</p>
+      <p><strong>Hogyan használd:</strong> dobj be bármit a cognitive inboxba (<code>inbox.md</code> vagy az „Alfred Inbox" ChatGPT chat). Ne rendszerezd — az Alfred dolga. A <code>sync</code>-kor végigmegy, kategorizál, és megerősítés után routol: TODO-ba, prioritásba, vagy egy másik agenthez (Presto / Broker / Forge). Kognitív módokban (<code>harvest</code>, <code>curate</code>, <code>chat</code>, <code>learn</code>) Alfred a saját gondolatok és minták kurátora is — Sage-et abszorbeálta v0.3-ban.</p>
+      <p><strong>Mit NEM csinál:</strong> nem publikál külső platformra, nem hoz cég-stratégiai döntést (az Maestro + gazda), és nem strukturál túl korán — a raw inboxban csak capture, presence, continuity kell.</p>
+      <p><strong>Canonical spec:</strong> <code>00_Prompts/BDOS/agents/alfred.md</code> · <strong>Storage:</strong> <code>02_Areas/Personal Growth/Alfred/</code></p>
+    </div>
+  </details>`;
+}
+
+// ============================================================
+// Capture box — POST to /api/alfred/process (Haiku 4.5 immediate parse)
+// Fallback: server returns mode:'capture-fallback' if AI unavailable.
+// ============================================================
+async function wireProcessorPill() {
+  const pill = document.getElementById('alfred-proc-pill');
+  if (!pill) return;
+  const LABELS = { sonnet: '⚙ Sonnet', haiku: '⚙ Haiku', capture: '⚙ capture-only', offline: '⚙ szerver offline' };
+  try {
+    const r = await fetch('/health', { cache: 'no-store' });
+    const h = await r.json();
+    const tier = (h.alfred_processor && h.alfred_processor.tier) || 'capture';
+    pill.dataset.tier = tier;
+    pill.textContent = LABELS[tier] || ('⚙ ' + tier);
+  } catch {
+    pill.dataset.tier = 'offline';
+    pill.textContent = LABELS.offline;
+  }
+}
+
+function wireCaptureBox() {
+  const btn    = document.getElementById('capture-submit');
+  const input  = document.getElementById('capture-input');
+  const status = document.getElementById('capture-status');
+  if (!btn || !input || !status) return;
+
+  function showStatus(cls, msg) {
+    status.className = 'capture-status ' + cls;
+    status.textContent = msg;
+    status.style.display = '';
+    setTimeout(() => { status.style.display = 'none'; }, 5000);
+  }
+
+  btn.addEventListener('click', async () => {
+    const text = input.value.trim();
+    if (!text) { showStatus('err', 'Irj be valamit elobb.'); return; }
+    btn.disabled = true;
+    showStatus('', 'Feldolgozas (Claude Code)...');  // CC tier can take 10-40s
+    try {
+      const res = await fetch('/api/alfred/process', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text }),
+      });
+      if (res.ok) {
+        const j = await res.json().catch(() => ({}));
+        input.value = '';
+        if (j.mode === 'capture-fallback') {
+          showStatus('warn', 'AI nem elerheto, inboxba mentve.');
+        } else {
+          // process-cc | process-haiku — N tasks decomposed into scope files
+          const n = j.count || (j.tasks ? j.tasks.length : 1);
+          const scopes = j.files ? ' (' + j.files.map(f => f.replace('.md', '')).join(', ') + ')' : '';
+          const via = j.mode === 'process-haiku' ? ' [Haiku]' : '';
+          showStatus('ok', n + (n === 1 ? ' task felveve' : ' task felveve') + scopes + via);
+        }
+      } else {
+        const j = await res.json().catch(() => ({}));
+        showStatus('err', 'Hiba: ' + (j.error || res.status));
+      }
+    } catch (e) {
+      showStatus('err', 'Szerver nem erheto el (4321).');
+    } finally {
+      btn.disabled = false;
+    }
+  });
+
+  // Cmd/Ctrl+Enter submits
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); btn.click(); }
+  });
+}
+
+// ============================================================
+// Fetch + render
+// ============================================================
+async function fetchText(url) {
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error(url + ' → ' + res.status);
+  return res.text();
+}
+async function fetchTextSoft(url) {
+  try { return await fetchText(url); } catch (e) { return ''; }
+}
+
+function renderError(msg) {
+  document.getElementById('content').innerHTML =
+    `<div class="state error">Nem sikerült betölteni: ${escapeHtml(msg)}</div>`;
+}
+
+async function refetchAndRender() {
+  try {
+    const [stateMd, inboxMd, priosMd] = await Promise.all([
+      fetchText(STATE_URL),
+      fetchTextSoft(INBOX_URL),
+      fetchTextSoft(PRIOS_URL),
+    ]);
+    const todoResults = await Promise.all(TODO_SCOPES.map(async (s) => {
+      const md = await fetchTextSoft(s.file);
+      return { scope: s.scope, label: s.label, tasks: md ? parseTasks(stripFrontmatter(md)) : null };
+    }));
+
+    const parsedState = parseYamlFrontmatter(stateMd) || {};
+    const fm = parsedState.frontmatter || {};
+    const stateBody = parsedState.body || stripFrontmatter(stateMd);
+    const inboxBody = stripFrontmatter(inboxMd);
+    const priosBody = stripFrontmatter(priosMd);
+
+    const container = document.getElementById('content');
+    container.innerHTML =
+      panelStatus(fm) +
+      panelTasks(todoResults) +
+      panelInbox(inboxBody) +
+      panelBriefing(stateBody) +
+      panelPriorities(priosBody) +
+      panelSyncRitual() +
+      panelModes() +
+      panelCapture() +
+      panelAbout();
+
+    wireCopyRef(container);
+    wireCaptureBox();
+    wireProcessorPill();
+  } catch (e) {
+    renderError(e.message);
+  }
+}
+
+// ============================================================
+// Boot — subscribe to LiveUpdates (SSE + poll fallback)
+// ============================================================
+LiveUpdates.subscribe(refetchAndRender);
+LiveUpdates.mountStatusIndicator(document.querySelector('.masthead-toprow'));
+refetchAndRender();
+</script>
+</body>
+</html>

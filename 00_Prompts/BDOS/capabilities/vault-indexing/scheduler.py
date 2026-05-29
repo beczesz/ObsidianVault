@@ -345,9 +345,10 @@ def _dispatch(job: sqlite3.Row):
     finally:
         con.close()
 
-    _log('task_started', f'[scheduler] Dispatching job: {job_id} (run {run_id})',
-         job_id=job_id, level='info',
-         metadata={'run_id': run_id, 'command': job['command'][:200]})
+    # The run start is recorded authoritatively in job_runs; we deliberately do
+    # NOT write a task_started row to agent_logs (routine dispatch is not a
+    # meaningful activity event — it was the bulk of the historical log noise).
+    print(f'[scheduler] Dispatching job: {job_id} (run {run_id})', flush=True)
 
     # Launch subprocess
     try:
@@ -374,6 +375,9 @@ def _dispatch(job: sqlite3.Row):
             duration_ms = int((time.perf_counter() - start_wall) * 1000)
             exit_code = proc.returncode
             success = exit_code == 0
+            # Convention: exit 2 = benign skip (e.g. debounce no-op), NOT a failure.
+            skipped = exit_code == 2
+            ok = success or skipped
 
             def _tail(path: str, max_bytes: int = 2000) -> str:
                 try:
@@ -406,12 +410,12 @@ def _dispatch(job: sqlite3.Row):
                         metadata_json  = ?
                     WHERE run_id = ?
                 """, (
-                    'completed' if success else 'failed',
-                    finish_ts if success else None,
-                    None if success else finish_ts,
+                    'completed' if ok else 'failed',
+                    finish_ts if ok else None,
+                    None if ok else finish_ts,
                     duration_ms,
                     out_tail,
-                    err_tail if not success else None,
+                    err_tail if not ok else None,
                     json.dumps({'exit_code': exit_code}),
                     run_id,
                 ))
@@ -422,14 +426,18 @@ def _dispatch(job: sqlite3.Row):
             with _active_runs_lock:
                 _active_runs.pop(run_id, None)
 
-            status_word = 'completed' if success else 'failed'
-            _log('task_completed',
-                 f'[scheduler] Job {job_id} {status_word} (exit {exit_code})',
-                 job_id=job_id,
-                 level='info' if success else 'warning',
-                 status='success' if success else 'failure',
-                 duration_ms=duration_ms,
-                 metadata={'run_id': run_id, 'exit_code': exit_code})
+            status_word = 'skipped' if skipped else ('completed' if success else 'failed')
+            print(f'[scheduler] Job {job_id} {status_word} (exit {exit_code})', flush=True)
+            # Only GENUINE failures reach agent_logs (real signal). Routine success
+            # and benign skips (exit 2) are recorded in job_runs, not the activity log.
+            if not ok:
+                _log('task_completed',
+                     f'[scheduler] Job {job_id} failed (exit {exit_code})',
+                     job_id=job_id,
+                     level='warning',
+                     status='failure',
+                     duration_ms=duration_ms,
+                     metadata={'run_id': run_id, 'exit_code': exit_code})
 
         t = threading.Thread(target=_reap, daemon=True,
                              name=f'reaper-{job_id[:20]}')
@@ -531,11 +539,10 @@ def scan_and_dispatch():
 
     scan_ms = int((time.perf_counter() - scan_start) * 1000)
     if dispatched or skipped or expired:
-        _log('task_completed',
-             f'[scheduler] Scan done: {dispatched} dispatched, {skipped} skipped, '
-             f'{expired} locks expired in {scan_ms}ms',
-             level='info', duration_ms=scan_ms,
-             metadata={'dispatched': dispatched, 'skipped': skipped, 'expired': expired})
+        # Routine scan summary is operational chatter, not an activity event —
+        # keep it on stdout (scheduler log), out of agent_logs.
+        print(f'[scheduler] Scan done: {dispatched} dispatched, {skipped} skipped, '
+              f'{expired} locks expired in {scan_ms}ms', flush=True)
     return scan_ms
 
 
@@ -563,19 +570,27 @@ def scheduler_loop():
 
 
 # ---------------------------------------------------------------------------
-# Seed helper — register the two Sage jobs (idempotent)
+# Seed helper — register Alfred cognition jobs (idempotent)
+# Replaces the former seed_sage_jobs() after the Sage-Alfred merge (2026-05-28).
 # ---------------------------------------------------------------------------
-def seed_sage_jobs():
+def seed_alfred_cognition_jobs():
     """
-    Register sage-daily-harvest and sage-weekly-curate in scheduled_jobs.
+    Register alfred-daily-harvest and alfred-weekly-curate in scheduled_jobs.
     Idempotent: INSERT OR IGNORE.
     Budapest is UTC+2 in summer (UTC+1 in winter) — user accepts UTC-only
     + winter drift.  Daily 06:00 local summer = 04:00 UTC.
     Weekly Monday 06:05 local summer = 04:05 UTC (weekday=0, Mon=0).
+
+    NOTE: The former sage-daily-harvest and sage-weekly-curate jobs remain in the
+    DB if already seeded (their rows are not deleted here — they will simply
+    never fire again once the Sage cron scripts are removed). A manual SQL DELETE
+    can clean them up:
+        DELETE FROM scheduled_jobs WHERE job_id IN
+          ('sage-daily-harvest', 'sage-weekly-curate');
     """
     vault = str(Path(__file__).resolve().parent.parent.parent.parent.parent)
-    daily_cmd  = f'{vault}/00_Prompts/BDOS/agents/sage/cron/run_daily_harvest.sh'
-    weekly_cmd = f'{vault}/00_Prompts/BDOS/agents/sage/cron/run_weekly_curate.sh'
+    daily_cmd  = f'{vault}/00_Prompts/BDOS/agents/alfred/cron/run_daily_harvest.sh'
+    weekly_cmd = f'{vault}/00_Prompts/BDOS/agents/alfred/cron/run_weekly_curate.sh'
 
     con = _db()
     try:
@@ -585,7 +600,7 @@ def seed_sage_jobs():
                schedule_hour, schedule_minute, schedule_weekday,
                command, requires_approval, lock_duration_s, enabled)
             VALUES
-              ('sage-daily-harvest', 'Sage Daily Harvest', 'sage',
+              ('alfred-daily-harvest', 'Alfred Daily Harvest', 'alfred',
                'daily', 4, 0, NULL,
                ?, 0, 600, 1)
         """, (daily_cmd,))
@@ -596,14 +611,72 @@ def seed_sage_jobs():
                schedule_hour, schedule_minute, schedule_weekday,
                command, requires_approval, lock_duration_s, enabled)
             VALUES
-              ('sage-weekly-curate', 'Sage Weekly Curate', 'sage',
+              ('alfred-weekly-curate', 'Alfred Weekly Curate', 'alfred',
                'weekly', 4, 5, 0,
                ?, 0, 1800, 1)
         """, (weekly_cmd,))
 
         con.commit()
         cnt = con.execute('SELECT COUNT(*) FROM scheduled_jobs').fetchone()[0]
-        print(f'[scheduler] seed_sage_jobs: {cnt} total job(s) registered.')
+        print(f'[scheduler] seed_alfred_cognition_jobs: {cnt} total job(s) registered.')
+    finally:
+        con.close()
+
+
+# ---------------------------------------------------------------------------
+# Backward-compat alias — kept so any existing callsite using seed_sage_jobs()
+# still works, but delegates to the new function.
+# ---------------------------------------------------------------------------
+def seed_sage_jobs():
+    """Deprecated alias for seed_alfred_cognition_jobs() (Sage-Alfred merge 2026-05-28)."""
+    print('[scheduler] WARNING: seed_sage_jobs() is deprecated; calling seed_alfred_cognition_jobs() instead.')
+    seed_alfred_cognition_jobs()
+
+
+# ---------------------------------------------------------------------------
+# Seed helper — register the marketing board sidecar refresh job (idempotent)
+# ---------------------------------------------------------------------------
+def seed_marketing_jobs():
+    """
+    Register marketing-board-sidecar-refresh in scheduled_jobs.
+    Idempotent: INSERT OR IGNORE.
+
+    Role: safety net (primary trigger is the watchdog hook in watch_event.py).
+    Schedule: interval every 300 seconds (5 minutes).
+    Agent owner: presto (marketing board is Presto's domain).
+    """
+    vault = str(Path(__file__).resolve().parent.parent.parent.parent.parent)
+    refresh_cmd = (
+        f'python3 "{vault}/00_Prompts/BDOS/capabilities/vault-indexing/'
+        f'marketing_board_refresh.py"'
+    )
+
+    con = _db()
+    try:
+        description = (
+            "Safety-net 5-min interval regen of marketing_board.json sidecar. "
+            "Primary trigger: watchdog hook in watch_event.py (event-driven). "
+            "This scheduler job catches any events the watchdog may have missed."
+        )
+        con.execute("""
+            INSERT OR IGNORE INTO scheduled_jobs
+              (job_id, job_name, agent_name, description,
+               schedule_type, interval_seconds,
+               command, requires_approval, lock_duration_s, enabled)
+            VALUES
+              (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            'marketing-board-sidecar-refresh',
+            'Marketing Board Sidecar Refresh',
+            'presto',
+            description,
+            'interval', 300,
+            refresh_cmd, 0, 120, 1,
+        ))
+
+        con.commit()
+        cnt = con.execute('SELECT COUNT(*) FROM scheduled_jobs').fetchone()[0]
+        print(f'[scheduler] seed_marketing_jobs: {cnt} total job(s) registered.')
     finally:
         con.close()
 
@@ -614,14 +687,20 @@ def seed_sage_jobs():
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='BDOS Job Scheduler')
-    parser.add_argument('--once',   action='store_true', help='Run one scan then exit')
-    parser.add_argument('--loop',   action='store_true', help='Run continuous loop')
-    parser.add_argument('--seed',   action='store_true', help='Seed Sage jobs then exit')
-    parser.add_argument('--status', action='store_true', help='Print job status table')
+    parser.add_argument('--once',            action='store_true', help='Run one scan then exit')
+    parser.add_argument('--loop',            action='store_true', help='Run continuous loop')
+    parser.add_argument('--seed',            action='store_true', help='Seed Alfred cognition jobs (harvest+curate) then exit')
+    parser.add_argument('--seed-alfred',     action='store_true', help='Alias for --seed (Alfred cognition jobs)')
+    parser.add_argument('--seed-marketing',  action='store_true', help='Seed marketing board job then exit')
+    parser.add_argument('--status',          action='store_true', help='Print job status table')
     args = parser.parse_args()
 
-    if args.seed:
-        seed_sage_jobs()
+    if args.seed or getattr(args, 'seed_alfred', False):
+        seed_alfred_cognition_jobs()
+        sys.exit(0)
+
+    if args.seed_marketing:
+        seed_marketing_jobs()
         sys.exit(0)
 
     if args.status:

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   =============================================================================
-  Curator — Dashboard Family Observatory.   Version: 0.5.1
+  Curator — Dashboard Family Observatory.   Version: 0.5.14
   =============================================================================
   I am the dashboard about dashboards.
 
@@ -31,6 +31,7 @@
     7. Promote History        — design system changelog
     8. Server Status          — port 4321, last serve invocation
     9. Recent Builds          — last 5 dashboard builds from index audit log
+   12. Server API Reference   — every dash-server endpoint: method, path, purpose, read/write
 
   Read-only. Edit markdown in Obsidian — dashboard auto-syncs within 8s.
   Served by _dashboards/_tools/dash-server.mjs (port 4321).
@@ -38,6 +39,32 @@
   Visual tone: self-aware, slightly playful — the dashboard about dashboards.
 
   Audit trail:
+    0.5.14 (2026-05-29) FIX: copy-ref + live-sync were dead. Boot called wireCopyRef() (clipboard.js) and LiveUpdates.subscribe() (live-updates.js) inline, BEFORE those engine scripts loaded -> ReferenceError killed the boot tail. Moved engine-dependent boot (incl. apiRefGrid wireCopyRef) into a deferred <script> after the src tags. Same defect fixed in librarian + broker. Curator owns the family — found via Librarian copy-ref report.
+    0.5.13 (2026-05-29) tend: Panel 12 Server API Reference — new card for POST /api/alfred/process
+      (RW). Haiku 4.5 immediate task parse: scope/title/due/priority/tags extraction, writes to
+      todos/<scope>.md ## Active; fallback capture-only to inbox.md on AI error. data-card-id
+      "api/alfred-process" + .card-copy-ref + wireCopyRef() triple (DS §4a). Version 0.5.12 -> 0.5.13.
+    0.5.12 (2026-05-29) tend: Panel 2 family-grid avatar chips now render the real Pixar
+      portraits (/00_Prompts/BDOS/agents/<slug>/avatar.png) instead of emoji, enlarged from
+      32px to 52px; emoji kept as 404 fallback. AGENT_FILE_TO_NAME + parseAllProfiles updated
+      to 7 agents (Alfred, Forge added, stale Sage removed).
+    0.5.11 (2026-05-29) tend: Panel 12 — Server API Reference added. Static card-grid
+      documenting every dash-server.mjs endpoint: method, path, purpose, R/W, body/response
+      shape. data-card-id + .card-copy-ref + wireCopyRef() triple on every endpoint card (DS §4a).
+    0.5.10 (2026-05-28) tend: masthead avatar now shows the real Pixar portrait
+      (/00_Prompts/BDOS/agents/curator/avatar.png) filling the 48px ring; emoji 🖼️
+      kept as 404 fallback. renderCapabilities no longer sets avatar textContent
+      (would wipe the <img>); profile.color still tints the ring.
+    0.5.9 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app -> .app-main + .app-shell layout. alfred-tasks.js added.
+    0.5.8 (2026-05-25) — promote DS 0.8.9: inline wirePanelAnchors() removed;
+          now auto-wired by /_design/clipboard.js. Modifier-key pass-through
+          + a11y attributes on panel anchors.
+    0.5.7 (2026-05-25) — promote: panel-anchor system (DS 0.8.0). id="panel-N-slug" on all
+          11 panel wrappers + .panel-anchor hover #N badge in each panel-head. wirePanelAnchors()
+          JS intercepts clicks: clipboard.writeText(full URL), hash update, smooth scroll, "✓" 1.5s.
+          scroll-margin-top:42px on [id^="panel-"] clears fixed 34px admin bar.
+    0.5.6 (2026-05-25) refactor: extract canonical :root + dark + @media tokens → /_design/tokens.css (DS 0.7.0 engine extraction, Sprint 2a)
+    0.5.5 (2026-05-25) refactor: extract setTheme/copyText/wireCopyRef → /_design/{theme,clipboard}.js (DS 0.7.0 engine extraction, Sprint 1)
         0.5.0 (2026-05-24) — tend: schema realigned to brief (agent_events → agent_logs).
           log_level/input_tokens/output_tokens/total_tokens column names, error/critical levels.
     0.4.0 (2026-05-24) — tend: Logs panel added (agent_observability.db sidecar).
@@ -60,6 +87,17 @@
           server status (port 4321), recent builds (audit log from index).
           Schema-aware parser for 00_DASHBOARD_INDEX.md family table + audit log.
           Graceful empty-state on all log-driven panels. DS 0.3.0 aligned.
+    0.5.4 (2026-05-25) — tend: card-copy-ref added per DS 4a (promote audit rollout).
+          .card-copy-ref CSS + copyText + wireCopyRef helpers added.
+          data-card-id on JS-rendered .dash-card elements (family grid, ~17 cards)
+          via renderDashFamily template string + wireCopyRef(grid) call.
+          Static .server-card gets data-card-id="server/dash-server".
+          position:relative ensured on .dash-card (was already set). DASH_STEM='curator'.
+    0.5.3 (2026-05-25) — promote: Fix: agent_name field name in logs filter (e.agent → e.agent_name); removed stale Phase 2 banner. Promote rollout.
+    0.5.2 (2026-05-25) — promote: admin-bar.js (DS 0.6.0) replaces ops-header.js.
+          #bdos-ops-header → #bdos-admin-bar. Fixed dark WP-style top bar, 34px,
+          #1d2327. Left: BDOS logo+breadcrumb. Center: 5 compact status pills.
+          Right: System drawer button. body padding-top: 34px auto-applied.
     0.5.1 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
 
   Conventions: see _dashboards/_design/DESIGN_SYSTEM.md (DS 0.3.0).
@@ -83,59 +121,9 @@
   document.documentElement.dataset.theme = t;
 })();
 </script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --bg-page:   #faf9f5;
-  --bg-elev:   #ffffff;
-  --bg-sunken: #f3f1ea;
-  --bg-tint:   #f5f4ef;
-  --ink-1: #141413;
-  --ink-2: #3a3a37;
-  --ink-3: #6d6d6a;
-  --ink-4: #9c9c98;
-  --ink-5: #c8c8c2;
-  --line:      #e5e4df;
-  --line-soft: #efede7;
-  --accent:      #D97757;
-  --accent-deep: #b35a3f;
-  --accent-tint: #fbeee6;
-  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
-  --warn:      #b07a18;  --warn-tint: #fbf2dc;
-  --gap:       #c0392b;  --gap-tint:  #fbeae6;
-  --idle:      #7a7a76;  --idle-tint: #efeeeb;
-  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
-  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
-  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
-  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
-  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
-}
-
-/* ===== Dark theme override (DS 0.3.0) ===== */
-:root[data-theme="dark"] {
-  --bg-page: #1a1916; --bg-elev: #232220; --bg-sunken: #2c2a26; --bg-tint: #262420;
-  --ink-1: #f5f4ef; --ink-2: #d6d4ce; --ink-3: #a8a6a0; --ink-4: #7c7a74; --ink-5: #54524d;
-  --line: #36342f; --line-soft: #2c2a26;
-  --accent: #e08a6a; --accent-deep: #f0a085; --accent-tint: #3a2a22;
-  --ok: #5cc08a; --ok-tint: #1e3329; --warn: #d6a94a; --warn-tint: #352c18;
-  --gap: #e57c6e; --gap-tint: #3a221e; --idle: #9a9892; --idle-tint: #2a2925;
-  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-page: #1a1916; --bg-elev: #232220; --bg-sunken: #2c2a26; --bg-tint: #262420;
-    --ink-1: #f5f4ef; --ink-2: #d6d4ce; --ink-3: #a8a6a0; --ink-4: #7c7a74; --ink-5: #54524d;
-    --line: #36342f; --line-soft: #2c2a26;
-    --accent: #e08a6a; --accent-deep: #f0a085; --accent-tint: #3a2a22;
-    --ok: #5cc08a; --ok-tint: #1e3329; --warn: #d6a94a; --warn-tint: #352c18;
-    --gap: #e57c6e; --gap-tint: #3a221e; --idle: #9a9892; --idle-tint: #2a2925;
-    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-  }
-}
-
 html { font-size: 15px; }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -150,7 +138,7 @@ a { color: inherit; text-decoration: none; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-s); }
 button { font: inherit; background: transparent; border: 0; color: inherit; cursor: pointer; }
 
-.app { max-width: 1200px; margin: 0 auto; padding: 28px 36px 96px; }
+.app-main { max-width: 1200px; padding: 28px 36px 96px; }
 
 /* ===== Theme toggle (DS 0.3.0) ===== */
 .theme-toggle {
@@ -276,7 +264,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 
 /* ===== Responsive ===== */
 @media (max-width: 960px) {
-  .app { padding: 20px 18px 64px; }
+  .app-main { padding: 20px 18px 64px; }
   .widget-strip { grid-template-columns: repeat(2, 1fr); }
   .dash-grid { grid-template-columns: repeat(2, 1fr); }
   .grid-2 { grid-template-columns: 1fr; }
@@ -287,7 +275,9 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   .dash-grid { grid-template-columns: 1fr; }
 }
 /* ===== Avatar + Capabilities panel (0.2.0) ===== */
-.agent-avatar { display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; border:1.5px solid; font-size:26px; line-height:1; flex-shrink:0; transition:background .3s,border-color .3s; }
+.agent-avatar { display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; border:1.5px solid; font-size:26px; line-height:1; flex-shrink:0; overflow:hidden; transition:background .3s,border-color .3s; }
+.agent-avatar-img { width:100%; height:100%; object-fit:cover; display:block; }
+.agent-avatar-emoji { display:none; width:100%; height:100%; align-items:center; justify-content:center; }
 .cap-panel { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:8px; }
 .cap-section { background:var(--bg-tint); border:1px solid var(--line); border-radius:8px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
 .cap-section-label { font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); margin-bottom:2px; }
@@ -302,12 +292,105 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .trace-val { color:var(--ink-2); }
 .cap-panel-badge { font-size:10px; font-family:'JetBrains Mono',monospace; color:var(--ink-4); background:var(--bg-tint); border:1px solid var(--line); padding:2px 8px; border-radius:999px; }
 /* Family-grid avatar chip */
-.dash-card-avatar { display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; border:1.5px solid; font-size:17px; line-height:1; flex-shrink:0; float:right; margin-left:8px; }
+.dash-card-avatar { display:inline-flex; align-items:center; justify-content:center; width:52px; height:52px; border-radius:50%; border:1.5px solid; font-size:27px; line-height:1; flex-shrink:0; float:right; margin-left:8px; overflow:hidden; }
+.dash-card-avatar-img { width:100%; height:100%; object-fit:cover; display:block; }
+.dash-card-avatar-emoji { display:none; width:100%; height:100%; align-items:center; justify-content:center; }
+
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+.card-copy-ref {
+  position: absolute; top: 10px; right: 10px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.dash-card:hover .card-copy-ref,
+.dash-card:focus-within .card-copy-ref,
+.server-card:hover .card-copy-ref,
+.server-card:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+/* .dash-card already has position:relative via .dash-card rule above */
+.server-card { position: relative; }
+
+/* ===== API Reference panel (0.5.11) ===== */
+.api-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 960px) { .api-grid { grid-template-columns: 1fr; } }
+.api-card {
+  background: var(--bg-sunken); border: 1px solid var(--line);
+  border-radius: var(--radius-m); padding: 14px 16px;
+  position: relative; overflow: hidden;
+  transition: border-color var(--t-fast);
+}
+.api-card:hover { border-color: var(--accent); }
+.api-card .api-card-copy-ref {
+  position: absolute; top: 10px; right: 10px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.api-card:hover .api-card-copy-ref,
+.api-card:focus-within .api-card-copy-ref { opacity: 1; }
+.api-card .api-card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.api-card .api-card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+.api-method {
+  display: inline-block; font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 700; letter-spacing: .05em;
+  padding: 2px 7px; border-radius: 4px; margin-bottom: 6px;
+}
+.api-method.get  { background: rgba(91,124,153,.15); color: #3d7bab; }
+.api-method.post { background: rgba(99,148,117,.15); color: #2e7d52; }
+.api-method.sse  { background: rgba(107,91,149,.15); color: #6b5b95; }
+.api-method.static { background: var(--bg-elev); color: var(--ink-3); border: 1px solid var(--line); }
+.api-rw {
+  display: inline-block; font-size: 10px; font-weight: 600;
+  font-family: 'JetBrains Mono', monospace; padding: 1px 6px;
+  border-radius: 3px; margin-left: 6px; vertical-align: middle;
+}
+.api-rw.ro { background: var(--ok-tint); color: var(--ok); }
+.api-rw.rw { background: var(--warn-tint); color: var(--warn); }
+.api-path { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; font-weight: 600; color: var(--ink-1); margin-bottom: 6px; }
+.api-purpose { font-size: 12.5px; color: var(--ink-2); line-height: 1.5; margin-bottom: 8px; }
+.api-detail-label { font-size: 10px; text-transform: uppercase; letter-spacing: .09em; color: var(--ink-4); font-weight: 600; margin-top: 8px; margin-bottom: 3px; }
+.api-detail-val { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-3); line-height: 1.55; word-break: break-all; }
+.api-guard { font-size: 11px; color: var(--ink-4); margin-top: 6px; font-style: italic; }
+
+/* ===== Panel anchor (DS 0.8.0) ===== */
+[id^="panel-"] { scroll-margin-top: 42px; }
+.panel-anchor {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  color: var(--ink-5);
+  background: transparent;
+  border: none;
+  padding: 1px 4px;
+  border-radius: var(--radius-s);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--t-fast), color var(--t-fast), background var(--t-fast);
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.panel-anchor-host:hover .panel-anchor,
+.panel-anchor-host:focus-within .panel-anchor { opacity: 1; }
+.panel-anchor:hover { color: var(--accent-deep); background: var(--accent-tint); }
+.section-head .panel-anchor { align-self: center; margin-left: 2px; }
+.panel-head .panel-anchor { margin-left: 2px; }
 </style>
 </head>
 <body>
-<div id="bdos-ops-header"></div>
-<div class="app">
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<div class="app-main">
 
   <!-- ===== Masthead ===== -->
   <header class="masthead">
@@ -317,7 +400,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
         Ideas Vault
       </a>
       <div style="display:flex;align-items:center;gap:10px;">
-        <span class="agent-avatar" id="agentAvatar" title="Curator" style="background:rgba(123,160,152,.12);border-color:rgba(123,160,152,.3);">🖼️</span>
+        <span class="agent-avatar" id="agentAvatar" title="Curator" style="background:rgba(123,160,152,.12);border-color:rgba(123,160,152,.3);"><img class="agent-avatar-img" src="/00_Prompts/BDOS/agents/curator/avatar.png" alt="Curator" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="agent-avatar-emoji" aria-hidden="true">🖼️</span></span>
         <span id="liveStatusMount"></span>
         <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
           <span class="theme-icon">&#9790;</span>
@@ -328,7 +411,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     <div class="eyebrow">
       <span class="dot"></span>
       BDOS · Representation Layer Curator
-      <span class="version-pill mono" id="versionPill">v0.4.0</span>
+      <span class="version-pill mono" id="versionPill">v0.5.14</span>
     </div>
     <h1>Curator <span class="accent">Observatory</span></h1>
     <p class="self-ref">I am the dashboard about dashboards.</p>
@@ -346,14 +429,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     </div>
   </header>
 
-  <!-- ===== Phase 2 Banner ===== -->
-  <div class="phase-banner">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <span><strong>Phase 2.B active.</strong> Curator operational logs folder exists but is currently empty. Mode frequency and audit backlog will populate after first logged invocations. Phase 2.C (token intelligence) pending.</span>
-  </div>
-
   <!-- ===== Panel 1: Header strip widgets ===== -->
-  <div class="widget-strip">
+  <div class="widget-strip" id="panel-1-header-strip">
     <div class="widget">
       <div class="widget-label">Dashboards (family)</div>
       <div class="widget-value mono" id="dashCount">—</div>
@@ -377,10 +454,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 2: Dashboard Family Grid ===== -->
-  <div class="panel">
+  <div class="panel panel-anchor-host" id="panel-2-dashboard-family">
     <div class="panel-head">
       Dashboard Family
       <span class="badge" id="familyBadge">loading…</span>
+      <a class="panel-anchor" href="#panel-2-dashboard-family" title="Link to this panel">#2</a>
     </div>
     <div class="dash-grid" id="dashGrid">
       <div style="grid-column:1/-1;color:var(--ink-4);font-size:12.5px;text-align:center;padding:20px 0;">loading family index…</div>
@@ -392,10 +470,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   <div class="grid-2">
 
     <!-- Panel 3: Design System Overview -->
-    <div class="panel">
+    <div class="panel panel-anchor-host" id="panel-3-design-system">
       <div class="panel-head">
         Design System Overview
         <span class="badge" id="dsBadge">DS 0.3.0</span>
+        <a class="panel-anchor" href="#panel-3-design-system" title="Link to this panel">#3</a>
       </div>
       <div id="dsOverview">
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
@@ -424,10 +503,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     </div>
 
     <!-- Panel 7: Promote History ===== -->
-    <div class="panel">
+    <div class="panel panel-anchor-host" id="panel-7-promote-history">
       <div class="panel-head">
         Promote History
         <span class="badge">DS changelog</span>
+        <a class="panel-anchor" href="#panel-7-promote-history" title="Link to this panel">#7</a>
       </div>
       <ul class="ds-changelog" id="promoteHistory">
         <li class="ds-change">
@@ -451,10 +531,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 4: Mode Frequency ===== -->
-  <div class="panel">
+  <div class="panel panel-anchor-host" id="panel-4-mode-frequency">
     <div class="panel-head">
       Mode Frequency
       <span class="badge">from operational logs</span>
+      <a class="panel-anchor" href="#panel-4-mode-frequency" title="Link to this panel">#4</a>
     </div>
     <div id="modeFreqContent">
       <div class="mode-freq-grid">
@@ -496,10 +577,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 5: 7 Modes Reference ===== -->
-  <div class="panel">
+  <div class="panel panel-anchor-host" id="panel-5-modes-reference">
     <div class="panel-head">
       7 Modes Reference
       <span class="badge">Curator v0.3</span>
+      <a class="panel-anchor" href="#panel-5-modes-reference" title="Link to this panel">#5</a>
     </div>
     <div class="mode-list">
       <div class="mode-item">
@@ -544,10 +626,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   <div class="grid-2">
 
     <!-- Panel 6: Audit Backlog -->
-    <div class="panel">
+    <div class="panel panel-anchor-host" id="panel-6-audit-backlog">
       <div class="panel-head">
         Audit Backlog
         <span class="badge" id="auditBadge">0 findings</span>
+        <a class="panel-anchor" href="#panel-6-audit-backlog" title="Link to this panel">#6</a>
       </div>
       <div id="auditContent">
         <div class="empty-state">
@@ -559,12 +642,14 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     </div>
 
     <!-- Panel 8: Server Status -->
-    <div class="panel">
+    <div class="panel panel-anchor-host" id="panel-8-server-status">
       <div class="panel-head">
         Server Status
         <span class="badge">port 4321</span>
+        <a class="panel-anchor" href="#panel-8-server-status" title="Link to this panel">#8</a>
       </div>
-      <div class="server-card" style="margin-bottom:14px;">
+      <div class="server-card" data-card-id="server/dash-server" style="margin-bottom:14px;">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="server-dot live" id="serverDot"></div>
         <div class="server-info">
           <div class="server-name">dash-server.mjs</div>
@@ -591,10 +676,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 9: Recent Builds ===== -->
-  <div class="panel">
+  <div class="panel panel-anchor-host" id="panel-9-recent-builds">
     <div class="panel-head">
       Recent Builds & Operations
       <span class="badge">from 00_DASHBOARD_INDEX.md audit log</span>
+      <a class="panel-anchor" href="#panel-9-recent-builds" title="Link to this panel">#9</a>
     </div>
     <ul class="build-log" id="buildLog">
       <li style="color:var(--ink-4);font-size:12.5px;padding:12px 0;">loading audit log…</li>
@@ -603,25 +689,164 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 10: Capabilities (added 0.2.0 — live from AGENT_PROFILES.md) ===== -->
-  <div class="panel full" id="capPanel">
-    <div class="panel-head serif">Capabilities <span class="badge">live from AGENT_PROFILES.md</span> <span class="cap-panel-badge">auto-refresh 8s</span></div>
+  <div class="panel full panel-anchor-host" id="panel-10-capabilities">
+    <div class="panel-head serif">Capabilities <span class="badge">live from AGENT_PROFILES.md</span> <span class="cap-panel-badge">auto-refresh 8s</span> <a class="panel-anchor" href="#panel-10-capabilities" title="Link to this panel">#10</a></div>
     <div class="cap-panel" id="capContent">
       <div class="activity-empty" style="grid-column:1/-1;text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Loading capability profile…</div>
     </div>
   </div>
 
   <!-- ===== Panel 11: Logs (added 0.4.0 — agent_observability sidecar) ===== -->
-  <div class="panel full" id="logsPanel">
-    <div class="panel-head serif">Logs <span class="badge" id="logsPanelBadge">loading…</span></div>
+  <div class="panel full panel-anchor-host" id="panel-11-logs">
+    <div class="panel-head serif">Logs <span class="badge" id="logsPanelBadge">loading…</span> <a class="panel-anchor" href="#panel-11-logs" title="Link to this panel">#11</a></div>
     <div id="logsContent"><div class="activity-empty" style="text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Loading sidecar…</div></div>
   </div>
 
-</div><!-- /app -->
+  <!-- ===== Panel 12: Server API Reference (added 0.5.11) ===== -->
+  <div class="panel panel-anchor-host" id="panel-12-server-api">
+    <div class="panel-head">
+      Server API Reference
+      <span class="badge">dash-server.mjs · port 4321</span>
+      <a class="panel-anchor" href="#panel-12-server-api" title="Link to this panel">#12</a>
+    </div>
+    <p style="font-size:12.5px;color:var(--ink-3);margin-bottom:16px;line-height:1.55;">
+      Every route exposed by <span class="mono" style="font-size:11.5px;">_dashboards/_tools/dash-server.mjs</span>.
+      Green badge = read-only, amber badge = writes to vault files.
+      Path-lock and body-size guards noted per endpoint.
+    </p>
+    <div class="api-grid" id="apiRefGrid">
+
+      <!-- ── GET / (launcher redirect) ── -->
+      <div class="api-card" data-card-id="api/root-redirect">
+        <button class="card-copy-ref api-card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation()">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref
+        </button>
+        <div><span class="api-method static">ANY</span><span class="api-rw ro">read-only</span></div>
+        <div class="api-path">/</div>
+        <div class="api-purpose">Redirects (internal rewrite) to <span class="mono" style="font-size:11px;">/_dashboards/index.html</span>. Entry point for the launcher when the server is opened bare.</div>
+        <div class="api-detail-label">Response</div>
+        <div class="api-detail-val">200 text/html — launcher HTML</div>
+      </div>
+
+      <!-- ── GET * (static file serving) ── -->
+      <div class="api-card" data-card-id="api/static-files">
+        <button class="card-copy-ref api-card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation()">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref
+        </button>
+        <div><span class="api-method get">GET</span><span class="api-rw ro">read-only</span></div>
+        <div class="api-path">/* (catch-all static)</div>
+        <div class="api-purpose">Serves any file from the vault root. Dashboards use this to fetch markdown sources (e.g. <span class="mono" style="font-size:11px;">/02_Areas/.../Pipeline.md</span>). Directories auto-resolve to <span class="mono" style="font-size:11px;">index.html</span>.</div>
+        <div class="api-detail-label">Response</div>
+        <div class="api-detail-val">200 + MIME-typed body · 404 text/plain on missing · 403 on path-traversal attempt</div>
+        <div class="api-detail-label">Security</div>
+        <div class="api-detail-val">Path locked to VAULT_ROOT via <span class="mono" style="font-size:11px;">safeResolve()</span> — any <span class="mono" style="font-size:11px;">../</span> traversal returns 403. Cache-Control: no-store.</div>
+      </div>
+
+      <!-- ── GET /__events (SSE) ── -->
+      <div class="api-card" data-card-id="api/sse-events">
+        <button class="card-copy-ref api-card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation()">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref
+        </button>
+        <div><span class="api-method sse">SSE</span><span class="api-rw ro">read-only</span></div>
+        <div class="api-path">/__events</div>
+        <div class="api-purpose">Server-Sent Events stream. Dashboards subscribe here for sub-second push notifications when watched markdown files change. The server watches <span class="mono" style="font-size:11px;">02_Areas/Sonrisa/CPS</span> and <span class="mono" style="font-size:11px;">02_Areas/Navigátor Podcast</span> by default (override via <span class="mono" style="font-size:11px;">WATCH_DIRS</span> env var).</div>
+        <div class="api-detail-label">Event name</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">change</span></div>
+        <div class="api-detail-label">Event data (JSON)</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">{ files: string[], ts: number }</span> — array of changed filenames + epoch ms timestamp</div>
+        <div class="api-detail-label">Keep-alive</div>
+        <div class="api-detail-val">SSE comment ping every 25s. <span class="mono" style="font-size:11px;">retry: 3000ms</span> hint sent on connect.</div>
+        <div class="api-detail-label">Debounce</div>
+        <div class="api-detail-val">150ms — rapid successive changes are collapsed into one broadcast. Only <span class="mono" style="font-size:11px;">*.md</span> files trigger an event.</div>
+      </div>
+
+      <!-- ── GET /api/search ── -->
+      <div class="api-card" data-card-id="api/search">
+        <button class="card-copy-ref api-card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation()">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref
+        </button>
+        <div><span class="api-method get">GET</span><span class="api-rw ro">read-only</span></div>
+        <div class="api-path">/api/search</div>
+        <div class="api-purpose">FTS5 full-text vault search. Spawns <span class="mono" style="font-size:11px;">query.py</span> from the vault-indexing capability and returns ranked results from the SQLite cache.</div>
+        <div class="api-detail-label">Query params</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">q</span> (required) — search string<br><span class="mono" style="font-size:11px;">limit</span> (optional, default 20, max 100)</div>
+        <div class="api-detail-label">Response 200</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">[{ path, title, description, category, area, rank }]</span></div>
+        <div class="api-detail-label">Errors</div>
+        <div class="api-detail-val">400 if <span class="mono" style="font-size:11px;">q</span> is empty · 500 if <span class="mono" style="font-size:11px;">query.py</span> exits non-zero or JSON parse fails</div>
+        <div class="api-guard">Security: <span class="mono" style="font-size:11px;">q</span> passed as argv element — no shell interpolation. CORS: Access-Control-Allow-Origin: *.</div>
+      </div>
+
+      <!-- ── POST /_signals/approval ── -->
+      <div class="api-card" data-card-id="api/signals-approval">
+        <button class="card-copy-ref api-card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation()">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref
+        </button>
+        <div><span class="api-method post">POST</span><span class="api-rw rw">write</span></div>
+        <div class="api-path">/_signals/approval</div>
+        <div class="api-purpose">Approval signal endpoint for Presto publication workflow. Writes a signal file to Presto's inbox so the agent can pick it up during its next <span class="mono" style="font-size:11px;">sync</span> run. Also broadcasts a <span class="mono" style="font-size:11px;">change</span> SSE event after writing.</div>
+        <div class="api-detail-label">Request body (JSON, max 4 KB)</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">{ publication_id: string, action: "approve"|"reject", project?: string, campaign_id?: string, channel?: string }</span></div>
+        <div class="api-detail-label">Response 201</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">{ ok: true, file: string }</span> — filename of the written signal</div>
+        <div class="api-detail-label">File written</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">00_Prompts/BDOS/agents/presto/_inbox/approval-actions/&lt;ts&gt;_&lt;publication_id&gt;.md</span></div>
+        <div class="api-guard">Path-locked to Presto inbox only. Body capped at 4 096 bytes (connection destroyed on overflow).</div>
+      </div>
+
+      <!-- ── POST /api/alfred/capture ── -->
+      <div class="api-card" data-card-id="api/alfred-capture">
+        <button class="card-copy-ref api-card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation()">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref
+        </button>
+        <div><span class="api-method post">POST</span><span class="api-rw rw">write</span></div>
+        <div class="api-path">/api/alfred/capture</div>
+        <div class="api-purpose">Append-only capture endpoint for Alfred. Writes a single timestamped bullet line under the <span class="mono" style="font-size:11px;">## Unprocessed</span> section of Alfred's inbox. Creates the section if missing. Triage and routing happen when Alfred runs <span class="mono" style="font-size:11px;">sync</span> mode later. Also broadcasts a <span class="mono" style="font-size:11px;">change</span> SSE event after writing.</div>
+        <div class="api-detail-label">Request body (JSON, max 8 KB)</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">{ text: string }</span> — the capture text (required, non-empty)</div>
+        <div class="api-detail-label">Response 201</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">{ ok: true, ts: "YYYY-MM-DD HH:MM", preview: string }</span></div>
+        <div class="api-detail-label">File written</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">02_Areas/Personal Growth/Alfred/inbox.md</span></div>
+        <div class="api-detail-label">Line format appended</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">- [YYYY-MM-DD HH:MM] &lt;text&gt;</span></div>
+        <div class="api-guard">Path-locked to <span class="mono" style="font-size:11px;">inbox.md</span> only — pure Node fs, no shell. Body capped at 8 192 bytes. CORS: Access-Control-Allow-Origin: *.</div>
+      </div>
+
+      <!-- ── POST /api/alfred/process ── -->
+      <div class="api-card" data-card-id="api/alfred-process">
+        <button class="card-copy-ref api-card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation()">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref
+        </button>
+        <div><span class="api-method post">POST</span><span class="api-rw rw">RW</span></div>
+        <div class="api-path">/api/alfred/process</div>
+        <div class="api-purpose">Alfred inbox sor Haiku 4.5-tel taskká parse-olva: scope, title, due, priority, tags kinyerése, majd formázott checkbox task sor írása <span class="mono" style="font-size:11px;">todos/&lt;scope&gt;.md</span> <span class="mono" style="font-size:11px;">## Active</span> szekciójába. Érvényes scope-ok: personal, family, fokuszpont (ismeretlen scope esetén personal). Magyar és angol relatív dátumok feloldva (holnap, jövő hétfő). Fallback: ha nincs API kulcs, API hiba vagy parse sikertelen, a nyers szöveget <span class="mono" style="font-size:11px;">inbox.md</span>-be fűzi (capture-only), az input sosem veszik el. Broadcasts <span class="mono" style="font-size:11px;">change</span> SSE event after writing.</div>
+        <div class="api-detail-label">Request body (JSON, max 8 KB)</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">{ text: string }</span> — the raw note text (required, non-empty)</div>
+        <div class="api-detail-label">Response 201 (mode: process)</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">{ ok: true, mode: "process", scope, task: { title, due, priority, tags }, line }</span></div>
+        <div class="api-detail-label">Response 201 (mode: capture-fallback)</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">{ ok: true, mode: "capture-fallback", scope: "personal", task: null, line }</span></div>
+        <div class="api-detail-label">Files written</div>
+        <div class="api-detail-val"><span class="mono" style="font-size:11px;">todos/&lt;scope&gt;.md</span> (process) · <span class="mono" style="font-size:11px;">inbox.md</span> (fallback)</div>
+        <div class="api-guard">Model: claude-haiku-4-5. Path-locked to Alfred todos/ and inbox.md only. Body capped at 8 192 bytes. CORS: Access-Control-Allow-Origin: *.</div>
+      </div>
+
+    </div><!-- end .api-grid -->
+    <div style="font-size:11.5px;color:var(--ink-4);margin-top:14px;">
+      Source: <span class="mono">/_dashboards/_tools/dash-server.mjs</span> · Static reference — edit the server file, then tend this panel.
+    </div>
+  </div>
+
+</div><!-- end .app-main -->
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
 
 <script>
 /* ===== DASH STEM ===== */
 const DASH_STEM = 'curator';
 
+/* Clipboard helpers (copyText, wireCopyRef): /_dashboards/_design/clipboard.js (DS 0.7.0, Sprint 1) */
 /* ===== SOURCE FILES ===== */
 const DASH_INDEX_FILE  = '/_dashboards/00_DASHBOARD_INDEX.md';
 const DS_FILE          = '/_dashboards/_design/DESIGN_SYSTEM.md';
@@ -657,9 +882,10 @@ const AGENT_FILE_TO_NAME = {
   'librarian/index.html': 'Librarian',
   'maestro/index.html':   'Maestro',
   'curator/index.html':   'Curator',
-  'sage/index.html':      'Sage',
+  'alfred/index.html':    'Alfred',
   'presto/index.html':    'Presto',
   'broker/index.html':    'Broker',
+  'forge/index.html':     'Forge',
 };
 let gAvatarMap = {}; // name → { emoji, color }
 
@@ -745,9 +971,11 @@ function renderDashFamily(dashes) {
     const agentName = AGENT_FILE_TO_NAME[d.file];
     const av = agentName && gAvatarMap[agentName];
     const avatarChip = av
-      ? `<span class="dash-card-avatar" style="background:${hexToRgba(av.color,0.12)};border-color:${hexToRgba(av.color,0.3)};color:${av.color};" title="${escHtml(agentName)}">${av.emoji}</span>`
+      ? `<span class="dash-card-avatar" style="background:${hexToRgba(av.color,0.12)};border-color:${hexToRgba(av.color,0.3)};color:${av.color};" title="${escHtml(agentName)}"><img class="dash-card-avatar-img" src="/00_Prompts/BDOS/agents/${agentName.toLowerCase()}/avatar.png" alt="${escHtml(agentName)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="dash-card-avatar-emoji" aria-hidden="true">${av.emoji}</span></span>`
       : '';
-    return `<div class="dash-card" style="${isSelf ? 'border-color:var(--accent);' : ''}">
+    const cardId = d.file.replace(/\/index\.html$/, '').replace(/\.html$/, '');
+    return `<div class="dash-card" data-card-id="dash/${escHtml(cardId)}" style="${isSelf ? 'border-color:var(--accent);' : ''}">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
       ${openLink}${avatarChip}
       <div class="dash-name">${escHtml(d.title)}</div>
       <div class="dash-version mono">${escHtml(d.file)} · ${escHtml(d.version)}</div>
@@ -758,6 +986,7 @@ function renderDashFamily(dashes) {
       ${selfNote}
     </div>`;
   }).join('');
+  wireCopyRef(grid);
 }
 
 /* ===== PARSE AUDIT LOG / RECENT BUILDS ===== */
@@ -848,9 +1077,9 @@ function hexToRgba(hex, alpha) {
 }
 
 function parseAllProfiles(md) {
-  // Parse all 6 agent sections and populate gAvatarMap
+  // Parse all 7 agent sections and populate gAvatarMap
   if (!md) return;
-  const agents = ['Librarian','Maestro','Curator','Sage','Presto','Broker'];
+  const agents = ['Librarian','Maestro','Curator','Alfred','Presto','Broker','Forge'];
   agents.forEach(name => {
     const p = parseAgentProfile(md, name);
     if (p) gAvatarMap[name] = { emoji: p.emoji, color: p.color };
@@ -865,7 +1094,8 @@ function renderCapabilities(profile) {
     return;
   }
   if (avatarEl) {
-    avatarEl.textContent = profile.emoji;
+    // avatar is now an <img> + emoji fallback; update the fallback, never textContent (would wipe the img)
+    const _emo = avatarEl.querySelector('.agent-avatar-emoji'); if (_emo) _emo.textContent = profile.emoji;
     avatarEl.style.background  = hexToRgba(profile.color, 0.12);
     avatarEl.style.borderColor = hexToRgba(profile.color, 0.35);
     avatarEl.style.color       = profile.color;
@@ -983,29 +1213,7 @@ function startPolling(interval) {
   return setInterval(() => { pollVault(); resetSyncBar(interval); }, interval);
 }
 
-/* ===== THEME TOGGLE (DS 0.3.0) ===== */
-function setTheme(t) {
-  document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('dash-theme', t); } catch(e) {}
-  const btn = el('themeToggle');
-  if (btn) {
-    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
-    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
-    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-  }
-}
-el('themeToggle').addEventListener('click', function() {
-  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-});
-window.addEventListener('storage', function(e) {
-  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
-});
-(function initTheme() {
-  var t;
-  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
-  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
-  setTheme(t);
-})();
+/* Theme toggle: moved to /_dashboards/_design/theme.js (DS 0.7.0, Sprint 1) */
 
 /* ===== TICKER ===== */
 syncTicker = setInterval(tickSyncLabel, 1000);
@@ -1016,7 +1224,7 @@ const LOGS_SIDECAR_URL = '/_dashboards/_design/agent_logs.json';
 let logsLastTs = null;
 
 function renderLogsPanel(events) {
-  const agentEvents = events.filter(e => e.agent === LOGS_AGENT);
+  const agentEvents = events.filter(e => e.agent_name === LOGS_AGENT);
   const badge = document.getElementById('logsPanelBadge');
   const wrap  = document.getElementById('logsContent');
   if (!agentEvents.length) {
@@ -1072,14 +1280,31 @@ async function loadLogsPanel() {
   } catch(e) {}
 }
 
+
+
 /* ===== BOOT — DS 0.4.0 event-driven live updates ===== */
+/* wirePanelAnchors() — auto-wired by /_design/clipboard.js (DS 0.8.9) */
+/* Initial paint only. The engine-dependent boot (wireCopyRef + LiveUpdates)
+   runs in the deferred block below, after clipboard.js + live-updates.js load. */
 pollVault();
 loadLogsPanel();
-LiveUpdates.subscribe(() => { pollVault(); loadLogsPanel(); });
-LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
 </script>
 <script src="/_dashboards/_design/live-updates.js"></script>
-<!-- ops-header.js (DS 0.5.0) -->
-<script src="/_dashboards/_design/ops-header.js"></script>
+<!-- theme.js + clipboard.js (DS 0.7.0, Sprint 1 engine) -->
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<!-- admin-bar.js (DS 0.6.0) -->
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
+<!-- Deferred boot (curator 0.5.14) — MUST run after the engine scripts above:
+     wireCopyRef lives in clipboard.js, LiveUpdates in live-updates.js. Running it
+     inline above threw a ReferenceError and silently killed copy-ref + live sync. -->
+<script>
+  wireCopyRef(document);
+  wireCopyRef(document.getElementById('apiRefGrid'));
+  LiveUpdates.subscribe(() => { pollVault(); loadLogsPanel(); });
+  LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
+</script>
 </body>
 </html>

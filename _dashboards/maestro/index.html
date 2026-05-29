@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   =============================================================================
-  Maestro — BDOS Organizational Observatory.   Version: 0.5.1
+  Maestro — BDOS Organizational Observatory.   Version: 0.6.3
   =============================================================================
   The Maestro Dashboard is the representation layer for Maestro's Observability
   domain (Phase 2 Constitution §D). It renders BDOS operational cognition as a
@@ -43,6 +43,49 @@
   operational log until Phase 2.B migration. Shown as "legacy source" in panel.
 
   Audit trail:
+    0.6.3 (2026-05-29) tend: panel-7-reflection moved to directly after panel-2-agent-overview
+      (user request: reflection panel sits under the status/team panel). Panel id and #7
+      anchor preserved unchanged. New panel order: panel-5, panel-2, panel-7, panel-3,
+      panel-4, panel-6, panel-8.
+    0.6.2 (2026-05-29) tend: Reflection learning cards are now expandable. Click a card
+      to lazy-fetch its proposal .md and show structured detail: A javaslat (## A tanulság),
+      Példa/bizonyíték (evidence[] frontmatter), Impact (## Hatás / ### rule subsections),
+      Hatókör (scope), and a per-type Haszon line + accept-command hint + open-file link.
+      parseProposal() + mdLite() + benefitForType() added; gProposalCache memoizes fetches.
+    0.6.1 (2026-05-29) tend: moved panel-5-org-intelligence to first position in Observatory
+      tab (directly after masthead/top-cards, before panel-2-agent-overview). Panel id and
+      #5 anchor preserved unchanged; no nav menu to update (panels use self-anchors only).
+    0.6.1 (2026-05-29) tend: SVG dep-graph nodes now show real Pixar portrait via SVG image + clipPath circle; emoji text kept as 404 fallback (toggled by JS load check). buildAvatarMap scope was already correct.
+    0.6.0 (2026-05-29) tend: live data rewire + interactive org graph. (1) Total Ops
+      now from observability sidecar total_rows (was "Phase 2.B pending"). (2) Open/Active
+      learnings from per-agent learnings 00_INDEX.md (alfred/presto/broker/forge) — real
+      self-improving loop surfaced; proposals rendered as review cards + loop explainer.
+      (3) removed Version Changes stat card → Active Learnings. (4) agent cards now <a>
+      links to /_dashboards/<slug>/ with per-agent avatar + emoji fallback. (5) Token
+      Intelligence panel implemented from sidecar (totals, model split, per-agent, top ops)
+      — replaced Phase 2.C placeholder. (6) roster fixed: sage→alfred + forge added across
+      KNOWN_AGENTS, STATIC_EDGES, Logcat chips, lc-agent CSS; parseAgentsIndex now skips
+      non-agent/deprecated headers (KNOWN_AGENTS guard). (7) Panel 5 is now an interactive
+      SVG dependency graph: click a node → documented connections + dashboard link; edges
+      typed/legended. Risk + bottleneck + retry panels fed from sidecar. Time-nav bars +
+      weekly comparison from sidecar. AGENT_META map (color/emoji/dash) added.
+    0.5.10 (2026-05-28) tend: masthead avatar now shows the real Pixar portrait
+      (/00_Prompts/BDOS/agents/maestro/avatar.png) filling the 64px circle; emoji
+      🎼 kept as 404 fallback. renderCapabilities no longer sets avatar textContent
+      (would wipe the <img>); profile.color still tints the ring.
+    0.5.9 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app → .app-main + .app-shell layout. alfred-tasks.js added.
+    0.5.8 (2026-05-25) — promote DS 0.8.9: inline wirePanelAnchors() removed;
+          now auto-wired by /_design/clipboard.js. Modifier-key pass-through
+          + a11y attributes on panel anchors.
+    0.5.7 (2026-05-25) — promote: panel-anchor system complete (DS 0.8.0).
+          All 7 Observatory panels updated: panel-2-agent-overview (was done),
+          panel-3-time-navigation, panel-4-token-intelligence, panel-5-org-intelligence,
+          panel-6-evolution, panel-7-reflection, panel-8-capabilities.
+          wirePanelAnchors() JS function added + boot call. Fixes 0.5.6 which had CSS
+          only and one panel completed.
+    0.5.6 (2026-05-25) — promote: panel-anchor system (DS 0.8.0) — partial (CSS only).
+    0.5.5 (2026-05-25) refactor: extract canonical :root + dark + @media tokens → /_design/tokens.css (DS 0.7.0 engine extraction, Sprint 2a)
+    0.5.4 (2026-05-25) refactor: extract setTheme/copyText/wireCopyRef → /_design/{theme,clipboard}.js (DS 0.7.0 engine extraction, Sprint 1)
     0.5.0 (2026-05-24) — tend: schema realigned to brief (agent_events → agent_logs).
           log_level (6 levels: debug/info/notice/warning/error/critical), 15 event types,
           input_tokens/output_tokens/total_tokens, query_duration_ms column (Librarian perf),
@@ -69,6 +112,9 @@
           source note. Phase 2.C token-intel placeholder. DS 0.3.0 aligned
           (tokens, dark theme, theme-toggle, FOUC-init, home-link absolute,
           sync indicator, card-copy-ref). SSE push + 8s poll.
+    0.5.3 (2026-05-25) — promote: Fix: agent_name field name in logs filter (e.agent → e.agent_name); removed stale Phase 2 banner. Promote rollout.
+    0.5.2 (2026-05-25) — promote: admin-bar.js (DS 0.6.0) replaces ops-header.js.
+          #bdos-ops-header → #bdos-admin-bar. Fixed dark WP-style top bar, 34px.
     0.5.1 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
 
   Conventions: see _dashboards/_design/DESIGN_SYSTEM.md (DS 0.4.0).
@@ -92,100 +138,33 @@
   document.documentElement.dataset.theme = t;
 })();
 </script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Surfaces — cream paper */
-  --bg-page:   #faf9f5;
-  --bg-elev:   #ffffff;
-  --bg-sunken: #f3f1ea;
-  --bg-tint:   #f5f4ef;
+/* Surfaces — cream paper */
 
   /* Ink scale (1 darkest → 5 lightest) */
-  --ink-1: #141413;
-  --ink-2: #3a3a37;
-  --ink-3: #6d6d6a;
-  --ink-4: #9c9c98;
-  --ink-5: #c8c8c2;
 
   /* Lines */
-  --line:      #e5e4df;
-  --line-soft: #efede7;
 
   /* Accent — terracotta */
-  --accent:      #D97757;
-  --accent-deep: #b35a3f;
-  --accent-tint: #fbeee6;
 
   /* Status */
-  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
-  --warn:      #b07a18;  --warn-tint: #fbf2dc;
-  --gap:       #c0392b;  --gap-tint:  #fbeae6;
-  --idle:      #7a7a76;  --idle-tint: #efeeeb;
 
   /* Elevation */
-  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
-  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
   --shadow-3: 0 12px 32px rgba(20,20,19,.10), 0 4px 12px rgba(20,20,19,.06);
 
   /* Radius */
-  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
 
   /* Motion */
-  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
-  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
   --t-slow: 320ms cubic-bezier(.16,.84,.32,1);
 }
 
 /* ===== Dark theme override (DS 0.3.0) ===== */
 :root[data-theme="dark"] {
-  --bg-page:   #1a1916;
-  --bg-elev:   #232220;
-  --bg-sunken: #2c2a26;
-  --bg-tint:   #262420;
-  --ink-1: #f5f4ef;
-  --ink-2: #d6d4ce;
-  --ink-3: #a8a6a0;
-  --ink-4: #7c7a74;
-  --ink-5: #54524d;
-  --line:      #36342f;
-  --line-soft: #2c2a26;
-  --accent:      #e08a6a;
-  --accent-deep: #f0a085;
-  --accent-tint: #3a2a22;
-  --ok:        #5cc08a;  --ok-tint:   #1e3329;
-  --warn:      #d6a94a;  --warn-tint: #352c18;
-  --gap:       #e57c6e;  --gap-tint:  #3a221e;
-  --idle:      #9a9892;  --idle-tint: #2a2925;
-  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-  --shadow-3: 0 12px 32px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.30);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-page:   #1a1916;
-    --bg-elev:   #232220;
-    --bg-sunken: #2c2a26;
-    --bg-tint:   #262420;
-    --ink-1: #f5f4ef;
-    --ink-2: #d6d4ce;
-    --ink-3: #a8a6a0;
-    --ink-4: #7c7a74;
-    --ink-5: #54524d;
-    --line:      #36342f;
-    --line-soft: #2c2a26;
-    --accent:      #e08a6a;
-    --accent-deep: #f0a085;
-    --accent-tint: #3a2a22;
-    --ok:        #5cc08a;  --ok-tint:   #1e3329;
-    --warn:      #d6a94a;  --warn-tint: #352c18;
-    --gap:       #e57c6e;  --gap-tint:  #3a221e;
-    --idle:      #9a9892;  --idle-tint: #2a2925;
-    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-  }
+--shadow-3: 0 12px 32px rgba(0,0,0,.45), 0 4px 12px rgba(0,0,0,.30);
 }
 
 html { font-size: 15px; }
@@ -211,9 +190,8 @@ a:focus-visible, button:focus-visible {
 button { font: inherit; background: transparent; border: 0; color: inherit; cursor: pointer; }
 
 /* ============= App shell ============= */
-.app {
+.app-main {
   max-width: 1200px;
-  margin: 0 auto;
   padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 40px) 96px;
 }
 
@@ -408,6 +386,14 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   position: relative;
 }
 .agent-card:hover { border-color: var(--ink-5); box-shadow: var(--shadow-2); }
+a.agent-card { display: block; cursor: pointer; }
+a.agent-card:hover { border-color: var(--accent); }
+.agent-card-cta {
+  display: block; margin-top: 12px; font-size: 11px; font-weight: 600;
+  font-family: 'JetBrains Mono', monospace; color: var(--ink-5);
+  opacity: 0; transition: opacity var(--t-fast), color var(--t-fast);
+}
+a.agent-card:hover .agent-card-cta { opacity: 1; color: var(--accent-deep); }
 
 .agent-card-header {
   display: flex; align-items: center; gap: 10px; margin-bottom: 10px;
@@ -555,8 +541,32 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .learning-type-chip.optimization { color: var(--ok); background: var(--ok-tint); }
 .learning-type-chip.workflow-insight { color: var(--warn); background: var(--warn-tint); }
 .learning-type-chip.prompt-weakness { color: var(--gap); background: var(--gap-tint); }
+.learning-type-chip.failure-mode { color: var(--gap); background: var(--gap-tint); }
 .learning-type-chip.successful-pattern { color: var(--ok); background: var(--ok-tint); }
 .learning-type-chip.improvement { color: var(--accent-deep); background: var(--accent-tint); }
+
+/* ===== Self-improving loop banner (0.6.0) ===== */
+.learn-loop {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 16px 20px; margin-bottom: 20px;
+  box-shadow: var(--shadow-1);
+}
+.learn-loop-title { font-size: 13px; font-weight: 700; color: var(--ink-1); margin-bottom: 12px; }
+.learn-loop-steps { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.loop-step {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--ink-2); line-height: 1.4;
+  background: var(--bg-sunken); border: 1px solid var(--line);
+  border-radius: var(--radius-m); padding: 6px 10px;
+}
+.loop-num {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--accent-tint); color: var(--accent-deep); border: 1px solid var(--accent);
+  font-size: 10px; font-weight: 700; flex-shrink: 0;
+}
+.loop-arrow { color: var(--ink-4); font-weight: 700; flex-shrink: 0; }
+.learn-loop code { font-size: 11px; }
 
 .learning-status-chip {
   margin-left: auto; font-size: 10px; font-weight: 600;
@@ -576,6 +586,50 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 }
 .learning-agent { font-weight: 600; color: var(--ink-3); }
 .learning-proposed { color: var(--ink-3); font-style: italic; }
+
+/* ===== Expandable learning card (0.6.1) ===== */
+.learning-card.is-expandable { cursor: pointer; transition: border-color var(--t-fast), box-shadow var(--t-fast); }
+.learning-card.is-expandable:hover { border-color: var(--accent); box-shadow: var(--shadow-2); }
+.learning-card.is-expandable:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.learning-expand-hint {
+  margin-left: auto; display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 600; color: var(--ink-4);
+  font-family: 'JetBrains Mono', monospace;
+}
+.learning-expand-hint .chevron { transition: transform var(--t-fast); }
+.learning-card.expanded .learning-expand-hint .chevron { transform: rotate(180deg); }
+.learning-card.expanded .learning-expand-hint { color: var(--accent-deep); }
+
+.learning-detail {
+  margin-top: 14px; padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+.ld-group { margin-bottom: 14px; }
+.ld-group:last-of-type { margin-bottom: 8px; }
+.ld-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-4); font-weight: 700; margin-bottom: 5px;
+}
+.ld-body { font-size: 12.5px; color: var(--ink-2); line-height: 1.55; }
+.ld-body p { margin: 0 0 6px; }
+.ld-body p:last-child { margin-bottom: 0; }
+.ld-subhead { font-size: 12px; font-weight: 700; color: var(--ink-1); margin: 8px 0 4px; }
+.ld-list { margin: 4px 0 6px; padding-left: 18px; }
+.ld-list li { margin-bottom: 3px; }
+.ld-more, .ld-empty { font-size: 11px; color: var(--ink-4); font-style: italic; }
+.ld-benefit .ld-body {
+  background: var(--ok-tint); border: 1px solid rgba(31,122,77,.25);
+  border-radius: var(--radius-m); padding: 9px 12px; color: var(--ink-1);
+}
+.ld-actions {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap; margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line-soft);
+}
+.ld-accept-hint { font-size: 11.5px; color: var(--ink-3); }
+.ld-accept-hint code { font-size: 11px; color: var(--accent-deep); background: var(--accent-tint); padding: 1px 6px; border-radius: var(--radius-s); }
+.ld-open-file { font-size: 11.5px; font-weight: 600; color: var(--accent-deep); }
+.ld-open-file:hover { text-decoration: underline; }
+.ld-loading { font-size: 12px; color: var(--ink-4); font-style: italic; padding: 6px 0; }
 
 /* ============= Version events ============= */
 .version-event {
@@ -668,6 +722,66 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .dep-arrow-sym { color: var(--accent); font-weight: 700; }
 .dep-empty { font-size: 11px; color: var(--ink-5); font-style: italic; }
 
+/* ===== Interactive dependency graph (0.6.0) ===== */
+.dep-graph-wrap { display: grid; grid-template-columns: 1.4fr 1fr; gap: 16px; align-items: start; }
+@media (max-width: 820px) { .dep-graph-wrap { grid-template-columns: 1fr; } }
+.dep-graph-canvas {
+  background: var(--bg-sunken); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 8px; position: relative;
+}
+#depGraph { width: 100%; height: auto; display: block; }
+.dep-edge { stroke-width: 1.5; fill: none; transition: stroke-opacity var(--t-fast), stroke-width var(--t-fast); stroke-opacity: .42; }
+.dep-edge.orchestrates   { stroke: var(--accent); }
+.dep-edge.permitted-flow { stroke: var(--ok); }
+.dep-edge.representation { stroke: var(--ink-4); stroke-dasharray: 4 3; }
+.dep-edge.sibling        { stroke: var(--warn); }
+.dep-edge.dimmed   { stroke-opacity: .08; }
+.dep-edge.active   { stroke-opacity: 1; stroke-width: 2.5; }
+.dep-node { cursor: pointer; }
+.dep-node circle { stroke-width: 2; transition: r var(--t-fast), stroke-width var(--t-fast); }
+.dep-node text.node-emoji { font-size: 17px; text-anchor: middle; dominant-baseline: central; pointer-events: none; }
+.dep-node text.node-label {
+  font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+  text-anchor: middle; fill: var(--ink-1); pointer-events: none;
+}
+.dep-node.dimmed { opacity: .3; }
+.dep-node.selected circle { stroke-width: 3.5; }
+.dep-legend { display: flex; flex-wrap: wrap; gap: 10px; padding: 8px 6px 2px; }
+.dep-legend-item { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; color: var(--ink-4); }
+.dep-legend-swatch { width: 16px; height: 0; border-top: 2px solid; }
+.dep-legend-swatch.orchestrates   { border-color: var(--accent); }
+.dep-legend-swatch.permitted-flow { border-color: var(--ok); }
+.dep-legend-swatch.representation { border-top-style: dashed; border-color: var(--ink-4); }
+.dep-legend-swatch.sibling        { border-color: var(--warn); }
+.dep-detail {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 16px 18px; box-shadow: var(--shadow-1);
+  min-height: 200px;
+}
+.dep-detail-empty { font-size: 12.5px; color: var(--ink-5); font-style: italic; padding: 24px 0; text-align: center; }
+.dep-detail-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+.dep-detail-name { font-size: 15px; font-weight: 700; color: var(--ink-1); }
+.dep-detail-role { font-size: 11.5px; color: var(--ink-4); margin-bottom: 14px; }
+.dep-detail-group { margin-bottom: 14px; }
+.dep-detail-group-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); font-weight: 700; margin-bottom: 6px; }
+.dep-edge-item { font-size: 12px; color: var(--ink-2); line-height: 1.5; padding: 7px 0; border-bottom: 1px solid var(--line-soft); }
+.dep-edge-item:last-child { border-bottom: none; }
+.dep-edge-item b { color: var(--ink-1); }
+.dep-edge-type {
+  display: inline-block; font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .05em; padding: 1px 6px; border-radius: var(--radius-s); margin-left: 4px;
+}
+.dep-edge-type.orchestrates   { color: var(--accent-deep); background: var(--accent-tint); }
+.dep-edge-type.permitted-flow { color: var(--ok); background: var(--ok-tint); }
+.dep-edge-type.representation { color: var(--ink-3); background: var(--idle-tint); }
+.dep-edge-type.sibling        { color: var(--warn); background: var(--warn-tint); }
+.dep-detail-link {
+  display: inline-flex; align-items: center; gap: 5px; margin-top: 6px;
+  font-size: 11.5px; font-weight: 600; color: var(--accent-deep);
+  font-family: 'JetBrains Mono', monospace;
+}
+.dep-detail-link:hover { text-decoration: underline; }
+
 /* ============= Card copy-ref (DS 0.2.0) ===== */
 .card-copy-ref {
   position: absolute; top: 10px; right: 10px;
@@ -689,6 +803,21 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .card-copy-ref.copied {
   background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1;
 }
+
+/* ===== Panel anchor (DS 0.8.0) ===== */
+[id^="panel-"] { scroll-margin-top: 42px; }
+.panel-anchor {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  color: var(--ink-5); background: transparent; border: none;
+  padding: 1px 4px; border-radius: var(--radius-s);
+  text-decoration: none; opacity: 0;
+  transition: opacity var(--t-fast), color var(--t-fast), background var(--t-fast);
+  white-space: nowrap; cursor: pointer; line-height: 1; flex-shrink: 0;
+}
+.panel-anchor-host:hover .panel-anchor,
+.panel-anchor-host:focus-within .panel-anchor { opacity: 1; }
+.panel-anchor:hover { color: var(--accent-deep); background: var(--accent-tint); }
 
 /* ============= Misc ============= */
 .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
@@ -724,9 +853,13 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   display: inline-flex; align-items: center; justify-content: center;
   font-size: 32px; flex-shrink: 0;
   border: 2px solid transparent;
+  overflow: hidden;
   transition: box-shadow var(--t-fast);
 }
 .agent-avatar:hover { box-shadow: var(--shadow-2); }
+.agent-avatar-sm { width: 30px; height: 30px; font-size: 16px; border-width: 1.5px; }
+.agent-avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.agent-avatar-emoji { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; }
 .cap-section { margin-bottom: 16px; }
 .cap-section-label { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); font-weight: 600; margin-bottom: 6px; }
 .cap-chip { display: inline-flex; align-items: center; gap: 4px; font-size: 11.5px; color: var(--ink-2); background: var(--bg-sunken); border: 1px solid var(--line); border-radius: var(--radius-m); padding: 3px 9px; margin: 2px 3px 2px 0; }
@@ -867,15 +1000,17 @@ table.logcat-table {
 .lc-agent.librarian { color: #5c4a1e; background: #f5eddc; }
 .lc-agent.maestro   { color: #3d2e6e; background: #ede8f5; }
 .lc-agent.curator   { color: #1e4d3a; background: #d6f0e6; }
-.lc-agent.sage      { color: #2a4a6e; background: #dceaf5; }
 .lc-agent.presto    { color: #6e2a1e; background: #f5dcd8; }
 .lc-agent.broker    { color: #4e3a1e; background: #f5e8d0; }
+.lc-agent.forge     { color: #7a2e1c; background: #f3ddd4; }
+.lc-agent.alfred    { color: #1e4d44; background: #d6f0ea; }
 :root[data-theme="dark"] .lc-agent.librarian { color: #f5eddc; background: rgba(92,74,30,.35); }
 :root[data-theme="dark"] .lc-agent.maestro   { color: #ede8f5; background: rgba(61,46,110,.35); }
 :root[data-theme="dark"] .lc-agent.curator   { color: #d6f0e6; background: rgba(30,77,58,.35); }
-:root[data-theme="dark"] .lc-agent.sage      { color: #dceaf5; background: rgba(42,74,110,.35); }
 :root[data-theme="dark"] .lc-agent.presto    { color: #f5dcd8; background: rgba(110,42,30,.35); }
 :root[data-theme="dark"] .lc-agent.broker    { color: #f5e8d0; background: rgba(78,58,30,.35); }
+:root[data-theme="dark"] .lc-agent.forge     { color: #f3ddd4; background: rgba(122,46,28,.35); }
+:root[data-theme="dark"] .lc-agent.alfred    { color: #d6f0ea; background: rgba(30,77,68,.35); }
 
 .lc-etype {
   font-size: 10px; color: var(--ink-4); background: var(--bg-sunken);
@@ -894,8 +1029,9 @@ table.logcat-table {
 </head>
 
 <body>
-<div id="bdos-ops-header"></div>
-<main class="app">
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<main class="app-main">
 
   <!-- ===== Masthead ===== -->
   <header class="masthead">
@@ -908,7 +1044,7 @@ table.logcat-table {
         Ideas Vault
       </a>
       <div style="display:flex;align-items:center;gap:12px;">
-        <span class="agent-avatar" id="agentAvatar" title="Maestro" style="background:rgba(107,91,149,.12);border-color:rgba(107,91,149,.3);">🎼</span>
+        <span class="agent-avatar" id="agentAvatar" title="Maestro" style="background:rgba(107,91,149,.12);border-color:rgba(107,91,149,.3);"><img class="agent-avatar-img" src="/00_Prompts/BDOS/agents/maestro/avatar.png" alt="Maestro" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="agent-avatar-emoji" aria-hidden="true">🎼</span></span>
         <div class="sync-status" id="syncStatus">
           <span class="sync-dot" id="syncDot"></span>
           <div class="sync-bar-wrap"><div class="sync-bar sync-shuttle" id="syncBar"></div></div>
@@ -924,7 +1060,7 @@ table.logcat-table {
     <div class="eyebrow">
       <span class="dot"></span>
       BDOS · Organizational Observatory
-      <span class="version-pill mono">v0.4.0</span>
+      <span class="version-pill mono">v0.6.3</span>
     </div>
     <h1>Maestro <span class="accent">Observatory</span></h1>
     <p class="submeta">
@@ -945,36 +1081,80 @@ table.logcat-table {
   <!-- ===== Tab 1: Observatory (all existing panels) ===== -->
   <div class="tab-panel active" id="panelObservatory" role="tabpanel" aria-labelledby="tabObservatory">
 
-  <!-- ===== Panel 1: Phase 2 Banner ===== -->
-  <div class="phase-banner" id="phaseBanner">
-    <div class="phase-banner-inner">
-      <div class="phase-banner-header">
-        <div class="phase-banner-title">Reflective Nervous System Era — Phase 2 Constitution Active</div>
-        <div class="phase-pills" id="phasePills">
-          <span class="phase-pill done">2.A Constitution + Schemas</span>
-          <span class="phase-pill pending">2.B Family Rollout (pending)</span>
-          <span class="phase-pill future">2.C Token Intelligence (future)</span>
+  <!-- ===== Panel 5: Organizational Intelligence ===== -->
+  <section class="section panel-anchor-host" id="panel-5-org-intelligence">
+    <div class="section-header">
+      <div>
+        <div class="section-title">How does the system collaborate and where does it struggle?</div>
+        <div class="section-sub">Dependency graph, bottleneck signals, retry patterns, systemic risk</div>
+      </div>
+      <a class="panel-anchor" href="#panel-5-org-intelligence" title="Link to this panel">#5</a>
+    </div>
+
+    <div style="margin-bottom:28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:4px;">Agent dependency graph (from canonicals)</div>
+      <p class="data-note" style="margin-top:0;margin-bottom:12px;">Click any node to see how that agent connects to the rest of the family. Each edge is documented.</p>
+      <div class="dep-graph-wrap">
+        <div class="dep-graph-canvas">
+          <svg id="depGraph" viewBox="0 0 620 460" role="img" aria-label="Agent dependency graph" preserveAspectRatio="xMidYMid meet"></svg>
+          <div class="dep-legend" id="depLegend"></div>
+        </div>
+        <div class="dep-detail" id="depDetail">
+          <div class="dep-detail-empty">Select an agent node to inspect its connections.</div>
         </div>
       </div>
-      <div class="phase-banner-body" id="phaseBannerBody">
-        <strong>Phase 2.A is active</strong> — the Constitution document, log schemas, Maestro v0.3 Observability domain, and this dashboard are complete.
-        <strong>Phase 2.B</strong> (family-wide log-emission rollout) is pending — when it completes, every agent will write structured operational, learning, and version logs.
-        Until then, most panels below show graceful empty-states with explanations.
-        <strong>Phase 2.C</strong> (token capture) follows Phase 2.B.
-        <br><br>
-        Source: <span class="mono" style="font-size:11px;">CONSTITUTION_PHASE_2.md</span> v2.0 (2026-05-24).
+    </div>
+
+    <div class="two-col">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Bottleneck signals</div>
+        <div id="bottleneckPanel">
+          <div class="empty-state">
+            <div class="empty-state-icon">⚠</div>
+            <div class="empty-state-title">No log data to analyze</div>
+            <div class="empty-state-body">
+              Bottleneck detection watches for agents with high pending counts,
+              error rates above 20%, or silent agents (no ops in 14+ days).
+            </div>
+            <span class="empty-state-badge">Phase 2.B pending</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Retry frequency</div>
+        <div id="retryPanel">
+          <div class="empty-state">
+            <div class="empty-state-icon">↻</div>
+            <div class="empty-state-title">No retry data yet</div>
+            <div class="empty-state-body">
+              Operations with <code class="mono" style="font-size:10px;">outcome: partial</code> or <code class="mono" style="font-size:10px;">outcome: failure</code> will be surfaced here
+              per agent, so recurring failure-types become visible.
+            </div>
+            <span class="empty-state-badge">Phase 2.B pending</span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
+
+    <div style="margin-top:28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Systemic risk indicators</div>
+      <div id="riskPanel">
+        <div class="stats-row" id="riskStats">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ===== Panel 2: Agent Overview ===== -->
-  <section class="section" id="panelAgentOverview">
+  <section class="section panel-anchor-host" id="panel-2-agent-overview">
     <div class="section-header">
       <div>
         <div class="section-title">Who is the team right now?</div>
         <div class="section-sub">Agent family — versions, health, and recent activity</div>
       </div>
       <span class="section-badge" id="agentCountBadge">loading…</span>
+      <a class="panel-anchor" href="#panel-2-agent-overview" title="Link to this panel">#2</a>
     </div>
 
     <div class="stats-row" id="overviewStats">
@@ -985,18 +1165,18 @@ table.logcat-table {
       </div>
       <div class="stat-card">
         <div class="stat-card-label">Total Ops (all time)</div>
-        <div class="stat-card-value mono null-val" id="statTotalOps">Phase 2.B pending</div>
-        <div class="stat-card-sub">from operational logs</div>
+        <div class="stat-card-value mono" id="statTotalOps">—</div>
+        <div class="stat-card-sub" id="statTotalOpsSub">from observability log</div>
       </div>
       <div class="stat-card">
         <div class="stat-card-label">Open Learnings</div>
         <div class="stat-card-value mono" id="statOpenLearnings">—</div>
-        <div class="stat-card-sub">awaiting action</div>
+        <div class="stat-card-sub">awaiting human review</div>
       </div>
       <div class="stat-card">
-        <div class="stat-card-label">Version Changes</div>
-        <div class="stat-card-value mono" id="statVersionChanges">—</div>
-        <div class="stat-card-sub">all agents, all time</div>
+        <div class="stat-card-label">Active Learnings</div>
+        <div class="stat-card-value mono" id="statActiveLearnings">—</div>
+        <div class="stat-card-sub">applied to agent prompts</div>
       </div>
     </div>
 
@@ -1024,13 +1204,73 @@ table.logcat-table {
     </div>
   </section>
 
+  <!-- ===== Panel 7: Reflection Layer ===== -->
+  <section class="section panel-anchor-host" id="panel-7-reflection">
+    <div class="section-header">
+      <div>
+        <div class="section-title">What did the system learn?</div>
+        <div class="section-sub">Open reflections, actioned insights, recurring patterns — the most important panel</div>
+      </div>
+      <span class="section-badge" id="learningCountBadge">—</span>
+      <a class="panel-anchor" href="#panel-7-reflection" title="Link to this panel">#7</a>
+    </div>
+
+    <div class="stats-row" style="margin-bottom:20px;">
+      <div class="stat-card">
+        <div class="stat-card-label">Open (proposed)</div>
+        <div class="stat-card-value mono" id="reflectOpenCount">—</div>
+        <div class="stat-card-sub">awaiting human review</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-label">Active (applied)</div>
+        <div class="stat-card-value mono" id="reflectActionedCount">—</div>
+        <div class="stat-card-sub">loaded into agent prompts</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-label">Retired</div>
+        <div class="stat-card-value mono" id="reflectPatternsCount">—</div>
+        <div class="stat-card-sub">archived / superseded</div>
+      </div>
+    </div>
+
+    <div class="learn-loop" id="learnLoop">
+      <div class="learn-loop-title">How the system improves itself</div>
+      <div class="learn-loop-steps">
+        <span class="loop-step"><span class="loop-num">1</span> Agent runs <code class="mono">learn</code>/<code class="mono">reflect</code> → drops a <strong>proposal</strong></span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step"><span class="loop-num">2</span> Human reviews via <code class="mono">/&lt;agent&gt;-learning-accept</code></span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step"><span class="loop-num">3</span> <strong>Active</strong>: loaded into the agent's next prompt</span>
+        <span class="loop-arrow">→</span>
+        <span class="loop-step"><span class="loop-num">4</span> Unused 4 weeks or contradicted → <strong>retired</strong></span>
+      </div>
+      <p class="data-note" style="margin-top:10px;">
+        The loop is deliberately <strong>human-gated</strong> (BDOS principle: agents never mutate their own prompts autonomously).
+        To make proposal-generation continuous, schedule each agent's <code class="mono">reflect</code> / Alfred <code class="mono">curate</code>
+        mode (weekly) so new candidates accumulate here automatically; acceptance stays a one-click human decision.
+      </p>
+    </div>
+
+    <div id="learningList">
+      <div class="empty-state">
+        <div class="empty-state-icon">◇</div>
+        <div class="empty-state-title">No open learnings right now</div>
+        <div class="empty-state-body">
+          Proposed learnings from each agent's learnings folder appear here. When an agent's
+          <code class="mono" style="font-size:10px;">reflect</code> or <code class="mono" style="font-size:10px;">learn</code> mode drops a proposal, it shows up as a card awaiting your review.
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ===== Panel 3: Time Navigation ===== -->
-  <section class="section" id="panelTimeNav">
+  <section class="section panel-anchor-host" id="panel-3-time-navigation">
     <div class="section-header">
       <div>
         <div class="section-title">How has activity moved through time?</div>
         <div class="section-sub">Weekly/monthly snapshots, evolution over time</div>
       </div>
+      <a class="panel-anchor" href="#panel-3-time-navigation" title="Link to this panel">#3</a>
     </div>
 
     <div class="two-col">
@@ -1078,126 +1318,32 @@ table.logcat-table {
   </section>
 
   <!-- ===== Panel 4: Token Intelligence ===== -->
-  <section class="section" id="panelTokenIntel">
+  <section class="section panel-anchor-host" id="panel-4-token-intelligence">
     <div class="section-header">
       <div>
         <div class="section-title">How much does the system cost to think?</div>
         <div class="section-sub">Token usage, model distribution, cost analytics</div>
       </div>
-      <span class="section-badge warn">Phase 2.C pending — token capture not yet enabled</span>
+      <span class="section-badge" id="tokenBadge">from observability log</span>
+      <a class="panel-anchor" href="#panel-4-token-intelligence" title="Link to this panel">#4</a>
     </div>
-    <div class="token-placeholder">
-      <div class="token-placeholder-header">
-        <div class="token-placeholder-title">Token Intelligence — Phase 2.C</div>
-      </div>
-      <p style="font-size:13px;color:var(--ink-3);margin-bottom:20px;max-width:70ch;">
-        Token capture is designed but not yet active. The operational log schema reserves
-        <code class="mono" style="font-size:11px;">tokens.input / output / total</code> and
-        <code class="mono" style="font-size:11px;">cost_estimate_usd</code> fields — currently <code class="mono" style="font-size:11px;">null</code>.
-        When Phase 2.C activates, these panels will populate automatically.
-      </p>
-      <div class="token-fields">
-        <div class="token-field">
-          <div class="token-field-label">Total tokens (all agents)</div>
-          <div class="token-field-value">null — Phase 2.C pending</div>
-        </div>
-        <div class="token-field">
-          <div class="token-field-label">Estimated total cost</div>
-          <div class="token-field-value">null — Phase 2.C pending</div>
-        </div>
-        <div class="token-field">
-          <div class="token-field-label">Model distribution</div>
-          <div class="token-field-value">null — Phase 2.C pending</div>
-        </div>
-        <div class="token-field">
-          <div class="token-field-label">Token efficiency trend</div>
-          <div class="token-field-value">null — Phase 2.C pending</div>
-        </div>
-        <div class="token-field">
-          <div class="token-field-label">High-cost workflows</div>
-          <div class="token-field-value">null — Phase 2.C pending</div>
-        </div>
-        <div class="token-field">
-          <div class="token-field-label">Token graveyards</div>
-          <div class="token-field-value">null — Phase 2.C pending</div>
-        </div>
-      </div>
-      <p class="data-note" style="margin-top:16px;">
-        Once operational logs include non-null token fields, these panels will auto-fill with trend charts,
-        model distribution pie breakdown, high-cost workflow rankings, and graveyard detection
-        (many tokens → little output). No HTML change required — data-driven rendering.
-      </p>
-    </div>
-  </section>
-
-  <!-- ===== Panel 5: Organizational Intelligence ===== -->
-  <section class="section" id="panelOrgIntel">
-    <div class="section-header">
-      <div>
-        <div class="section-title">How does the system collaborate and where does it struggle?</div>
-        <div class="section-sub">Dependency graph, bottleneck signals, retry patterns, systemic risk</div>
-      </div>
-    </div>
-
-    <div style="margin-bottom:28px;">
-      <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Known agent dependencies (from canonicals)</div>
-      <div class="dependency-grid" id="dependencyGrid">
-        <!-- populated by JS from static edges -->
-      </div>
-      <p class="data-note">
-        Static edges derived from canonical agent specs — who orchestrates whom, what flows where.
-        Dynamic collaboration quality (cross-agent references in logs) requires Phase 2.B operational logs.
-      </p>
-    </div>
-
-    <div class="two-col">
-      <div>
-        <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Bottleneck signals</div>
-        <div id="bottleneckPanel">
-          <div class="empty-state">
-            <div class="empty-state-icon">⚠</div>
-            <div class="empty-state-title">No log data to analyze</div>
-            <div class="empty-state-body">
-              Bottleneck detection watches for agents with high pending counts,
-              error rates above 20%, or silent agents (no ops in 14+ days).
-            </div>
-            <span class="empty-state-badge">Phase 2.B pending</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Retry frequency</div>
-        <div id="retryPanel">
-          <div class="empty-state">
-            <div class="empty-state-icon">↻</div>
-            <div class="empty-state-title">No retry data yet</div>
-            <div class="empty-state-body">
-              Operations with <code class="mono" style="font-size:10px;">outcome: partial</code> or <code class="mono" style="font-size:10px;">outcome: failure</code> will be surfaced here
-              per agent, so recurring failure-types become visible.
-            </div>
-            <span class="empty-state-badge">Phase 2.B pending</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="margin-top:28px;">
-      <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Systemic risk indicators</div>
-      <div id="riskPanel">
-        <div class="stats-row" id="riskStats">
-          <!-- populated by JS -->
-        </div>
+    <div id="tokenIntel">
+      <div class="empty-state">
+        <div class="empty-state-icon">◷</div>
+        <div class="empty-state-title">Loading token intelligence…</div>
+        <div class="empty-state-body">Aggregating token + cost fields from the observability log.</div>
       </div>
     </div>
   </section>
 
   <!-- ===== Panel 6: Evolution Tracking ===== -->
-  <section class="section" id="panelEvolution">
+  <section class="section panel-anchor-host" id="panel-6-evolution">
     <div class="section-header">
       <div>
         <div class="section-title">How has the system changed itself?</div>
         <div class="section-sub">Version changes, prompt modifications, behavioral evolution</div>
       </div>
+      <a class="panel-anchor" href="#panel-6-evolution" title="Link to this panel">#6</a>
     </div>
 
     <div id="evolutionTimeline">
@@ -1221,65 +1367,15 @@ table.logcat-table {
     </div>
   </section>
 
-  <!-- ===== Panel 7: Reflection Layer ===== -->
-  <section class="section" id="panelReflection">
-    <div class="section-header">
-      <div>
-        <div class="section-title">What did the system learn?</div>
-        <div class="section-sub">Open reflections, actioned insights, recurring patterns — the most important panel</div>
-      </div>
-      <span class="section-badge" id="learningCountBadge">—</span>
-    </div>
-
-    <div class="stats-row" style="margin-bottom:24px;">
-      <div class="stat-card">
-        <div class="stat-card-label">Open Learnings</div>
-        <div class="stat-card-value mono" id="reflectOpenCount">—</div>
-        <div class="stat-card-sub">awaiting action or decision</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card-label">Actioned</div>
-        <div class="stat-card-value mono" id="reflectActionedCount">—</div>
-        <div class="stat-card-sub">turned into version changes</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card-label">Recurring Patterns</div>
-        <div class="stat-card-value mono null-val" id="reflectPatternsCount">—</div>
-        <div class="stat-card-sub">failures across multiple agents</div>
-      </div>
-    </div>
-
-    <div style="margin-bottom:16px;">
-      <span class="legacy-note">
-        <strong>Legacy source note (Sage):</strong>
-        Sage's <code class="mono" style="font-size:10px;">_journal/</code> is aliased as operational source until Phase 2.B migration.
-        Learning data from Sage may appear below from <code class="mono" style="font-size:10px;">/agents/sage/logs/learning/</code>
-        if that path exists.
-      </span>
-    </div>
-
-    <div id="learningList">
-      <div class="empty-state">
-        <div class="empty-state-icon">◇</div>
-        <div class="empty-state-title">No learning log data yet</div>
-        <div class="empty-state-body">
-          When agents emit learning logs (Phase 2.B), discoveries, failures, optimizations, and
-          successful patterns will appear here — each with its status (open / actioned / retired),
-          the proposed action, and a link to any resulting version change.
-        </div>
-        <span class="empty-state-badge">Phase 2.B pending</span>
-      </div>
-    </div>
-  </section>
-
   <!-- ===== Panel 8: Capabilities (added 0.2.0 — live from AGENT_PROFILES.md) ===== -->
-  <section class="section" id="panelCapabilities">
+  <section class="section panel-anchor-host" id="panel-8-capabilities">
     <div class="section-header">
       <div>
         <div class="section-title">Capabilities</div>
         <div class="section-sub">Tools, MCPs, APIs, plugins, slash commands — live from AGENT_PROFILES.md</div>
       </div>
       <span class="cap-panel-badge">auto-refresh 8s</span>
+      <a class="panel-anchor" href="#panel-8-capabilities" title="Link to this panel">#8</a>
     </div>
     <div class="cap-panel" id="capContent">
       <div class="empty-state"><div class="empty-state-icon">🎼</div><div class="empty-state-title">Loading capability profile…</div><div class="empty-state-body">Fetching /00_Prompts/BDOS/AGENT_PROFILES.md</div></div>
@@ -1334,9 +1430,10 @@ table.logcat-table {
         <span class="filter-chip" data-filter="agent" data-value="librarian">librarian</span>
         <span class="filter-chip" data-filter="agent" data-value="maestro">maestro</span>
         <span class="filter-chip" data-filter="agent" data-value="curator">curator</span>
-        <span class="filter-chip" data-filter="agent" data-value="sage">sage</span>
         <span class="filter-chip" data-filter="agent" data-value="presto">presto</span>
         <span class="filter-chip" data-filter="agent" data-value="broker">broker</span>
+        <span class="filter-chip" data-filter="agent" data-value="forge">forge</span>
+        <span class="filter-chip" data-filter="agent" data-value="alfred">alfred</span>
       </div>
       <div class="filter-sep"></div>
       <!-- Level (6 levels: debug info notice warning error critical) -->
@@ -1461,6 +1558,8 @@ table.logcat-table {
   </div><!-- end #panelLogcat -->
 
 </main>
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
 
 <script>
 /* ===================================================================
@@ -1470,6 +1569,7 @@ table.logcat-table {
 
 const DASH_STEM = 'maestro';
 
+/* Clipboard helpers (copyText, wireCopyRef): /_dashboards/_design/clipboard.js (DS 0.7.0, Sprint 1) */
 // ---- Data source paths ----
 const AGENTS_INDEX_FILE  = '/00_Prompts/BDOS/00_AGENTS_INDEX.md';
 const CONSTITUTION_FILE  = '/00_Prompts/BDOS/CONSTITUTION_PHASE_2.md';
@@ -1478,32 +1578,48 @@ const AGENT_NAME_IN_PROFILES = 'Maestro';
 
 let lastProfilesContent = null;
 
-// Known agents (used for log-glob + dependency graph)
-const KNOWN_AGENTS = ['librarian', 'maestro', 'curator', 'sage', 'presto', 'broker'];
+// Known agents (used for log-glob + dependency graph). Sage deprecated 2026-05-28,
+// merged into Alfred v0.3. Forge added (Practice Steward).
+const KNOWN_AGENTS = ['librarian', 'maestro', 'curator', 'presto', 'broker', 'forge', 'alfred'];
 
-// Static dependency edges from canonical agent specs
+// Per-agent metadata: avatar, identity color, and own dashboard.
+// Colors mirror AGENT_PROFILES.md; dashboards live at /_dashboards/<slug>/.
+const AGENT_META = {
+  librarian: { color: '#8B6F4E', emoji: '📚', dash: '/_dashboards/librarian/' },
+  maestro:   { color: '#6B5B95', emoji: '🎼', dash: '/_dashboards/maestro/' },
+  curator:   { color: '#7BA098', emoji: '🖼️', dash: '/_dashboards/curator/' },
+  presto:    { color: '#D17A5F', emoji: '🐰', dash: '/_dashboards/presto/' },
+  broker:    { color: '#A47551', emoji: '🤝', dash: '/_dashboards/broker/' },
+  forge:     { color: '#9B4F3A', emoji: '🔨', dash: '/_dashboards/forge/' },
+  alfred:    { color: '#4A7B6F', emoji: '🧭', dash: '/_dashboards/alfred/' }
+};
+function agentMeta(slug) { return AGENT_META[slug] || { color: '#D97757', emoji: '⬡', dash: null }; }
+function avatarUrl(slug) { return `/00_Prompts/BDOS/agents/${slug}/avatar.png`; }
+
+// Static dependency edges from canonical agent specs. Each edge carries a human
+// description so the interactive graph can explain why two agents are connected.
 const STATIC_EDGES = [
-  { source: 'maestro', target: 'librarian',  type: 'orchestrates',   label: 'team-*' },
-  { source: 'maestro', target: 'curator',    type: 'orchestrates',   label: 'team-*' },
-  { source: 'maestro', target: 'sage',       type: 'orchestrates',   label: 'team-*' },
-  { source: 'maestro', target: 'presto',     type: 'orchestrates',   label: 'team-*' },
-  { source: 'maestro', target: 'broker',     type: 'orchestrates',   label: 'team-*' },
-  { source: 'sage',    target: 'librarian',  type: 'orchestrates',   label: 'curate→' },
-  { source: 'sage',    target: 'presto',     type: 'permitted-flow', label: 'cognition→dist' },
-  { source: 'sage',    target: 'broker',     type: 'permitted-flow', label: 'cognition→dist' },
-  { source: 'presto',  target: 'broker',     type: 'sibling',        label: 'sibling' },
-  { source: 'curator', target: 'librarian',  type: 'representation', label: 'renders' },
-  { source: 'curator', target: 'maestro',    type: 'representation', label: 'static↔dynamic' },
-  { source: 'curator', target: 'sage',       type: 'representation', label: 'renders' },
-  { source: 'curator', target: 'presto',     type: 'representation', label: 'renders' },
-  { source: 'curator', target: 'broker',     type: 'representation', label: 'renders' }
+  { source: 'maestro', target: 'librarian', type: 'orchestrates',   label: 'team-*',          desc: 'Maestro a family-conductor: team-status/audit/promote módokkal koordinálja a Librarian-t (verzió-sync, index-konzisztencia).' },
+  { source: 'maestro', target: 'curator',   type: 'orchestrates',   label: 'team-*',          desc: 'Maestro orchestrálja a Curator-t a team-* módokon át; közös meta-szabályok rollout-ja (team-promote analóg a Curator dash-promote-tal).' },
+  { source: 'maestro', target: 'presto',    type: 'orchestrates',   label: 'team-*',          desc: 'Maestro family-szinten vezeti a Presto-t: státusz, audit, promote. Reflect-módban a Presto logjaiból is mintát keres.' },
+  { source: 'maestro', target: 'broker',    type: 'orchestrates',   label: 'team-*',          desc: 'Maestro koordinálja a Broker-t a team-* módokkal; sales-cogníció és a family-meta-szabályok összehangolása.' },
+  { source: 'maestro', target: 'forge',     type: 'orchestrates',   label: 'team-*',          desc: 'Maestro vezeti a Forge-ot (Practice Steward) a family-conductor szerepből; capability-réteg integráció.' },
+  { source: 'maestro', target: 'alfred',    type: 'orchestrates',   label: 'team-*',          desc: 'Maestro orchestrálja az Alfred-et (Executive Cognition); a reflektív idegrendszer és a cognitive inbox összekötése.' },
+  { source: 'alfred',  target: 'librarian', type: 'permitted-flow', label: 'chat→retrieve',   desc: 'Alfred chat/curate módja a Librarian retrieve-jét hívja a tudásbázis-lekérdezéshez (kontextus-védett olvasás, nincs write-back).' },
+  { source: 'alfred',  target: 'presto',    type: 'permitted-flow', label: 'cognition→dist',  desc: 'Alfred kognitív atomjai/thought-jai a Presto-ba folynak distribution-re (permitted-flow, Sage-örökség Alfred v0.3 óta).' },
+  { source: 'alfred',  target: 'broker',    type: 'permitted-flow', label: 'cognition→dist',  desc: 'Alfred-cogníció a Broker sales-outreach talking-pointjaihoz (permitted-flow, read-only, nincs write-back).' },
+  { source: 'presto',  target: 'broker',    type: 'sibling',        label: 'sibling',         desc: 'Testvér-engine-ek: Presto = marketing one-to-many disztribúció, Broker = sales one-to-one disztribúció. Közös pipeline-minta.' },
+  { source: 'curator', target: 'librarian', type: 'representation', label: 'renders',         desc: 'Curator a representation-réteg: a Librarian persistence-rétegét teszi láthatóvá dashboardként (cartographer ↔ curator).' },
+  { source: 'curator', target: 'maestro',   type: 'representation', label: 'static↔dynamic',  desc: 'Curator a statikus design-rendszer mestere, Maestro a dinamikus observability-é: a két dashboard-domain összhangja (DS promote ↔ team-promote).' },
+  { source: 'curator', target: 'presto',    type: 'representation', label: 'renders',         desc: 'Curator rendereli a Presto marketing-állapotát (kampányok, publikációk, channel-ek) live read-only dashboardként.' },
+  { source: 'curator', target: 'broker',    type: 'representation', label: 'renders',         desc: 'Curator rendereli a Broker sales-pipeline-t (cohorts, deal-velocity) dashboardként.' },
+  { source: 'curator', target: 'alfred',    type: 'representation', label: 'renders',         desc: 'Curator rendereli az Alfred cognitive inbox + tasks + learnings állapotát (Alfred Tasks Sidebar promote, DS 0.9.0).' },
+  { source: 'curator', target: 'forge',     type: 'representation', label: 'renders',         desc: 'Curator rendereli a Forge practice-steward állapotát dashboardként.' }
 ];
 
 // ---- Global parsed state ----
 let gAgents = [];
-let gOpEvents = [];    // all operational log events
-let gLearnEvents = []; // all learning log events
-let gVerEvents = [];   // all version log events
+let gVerEvents = [];   // version-change log events (forward-compat; sidecar covers ops)
 let gLastContent = {}; // per-url content cache
 
 // ---- Utility ----
@@ -1601,6 +1717,9 @@ function parseAgentsIndex(md) {
     const rawName = m[1].trim();
     const slug = rawName.toLowerCase().replace(/\s+/g, '-');
     const version = m[2] || '?';
+    // Only accept real family agents — skips non-agent headers (e.g. "Tier-2
+    // scoped indexes") and deprecated entries (Sage) that aren't in the roster.
+    if (!KNOWN_AGENTS.includes(slug)) continue;
     const sectionStart = m.index;
     const sectionEnd = md.indexOf('\n### ', sectionStart + 1);
     const body = sectionEnd === -1 ? md.slice(sectionStart) : md.slice(sectionStart, sectionEnd);
@@ -1662,13 +1781,134 @@ async function fetchAgentLogs(agentSlug, stream) {
   return events;
 }
 
-// Sage legacy: try _journal as alias for operational
-async function fetchSageLegacyJournal() {
-  const now = new Date();
-  const month = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
-  const url = `/02_Areas/Personal Growth/Ideas/_journal/${month}.md`;
-  const md = await fetchMd(url);
-  return md || null;
+// ---- Learnings (self-improving loop) ----
+// Each agent keeps a learnings folder with proposals/ active/ retired/ and a
+// 00_INDEX.md that carries `counts:` frontmatter + a parseable proposed list.
+// This is the real source of "open learnings" — the dashboard reads these
+// indexes directly (the server has no directory listing).
+const LEARNINGS_SOURCES = [
+  { agent: 'alfred', label: 'meta-cognition', path: '/00_Prompts/BDOS/agents/alfred/learnings/00_INDEX.md',            base: '/00_Prompts/BDOS/agents/alfred/learnings/' },
+  { agent: 'presto', label: 'audience',       path: '/00_Prompts/BDOS/agents/presto/audience-learnings/00_INDEX.md',  base: '/00_Prompts/BDOS/agents/presto/audience-learnings/' },
+  { agent: 'broker', label: 'sales',          path: '/00_Prompts/BDOS/agents/broker/sales-learnings/00_INDEX.md',     base: '/00_Prompts/BDOS/agents/broker/sales-learnings/' },
+  { agent: 'forge',  label: 'practice',       path: '/00_Prompts/BDOS/agents/forge/practice-learnings/00_INDEX.md',   base: '/00_Prompts/BDOS/agents/forge/practice-learnings/' }
+];
+
+let gLearnings = { sources: [], totalOpen: 0, totalActive: 0, totalRetired: 0, proposed: [] };
+
+// Parse a learnings 00_INDEX.md: counts.{active,proposed,retired} from frontmatter,
+// plus proposed entries from the "## Proposed" list (file, type, confidence, summary).
+function parseLearningsIndex(md, src) {
+  const out = { agentSlug: src.agent, label: src.label, base: src.base, active: 0, proposed: 0, retired: 0, entries: [] };
+  if (!md) return out;
+  const fm = md.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  if (fm) {
+    const a = fm[1].match(/active:\s*(\d+)/);
+    const p = fm[1].match(/proposed:\s*(\d+)/);
+    const r = fm[1].match(/retired:\s*(\d+)/);
+    if (a) out.active = +a[1];
+    if (p) out.proposed = +p[1];
+    if (r) out.retired = +r[1];
+  }
+  // Proposed list entries: - [`proposals/<file>.md`](...) — `type` / conf — summary
+  const re = /^- \[`([^`]+)`\][^\n]*?—\s*`([^`]+)`\s*\/\s*(\w+)\s*—\s*([^\n]+)$/gm;
+  let m;
+  while ((m = re.exec(md)) !== null) {
+    out.entries.push({
+      agentSlug: src.agent,
+      base: src.base,
+      file: m[1].trim(),
+      type: m[2].trim(),
+      confidence: m[3].trim(),
+      summary: m[4].trim()
+    });
+  }
+  return out;
+}
+
+// Minimal inline-markdown → HTML for proposal detail (bold, code, h3 subheads, bullets).
+function mdLite(src) {
+  if (!src) return '';
+  const blocks = src.trim().split(/\n{2,}/);
+  const inline = s => escHtml(s)
+    .replace(/`([^`]+)`/g, '<code class="mono">$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+  return blocks.map(b => {
+    const lines = b.split('\n');
+    if (lines.every(l => /^\s*-\s+/.test(l))) {
+      return '<ul class="ld-list">' + lines.map(l => `<li>${inline(l.replace(/^\s*-\s+/, ''))}</li>`).join('') + '</ul>';
+    }
+    return lines.map(l => {
+      const h3 = l.match(/^###\s+(.+)$/);
+      if (h3) return `<div class="ld-subhead">${inline(h3[1])}</div>`;
+      return `<p>${inline(l)}</p>`;
+    }).join('');
+  }).join('');
+}
+
+// Parse a single proposal .md into { explanation, impact, evidence[], scope }.
+function parseProposal(md) {
+  const fmMatch = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/);
+  const fm = fmMatch ? fmMatch[1] : '';
+  const body = fmMatch ? fmMatch[2] : md;
+
+  const evidence = [];
+  const evBlock = fm.match(/^evidence:\s*\n((?:\s*-\s.*\n?)+)/m);
+  if (evBlock) {
+    evBlock[1].split('\n').forEach(l => {
+      const m = l.match(/^\s*-\s*"?(.*?)"?\s*$/);
+      if (m && m[1].trim()) evidence.push(m[1].trim());
+    });
+  }
+  const scopeM = fm.match(/^scope:\s*"?(.+?)"?\s*$/m);
+  const scope = scopeM ? scopeM[1].trim() : '';
+
+  // Split body into ## sections (### stays inside its parent).
+  const secs = [];
+  let cur = null;
+  body.split('\n').forEach(ln => {
+    const h = ln.match(/^##\s+(.+?)\s*$/);
+    if (h) { cur = { title: h[1].trim(), text: '' }; secs.push(cur); }
+    else if (cur) cur.text += ln + '\n';
+  });
+  const find = re => secs.find(s => re.test(s.title));
+  const explSec = find(/tanuls[áa]g|the learning|learning/i);
+  let explanation = explSec ? explSec.text.trim() : '';
+  let impact = '';
+  const impactSec = find(/hat[áa]s|impact/i);
+  if (impactSec) {
+    impact = impactSec.text.trim();
+  } else if (explSec && /\n###\s/.test(explSec.text)) {
+    // Rules live as ### subsections inside the learning section.
+    const idx = explSec.text.search(/\n###\s/);
+    impact = explSec.text.slice(idx).trim();
+    explanation = explSec.text.slice(0, idx).trim();
+  }
+  return { explanation, impact, evidence, scope };
+}
+
+// Benefit framing per learning type (categorical, not invented specifics).
+function benefitForType(type) {
+  if (/fail/i.test(type))         return 'Megelőzi a bizonyítékban dokumentált hibamód ismétlődését; stabilabb, kiszámíthatóbb futás.';
+  if (/weak|prompt/i.test(type))  return 'Bezár egy prompt-rést, így az agent nem ismétli ezt a hibatípust egy emberi korrekció nélkül.';
+  if (/optim/i.test(type))        return 'Csökkenti az adott workflow token-költségét vagy futásidejét.';
+  if (/pattern/i.test(type))      return 'Megerősít egy bevált mintát, hogy az agent következetesen alkalmazza.';
+  if (/workflow/i.test(type))     return 'Gördülékenyebb munkafolyamat, kevesebb megszakítás és újrakezdés.';
+  return 'Növeli az agent megbízhatóságát ezen a területen.';
+}
+
+async function fetchLearnings() {
+  const results = await Promise.all(LEARNINGS_SOURCES.map(async src => {
+    const md = await fetchMd(src.path);
+    return parseLearningsIndex(md, src);
+  }));
+  const agg = { sources: results, totalOpen: 0, totalActive: 0, totalRetired: 0, proposed: [] };
+  results.forEach(r => {
+    agg.totalOpen    += r.proposed;
+    agg.totalActive  += r.active;
+    agg.totalRetired += r.retired;
+    agg.proposed.push(...r.entries);
+  });
+  gLearnings = agg;
 }
 
 // ---- Polling & sync indicator ----
@@ -1761,7 +2001,8 @@ function renderCapabilities(profile) {
     return;
   }
   if (avatarEl) {
-    avatarEl.textContent = profile.emoji;
+    // avatar is now an <img> + emoji fallback; update the fallback, never textContent (would wipe the img)
+    const _emo = avatarEl.querySelector('.agent-avatar-emoji'); if (_emo) _emo.textContent = profile.emoji;
     avatarEl.style.background   = hexToRgba(profile.color, 0.12);
     avatarEl.style.borderColor  = hexToRgba(profile.color, 0.35);
     avatarEl.style.color        = profile.color;
@@ -1820,26 +2061,23 @@ async function loadAllData() {
     gAgents = parseAgentsIndex(agentsMd);
   }
 
-  // 2. Logs — try all known agents × all 3 streams
-  gOpEvents = [];
-  gLearnEvents = [];
+  // 2. Version logs — the one stream with no sidecar equivalent (forward-compat:
+  //    populates the evolution timeline once agents emit version-change logs).
+  //    Operational events now come from the sidecar; learnings from the indexes.
   gVerEvents = [];
-
   await Promise.all(KNOWN_AGENTS.map(async slug => {
-    const [ops, learns, vers] = await Promise.all([
-      fetchAgentLogs(slug, 'operational'),
-      fetchAgentLogs(slug, 'learning'),
-      fetchAgentLogs(slug, 'version')
-    ]);
-    gOpEvents.push(...ops);
-    gLearnEvents.push(...learns);
+    const vers = await fetchAgentLogs(slug, 'version');
     gVerEvents.push(...vers);
   }));
 
-  // 3. Sage legacy journal (for partial data note)
-  await fetchSageLegacyJournal();
+  // 3. Learnings indexes (self-improving loop — real source of open learnings)
+  await fetchLearnings();
 
-  // 4. Agent profiles (capabilities panel — 0.2.0)
+  // 4. Observability sidecar (Total Ops + Token Intelligence + Logcat).
+  //    Loaded before render so Total Ops + token panels have data this cycle.
+  await loadLogcat(false);
+
+  // 5. Agent profiles (capabilities panel — 0.2.0)
   const profilesMd = await fetchMd(AGENT_PROFILES_FILE);
   if (profilesMd !== lastProfilesContent) {
     lastProfilesContent = profilesMd;
@@ -1852,9 +2090,7 @@ async function loadAllData() {
   renderOrgIntel();
   renderEvolution();
   renderReflection();
-
-  // Logcat sidecar — refresh on every poll cycle (silent if unchanged)
-  await loadLogcat(false);
+  renderTokenIntel();
 
   setSyncState('ok', '');
   startSyncCountdown();
@@ -1866,13 +2102,25 @@ function renderAgentOverview() {
   document.getElementById('statActiveAgents').textContent = activeAgents.length || gAgents.length || '—';
   document.getElementById('agentCountBadge').textContent = `${gAgents.length} agents`;
 
-  const openLearnings = gLearnEvents.filter(e => e.status === 'open').length;
-  const allVersionChanges = gVerEvents.filter(e => e.event === 'version-change').length;
+  // Total Ops — from the observability log (all-time row count in the DB).
+  const totalOps = gSidecarTotal;
+  const opsEl = document.getElementById('statTotalOps');
+  const opsSub = document.getElementById('statTotalOpsSub');
+  if (totalOps != null) {
+    opsEl.textContent = totalOps.toLocaleString();
+    opsEl.classList.remove('null-val');
+    opsSub.textContent = gAllEvents.length < totalOps
+      ? `${gAllEvents.length} most recent in view`
+      : 'from observability log';
+  } else {
+    opsEl.textContent = '—';
+    opsEl.classList.add('null-val');
+    opsSub.textContent = 'observability log unavailable';
+  }
 
-  document.getElementById('statOpenLearnings').textContent = openLearnings || (gLearnEvents.length ? '0' : '—');
-  document.getElementById('statVersionChanges').textContent = allVersionChanges || (gVerEvents.length ? '0' : '—');
-
-  // If no op events, stat stays as "Phase 2.B pending" (already set in HTML)
+  // Learnings — open (proposals awaiting human review) + active (applied to prompts).
+  document.getElementById('statOpenLearnings').textContent   = String(gLearnings.totalOpen);
+  document.getElementById('statActiveLearnings').textContent = String(gLearnings.totalActive);
 
   // Agent grid
   const grid = document.getElementById('agentGrid');
@@ -1885,34 +2133,40 @@ function renderAgentOverview() {
     return;
   }
 
-  // Per-agent op/learn/version counts
+  // Per-agent counts: ops from the sidecar window, learnings from the indexes.
   function agentOpCount(slug) {
-    return gOpEvents.filter(e => e.agent === slug || e._agent === slug).length;
+    return gAllEvents.filter(e => e.agent_name === slug).length;
   }
-  function agentLearnCount(slug) {
-    return gLearnEvents.filter(e => (e.agent === slug || e._agent === slug) && e.status === 'open').length;
+  function agentOpenLearnings(slug) {
+    const src = gLearnings.sources.find(s => s.agentSlug === slug);
+    return src ? src.proposed : 0;
   }
-  function agentVerCount(slug) {
-    return gVerEvents.filter(e => e.agent === slug || e._agent === slug).length;
+  function agentActiveLearnings(slug) {
+    const src = gLearnings.sources.find(s => s.agentSlug === slug);
+    return src ? src.active : 0;
   }
 
   grid.innerHTML = gAgents.map(a => {
     const slug = a.slug;
-    const statusClass = a.status === 'active' ? 'active'
-      : a.status === 'idle' ? 'idle'
-      : a.status === 'planned' ? 'idle' : 'idle';
+    const meta = agentMeta(slug);
+    const statusClass = a.status === 'active' ? 'active' : 'idle';
     const ops = agentOpCount(slug);
-    const learns = agentLearnCount(slug);
-    const vers = agentVerCount(slug);
+    const open = agentOpenLearnings(slug);
+    const act = agentActiveLearnings(slug);
     const da = a.lastUpdated ? daysAgo(a.lastUpdated) : null;
-    const staleness = da !== null && da > 90 ? `<span style="font-size:10px;color:var(--warn);">⚠ ${da}d ago</span>` : '';
+    const staleness = da !== null && da > 90 ? `<span style="font-size:10px;color:var(--warn);">⚠ ${da}d</span>` : '';
+    const ringStyle = `background:${hexToRgba(meta.color,0.12)};border-color:${hexToRgba(meta.color,0.35)};`;
 
-    return `<div class="agent-card" data-card-id="agent/${escHtml(slug)}">
-      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+    return `<a class="agent-card" href="${escHtml(meta.dash || '#')}" data-card-id="agent/${escHtml(slug)}" title="Open ${escHtml(a.displayName)} dashboard">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.preventDefault();event.stopPropagation();">
         <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
         copy ref
       </button>
       <div class="agent-card-header">
+        <span class="agent-avatar agent-avatar-sm" style="${ringStyle}">
+          <img class="agent-avatar-img" src="${avatarUrl(slug)}" alt="${escHtml(a.displayName)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <span class="agent-avatar-emoji" aria-hidden="true">${meta.emoji}</span>
+        </span>
         <span class="agent-status-dot ${statusClass}"></span>
         <span class="agent-name">${escHtml(a.displayName)}</span>
         <span class="agent-version mono">v${escHtml(a.version)}</span>
@@ -1920,45 +2174,48 @@ function renderAgentOverview() {
       <div class="agent-role">${escHtml(a.description || '—')}</div>
       <div class="agent-metrics">
         <div class="agent-metric">
-          <div class="agent-metric-label">Ops logged</div>
-          <div class="agent-metric-value${ops ? '' : ' null-val'}">${ops || (gOpEvents.length ? '0' : 'null')}</div>
+          <div class="agent-metric-label">Ops (recent)</div>
+          <div class="agent-metric-value${ops ? '' : ' null-val'}">${ops || '0'}</div>
         </div>
         <div class="agent-metric">
           <div class="agent-metric-label">Open learnings</div>
-          <div class="agent-metric-value${learns || gLearnEvents.length ? '' : ' null-val'}">${learns || (gLearnEvents.length ? '0' : 'null')}</div>
+          <div class="agent-metric-value${open ? '' : ' null-val'}">${open || '0'}</div>
         </div>
         <div class="agent-metric">
-          <div class="agent-metric-label">Ver. changes</div>
-          <div class="agent-metric-value${vers || gVerEvents.length ? '' : ' null-val'}">${vers || (gVerEvents.length ? '0' : 'null')}</div>
+          <div class="agent-metric-label">Active learnings</div>
+          <div class="agent-metric-value${act ? '' : ' null-val'}">${act || '0'}</div>
         </div>
         <div class="agent-metric">
           <div class="agent-metric-label">Last updated</div>
           <div class="agent-metric-value" style="font-size:11px;color:var(--ink-3);">${a.lastUpdated || '—'} ${staleness}</div>
         </div>
       </div>
-    </div>`;
+      <span class="agent-card-cta">open dashboard →</span>
+    </a>`;
   }).join('');
 
   wireCopyRef(grid);
 
-  // Recent activity feed
+  // Recent activity feed — from the observability sidecar (last events).
   const feed = document.getElementById('recentActivityFeed');
-  const opsSorted = gOpEvents
-    .filter(e => e.event === 'operation' && e.ts)
-    .sort((a, b) => (b.ts || '').localeCompare(a.ts || ''))
+  const recent = [...gAllEvents]
+    .filter(e => e.timestamp)
+    .sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''))
     .slice(0, 10);
 
-  if (!opsSorted.length) return; // keep empty state
+  if (!recent.length) return; // keep empty state
 
   feed.innerHTML = `<div class="activity-feed">` +
-    opsSorted.map(e => {
-      const outcomeClass = e.outcome === 'success' ? 'success'
-        : e.outcome === 'failure' ? 'failure' : 'partial';
+    recent.map(e => {
+      const lv = e.log_level || 'info';
+      const outcomeClass = (lv === 'error' || lv === 'critical') ? 'failure'
+        : lv === 'warning' ? 'partial' : 'success';
+      const meta = agentMeta(e.agent_name);
       return `<div class="activity-entry">
-        <span class="activity-ts">${fmtDate(e.ts)}</span>
-        <span class="activity-agent">${escHtml(e.agent || e._agent || '?')}</span>
-        <span class="activity-desc">${escHtml(e.command || e.mode || '?')}</span>
-        <span class="activity-outcome ${outcomeClass}">${escHtml(e.outcome || '?')}</span>
+        <span class="activity-ts">${escHtml((e.timestamp||'').replace('T',' ').replace('Z','').slice(0,16))}</span>
+        <span class="activity-agent" style="color:${meta.color};">${escHtml(e.agent_name || '?')}</span>
+        <span class="activity-desc">${escHtml(e.title || e.message || e.event_type || '?')}</span>
+        <span class="activity-outcome ${outcomeClass}">${escHtml(e.event_type || lv)}</span>
       </div>`;
     }).join('') +
     `</div>`;
@@ -1966,11 +2223,11 @@ function renderAgentOverview() {
 
 // ---- Render: Time Navigation ----
 function renderTimeNav() {
-  // Activity per agent bars
+  // Activity per agent bars — from the observability sidecar window.
   const bars = document.getElementById('agentActivityBars');
   const opsByAgent = {};
-  gOpEvents.filter(e => e.event === 'operation').forEach(e => {
-    const a = e.agent || e._agent || 'unknown';
+  gAllEvents.forEach(e => {
+    const a = e.agent_name || 'unknown';
     opsByAgent[a] = (opsByAgent[a] || 0) + 1;
   });
   const maxOps = Math.max(...Object.values(opsByAgent), 1);
@@ -1978,11 +2235,14 @@ function renderTimeNav() {
   if (Object.keys(opsByAgent).length) {
     bars.innerHTML = `<div>` + Object.entries(opsByAgent)
       .sort((a,b) => b[1]-a[1])
-      .map(([agent, count]) => `<div class="timeline-row">
-        <span class="timeline-label">${escHtml(agent)}</span>
-        <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:${Math.round(count/maxOps*100)}%"></div></div>
+      .map(([agent, count]) => {
+        const meta = agentMeta(agent);
+        return `<div class="timeline-row">
+        <span class="timeline-label" style="color:${meta.color};">${escHtml(agent)}</span>
+        <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:${Math.round(count/maxOps*100)}%;background:${meta.color};"></div></div>
         <span class="timeline-count">${count}</span>
-      </div>`).join('') + `</div>`;
+      </div>`;
+      }).join('') + `</div>`;
   }
 
   // Version timeline
@@ -2002,11 +2262,12 @@ function renderTimeNav() {
     </div>`).join('') + `</div>`;
   }
 
-  // Weekly comparison (requires ts data)
-  if (gOpEvents.length) {
+  // Weekly comparison — from the observability sidecar window.
+  if (gAllEvents.length) {
     const now = Date.now();
-    const thisWeekOps = gOpEvents.filter(e => e.ts && (now - new Date(e.ts).getTime()) < 7*86400000).length;
-    const lastWeekOps = gOpEvents.filter(e => e.ts && (now - new Date(e.ts).getTime()) >= 7*86400000 && (now - new Date(e.ts).getTime()) < 14*86400000).length;
+    const ageMs = e => now - new Date(e.timestamp).getTime();
+    const thisWeekOps = gAllEvents.filter(e => e.timestamp && ageMs(e) < 7*86400000).length;
+    const lastWeekOps = gAllEvents.filter(e => e.timestamp && ageMs(e) >= 7*86400000 && ageMs(e) < 14*86400000).length;
     const weekEl = document.getElementById('weeklyComparison');
     weekEl.innerHTML = `<div>
       <div class="timeline-row">
@@ -2025,41 +2286,157 @@ function renderTimeNav() {
 }
 
 // ---- Render: Org Intel ----
-function renderOrgIntel() {
-  // Dependency grid (static edges)
-  const depGrid = document.getElementById('dependencyGrid');
-  const edgesByAgent = {};
-  KNOWN_AGENTS.forEach(a => { edgesByAgent[a] = { outgoing: [], incoming: [] }; });
-  STATIC_EDGES.forEach(e => {
-    if (edgesByAgent[e.source]) edgesByAgent[e.source].outgoing.push(e);
-    if (edgesByAgent[e.target]) edgesByAgent[e.target].incoming.push(e);
+// Graph node layout: Maestro at the centre (it orchestrates all), the rest on an ellipse.
+const GRAPH_SATELLITES = ['librarian', 'curator', 'alfred', 'presto', 'broker', 'forge'];
+function computeGraphNodes() {
+  const cx = 310, cy = 212, rx = 232, ry = 150;
+  const nodes = { maestro: { x: cx, y: cy, r: 30 } };
+  GRAPH_SATELLITES.forEach((slug, i) => {
+    const theta = (-90 + i * (360 / GRAPH_SATELLITES.length)) * Math.PI / 180;
+    nodes[slug] = { x: cx + rx * Math.cos(theta), y: cy + ry * Math.sin(theta), r: 24 };
   });
+  return nodes;
+}
 
-  depGrid.innerHTML = KNOWN_AGENTS.map(agent => {
-    const { outgoing, incoming } = edgesByAgent[agent];
-    const arrows = [
-      ...outgoing.map(e => `<div class="dep-arrow"><span class="dep-arrow-sym">→</span>${escHtml(e.target)} <span style="font-size:10px;color:var(--ink-4);">(${escHtml(e.label)})</span></div>`),
-      ...incoming.map(e => `<div class="dep-arrow"><span class="dep-arrow-sym" style="color:var(--ink-4);">←</span>${escHtml(e.source)} <span style="font-size:10px;color:var(--ink-4);">(${escHtml(e.label)})</span></div>`)
-    ];
-    return `<div class="dep-card">
-      <div class="dep-card-name">${escHtml(agent)}</div>
-      <div class="dep-arrows">${arrows.length ? arrows.join('') : '<div class="dep-empty">no mapped edges</div>'}</div>
+let gSelectedNode = null;
+
+function renderDepDetail(slug) {
+  const detail = document.getElementById('depDetail');
+  if (!detail) return;
+  if (!slug) {
+    detail.innerHTML = `<div class="dep-detail-empty">Select an agent node to inspect its connections.</div>`;
+    return;
+  }
+  const meta = agentMeta(slug);
+  const agentObj = gAgents.find(a => a.slug === slug);
+  const name = agentObj ? agentObj.displayName : slug;
+  const out = STATIC_EDGES.filter(e => e.source === slug);
+  const inc = STATIC_EDGES.filter(e => e.target === slug);
+
+  const edgeItem = (e, dir) => {
+    const other = dir === 'out' ? e.target : e.source;
+    const otherMeta = agentMeta(other);
+    const verb = dir === 'out' ? '→' : '←';
+    return `<div class="dep-edge-item">
+      <span style="color:var(--ink-4);font-weight:700;">${verb}</span>
+      <b style="color:${otherMeta.color};">${escHtml(other)}</b>
+      <span class="dep-edge-type ${e.type}">${escHtml(e.type)}</span>
+      <div style="margin-top:3px;color:var(--ink-3);">${escHtml(e.desc)}</div>
     </div>`;
+  };
+
+  detail.innerHTML = `
+    <div class="dep-detail-head">
+      <span class="agent-avatar agent-avatar-sm" style="background:${hexToRgba(meta.color,0.12)};border-color:${hexToRgba(meta.color,0.35)};">
+        <img class="agent-avatar-img" src="${avatarUrl(slug)}" alt="${escHtml(name)}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <span class="agent-avatar-emoji" aria-hidden="true">${meta.emoji}</span>
+      </span>
+      <span class="dep-detail-name">${escHtml(name)}</span>
+    </div>
+    <div class="dep-detail-role">${escHtml(agentObj ? agentObj.description : '')}</div>
+    ${out.length ? `<div class="dep-detail-group"><div class="dep-detail-group-label">Drives / depends on (${out.length})</div>${out.map(e=>edgeItem(e,'out')).join('')}</div>` : ''}
+    ${inc.length ? `<div class="dep-detail-group"><div class="dep-detail-group-label">Driven by (${inc.length})</div>${inc.map(e=>edgeItem(e,'in')).join('')}</div>` : ''}
+    ${meta.dash ? `<a class="dep-detail-link" href="${meta.dash}">open ${escHtml(slug)} dashboard →</a>` : ''}`;
+}
+
+function selectGraphNode(slug) {
+  gSelectedNode = slug;
+  const svg = document.getElementById('depGraph');
+  if (!svg) return;
+  const connected = new Set([slug]);
+  STATIC_EDGES.forEach(e => {
+    if (e.source === slug) connected.add(e.target);
+    if (e.target === slug) connected.add(e.source);
+  });
+  svg.querySelectorAll('.dep-node').forEach(n => {
+    const s = n.dataset.slug;
+    n.classList.toggle('selected', s === slug);
+    n.classList.toggle('dimmed', !connected.has(s));
+  });
+  svg.querySelectorAll('.dep-edge').forEach(ed => {
+    const on = ed.dataset.source === slug || ed.dataset.target === slug;
+    ed.classList.toggle('active', on);
+    ed.classList.toggle('dimmed', !on);
+  });
+  renderDepDetail(slug);
+}
+
+function renderDepGraph() {
+  const svg = document.getElementById('depGraph');
+  if (!svg) return;
+  const nodes = computeGraphNodes();
+
+  const edgesSvg = STATIC_EDGES.filter(e => nodes[e.source] && nodes[e.target]).map(e => {
+    const a = nodes[e.source], b = nodes[e.target];
+    return `<line class="dep-edge ${e.type}" data-source="${e.source}" data-target="${e.target}" x1="${a.x.toFixed(1)}" y1="${a.y.toFixed(1)}" x2="${b.x.toFixed(1)}" y2="${b.y.toFixed(1)}"></line>`;
   }).join('');
 
-  // Bottleneck and risk signals
-  const riskStats = document.getElementById('riskStats');
+  // 0.6.1: SVG <image> primary, emoji <text> as 404 fallback.
+  // clipPath uses userSpaceOnUse (default), so each clipPath circle is positioned
+  // at the node's actual SVG coordinates.
+  const clipDefs = Object.entries(nodes).map(([slug, p]) =>
+    `<clipPath id="dep-clip-${slug}"><circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${(p.r - 2).toFixed(0)}"></circle></clipPath>`
+  ).join('');
 
-  // Compute silent agents (no ops in 14+ days from log data)
-  const silentAgents = gAgents.filter(a => {
-    const agentOps = gOpEvents.filter(e => (e.agent || e._agent) === a.slug);
-    if (!agentOps.length) return false; // no data at all — not "silent", just pre-Phase-2.B
-    const latestTs = agentOps.map(e => e.ts).filter(Boolean).sort().reverse()[0];
-    return latestTs && daysAgo(latestTs) > 14;
+  const nodesSvg = Object.entries(nodes).map(([slug, p]) => {
+    const meta = agentMeta(slug);
+    const ir = p.r - 2; // inset radius for avatar circle
+    return `<g class="dep-node" data-slug="${slug}" tabindex="0" role="button" aria-label="${slug} connections">
+      <circle cx="${p.x.toFixed(1)}" cy="${p.y.toFixed(1)}" r="${p.r}" fill="${hexToRgba(meta.color,0.14)}" stroke="${meta.color}"></circle>
+      <image class="node-avatar-img" href="/00_Prompts/BDOS/agents/${slug}/avatar.png"
+        x="${(p.x - ir).toFixed(1)}" y="${(p.y - ir).toFixed(1)}" width="${(ir*2).toFixed(0)}" height="${(ir*2).toFixed(0)}"
+        clip-path="url(#dep-clip-${slug})" preserveAspectRatio="xMidYMid slice"></image>
+      <text class="node-emoji" x="${p.x.toFixed(1)}" y="${p.y.toFixed(1)}" style="display:none">${meta.emoji}</text>
+      <text class="node-label" x="${p.x.toFixed(1)}" y="${(p.y + p.r + 13).toFixed(1)}">${slug}</text>
+    </g>`;
+  }).join('');
+
+  svg.innerHTML = `<defs>${clipDefs}</defs>` + edgesSvg + nodesSvg;
+
+  // Wire avatar 404 fallback: if image fails to load, show emoji text instead.
+  svg.querySelectorAll('image.node-avatar-img').forEach(imgEl => {
+    imgEl.addEventListener('error', () => {
+      imgEl.style.display = 'none';
+      const txt = imgEl.nextElementSibling;
+      if (txt && txt.classList.contains('node-emoji')) txt.style.removeProperty('display');
+    });
   });
 
-  const failureOps = gOpEvents.filter(e => e.outcome === 'failure' || e.outcome === 'partial');
-  const errorRate = gOpEvents.length ? Math.round(failureOps.length / gOpEvents.length * 100) : null;
+  svg.querySelectorAll('.dep-node').forEach(n => {
+    const handler = () => selectGraphNode(n.dataset.slug);
+    n.addEventListener('click', handler);
+    n.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); handler(); } });
+  });
+
+  // Legend
+  const legend = document.getElementById('depLegend');
+  if (legend) {
+    const types = [['orchestrates','orchestrates'],['permitted-flow','permitted flow'],['representation','renders'],['sibling','sibling']];
+    legend.innerHTML = types.map(([cls,lbl]) =>
+      `<span class="dep-legend-item"><span class="dep-legend-swatch ${cls}"></span>${lbl}</span>`).join('');
+  }
+
+  // Re-apply selection across live refreshes.
+  if (gSelectedNode && nodes[gSelectedNode]) selectGraphNode(gSelectedNode);
+  else renderDepDetail(null);
+}
+
+function renderOrgIntel() {
+  renderDepGraph();
+
+  // Risk signals — from the observability sidecar window.
+  const riskStats = document.getElementById('riskStats');
+  const win = gAllEvents;
+  const lastByAgent = {};
+  win.forEach(e => {
+    const a = e.agent_name;
+    if (!a || !e.timestamp) return;
+    if (!lastByAgent[a] || e.timestamp > lastByAgent[a]) lastByAgent[a] = e.timestamp;
+  });
+  // Silent = roster agent that has appeared in the log but not in 14+ days.
+  const silentAgents = Object.keys(lastByAgent).filter(a => daysAgo(lastByAgent[a]) > 14);
+  const errEvents = win.filter(e => ['error','critical'].includes(e.log_level));
+  const errorRate = win.length ? Math.round(errEvents.length / win.length * 100) : null;
 
   const riskLevel = (silentAgents.length > 0 || (errorRate !== null && errorRate > 20)) ? 'medium'
     : (errorRate !== null && errorRate > 5) ? 'low' : 'none';
@@ -2067,22 +2444,63 @@ function renderOrgIntel() {
   riskStats.innerHTML = `
     <div class="stat-card">
       <div class="stat-card-label">Silent agents</div>
-      <div class="stat-card-value mono${gOpEvents.length ? '' : ' null-val'}">${gOpEvents.length ? silentAgents.length : '—'}</div>
-      <div class="stat-card-sub">no ops in 14+ days</div>
+      <div class="stat-card-value mono${win.length ? '' : ' null-val'}">${win.length ? silentAgents.length : '—'}</div>
+      <div class="stat-card-sub">logged before, none in 14+ days</div>
     </div>
     <div class="stat-card">
       <div class="stat-card-label">Error rate</div>
       <div class="stat-card-value mono${errorRate !== null ? '' : ' null-val'}">${errorRate !== null ? errorRate + '%' : '—'}</div>
-      <div class="stat-card-sub">ops with failure/partial outcome</div>
+      <div class="stat-card-sub">error/critical events in window</div>
     </div>
     <div class="stat-card">
       <div class="stat-card-label">Overall risk</div>
       <div class="stat-card-value" style="font-size:15px;">
         <span class="risk-badge ${riskLevel}">${riskLevel === 'none' ? 'None detected' : riskLevel.charAt(0).toUpperCase()+riskLevel.slice(1)}</span>
       </div>
-      <div class="stat-card-sub">${gOpEvents.length ? 'from operational logs' : 'no log data yet'}</div>
+      <div class="stat-card-sub">${win.length ? 'from observability log' : 'no log data yet'}</div>
     </div>
   `;
+
+  // Bottleneck signals — silent / high-error agents from the window.
+  const bottleneckEl = document.getElementById('bottleneckPanel');
+  if (bottleneckEl) {
+    const signals = [];
+    silentAgents.forEach(a => signals.push({ agent: a, msg: `silent ${daysAgo(lastByAgent[a])}d (last ${lastByAgent[a].slice(0,10)})`, kind: 'warn' }));
+    const errByAgent = {};
+    errEvents.forEach(e => { errByAgent[e.agent_name] = (errByAgent[e.agent_name]||0)+1; });
+    Object.entries(errByAgent).forEach(([a,n]) => signals.push({ agent: a, msg: `${n} error/critical event${n>1?'s':''} in window`, kind: 'err' }));
+    if (signals.length) {
+      bottleneckEl.innerHTML = `<div class="activity-feed">` + signals.map(s => {
+        const meta = agentMeta(s.agent);
+        return `<div class="activity-entry" style="grid-template-columns:90px 1fr auto;">
+          <span class="activity-agent" style="color:${meta.color};">${escHtml(s.agent)}</span>
+          <span class="activity-desc">${escHtml(s.msg)}</span>
+          <span class="activity-outcome ${s.kind==='err'?'failure':'partial'}">${s.kind==='err'?'error':'silent'}</span>
+        </div>`;
+      }).join('') + `</div>`;
+    } else {
+      bottleneckEl.innerHTML = `<div class="empty-state"><div class="empty-state-icon">✓</div><div class="empty-state-title">No bottleneck signals</div><div class="empty-state-body">No silent agents, no elevated error rates in the current window.</div></div>`;
+    }
+  }
+
+  // Retry / failure frequency — error+critical events grouped.
+  const retryEl = document.getElementById('retryPanel');
+  if (retryEl) {
+    const fails = win.filter(e => ['error','critical'].includes(e.log_level))
+      .sort((a,b)=>(b.timestamp||'').localeCompare(a.timestamp||'')).slice(0,8);
+    if (fails.length) {
+      retryEl.innerHTML = `<div class="activity-feed">` + fails.map(e => {
+        const meta = agentMeta(e.agent_name);
+        return `<div class="activity-entry" style="grid-template-columns:90px 70px 1fr;">
+          <span class="activity-ts">${escHtml((e.timestamp||'').slice(0,10))}</span>
+          <span class="activity-agent" style="color:${meta.color};">${escHtml(e.agent_name||'?')}</span>
+          <span class="activity-desc">${escHtml(e.error_message || e.message || e.title || '?')}</span>
+        </div>`;
+      }).join('') + `</div>`;
+    } else {
+      retryEl.innerHTML = `<div class="empty-state"><div class="empty-state-icon">✓</div><div class="empty-state-title">No failures in window</div><div class="empty-state-body">No events with <code class="mono" style="font-size:10px;">error</code> or <code class="mono" style="font-size:10px;">critical</code> level.</div></div>`;
+    }
+  }
 }
 
 // ---- Render: Evolution ----
@@ -2104,115 +2522,236 @@ function renderEvolution() {
 
 // ---- Render: Reflection ----
 function renderReflection() {
-  const openCount = gLearnEvents.filter(e => e.status === 'open').length;
-  const actionedCount = gLearnEvents.filter(e => e.status === 'actioned').length;
+  document.getElementById('reflectOpenCount').textContent     = String(gLearnings.totalOpen);
+  document.getElementById('reflectActionedCount').textContent = String(gLearnings.totalActive);
+  document.getElementById('reflectPatternsCount').textContent = String(gLearnings.totalRetired);
 
-  document.getElementById('reflectOpenCount').textContent = gLearnEvents.length ? openCount : '—';
-  document.getElementById('reflectActionedCount').textContent = gLearnEvents.length ? actionedCount : '—';
-  document.getElementById('learningCountBadge').textContent = gLearnEvents.length ? `${gLearnEvents.length} learnings` : 'no data yet';
-
-  // Recurring patterns: same type appearing ≥ 2 agents
-  const typeByAgent = {};
-  gLearnEvents.forEach(e => {
-    const t = e.type || 'unknown';
-    if (!typeByAgent[t]) typeByAgent[t] = new Set();
-    typeByAgent[t].add(e.agent || e._agent || 'unknown');
-  });
-  const recurringPatterns = Object.entries(typeByAgent).filter(([,agents]) => agents.size >= 2).length;
-  document.getElementById('reflectPatternsCount').textContent = gLearnEvents.length ? recurringPatterns : '—';
+  const total = gLearnings.totalOpen + gLearnings.totalActive + gLearnings.totalRetired;
+  document.getElementById('learningCountBadge').textContent =
+    total ? `${gLearnings.totalOpen} open · ${gLearnings.totalActive} active` : 'no data yet';
 
   const listEl = document.getElementById('learningList');
-  const learns = gLearnEvents
-    .filter(e => e.event === 'learning')
-    .sort((a,b) => {
-      // open first, then actioned, then retired
-      const order = { open: 0, actioned: 1, retired: 2 };
-      return (order[a.status]||1) - (order[b.status]||1);
-    });
+  const proposed = gLearnings.proposed;
+  if (!proposed.length) return; // keep empty state
 
-  if (!learns.length) return; // keep empty state
+  // Confidence rank: high → medium → low
+  const confOrder = { high: 0, medium: 1, low: 2 };
+  const sorted = [...proposed].sort((a, b) =>
+    (confOrder[a.confidence] ?? 1) - (confOrder[b.confidence] ?? 1));
+
+  // Map index type vocabulary onto existing chip classes.
+  const typeClass = t =>
+    /fail/.test(t)        ? 'failure-mode'
+    : /weak|prompt/.test(t) ? 'prompt-weakness'
+    : /optim/.test(t)      ? 'optimization'
+    : /pattern/.test(t)    ? 'successful-pattern'
+    : /workflow/.test(t)   ? 'workflow-insight'
+    : 'discovery';
 
   listEl.innerHTML = `<div class="learning-list">` +
-    learns.map(e => {
-      const typeSlug = (e.type || 'discovery').replace(/-/g, '-');
-      const statusClass = e.status || 'open';
-      const agent = e.agent || e._agent || '?';
-      return `<div class="learning-card" data-card-id="learning/${escHtml(e.learning_id || toSlug(e.title||''))}" >
-        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+    sorted.map(e => {
+      const meta = agentMeta(e.agentSlug);
+      const cardId = `learning/${escHtml(e.agentSlug)}/${escHtml(toSlug(e.file.replace(/^.*\//,'').replace(/\.md$/,'')))}`;
+      const url = escHtml(e.base + e.file);
+      const accept = `/${e.agentSlug === 'alfred' ? 'alf' : e.agentSlug.slice(0,3)}-learning-accept`;
+      return `<div class="learning-card is-expandable" data-card-id="${cardId}" data-url="${url}" data-type="${escHtml(e.type)}" data-accept="${escHtml(accept)}" data-loaded="0">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation();">
           <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           copy ref
         </button>
         <div class="learning-card-header">
-          <span class="learning-type-chip ${escHtml(typeSlug)}">${escHtml(e.type || 'discovery')}</span>
-          <span class="learning-status-chip ${escHtml(statusClass)}">${escHtml(e.status || 'open')}</span>
+          <span class="learning-type-chip ${typeClass(e.type)}">${escHtml(e.type)}</span>
+          <span class="learning-status-chip open">proposed · ${escHtml(e.confidence)}</span>
         </div>
-        <div class="learning-title">${escHtml(e.title || '(untitled)')}</div>
+        <div class="learning-title">${escHtml(e.summary)}</div>
         <div class="learning-meta">
-          <span class="learning-agent">${escHtml(agent)}</span>
-          <span>${fmtDate(e.ts)}</span>
-          ${e.proposed_action ? `<span class="learning-proposed">→ ${escHtml(e.proposed_action)}</span>` : ''}
-          ${e.actioned_in ? `<span style="color:var(--ok);">✓ actioned</span>` : ''}
+          <span class="learning-agent" style="color:${meta.color};">${escHtml(e.agentSlug)}</span>
+          <span class="mono" style="font-size:10.5px;">${escHtml(e.file.replace(/^.*\//,''))}</span>
+          <span class="learning-expand-hint"><svg class="chevron" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg> details</span>
         </div>
+        <div class="learning-detail" hidden></div>
       </div>`;
     }).join('') +
     `</div>`;
 
   wireCopyRef(listEl);
+  wireLearningExpand(listEl);
+}
+
+// Cache of parsed proposal detail by URL.
+const gProposalCache = {};
+
+function wireLearningExpand(root) {
+  root.querySelectorAll('.learning-card.is-expandable').forEach(card => {
+    card.addEventListener('click', () => toggleLearningCard(card));
+    card.setAttribute('tabindex', '0');
+    card.setAttribute('role', 'button');
+    card.setAttribute('aria-expanded', 'false');
+    card.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggleLearningCard(card); }
+    });
+  });
+}
+
+async function toggleLearningCard(card) {
+  const detail = card.querySelector('.learning-detail');
+  const open = !card.classList.contains('expanded');
+  card.classList.toggle('expanded', open);
+  card.setAttribute('aria-expanded', String(open));
+  detail.hidden = !open;
+  if (!open || card.dataset.loaded === '1') return;
+
+  card.dataset.loaded = '1';
+  detail.innerHTML = `<div class="ld-loading">Részletek betöltése…</div>`;
+  const url = card.dataset.url;
+  let parsed = gProposalCache[url];
+  if (!parsed) {
+    const md = await fetchMd(url);
+    parsed = md ? parseProposal(md) : null;
+    gProposalCache[url] = parsed || { _err: true };
+  }
+  if (!parsed || parsed._err) {
+    detail.innerHTML = `<div class="ld-loading">A proposal fájl nem olvasható.</div>`;
+    return;
+  }
+  const benefit = benefitForType(card.dataset.type);
+  const accept = card.dataset.accept;
+  const evidence = parsed.evidence || [];
+  const exampleHtml = evidence.length
+    ? `<p>${escHtml(evidence[0])}</p>${evidence.length > 1 ? `<p class="ld-more">+ ${evidence.length - 1} további bizonyíték a fájlban</p>` : ''}`
+    : '<p class="ld-empty">Nincs külön rögzített példa; lásd a javaslat leírását.</p>';
+
+  detail.innerHTML = `
+    ${parsed.explanation ? `<div class="ld-group"><div class="ld-label">A javaslat</div><div class="ld-body">${mdLite(parsed.explanation)}</div></div>` : ''}
+    <div class="ld-group"><div class="ld-label">Példa / bizonyíték</div><div class="ld-body">${exampleHtml}</div></div>
+    ${parsed.impact ? `<div class="ld-group"><div class="ld-label">Impact (mit változtat)</div><div class="ld-body">${mdLite(parsed.impact)}</div></div>` : ''}
+    ${parsed.scope ? `<div class="ld-group"><div class="ld-label">Hatókör</div><div class="ld-body"><p>${escHtml(parsed.scope)}</p></div></div>` : ''}
+    <div class="ld-group ld-benefit"><div class="ld-label">Haszon (miért érdemes elfogadni)</div><div class="ld-body"><p>${escHtml(benefit)}</p></div></div>
+    <div class="ld-actions">
+      <span class="ld-accept-hint">Elfogadás: <code class="mono">${escHtml(accept)}</code></span>
+      <a class="ld-open-file mono" href="${escHtml(card.dataset.url)}" target="_blank" rel="noopener" onclick="event.stopPropagation();">open file →</a>
+    </div>`;
+}
+
+// ---- Render: Token Intelligence (0.6.0 — live from observability sidecar) ----
+function renderTokenIntel() {
+  const host = document.getElementById('tokenIntel');
+  const badge = document.getElementById('tokenBadge');
+  if (!host) return;
+
+  const withTok = gAllEvents.filter(e => (e.total_tokens || 0) > 0);
+  const totalTok = gAllEvents.reduce((s, e) => s + (e.total_tokens || 0), 0);
+  const totalIn  = gAllEvents.reduce((s, e) => s + (e.input_tokens || 0), 0);
+  const totalOut = gAllEvents.reduce((s, e) => s + (e.output_tokens || 0), 0);
+  const totalCost = gAllEvents.reduce((s, e) => s + (e.estimated_cost || 0), 0);
+
+  if (badge) badge.textContent = `${withTok.length} token-bearing events in view`;
+
+  if (!withTok.length) {
+    host.innerHTML = `<div class="empty-state">
+      <div class="empty-state-icon">◷</div>
+      <div class="empty-state-title">No token-bearing events in the current window</div>
+      <div class="empty-state-body">
+        The schema captures <code class="mono" style="font-size:10px;">input/output/total_tokens</code> and
+        <code class="mono" style="font-size:10px;">estimated_cost</code>. As agents emit events with these fields populated,
+        totals, model split, and per-agent cost render here automatically (no template change needed).
+      </div>
+    </div>`;
+    return;
+  }
+
+  // Model distribution
+  const byModel = {};
+  withTok.forEach(e => {
+    const mdl = e.model_name || 'unknown';
+    if (!byModel[mdl]) byModel[mdl] = { tok: 0, cost: 0, n: 0 };
+    byModel[mdl].tok  += e.total_tokens || 0;
+    byModel[mdl].cost += e.estimated_cost || 0;
+    byModel[mdl].n++;
+  });
+  const maxModelTok = Math.max(...Object.values(byModel).map(v => v.tok), 1);
+
+  // Per-agent token totals
+  const byAgent = {};
+  withTok.forEach(e => {
+    const a = e.agent_name || 'unknown';
+    if (!byAgent[a]) byAgent[a] = { tok: 0, cost: 0 };
+    byAgent[a].tok  += e.total_tokens || 0;
+    byAgent[a].cost += e.estimated_cost || 0;
+  });
+  const maxAgentTok = Math.max(...Object.values(byAgent).map(v => v.tok), 1);
+
+  // Top high-cost / high-token events
+  const top = [...withTok].sort((a,b) => (b.total_tokens||0) - (a.total_tokens||0)).slice(0, 6);
+
+  const modelBars = Object.entries(byModel).sort((a,b)=>b[1].tok-a[1].tok).map(([m,v]) =>
+    `<div class="timeline-row">
+      <span class="timeline-label" style="min-width:130px;">${escHtml(m)}</span>
+      <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:${Math.round(v.tok/maxModelTok*100)}%"></div></div>
+      <span class="timeline-count">${v.tok.toLocaleString()}</span>
+    </div>`).join('');
+
+  const agentBars = Object.entries(byAgent).sort((a,b)=>b[1].tok-a[1].tok).map(([a,v]) => {
+    const meta = agentMeta(a);
+    return `<div class="timeline-row">
+      <span class="timeline-label" style="color:${meta.color};">${escHtml(a)}</span>
+      <div class="timeline-bar-wrap"><div class="timeline-bar" style="width:${Math.round(v.tok/maxAgentTok*100)}%;background:${meta.color};"></div></div>
+      <span class="timeline-count">${v.tok.toLocaleString()}</span>
+    </div>`;
+  }).join('');
+
+  const topRows = top.map(e => {
+    const meta = agentMeta(e.agent_name);
+    return `<div class="activity-entry">
+      <span class="activity-ts">${escHtml((e.timestamp||'').slice(0,10))}</span>
+      <span class="activity-agent" style="color:${meta.color};">${escHtml(e.agent_name||'?')}</span>
+      <span class="activity-desc">${escHtml(e.title || e.message || e.event_type || '?')}</span>
+      <span class="activity-outcome success">${(e.total_tokens||0).toLocaleString()} tok</span>
+    </div>`;
+  }).join('');
+
+  host.innerHTML = `
+    <div class="stats-row" style="margin-bottom:24px;">
+      <div class="stat-card">
+        <div class="stat-card-label">Total tokens</div>
+        <div class="stat-card-value mono">${totalTok.toLocaleString()}</div>
+        <div class="stat-card-sub">in / out: ${totalIn.toLocaleString()} / ${totalOut.toLocaleString()}</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-label">Est. cost</div>
+        <div class="stat-card-value mono">${totalCost > 0 ? '$'+totalCost.toFixed(4) : '—'}</div>
+        <div class="stat-card-sub">all token-bearing events</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-card-label">Models used</div>
+        <div class="stat-card-value mono">${Object.keys(byModel).length}</div>
+        <div class="stat-card-sub">distinct model_name</div>
+      </div>
+    </div>
+    <div class="two-col">
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Tokens by model</div>
+        ${modelBars || '<div class="dep-empty">no model data</div>'}
+      </div>
+      <div>
+        <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Tokens by agent</div>
+        ${agentBars || '<div class="dep-empty">no agent data</div>'}
+      </div>
+    </div>
+    <div style="margin-top:28px;">
+      <div style="font-size:13px;font-weight:700;color:var(--ink-2);margin-bottom:12px;">Highest-token operations</div>
+      <div class="activity-feed">${topRows}</div>
+    </div>`;
 }
 
 // ---- Clipboard helper (DS 0.2.0) ----
-function copyText(text, el) {
-  navigator.clipboard.writeText(text).then(() => {
-    el.classList.add('copied');
-    setTimeout(() => el.classList.remove('copied'), 1600);
-  }).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); } catch(e) {}
-    document.body.removeChild(ta);
-    el.classList.add('copied');
-    setTimeout(() => el.classList.remove('copied'), 1600);
-  });
-}
 
-function wireCopyRef(containerEl) {
-  containerEl.querySelectorAll('.card-copy-ref').forEach(btn => {
-    btn.onclick = (e) => {
-      e.stopPropagation();
-      const card = btn.closest('[data-card-id]');
-      if (!card) return;
-      copyText(DASH_STEM + ':' + card.dataset.cardId, btn);
-    };
-  });
-}
 
 // ---- Theme toggle (DS 0.3.0) ----
-function setTheme(t) {
-  document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('dash-theme', t); } catch(e) {}
-  const btn = document.getElementById('themeToggle');
-  if (btn) {
-    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
-    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
-    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-  }
-}
+/* Theme toggle: moved to /_dashboards/_design/theme.js (DS 0.7.0, Sprint 1) */
 
-document.getElementById('themeToggle').addEventListener('click', function() {
-  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-});
 
-window.addEventListener('storage', function(e) {
-  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
-});
 
-(function initTheme() {
-  var t;
-  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
-  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
-  setTheme(t);
-})();
 
 // ====================================================================
 // Logcat (0.5.0) — sidecar JSON transport  (schema v1.2: agent_logs)
@@ -2222,8 +2761,9 @@ window.addEventListener('storage', function(e) {
 // ====================================================================
 const SIDECAR_URL = '/_dashboards/_design/agent_logs.json';
 
-let gAllEvents = [];       // all events from sidecar
+let gAllEvents = [];       // all events from sidecar (last 500 window)
 let gSidecarTs = null;     // generated_at of last sidecar fetch
+let gSidecarTotal = null;  // total_rows in the observability DB (all time)
 let lcSortKey = 'timestamp';
 let lcSortAsc = true;
 
@@ -2247,6 +2787,7 @@ async function fetchSidecar() {
     const r = await fetch(SIDECAR_URL, { cache: 'no-store' });
     if (!r.ok) return null;
     const data = await r.json();
+    gSidecarTotal = data.total_rows != null ? data.total_rows : (data.events || []).length;
     if (data.generated_at === gSidecarTs) return null; // no change
     gSidecarTs = data.generated_at;
     gAllEvents = data.events || [];
@@ -2472,6 +3013,7 @@ function startPolling() {
 }
 
 // ---- Boot — DS 0.4.0 event-driven live updates ----
+/* wirePanelAnchors() — auto-wired by /_design/clipboard.js (DS 0.8.9) */
 syncBarEl  = document.getElementById('syncBar');
 syncDotEl  = document.getElementById('syncDot');
 syncLabelEl = document.getElementById('syncLabel');
@@ -2482,7 +3024,12 @@ loadAllData().then(() => {
 });
 </script>
 <script src="/_dashboards/_design/live-updates.js"></script>
-<!-- ops-header.js (DS 0.5.0) -->
-<script src="/_dashboards/_design/ops-header.js"></script>
+<!-- theme.js + clipboard.js (DS 0.7.0, Sprint 1 engine) -->
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<!-- admin-bar.js (DS 0.6.0) -->
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
 </body>
 </html>
