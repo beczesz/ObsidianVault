@@ -33,7 +33,18 @@ CREATE TABLE IF NOT EXISTS notes (
   mtime REAL,
   size_bytes INTEGER,
   has_frontmatter INTEGER,
-  body_word_count INTEGER
+  body_word_count INTEGER,
+
+  -- Content type (Reach layer, 2026-06-07): which kind of knowledge file this
+  -- is. ext = lowercased extension (.md/.srt/.pdf/...). content_class =
+  -- fulltext (body in FTS) | metadata (discoverable stub, no body).
+  ext TEXT,
+  content_class TEXT,
+
+  -- Description provenance (Layer B refresh, 2026-05-28)
+  description_source TEXT,        -- 'auto' = tool-generated, safe to regenerate; NULL/other = leave alone
+  description_hash TEXT,          -- body sha at description-generation time (read from frontmatter)
+  body_hash TEXT                  -- current body sha at index time; description is stale when != description_hash
 );
 
 CREATE INDEX IF NOT EXISTS idx_notes_id ON notes(id);
@@ -44,6 +55,9 @@ CREATE INDEX IF NOT EXISTS idx_notes_agent ON notes(agent);
 CREATE INDEX IF NOT EXISTS idx_notes_schema ON notes(schema_field);
 CREATE INDEX IF NOT EXISTS idx_notes_health ON notes(health_state);
 CREATE INDEX IF NOT EXISTS idx_notes_bdos_index ON notes(bdos_index);
+CREATE INDEX IF NOT EXISTS idx_notes_desc_source ON notes(description_source);
+CREATE INDEX IF NOT EXISTS idx_notes_ext ON notes(ext);
+CREATE INDEX IF NOT EXISTS idx_notes_content_class ON notes(content_class);
 
 CREATE TABLE IF NOT EXISTS backlinks (
   source_path TEXT,
@@ -63,7 +77,8 @@ CREATE VIRTUAL TABLE IF NOT EXISTS notes_fts USING fts5(
   title,
   description,
   category UNINDEXED,
-  tags
+  tags,
+  body                          -- Layer A (2026-05-28): full body indexed as a low-weight fallback lane
 );
 
 -- Phase 4.C placeholder (keyword + entity extraction, populated in Phase 4.C)

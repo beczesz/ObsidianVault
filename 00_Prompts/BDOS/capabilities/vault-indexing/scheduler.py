@@ -690,6 +690,121 @@ def seed_marketing_jobs():
 
 
 # ---------------------------------------------------------------------------
+# Seed helper — register the Alfred hourly triage job (idempotent)
+# ---------------------------------------------------------------------------
+def seed_alfred_triage_job():
+    """
+    Register alfred-hourly-triage in scheduled_jobs (Alfred v0.4 Cognitive
+    Triage Engine). Idempotent: INSERT OR IGNORE.
+
+    Role: every hour (while the BDOS daemon is up), Alfred reads email
+    (Gmail/Outlook/Yahoo MCP), filters threads needing a reply, and prepares
+    multi-agent dossiers (Librarian + dynamic domain-routing) with a draft
+    reply + actionable items. Read-only on the outside world: NEVER sends,
+    never writes Gmail in --auto. requires_approval=0 because side effects are
+    additive-only (internal dossiers under 02_Areas/Personal Growth/Alfred/tasks/).
+
+    Registered DISABLED (enabled=0) at first: like harvest/curate, the headless
+    `claude -p` LLM auth is solved via CLAUDE_CODE_OAUTH_TOKEN, but whether the
+    interactively-authenticated email connectors (Gmail/Outlook) load in a
+    headless `claude -p` is unverified. Run a smoke test (run_hourly_triage.sh
+    or `claude -p "/alf-triage --auto"`) once; flip `enabled` to 1 when the
+    sources are reachable headless. Degrade-safe regardless: an unreachable
+    source is logged + skipped, the dossier-prep then waits for an interactive
+    session.
+    """
+    vault = str(Path(__file__).resolve().parent.parent.parent.parent.parent)
+    triage_cmd = f'{vault}/00_Prompts/BDOS/agents/alfred/cron/run_hourly_triage.sh'
+
+    con = _db()
+    try:
+        description = (
+            "Hourly email triage: read Gmail/Outlook/Yahoo, filter threads needing "
+            "a reply, prepare multi-agent dossiers (Librarian + domain-routing) with "
+            "draft + actionable items. Never sends. Additive-only (tasks/ dossiers). "
+            "Heartbeat: state/triage_queue.md. enabled=0 until headless email-MCP "
+            "reachability is verified."
+        )
+        con.execute("""
+            INSERT OR IGNORE INTO scheduled_jobs
+              (job_id, job_name, agent_name, description,
+               schedule_type, interval_seconds,
+               command, requires_approval, lock_duration_s, enabled)
+            VALUES
+              (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            'alfred-hourly-triage',
+            'Alfred Hourly Triage',
+            'alfred',
+            description,
+            'interval', 3600,
+            triage_cmd, 0, 900, 0,
+        ))
+
+        con.commit()
+        cnt = con.execute('SELECT COUNT(*) FROM scheduled_jobs').fetchone()[0]
+        print(f'[scheduler] seed_alfred_triage_job: {cnt} total job(s) registered.')
+    finally:
+        con.close()
+
+
+# ---------------------------------------------------------------------------
+# Seed helper — register the vault-index reconciliation backstop (idempotent)
+# ---------------------------------------------------------------------------
+def seed_reach_jobs():
+    """
+    Register vault-index-reconcile in scheduled_jobs (Reach layer, 2026-06-07).
+    Idempotent: INSERT OR IGNORE.
+
+    Role: the GROWTH GUARANTEE. The live watcher gives low-latency updates but
+    an incremental watcher can miss events (crash, sleep, Drive sync lag) and an
+    event-based watcher never re-checks, so a missed file would stay invisible to
+    the Librarian until the next full build. This interval job runs a full
+    disk-vs-index reconciliation (reconcile.sh -> watch.py --once) every 30 min,
+    independent of which watcher engine is live, and refreshes the honest reach
+    sidecar (emit_stats.py) so the dashboard shows the real coverage number.
+
+    Safe alongside the live watcher (both use WAL + busy_timeout). Owner: maestro
+    (infra concern, same as the scheduler's own logs). Enabled by default: it is
+    read-only when nothing changed, and additive (never deletes vault files).
+    """
+    vault = str(Path(__file__).resolve().parent.parent.parent.parent.parent)
+    reconcile_cmd = (
+        f'{vault}/00_Prompts/BDOS/capabilities/vault-indexing/reconcile.sh'
+    )
+
+    con = _db()
+    try:
+        description = (
+            "Full disk-vs-index reconciliation backstop every 30 min: catches any "
+            "file the live watcher missed (crash/sleep/Drive-lag), purges ghosts, "
+            "and refreshes the honest reach sidecar. The growth guarantee, "
+            "independent of the watcher engine. Safe alongside the watcher (WAL)."
+        )
+        con.execute("""
+            INSERT OR IGNORE INTO scheduled_jobs
+              (job_id, job_name, agent_name, description,
+               schedule_type, interval_seconds,
+               command, requires_approval, lock_duration_s, enabled)
+            VALUES
+              (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            'vault-index-reconcile',
+            'Vault Index Reconcile',
+            'maestro',
+            description,
+            'interval', 1800,
+            reconcile_cmd, 0, 300, 1,
+        ))
+
+        con.commit()
+        cnt = con.execute('SELECT COUNT(*) FROM scheduled_jobs').fetchone()[0]
+        print(f'[scheduler] seed_reach_jobs: {cnt} total job(s) registered.')
+    finally:
+        con.close()
+
+
+# ---------------------------------------------------------------------------
 # CLI entry point
 # ---------------------------------------------------------------------------
 if __name__ == '__main__':
@@ -699,7 +814,9 @@ if __name__ == '__main__':
     parser.add_argument('--loop',            action='store_true', help='Run continuous loop')
     parser.add_argument('--seed',            action='store_true', help='Seed Alfred cognition jobs (harvest+curate) then exit')
     parser.add_argument('--seed-alfred',     action='store_true', help='Alias for --seed (Alfred cognition jobs)')
+    parser.add_argument('--seed-triage',     action='store_true', help='Seed Alfred hourly triage job then exit')
     parser.add_argument('--seed-marketing',  action='store_true', help='Seed marketing board job then exit')
+    parser.add_argument('--seed-reach',      action='store_true', help='Seed vault-index reconciliation backstop then exit')
     parser.add_argument('--status',          action='store_true', help='Print job status table')
     args = parser.parse_args()
 
@@ -707,8 +824,16 @@ if __name__ == '__main__':
         seed_alfred_cognition_jobs()
         sys.exit(0)
 
+    if getattr(args, 'seed_triage', False):
+        seed_alfred_triage_job()
+        sys.exit(0)
+
     if args.seed_marketing:
         seed_marketing_jobs()
+        sys.exit(0)
+
+    if getattr(args, 'seed_reach', False):
+        seed_reach_jobs()
         sys.exit(0)
 
     if args.status:

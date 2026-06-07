@@ -21,3 +21,7 @@ __pycache__/
 
 # Claude Code worktrees (embedded, transient)
 **/.claude/worktrees/
+
+# Large binary/build artifacts (not vault content)
+**/node_modules/
+02_Areas/ExarLabs/resources/ExarSharedBrain/

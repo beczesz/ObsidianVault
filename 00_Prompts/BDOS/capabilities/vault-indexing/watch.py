@@ -25,8 +25,7 @@ from build_index import (
     walk_vault, index_file, VAULT_ROOT, DB_PATH, SCHEMA_PATH, EXCLUDE_DIRS
 )
 
-PID_FILE = SCRIPT_DIR / "cache" / "watch.pid"
-LOG_FILE = SCRIPT_DIR / "cache" / "watch.log"
+from runtime import PID_WATCHER as PID_FILE, LOG_WATCH as LOG_FILE, connect
 POLL_INTERVAL = 5  # seconds
 
 
@@ -159,7 +158,7 @@ def main():
         cycle = 0
         while True:
             cycle += 1
-            conn = sqlite3.connect(DB_PATH)
+            conn = connect(DB_PATH)  # WAL + busy_timeout: safe alongside a scheduled reconcile
             indexed = get_indexed_mtimes(conn)
             current = scan_vault_mtimes()
             new, modified, deleted = detect_changes(indexed, current)

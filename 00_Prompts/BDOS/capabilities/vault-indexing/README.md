@@ -60,13 +60,56 @@ orphans = query.find_orphans()
 stats = query.stats()
 ```
 
+## What IS indexed (coverage policy, 2026-06-07)
+
+The single source of truth is [`policy.py`](policy.py). The index ingests two
+classes of knowledge file:
+
+- **Full-text** (`.md`, `.srt`, `.txt`, `.vtt`): body goes into the FTS lane.
+  Transcripts have their timestamps stripped so only spoken text is indexed.
+- **Metadata stub** (`.pdf`, `.docx`, `.xlsx`, `.pptx`, `.epub`, `.csv`, `.rtf`):
+  path, filename-title, area, type, size, mtime, so the file is discoverable by
+  structured query (`--content-class metadata`, `--ext .pdf`) even though its
+  binary body is not extracted.
+
+The `notes` table carries `ext` and `content_class` columns; query them with
+`query.py --ext .srt` or `--content-class metadata`.
+
 ## What's NOT indexed
 
-By design:
-- `.smart-env/`, `.obsidian/` (vault metadata)
-- `04_Archive/` (inactive content)
+By policy (`policy.EXCLUDE_DIRS` + extension classes):
+- `.smart-env/`, `.obsidian/`, `.smart-connections/` (vault metadata)
+- `04_Archive/`, `_archive_old/` (inactive content, dark on purpose)
 - `node_modules/`, `.git/`, `.trash/`
-- Body full-text (only `title` + `description` in FTS — keeps the index tight, agents read full files only when relevant)
+- `ExarSharedBrain/` (nested git repo of vault-mirrored duplicates)
+- Media (`.mp3`, `.mp4`, images), assets (`.html`, `.js`, `.json`, `.py`), and
+  binary noise (`.zip`, `.tmp`, ...)
+- Binary document bodies (pdf/docx are stubs, not text-extracted, yet)
+
+## Reach (the trust instrument)
+
+`coverage_pct` from `emit_stats.py` used to be `indexed / total_md_files` where
+both came from the index table, so it measured the index against itself and
+could never report a miss. [`reach.py`](reach.py) fixes this: it compares the
+index against the FILESYSTEM ground truth plus the coverage policy, and reports
+three falsifiable failure modes (format gap, completeness gap, drift).
+
+```bash
+python3 reach.py            # writes 00_REACH_REPORT.md at the vault root + prints a summary
+python3 reach.py --json     # machine-readable
+```
+
+`emit_stats.py` now sources its `coverage_pct` (and a `reach` block) from
+reach.py, so the dashboard shows the real number.
+
+### Growth guarantee
+
+An incremental watcher can miss events (crash, sleep, Drive sync lag); an
+event-based one never re-checks. So a scheduled backstop, [`reconcile.sh`](reconcile.sh)
+(scheduler job `vault-index-reconcile`, interval 30 min), runs a full
+disk-vs-index reconciliation independent of the live watcher and refreshes the
+reach sidecar. Seed it with `python3 scheduler.py --seed-reach`. This is what
+guarantees that anything you add becomes reachable even if the watcher hiccuped.
 
 ## Performance target (v0.1)
 

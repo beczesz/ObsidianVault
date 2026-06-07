@@ -44,9 +44,12 @@ from build_index import (
 )
 import query as Q
 import audit as A
+from runtime import db_read_path
 
 VAULT_ROOT = SCRIPT_DIR.parent.parent.parent.parent
-DB_PATH = SCRIPT_DIR / "cache" / "vault.db"
+# Test against the canonical per-machine index (same DB the writer/reader use),
+# not the legacy synced cache/vault.db which can carry an older schema.
+DB_PATH = db_read_path()
 TEST_DIR = SCRIPT_DIR / "cache" / "_test_sandbox"
 
 # ============================================================

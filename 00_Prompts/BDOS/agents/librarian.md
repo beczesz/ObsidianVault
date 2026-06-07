@@ -123,7 +123,8 @@ Minden hívás a `mode:` paraméterrel indul. A mód meghatározza: mit csináls
    - **Unit/Area-specific** ("Sonrisa pricing"): `query.py --area Sonrisa --fts "pricing"`
    - **Schema-typed** ("Sage atomic notes"): `query.py --schema sage.atomic.v1`
    - **Status-filtered** ("active maturing"): `query.py --status maturing --limit 20`
-   - **FTS5 keyword** ("middle management"): `query.py --fts "middle management"`
+   - **FTS5 keyword** ("middle management"): `query.py --fts "middle management"` (a body lane is benne van 2026-05-28 óta, így leiratokban is keres)
+   - **Transcript/dokumentum** ("Navigátor leiratok", " exarlabs PDF-ek"): `query.py --content-class fulltext --area X` vagy `query.py --ext .srt --area X` / `--ext .pdf` (Reach layer 2026-06-07: srt/txt/vtt full-text, pdf/docx/xlsx metadata-stub). Az area-match NFC/NFD-robusztus (ékezetes Area-név is talál).
    - **Backlinks** ("ki hivatkozik X-re"): `query.py --backlinks X --json`
    - **Orphan check** ("árva fájlok"): `query.py --orphans`
 
@@ -202,6 +203,8 @@ Minden hívás a `mode:` paraméterrel indul. A mód meghatározza: mit csináls
 | **NEM használ** | Edit, mozgatás, törlés |
 | **Output** | `00_AUDIT.md` a scope gyökerében (új fájl). Tartalom: stale fájlok (>90 nap, status≠archived), hiányzó frontmatter, struktúra-anomáliák (üres mappák, naming inkonzisztencia), broken links összesítés, agent-meta (lásd §6 — agent meta-index karbantartás) |
 | **Frekvencia** | Havi |
+
+> **Reach audit (2026-06-07):** ha a kérdés az, hogy *az index lefed-e mindent* (nem az index belső egészsége, hanem a lemez-vs-index lefedettség), futtasd `python3 capabilities/vault-indexing/reach.py`-t. Ez a filesystemhez méri az indexet + a coverage-policyhez (`policy.py`), és falsifikálható reach-számot ad (format gap / completeness gap / drift). A dashboard `coverage_pct`-je is innen jön (nem önreferenciális többé). A `vault-index-reconcile` scheduler job 30 percenként auto-reconciliál (growth guarantee). Lásd `capabilities/vault-indexing/CLAUDE.md` Reach szekció.
 
 ---
 

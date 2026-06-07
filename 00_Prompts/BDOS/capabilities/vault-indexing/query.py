@@ -16,13 +16,28 @@ Usage:
 import argparse
 import sqlite3
 import json
+import sys
+import unicodedata
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DB_PATH = SCRIPT_DIR / "cache" / "vault.db"
+sys.path.insert(0, str(SCRIPT_DIR))
+from runtime import db_read_path
+
+
+def _norm_forms(value):
+    """Both Unicode normalization forms of a string, deduped. The index stores
+    path-derived fields (area, agent) in the filesystem's form (NFD on macOS),
+    but a typed or pasted query is usually NFC, so an exact match on an accented
+    Area name like 'Navigator' would silently miss. Matching both forms fixes it
+    without a rebuild or any change to how paths are stored."""
+    nfc = unicodedata.normalize("NFC", value)
+    nfd = unicodedata.normalize("NFD", value)
+    return [nfc] if nfc == nfd else [nfc, nfd]
 
 
 def get_conn():
+    DB_PATH = db_read_path()
     if not DB_PATH.exists():
         raise FileNotFoundError(f"Index not built. Run: python3 {SCRIPT_DIR}/build_index.py")
     conn = sqlite3.connect(DB_PATH)
@@ -30,7 +45,8 @@ def get_conn():
     return conn
 
 
-def query_notes(category=None, status=None, area=None, agent=None, schema=None, tag=None, limit=50):
+def query_notes(category=None, status=None, area=None, agent=None, schema=None, tag=None,
+                content_class=None, ext=None, limit=50):
     """Python API — return matching notes."""
     conn = get_conn()
     where, params = [], []
@@ -39,13 +55,19 @@ def query_notes(category=None, status=None, area=None, agent=None, schema=None, 
     if status:
         where.append("status = ?"); params.append(status)
     if area:
-        where.append("area = ?"); params.append(area)
+        forms = _norm_forms(area)
+        where.append("area IN (%s)" % ",".join("?" * len(forms))); params.extend(forms)
     if agent:
-        where.append("agent = ?"); params.append(agent)
+        forms = _norm_forms(agent)
+        where.append("agent IN (%s)" % ",".join("?" * len(forms))); params.extend(forms)
     if schema:
         where.append("schema_field = ?"); params.append(schema)
     if tag:
         where.append("tags LIKE ?"); params.append(f'%"{tag}"%')
+    if content_class:
+        where.append("content_class = ?"); params.append(content_class)
+    if ext:
+        where.append("ext = ?"); params.append(ext if ext.startswith('.') else '.' + ext)
 
     sql = "SELECT * FROM notes"
     if where:
@@ -57,8 +79,15 @@ def query_notes(category=None, status=None, area=None, agent=None, schema=None, 
 
 def fts_search(query, limit=20):
     conn = get_conn()
+    # Weighted bm25 over (path, title, description, category, tags, body).
+    # UNINDEXED columns (path, category) take weight 0. Title + description are the
+    # high-signal lanes; body is a low-weight fallback so a note with no description
+    # is still findable via its content without drowning the metadata lanes.
     rows = conn.execute(
-        "SELECT path, title, description, category, rank FROM notes_fts WHERE notes_fts MATCH ? ORDER BY rank LIMIT ?",
+        "SELECT path, title, description, category, "
+        "bm25(notes_fts, 0.0, 10.0, 8.0, 0.0, 4.0, 1.0) AS rank "
+        "FROM notes_fts WHERE notes_fts MATCH ? "
+        "ORDER BY rank LIMIT ?",
         (query, limit)
     ).fetchall()
     return [dict(r) for r in rows]
@@ -144,7 +173,10 @@ def main():
     ap.add_argument('--agent')
     ap.add_argument('--schema')
     ap.add_argument('--tag')
-    ap.add_argument('--fts', help='FTS5 search on title+description')
+    ap.add_argument('--content-class', dest='content_class',
+                    help='Filter by content class: fulltext | metadata')
+    ap.add_argument('--ext', help='Filter by extension, e.g. .srt or .pdf')
+    ap.add_argument('--fts', help='FTS5 search on title+description+body')
     ap.add_argument('--orphans', action='store_true')
     ap.add_argument('--backlinks', help='Find files linking to this path/slug')
     ap.add_argument('--stats', action='store_true')
@@ -166,7 +198,8 @@ def main():
 
     results = query_notes(
         category=args.category, status=args.status, area=args.area,
-        agent=args.agent, schema=args.schema, tag=args.tag, limit=args.limit
+        agent=args.agent, schema=args.schema, tag=args.tag,
+        content_class=args.content_class, ext=args.ext, limit=args.limit
     )
     print_results(results, fmt)
 
