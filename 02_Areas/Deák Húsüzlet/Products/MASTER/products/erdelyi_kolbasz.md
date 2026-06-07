@@ -1,3 +1,15 @@
+---
+title: "Deák háziKolbász"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Traditional Transylvanian garlic and paprika sausage with smoked aroma, priced at 45.0 HUF per kilogram, with internal code 911 and high popularity score for product catalog integration."
+description_source: auto
+description_hash: 26a66fa38e7970e4
+id: 0177c9b2-a5af-48f9-b452-993992f5f4fa
+index_schema_version: 1
+bdos_index: true
+---
 # Deák háziKolbász
 
 ```yaml

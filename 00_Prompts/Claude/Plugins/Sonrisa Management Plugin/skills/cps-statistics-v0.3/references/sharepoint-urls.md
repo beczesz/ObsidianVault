@@ -1,3 +1,15 @@
+---
+title: "SharePoint Upload Locations"
+date: 2026-04-22
+author: Becze Szabolcs
+status: active
+description: "Reference guide for uploading two file types to specific SharePoint folders: base files to Sales site and tam files to Cloud Guild site, with direct URLs and manual upload instructions since automated tools don't work with SharePoint's interface."
+description_source: auto
+description_hash: ddc473569d09e5b3
+id: b815ebcf-2e34-4327-98b0-8361dfbbb864
+index_schema_version: 1
+bdos_index: true
+---
 # SharePoint Upload Locations
 
 ## _base file

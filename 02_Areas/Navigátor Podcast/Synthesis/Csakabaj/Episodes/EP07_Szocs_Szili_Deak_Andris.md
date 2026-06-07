@@ -1,4 +1,7 @@
 ---
+description: "Dokumentumfilmesek Szőcs Szili és Deák Andris páros interjúja az emlékezés politikájáról, kulturális megőrzésről és az időfaktor szerepéről a rögzítésben. Intellektuális diskurzus a dokumentarizmus mint etnográfiai módszer etikai és archívumi kérdéseiről."
+description_source: auto
+description_hash: cb28a2fa1fa83e65
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -14,7 +17,6 @@ quality: "Gold Standard"
 id: 5e1b79c9-a097-4bfc-9569-6ac1fd5dc1ed
 index_schema_version: 1
 ---
-
 # EP07 — Szőcs Szili & Deák Andris: Emlékezetpolitika — A dokumentumfilm mint kultural megőrzés
 
 ## Alapadatok

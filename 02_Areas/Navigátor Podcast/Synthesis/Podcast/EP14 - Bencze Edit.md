@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP14
 title: "A nárcizmus rejtett arcai | Bencze Edit | EP14"
+description: "Bencze Edit pasztorálpszichológus elemzi a nárcizmus rejtett formáit, manipulációs technikáit és megoldási lehetőségeit. A videó rendkívüli nézettségét (72K view, 1.2M impression) a női közönség (85%) és az idősebb korosztály (45+: 64%) erős érdeklődése hajtja a témában."
+description_source: auto
+description_hash: 0986e42d70acdd4b
 guest: "Bencze Edit"
 guest_title: "Pasztorálpszichológus"
 topic: "Nárcizmus — nyílt és rejtett formák, manipulációs technikák, megoldási utak"
@@ -15,7 +18,6 @@ quality: deep
 id: cd7e3669-9eed-4697-8acb-50988bd8427a
 index_schema_version: 1
 ---
-
 # EP14 — Bencze Edit: „Nem veled van a baj" — A nárcizmus rejtett arcai
 
 ## YouTube Studio Analytics

@@ -1,3 +1,15 @@
+---
+title: "Product Options Matrix v1.0 — per-termék opció bontás"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Detailed breakdown of 15 pork products with customizable options from a 46-product catalog, including 59 variation values for size, slicing, marinating, and thickness preferences used by production and sales teams."
+description_source: auto
+description_hash: a84c921847356991
+id: 2630a396-2525-413d-ac41-ddccbba9d70f
+index_schema_version: 1
+bdos_index: true
+---
 # Product Options Matrix v1.0 — per-termék opció bontás
 
 > **Generálva:** 2026-05-07 (a `Products/MASTER/products/*.md` fájlokból)

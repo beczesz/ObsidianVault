@@ -1,4 +1,7 @@
 ---
+description: "Diabetológus és dietetikus közös interjúja a 2-es típusú cukorbetegségről, inzulin rezisztenciáról, diétákról és mikrobióm szerepéről; 152 perces epizód orvosok és táplálkozási szakemberek számára a modern táplálkozás individualizálásáról és az evidencia-alapú megközelítésről."
+description_source: auto
+description_hash: 14ea275e80223e2c
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
@@ -13,7 +16,6 @@ synthesis_status: Complete
 id: 1e645b90-6d5b-4311-9699-f063bd370ce6
 index_schema_version: 1
 ---
-
 ## Alapadatok
 
 | Attribútum | Érték |

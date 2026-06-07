@@ -1,3 +1,15 @@
+---
+title: "Startup napló"
+date: 2026-05-11
+author: Becze Szabolcs
+status: active
+description: "Startup founder's personal journal tracking progress on Ignis Academy venture, including grant application results (275k EUR awarded), MVP development plans, networking efforts, business strategy refinement, and reflections on team dynamics at related companies CPS and Exar."
+description_source: auto
+description_hash: 3099a0e83b55c59a
+id: a2ac17f9-9882-4a0d-80b3-8e9cfd20f1a1
+index_schema_version: 1
+bdos_index: true
+---
 Link: [Situație proiecte depuse - ADRC](https://www.regiocentru.ro/situatie-proiecte-depuse)
 
 ## 2025.12.01 Újra kalibrálás

@@ -1,3 +1,15 @@
+---
+title: "Green Hill / SynLab"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Account details for Green Hill and SynLab, a laboratory diagnostics company receiving CPS managed cloud operations support, led by Molnar Daniel as TAM with team members Kovacs Marcell and Tornai Zsolt assigned March 2026. Tracks contract status, scope clarification, and ramp-up process improvements."
+description_source: auto
+description_hash: 5f4e7149f108b88b
+id: 3d4e7ade-aafc-4fd2-9037-635b9c5cee10
+index_schema_version: 1
+bdos_index: true
+---
 # Green Hill / SynLab
 
 ## Quick Info

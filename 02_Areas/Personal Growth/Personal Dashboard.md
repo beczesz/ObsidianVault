@@ -1,4 +1,15 @@
-
+---
+title: "TODO"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Tracks personal weight data from daily notes over 90 days with visualization and statistics, plus a habit tracker and task list for contacting people and project progress across multiple life areas."
+description_source: auto
+description_hash: d6ef790335372d70
+id: 801a57fc-ef04-4378-b654-6a0c904a6339
+index_schema_version: 1
+bdos_index: true
+---
 ```dataviewjs
 // === CONFIG ===
 const FOLDER    = "05_DailyNotes";     // daily notes folder

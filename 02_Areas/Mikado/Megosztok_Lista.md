@@ -1,3 +1,15 @@
+---
+title: "Megosztók Lista - Tavaszi Otthon Akció"
+date: 2026-02-15
+author: Becze Szabolcs
+status: active
+description: "Tavaszi Otthon Akció promóciójához megosztási kérelmeket intéző lista, amely hat kontakt személy nevét, egy sablonüzenetet és egy nyomon követési táblázatot tartalmaz a megosztás állapotának feljegyzésére."
+description_source: auto
+description_hash: e16dce0687a928de
+id: 1cb39ce0-bf4e-4958-84e0-ce56680dfc2a
+index_schema_version: 1
+bdos_index: true
+---
 # Megosztók Lista - Tavaszi Otthon Akció
 
 ## Kinek szólok, hogy ossza meg a posztot (hétfőn):

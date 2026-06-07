@@ -1,3 +1,15 @@
+---
+title: "MVMI Azure DevOps szerzodes -- Targyalasi jegyzet"
+date: 2026-04-29
+author: Becze Szabolcs
+status: active
+description: "Targyalasi jegyzet az MVMI Azure DevOps szerzodes v3.1 verziojához, melyet Sonrisa Informatikai Kft. szerzodott meg MVMI Zrt.-vel. Tartalmazza a v3-hoz kepesti valtozasokat, megoldott RED/YELLOW kockazatokat és még nyitott kérdéseket az aláírás előtti dönésekről."
+description_source: auto
+description_hash: 15946c99fa7add43
+id: d6562d24-fafd-4918-acd2-79791dfc20a0
+index_schema_version: 1
+bdos_index: true
+---
 # MVMI Azure DevOps szerzodes -- Targyalasi jegyzet
 
 **Utolso frissites:** 2026-04-29 (v3.1 review -- valtozasok osszegzese + uj ertekeles)

@@ -1,3 +1,15 @@
+---
+title: "Navigator Podcast Plugin v0.2"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Teljes körű podcast asszisztens a Navigator számára, amely YouTube metaadatokat generál SRT fájlokból, valamint epizód-meghívókat és felkészülési dokumentumokat készít. Hat command érhető el: hook, cím, thumbnail, leírás, időkód és meghívó."
+description_source: auto
+description_hash: e661b06e5a1270df
+id: 3f640441-8991-42b1-9551-b2203a8a435d
+index_schema_version: 1
+bdos_index: true
+---
 # Navigator Podcast Plugin v0.2
 
 Teljes körű Navigátor Podcast asszisztens. Két fő funkciót lát el:

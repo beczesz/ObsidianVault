@@ -1,3 +1,15 @@
+---
+title: "Miccs"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Hungarian ground meat product catalog entry with pricing, availability status, and preparation instructions; serves inventory and sales staff managing sausage products."
+description_source: auto
+description_hash: c272c3b7a5de4be6
+id: 2bd714d1-7f0a-4583-a2d5-314a06c64127
+index_schema_version: 1
+bdos_index: true
+---
 # Miccs
 
 ```yaml

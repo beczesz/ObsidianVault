@@ -1,3 +1,15 @@
+---
+title: "Cérna Kolbász"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Thin string-tied sausage with spicy flavor, sold by kilogram at 48.0 currency units, available and highly popular product in the sausage category with internal code 920."
+description_source: auto
+description_hash: 85bfdc5cbde43335
+id: ba816e2a-a3da-4254-a256-d41dc1c9dbf3
+index_schema_version: 1
+bdos_index: true
+---
 # Cérna Kolbász
 
 ```yaml

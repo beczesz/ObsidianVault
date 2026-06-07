@@ -1,3 +1,15 @@
+---
+title: "Possible ceremonies between ages 5-15"
+date: 2025-10-29
+author: Becze Szabolcs
+status: active
+description: "Férfivá válási ceremonkák életkori szakaszokra bontva, Robert Lewis négy alapelvével: áldozattal járó, értékadó, szimbolikus és jövőképet adó rituálék. Fejleszthető erények és apa szerepe minden korcsoportnál."
+description_source: auto
+description_hash: 0168686230d62ff2
+id: d1b30aab-33c7-48b2-95a1-e99410390dbd
+index_schema_version: 1
+bdos_index: true
+---
 1. Fejezet
    - *a modern fiúk nem kapnak világos definíciót arról, mit jelent férfivá válni,* 
    - *nincs iránymutató folyamat, és* 

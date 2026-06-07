@@ -1,4 +1,7 @@
 ---
+description: "Exar Labs második bevételi lábjának pozicionálása a Frappe Partner Program-on keresztül: vizsgálja a bevételi modellt (Cloud resale, implementáció, managed support), piaci szegmentációt (SME, vertikalisan élelmiszer/kereskedelem) és Bronze/Silver szintű feljutás stratégiáját 12 hónapon belül."
+description_source: auto
+description_hash: f18923573a49959a
 topic: Frappe Partnership Strategy — Exar Labs második stratégiai bevételi láb
 created: 2026-05-10
 last_updated: 2026-05-10
@@ -7,7 +10,6 @@ horizon: 12_months
 id: eb0fcd00-5df2-4d5b-a3db-c1dbd8c55e14
 index_schema_version: 1
 ---
-
 # Brainstorm: Frappe Partnership — Exar Labs második láb
 
 ## Kontextus

@@ -1,3 +1,15 @@
+---
+title: "ExarLabs"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Székhelyű IT vállalat Székelyudvarhely, amely Sonrisa projektekből élettávon 100% bevételét szerzik, miközben saját termékek (Ignis LMS, Media Műhely, ExarGroups) fejlesztésén dolgozik Frappe és AI technológiákkal. Tíz fős csapat, egyetlen ügyfél-függőségi kockázattal."
+description_source: auto
+description_hash: dd9fd28d041b62da
+id: 1fd69b7d-490f-4f0e-8b1b-d6394f3d7d9f
+index_schema_version: 1
+bdos_index: true
+---
 # ExarLabs
 
 ## Overview

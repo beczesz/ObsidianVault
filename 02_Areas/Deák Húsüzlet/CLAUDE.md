@@ -1,3 +1,15 @@
+---
+title: "Memory – Szabolcs / Exar Labs munkaterülete"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Szabolcs és az Exar Labs DH (Deák Húsmíves) projektjének munkaterülete: kötelező olvasandó fájlok, eszközök, fájlrendszer, fogalmak és automatikus session startup protokoll az MVP online rendelési platform fejlesztéséhez."
+description_source: auto
+description_hash: 7cf9e3e82b7d5dab
+id: 74859662-22a8-48c8-8282-444672059dae
+index_schema_version: 1
+bdos_index: true
+---
 # Memory – Szabolcs / Exar Labs munkaterülete
 
 ---

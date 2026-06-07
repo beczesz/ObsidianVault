@@ -1,3 +1,15 @@
+---
+title: "Glossary"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "A Mikado építésziroda üzleti kommunikációjához szükséges kifejezéseket, rövidítéseket és projektadatokat tartalmazó referencia lista a csapat és a kliens számára."
+description_source: auto
+description_hash: 9ac5b3cff443333b
+id: 8e84d47e-4093-4fe3-8a26-47e9c2522ac9
+index_schema_version: 1
+bdos_index: true
+---
 # Glossary
 
 ## Terms & Acronyms

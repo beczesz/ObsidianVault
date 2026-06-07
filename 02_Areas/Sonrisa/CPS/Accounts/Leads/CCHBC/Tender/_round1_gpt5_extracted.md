@@ -1,3 +1,15 @@
+---
+title: "GPT-5 (Validator) — Round 1 raw findings"
+date: 2026-05-20
+author: Becze Szabolcs
+status: active
+description: "Token usage and findings from GPT-5 validator assessing pricing, contract language, execution risks, and gaps in an AI operations proposal for a large enterprise client; includes detailed competitive benchmarking showing significant underpricing and vague deliverables requiring rewrite."
+description_source: auto
+description_hash: ebc3484481f3527c
+id: 23551b4c-ad5d-42c3-be7b-be0bfc076886
+index_schema_version: 1
+bdos_index: true
+---
 # GPT-5 (Validator) — Round 1 raw findings
 
 **Usage:** {'prompt_tokens': 1531, 'completion_tokens': 5741, 'total_tokens': 7272, 'prompt_tokens_details': {'cached_tokens': 0, 'audio_tokens': 0}, 'completion_tokens_details': {'reasoning_tokens': 3264, 'audio_tokens': 0, 'accepted_prediction_tokens': 0, 'rejected_prediction_tokens': 0}}

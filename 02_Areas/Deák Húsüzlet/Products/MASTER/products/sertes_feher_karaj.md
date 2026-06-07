@@ -1,3 +1,15 @@
+---
+title: "Sertés fehérkaraj csontnélkül"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Boneless pork loin chop product record with weight-based pricing, slicing and marinating options, and producer notes on suitability for Wiener schnitzel and similar preparations."
+description_source: auto
+description_hash: ff68f895a8493c71
+id: 0d18b60e-b7d4-4b68-bea1-a928480b84f8
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés fehérkaraj csontnélkül
 
 ```yaml

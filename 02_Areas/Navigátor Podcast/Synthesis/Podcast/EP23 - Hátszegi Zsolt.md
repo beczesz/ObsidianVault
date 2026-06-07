@@ -1,6 +1,9 @@
 ---
 ep_number: 23
 title: "A szavakon túl – Mit mesél rólunk a vizuális művészet?"
+description: "Hátszegi Zsolt székelyföldi animátor, grafikus és egyetemi oktató egy podcastepizódban beszél a vizuális művészet, animáció és dizájn mélységéről, az ADHD-ról mint kreatív tényezőről, és arról, hogyan tanítanak meg a művészetek olyan dolgokra, amikre szavak nincsenek."
+description_source: auto
+description_hash: f15a98dd7a4b8cfa
 guest: "Hátszegi Zsolt"
 guest_title: "Animátor, dizájner, zenész, oktató"
 date_published: 2025-04-08
@@ -22,7 +25,6 @@ created: 2026-04-06
 id: ecf0f269-bc53-46c2-b52a-b72bef54b6bb
 index_schema_version: 1
 ---
-
 # EP23 — A szavakon túl – Mit mesél rólunk a vizuális művészet? | Hátszegi Zsolt
 
 ## Epizód-összefoglaló

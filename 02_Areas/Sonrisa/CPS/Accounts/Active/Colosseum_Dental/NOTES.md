@@ -1,3 +1,15 @@
+---
+title: "Colosseum Dental"
+date: 2026-04-02
+author: Becze Szabolcs
+status: active
+description: "Colosseum AG is a major Swiss dental chain using Azure Logic Apps to integrate Microsoft Dynamics 365 with multiple external systems."
+description_source: auto
+description_hash: dbccbb243169d2d4
+id: e2ef2b99-0ced-432a-aebe-c10942435d43
+index_schema_version: 1
+bdos_index: true
+---
 # Colosseum Dental
 
 ## Quick Info

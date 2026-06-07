@@ -1,4 +1,7 @@
 ---
+description: "Stratégiai audit terv a Navigátor Podcast csatornájához, amely egy többagentes AI munkafolyamattal (ChatGPT, Perplexity, Claude) dolgozza fel az 56 epizódnyi adatot, azonosítja a top előadások közös jellemzőit (egészségtémák, tabútörés, személyes történet), és konkrét metadat-fejlesztési ajánlásokat ad az eredményes"
+description_source: auto
+description_hash: 042e95dbba1d6973
 version: 0.4
 date: 2026-04-08
 type: audit-plan
@@ -6,7 +9,6 @@ changelog: "v0.4 — Fázis 2 befejezve. 56 epizód szintézis kész. Tanulságo
 id: ac7ea00f-26cb-4a3c-997a-7c63c71a271d
 index_schema_version: 1
 ---
-
 # Navigátor Podcast — Csatorna Audit Terv v0.3
 
 ## 0. Multi-AI Workflow (Think Agent Orchestrator v0.5)

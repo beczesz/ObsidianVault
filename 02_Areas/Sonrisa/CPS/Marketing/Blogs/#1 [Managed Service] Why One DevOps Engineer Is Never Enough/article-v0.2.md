@@ -1,3 +1,15 @@
+---
+title: "The Single Engineer Trap: Why Modern Infrastructure Needs More Than One Person"
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "One DevOps engineer handling all infrastructure creates unsustainable burnout and knowledge-loss risks. Resilient infrastructure requires at least three engineers covering day-to-day operations, backup knowledge, on-call rotation, and architectural planning."
+description_source: auto
+description_hash: 930d7b0c0411286c
+id: 300194b1-145e-40b0-a4f8-bb959a8d1696
+index_schema_version: 1
+bdos_index: true
+---
 # The Single Engineer Trap: Why Modern Infrastructure Needs More Than One Person
 
 > **Primary keyword:** single devops engineer risk

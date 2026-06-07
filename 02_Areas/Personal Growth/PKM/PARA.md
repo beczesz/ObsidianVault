@@ -1,5 +1,15 @@
-
-
+---
+title: "PARA"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Overview of PARA, a personal knowledge management system organizing notes into Projects (goal-driven, time-bound), Areas (ongoing responsibilities), Resources (reference materials), and Archives (inactive items), with practical implementation guidance for folder structure and workflow management."
+description_source: auto
+description_hash: 20bcfbc7b8068a60
+id: 93cb1833-0264-4c66-9c54-cad299bd0880
+index_schema_version: 1
+bdos_index: true
+---
 #PKM
 ### PARA in a Nutshell
 

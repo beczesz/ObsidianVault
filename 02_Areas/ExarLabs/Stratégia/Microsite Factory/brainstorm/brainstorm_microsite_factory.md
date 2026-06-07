@@ -1,4 +1,7 @@
 ---
+description: "Brainstorm document for Microsite Factory startup concept, capturing multi-AI team analysis (ChatGPT strategist, Perplexity researcher, Gemini validator) of a dental-focused done-for-you microsite service with transformation ladder positioning, composable architecture, and sub-brand strategy."
+description_source: auto
+description_hash: 7f18322379e7874c
 topic: Microsite Factory — Startup BMC
 created: 2026-05-16
 last_updated: 2026-05-16
@@ -6,7 +9,6 @@ status: active
 id: cf9f7e8d-1ff3-4ab1-b7e3-c8c8e4380afe
 index_schema_version: 1
 ---
-
 # Brainstorm: Microsite Factory — Startup BMC
 
 ## Team

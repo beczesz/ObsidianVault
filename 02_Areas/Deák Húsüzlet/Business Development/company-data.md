@@ -1,3 +1,15 @@
+---
+title: "Cégadatok — Referencia"
+date: 2026-04-22
+author: Becze Szabolcs
+status: active
+description: "Hivatalos céginformációk szerződések és jogi dokumentumok elkészítéséhez: EXARGROUPS S.R.L. (Exar Labs) és DEAK PROD SRL partnercégadatai, beleértve adószámokat, nyilvántartási számokat és képviselőket."
+description_source: auto
+description_hash: 4d95a14da38f2a89
+id: 160747b2-c341-4aff-8a4c-ee61fabbbe0c
+index_schema_version: 1
+bdos_index: true
+---
 # Cégadatok — Referencia
 
 > Ez a fájl a jogi dokumentumokhoz szükséges hivatalos cégadatokat tartalmazza.

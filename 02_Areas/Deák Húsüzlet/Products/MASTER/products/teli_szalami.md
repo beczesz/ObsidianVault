@@ -1,3 +1,15 @@
+---
+title: "Téli Szalámi"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Téli szalámi termékadat: 68 Ft/kg-os, hosszan érlelt szalámi hideg ételekhez. Tartalmazza a termékkódot, elérhetőséget és szeletelési lehetőségeket kezelőknek és rendszerkarbantartóknak."
+description_source: auto
+description_hash: ca9643501e789b3c
+id: e83356d2-db45-40b0-a1ee-a177f10947e0
+index_schema_version: 1
+bdos_index: true
+---
 # Téli Szalámi
 
 ```yaml

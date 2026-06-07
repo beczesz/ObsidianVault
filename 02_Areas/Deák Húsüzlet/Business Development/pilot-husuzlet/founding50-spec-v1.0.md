@@ -1,3 +1,15 @@
+---
+title: "Founding 50 Program — Feature Specification"
+date: 2026-04-22
+author: Becze Szabolcs
+status: active
+description: "Technical specification for an exclusive early adopter program offering 50 free shipping slots for three months to establish repeat purchase behavior and gather user metrics. Includes UI modals, user states, data model extensions, and backend logic for Romanian and Hungarian markets."
+description_source: auto
+description_hash: 7cdab9ae1195195a
+id: 274b8b79-5282-4284-9278-f2d43c2bf2a3
+index_schema_version: 1
+bdos_index: true
+---
 # Founding 50 Program — Feature Specification
 
 **Jira ticket:** DH-150

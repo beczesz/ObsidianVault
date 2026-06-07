@@ -2,6 +2,9 @@
 podcast: Navigátor Podcast
 episode: EP08
 title: "Az élet tragédiájának közelében"
+description: "Podcast-epizód Kurtus Aranka hematológus-főorvossal a ritka hematológiai szakterület gyakorlatáról, az anyaság és karrieregyensúlyáról, valamint a hetenkénti halálos diagnózisok etikai és érzelmi kezeléséről. Szakterületi szakértői perspektíva a medicina határtalanságáról és az egyéni felelősségvállalás dilemmáiról."
+description_source: auto
+description_hash: 30fdf5d44b9a03fa
 guest: Dr. Kurtus Aranka
 role: Hematológus főorvos, Székelyudvarhelyi Kórház
 date_recorded: "2024-09-10"
@@ -37,7 +40,6 @@ tags:
 id: caec6965-397a-41f0-a49a-917f3f48b9d7
 index_schema_version: 1
 ---
-
 # EP08 – Dr. Kurtus Aranka: Az élet tragédiájának közelében
 
 ## Epizód kontextus

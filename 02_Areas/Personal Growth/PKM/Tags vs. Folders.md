@@ -1,4 +1,15 @@
-
+---
+title: "Notes"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Guide to tagging systems in personal knowledge management, covering the distinction between hierarchical and network structures, best practices like tagging context over content, and categorization frameworks using status, format, and topic tags."
+description_source: auto
+description_hash: d05f81d335aa9c39
+id: e77f5b17-f9f7-4ed1-9b20-c8ccba4595b2
+index_schema_version: 1
+bdos_index: true
+---
 #PKM 
 
 Link:

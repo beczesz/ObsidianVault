@@ -1,3 +1,15 @@
+---
+title: "Ignis Academy"
+date: 2026-04-16
+author: Becze Szabolcs
+status: active
+description: "AI-powered B2B SaaS platform for personalized enterprise skills development, founded in 2025 with 275k EUR grant. Used by founders and investors tracking platform development, research, business model, and team structure."
+description_source: auto
+description_hash: dea5bb1219101476
+id: 0352b226-8b92-4db3-b139-f3879e5839b3
+index_schema_version: 1
+bdos_index: true
+---
 # Ignis Academy
 
 **Status:** Active, pre-seed / seed phase

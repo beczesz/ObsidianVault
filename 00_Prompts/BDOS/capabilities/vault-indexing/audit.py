@@ -20,14 +20,17 @@ import argparse
 import json
 import sqlite3
 import time
+import sys
 from pathlib import Path
 
 SCRIPT_DIR = Path(__file__).resolve().parent
-DB_PATH = SCRIPT_DIR / "cache" / "vault.db"
+sys.path.insert(0, str(SCRIPT_DIR))
+from runtime import db_read_path
 VAULT_ROOT = SCRIPT_DIR.parent.parent.parent.parent
 
 
 def get_conn():
+    DB_PATH = db_read_path()
     if not DB_PATH.exists():
         raise FileNotFoundError(f"No index — run: python3 {SCRIPT_DIR}/build_index.py")
     conn = sqlite3.connect(DB_PATH)

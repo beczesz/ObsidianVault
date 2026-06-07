@@ -1,3 +1,15 @@
+---
+title: "Gondolatok"
+date: 2025-09-01
+author: Becze Szabolcs
+status: active
+description: "Reflexiók egy erőforrások és manipuláció témájú könyvről: a szerző etikai dilemmáival küzd, hogy miként használjon fel tudást a hatalom dinamikáiról, egyúttal tisztázni kívánja saját erkölcsi alapelveit és személyes fejlődését."
+description_source: auto
+description_hash: 1d3a52aa86c6b5f5
+id: 0a7718ad-dd02-4c2e-8c57-bf4f871a5b46
+index_schema_version: 1
+bdos_index: true
+---
 # Gondolatok
 Tags: #atomic #idea #ethics
 

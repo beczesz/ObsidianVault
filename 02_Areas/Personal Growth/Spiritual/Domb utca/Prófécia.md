@@ -1,4 +1,15 @@
-
+---
+title: "Prófécia"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Öt éve kapott családi prófécia egy közösségi ház megvásárlásáról, amely Isten szolgálatára és vezetők képzésére lesz használva. Jelenleg két pénzügyi opció között választanak: 3 év alatt fokozatosan fizetni, vagy gyorsítani és 2027-ben beköltözni, hogy örökbefogadást is elkezdhessenek."
+description_source: auto
+description_hash: 4bed77276f9816da
+id: 046e21e6-1527-4208-9d82-18b3eeb64622
+index_schema_version: 1
+bdos_index: true
+---
 ## A prófécia
 Ezelőtt 5 évvel kaptunk egy próféciát a családunk elhívásával kapcsolatban. Azt kaptuk, hogy keressünk egy házat amit Isten szolgálatára fogunk használni.
 Elég pontos instrukciókat kaptunk a házzal kapcsolatban:

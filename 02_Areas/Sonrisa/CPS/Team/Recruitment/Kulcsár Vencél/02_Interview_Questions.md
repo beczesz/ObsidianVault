@@ -1,3 +1,15 @@
+---
+title: "3. Interjú - Cultural Deep Dive Template"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "Interjúsablon az abszolút kezdetleges proaktivitás, empátia és önreflexió mélyreható értékeléséhez Kulcsár Vencél számára; 45-60 perces strukturált felmérés senior interjúzóval 12 fókuszkérdéssel és értékelési kritériumokkal."
+description_source: auto
+description_hash: 945e751ac90124f6
+id: 1ec4123f-f2b1-487d-9362-e787fd1f4713
+index_schema_version: 1
+bdos_index: true
+---
 # 3. Interjú - Cultural Deep Dive Template
 ## Kulcsár Vencél
 

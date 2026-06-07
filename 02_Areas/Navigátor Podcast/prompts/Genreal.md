@@ -1,3 +1,15 @@
+---
+title: "Genreal"
+date: 2026-02-03
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Közösség Patreon oldala kéthetente egy-egy alapelvvel foglalkozik elméleti és gyakorlati szinten, személyes történeteken keresztül mutatva be azok alkalmazását az élet különböző területein."
+description_source: auto
+description_hash: 0b6f251e9628c892
+id: 939c2f8d-221a-47e6-9379-d6fe7e9c267b
+index_schema_version: 1
+bdos_index: true
+---
 ### **Navigátor Közösség – Patreon oldal célja és kontextusa**  
 
 **Cél:**  

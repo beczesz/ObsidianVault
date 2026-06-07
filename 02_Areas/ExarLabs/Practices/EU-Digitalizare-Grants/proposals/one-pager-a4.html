@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<!--
+  ExarLabs digitalizációs pályázat, A4 egylapos one-pager (HU)
+  2026-05-30. Live Exar Design System (Bricolage Grotesque + Hanken Grotesk, navy + clay, OKLCH).
+  Egyetlen A4 oldal, diagramokkal (donut 90/10, folyamat-flow, idővonal). PDF-ready (@page A4).
+  RegioConsult: partnerként.
+-->
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digitalizációs pályázat A4 | ExarLabs</title>
+<link rel="icon" type="image/png" href="exar-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy-900: oklch(0.20 0.05 256);
+    --navy-800: oklch(0.26 0.07 256);
+    --navy-700: oklch(0.32 0.09 256);
+    --navy-100: oklch(0.94 0.025 256);
+    --clay-600: oklch(0.62 0.13 50);
+    --clay-500: oklch(0.71 0.135 56);
+    --clay-400: oklch(0.80 0.115 60);
+    --clay-100: oklch(0.95 0.03 66);
+    --bg: oklch(0.987 0.004 250);
+    --surface: oklch(0.965 0.006 250);
+    --ink: oklch(0.24 0.03 256);
+    --ink-muted: oklch(0.44 0.03 256);
+    --line: oklch(0.90 0.008 250);
+    --on-navy: oklch(0.97 0.01 250);
+    --on-navy-muted: oklch(0.84 0.035 256);
+    --font-display: "Bricolage Grotesque", Georgia, serif;
+    --font-body: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: oklch(0.90 0.01 256); font-family: var(--font-body); color: var(--ink); -webkit-font-smoothing: antialiased; }
+
+  /* A4 sheet */
+  .sheet {
+    width: 210mm; min-height: 297mm; margin: 14px auto; background: var(--bg);
+    box-shadow: 0 8px 40px rgba(0,0,0,.22); display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .pad { padding: 9mm 12mm; flex: 1; display: flex; flex-direction: column; gap: 3.7mm; }
+
+  h1, h2, h3, .num, .stat-n, .don-n, .step-no { font-family: var(--font-display); letter-spacing: -0.02em; }
+
+  /* Topbar */
+  .topbar { display: flex; align-items: center; justify-content: space-between; }
+  .brand { display: flex; align-items: center; gap: 8px; }
+  .brand img { width: 34px; height: 34px; }
+  .brand .wm { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--navy-900); }
+  .topbar .meta { font-size: 9.5px; color: var(--ink-muted); text-align: right; line-height: 1.35; text-transform: uppercase; letter-spacing: .08em; }
+  .topbar .meta b { color: var(--navy-700); }
+
+  /* Hero row */
+  .hero { display: grid; grid-template-columns: 1fr 46mm; gap: 8mm; align-items: center;
+          background: var(--navy-700); color: var(--on-navy); border-radius: 12px; padding: 6mm 8mm; }
+  .hero h1 { color: var(--on-navy); font-weight: 700; font-size: 27px; line-height: 1.06; text-wrap: balance; }
+  a:focus-visible, [href]:focus-visible { outline: 3px solid var(--clay-500); outline-offset: 2px; border-radius: 3px; }
+  .hero p { color: var(--on-navy-muted); font-size: 12.5px; line-height: 1.5; margin-top: 3mm; max-width: 42ch; }
+  .hero p strong { color: var(--on-navy); }
+
+  /* Donut */
+  .donut { text-align: center; }
+  .donut svg { width: 38mm; height: 38mm; display: block; margin: 0 auto; }
+  .don-center { font-family: var(--font-display); }
+  .donut .cap { color: var(--on-navy-muted); font-size: 9.5px; margin-top: 1.5mm; line-height: 1.35; }
+  .donut .cap b { color: var(--clay-400); }
+  .don-track { fill: none; stroke: var(--on-navy-muted); }
+  .don-arc { fill: none; stroke: var(--clay-500); }
+  .don-pct { fill: var(--on-navy); font-family: var(--font-display); font-weight: 700; font-size: 30px; }
+  .don-lbl { fill: var(--on-navy-muted); font-family: var(--font-body); font-size: 9px; }
+
+  /* Stats strip */
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; }
+  .stat { border-top: 2px solid var(--navy-700); padding-top: 2mm; }
+  .stat-n { font-weight: 700; font-size: 22px; color: var(--navy-800); line-height: 1; }
+  .stat-l { font-size: 9.5px; color: var(--ink-muted); margin-top: 1.4mm; line-height: 1.35; }
+
+  /* Two columns */
+  .twocol { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; }
+  .block h3 { font-size: 13px; color: var(--navy-800); margin-bottom: 2mm; }
+  .block ul { list-style: none; }
+  .block li { font-size: 11.5px; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 1.4mm; }
+  .block li::before { content: ""; position: absolute; left: 0; top: 5px; width: 4px; height: 4px; border-radius: 1px; background: var(--clay-500); }
+
+  /* Section label */
+  .seclabel { font-size: 9.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: oklch(0.50 0.12 48); margin-bottom: 2.5mm; }
+
+  /* Process flow */
+  .flow { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; align-items: stretch; gap: 0; }
+  .node { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 3.5mm 4mm; }
+  .node .step-no { font-size: 18px; font-weight: 700; color: var(--clay-600); line-height: 1; }
+  .node h3 { font-size: 12px; color: var(--navy-800); margin: 1mm 0; }
+  .node p { font-size: 10.5px; color: var(--ink-muted); line-height: 1.45; }
+  .arrow { display: flex; align-items: center; justify-content: center; width: 8mm; color: var(--clay-500); font-size: 16px; }
+
+  /* Timeline */
+  .timeline { background: var(--surface); border-radius: 10px; padding: 5mm 6mm 4mm; }
+  .tl-track { position: relative; height: 2px; background: var(--line); margin: 6mm 4% 4mm; }
+  .tl-fill { position: absolute; left: 0; top: 0; height: 2px; width: 20%; background: var(--clay-500); }
+  .tl-pt { position: absolute; top: -3px; width: 8px; height: 8px; border-radius: 999px; background: var(--navy-700); transform: translateX(-50%); }
+  .tl-pt.now { background: var(--clay-500); width: 11px; height: 11px; top: -4.5px; box-shadow: 0 0 0 3px var(--clay-100); }
+  .tl-pt.p1 { left: 20%; } .tl-pt.p2 { left: 62%; } .tl-pt.p3 { left: 100%; }
+  .tl-labels { display: grid; grid-template-columns: 22% 42% 36%; }
+  .tl-l { font-size: 10px; line-height: 1.4; }
+  .tl-l .t { font-family: var(--font-display); font-weight: 700; font-size: 11px; color: var(--navy-800); display: block; }
+  .tl-l.now .t { color: var(--clay-600); }
+  .tl-l.mid { text-align: center; } .tl-l.end { text-align: right; }
+
+  /* Studio + partner line */
+  .who { display: grid; grid-template-columns: 1fr 1fr; gap: 7mm; font-size: 11px; line-height: 1.5; color: var(--ink-muted); }
+  .who b { font-family: var(--font-display); color: var(--navy-700); }
+  .who em { font-family: var(--font-display); color: var(--navy-700); font-style: italic; }
+
+  /* Contact footer band */
+  .foot { margin-top: auto; background: var(--navy-900); color: var(--on-navy); border-radius: 12px; padding: 6mm 8mm;
+          display: flex; align-items: center; justify-content: space-between; gap: 6mm; flex-wrap: wrap; }
+  .foot .cta-h { font-family: var(--font-display); font-weight: 700; font-size: 15.5px; color: var(--on-navy); line-height: 1.15; max-width: 54mm; }
+  .foot .lines { display: flex; flex-direction: column; gap: 1mm; }
+  .foot .big { font-family: var(--font-display); font-weight: 700; font-size: 21px; color: var(--clay-500); text-decoration: none; line-height: 1.1; }
+  .foot .small { font-size: 9px; color: var(--on-navy-muted); }
+  .foot .pill { background: var(--clay-500); color: var(--navy-900); font-weight: 700; font-size: 11px; padding: 2.8mm 5mm; border-radius: 7px; text-align: center; }
+
+  .disclaimer { font-size: 8.5px; color: var(--ink-muted); line-height: 1.4; text-align: center; }
+
+  @media print {
+    body { background: #fff; }
+    .sheet { box-shadow: none; margin: 0; width: auto; min-height: auto; }
+    .hero, .foot, .node, .timeline, .stat, .tl-pt, .don, .donut, .tl-fill { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+  @page { size: A4; margin: 0; }
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="pad">
+
+    <!-- Topbar -->
+    <div class="topbar">
+      <div class="brand">
+        <img src="exar-logo.png" alt="ExarLabs" width="34" height="34">
+        <span class="wm">ExarLabs</span>
+      </div>
+      <div class="meta">Régió Központ digitalizációs pályázat 2026<br>Pályázati partner: <b>RegioConsult</b></div>
+    </div>
+
+    <!-- Hero + donut -->
+    <div class="hero">
+      <div>
+        <h1>Digitalizáld a céged akár 200&nbsp;000 euró uniós támogatásból.</h1>
+        <p>A Régió Központ pályázata a beruházás <strong>90 százalékát</strong> fedezi. Az ExarLabs megépíti a rendszert, a pályázatot partnerünk intézi. Te a cégedre figyelsz.</p>
+      </div>
+      <div class="donut">
+        <svg viewBox="0 0 120 120" role="img" aria-label="A támogatás a költség 90 százalékát fedezi, az önrész 10 százalék">
+          <circle class="don-track" cx="60" cy="60" r="50" stroke-width="15"/>
+          <circle class="don-arc" cx="60" cy="60" r="50" stroke-width="15"
+                  stroke-dasharray="282.7 31.4" transform="rotate(-90 60 60)"/>
+          <text class="don-pct" x="60" y="58" text-anchor="middle">90%</text>
+          <text class="don-lbl" x="60" y="74" text-anchor="middle">támogatás</text>
+        </svg>
+        <div class="cap">Önrész mindössze <b>10%</b><br>Példa: 100&nbsp;000 EUR projekt = 90&nbsp;000 támogatás + 10&nbsp;000 önrész</div>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats">
+      <div class="stat"><div class="stat-n">200&nbsp;000 EUR</div><div class="stat-l">Max. támogatás cégenként (min. 15&nbsp;000 EUR)</div></div>
+      <div class="stat"><div class="stat-n">90%</div><div class="stat-l">Támogatási arány, 10% önrész</div></div>
+      <div class="stat"><div class="stat-n">6 megye</div><div class="stat-l">Alba, Brassó, Kovászna, Hargita, Maros, Szeben</div></div>
+      <div class="stat"><div class="stat-n">24 hó</div><div class="stat-l">Max. projektidőtartam</div></div>
+    </div>
+
+    <!-- Mit / Ki -->
+    <div class="twocol">
+      <div class="block">
+        <h3>Mit finanszíroz</h3>
+        <ul>
+          <li>ERP, CRM, folyamat-automatizálás (RPA)</li>
+          <li>Mesterséges intelligencia, chatbot</li>
+          <li>Weboldal, webshop, e-számlázás</li>
+          <li>Kiberbiztonság, IoT, felhőszolgáltatás</li>
+          <li>Munkavállalói képzés (max. 5&nbsp;000 EUR)</li>
+        </ul>
+      </div>
+      <div class="block">
+        <h3>Ki pályázhat</h3>
+        <ul>
+          <li>Mikro-, kis- vagy középvállalkozás</li>
+          <li>Székhely a hat jogosult megye egyikében</li>
+          <li>Nem informatikai a fő tevékenység (nem IT-cég)</li>
+          <li>Bevétel a bejegyzett tevékenységből</li>
+          <li>Rendelkezésre álló de minimis keret</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Process flow -->
+    <div>
+      <div class="seclabel">Három lépés a támogatott digitalizációig</div>
+      <div class="flow">
+        <div class="node">
+          <div class="step-no">1</div>
+          <h3>Jogosultság-ellenőrzés</h3>
+          <p>Egy rövid, ingyenes beszélgetés: jogosult vagy-e, és mit érdemes digitalizálni.</p>
+        </div>
+        <div class="arrow">&rarr;</div>
+        <div class="node">
+          <div class="step-no">2</div>
+          <h3>Pályázat és terv</h3>
+          <p>A RegioConsult megírja a pályázatot, az ExarLabs megtervezi a projektet és az árat.</p>
+        </div>
+        <div class="arrow">&rarr;</div>
+        <div class="node">
+          <div class="step-no">3</div>
+          <h3>Megvalósítás</h3>
+          <p>A nyertes pályázat után megépítjük és átadjuk a megoldást, akár 90% támogatásból.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="timeline">
+      <div class="seclabel" style="margin-bottom:0;">Miért most: a felkészülés a kiírás előtt dől el</div>
+      <div class="tl-track">
+        <div class="tl-fill"></div>
+        <div class="tl-pt now p1"></div>
+        <div class="tl-pt p2"></div>
+        <div class="tl-pt p3"></div>
+      </div>
+      <div class="tl-labels">
+        <div class="tl-l now"><span class="t">Most</span>Felkészülés: terv és kivitelező. Itt vagyunk.</div>
+        <div class="tl-l mid"><span class="t">2026 nyár</span>A kiírás megnyílik, beadás a MySMIS rendszerben. Az ablak rövid.</div>
+        <div class="tl-l end"><span class="t">Ezután</span>Megvalósítás, max. 24 hónap.</div>
+      </div>
+    </div>
+
+    <!-- Who -->
+    <div class="who">
+      <div><b>ExarLabs:</b> AI-natív Frappe szoftverstúdió Székelyudvarhelyről. Tízfős csapat, a megépített rendszert és a kódot te birtoklod, nincs platform-fogság. <em>Exercitus Arce</em>, a citadella serege.</div>
+      <div><b>RegioConsult:</b> közel két évtized uniós pályázati tapasztalat, helyi irodákkal. A pályázatírás és a teljes lebonyolítás egy kézből.</div>
+    </div>
+
+    <!-- Contact footer -->
+    <div class="foot">
+      <div class="cta-h">Tudjuk meg együtt, jogosult-e a céged.</div>
+      <div class="lines">
+        <a href="tel:+40740507135" class="big">0740 507 135</a>
+        <a href="mailto:contact@exar.ro" class="big">contact@exar.ro</a>
+        <span class="small">ExarGroups SRL · str. Orbán Balázs 9., Székelyudvarhely · RO41839221</span>
+      </div>
+      <div class="pill">Ingyenes<br>jogosultság-<br>ellenőrzés</div>
+    </div>
+
+    <div class="disclaimer">A pályázati adatok tájékoztató jellegűek, a hivatalos Ghidul Solicitantului konzultációs változata (2026) alapján; a benyújtási határidő a végleges kiírásban jelenik meg. De minimis támogatási rezsim. A pályázat a kedvezményezett vállalkozás nevén fut.</div>
+
+  </div>
+</div>
+</body>
+</html>

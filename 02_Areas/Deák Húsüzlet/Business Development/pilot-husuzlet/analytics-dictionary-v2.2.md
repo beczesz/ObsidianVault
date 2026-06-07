@@ -1,5 +1,8 @@
 ---
 title: DH Analytics Dictionary
+description: "A DH Analytics szótár az 1-26. közötti analytics eventeket katalogizálja, megjelölve azok GA4-ben mért státuszát: 10 tökéletesen működő, 4 javítandó paraméter-probléma, 4 ellenőrizendő esemény és 8 hiányzó implementáció. Célja hogy fejlesztőknek és termék-csapatnak jól áttekinthető lista legyen a szá"
+description_source: auto
+description_hash: 25c7b1d97d66f906
 version: v2.2
 updated: 2026-04-29
 source: "GA4 Events audit (Apr 1-28, 2026) + Mate feedback + Szabolcs review"
@@ -10,7 +13,6 @@ single_ticket: DH-181
 id: c1bf3d55-7a33-45b5-a7a4-f1f5c0c178e1
 index_schema_version: 1
 ---
-
 # DH Analytics Dictionary v2.2
 
 ## Gyors áttekintés

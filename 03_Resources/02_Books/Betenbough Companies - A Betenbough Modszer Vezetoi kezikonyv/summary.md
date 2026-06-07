@@ -1,5 +1,8 @@
 ---
 title: A Betenbough Módszer Vezetői kézikönyv
+description: "A Texas home-building company's leadership manual integrating Christian faith into corporate governance, addressing spiritual formation, team accountability, feedback culture, and kingdom-oriented business practices for managers and organizational leaders."
+description_source: auto
+description_hash: 270010b53dcb1e37
 type: book
 author: Betenbough Companies management team
 year: 2025
@@ -22,7 +25,6 @@ processed_date: 2025-08-31
 id: 358aaf19-8b4a-4332-8e39-fd1b5e213cd8
 index_schema_version: 1
 ---
-
 # A Betenbough Módszer Vezetői kézikönyv – Summary
 
 ## Abstract and thesis

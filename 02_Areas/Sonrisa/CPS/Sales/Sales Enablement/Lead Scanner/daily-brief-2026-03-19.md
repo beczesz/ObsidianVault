@@ -1,12 +1,14 @@
 ---
 title: CPS Daily Lead Brief
+description: "Daily pipeline of 12 qualified leads for CPS cloud infrastructure services, with 5 hot prospects (score 8+) including Allonic, Chatlyn, BitNinja Security, Genezio, and Orbotix Industries. Details include funding signals, why CPS fits, suggested packages, and personalized outreach strategies for each company."
+description_source: auto
+description_hash: b02ad419503fe218
 date: 2026-03-19
 leads_found: 8
 hot_leads: 5
 id: 3af2a1a5-9b75-453d-a6a6-7a1cefe37011
 index_schema_version: 1
 ---
-
 # CPS Daily Lead Brief - 2026-03-19
 
 ## Summary

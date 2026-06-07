@@ -1,3 +1,15 @@
+---
+title: "WP40 – Fegyelmezés | Gál Ildikó | EP40 — Végleges Metaadat Csomag"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Gál Ildikó gyermekvédelmi szakértővel készült podcast epizód a tudatos fegyelmezésről, hazugság kezeléséről és szülői határok meghúzásáról. Szülők és nevelésre kíváncsiak számára készült, gyakorlati technikákat és valós történeteket tartalmaz."
+description_source: auto
+description_hash: ee38d3823081adf3
+id: 45336e78-78ed-450c-ae82-1d4ccb2a9c84
+index_schema_version: 1
+bdos_index: true
+---
 # WP40 – Fegyelmezés | Gál Ildikó | EP40 — Végleges Metaadat Csomag
 
 **Dátum:** 2026-04-09

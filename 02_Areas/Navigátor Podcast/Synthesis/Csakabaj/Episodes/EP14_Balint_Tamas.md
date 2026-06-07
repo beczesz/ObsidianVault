@@ -1,4 +1,7 @@
 ---
+description: "Interjú Bálint Tamással, könyvelővel és szinesztétával, aki részletez arról, hogyan jelenik meg a szinesztézia a mindennapi munkájában, valamint az erkölcsi dimenziók az szellemi munkavégzésben. Tartalmazza az epizód dramaturgiáját, főbb témablokkjait és Levi interjúvezetői szerepét."
+description_source: auto
+description_hash: acd5b5721a580765
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -15,7 +18,6 @@ quality: "Gold Standard"
 id: 8fa977d1-cb70-46a1-b81f-20156c1450c6
 index_schema_version: 1
 ---
-
 # EP14 — Bálint Tamás: Amikor a számokból elegem van, akkor a betűk kikapcsolnak
 
 ## Alapadatok

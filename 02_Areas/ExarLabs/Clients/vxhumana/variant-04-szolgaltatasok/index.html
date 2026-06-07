@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vox Humana — Az Erdélyi Szakrális Örökség Őrzői</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --black: #000000;
+            --white: #FFFFFF;
+            --copper: #D4622B;
+            --copper-dark: #b8521f;
+            --gray: #F5F3F0;
+            --gray-warm: #EDE8E2;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'DM Sans', sans-serif;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--black);
+            background: var(--white);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ============ NAVBAR ============ */
+        .navbar {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            padding: 1.5rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            transition: background 0.4s ease, padding 0.3s ease, box-shadow 0.3s ease;
+        }
+        .navbar.scrolled {
+            background: var(--white);
+            padding: 1rem 3rem;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+        }
+        .navbar-left { display: flex; align-items: center; gap: 1.5rem; }
+        .navbar-logo {
+            font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;
+            letter-spacing: 0.15em; color: var(--black); text-decoration: none;
+            transition: color 0.3s;
+        }
+        .navbar.hero-visible .navbar-logo { color: var(--white); }
+        .navbar.scrolled .navbar-logo { color: var(--black); }
+
+        /* Language Switcher */
+        .lang-switch {
+            display: flex; gap: 0; border-radius: 4px; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: border-color 0.3s;
+        }
+        .navbar.scrolled .lang-switch { border-color: #ddd; }
+        .lang-switch button {
+            background: transparent; border: none; cursor: pointer;
+            font-family: var(--font-display); font-size: 0.7rem; font-weight: 600;
+            letter-spacing: 0.1em; padding: 0.35rem 0.7rem;
+            color: rgba(255,255,255,0.6); transition: all 0.3s;
+        }
+        .navbar.scrolled .lang-switch button { color: #999; }
+        .lang-switch button.active {
+            background: var(--copper); color: var(--white);
+        }
+        .lang-switch button:not(.active):hover { color: var(--white); }
+        .navbar.scrolled .lang-switch button:not(.active):hover { color: var(--black); }
+
+        .navbar-right { display: flex; align-items: center; gap: 1.5rem; }
+
+        .hamburger {
+            width: 32px; height: 24px; position: relative; cursor: pointer; z-index: 1001;
+        }
+        .hamburger span {
+            display: block; width: 100%; height: 2px; background: var(--black);
+            position: absolute; transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .navbar.hero-visible .hamburger span { background: var(--white); }
+        .navbar.scrolled .hamburger span { background: var(--black); }
+        .hamburger span:nth-child(1) { top: 0; }
+        .hamburger span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .hamburger span:nth-child(3) { bottom: 0; }
+        .hamburger.active span:nth-child(1) { top: 50%; transform: translateY(-50%) rotate(45deg); background: var(--white); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { bottom: 50%; transform: translateY(50%) rotate(-45deg); background: var(--white); }
+
+        /* ============ FULLSCREEN MENU ============ */
+        .menu-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--black); z-index: 999;
+            display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .menu-overlay.active { opacity: 1; pointer-events: all; }
+        .menu-overlay nav { text-align: center; }
+        .menu-overlay nav a {
+            display: block; font-family: var(--font-display);
+            font-size: clamp(2rem, 5vw, 4rem); font-weight: 700;
+            color: var(--white); text-decoration: none; margin: 0.4em 0;
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s;
+        }
+        .menu-overlay.active nav a { opacity: 1; transform: translateY(0); }
+        .menu-overlay.active nav a:nth-child(1) { transition-delay: 0.1s; }
+        .menu-overlay.active nav a:nth-child(2) { transition-delay: 0.15s; }
+        .menu-overlay.active nav a:nth-child(3) { transition-delay: 0.2s; }
+        .menu-overlay.active nav a:nth-child(4) { transition-delay: 0.25s; }
+        .menu-overlay.active nav a:nth-child(5) { transition-delay: 0.3s; }
+        .menu-overlay.active nav a:nth-child(6) { transition-delay: 0.35s; }
+        .menu-overlay nav a:hover { color: var(--copper); }
+
+        /* ============ HERO ============ */
+        .hero {
+            min-height: 100vh; position: relative;
+            display: flex; align-items: flex-end; overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover; filter: brightness(0.4);
+            transform: scale(1.05); transition: transform 12s ease;
+        }
+        .hero:hover .hero-bg { transform: scale(1); }
+        .hero-content {
+            position: relative; z-index: 2; padding: 6rem 5rem; max-width: 800px;
+        }
+        .hero-tag {
+            font-family: var(--font-display); font-size: 0.85rem; font-weight: 500;
+            letter-spacing: 0.25em; text-transform: uppercase; color: var(--copper);
+            margin-bottom: 1.5rem;
+        }
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.8rem, 5vw, 5rem); font-weight: 700;
+            line-height: 1.05; letter-spacing: -0.02em; color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+        .hero-line { width: 80px; height: 4px; background: var(--copper); margin-bottom: 1.5rem; }
+        .hero-subtitle {
+            font-family: var(--font-body); font-size: 1.15rem; font-weight: 400;
+            color: rgba(255,255,255,0.7); letter-spacing: 0.08em;
+            max-width: 550px; line-height: 1.7;
+        }
+
+        /* ============ MANIFESTO ============ */
+        .manifesto { padding: 8rem 3rem; text-align: center; background: var(--white); }
+        .manifesto-text {
+            max-width: 900px; margin: 0 auto;
+            font-family: var(--font-display);
+            font-size: clamp(1.2rem, 2.2vw, 1.8rem); font-weight: 400;
+            line-height: 1.7; letter-spacing: 0.02em;
+        }
+        .manifesto-text em { color: var(--copper); font-style: normal; font-weight: 600; }
+        .manifesto-line { width: 60px; height: 3px; background: var(--copper); margin: 3rem auto 0; }
+
+        /* ============ SERVICES OVERVIEW ============ */
+        .services-overview {
+            background: var(--black); padding: 6rem 3rem; text-align: center;
+        }
+        .services-overview h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 4vw, 3.5rem); font-weight: 700;
+            color: var(--white); margin-bottom: 1rem; letter-spacing: -0.02em;
+        }
+        .services-overview .subtitle {
+            font-size: 1rem; color: #888; letter-spacing: 0.15em;
+            text-transform: uppercase; margin-bottom: 4rem;
+        }
+        .services-icons {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 2rem; max-width: 1000px; margin: 0 auto;
+        }
+        .service-icon-card {
+            padding: 2.5rem 1.5rem; border: 1px solid #333;
+            transition: border-color 0.4s, transform 0.3s; cursor: pointer;
+            text-decoration: none; display: block;
+        }
+        .service-icon-card:hover { border-color: var(--copper); transform: translateY(-4px); }
+        .service-icon-card .icon-wrap {
+            width: 56px; height: 56px; margin: 0 auto 1.2rem;
+            display: flex; align-items: center; justify-content: center;
+            border: 1px solid var(--copper); border-radius: 50%;
+        }
+        .service-icon-card .icon-wrap svg {
+            width: 26px; height: 26px; stroke: var(--copper); stroke-width: 1.5;
+        }
+        .service-icon-card h3 {
+            font-family: var(--font-display); font-size: 1rem; font-weight: 600;
+            color: var(--white); letter-spacing: 0.05em; margin-bottom: 0.8rem;
+        }
+        .service-icon-card p { font-size: 0.85rem; color: #999; line-height: 1.5; }
+
+        /* ============ SERVICES STRIP ============ */
+        .services-strip {
+            display: grid; grid-template-columns: 1fr 1fr; min-height: 70vh;
+        }
+        .services-strip.reverse .strip-image { order: 2; }
+        .services-strip.reverse .strip-text { order: 1; }
+        .strip-image { position: relative; overflow: hidden; }
+        .strip-image img {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: grayscale(30%);
+            transition: filter 0.6s ease, transform 0.6s ease;
+        }
+        .strip-image:hover img { filter: grayscale(0%); transform: scale(1.02); }
+        .strip-text {
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 4rem 5rem;
+        }
+        .strip-text.bg-gray { background: var(--gray); }
+        .strip-text.bg-warm { background: var(--gray-warm); }
+        .strip-text.bg-white { background: var(--white); }
+        .strip-tag {
+            font-family: var(--font-display); font-size: 0.75rem; font-weight: 600;
+            letter-spacing: 0.2em; text-transform: uppercase; color: var(--copper);
+            margin-bottom: 1rem;
+        }
+        .strip-text h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 700;
+            margin-bottom: 1.5rem; letter-spacing: -0.01em; line-height: 1.1;
+        }
+        .strip-text p {
+            font-size: 1.05rem; color: #444; margin-bottom: 1.5rem;
+            max-width: 480px; line-height: 1.7;
+        }
+        .strip-list { list-style: none; margin-bottom: 2rem; }
+        .strip-list li {
+            font-size: 0.95rem; color: #555; padding: 0.4rem 0 0.4rem 1.5rem;
+            position: relative;
+        }
+        .strip-list li::before {
+            content: ''; position: absolute; left: 0; top: 0.85rem;
+            width: 8px; height: 2px; background: var(--copper);
+        }
+        .stat {
+            font-family: var(--font-display); font-size: 3.5rem; font-weight: 700;
+            color: var(--copper); margin-bottom: 0.3rem;
+        }
+        .stat-label {
+            font-size: 0.9rem; text-transform: uppercase;
+            letter-spacing: 0.15em; color: #666;
+        }
+        .badge-new {
+            display: inline-block; background: var(--copper); color: var(--white);
+            font-family: var(--font-display); font-size: 0.65rem; font-weight: 700;
+            letter-spacing: 0.15em; padding: 0.25rem 0.6rem;
+            margin-left: 0.5rem; vertical-align: middle;
+        }
+
+        /* ============ CTA BAND ============ */
+        .cta-band {
+            background: var(--copper); padding: 5rem 3rem;
+            display: flex; align-items: center; justify-content: space-between;
+            gap: 3rem; flex-wrap: wrap;
+        }
+        .cta-band-text { max-width: 700px; }
+        .cta-band h2 {
+            font-family: var(--font-display);
+            font-size: clamp(1.8rem, 3vw, 2.5rem); font-weight: 700;
+            color: var(--white); margin-bottom: 1rem; line-height: 1.15;
+        }
+        .cta-band p { font-size: 1.05rem; color: rgba(255,255,255,0.85); line-height: 1.7; }
+        .btn-white {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--white); color: var(--black);
+            padding: 1.1rem 2.5rem; font-family: var(--font-display);
+            font-size: 1rem; font-weight: 600; text-decoration: none;
+            letter-spacing: 0.05em; transition: background 0.3s ease, transform 0.3s ease;
+            white-space: nowrap;
+        }
+        .btn-white:hover { background: var(--gray); transform: translateX(4px); }
+
+        /* ============ PORTFOLIO ============ */
+        .portfolio { padding: 8rem 3rem; background: var(--white); }
+        .portfolio-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 4rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .portfolio-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4.5rem); font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+        .portfolio-count {
+            font-family: var(--font-display); font-size: 1rem;
+            color: #999; letter-spacing: 0.1em;
+        }
+        .portfolio-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: auto auto; gap: 1.5rem;
+        }
+        .portfolio-item {
+            position: relative; overflow: hidden; cursor: pointer; aspect-ratio: 4/3;
+        }
+        .portfolio-item:nth-child(1) { grid-column: span 2; aspect-ratio: 16/9; }
+        .portfolio-item img {
+            width: 100%; height: 100%; object-fit: cover;
+            transition: filter 0.5s ease, transform 0.5s ease;
+        }
+        .portfolio-item:hover img { filter: grayscale(0%); transform: scale(1.05); }
+        .portfolio-item .overlay {
+            position: absolute; bottom: 0; left: 0; right: 0; padding: 2rem;
+            background: linear-gradient(transparent, rgba(0,0,0,0.8));
+            transform: translateY(100%);
+            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+        .portfolio-item:hover .overlay { transform: translateY(0); }
+        .overlay-name {
+            font-family: var(--font-display); font-size: 1.2rem;
+            font-weight: 600; color: var(--white);
+        }
+        .overlay-type {
+            font-size: 0.8rem; color: var(--copper);
+            letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem;
+        }
+
+        /* ============ TEAM ============ */
+        .team { background: var(--black); padding: 8rem 3rem; }
+        .team-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 4rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .team-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 700;
+            color: var(--copper); letter-spacing: -0.02em;
+        }
+        .team-tagline { font-size: 1rem; color: #666; max-width: 400px; text-align: right; }
+        .team-grid {
+            display: grid; grid-template-columns: repeat(2, 1fr);
+            gap: 3rem; max-width: 900px; margin: 0 auto;
+        }
+        .team-member { text-align: center; }
+        .team-member img {
+            width: 100%; aspect-ratio: 3/4; object-fit: cover; object-position: top;
+            filter: grayscale(40%); transition: filter 0.5s ease; margin-bottom: 1.5rem;
+        }
+        .team-member:hover img { filter: grayscale(0%); }
+        .team-member h3 {
+            font-family: var(--font-display); font-size: 1.4rem;
+            font-weight: 600; color: var(--white); margin-bottom: 0.4rem;
+        }
+        .team-member .role {
+            font-size: 0.9rem; color: var(--copper);
+            letter-spacing: 0.08em; margin-bottom: 0.8rem;
+        }
+        .team-member .bio {
+            font-size: 0.85rem; color: #888; line-height: 1.6;
+            max-width: 350px; margin: 0 auto;
+        }
+
+        /* ============ CONTACT ============ */
+        .contact {
+            display: grid; grid-template-columns: 1fr 1fr; min-height: 70vh;
+        }
+        .contact-text {
+            display: flex; flex-direction: column; justify-content: center;
+            padding: 5rem; background: var(--gray);
+        }
+        .contact-text h2 {
+            font-family: var(--font-display);
+            font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 700;
+            margin-bottom: 1rem; line-height: 1.1; letter-spacing: -0.02em;
+        }
+        .contact-text .lead {
+            font-size: 1.05rem; color: #666; margin-bottom: 2.5rem; line-height: 1.7;
+        }
+        .contact-info { margin-bottom: 2.5rem; }
+        .contact-info p { font-size: 1.05rem; margin-bottom: 0.8rem; color: #333; }
+        .contact-info a {
+            color: var(--black); text-decoration: none; transition: color 0.3s;
+        }
+        .contact-info a:hover { color: var(--copper); }
+        .btn-copper {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--copper); color: var(--white);
+            padding: 1rem 2.5rem; font-family: var(--font-display);
+            font-size: 1rem; font-weight: 600; text-decoration: none;
+            letter-spacing: 0.05em;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+        .btn-copper:hover { background: var(--copper-dark); transform: translateX(4px); }
+        .contact-image { position: relative; overflow: hidden; }
+        .contact-image img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            background: var(--black); padding: 2rem 3rem;
+            display: flex; justify-content: space-between; align-items: center;
+            border-top: 1px solid #222;
+        }
+        .footer p { font-size: 0.85rem; color: #666; }
+        .footer a {
+            color: #666; text-decoration: none; font-size: 0.85rem;
+            transition: color 0.3s;
+        }
+        .footer a:hover { color: var(--copper); }
+
+        /* ============ ANIMATIONS ============ */
+        .reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-left {
+            opacity: 0; transform: translateX(-60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-left.visible { opacity: 1; transform: translateX(0); }
+        .reveal-right {
+            opacity: 0; transform: translateX(60px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+        /* ============ i18n — hide inactive lang ============ */
+        [data-lang="ro"] { display: none; }
+        html[lang="ro"] [data-lang="hu"] { display: none; }
+        html[lang="ro"] [data-lang="ro"] { display: block; }
+        /* inline spans */
+        span[data-lang="ro"] { display: none; }
+        html[lang="ro"] span[data-lang="hu"] { display: none; }
+        html[lang="ro"] span[data-lang="ro"] { display: inline; }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1024px) {
+            .hero-content { padding: 4rem 3rem; }
+            .services-strip { grid-template-columns: 1fr; min-height: auto; }
+            .services-strip.reverse .strip-image { order: 0; }
+            .services-strip.reverse .strip-text { order: 0; }
+            .strip-image { min-height: 50vh; }
+            .strip-text { padding: 4rem 3rem; }
+            .services-icons { grid-template-columns: repeat(3, 1fr); }
+            .portfolio-grid { grid-template-columns: 1fr 1fr; }
+            .portfolio-item:nth-child(1) { grid-column: span 2; }
+            .contact { grid-template-columns: 1fr; }
+            .contact-image { min-height: 40vh; }
+            .team-grid { max-width: 700px; }
+            .cta-band { flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 768px) {
+            .navbar { padding: 1.2rem 1.5rem; }
+            .navbar.scrolled { padding: 1rem 1.5rem; }
+            .hero-content { padding: 3rem 1.5rem; }
+            .services-icons { grid-template-columns: 1fr; max-width: 400px; }
+            .portfolio-grid { grid-template-columns: 1fr; }
+            .portfolio-item:nth-child(1) { grid-column: span 1; }
+            .team-grid { grid-template-columns: 1fr; max-width: 400px; }
+            .contact-text { padding: 3rem 1.5rem; }
+            .manifesto, .portfolio, .team { padding: 5rem 1.5rem; }
+            .footer { flex-direction: column; gap: 1rem; text-align: center; }
+            .cta-band { padding: 4rem 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- ============ NAVBAR ============ -->
+    <header class="navbar hero-visible">
+        <div class="navbar-left">
+            <a href="#" class="navbar-logo">VOX HUMANA</a>
+        </div>
+        <div class="navbar-right">
+            <div class="lang-switch">
+                <button class="active" data-set-lang="hu">HU</button>
+                <button data-set-lang="ro">RO</button>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- ============ FULLSCREEN MENU ============ -->
+    <div class="menu-overlay" id="menuOverlay">
+        <nav>
+            <a href="#hero" data-menu-link>
+                <span data-lang="hu">Főoldal</span>
+                <span data-lang="ro">Acasă</span>
+            </a>
+            <a href="#services-overview" data-menu-link>
+                <span data-lang="hu">Szolgáltatások</span>
+                <span data-lang="ro">Servicii</span>
+            </a>
+            <a href="#szakralis" data-menu-link>
+                <span data-lang="hu">Szakrális Belső</span>
+                <span data-lang="ro">Interior Sacru</span>
+            </a>
+            <a href="#portfolio" data-menu-link>
+                <span data-lang="hu">Referenciák</span>
+                <span data-lang="ro">Portofoliu</span>
+            </a>
+            <a href="#team" data-menu-link>
+                <span data-lang="hu">Csapat</span>
+                <span data-lang="ro">Echipă</span>
+            </a>
+            <a href="#contact" data-menu-link>
+                <span data-lang="hu">Kapcsolat</span>
+                <span data-lang="ro">Contact</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- ============ HERO ============ -->
+    <section class="hero" id="hero">
+        <img class="hero-bg" src="../original-site/voxhumana.ro/sites/default/files/2019-10/Szarhegyi Orgona.jpg" alt="Gyergyószárhegyi orgona a templomban">
+        <div class="hero-content">
+            <p class="hero-tag" data-lang="hu">Orgonaépítés &middot; Restaurálás &middot; Örökségvédelem</p>
+            <p class="hero-tag" data-lang="ro">Construcție de orgă &middot; Restaurare &middot; Conservare</p>
+
+            <h1 class="hero-title" data-lang="hu">AZ ERDÉLYI SZAKRÁLIS ÖRÖKSÉG ŐRZŐI</h1>
+            <h1 class="hero-title" data-lang="ro">PĂZITORII PATRIMONIULUI SACRU TRANSILVAN</h1>
+
+            <div class="hero-line"></div>
+
+            <p class="hero-subtitle" data-lang="hu">Ahol a csend zenévé válik. Orgonák, templomi belsőterek és műtárgyak komplex restaurálása egyetlen kézből.</p>
+            <p class="hero-subtitle" data-lang="ro">Unde liniștea devine muzică. Restaurarea complexă a orgilor, interioarele bisericești și a obiectelor de artă — dintr-o singură sursă.</p>
+        </div>
+    </section>
+
+    <!-- ============ MANIFESTO ============ -->
+    <section class="manifesto">
+        <p class="manifesto-text reveal" data-lang="hu">Románia egyetlen műhelye, ahol egy orgona minden alkotóeleme — a fémsíptól a faszekrényig — <em>egy fedél alatt készül.</em> Ugyanezzel a precizitással gondozzuk az erdélyi templomok teljes belső örökségét.</p>
+        <p class="manifesto-text reveal" data-lang="ro">Singurul atelier din România în care fiecare componentă a unei orgi — de la tuburile metalice la corpul de lemn — <em>se fabrică sub același acoperiș.</em> Cu aceeași precizie îngrijim întregul patrimoniu interior al bisericilor transilvănene.</p>
+        <div class="manifesto-line reveal"></div>
+    </section>
+
+    <!-- ============ SERVICES OVERVIEW ============ -->
+    <section class="services-overview" id="services-overview">
+        <h2 class="reveal" data-lang="hu">SZOLGÁLTATÁSAINK</h2>
+        <h2 class="reveal" data-lang="ro">SERVICIILE NOASTRE</h2>
+        <p class="subtitle reveal" data-lang="hu">Egy műhely — teljes megoldás</p>
+        <p class="subtitle reveal" data-lang="ro">Un atelier — soluție completă</p>
+        <div class="services-icons">
+            <a href="#orgona" class="service-icon-card reveal">
+                <div class="icon-wrap"><i data-lucide="music"></i></div>
+                <h3 data-lang="hu">ORGONAÉPÍTÉS</h3>
+                <h3 data-lang="ro">CONSTRUCȚIE ORGĂ</h3>
+                <p data-lang="hu">Új orgonák tervezése és építése, történeti hangszerek restaurálása</p>
+                <p data-lang="ro">Proiectarea și construcția de orgi noi, restaurarea instrumentelor istorice</p>
+            </a>
+            <a href="#szakralis" class="service-icon-card reveal">
+                <div class="icon-wrap"><i data-lucide="church"></i></div>
+                <h3 data-lang="hu">SZAKRÁLIS BELSŐ</h3>
+                <h3 data-lang="ro">INTERIOR SACRU</h3>
+                <p data-lang="hu">Templomi belsőtér komplex restaurálás — padok, oltárok, szószékek</p>
+                <p data-lang="ro">Restaurarea complexă a interioarelor bisericești — bănci, altare, amvoane</p>
+            </a>
+            <a href="#fakonzervalas" class="service-icon-card reveal">
+                <div class="icon-wrap"><i data-lucide="thermometer"></i></div>
+                <h3 data-lang="hu">FAKONZERVÁLÁS</h3>
+                <h3 data-lang="ro">CONSERVARE LEMN</h3>
+                <p data-lang="hu">Hőkezeléses kártevőirtás és műtárgy-konzerválás kémiai szerek nélkül</p>
+                <p data-lang="ro">Dezinsecție prin tratament termic și conservarea obiectelor de artă fără chimicale</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- ============ SERVICE 1: ORGONAÉPÍTÉS ============ -->
+    <section id="orgona">
+        <div class="services-strip">
+            <div class="strip-image reveal-left">
+                <img src="../original-site/voxhumana.ro/themes/pegazus/images/orgonaepites-kategoria.jpg" alt="Orgonaépítés">
+            </div>
+            <div class="strip-text bg-gray reveal-right">
+                <span class="strip-tag" data-lang="hu">Alapszolgáltatás</span>
+                <span class="strip-tag" data-lang="ro">Serviciu de bază</span>
+                <h2 data-lang="hu">ORGONAÉPÍTÉS ÉS RESTAURÁLÁS</h2>
+                <h2 data-lang="ro">CONSTRUCȚIE ȘI RESTAURARE DE ORGI</h2>
+                <p data-lang="hu">Teljes orgonaépítés a tervezéstől az intonálásig. Történeti orgonák szakszerű restaurálása, az eredeti hangvilág és mechanika megőrzésével.</p>
+                <p data-lang="ro">Construcție completă de orgi, de la proiectare până la intonare. Restaurarea profesională a orgilor istorice, păstrând sonoritatea și mecanica originală.</p>
+                <ul class="strip-list" data-lang="hu">
+                    <li>Új orgonák tervezése és építése</li>
+                    <li>Történeti orgonák komplex restaurálása</li>
+                    <li>Hangolás és rendszeres karbantartás</li>
+                    <li>Akusztikai felmérés és tanácsadás</li>
+                    <li>Alkatrészgyártás egyedi megrendelésre</li>
+                </ul>
+                <ul class="strip-list" data-lang="ro">
+                    <li>Proiectarea și construcția de orgi noi</li>
+                    <li>Restaurarea complexă a orgilor istorice</li>
+                    <li>Acordaj și întreținere regulată</li>
+                    <li>Evaluare acustică și consultanță</li>
+                    <li>Fabricare de componente la comandă</li>
+                </ul>
+                <div class="stat">25+</div>
+                <div class="stat-label" data-lang="hu">restaurált orgona Erdélyben és a Kárpát-medencében</div>
+                <div class="stat-label" data-lang="ro">orgi restaurate în Transilvania și bazinul Carpatic</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SERVICE 2: SZAKRÁLIS BELSŐ (ÚJ) ============ -->
+    <section id="szakralis">
+        <div class="services-strip reverse">
+            <div class="strip-image reveal-right">
+                <img src="../original-site/voxhumana.ro/sites/default/files/2019-10/voxhumana-werk-20151103-17.jpg" alt="Famegmunkálás">
+            </div>
+            <div class="strip-text bg-warm reveal-left">
+                <span class="strip-tag" data-lang="hu">Új szolgáltatás</span>
+                <span class="strip-tag" data-lang="ro">Serviciu nou</span>
+                <h2 data-lang="hu">SZAKRÁLIS BELSŐ <span class="badge-new">ÚJ</span></h2>
+                <h2 data-lang="ro">INTERIOR SACRU <span class="badge-new">NOU</span></h2>
+                <p data-lang="hu">Egyablakos (turnkey) szolgáltatás egyházközségek számára. Egyetlen szerződéssel lefedünk mindent: az orgonától a padokon át az oltárig. Többé nem kell 3-4 külön vállalkozót keresni.</p>
+                <p data-lang="ro">Serviciu complet (la cheie) pentru parohii. Un singur contract acoperă totul: de la orgă, prin bănci, până la altar. Nu mai trebuie să căutați 3-4 firme diferite.</p>
+                <ul class="strip-list" data-lang="hu">
+                    <li>Padok, stallumok, szószékek restaurálása</li>
+                    <li>Oltárok és liturgikus bútorok felújítása</li>
+                    <li>Fafaragás, aranyozás, díszítőfestés</li>
+                    <li>Ikonok és festett táblák konzerválása</li>
+                    <li>Teljes belsőtér állapotfelmérés és dokumentáció</li>
+                    <li>EU és nemzeti pályázati dokumentáció támogatás</li>
+                </ul>
+                <ul class="strip-list" data-lang="ro">
+                    <li>Restaurarea băncilor, stranelor și amvoanelor</li>
+                    <li>Renovarea altarelor și mobilierului liturgic</li>
+                    <li>Sculptură în lemn, aurire, pictură decorativă</li>
+                    <li>Conservarea icoanelor și panourilor pictate</li>
+                    <li>Evaluarea completă a stării interioare și documentare</li>
+                    <li>Suport pentru documentația de finanțare UE și națională</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ SERVICE 3: FAKONZERVÁLÁS (ÚJ) ============ -->
+    <section id="fakonzervalas">
+        <div class="services-strip">
+            <div class="strip-image reveal-left">
+                <img src="../original-site/voxhumana.ro/sites/default/files/2019-10/voxhumana-werk-20151103-31.jpg" alt="Precíziós famegmunkálás">
+            </div>
+            <div class="strip-text bg-gray reveal-right">
+                <span class="strip-tag" data-lang="hu">Új szolgáltatás</span>
+                <span class="strip-tag" data-lang="ro">Serviciu nou</span>
+                <h2 data-lang="hu">MŰTÁRGY- ÉS FAKONZERVÁLÁS <span class="badge-new">ÚJ</span></h2>
+                <h2 data-lang="ro">CONSERVARE OBIECTE DE ARTĂ ȘI LEMN <span class="badge-new">NOU</span></h2>
+                <p data-lang="hu">Kártevőirtás és fakonzerválás szabályozott hőkezeléssel (55-60°C), kémiai szerek nélkül. A módszer hatékonyan elpusztítja a szúkat és molyokat anélkül, hogy a fa vagy a festék sérülne.</p>
+                <p data-lang="ro">Dezinsecție și conservare a lemnului prin tratament termic controlat (55-60°C), fără substanțe chimice. Metoda elimină eficient cariile și moliile fără a deteriora lemnul sau vopseaua.</p>
+                <ul class="strip-list" data-lang="hu">
+                    <li>Hőkezeléses kártevőirtás — vegyszermentes</li>
+                    <li>Történeti bútorok és műtárgyak konzerválása</li>
+                    <li>Múzeumi gyűjtemények kezelése</li>
+                    <li>Fa állapotfelmérés és diagnosztika</li>
+                    <li>Festett fa felületek restaurálása</li>
+                </ul>
+                <ul class="strip-list" data-lang="ro">
+                    <li>Dezinsecție termică — fără chimicale</li>
+                    <li>Conservarea mobilierului istoric și obiectelor de artă</li>
+                    <li>Tratarea colecțiilor muzeale</li>
+                    <li>Diagnosticarea și evaluarea stării lemnului</li>
+                    <li>Restaurarea suprafețelor de lemn pictat</li>
+                </ul>
+                <div class="stat">55°C</div>
+                <div class="stat-label" data-lang="hu">szabályozott hőkezelés — biztonságos és hatékony</div>
+                <div class="stat-label" data-lang="ro">tratament termic controlat — sigur și eficient</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CTA BAND ============ -->
+    <section class="cta-band reveal">
+        <div class="cta-band-text">
+            <h2 data-lang="hu">MŰSZAKI ÁLLAPOTFELMÉRÉS ÉS PÁLYÁZATI TÁMOGATÁS</h2>
+            <h2 data-lang="ro">EVALUARE TEHNICĂ ȘI SUPORT PENTRU FINANȚARE</h2>
+            <p data-lang="hu">Sok erdélyi egyházközség azért nem jut EU-s vagy nemzeti finanszírozáshoz, mert nem tudja benyújtani a szükséges műszaki dokumentációt. Készítünk részletes állapotfelméréseket és technikai dokumentációt.</p>
+            <p data-lang="ro">Multe parohii din Transilvania nu obțin finanțare UE sau națională deoarece nu pot depune documentația tehnică necesară. Realizăm evaluări detaliate de stare și documentație tehnică.</p>
+        </div>
+        <a href="#contact" class="btn-white">
+            <span data-lang="hu">Állapotfelmérés kérése &rarr;</span>
+            <span data-lang="ro">Solicitați evaluare &rarr;</span>
+        </a>
+    </section>
+
+    <!-- ============ PORTFOLIO ============ -->
+    <section class="portfolio" id="portfolio">
+        <div class="portfolio-header">
+            <h2 class="portfolio-title reveal" data-lang="hu">REFERENCIÁK</h2>
+            <h2 class="portfolio-title reveal" data-lang="ro">PORTOFOLIU</h2>
+            <p class="portfolio-count reveal" data-lang="hu">Válogatás munkáinkból</p>
+            <p class="portfolio-count reveal" data-lang="ro">Selecție din lucrările noastre</p>
+        </div>
+        <div class="portfolio-grid">
+            <div class="portfolio-item reveal">
+                <img src="../original-site/voxhumana.ro/sites/default/files/2019-10/Szarhegyi Orgona.jpg" alt="Gyergyószárhegy">
+                <div class="overlay">
+                    <span class="overlay-name">Gyergyószárhegy</span>
+                    <p class="overlay-type" data-lang="hu">Orgona restaurálás</p>
+                    <p class="overlay-type" data-lang="ro">Restaurare orgă</p>
+                </div>
+            </div>
+            <div class="portfolio-item reveal">
+                <img src="../original-site/voxhumana.ro/sites/default/files/2019-10/voxhumana-werk-20151103-47.jpg" alt="Műhelymunka">
+                <div class="overlay">
+                    <span class="overlay-name" data-lang="hu">Műhelymunka</span>
+                    <span class="overlay-name" data-lang="ro">Lucru în atelier</span>
+                    <p class="overlay-type" data-lang="hu">Alkatrészgyártás</p>
+                    <p class="overlay-type" data-lang="ro">Fabricare componente</p>
+                </div>
+            </div>
+            <div class="portfolio-item reveal">
+                <img src="../original-site/voxhumana.ro/sites/default/files/2019-10/voxhumana-werk-20151103-02.jpg" alt="Részletmunka">
+                <div class="overlay">
+                    <span class="overlay-name" data-lang="hu">Precíziós munka</span>
+                    <span class="overlay-name" data-lang="ro">Lucru de precizie</span>
+                    <p class="overlay-type" data-lang="hu">Famegmunkálás</p>
+                    <p class="overlay-type" data-lang="ro">Prelucrare lemn</p>
+                </div>
+            </div>
+            <div class="portfolio-item reveal">
+                <img src="../original-site/voxhumana.ro/sites/default/files/2019-10/voxhumana-werk-20151103-03.jpg" alt="Fémmegmunkálás">
+                <div class="overlay">
+                    <span class="overlay-name" data-lang="hu">Fémsípgyártás</span>
+                    <span class="overlay-name" data-lang="ro">Fabricare tuburi</span>
+                    <p class="overlay-type" data-lang="hu">Alkatrészgyártás</p>
+                    <p class="overlay-type" data-lang="ro">Fabricare componente</p>
+                </div>
+            </div>
+            <div class="portfolio-item reveal">
+                <img src="../original-site/voxhumana.ro/sites/default/files/2019-10/Szarhegyi Orgona Sipok.jpg" alt="Orgonasípok">
+                <div class="overlay">
+                    <span class="overlay-name" data-lang="hu">Orgonasípok</span>
+                    <span class="overlay-name" data-lang="ro">Tuburi de orgă</span>
+                    <p class="overlay-type" data-lang="hu">Hangolás</p>
+                    <p class="overlay-type" data-lang="ro">Acordaj</p>
+                </div>
+            </div>
+            <div class="portfolio-item reveal">
+                <img src="../original-site/voxhumana.ro/sites/default/files/2019-10/Szarhegyi Orgona Jatszoasztal.jpg" alt="Játszóasztal">
+                <div class="overlay">
+                    <span class="overlay-name" data-lang="hu">Játszóasztal</span>
+                    <span class="overlay-name" data-lang="ro">Consolă</span>
+                    <p class="overlay-type" data-lang="hu">Restaurálás</p>
+                    <p class="overlay-type" data-lang="ro">Restaurare</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ TEAM ============ -->
+    <section class="team" id="team">
+        <div class="team-header">
+            <h2 class="team-title reveal" data-lang="hu">A CSAPAT</h2>
+            <h2 class="team-title reveal" data-lang="ro">ECHIPA</h2>
+            <p class="team-tagline reveal" data-lang="hu">Mesterségbeli tudás és restaurálási szakértelem — egy csapatban</p>
+            <p class="team-tagline reveal" data-lang="ro">Măiestrie artizanală și expertiză în restaurare — într-o singură echipă</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-member reveal">
+                <img src="../original-site/voxhumana.ro/sites/default/files/styles/large/public/2019-07/_AD_9053-min.JPG@itok=CPtqUGHK" alt="Bartis Szabolcs">
+                <h3>Bartis Szabolcs</h3>
+                <p class="role" data-lang="hu">Alapító, orgonaépítő mester</p>
+                <p class="role" data-lang="ro">Fondator, maestru constructor de orgi</p>
+                <p class="bio" data-lang="hu">A Vox Humana Kft. alapítója és vezetője. Több mint két évtizedes tapasztalat az orgonaépítés és restaurálás terén. Románia egyetlen teljes körű orgonaépítő műhelyét vezeti.</p>
+                <p class="bio" data-lang="ro">Fondatorul și directorul Vox Humana SRL. Peste două decenii de experiență în construcția și restaurarea de orgi. Conduce singurul atelier complet de construcție de orgi din România.</p>
+            </div>
+            <div class="team-member reveal">
+                <!-- A képet cseréld le: helyezd a csortantunde.jpg fájlt ebbe a mappába -->
+                <img src="csortantunde.jpg" alt="Csortán Tünde"
+                     onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+                <div style="display:none;width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,#2a1f1a 0%,#4a3628 40%,#6b4c35 100%);align-items:center;justify-content:center;margin-bottom:1.5rem;">
+                    <div style="text-align:center;color:rgba(255,255,255,0.6);">
+                        <div style="font-family:var(--font-display);font-size:3rem;font-weight:700;color:var(--copper);">CT</div>
+                        <div style="font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;">Fotó helye</div>
+                    </div>
+                </div>
+                <h3>Csortán Tünde</h3>
+                <p class="role" data-lang="hu">Restaurálási szakember</p>
+                <p class="role" data-lang="ro">Specialist restaurare</p>
+                <p class="bio" data-lang="hu">Képzett restaurátor, a templomi belsőterek és szakrális műtárgyak konzerválásának és helyreállításának specialistája. Az új szolgáltatási irány kulcsembere.</p>
+                <p class="bio" data-lang="ro">Restaurator calificat, specialist în conservarea și restaurarea interioarele bisericești și obiectelor sacre de artă. Persoană cheie pentru noua direcție de servicii.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============ CONTACT ============ -->
+    <section class="contact" id="contact">
+        <div class="contact-text">
+            <h2 data-lang="hu">VEGYE FEL VELÜNK A KAPCSOLATOT</h2>
+            <h2 data-lang="ro">CONTACTAȚI-NE</h2>
+            <p class="lead" data-lang="hu">Legyen szó orgona restaurálásról, templomi belsőtér felújításról vagy műtárgy-konzerválásról — írjon nekünk, és elkészítjük az ingyenes állapotfelmérést.</p>
+            <p class="lead" data-lang="ro">Fie că este vorba de restaurarea unei orgi, renovarea interiorului unei biserici sau conservarea obiectelor de artă — scrieți-ne și vă pregătim o evaluare gratuită.</p>
+            <div class="contact-info">
+                <p><strong data-lang="hu">Telefon:</strong><strong data-lang="ro">Telefon:</strong> <a href="tel:+40742968203">0742-968203</a> | <a href="tel:+40740108837">0740-108837</a></p>
+                <p><strong>Email:</strong> <a href="mailto:office@voxhumana.ro">office@voxhumana.ro</a></p>
+                <p><strong data-lang="hu">Cím:</strong><strong data-lang="ro">Adresă:</strong> Ady Endre utca 91/A, Gheorgheni 535500, jud. Harghita</p>
+            </div>
+            <a href="mailto:office@voxhumana.ro" class="btn-copper">
+                <span data-lang="hu">Ajánlatkérés &rarr;</span>
+                <span data-lang="ro">Solicitare ofertă &rarr;</span>
+            </a>
+        </div>
+        <div class="contact-image">
+            <img src="../original-site/voxhumana.ro/themes/pegazus/images/page-top-muhely.jpg" alt="Vox Humana műhely">
+        </div>
+    </section>
+
+    <!-- ============ FOOTER ============ -->
+    <footer class="footer">
+        <p data-lang="hu">&copy; 2026 Vox Humana Kft. — Az erdélyi szakrális örökség őrzői</p>
+        <p data-lang="ro">&copy; 2026 Vox Humana SRL — Păzitorii patrimoniului sacru transilvan</p>
+        <a href="https://www.facebook.com/VoxOrgona/" target="_blank" rel="noopener">Facebook</a>
+    </footer>
+
+    <script>
+        // ============ LUCIDE ICONS ============
+        lucide.createIcons();
+
+        // ============ LANGUAGE SWITCHER ============
+        const langButtons = document.querySelectorAll('[data-set-lang]');
+        langButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.dataset.setLang;
+                document.documentElement.lang = lang;
+                langButtons.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        // ============ HAMBURGER MENU ============
+        const hamburger = document.getElementById('hamburger');
+        const menuOverlay = document.getElementById('menuOverlay');
+        const menuLinks = document.querySelectorAll('[data-menu-link]');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            menuOverlay.classList.toggle('active');
+            document.body.style.overflow = menuOverlay.classList.contains('active') ? 'hidden' : '';
+        });
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                menuOverlay.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // ============ NAVBAR SCROLL ============
+        const navbar = document.querySelector('.navbar');
+        const heroSection = document.querySelector('.hero');
+        function updateNavbar() {
+            const heroBottom = heroSection.getBoundingClientRect().bottom;
+            if (heroBottom <= 80) {
+                navbar.classList.add('scrolled');
+                navbar.classList.remove('hero-visible');
+            } else {
+                navbar.classList.remove('scrolled');
+                navbar.classList.add('hero-visible');
+            }
+        }
+        window.addEventListener('scroll', updateNavbar);
+        updateNavbar();
+
+        // ============ SCROLL ANIMATIONS ============
+        const reveals = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+        reveals.forEach(el => observer.observe(el));
+
+        // ============ PARALLAX ============
+        const heroBg = document.querySelector('.hero-bg');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            if (scrolled < window.innerHeight) {
+                heroBg.style.transform = `scale(1.05) translateY(${scrolled * 0.15}px)`;
+            }
+        });
+    </script>
+</body>
+</html>

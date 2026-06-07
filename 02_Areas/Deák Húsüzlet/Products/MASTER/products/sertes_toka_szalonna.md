@@ -1,3 +1,15 @@
+---
+title: "Sertés Toka Szalonna"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Sertés Toka Szalonna: friss sertésből készült, márványos szerkezetű szalonna, amely alapanyag az Abált Szalonnához. 20 lej/kg, készleten van."
+description_source: auto
+description_hash: 05f5e0cdedc0e054
+id: d2e9cdb2-1652-463f-8d2c-402757e3382c
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Toka Szalonna
 
 ```yaml

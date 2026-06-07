@@ -1,4 +1,15 @@
-
+---
+title: "Kolumban Sándor Notes"
+date: 2025-12-08
+author: Becze Szabolcs
+status: active
+description: "Kolumban Sándor interjú- vagy találkozó-jegyzetei különböző tech vezetőkkel, tartalmaz konkrét kérdéseket Hassan, Láng Máté, Kiss Dániel, Kiss Gergely és Süket Csaba karrierjéről, technológiai megoldásokról és üzleti tapasztalatokról."
+description_source: auto
+description_hash: 3ad92e75d7d23da4
+id: 0f8c34aa-373a-4e9d-b791-febebff66968
+index_schema_version: 1
+bdos_index: true
+---
 Hassan: 
 - Gradiens jó irányba halad?
 - BME külföldön terjeszkedési szándékai? Több magayrországi egyetemnek van külföldi tagozata

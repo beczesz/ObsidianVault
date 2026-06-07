@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast – Patreon Kampányterv 2026"
+date: 2026-03-09
+author: Becze Szabolcs
+status: active
+description: "Stratégiai terv a Navigátor Podcast Patreon kampányához, amely 4 fizető tagból 25-re akar nőni 4 hét alatt konkrét fázisokkal, üzenetekkel és méréspontokkal célszemélyek szerint. Szabolcs projektvezetőjének szól."
+description_source: auto
+description_hash: c13f05c366f94a4d
+id: 8503d5cb-3dff-44b2-9fda-12463092f010
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast – Patreon Kampányterv 2026
 
 **Cél:** 4 fizető tagból → 25 fizető tag

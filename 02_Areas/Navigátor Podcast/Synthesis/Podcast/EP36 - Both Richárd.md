@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP36
 title: "„A fáradtság nem normális!" – Hogyan fordítható meg a napi kimerültség? | Both Richárd | EP36"
+description: "Episode 36 podcast analytics on fatigue reversal featuring Both Richárd, a Transylvanian dietician; covers sleep chronotypes, circadian optimization through blue light filtering and melatonin management, and marginal gains methodology for boosting daily energy in office workers."
+description_source: auto
+description_hash: ac917f853034909f
 guest: "Both Richárd"
 guest_title: "Dietetikus, alkalmazott táplálkozástudományi szakember"
 topic: "Energiaszint maximalizálás — alvás, mozgás, étrend, étrendkiegészítők a középkorú irodai dolgozó számára"
@@ -15,7 +18,6 @@ quality: deep
 id: 47abefcf-e025-4666-87a4-dd129f185f19
 index_schema_version: 1
 ---
-
 # EP36 — Both Richárd: „A fáradtság nem normális!" — Hogyan fordítható meg a napi kimerültség?
 
 ## YouTube Studio Analytics

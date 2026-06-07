@@ -1,3 +1,15 @@
+---
+title: "DH Design System"
+date: 2026-04-18
+author: Becze Szabolcs
+status: active
+description: "Dokumentálja a DH márka design rendszerét: tipográfia, szín- és szóközpaletta, shadow-k, border radiusok, komponensek (StatusBadge, ProductCard, QuantitySelector, AvailabilityBadge) és design tokenek a staging.deakhus.ro alapján."
+description_source: auto
+description_hash: 66ac1a0fb5a298b5
+id: de490989-937d-4690-8949-c89df0ccaefb
+index_schema_version: 1
+bdos_index: true
+---
 # DH Design System
 > Forrás: `staging.deakhus.ro` – feltérképezve 2026-03-22, frissítve 2026-04-18 (Kosár screen audit)
 

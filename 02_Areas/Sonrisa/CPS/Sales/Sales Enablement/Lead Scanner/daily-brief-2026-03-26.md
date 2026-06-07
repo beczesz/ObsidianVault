@@ -1,12 +1,14 @@
 ---
 title: CPS Daily Lead Scanner Brief
+description: "Daily report on lead generation activity for March 26, 2026, showing zero qualified prospects from 10 screened companies; pipeline includes 2 active follow-ups and 1 unvalidated lead with recommendations to expand geography or activate secondary ICP profile."
+description_source: auto
+description_hash: c7e2cb1aa93c284c
 date: 2026-03-26
 profile: "Profile #1: The Replacement Hire"
 scanner_version: automated
 id: b54fb455-6e2e-4857-9bfa-e1b1126d646e
 index_schema_version: 1
 ---
-
 # Daily Lead Scanner Brief -- 2026-03-26 (Thursday)
 
 ## Summary

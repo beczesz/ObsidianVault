@@ -1,4 +1,7 @@
 ---
+description: "AI-native cognition system for business development using stable agent roles, persistent markdown state in Obsidian, and orchestration via Claude Code. DH serves as the validation pilot project with Librarian as the first agent handling retrieval-based knowledge management across two-tier indexing."
+description_source: auto
+description_hash: cbafb0777995f3e2
 topic: BDOS — Business Development Operation System
 created: 2026-05-10
 last_updated: 2026-05-11
@@ -6,7 +9,6 @@ status: active
 id: cf4f9d50-7322-4dcd-9845-25b96b4b8c73
 index_schema_version: 1
 ---
-
 # Brainstorm: BDOS — Business Development Operation System
 
 > **Megjegyzés (2026-05-11):** A BDOS kanonikus belépője átkerült ide: [`00_Prompts/BDOS/CLAUDE.md`](../../../00_Prompts/BDOS/CLAUDE.md). Ez a fájl továbbra is a **DH-specifikus pilot-napló** — döntések, agent-választások, sprint-tapasztalatok a DH-pilot kontextusából. Univerzális BDOS-tartalmat az új belépőben tarts.

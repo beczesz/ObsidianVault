@@ -1,3 +1,15 @@
+---
+title: "Füstölt Csülök"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Smoked pork knuckle product entry with size options ranging from 1.2 to 1.9 kg, priced at 34.0 per kg, with Hungarian and Romanian descriptions for a hybrid retail product catalog."
+description_source: auto
+description_hash: 28ff0f69a5a9e326
+id: 8a24ce34-4e4c-42a5-8aa1-cabad8cbab59
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Csülök
 
 ```yaml

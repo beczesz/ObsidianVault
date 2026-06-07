@@ -1,4 +1,7 @@
 ---
+description: "Trucza Adorján séf interjúja a gasztronómia mint identitás és márkaépítés témájáról, amely a magyar konyha nemzetközi pozicionálásáról és az Erdély branding-projektről szól. A beszélgetés mélyreható betekintést nyújt a séfmesterségbe mint politikai és társadalmi kommunikációba."
+description_source: auto
+description_hash: 2f4c6a510b77fced
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -14,7 +17,6 @@ quality: "Gold Standard"
 id: 541d3c40-2936-4394-90d6-320105301bde
 index_schema_version: 1
 ---
-
 # EP06 — Trucza Adorján: Gasztronómia mint identitás — A Transylvania brand születése
 
 ## Alapadatok

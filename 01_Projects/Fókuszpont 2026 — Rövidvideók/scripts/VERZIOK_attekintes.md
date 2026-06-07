@@ -1,11 +1,13 @@
 ---
+description: "Szabolcs döntésének alapján a 2026-os Fókuszpont kampány három videóból áll: egy filmes 30 másperces, egy 60 másperces tanúságtétel és egy fiatalos 30 másperces verzió, mindegyik máshogy közvetíti a brand-ígéretet. Tartalmazza a csatorna-mátrixot, forgatási ütemezést és a korábbi draftverziókat."
+description_source: auto
+description_hash: 6fb4f34754576cd8
 type: index / áttekintés
 created: 2026-05-19
 status: hármas csomag (Szabolcs koncepciója)
 id: 1418eb78-d2b4-4e4f-9c19-1d0771db55a7
 index_schema_version: 1
 ---
-
 # Fókuszpont 2026 — A 3 verzió áttekintése
 
 > Szabolcs döntése után a kampány **HÁRMAS** felépítésű — három különböző hosszú, hangulatú, célközönséghez szóló videó. Mindhárom ugyanazt a brand-line-t hozza haza (*„Jézus a Fókuszpont és minden szem Rá szegeződik"*), de máshogy.
@@ -42,6 +44,18 @@ index_schema_version: 1
 | **WhatsApp továbbküldés** | ✅ | ✅ | ✅ |
 | **Csiszér Laci megosztás** | ✅ (kapcsolódás) | ✅ (nevesítve) | — |
 | **Anna+Dani Stories** | — | — | ✅ főanyag |
+
+## ⚠️ Technikai megjegyzés — Reel safe-zone + feltöltés (mindhárom reelre)
+
+> A 2026-05-28-i úrnapi videó "levágott" lett, mert **feed-posztként** ment fel Facebookra. Tanulság (mindhárom reelre érvényes):
+
+1. **Feltöltés mindig Reel-ként** (FB: *Létrehozás → Reel*; IG: a *Reel* fül; TikTok/Shorts natív vertikális) — NEM sima fotó/videó posztként, mert a Meta feed-poszt **4:5-re vágja** (levágja a fej tetejét + az alsó feliratot).
+2. **Safe-zone a forgatásnál és a vágásnál:** a fő alany és a feliratok a **középső zónába** kerüljenek —
+   - felső **~10%** és alsó **~20%** maradjon "üres" a kulcs-tartalomtól,
+   - jobb oldal **~10%** a platform UI-gombjai (like / komment / megosztás) miatt kerülendő.
+3. **Borítókocka (cover)** kézi kiválasztása feltöltéskor — a feed-thumbnail akkor is vághat, ha a teljes Reel 9:16.
+
+Részletes csatorna-szabály: [`../../../02_Areas/Fókuszpont/Marketing/ChannelDNA/Fokuszpont-FB.md` §2](../../../02_Areas/Fókuszpont/Marketing/ChannelDNA/Fokuszpont-FB.md).
 
 ## Időrend-javaslat (kampány-időzítés a 2026-os eseményig)
 

@@ -1,3 +1,15 @@
+---
+title: "Sertés Őrölt Hús"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Sertés őrölt hús termékadat és értékesítési opciók gyártók és termékmenedzserek számára. Tartalmazza az árát, elérhetőségét, a zsírosság-választás felépítését és a termelői megjegyzéseket az alapanyag-opció eltávolításáról."
+description_source: auto
+description_hash: 5c872d6026b1ec56
+id: 06c3faa3-b585-4d3c-95e8-29d875f2b4f9
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Őrölt Hús
 
 ```yaml

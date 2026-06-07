@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP31
 title: "Az AI csak 80%-ra elég? Forradalom vagy újabb buborék? | Simon Károly & Kolumbán Sándor | EP31"
+description: "Az epizód két IT-oktató és vállalkozó beszélgetése az AI valódi értékéről és limittációiról, amely a 80%-os demóhatástól az EU fragmentációján át az oktatás jövőjéig foglalkozik. Az elemzésben YouTube analytics, résztvevői háttér és teljes tartalmi szegmentáció szerepel."
+description_source: auto
+description_hash: 96a75aa57468650a
 guest: "Simon Károly & Kolumbán Sándor"
 guest_title: "Egyetemi oktatók (Sapientia / Babeș-Bolyai) és vállalkozók, IT+ Cluster tagok"
 topic: "AI buborék vs valóság — 80%-os demóeffektus, Nvidia monopol, Európa helyzete, Digitális Székelyföld"
@@ -15,7 +18,6 @@ quality: deep
 id: 40b83e77-d89b-4d11-ad82-6651c09c850b
 index_schema_version: 1
 ---
-
 # EP31 — Simon Károly & Kolumbán Sándor: „85%-ig nagyon gyorsan eljutunk, és utána tovább nagyon nehéz menni fölfele."
 
 ## Vendég háttér

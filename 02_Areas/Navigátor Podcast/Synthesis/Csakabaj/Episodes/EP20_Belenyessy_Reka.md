@@ -1,5 +1,8 @@
 ---
 title: "Tanácsok, gyermekvállalás, tragédiák | Dr. Belényessy Réka | EP20"
+description: "Szülész-nőgyógyász Dr. Belényessy Réka reprodukciós egészségről, szülésügyeletésről és tabu témákról beszél, hangsúlyozva az orvosi tudás mellett az empátia és emberi megértés fontosságát."
+description_source: auto
+description_hash: fa72daca2bf4edb1
 broadcast_date: 2024-09-18
 duration: "89 perc"
 guest_name: "Dr. Belényessy Réka"
@@ -13,7 +16,6 @@ topic_cluster: "Reprodukciós egészség, nőgyógyászat, szülés, gyermekvál
 id: 7e1221ce-234b-474c-9203-f822d7822299
 index_schema_version: 1
 ---
-
 # EP20 - Dr. Belényessy Réka: Reprodukciós egészség és az emberi sérülékenység
 
 ## Alapadatok

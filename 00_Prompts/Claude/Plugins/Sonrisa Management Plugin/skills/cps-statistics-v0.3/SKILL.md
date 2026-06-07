@@ -198,8 +198,8 @@ Follow the MUB template from `references/mub-instructions.md` EXACTLY. The MUB h
 #### Step 10: Verify and save
 
 - Verify: Billable + Internal + MVMI + Sick/Leave + Other = CPS Total (must match exactly)
-- Save all 3 files to `raports/generated/`
-- Also save MUB to `Administration/MUB_YYYY_MM.md`
+- Save MUB to vault: `02_Areas/Sonrisa/CPS/Administration/Reports/MUB/MUB_YYYY_MM.md`
+- Save _base.xlsx and _tam.xlsx locally (temp), then upload to SharePoint (see Step 11)
 - Print summary with file sizes
 
 #### Step 11: Upload to SharePoint (manual, document for user)
@@ -219,7 +219,8 @@ See `references/sharepoint-urls.md` for exact URLs.
 
 ## Output Naming Convention
 
-- `activityreport_YYYY_MM_base.xlsx` -- full workbook
-- `activityreport_YYYY_MM_tam.xlsx` -- TAM extract
-- `MUB_YYYY_MM.md` -- Monthly Update Brief
-- Output folder: `raports/generated/` (flat, no month subfolders)
+- `activityreport_YYYY_MM_base.xlsx` -- full workbook (SharePoint upload)
+- `activityreport_YYYY_MM_tam.xlsx` -- TAM extract (SharePoint upload)
+- `MUB_YYYY_MM.md` -- Monthly Update Brief (vault: `02_Areas/Sonrisa/CPS/Administration/Reports/MUB/`)
+
+Raw input location (vault): `02_Areas/Sonrisa/CPS/Administration/Reports/raw/activityreport_YYYY_MM.xlsx`

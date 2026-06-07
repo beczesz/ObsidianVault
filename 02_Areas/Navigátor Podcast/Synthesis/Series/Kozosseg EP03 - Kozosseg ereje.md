@@ -2,6 +2,9 @@
 series: "Navigátor Közösség"
 episode: "EP03"
 title: "A bizalom sebessége és értéke egy szervezeten belül"
+description: "Szabolcs és Róbert egy podcast-epizódban elemzi, hogyan működik a bizalom mint mérhető gazdasági erő szervezetekben és társadalomban. Covey elméletét felhasználva bemutatják a bizalom láthatatlan költségeit, biológiai alapjait és gyakorlati építésének módszereit."
+description_source: auto
+description_hash: 370117fa4c664c23
 host: "Beczesz Szabolcs"
 youtube_id: "k3BRds8PlxQ"
 published: "2025-03-17"
@@ -29,7 +32,6 @@ created: "2026-04-06"
 id: 899499a8-5487-48ee-b8dd-8703474baa90
 index_schema_version: 1
 ---
-
 # Közösség EP03 – A bizalom sebessége: Láthatatlan erő, ami összeköt
 
 ## Sorozat kontextus

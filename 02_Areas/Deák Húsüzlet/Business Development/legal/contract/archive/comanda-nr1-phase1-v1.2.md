@@ -1,5 +1,8 @@
 ---
 title: "Comandă nr. 1 — Faza Pilot (Phase 1)"
+description: "Pilot phase order establishing commercial terms for deakhus.ro platform launch in Odorheiu Secuiesc, including 6.8% platform fee, 30-day evaluation period with scaling criteria, and maximum 12,000-13,000 EUR investment cap for EXARGROUPS and DEAK PROD partnership."
+description_source: auto
+description_hash: f46ab2faf72b85cd
 version: "1.2"
 status: DRAFT
 created: 2026-04-16
@@ -18,7 +21,6 @@ changelog:
 id: aa70a836-f0ed-40d7-8745-c8c82cc00d9d
 index_schema_version: 1
 ---
-
 # COMANDĂ NR. 1 — FAZA PILOT (Phase 1)
 
 ## Megrendelőlap / Act Adițional la Contract-Cadru

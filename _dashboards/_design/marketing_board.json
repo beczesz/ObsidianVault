@@ -1,0 +1,1633 @@
+{
+  "generated_at": "2026-06-07T05:24:08.841727+00:00",
+  "schema_version": "2",
+  "lanes": {
+    "seed": [
+      {
+        "id": "seed-20260524-middle-management-disappearance-bdos",
+        "title": "A middle management réteg eltűnése — és a BDOS mint strukturális válasz",
+        "source_type": "atomic-ref",
+        "captured_at": "2026-05-25T21:46:30+03:00",
+        "age_days": 12,
+        "publications_spawned": [],
+        "file_path": "00_Prompts/BDOS/agents/presto/_inbox/seeds/seed-20260524-middle-management-disappearance-bdos.md",
+        "schema_version": "v1",
+        "short_description": "",
+        "runbook_ref": null,
+        "campaign_ref": null,
+        "prerequisites": [],
+        "distribution_timeline": [],
+        "todos_count": {
+          "pending": 0,
+          "in_progress": 0,
+          "done": 0,
+          "skipped": 0,
+          "total": 0
+        }
+      },
+      {
+        "id": "seed-20260526-ep43-gyasz-launch",
+        "title": "EP43 Gyász (Farkas Kinga) — multi-platform launch",
+        "source_type": "other",
+        "captured_at": "2026-05-26T09:48:50+03:00",
+        "age_days": 11,
+        "publications_spawned": [
+          "pub-youtube-2026-05-26-001",
+          "pub-facebook-2026-05-26-001",
+          "pub-instagram-2026-05-27-001",
+          "pub-facebook-2026-05-27-001",
+          "pub-youtube-shorts-2026-05-27-001",
+          "pub-tiktok-2026-05-27-001",
+          "pub-youtube-community-2026-06-02-001",
+          "pub-facebook-2026-06-02-001"
+        ],
+        "file_path": "00_Prompts/BDOS/agents/presto/_inbox/seeds/seed-20260526-ep43-gyasz-launch.md",
+        "schema_version": "v2",
+        "short_description": "EP43 Farkas Kinga (Gyász/ambiguous loss). 8 publikáció T+0–T+7: YT+Spotify+FB+Patreon + T+1 Reel-hullám (Insta+TT+FB+YT-Shorts) + T+7 follow-up.",
+        "runbook_ref": "episode-launch",
+        "campaign_ref": null,
+        "prerequisites": [
+          {
+            "id": "prereq-001",
+            "description": "Felvétel elkészült (hanganyag rögzítve és alapszerkesztés kész)",
+            "status": "done",
+            "done_date": "2026-05-26",
+            "owner": "user",
+            "due_date": "2026-05-29",
+            "notes": ""
+          },
+          {
+            "id": "prereq-002",
+            "description": "SRT felirat generálva (YouTube feltöltéshez + Shorts burned-in subs)",
+            "status": "done",
+            "done_date": "2026-05-26",
+            "owner": "user",
+            "due_date": "2026-05-29",
+            "notes": "SRT-függő: YouTube metadata + TikTok/Instagram Shorts is erre vár"
+          },
+          {
+            "id": "prereq-003",
+            "description": "Thumbnail elkészítve (YouTube primary thumbnail — /thumbnail skill)",
+            "status": "done",
+            "done_date": "2026-05-26",
+            "owner": "user",
+            "due_date": "2026-05-29",
+            "notes": ""
+          },
+          {
+            "id": "prereq-004",
+            "description": "YouTube metadata csomag összeállítva (cím, leírás, időkódok, hashtagek — /cim /leiras /idokod /hook)",
+            "status": "done",
+            "done_date": "2026-05-26",
+            "owner": "user",
+            "due_date": "2026-05-29",
+            "notes": "navigator-plugin skill-jei: /cim, /leiras, /idokod, /thumbnail, /hook"
+          },
+          {
+            "id": "prereq-005",
+            "description": "Publish date véglegesítve (T+0 konkrét dátum és időpont meghatározva)",
+            "status": "done",
+            "done_date": "2026-05-26",
+            "owner": "user",
+            "due_date": "2026-05-29",
+            "notes": ""
+          },
+          {
+            "id": "prereq-006",
+            "description": "Reel-clip kivágva (30-60s legerősebb retention-szegmens — T+1 hullámhoz)",
+            "status": "done",
+            "done_date": "2026-05-26",
+            "owner": "user",
+            "due_date": "2026-05-29",
+            "notes": "TikTok + Instagram + FB Reels + YT Shorts alap — SRT-függő (burned-in subs)"
+          }
+        ],
+        "distribution_timeline": [
+          {
+            "step": "T+0",
+            "date": "2026-05-29",
+            "channels": "[youtube, spotify, facebook, patreon]",
+            "pub_type": "launch",
+            "notes": "Elsődleges launch: YT teljes videó + Spotify audio + FB személyes cross-post (EP41-mintára) + Patreon intimate backstage + EP44 teaser"
+          },
+          {
+            "step": "T+1",
+            "date": "2026-05-30",
+            "channels": "[instagram, tiktok, facebook, youtube]",
+            "pub_type": "reel",
+            "notes": "Reel-hullám: 30-60s clip — Insta Reels + TikTok + FB Reels + YT Shorts. Legerősebb retention-szegmens, burned-in subs, magyar."
+          },
+          {
+            "step": "T+7",
+            "date": "2026-06-05",
+            "channels": "[facebook]",
+            "pub_type": "followup",
+            "notes": "Follow-up post: első hét statisztikák + tanulságok + közönség bevonása (ha van elég visszajelzés)"
+          }
+        ],
+        "todos_count": {
+          "pending": 0,
+          "in_progress": 0,
+          "done": 6,
+          "skipped": 0,
+          "total": 6
+        }
+      },
+      {
+        "id": "seed-20260526-spotify-archive-launch",
+        "title": "Spotify archive launch — 17 missing + 4 date-fix",
+        "source_type": "other",
+        "captured_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "publications_spawned": [
+          "pub-spotify-2026-05-28-001",
+          "pub-spotify-2026-05-29-001",
+          "pub-spotify-2026-05-29-002",
+          "pub-spotify-2026-05-30-001",
+          "pub-spotify-2026-05-30-002",
+          "pub-spotify-2026-06-04-001",
+          "pub-spotify-2026-06-11-001",
+          "pub-spotify-2026-06-18-001",
+          "pub-spotify-2026-06-25-001",
+          "pub-spotify-2026-07-02-001",
+          "pub-spotify-2026-07-09-001",
+          "pub-spotify-2026-07-16-001",
+          "pub-spotify-2026-07-23-001",
+          "pub-spotify-2026-07-30-001",
+          "pub-spotify-2026-08-06-001",
+          "pub-spotify-2026-08-13-001",
+          "pub-spotify-2026-08-20-001",
+          "pub-spotify-2026-08-27-001",
+          "pub-spotify-2026-09-03-001",
+          "pub-spotify-2026-09-10-001",
+          "pub-spotify-2026-09-17-001"
+        ],
+        "file_path": "00_Prompts/BDOS/agents/presto/_inbox/seeds/seed-20260526-spotify-archive-launch.md",
+        "schema_version": "v2",
+        "short_description": "21 Spotify-publikáció: 17 archív EP heti 1 csütörtökökön (views-priority), 4 date-fix EP a hétvégén. Time-range: 2026-05-28 — 2026-09-17.",
+        "runbook_ref": null,
+        "campaign_ref": null,
+        "prerequisites": [
+          {
+            "id": "prereq-001",
+            "description": "MP3 audio fájlok exportálva mind a 17 + 4 EP-hez (YouTube → MP3 vagy eredeti felvétel-fájlból). Forrás-meghatározás user-döntés.",
+            "status": "pending",
+            "owner": "user",
+            "due_date": "2026-05-28",
+            "notes": "Master Plan §3: 'a felhasználó biztosítja'. Pontos workflow TBD."
+          }
+        ],
+        "distribution_timeline": [
+          {
+            "step": "T+0 (Thu Week 1)",
+            "date": "2026-05-28",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP36 Both Richárd (18 395 views) — első archív upload"
+          },
+          {
+            "step": "T+3 (Fri date-fix batch)",
+            "date": "2026-05-29",
+            "channels": "[spotify]",
+            "pub_type": "date_fix",
+            "notes": "EP38 + EP39 dátum-javítás (Spotify for Creators)"
+          },
+          {
+            "step": "T+4 (Sat date-fix batch)",
+            "date": "2026-05-30",
+            "channels": "[spotify]",
+            "pub_type": "date_fix",
+            "notes": "EP41 + EP42 dátum-javítás"
+          },
+          {
+            "step": "Week 2",
+            "date": "2026-06-04",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP37 Brutbányai-Elekes (6 363 views)"
+          },
+          {
+            "step": "Week 3",
+            "date": "2026-06-11",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP21 Szakács-Paál István (4 231 views)"
+          },
+          {
+            "step": "Week 4",
+            "date": "2026-06-18",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP18 Lázár-Szilágyi-Balázs (2 524 views)"
+          },
+          {
+            "step": "Week 5",
+            "date": "2026-06-25",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP35 Láng Máté (2 491 views)"
+          },
+          {
+            "step": "Week 6",
+            "date": "2026-07-02",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP15 Szabó W. Péter (1 900 views)"
+          },
+          {
+            "step": "Week 7",
+            "date": "2026-07-09",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP27 Tamás Barna atya (1 782 views)"
+          },
+          {
+            "step": "Week 8",
+            "date": "2026-07-16",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP22 Tódor Botond (1 635 views)"
+          },
+          {
+            "step": "Week 9",
+            "date": "2026-07-23",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP20 Gábor Attila (1 626 views)"
+          },
+          {
+            "step": "Week 10",
+            "date": "2026-07-30",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP26 Balázs-Zoltáni (1 578 views)"
+          },
+          {
+            "step": "Week 11",
+            "date": "2026-08-06",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP23 Hátszegi Zsolt (1 440 views)"
+          },
+          {
+            "step": "Week 12",
+            "date": "2026-08-13",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP40 Gál Ildikó (1 200 views)"
+          },
+          {
+            "step": "Week 13",
+            "date": "2026-08-20",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP12 Bándi Domokos (889 views)"
+          },
+          {
+            "step": "Week 14",
+            "date": "2026-08-27",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP13 Józsa Levente (745 views)"
+          },
+          {
+            "step": "Week 15",
+            "date": "2026-09-03",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP24 Faragó-Fodor (555 views)"
+          },
+          {
+            "step": "Week 16",
+            "date": "2026-09-10",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP25 Albert Orsolya (495 views)"
+          },
+          {
+            "step": "Week 17",
+            "date": "2026-09-17",
+            "channels": "[spotify]",
+            "pub_type": "archive_upload",
+            "notes": "EP34 Süket Csaba (327 views) — utolsó archív upload"
+          }
+        ],
+        "todos_count": {
+          "pending": 1,
+          "in_progress": 0,
+          "done": 0,
+          "skipped": 0,
+          "total": 1
+        }
+      }
+    ],
+    "draft": [
+      {
+        "id": "README.md",
+        "title": "README.md",
+        "channel": "",
+        "area": "",
+        "intent": "",
+        "seed_ref": "",
+        "campaign_id": "",
+        "stage": "draft",
+        "publish_date": null,
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/README.md"
+      },
+      {
+        "id": "pub-facebook-2026-06-02-001",
+        "title": "EP43 followup",
+        "channel": "facebook",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "draft",
+        "publish_date": "2026-06-02",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-facebook-2026-06-02-001.md"
+      },
+      {
+        "id": "pub-tiktok-2026-05-27-001",
+        "title": "EP43 short",
+        "channel": "tiktok",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "draft",
+        "publish_date": "2026-05-29",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-tiktok-2026-05-27-001.md"
+      },
+      {
+        "id": "pub-youtube-community-2026-06-02-001",
+        "title": "EP43 followup",
+        "channel": "youtube-community",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "draft",
+        "publish_date": "2026-06-02",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-youtube-community-2026-06-02-001.md"
+      }
+    ],
+    "prepared": [],
+    "approval": [],
+    "scheduled": [
+      {
+        "id": "pub-facebook-2026-05-29-001",
+        "title": "FB meghivo-v2",
+        "channel": "facebook",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "scheduled",
+        "publish_date": "2026-05-29",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-28T18:30+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-facebook-2026-05-29-001.md"
+      },
+      {
+        "id": "pub-instagram-2026-05-29-001",
+        "title": "IG meghivo-v2",
+        "channel": "instagram",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "scheduled",
+        "publish_date": "2026-05-29",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-28T18:30+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-instagram-2026-05-29-001.md"
+      },
+      {
+        "id": "pub-tiktok-2026-05-29-001",
+        "title": "TT meghivo-v2",
+        "channel": "tiktok",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "scheduled",
+        "publish_date": "2026-05-29",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-28T18:30+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-tiktok-2026-05-29-001.md"
+      },
+      {
+        "id": "pub-youtube-2026-05-29-001",
+        "title": "YT meghivo-v2",
+        "channel": "youtube",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "scheduled",
+        "publish_date": "2026-05-29",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-28T18:30+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-youtube-2026-05-29-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-06-04-001",
+        "title": "EP37 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-06-04",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-04-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-06-06-001",
+        "title": "EP38 date-fix",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-06-06",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-06-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-06-11-001",
+        "title": "EP21 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-06-11",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-11-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-06-13-001",
+        "title": "EP39 date-fix",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-06-13",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-13-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-06-18-001",
+        "title": "EP18 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-06-18",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-18-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-06-20-001",
+        "title": "EP41 date-fix",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-06-20",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-20-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-06-25-001",
+        "title": "EP35 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-06-25",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-25-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-06-27-001",
+        "title": "EP42 date-fix",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-06-27",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-27-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-07-02-001",
+        "title": "EP15 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-07-02",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-02-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-07-09-001",
+        "title": "EP27 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-07-09",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-09-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-07-16-001",
+        "title": "EP22 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-07-16",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-16-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-07-23-001",
+        "title": "EP20 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-07-23",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-23-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-07-30-001",
+        "title": "EP26 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-07-30",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-30-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-08-06-001",
+        "title": "EP23 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-08-06",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-08-06-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-08-13-001",
+        "title": "EP40 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-08-13",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-08-13-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-08-20-001",
+        "title": "EP12 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-08-20",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-08-20-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-08-27-001",
+        "title": "EP13 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-08-27",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-08-27-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-09-03-001",
+        "title": "EP24 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-09-03",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-09-03-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-09-10-001",
+        "title": "EP25 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-09-10",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-09-10-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-09-17-001",
+        "title": "EP34 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "scheduled",
+        "publish_date": "2026-09-17",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-09-17-001.md"
+      }
+    ],
+    "published": [
+      {
+        "id": "pub-facebook-2026-05-25-001",
+        "title": "FB trailer",
+        "channel": "facebook",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "published",
+        "publish_date": "2026-05-25",
+        "publish_time": null,
+        "published_at": "2026-05-25",
+        "days_since_publish": 13,
+        "stage_entered_at": "2026-05-28T12:00+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-facebook-2026-05-25-001.md"
+      },
+      {
+        "id": "pub-facebook-2026-05-28-001",
+        "title": "FB meghivo-v1",
+        "channel": "facebook",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "published",
+        "publish_date": "2026-05-28",
+        "publish_time": null,
+        "published_at": "2026-05-28",
+        "days_since_publish": 10,
+        "stage_entered_at": "2026-05-28T12:00+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-facebook-2026-05-28-001.md"
+      },
+      {
+        "id": "pub-instagram-2026-05-25-001",
+        "title": "IG trailer",
+        "channel": "instagram",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "published",
+        "publish_date": "2026-05-25",
+        "publish_time": null,
+        "published_at": "2026-05-25",
+        "days_since_publish": 13,
+        "stage_entered_at": "2026-05-28T12:00+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-instagram-2026-05-25-001.md"
+      },
+      {
+        "id": "pub-instagram-2026-05-28-001",
+        "title": "IG meghivo-v1",
+        "channel": "instagram",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "published",
+        "publish_date": "2026-05-28",
+        "publish_time": null,
+        "published_at": "2026-05-28",
+        "days_since_publish": 10,
+        "stage_entered_at": "2026-05-28T12:00+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-instagram-2026-05-28-001.md"
+      },
+      {
+        "id": "pub-tiktok-2026-05-25-001",
+        "title": "TT trailer",
+        "channel": "tiktok",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "published",
+        "publish_date": "2026-05-25",
+        "publish_time": null,
+        "published_at": "2026-05-25",
+        "days_since_publish": 13,
+        "stage_entered_at": "2026-05-28T12:00+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-tiktok-2026-05-25-001.md"
+      },
+      {
+        "id": "pub-tiktok-2026-05-28-001",
+        "title": "TT meghivo-v1",
+        "channel": "tiktok",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "published",
+        "publish_date": "2026-05-28",
+        "publish_time": null,
+        "published_at": "2026-05-28",
+        "days_since_publish": 10,
+        "stage_entered_at": "2026-05-28T12:00+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-tiktok-2026-05-28-001.md"
+      },
+      {
+        "id": "pub-youtube-2026-05-25-001",
+        "title": "YT trailer",
+        "channel": "youtube",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "published",
+        "publish_date": "2026-05-25",
+        "publish_time": null,
+        "published_at": "2026-05-25",
+        "days_since_publish": 13,
+        "stage_entered_at": "2026-05-28T12:00+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-youtube-2026-05-25-001.md"
+      },
+      {
+        "id": "pub-youtube-2026-05-28-001",
+        "title": "YT meghivo-v1",
+        "channel": "youtube",
+        "area": "Fókuszpont",
+        "intent": "announcement",
+        "seed_ref": null,
+        "campaign_id": "urnapja-2026",
+        "stage": "published",
+        "publish_date": "2026-05-28",
+        "publish_time": null,
+        "published_at": "2026-05-28",
+        "days_since_publish": 10,
+        "stage_entered_at": "2026-05-28T12:00+02:00",
+        "age_days": 9,
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-youtube-2026-05-28-001.md"
+      },
+      {
+        "id": "pub-facebook-2026-05-26-001",
+        "title": "EP43 post",
+        "channel": "facebook",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "published",
+        "publish_date": "2026-05-26",
+        "publish_time": null,
+        "published_at": "2026-05-26T16:05:00+03:00",
+        "days_since_publish": 11,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-facebook-2026-05-26-001.md"
+      },
+      {
+        "id": "pub-facebook-2026-05-27-001",
+        "title": "EP43 reel",
+        "channel": "facebook",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "published",
+        "publish_date": "2026-05-28",
+        "publish_time": null,
+        "published_at": "2026-05-28",
+        "days_since_publish": 10,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-facebook-2026-05-27-001.md"
+      },
+      {
+        "id": "pub-instagram-2026-05-27-001",
+        "title": "EP43 reel",
+        "channel": "instagram",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "published",
+        "publish_date": "2026-05-28",
+        "publish_time": null,
+        "published_at": "2026-05-28",
+        "days_since_publish": 10,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-instagram-2026-05-27-001.md"
+      },
+      {
+        "id": "pub-patreon-2026-05-28-001",
+        "title": "EP43 teaser",
+        "channel": "patreon",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "published",
+        "publish_date": "2026-05-28",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-patreon-2026-05-28-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-05-26-001",
+        "title": "EP43 audio",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "published",
+        "publish_date": "2026-05-26",
+        "publish_time": null,
+        "published_at": "2026-05-26T16:30:00+03:00",
+        "days_since_publish": 11,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-05-26-001.md"
+      },
+      {
+        "id": "pub-spotify-2026-05-28-001",
+        "title": "EP36 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-spotify-archive-launch",
+        "campaign_id": "",
+        "stage": "published",
+        "publish_date": "2026-05-28",
+        "publish_time": null,
+        "published_at": null,
+        "days_since_publish": null,
+        "stage_entered_at": "2026-05-26T00:00+02:00",
+        "age_days": 12,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-05-28-001.md"
+      },
+      {
+        "id": "pub-youtube-2026-05-26-001",
+        "title": "EP43 launch",
+        "channel": "youtube",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "published",
+        "publish_date": "2026-05-26",
+        "publish_time": null,
+        "published_at": "2026-05-26T16:00:00+03:00",
+        "days_since_publish": 11,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-youtube-2026-05-26-001.md"
+      },
+      {
+        "id": "pub-youtube-shorts-2026-05-27-001",
+        "title": "EP43 short",
+        "channel": "youtube-shorts",
+        "area": "Navigátor Podcast",
+        "intent": "",
+        "seed_ref": "seed-20260526-ep43-gyasz-launch",
+        "campaign_id": "",
+        "stage": "published",
+        "publish_date": "2026-05-28",
+        "publish_time": null,
+        "published_at": "2026-05-28",
+        "days_since_publish": 10,
+        "stage_entered_at": null,
+        "age_days": null,
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-youtube-shorts-2026-05-27-001.md"
+      }
+    ]
+  },
+  "tasks": [
+    {
+      "id": "todo-20260528-ep40-thumbnail-swap",
+      "title": "EP40 thumbnail csere (anya-lánya ölelés)",
+      "area": "Navigátor Podcast",
+      "channel": "youtube",
+      "urgency": "today",
+      "status": "open",
+      "due_date": "2026-05-29",
+      "action_type": "thumbnail-swap",
+      "related_episode": "EP40 — Fegyelmezés / Gál Ildikó",
+      "requires_human": true,
+      "file_path": "00_Prompts/BDOS/agents/presto/_inbox/todos/todo-20260528-ep40-thumbnail-swap.md"
+    }
+  ],
+  "calendar": {
+    "2026-06-02": [
+      {
+        "publication_id": "pub-facebook-2026-06-02-001",
+        "title": "EP43 followup",
+        "channel": "facebook",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "draft",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-facebook-2026-06-02-001.md"
+      },
+      {
+        "publication_id": "pub-youtube-community-2026-06-02-001",
+        "title": "EP43 followup",
+        "channel": "youtube-community",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "draft",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-youtube-community-2026-06-02-001.md"
+      }
+    ],
+    "2026-05-29": [
+      {
+        "publication_id": "pub-tiktok-2026-05-27-001",
+        "title": "EP43 short",
+        "channel": "tiktok",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "draft",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-tiktok-2026-05-27-001.md"
+      },
+      {
+        "publication_id": "pub-facebook-2026-05-29-001",
+        "title": "FB meghivo-v2",
+        "channel": "facebook",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-facebook-2026-05-29-001.md"
+      },
+      {
+        "publication_id": "pub-instagram-2026-05-29-001",
+        "title": "IG meghivo-v2",
+        "channel": "instagram",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-instagram-2026-05-29-001.md"
+      },
+      {
+        "publication_id": "pub-tiktok-2026-05-29-001",
+        "title": "TT meghivo-v2",
+        "channel": "tiktok",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-tiktok-2026-05-29-001.md"
+      },
+      {
+        "publication_id": "pub-youtube-2026-05-29-001",
+        "title": "YT meghivo-v2",
+        "channel": "youtube",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-youtube-2026-05-29-001.md"
+      },
+      {
+        "publication_id": "todo-20260528-ep40-thumbnail-swap",
+        "title": "EP40 thumbnail csere (anya-lánya ölelés)",
+        "channel": "youtube",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "task",
+        "status": "open",
+        "type": "task",
+        "urgency": "today",
+        "file_path": "00_Prompts/BDOS/agents/presto/_inbox/todos/todo-20260528-ep40-thumbnail-swap.md"
+      }
+    ],
+    "2026-06-04": [
+      {
+        "publication_id": "pub-spotify-2026-06-04-001",
+        "title": "EP37 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-04-001.md"
+      }
+    ],
+    "2026-06-06": [
+      {
+        "publication_id": "pub-spotify-2026-06-06-001",
+        "title": "EP38 date-fix",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-06-001.md"
+      }
+    ],
+    "2026-06-11": [
+      {
+        "publication_id": "pub-spotify-2026-06-11-001",
+        "title": "EP21 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-11-001.md"
+      }
+    ],
+    "2026-06-13": [
+      {
+        "publication_id": "pub-spotify-2026-06-13-001",
+        "title": "EP39 date-fix",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-13-001.md"
+      }
+    ],
+    "2026-06-18": [
+      {
+        "publication_id": "pub-spotify-2026-06-18-001",
+        "title": "EP18 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-18-001.md"
+      }
+    ],
+    "2026-06-20": [
+      {
+        "publication_id": "pub-spotify-2026-06-20-001",
+        "title": "EP41 date-fix",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-20-001.md"
+      }
+    ],
+    "2026-06-25": [
+      {
+        "publication_id": "pub-spotify-2026-06-25-001",
+        "title": "EP35 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-25-001.md"
+      }
+    ],
+    "2026-06-27": [
+      {
+        "publication_id": "pub-spotify-2026-06-27-001",
+        "title": "EP42 date-fix",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-06-27-001.md"
+      }
+    ],
+    "2026-07-02": [
+      {
+        "publication_id": "pub-spotify-2026-07-02-001",
+        "title": "EP15 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-02-001.md"
+      }
+    ],
+    "2026-07-09": [
+      {
+        "publication_id": "pub-spotify-2026-07-09-001",
+        "title": "EP27 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-09-001.md"
+      }
+    ],
+    "2026-07-16": [
+      {
+        "publication_id": "pub-spotify-2026-07-16-001",
+        "title": "EP22 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-16-001.md"
+      }
+    ],
+    "2026-07-23": [
+      {
+        "publication_id": "pub-spotify-2026-07-23-001",
+        "title": "EP20 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-23-001.md"
+      }
+    ],
+    "2026-07-30": [
+      {
+        "publication_id": "pub-spotify-2026-07-30-001",
+        "title": "EP26 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-07-30-001.md"
+      }
+    ],
+    "2026-08-06": [
+      {
+        "publication_id": "pub-spotify-2026-08-06-001",
+        "title": "EP23 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-08-06-001.md"
+      }
+    ],
+    "2026-08-13": [
+      {
+        "publication_id": "pub-spotify-2026-08-13-001",
+        "title": "EP40 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-08-13-001.md"
+      }
+    ],
+    "2026-08-20": [
+      {
+        "publication_id": "pub-spotify-2026-08-20-001",
+        "title": "EP12 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-08-20-001.md"
+      }
+    ],
+    "2026-08-27": [
+      {
+        "publication_id": "pub-spotify-2026-08-27-001",
+        "title": "EP13 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-08-27-001.md"
+      }
+    ],
+    "2026-09-03": [
+      {
+        "publication_id": "pub-spotify-2026-09-03-001",
+        "title": "EP24 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-09-03-001.md"
+      }
+    ],
+    "2026-09-10": [
+      {
+        "publication_id": "pub-spotify-2026-09-10-001",
+        "title": "EP25 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-09-10-001.md"
+      }
+    ],
+    "2026-09-17": [
+      {
+        "publication_id": "pub-spotify-2026-09-17-001",
+        "title": "EP34 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "scheduled",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-09-17-001.md"
+      }
+    ],
+    "2026-05-25": [
+      {
+        "publication_id": "pub-facebook-2026-05-25-001",
+        "title": "FB trailer",
+        "channel": "facebook",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-facebook-2026-05-25-001.md"
+      },
+      {
+        "publication_id": "pub-instagram-2026-05-25-001",
+        "title": "IG trailer",
+        "channel": "instagram",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-instagram-2026-05-25-001.md"
+      },
+      {
+        "publication_id": "pub-tiktok-2026-05-25-001",
+        "title": "TT trailer",
+        "channel": "tiktok",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-tiktok-2026-05-25-001.md"
+      },
+      {
+        "publication_id": "pub-youtube-2026-05-25-001",
+        "title": "YT trailer",
+        "channel": "youtube",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-youtube-2026-05-25-001.md"
+      }
+    ],
+    "2026-05-28": [
+      {
+        "publication_id": "pub-facebook-2026-05-28-001",
+        "title": "FB meghivo-v1",
+        "channel": "facebook",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-facebook-2026-05-28-001.md"
+      },
+      {
+        "publication_id": "pub-instagram-2026-05-28-001",
+        "title": "IG meghivo-v1",
+        "channel": "instagram",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-instagram-2026-05-28-001.md"
+      },
+      {
+        "publication_id": "pub-tiktok-2026-05-28-001",
+        "title": "TT meghivo-v1",
+        "channel": "tiktok",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-tiktok-2026-05-28-001.md"
+      },
+      {
+        "publication_id": "pub-youtube-2026-05-28-001",
+        "title": "YT meghivo-v1",
+        "channel": "youtube",
+        "area": "Fókuszpont",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Fókuszpont/Marketing/Publications/pub-youtube-2026-05-28-001.md"
+      },
+      {
+        "publication_id": "pub-facebook-2026-05-27-001",
+        "title": "EP43 reel",
+        "channel": "facebook",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-facebook-2026-05-27-001.md"
+      },
+      {
+        "publication_id": "pub-instagram-2026-05-27-001",
+        "title": "EP43 reel",
+        "channel": "instagram",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-instagram-2026-05-27-001.md"
+      },
+      {
+        "publication_id": "pub-patreon-2026-05-28-001",
+        "title": "EP43 teaser",
+        "channel": "patreon",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-patreon-2026-05-28-001.md"
+      },
+      {
+        "publication_id": "pub-spotify-2026-05-28-001",
+        "title": "EP36 archive",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-05-28-001.md"
+      },
+      {
+        "publication_id": "pub-youtube-shorts-2026-05-27-001",
+        "title": "EP43 short",
+        "channel": "youtube-shorts",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-youtube-shorts-2026-05-27-001.md"
+      }
+    ],
+    "2026-05-26": [
+      {
+        "publication_id": "pub-facebook-2026-05-26-001",
+        "title": "EP43 post",
+        "channel": "facebook",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-facebook-2026-05-26-001.md"
+      },
+      {
+        "publication_id": "pub-spotify-2026-05-26-001",
+        "title": "EP43 audio",
+        "channel": "spotify",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-spotify-2026-05-26-001.md"
+      },
+      {
+        "publication_id": "pub-youtube-2026-05-26-001",
+        "title": "EP43 launch",
+        "channel": "youtube",
+        "area": "Navigátor Podcast",
+        "publish_time": null,
+        "stage": "published",
+        "status": null,
+        "type": "publication",
+        "file_path": "02_Areas/Navigátor Podcast/Marketing/Publications/pub-youtube-2026-05-26-001.md"
+      }
+    ]
+  }
+}

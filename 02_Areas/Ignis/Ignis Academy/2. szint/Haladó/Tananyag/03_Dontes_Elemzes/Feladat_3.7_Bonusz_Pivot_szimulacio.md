@@ -1,0 +1,66 @@
+---
+title: "(Bónusz) Feladat 3.7 — „Mi lenne, ha…?" pivot szimuláció"
+date: 2026-05-14
+author: Becze Szabolcs
+status: active
+description: "Gyakorlat a mi lenne, ha szcenárió-tervezéshez: 3-4 hipotetikus változtatást szimulálsz a TransOffice helyzetén (flotta mérete, telephely, pályázási fázisok), és megvizsgálsz minden esetben eligibility, támogatás és pontszám változásokat, majd rangsorsz. AI-támogatott forgatókönyv-generálás, melyet szakember-konzult"
+description_source: auto
+description_hash: 5157e2d7e7bfdfd6
+id: 87fc15f9-dd41-44a7-919d-dd0da6b23f2c
+index_schema_version: 1
+bdos_index: true
+---
+# (Bónusz) Feladat 3.7 — „Mi lenne, ha…?" pivot szimuláció
+
+## Szituáció
+
+A pályázati kiírás 100% rögzített — de **a saját helyzeted nem**. Ha kicsit átszerveznél valamit a cégnél (másik beszállító, másik telephely, másik üzleti modell), megnyílhatna egy másik pályázati ablak vagy magasabb pontszámot kaphatnál.
+
+A Cowork-kel ezt **pillanatok alatt szimulálni lehet** — without committing.
+
+## Feladat
+
+Próbálj ki 3-4 hipotetikus változtatást a TransOffice helyzetén, és minden esetben kérdezd meg a Cowork-öt, hogyan változna a pályázati helyzet.
+
+## Hint
+
+Találj ki 3-4 hipotetikus változtatást a TransOffice (vagy a saját céged) helyzetén — pl. "mi van ha 8 jármű 5 helyett?", "mi van ha saját telephely?", "mi van ha 2 fázisban pályázunk?". Minden szcenárióhoz kérj eligibility + támogatási összeg + pontozás + kockázat összevetést. A végén: rangsorold őket, indoklással.
+
+**Vigyázz:** az AI optimista becsléseit valós szakember-konzultációval ellenőrizd mielőtt nagy döntést hozol.
+
+## Elvárt kimenet
+
+Egy `palyazat_pivot_szimulaciok.md`, amiben minden szcenárió:
+
+### Scenario [X]: [Cím]
+
+**Változás:** [1-2 mondat]
+
+**Pályázati hatás:**
+- Eligibility: [maradna / módosulna / kiesnénk]
+- Maximum támogatás: [X EUR → Y EUR]
+- Becsült pontszám: [X → Y]
+- Új követelmények: [mit kellene még szállítani]
+
+**Praktikus hatás:**
+- Cash flow: [megnövekedne / csökkenne / stabil]
+- Időigény: [+/- X hónap]
+- Üzleti kockázat: [magasabb / azonos / alacsonyabb]
+
+**Vélemény:** [3-4 mondatos elemzés — érdemes-e]
+
+## Extra kihívás
+
+A 4 szcenárió után kérdezd meg:
+> "Ha ma kellene döntenem, melyik szcenárió a legjobb? Adj rangsort 1-4-ig, indoklással. Vegye figyelembe: anyagi helyzet, kockázattűrés, időkeret."
+
+## Tipp
+
+Ez a feladat **a stratégiai gondolkodás AI-támogatott változata**. Korábban ez egy fél napos workshop-csapatmegbeszélés lett volna; most 20 perc + saját döntés. Az AI itt **forgatókönyv-generátor és kritikus**, nem döntéshozó.
+
+## Tanulás
+
+- Az AI segít **alternatív valóságokat felépíteni** anélkül hogy realizálnánk őket
+- A "mi van ha" kérdéseket szakemberek MBA-iskolákban tanulnak — de a Cowork-kel ez ingyenes
+- A scenario planning a legjobb döntéseink hátterében szokott állni — most nem kell hozzá tanácsadó
+- **Vigyázz:** az AI optimista becsléseit valós szakember-konzultációval ellenőrizd mielőtt nagy döntést hozol

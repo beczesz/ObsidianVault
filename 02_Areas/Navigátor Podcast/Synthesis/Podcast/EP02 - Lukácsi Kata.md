@@ -1,4 +1,7 @@
 ---
+description: "Podcast epizód Lukácsi Katával, szegedi ügyvéddel: három jogi mítosz, az ügyvédi munka realitása és a fia daganatos betegségének mély személyes története. Jogi ismeretterjesztés a 35+ korosztály számára."
+description_source: auto
+description_hash: 5e2b3c303a319739
 version: 0.3
 date: 2026-04-08
 type: episode-synthesis
@@ -21,7 +24,6 @@ status: complete
 id: 3f1d7744-785e-4ea3-9507-8954b3a21dd4
 index_schema_version: 1
 ---
-
 # EP02 — Lukácsi Kata: A törvény tudása szabaddá tesz
 
 ## Alapadatok

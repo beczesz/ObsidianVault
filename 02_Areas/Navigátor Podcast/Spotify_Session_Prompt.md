@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast — Spotify + Dashboard Session Prompt"
+date: 2026-05-21
+author: Becze Szabolcs
+status: active
+description: "Spotify integrációs prompt a Navigátor Podcast dashboard fejlesztéséhez, amely három feladatot tartalmaz: meglévő epizódok dátumainak korrigálása, hiányzó epizódok feltöltése és egy interaktív HTML dashboard létrehozása az összes epizód adatainak megjelenítéshez, valamint YouTube Analytics és Spotify státusz nyomon követéshez."
+description_source: auto
+description_hash: 856653e5539aa45b
+id: 9458cc5d-2b64-492e-b9f4-796ccc0cd2ed
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast — Spotify + Dashboard Session Prompt
 
 > Ez a prompt egy új Claude Code / Cowork sessionbe másolandó.

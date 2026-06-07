@@ -1,3 +1,15 @@
+---
+title: "Building a Second Brain — Tiago Forte (2022)"
+date: 2025-09-03
+author: Becze Szabolcs
+status: active
+description: "Tiago Forte's bestselling guide to personal knowledge management, teaching the CODE method (Capture, Organize, Distill, Express) for building a digital system that captures ideas, reduces cognitive overload and fuels creative output. Essential for knowledge workers seeking to systematize how they consume and reuse information."
+description_source: auto
+description_hash: 48781d280bb54bfa
+id: e3b73358-74ce-47f2-be1c-a5b47afb3534
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /02_Books/Tiago Forte - Building a Second Brain/
 FILES:
   - Building_a_Second_Brain_Tiago_Forte_2022.md

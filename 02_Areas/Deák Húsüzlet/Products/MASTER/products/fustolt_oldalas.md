@@ -1,3 +1,15 @@
+---
+title: "Füstölt Oldalas"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Füstölt sertésoldal, 47 euró/kg, csontosan értékesített termék grillezésre vagy sütésre alkalmas, a gyártó szerint nem szeletelhető. Készletben van, nagy keresletű termék."
+description_source: auto
+description_hash: 82bca47a689a3efd
+id: 067a6c2f-6482-4079-9981-fbf787cc6336
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Oldalas
 
 ```yaml

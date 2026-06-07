@@ -1,3 +1,15 @@
+---
+title: "Füstölt Kötözött Sonka"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Füstölt sonka termék katalógusadatlapja: 1 kg-os kötözött darabban, 50 lej/kg áron, szezonális elérhetőség, gyártói és készletkezelési információkkal. Hideg ételekhez szánva, féldara-bon is adható."
+description_source: auto
+description_hash: 582c0feb4ea38a49
+id: 51f74b28-e5a6-4c71-bc81-26dac758aae7
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Kötözött Sonka
 
 ```yaml

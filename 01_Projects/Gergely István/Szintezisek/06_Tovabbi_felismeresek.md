@@ -1,5 +1,8 @@
 ---
 title: "További felismerések — mélyebb adatbányászat"
+description: "Második körben azonosított konkrét működési problémák és lehetőségek: negatív készletek, holt cikkek, magas lekötött tőke és szezonális B2B csatorna-gödör. Adatvezetőknek és raktárgazdálkodásnak."
+description_source: auto
+description_hash: 712fdd960cd5a318
 type: synthesis
 project: Gergely István
 created: 2026-05-21
@@ -7,7 +10,6 @@ tags: [synthesis, deep-dive, findings]
 id: c4ac6cb4-1f50-4888-9faf-8ae4e44f9057
 index_schema_version: 1
 ---
-
 # További felismerések (2. kör mélyelemzés)
 
 ## 1. ✅ A csatornák összeállnak — GERDIT = teljes árbevétel

@@ -1,3 +1,15 @@
+---
+title: "Média Műhely — Company Context"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Székelyudvarhely-based media studio founded by Szabolcs, producing video and podcast content around dialogue, learning, and community. Operates with Christian values, serves clients like RMÜE and Koffer, and manages 27+ service packages alongside projects including Vision Corner podcast and Open Days."
+description_source: auto
+description_hash: 6c8b12f94e025fe9
+id: 4bccaf13-fa52-464b-9c8a-89a1bc38b7af
+index_schema_version: 1
+bdos_index: true
+---
 # Média Műhely — Company Context
 
 ## Overview

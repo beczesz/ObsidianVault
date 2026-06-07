@@ -1,3 +1,15 @@
+---
+title: "MVMI - AzureDevOps - Ki Kicsoda"
+date: 2026-05-06
+author: Becze Szabolcs
+status: active
+description: "Contact guide for MVMI AzureDevOps project listing primary contacts and communication rules: Horváth László Csaba (direct TO), Müller József (always CC), Bozár Anita (MVMI representative), and Sonrisa team members including Becze Szabolcs and technical staff."
+description_source: auto
+description_hash: b9cb7db16d18c3c7
+id: 360f6f44-8e21-48f7-b41b-7ced7d1c1d5e
+index_schema_version: 1
+bdos_index: true
+---
 # MVMI - AzureDevOps - Ki Kicsoda
 
 ## Kontakt szabályok

@@ -1,4 +1,7 @@
 ---
+description: "Interjú György Botond humoristával arról, hogy a humor hogyan eszköz a társadalomkritikára, tabuk megtörésére és szabadság kifejezésére, személyes élmények és az értelmiségi szerep középpontjában."
+description_source: auto
+description_hash: cf7671d817978a3f
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -14,7 +17,6 @@ quality: "Gold Standard"
 id: 55dbea5b-afa9-4760-9d65-73a3a9866246
 index_schema_version: 1
 ---
-
 # EP08 — György Botond: Humor mint szabadság — A humorista társadalomi missziója
 
 ## Alapadatok

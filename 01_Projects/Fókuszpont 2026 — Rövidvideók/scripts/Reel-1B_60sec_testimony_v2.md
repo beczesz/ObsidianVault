@@ -1,4 +1,7 @@
 ---
+description: "Egy éves emlékre visszatekintő 60 másperces reel Barni atya vezetésével, amely egy fiatal résztvevő szájából hallható őszinte tanúságtétellel és június 2-i közösségi imaidőzítésre való meghívással dolgozik. Vallási közösség bevonzására és érzelmek közvetítésére készült."
+description_source: auto
+description_hash: e85fb373420321cd
 type: forgatókönyv
 reel: "#1B — 60 mp · Insider story / tanúságtétel"
 version: v2 (Opció A — teljes átírás, NEM diagnózis-folytatás)
@@ -14,7 +17,6 @@ target_audience: aki MÁR kattintott / érdeklődik — meleg közönség
 id: 2aed645a-31e2-4bc3-844c-204e343d4197
 index_schema_version: 1
 ---
-
 # Reel #1B — 60 mp · Insider story / Tanúságtétel
 
 ## Koncepció

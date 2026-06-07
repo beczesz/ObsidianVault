@@ -1,4 +1,7 @@
 ---
+description: "DHOP stratégiai auditot dokumentáló brainstorm gyűjtés ChatGPT és Claude bevonásával, amely az economic engine koncepcióra, decision framework-re és sprint validációra fókuszál; product owner és stratégiai döntéshozók számára."
+description_source: auto
+description_hash: 414037bfe389e9c5
 topic: DHOP Stratégiai Áttekintés v1.0 — Teljes projekt review
 created: 2026-04-11
 last_updated: 2026-04-11
@@ -6,7 +9,6 @@ status: active
 id: 65c309fd-224a-4fb5-a0f1-2601ee0de129
 index_schema_version: 1
 ---
-
 # Brainstorm: DHOP Stratégiai Áttekintés — Sprint 1-6, Roadmap, Moat, Decision Framework
 
 ## Sessions

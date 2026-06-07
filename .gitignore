@@ -25,3 +25,35 @@ __pycache__/
 # Large binary/build artifacts (not vault content)
 **/node_modules/
 02_Areas/ExarLabs/resources/ExarSharedBrain/
+02_Areas/ExarLabs/Practices/microsite-factory/
+
+# Media + large binaries (live on disk + Google Drive, not in git). Commit policy 2026-06-07.
+# The vault is Drive-synced, so media is already backed up; git holds the knowledge layer.
+*.mp4
+*.mov
+*.mkv
+*.webm
+*.avi
+*.mp3
+*.m4a
+*.wav
+*.aac
+*.flac
+*.zip
+*.tar
+*.gz
+*.tgz
+*.7z
+*.rar
+*.bnl
+*.out
+# Raster images (bulk photos/thumbnails). Keep agent avatars; vector svg stays tracked.
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.webp
+*.heic
+*.tiff
+*.bmp
+!**/avatar.png

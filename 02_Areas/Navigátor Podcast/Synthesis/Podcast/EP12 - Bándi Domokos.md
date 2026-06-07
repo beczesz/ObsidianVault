@@ -2,6 +2,9 @@
 podcast: Navigátor Podcast
 episode: EP12
 title: "A Konyhai Kisegítőtől az Olimpiáig"
+description: "Bándi Domokos életútja az elektrotechnikából a séf mesterségbe vezet: az 92 perces interjú az olimpiai versenyig vezető pályáját, a helyi alapanyagok és székelyföldi identitás szerepét, valamint a kreativitás és rutin közötti egyensúlyt tárja fel szakterületi bölcsesség útján."
+description_source: auto
+description_hash: 9d76e7bed4b344db
 guest: Bándi Domokos
 role: Séf, a Küküllő Étterem (Székelykeresztúr) vezetője, zöldség-gyümölcs artisztika mester, olimpiai versenyző
 guest_background: "Székelykeresztúri séf, a Küküllő Étterem, Diszkrét Pub és Golden Events Rendezvénypark szakembere. Kézzel fogható szakmát keresett az érettségi után (elektrotechnikától asztalosig próbálkozott), míg megtalálta a konyhát. A zöldség-gyümölcs artisztika egyik erdélyi úttörője — az internet előtti korban, önszorgalomból tanulta. 2024 tavaszán Párizsban olimpiai kulináris versenyen vett részt a Taste of Transylvania csapattal."
@@ -34,7 +37,6 @@ cluster_episodes: [EP12, EP11, EP22, EP01]
 id: bc47e577-d3ca-499a-81e3-face12766091
 index_schema_version: 1
 ---
-
 # EP12 — Bándi Domokos: A Konyhai Kisegítőtől az Olimpiáig
 
 ## Bevezető kontextus

@@ -1,3 +1,15 @@
+---
+title: "Strategist (Claude Opus 4.7) — Round 1 findings"
+date: 2026-05-20
+author: Becze Szabolcs
+status: active
+description: "Strategist Round 1 findings on agent-maturity tier reframing for CCHBC AIOps engagement."
+description_source: auto
+description_hash: 966caacdd74f0589
+id: 23a104e1-6412-4a43-b431-2d2374060b50
+index_schema_version: 1
+bdos_index: true
+---
 # Strategist (Claude Opus 4.7) — Round 1 findings
 
 ## Summary

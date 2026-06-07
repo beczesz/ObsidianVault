@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Synthesis of Csakabaj's longest episode featuring strategic conversation between host Józsa Levi and guest Becze Szabolcs on podcasting's mainstream evolution, authenticity as competitive advantage, and the Hungarian media landscape's future directions. Essential for podcasters and media professionals."
+description_source: auto
+description_hash: 56f24a5ad7c3da16
+id: 90bb94bf-55e9-4e14-aa58-398add83f683
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP31 | Szülinap-hét #2

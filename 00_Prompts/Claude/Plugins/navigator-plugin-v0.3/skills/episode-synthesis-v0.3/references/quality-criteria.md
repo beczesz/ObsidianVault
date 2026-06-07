@@ -1,3 +1,15 @@
+---
+title: "Szintézis Minőségi Kritériumok és Sablon"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Szintézis minőségi szabvány és sablon podcastokat feldolgozó tudásvault számára. Tartalmazza a minőségi szinteket (Placeholder, Deep, Benchmark, Gold Standard), minimum követelményeket, placeholder-azonosítást és kitölthető sablonokat vendég epizódokhoz és sorozat-részekhez YouTube analitikával és tartalmi elemzéssel."
+description_source: auto
+description_hash: f71953bbcac9a547
+id: 1746c9f7-1d4d-479c-9f62-d52c4a94632c
+index_schema_version: 1
+bdos_index: true
+---
 # Szintézis Minőségi Kritériumok és Sablon
 
 ## Minőségi szintek

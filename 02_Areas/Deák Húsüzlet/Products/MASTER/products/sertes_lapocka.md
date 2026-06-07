@@ -1,3 +1,15 @@
+---
+title: "Sertés Lapocka"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Sertés lapocka termékleírása: csontmentes, szalonnamentes sertéshús pörköltnek, töltelékesnek és levesnek ajánlott, puha szerkezetű és gyors főzési idővel. Termékadat bejegyzés a friss sertéshús kategóriához, 25 Ft/kg áron."
+description_source: auto
+description_hash: d0dbd8fcdaf807fc
+id: 1dea2a5e-689a-4563-8388-4fef869b2e4e
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Lapocka
 
 ```yaml

@@ -1,3 +1,15 @@
+---
+title: "Ipari húskészítmények adalékanyagai — Kutatási jegyzet"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Kutatási jegyzet az ipari húskészítmények 50+ adalékanyagáról és azok funkcióiról, amelyek a kézműves terméket megkülönböztetik az ipartól. Felsorolja a Deák Húsmíves fűszerkeverékeiben valóban jelen lévő E-számokat és tiltja az adalékanyag-mentes állítást."
+description_source: auto
+description_hash: cf81be3ca51d6cf4
+id: a8f91da9-52c9-4f13-b280-b15f7fc126dc
+index_schema_version: 1
+bdos_index: true
+---
 # Ipari húskészítmények adalékanyagai — Kutatási jegyzet
 
 **Készült:** 2026-03-27 | **Frissítve:** 2026-03-31

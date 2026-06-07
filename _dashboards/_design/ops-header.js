@@ -1,6 +1,8 @@
 /**
- * ops-header.js — BDOS Ops Header  (DS 0.5.0, Phase B, 2026-05-24)
+ * ops-header.js — BDOS Ops Header  (DS 0.5.1, 2026-05-29)
  * =================================================================
+ * 0.5.1 (2026-05-29) single-server consolidation: Watchdog pill now reads
+ *        dash-server.mjs /health (4321); events_server.py (4322) retired.
  * Renders a slim ops-status strip ABOVE every dashboard masthead.
  * Five status pills (Watchdog · Server · DB · Scheduler · Index),
  * each independently checked every 30 s.
@@ -25,8 +27,7 @@
   // ---------------------------------------------------------------------------
   // Configuration
   // ---------------------------------------------------------------------------
-  const EVENTS_SERVER = 'http://localhost:4322';
-  const DASH_SERVER   = 'http://localhost:4321';
+  const DASH_SERVER   = 'http://localhost:4321';   // single browser-facing server (events_server/4322 retired 2026-05-29)
   const SIDECAR_PATH  = '/_dashboards/_design/agent_logs.json';
   const SCHEDULER_URL = '/_dashboards/scheduler/index.html';
   const REFRESH_MS    = 30_000;  // poll every 30 s
@@ -197,14 +198,16 @@
   // ---------------------------------------------------------------------------
 
   async function checkWatchdog() {
-    // Watchdog = events_server /health endpoint (which knows about vault.db)
+    // Watchdog = dash-server /health (port 4321) — reports indexing daemon liveness
     try {
-      const r = await fetch(EVENTS_SERVER + '/health', { signal: AbortSignal.timeout(4000) });
+      const r = await fetch(DASH_SERVER + '/health', { signal: AbortSignal.timeout(4000) });
       const j = await r.json();
       if (j.ok) {
         state.watchdog = { status: 'ok', label: 'Watchdog', detail: `clients:${j.clients}` };
+      } else if (j.daemon_alive === false) {
+        state.watchdog = { status: 'gap', label: 'Watchdog', detail: 'daemon down' };
       } else {
-        state.watchdog = { status: 'warn', label: 'Watchdog', detail: 'unhealthy' };
+        state.watchdog = { status: 'warn', label: 'Watchdog', detail: j.db_exists ? 'unhealthy' : 'no index' };
       }
     } catch (e) {
       state.watchdog = { status: 'gap', label: 'Watchdog', detail: 'offline' };

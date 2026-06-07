@@ -1,3 +1,15 @@
+---
+title: "Sonrisa CPS — Unified Strategic Journey"
+date: 2025-12-10
+author: Becze Szabolcs
+status: active
+description: "Strategic execution roadmap for Sonrisa's managed service transformation, detailing three-horizon plan from first CPS customer through €5M ARR scaling, AWS partnership advancement, and integrated delivery positioning."
+description_source: auto
+description_hash: 54f03b248c4c1691
+id: 6752e4f0-ac8f-4011-a232-d1a863e78428
+index_schema_version: 1
+bdos_index: true
+---
 # Sonrisa CPS — Unified Strategic Journey
 
 **Document Version:** 2.0  

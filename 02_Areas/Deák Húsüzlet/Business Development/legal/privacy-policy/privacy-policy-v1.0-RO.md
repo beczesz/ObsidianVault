@@ -1,5 +1,8 @@
 ---
 title: "Politica de Confidențialitate"
+description: "Privacy policy for Deák Húsmíves online butcher shop detailing data collection (name, email, phone, delivery address), processing purposes under GDPR, sharing with authorized partners, Firebase Analytics usage, retention periods, security measures, and user rights including access and deletion requests."
+description_source: auto
+description_hash: 0806323b1e48d6cc
 version: "1.0"
 status: DRAFT
 created: 2026-04-17
@@ -15,7 +18,6 @@ changelog:
 id: 3623158a-e9eb-4e8b-89eb-f784ab9c9d5b
 index_schema_version: 1
 ---
-
 # POLITICA DE CONFIDENȚIALITATE
 
 **Deák Húsmíves Online Platform — deakhus.ro**

@@ -1,3 +1,15 @@
+---
+title: "PRODUCT.md — Dr. Antal Réka Ügyvédi Iroda (fiktív demó)"
+date: 2026-05-21
+author: Becze Szabolcs
+status: active
+description: "Egy erdélyi magánügyvédi iroda demó landing oldala, ahol a tiszta tipográfia és nyugodt szerkezet építi fel a bizalmat a stresszhelyzetben érkező, nem-jogász látogató számára. Típusú ügyfélnek világos útbaigazítást nyújt a jogterületekhez, személyes megbízhatóságot, és könnyű kapcsolatfelvételt."
+description_source: auto
+description_hash: 7aa2c8003a40dba3
+id: 81c8d48d-240c-4430-afb6-7a3ee33584f1
+index_schema_version: 1
+bdos_index: true
+---
 # PRODUCT.md — Dr. Antal Réka Ügyvédi Iroda (fiktív demó)
 
 > Tanuló-demó. A cég és minden adat kitalált. Készült az `/impeccable` skill bemutatására,

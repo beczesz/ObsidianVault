@@ -1,3 +1,15 @@
+---
+title: "Gábos Levente - Értékelés"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Gábos Levente E6 szintű Senior fejlesztőjének február 2026-os értékelése, melyet Becze Szabolcs végzett. Tartalmazza a kliens (Isti) visszajelzéseit az alaposságról, a szakmai mérce magas szintjéről, valamint a munkatársak értékeléseit a bizalom, felelősségvállalás és teljesítmény területén."
+description_source: auto
+description_hash: ffa9ab890bdd1877
+id: 16dc2c89-ea5b-4ef6-b5f2-a747ec0c7e01
+index_schema_version: 1
+bdos_index: true
+---
 # Gábos Levente - Értékelés
 **Időszak**: 2026 Február
 **Szint**: E6 (Senior)

@@ -1,3 +1,15 @@
+---
+title: "Products Master — Version History"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Detailed changelog tracking schema and product data versions for a meat product catalog system, documenting the evolution from v1.0 through current v1.2 with variation group support, internal codes, and product option specifications for a butcher shop inventory system."
+description_source: auto
+description_hash: f2b2488d24b562a4
+id: e5206fd6-914d-4c3a-8571-2ec3ca3b64ae
+index_schema_version: 1
+bdos_index: true
+---
 # Products Master — Version History
 
 > **Forrás:** `Products/MASTER/products/*.md` (egy fájl per termék)

@@ -1,3 +1,15 @@
+---
+title: "Vision Corner   Episodes prompt"
+date: 2026-01-29
+author: Becze Szabolcs
+status: active
+description: "Internal podcast platform where Sonrisa leadership shares strategic updates, addresses employee questions, and builds organizational alignment through recorded conversations accessible to all staff members."
+description_source: auto
+description_hash: 2c1949fbaa7e9ff0
+id: 257683ee-caee-4488-ab69-d888e8a45b40
+index_schema_version: 1
+bdos_index: true
+---
 Prompt: What is Vision Corner? (General Context) 
 
 Vision Corner is Sonrisa’s internal podcast platform designed to foster open communication, transparency, and alignment across the organization. It was launched in response to a growing need for more structured, regular, and authentic dialogue between leadership and employees—especially as the company scaled rapidly and adopted more hybrid and remote ways of working. 

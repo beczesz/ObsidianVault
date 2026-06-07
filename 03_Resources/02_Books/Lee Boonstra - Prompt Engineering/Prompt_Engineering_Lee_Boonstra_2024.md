@@ -1,3 +1,15 @@
+---
+title: "Prompt Engineering — Lee Boonstra (2024)"
+date: 2025-09-04
+author: Becze Szabolcs
+status: active
+description: "Lee Boonstra's 2024 Google whitepaper on prompt engineering: structured techniques for crafting effective LLM prompts, covering configuration parameters, zero-shot to advanced prompting strategies, and best practices for developers and AI practitioners."
+description_source: auto
+description_hash: 2de9bc578b137f96
+id: a44cfa42-1c83-4e96-82f7-75651d0ee555
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /02_Books/Lee Boonstra - Prompt Engineering/
 FILES:
   - Prompt_Engineering_Lee_Boonstra_2024.md

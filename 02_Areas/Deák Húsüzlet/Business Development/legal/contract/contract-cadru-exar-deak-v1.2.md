@@ -1,5 +1,8 @@
 ---
 title: "Contract-Cadru de Colaborare și Prestări Servicii Digitale"
+description: "Cadrul contractual de colaborare pe durată nedeterminată dintre EXARGROUPS SRL și DEAK PROD SRL pentru prestarea de servicii digitale prin platforma deakhus.ro, cu detalii privind obligații reciproce, taxa de platformă variabilă, comenzi comerciale subsecvente și condiții de încetare cu preaviz de 30 de zile."
+description_source: auto
+description_hash: a16bc77601bf9b6b
 version: "1.2"
 status: FINAL
 created: 2026-04-16
@@ -21,7 +24,6 @@ changelog:
 id: fa061644-2b07-4863-a153-7dd12bfae22b
 index_schema_version: 1
 ---
-
 # CONTRACT-CADRU DE COLABORARE ȘI PRESTĂRI SERVICII DIGITALE
 
 **(pe durată nedeterminată)**

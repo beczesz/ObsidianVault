@@ -1,4 +1,7 @@
 ---
+description: "Podcast epizód Pálfi Kinga stílustanácsadóval, aki a személyes gyász (édesanya halála) feldolgozásából indított vállalkozást. Tartalmazza az édesanya-epizód hatásait, a Bloom Style szolgáltatásait, szépségideál-kritikát és a daganatos betegek támogatásáról szóló Életvonal projektjét."
+description_source: auto
+description_hash: c13de4d9ff96ff89
 version: 0.1
 date: 2026-04-06
 type: episode-synthesis
@@ -15,7 +18,6 @@ analytics_note: "Overview tab részlegesen elérhető (2026-04-06). Reach, Engag
 id: dc21272e-0591-435f-8179-a483c716cbf1
 index_schema_version: 1
 ---
-
 # EP12 — Pálfi Kinga: A stílus nem pénz kérdése
 
 ## Alapadatok

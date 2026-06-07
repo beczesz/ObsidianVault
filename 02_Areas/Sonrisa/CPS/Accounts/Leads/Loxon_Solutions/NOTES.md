@@ -1,4 +1,7 @@
 ---
+description: "Hungary's largest banking software vendor demoted from active prospects due to lack of DevOps/SRE openings, but remains interesting for DORA compliance services starting 2026; outreach focuses on Head of IT with audit-ready infrastructure background."
+description_source: auto
+description_hash: 9f6286c2fcc1cdaa
 type: lead
 id: loxon
 company: "Loxon Solutions"
@@ -37,7 +40,6 @@ created: 2026-05-11
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # Loxon Solutions
 
 ## Signal

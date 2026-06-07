@@ -1,4 +1,7 @@
 ---
+description: "Második epizód a Csakabaj Podcastból, ahol Miklós Csongor stand-up comedian és mentális egészség szakértő beszél humorról, lelki egészségről és segítség kérésről, összekötvén elméleti kereteket személyes tapasztalatokkal, gyakorlati alkalmazásokkal és etikai kérdésekkel."
+description_source: auto
+description_hash: 1bca87447ea03042
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -13,7 +16,6 @@ quality: "Gold Standard"
 id: 22dc7e0e-7d9b-41c7-aae2-3cdb1c238a36
 index_schema_version: 1
 ---
-
 # EP02 — Miklós Csongor: Humor, lelki egészség, segítség kérés
 
 ## Alapadatok

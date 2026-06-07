@@ -1,3 +1,15 @@
+---
+title: "Alapító Kliensek Program - Facebook Posztok"
+date: 2026-02-15
+author: Becze Szabolcs
+status: active
+description: "Teaser és bejelentő Facebook posztok az Alapító Kliensek Program promocióhoz, amely 30% kedvezményt és kiemelt prioritást kínál az első 5 kliensnek családi ház tervezésére március végéig Székelyudvarhelyen."
+description_source: auto
+description_hash: 2e9c165f61f507d8
+id: ea359adf-2dc2-46d6-81cd-6fc731fbb758
+index_schema_version: 1
+bdos_index: true
+---
 # Alapító Kliensek Program - Facebook Posztok
 
 ---

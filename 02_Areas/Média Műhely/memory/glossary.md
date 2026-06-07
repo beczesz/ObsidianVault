@@ -1,3 +1,15 @@
+---
+title: "Glossary"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Reference guide for project acronyms, internal terminology, team members, and client information used by Média Műhely. Includes currency details, content formats, and billing status for active engagements."
+description_source: auto
+description_hash: 9c3c78b14b9f5536
+id: 8d465dd4-5ab6-4651-9892-29cbdc77d0cf
+index_schema_version: 1
+bdos_index: true
+---
 # Glossary
 
 ## Acronyms & Terms

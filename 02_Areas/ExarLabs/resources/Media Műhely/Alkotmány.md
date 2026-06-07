@@ -1,4 +1,15 @@
-
+---
+title: "Vízió"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "A Média Műhely alapítópapírja: szervezete vízója, misszója, valamint alapvető értékei a párbeszédről, közösségről, jellemről és keresztény etikáról. Szervezeti vezetők és tagok számára szükséges dokumentum."
+description_source: auto
+description_hash: d6f8e49e01ab4977
+id: f8ad755d-5dfb-4302-9442-16b38a6546ea
+index_schema_version: 1
+bdos_index: true
+---
 # Vízió
 
 A Média Műhely az a hely ahol az igazság felhangosodik.

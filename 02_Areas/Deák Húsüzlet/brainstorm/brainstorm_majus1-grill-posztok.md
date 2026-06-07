@@ -1,4 +1,7 @@
 ---
+description: "Május 1-i grillcsomag kampány Facebook posztjainak brainstorming dokumenuma: 10 poszt ötlet, AI team szereposztása, termékadatok, célközönség profil, kiválasztott TOP 5 poszt indoklással és vizuál javaslatokkal. Szakterület: közösségi média marketing és kreatív írás."
+description_source: auto
+description_hash: 80bbfec0f536c85d
 topic: Május 1-i Grillcsomag Facebook Posztok
 created: 2026-04-29
 last_updated: 2026-04-29T15:30:00
@@ -6,7 +9,6 @@ status: concluded
 id: cf555673-5501-4ec4-81a9-8f2c16b707d1
 index_schema_version: 1
 ---
-
 # Brainstorm: Május 1-i Grillcsomag Facebook Posztok
 
 ## Team

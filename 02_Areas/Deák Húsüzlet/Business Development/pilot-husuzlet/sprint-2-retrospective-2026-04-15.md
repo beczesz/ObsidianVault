@@ -1,5 +1,8 @@
 ---
 title: Sprint 2 Retrospective — DH "Látjuk az adatokat"
+description: "Sprint 2 végeztével a 38/38 ticketből 100% Done, 13 nap alatt: teljes Firebase Analytics stack, UTM/QR forráskövetés, KPI dashboard. AI szorzó 11.7x, carry-over 0, legal compliance hátramaradt. Szabolcs és Mate sprint review dokumentuma a Deák Húsmíves projekt mérésképes mérési alapjáról és Sprint 3 fókuszáról."
+description_source: auto
+description_hash: 356763993bce7317
 version: 1.0
 date: 2026-04-15
 sprint_period: 2026-04-03 → 2026-04-15 (tényleges) / 2026-04-29 (eredeti)
@@ -9,7 +12,6 @@ author: Claude (Anthropic) + Szabolcs
 id: e04947be-e715-427d-b4e8-ad6374b688d5
 index_schema_version: 1
 ---
-
 # Sprint 2 Retrospective — DH
 
 ## TL;DR

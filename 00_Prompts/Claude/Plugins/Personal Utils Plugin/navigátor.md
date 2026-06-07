@@ -1,3 +1,15 @@
+---
+title: "navigátor"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Reggeli emailkezelési feladat a Navigátor Podcast Gmail fiókjához: olvasatlan levelek átnézése, kategorizálása és sürgős üzenetek kiemelése. Szponzorációs ajánlatok, vendégajánlások és egyéb megkeresések azonosítása."
+description_source: auto
+description_hash: 32e450dc85f449c1
+id: 5610966a-f511-4752-a41f-ab52a430d07f
+index_schema_version: 1
+bdos_index: true
+---
 Ellenőrizd a Navigátor Podcast Gmail fiókját (navigator.podc@gmail.com) és foglald össze az összes olvasatlan emailt, kiemelve a figyelmet igénylőket.
 
 ## Lépések

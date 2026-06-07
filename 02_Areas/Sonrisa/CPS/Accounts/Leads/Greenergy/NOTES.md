@@ -1,4 +1,7 @@
 ---
+description: "Hungarian energy services company marked as lost in 2026; no public DevOps presence, career page, or response to LinkedIn outreach; no remaining actionable opportunities."
+description_source: auto
+description_hash: 47b2a9eb1395854a
 type: lead
 id: greenergy
 company: "Greenergy-Service Kft"
@@ -27,7 +30,6 @@ created: 2026-03-20
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # Greenergy-Service Kft
 
 ## Signal

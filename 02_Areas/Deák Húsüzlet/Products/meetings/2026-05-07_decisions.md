@@ -1,3 +1,15 @@
+---
+title: "2026-05-07 — Termelői meeting döntések (Mikado-i ülés)"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Szabolcs termelő-megbeszélésének döntési jegyzete az 37 termékvariáció felülvizsgálatáról, beleértve szeletelési módokat, pácolási opciókat, méretkategóriákat és árképzést. Termelési és értékesítési csapatnak szükséges a termékleírások és fotózás pontosításához."
+description_source: auto
+description_hash: ea57d9b2e92a5c8d
+id: 0a6b47ad-b4f6-4674-9bfc-5fbe3c71d833
+index_schema_version: 1
+bdos_index: true
+---
 # 2026-05-07 — Termelői meeting döntések (Mikado-i ülés)
 
 > **Forrás:** `Products/meetings/DH - Mikado - Termek variációk-transcript-full.srt`

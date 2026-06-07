@@ -1,6 +1,9 @@
 ---
 episode: EP11
 title: "„Hit és vezetés" – Keresztény szemlélet a munkában | Elekes István | EP11"
+description: "Elekes István szervezetfejlesztővel beszélgető epizód a keresztény vezetés gyakorlati megvalósításáról, amely a szolgáló vezetés, bizalom, jellem és önként vállalt szenvedés szerepéről értekezik konkrét szervezeti példákon keresztül."
+description_source: auto
+description_hash: f6ed6c449e082606
 guest: Elekes István
 guest_title: Szervezetfejlesztő, coach, HR szakértő
 youtube_id: wVLydj4eUFg
@@ -31,7 +34,6 @@ created: 2026-04-06
 id: 16a8aabd-9f2b-47ce-a841-c2e4b49101fc
 index_schema_version: 1
 ---
-
 # EP11 – „Hit és vezetés" – Keresztény szemlélet a munkában | Elekes István
 
 ## Bevezető kontextus

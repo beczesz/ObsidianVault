@@ -1,4 +1,7 @@
 ---
+description: "A KAW szervezet vezetőinek kézikönyve, amely személyes feladatok és kapcsolatok nyilvántartását tartalmazza magyar vezetők számára, beleértve utazási terveket és kapcsolattartási listákat."
+description_source: auto
+description_hash: ddcaa9915c30766e
 significance:
   - Az első magyar nyelvű igazán praktikus keresztény vezetéselméleti könyv
   - Szakmai autoritást ad az Ignisnek és az Exarnak
@@ -7,7 +10,6 @@ significance:
 id: 03b3a1dd-5c22-4e86-8eb0-f3942d0ff6e6
 index_schema_version: 1
 ---
-
 TODO
 - [x] Felvenni a kapcsolatot Fábri Kornállal 📅 2025-09-10
 - [x] Vezetők Imája csoportba írni 📅 2025-09-08

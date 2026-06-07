@@ -41,8 +41,8 @@ Magyar vállalkozói podcast mélyreható beszélgetésekkel. Cél: térképet �
 1. **Alacsony Impressions CTR:** Az EP41 csak 5.8% CTR-t ért el — a thumbnail/cím vonzó de a retention 12.8% — optimalizálni kell
 2. **Shorts stratégia hiányzik:** Csak 3.1% a Shorts-ból jön — kihasználatlan csatorna
 3. **Mappa rendetlenség:** Non-md fájlok az Obsidian vault-ban, duplikátumok — takarítási útmutató elkészült
-4. **Lejárt feladatok:** Farkas Kinga (EP45 gyász, 2026-02-24 lejárt), Webinar (2026-03-24)
-5. **Üres epizód fájlok:** EP45, EP46 üresek — nincs felkészülés
+4. **Lejárt feladatok:** Webinar (2026-03-24)
+5. **Feldolgozásra vár:** EP43 (Gyász / Farkas Kinga — forgatás kész), EP44 (Agrárdigitalizáció / Miklós Ervin — forgatás kész)
 6. **Patreon kampány:** 4 hetes kampány lezárult — eredmények ismeretlenek
 7. **Felirat archívum hiányzik:** Csak ~13 SRT van, a többi ~180+ videóhoz le kell tölteni
 
@@ -70,8 +70,8 @@ Magyar vállalkozói podcast mélyreható beszélgetésekkel. Cél: térképet �
 - [ ] SRT feliratok letöltése: `yt-dlp --write-auto-subs --sub-langs hu --sub-format srt --skip-download -o "%(upload_date)s - %(title)s.%(ext)s" "https://www.youtube.com/@NavigatorPodcast"`
 - [ ] Epizódonkénti elemzés elkezdése a Synthesis mappában
 - [ ] Patreon eredmények ellenőrzése
-- [ ] EP45 (Farkas Kinga - gyász) — új dátum egyeztetése
-- [ ] EP46 (Miklós Ervin) — dátum kitűzése
+- [ ] EP43 (Gyász / Farkas Kinga) — feldolgozás + publikálás
+- [ ] EP44 (Agrárdigitalizáció / Miklós Ervin) — feldolgozás + dátum kitűzése
 
 ## Constraints
 

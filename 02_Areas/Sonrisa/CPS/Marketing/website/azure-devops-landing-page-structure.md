@@ -1,3 +1,15 @@
+---
+title: "Azure DevOps Platform Services - Landing Page Structure & Copy"
+date: 2026-04-27
+author: Becze Szabolcs
+status: active
+description: "Landing page design for Azure DevOps professional services, covering hero positioning, implementation and managed support service models, customer scenarios, and proof points targeting enterprise buyers in regulated industries."
+description_source: auto
+description_hash: b75026c7d42c2a03
+id: 2389ee81-7cbc-4eb9-bf33-943508100174
+index_schema_version: 1
+bdos_index: true
+---
 # Azure DevOps Platform Services - Landing Page Structure & Copy
 
 **Strategic positioning:** "Your DevOps Platform. Our Engineers."

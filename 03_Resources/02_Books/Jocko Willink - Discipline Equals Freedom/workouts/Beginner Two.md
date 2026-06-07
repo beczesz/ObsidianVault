@@ -1,4 +1,15 @@
-
+---
+title: "Beginner Two"
+date: 2026-01-19
+author: Becze Szabolcs
+status: active
+description: "A second-level bodyweight training program featuring pull-ups, push-ups, handstand work, and squats with broken sets, core exercises, and metabolic conditioning for building rep consistency and workout density."
+description_source: auto
+description_hash: a5b685a3eaebbac1
+id: 125af26a-cb0c-4482-945c-8f0467a91971
+index_schema_version: 1
+bdos_index: true
+---
 ## Warm-up (Bemelegítés)
 
 Use the **same warm-up** as in **Beginner Series One**.  

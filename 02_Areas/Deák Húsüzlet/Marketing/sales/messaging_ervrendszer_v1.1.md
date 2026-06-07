@@ -1,5 +1,8 @@
 ---
 title: "Messaging Érvrendszer — Miért okosabb így vásárolni?"
+description: "A Deák Húsmíves online rendelési rendszer marketing érvrendszere, amely a „jobban vásárolsz üzenetből indul és a tudatos vásárlásra helyezi a hangsúlyt. Stratégiai szövegezést és pozicionálást tartalmaz a csapat számára, valamint kritikai megjegyzéseket az intellektuális nyelvezet vagy tarthatatlan ígéretek elkerüléséről."
+description_source: auto
+description_hash: d81d1728883f623c
 version: v1.1
 date: 2026-04-05
 authors: Claude + ChatGPT (Deak GPT)
@@ -11,7 +14,6 @@ changelog: |
 id: cb7e629d-6ba3-45b9-bef3-eb59c5304188
 index_schema_version: 1
 ---
-
 # Messaging Érvrendszer — Deák Húsmíves Online
 
 > „Nem többet vásárolsz — jobban."

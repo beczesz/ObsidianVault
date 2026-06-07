@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   =============================================================================
-  Navigátor Podcast, episode + ops dashboard.   Version: 0.1.4
+  Navigátor Podcast, episode + ops dashboard.   Version: 0.2.2
   =============================================================================
   Two tabs in one renderer:
     - Epizódok : sortable/filterable roster of EP01–EP42, platform status
@@ -20,6 +20,18 @@
   Conventions: see 02_Areas/Sonrisa/CPS/Sales/DASHBOARD_CONTRACT.md.
 
   Audit trail:
+    0.2.2 (2026-05-29) tend: version-pill normalized family-wide. CSS: font-size 10.5px, padding 2px 8px, font-weight 500 (was 10px, 1px 7px, no weight). Markup: mono class added.
+    0.2.0 (2026-05-26) — tend: default sort desc (EP45 first); planned episode support.
+          filteredSorted() passes status:planned rows through. fSpotify dropdown: "planned"
+          option added. Planned rows: bg-tint background + idle-color badge + italic guest +
+          0.55 opacity. "Előkészítés alatt" placeholder when no youtube_id. Widget strip
+          caption updated: N published + M planned. DS --idle token used (DS 0.1.0+).
+    0.1.9 (2026-05-25) — promote: panel-anchor system (DS 0.8.0) partial — tab-based.
+          scroll-margin-top: 42px added. widgets → panel-1-header-strip ID rename. JS ref updated.
+          Tab panels (view-episodes, view-kanban) use tab state for navigation — no badge anchors.
+    0.1.8 (2026-05-25) refactor: extract canonical parseYamlFrontmatter → /_design/markdown-parser.js (DS 0.7.2 engine extraction, Sprint 3)
+    0.1.7 (2026-05-25) refactor: extract canonical :root + dark + @media tokens → /_design/tokens.css (DS 0.7.0 engine extraction, Sprint 2a)
+    0.1.6 (2026-05-25) refactor: extract setTheme/copyText/wireCopyRef → /_design/{theme,clipboard}.js (DS 0.7.0 engine extraction, Sprint 1)
     0.1.0 (2026-05-21) initial build. Episode roster grid + drawer + kanban,
           dark mode, filters, sort, widgets, YAML + kanban + markdown parsers,
           SSE push + poll fallback.
@@ -30,6 +42,9 @@
     0.1.3 (2026-05-22) — added day/night theme toggle + dark tokens (DESIGN_SYSTEM
           0.3.0). Canonical shared localStorage key "dash-theme" (replaces
           bespoke "nav-dash-theme"). FOUC-init added. Cross-dashboard storage sync.
+    0.2.1 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app → .app-main + .app-shell layout. alfred-tasks.js added. Header version synced (was 0.1.9, pill was 0.2.0).
+    0.1.5 (2026-05-25) — promote: admin-bar.js (DS 0.6.0) replaces ops-header.js.
+          #bdos-ops-header → #bdos-admin-bar. Fixed dark WP-style top bar, 34px.
     0.1.4 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
   =============================================================================
 -->
@@ -53,114 +68,42 @@
   document.documentElement.dataset.theme = t;
 })();
 </script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-page: #faf9f5;
-  --bg-elev: #ffffff;
-  --bg-sunken: #f3f1ea;
-  --bg-tint: #f5f4ef;
-  --ink-1: #141413;
-  --ink-2: #3a3a37;
-  --ink-3: #6d6d6a;
-  --ink-4: #9c9c98;
-  --ink-5: #c8c8c2;
-  --line: #e5e4df;
-  --line-soft: #efede7;
-  --accent: #D97757;
-  --accent-deep: #b35a3f;
-  --accent-tint: #fbeee6;
-
-  --ok:        #1f7a4d;
-  --ok-tint:   #e6f3ec;
-  --warn:      #b07a18;
-  --warn-tint: #fbf2dc;
-  --gap:       #c0392b;
-  --gap-tint:  #fbeae6;
-  --idle:      #7a7a76;
-  --idle-tint: #efeeeb;
-  --info:      #2563a5;
+--info:      #2563a5;
   --info-tint: #e8eff8;
 
-  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
-  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
   --shadow-3: 0 18px 50px rgba(20,20,19,.18), 0 6px 16px rgba(20,20,19,.10);
-
-  --radius-s: 4px;
-  --radius-m: 6px;
-  --radius-l: 10px;
-  --radius-xl: 14px;
-
-  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
-  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
 }
 
 /* ===== Dark theme override (DS 0.3.0) ===== */
 :root[data-theme="dark"] {
-  /* Surfaces — warm dark paper */
-  --bg-page:   #1a1916;
-  --bg-elev:   #232220;
-  --bg-sunken: #2c2a26;
-  --bg-tint:   #262420;
+/* Surfaces — warm dark paper */
 
   /* Ink scale */
-  --ink-1: #f5f4ef;
-  --ink-2: #d6d4ce;
-  --ink-3: #a8a6a0;
-  --ink-4: #7c7a74;
-  --ink-5: #54524d;
 
   /* Lines */
-  --line:      #36342f;
-  --line-soft: #2c2a26;
 
   /* Accent */
-  --accent:      #e08a6a;
-  --accent-deep: #f0a085;
-  --accent-tint: #3a2a22;
 
   /* Status */
-  --ok:        #5cc08a;  --ok-tint:   #1e3329;
-  --warn:      #d6a94a;  --warn-tint: #352c18;
-  --gap:       #e57c6e;  --gap-tint:  #3a221e;
-  --idle:      #9a9892;  --idle-tint: #2a2925;
 
   /* Navigator-specific extras (pending promote) */
   --info:      #6aa3e0;  --info-tint: #1e2a3a;
 
   /* Elevation */
-  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
   --shadow-3: 0 18px 50px rgba(0,0,0,.55), 0 6px 16px rgba(0,0,0,.40);
 }
 
 /* System-aware fallback (DS 0.3.0) */
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg-page:   #1a1916;
-    --bg-elev:   #232220;
-    --bg-sunken: #2c2a26;
-    --bg-tint:   #262420;
-    --ink-1: #f5f4ef;
-    --ink-2: #d6d4ce;
-    --ink-3: #a8a6a0;
-    --ink-4: #7c7a74;
-    --ink-5: #54524d;
-    --line:      #36342f;
-    --line-soft: #2c2a26;
-    --accent:      #e08a6a;
-    --accent-deep: #f0a085;
-    --accent-tint: #3a2a22;
-    --ok:        #5cc08a;  --ok-tint:   #1e3329;
-    --warn:      #d6a94a;  --warn-tint: #352c18;
-    --gap:       #e57c6e;  --gap-tint:  #3a221e;
-    --idle:      #9a9892;  --idle-tint: #2a2925;
-    --info:      #6aa3e0;  --info-tint: #1e2a3a;
-    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
+--info:      #6aa3e0;  --info-tint: #1e2a3a;
     --shadow-3: 0 18px 50px rgba(0,0,0,.55), 0 6px 16px rgba(0,0,0,.40);
-  }
+}
 }
 
 html { font-size: 15px; }
@@ -182,7 +125,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   outline: 2px solid var(--accent); outline-offset: 2px; border-radius: var(--radius-s);
 }
 
-.app { max-width: 1240px; margin: 0 auto; padding: 26px 32px 96px; }
+.app-main { max-width: 1240px; padding: 26px 32px 96px; }
 
 /* ===== Masthead ===== */
 .masthead { padding-bottom: 20px; border-bottom: 1px solid var(--line); margin-bottom: 24px; }
@@ -212,11 +155,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   display: flex; align-items: center; gap: 10px;
 }
 .eyebrow .dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; }
-.version-pill {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
-  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
-  border-radius: 999px; letter-spacing: 0; text-transform: none;
-}
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; letter-spacing: 0; font-weight: 500; }
 .masthead h1 { font-size: clamp(26px, 3.2vw, 38px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
 .masthead h1 .accent { color: var(--accent); }
 .masthead .submeta {
@@ -327,6 +266,13 @@ tr.is-top td.guest { }
 .yt-ok { color: var(--ok); }
 .empty-note { font-size: 13px; color: var(--ink-4); font-style: italic; padding: 24px; text-align: center; }
 
+/* ===== Planned episode rows (status: planned) ===== */
+table.eps tbody tr.is-planned { background: var(--bg-tint); opacity: 0.72; }
+table.eps tbody tr.is-planned:hover { background: var(--bg-sunken); opacity: 1; }
+table.eps tbody tr.is-planned td { color: var(--ink-3); }
+table.eps tbody tr.is-planned td.guest { font-style: italic; color: var(--ink-2); }
+.badge.planned { color: var(--idle); background: var(--idle-tint); }
+
 /* ===== Kanban ===== */
 .kanban { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(248px, 1fr); gap: 14px; overflow-x: auto; padding-bottom: 12px; align-items: start; }
 .kcol { background: var(--bg-tint); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 12px; min-width: 0; }
@@ -414,9 +360,12 @@ tr[data-card-id]:hover .card-copy-ref { opacity: 1; }
 .card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
 .card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
 
+/* ===== Panel Anchor System (DS 0.8.0) — tab-based: IDs only, no badge anchors ===== */
+[id^="panel-"] { scroll-margin-top: 42px; }
+
 @media (max-width: 1080px) { .widgets { grid-template-columns: repeat(3, 1fr); } }
 @media (max-width: 760px) {
-  .app { padding: 18px 16px 80px; }
+  .app-main { padding: 18px 16px 80px; }
   .widgets { grid-template-columns: repeat(2, 1fr); }
   table.eps td .topic { display: none; }
   table.eps th.col-topic, table.eps td.col-topic, table.eps th.col-cluster, table.eps td.col-cluster, table.eps th.col-dur, table.eps td.col-dur { display: none; }
@@ -425,8 +374,9 @@ tr[data-card-id]:hover .card-copy-ref { opacity: 1; }
 </style>
 </head>
 <body>
-<div id="bdos-ops-header"></div>
-<div class="app">
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<div class="app-main">
 
   <header class="masthead">
     <div class="toprow">
@@ -444,7 +394,7 @@ tr[data-card-id]:hover .card-copy-ref { opacity: 1; }
     <div class="eyebrow">
       <span class="dot"></span>
       <span>Navigátor Podcast</span>
-      <span class="version-pill">v0.1.3</span>
+      <span class="version-pill mono">v0.2.2</span>
     </div>
     <h1>Epizód &amp; Platform Pult <span class="accent">.</span></h1>
     <div class="submeta">
@@ -469,7 +419,7 @@ tr[data-card-id]:hover .card-copy-ref { opacity: 1; }
 
   <!-- ===== Episodes view ===== -->
   <section class="view active" id="view-episodes" role="tabpanel">
-    <div class="widgets" id="widgets"></div>
+    <div class="widgets" id="panel-1-header-strip"></div>
     <div class="controls">
       <div class="search-box">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><path d="M21 21l-4.3-4.3"></path></svg>
@@ -482,6 +432,7 @@ tr[data-card-id]:hover .card-copy-ref { opacity: 1; }
         <option value="date_fix">🟡 Dátum javítandó</option>
         <option value="missing">🔴 Hiányzik</option>
         <option value="unverified">⚪ Ellenőrzendő</option>
+        <option value="planned">🔵 Tervezett</option>
       </select>
       <select class="filter-sel" id="fTop">
         <option value="">Összes epizód</option>
@@ -513,6 +464,8 @@ tr[data-card-id]:hover .card-copy-ref { opacity: 1; }
   </section>
 
 </div>
+<aside id="alfred-tasks-sidebar"></aside>
+</div>
 
 <!-- ===== Drawer ===== -->
 <div class="scrim" id="scrim"></div>
@@ -527,89 +480,7 @@ tr[data-card-id]:hover .card-copy-ref { opacity: 1; }
    sales dashboards). Scalars, inline + block arrays, block
    objects, arrays of objects with nested arrays.
    ============================================================ */
-function parseYamlFrontmatter(md) {
-  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
-  if (!m) return null;
-  const lines = m[1].split('\n');
-  const root = {};
-  const stack = [{ indent: -1, container: root, key: null }];
-  const stripComment = (line) => {
-    let q = null;
-    for (let i = 0; i < line.length; i++) {
-      const c = line[i];
-      if (q) { if (c === q && line[i-1] !== '\\') q = null; }
-      else if (c === '"' || c === "'") q = c;
-      else if (c === '#' && (i === 0 || /\s/.test(line[i-1]))) return line.slice(0, i).replace(/\s+$/, '');
-    }
-    return line.replace(/\s+$/, '');
-  };
-  const sv = (raw) => {
-    let v = raw.trim();
-    if (v === '') return '';
-    if (v === 'null' || v === '~') return null;
-    if (v === 'true') return true;
-    if (v === 'false') return false;
-    if ((v.startsWith('"') && v.endsWith('"')) || (v.startsWith("'") && v.endsWith("'"))) return v.slice(1, -1);
-    if (v.startsWith('[') && v.endsWith(']')) {
-      const inner = v.slice(1, -1).trim();
-      return inner ? inner.split(',').map(s => sv(s)) : [];
-    }
-    if (/^-?\d+$/.test(v)) return parseInt(v, 10);
-    if (/^-?\d+\.\d+$/.test(v)) return parseFloat(v);
-    return v;
-  };
-  for (let i = 0; i < lines.length; i++) {
-    const raw = lines[i];
-    if (!raw || /^\s*$/.test(raw)) continue;
-    const nc = stripComment(raw);
-    if (!nc.trim()) continue;
-    const indent = nc.match(/^(\s*)/)[1].length;
-    const trimmed = nc.trim();
-    while (stack.length > 1 && indent <= stack[stack.length-1].indent) stack.pop();
-    const top = stack[stack.length-1];
-    if (trimmed.startsWith('- ')) {
-      const item = trimmed.slice(2).trim();
-      if (!Array.isArray(top.container)) continue;
-      if (item.includes(':')) {
-        const obj = {};
-        top.container.push(obj);
-        const ci = item.indexOf(':');
-        const k = item.slice(0, ci).trim();
-        const val = item.slice(ci+1).trim();
-        if (val !== '') obj[k] = sv(val);
-        stack.push({ indent, container: obj, key: null });
-      } else {
-        top.container.push(sv(item));
-      }
-      continue;
-    }
-    const ci = trimmed.indexOf(':');
-    if (ci === -1) continue;
-    const key = trimmed.slice(0, ci).trim();
-    const val = trimmed.slice(ci+1).trim();
-    const parent = top.container;
-    if (val === '') {
-      let ni = i + 1;
-      while (ni < lines.length && /^\s*(#.*)?$/.test(lines[ni])) ni++;
-      const nl = lines[ni] || '';
-      const nIndent = nl.match(/^(\s*)/)[1].length;
-      const nTrim = nl.trim();
-      if (nTrim.startsWith('- ') && nIndent > indent) {
-        const arr = []; if (Array.isArray(parent)) parent.push(arr); else parent[key] = arr;
-        stack.push({ indent, container: arr, key });
-      } else if (nIndent > indent && nTrim.includes(':')) {
-        const obj = {}; if (Array.isArray(parent)) parent.push(obj); else parent[key] = obj;
-        stack.push({ indent, container: obj, key });
-      } else {
-        if (Array.isArray(parent)) parent.push(null); else parent[key] = null;
-      }
-    } else {
-      const value = sv(val);
-      if (Array.isArray(parent)) parent.push({ [key]: value }); else parent[key] = value;
-    }
-  }
-  return { frontmatter: root, body: md.slice(m[0].length) };
-}
+/* parseYamlFrontmatter: moved to /_dashboards/_design/markdown-parser.js (DS 0.7.2, Sprint 3) */
 
 /* ============================================================
    Obsidian Kanban parser. `## Lane` headers, `- [ ] **Title**
@@ -711,12 +582,13 @@ const EPISODES_FILE = '/' + AREA + '/EPISODES.md';
 const TODO_FILE = '/' + AREA + '/TODO.md';
 const SYNTH_DIR = AREA + '/Synthesis/Podcast/';
 const DASH_STEM = 'navigator';
+/* Clipboard helpers (copyText, wireCopyRef): /_dashboards/_design/clipboard.js (DS 0.7.0, Sprint 1) */
 let POLL_INTERVAL_MS = 8000;
 
 let EPISODES = [];
 let COLUMNS = [];
 let filters = { q: '', cluster: '', spotify: '', top: '' };
-let sortKey = 'ep', sortDir = 'asc';
+let sortKey = 'ep', sortDir = 'desc';
 let lastEpMd = null, lastTodoMd = null;
 let syncState = 'offline', syncTooltip = '', pollTimer = null, lastSyncAt = null, tickTimer = null;
 const synthCache = {};
@@ -727,29 +599,7 @@ function obsidianOpen(filePath) { return `obsidian://open?vault=${encodeURICompo
 function durToSec(d) { if (!d) return 0; const p = String(d).replace('~','').split(':').map(n => parseInt(n,10) || 0); return p.length === 3 ? p[0]*3600+p[1]*60+p[2] : p.length === 2 ? p[0]*60+p[1] : 0; }
 function fmtViews(v) { if (!v) return '—'; if (v >= 1000) return (v/1000).toFixed(v >= 10000 ? 0 : 1) + 'k'; return String(v); }
 function toSlug(s) { return String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''); }
-function copyText(text, el) {
-  navigator.clipboard.writeText(text).then(() => {
-    el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
-  }).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); } catch(e) {}
-    document.body.removeChild(ta);
-    el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
-  });
-}
 const COPY_REF_BTN = `<button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>`;
-function wireCopyRef(container) {
-  container.querySelectorAll('.card-copy-ref').forEach(btn => {
-    btn.onclick = (e) => {
-      e.stopPropagation();
-      const card = btn.closest('[data-card-id]');
-      if (!card) return;
-      copyText(DASH_STEM + ':' + card.dataset.cardId, btn);
-    };
-  });
-}
 
 const SP_LABEL = { ok: 'Kész', date_fix: 'Dátum javítandó', missing: 'Hiányzik', unverified: 'Ellenőrzendő' };
 const SP_ORDER = { missing: 0, date_fix: 1, unverified: 2, ok: 3 };
@@ -760,20 +610,24 @@ const SP_ICON = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentCo
    Episodes view
    ============================================================ */
 function renderWidgets() {
+  const planned = EPISODES.filter(e => e.status === 'planned');
+  const published = EPISODES.filter(e => e.status !== 'planned');
   const total = EPISODES.length;
-  const dateFix = EPISODES.filter(e => e.spotify === 'date_fix').length;
-  const missing = EPISODES.filter(e => e.spotify === 'missing').length;
-  const onSpotify = EPISODES.filter(e => e.spotify === 'ok' || e.spotify === 'date_fix' || e.spotify === 'unverified').length;
-  const totalViews = EPISODES.reduce((a, e) => a + (e.views || 0), 0);
+  const dateFix = published.filter(e => e.spotify === 'date_fix').length;
+  const missing = published.filter(e => e.spotify === 'missing').length;
+  const onSpotify = published.filter(e => e.spotify === 'ok' || e.spotify === 'date_fix' || e.spotify === 'unverified').length;
+  const totalViews = published.reduce((a, e) => a + (e.views || 0), 0);
+  const publishedCount = published.length;
+  const plannedCount = planned.length;
 
   $('#epTotal').textContent = total;
   $('#spDateFix').textContent = dateFix;
   $('#spMissing').textContent = missing;
   $('#tabEpCount').textContent = total;
 
-  $('#widgets').innerHTML = `
-    <div class="widget"><h2>Epizódok</h2><div class="big tabular">${total}</div><div class="cap">EP01–EP${String(total).padStart(2,'0')} · YouTube ✅</div></div>
-    <div class="widget is-ok"><h2>Spotify-on</h2><div class="big tabular">${onSpotify}<span class="of"> / ${total}</span></div><div class="cap">${total - onSpotify} hiányzik</div></div>
+  $('#panel-1-header-strip').innerHTML = `
+    <div class="widget"><h2>Epizódok</h2><div class="big tabular">${publishedCount}</div><div class="cap">publikált · ${plannedCount} tervezett</div></div>
+    <div class="widget is-ok"><h2>Spotify-on</h2><div class="big tabular">${onSpotify}<span class="of"> / ${publishedCount}</span></div><div class="cap">${publishedCount - onSpotify} hiányzik</div></div>
     <div class="widget is-warn"><h2>Dátumjavítás</h2><div class="big tabular">${dateFix}</div><div class="cap">Spotify dátum hibás</div></div>
     <div class="widget is-gap"><h2>Feltöltésre vár</h2><div class="big tabular">${missing}</div><div class="cap">audio (MP3) kell</div></div>
     <div class="widget"><h2>Összes nézés</h2><div class="big tabular">${fmtViews(totalViews)}</div><div class="cap">YouTube, mért epizódok</div></div>
@@ -790,8 +644,13 @@ function populateClusterFilter() {
 
 function filteredSorted() {
   let list = EPISODES.filter(e => {
+    const isPlanned = e.status === 'planned';
     if (filters.cluster && e.cluster !== filters.cluster) return false;
-    if (filters.spotify && e.spotify !== filters.spotify) return false;
+    // Spotify filter: 'planned' matches status:planned rows; others match e.spotify field
+    if (filters.spotify) {
+      if (filters.spotify === 'planned') { if (!isPlanned) return false; }
+      else { if (e.spotify !== filters.spotify) return false; }
+    }
     if (filters.top === 'top' && !e.top) return false;
     if (filters.q) {
       const q = filters.q.toLowerCase();
@@ -822,22 +681,39 @@ function renderEpisodes() {
   if (!list.length) { tbody.innerHTML = `<tr><td colspan="8"><div class="empty-note">Nincs találat. Módosítsd a szűrőket, vagy ellenőrizd az EPISODES.md fájlt.</div></td></tr>`; return; }
   const epSlug = (ep) => 'ep' + String(ep).padStart(2, '0');
   tbody.innerHTML = list.map(e => {
+    const isPlanned = e.status === 'planned';
     const sp = e.spotify || 'unverified';
     const spDates = sp === 'date_fix' ? `<div class="topic mono">${escapeHtml(e.spotify_current)} → ${escapeHtml(e.spotify_correct)}</div>` : '';
     const prio = e.priority ? ' <span class="badge prio">prio</span>' : '';
+    const rowClass = [e.top ? 'is-top' : '', isPlanned ? 'is-planned' : ''].filter(Boolean).join(' ');
+
+    // YouTube cell: planned with no youtube_id shows placeholder
+    const ytCell = isPlanned && !e.youtube_id
+      ? `<span style="font-size:11px;font-style:italic;color:var(--idle);">Előkészítés alatt</span>`
+      : `<span class="pf yt-ok"><span class="ic">${YT_ICON}</span>${e.youtube_date ? '<span class="mono" style="color:var(--ink-3);font-weight:500;">'+escapeHtml(e.youtube_date)+'</span>' : '✅'}</span>`;
+
+    // Spotify cell: planned rows show planned badge instead of spotify status
+    const spCell = isPlanned
+      ? `<span class="badge planned">Tervezett</span>`
+      : `<span class="badge ${sp}">${SP_LABEL[sp]}</span>${prio}${spDates}`;
+
     return `
-      <tr data-ep="${e.ep}" data-card-id="${epSlug(e.ep)}" class="${e.top ? 'is-top' : ''}">
+      <tr data-ep="${e.ep}" data-card-id="${epSlug(e.ep)}" class="${rowClass}">
         <td class="epnum col-ep">EP${String(e.ep).padStart(2,'0')}</td>
-        <td class="guest col-guest">${escapeHtml(e.guest)}${e.top ? '<span class="top-star" title="TOP performer">★</span>' : ''}</td>
+        <td class="guest col-guest">${escapeHtml(e.guest||'—')}${e.top ? '<span class="top-star" title="TOP performer">★</span>' : ''}</td>
         <td class="col-topic"><div class="topic">${escapeHtml(e.topic||'')}</div></td>
         <td class="col-cluster">${e.cluster ? `<span class="cluster-chip">${escapeHtml(e.cluster)}</span>` : ''}</td>
         <td class="col-dur mono" style="color:var(--ink-3);white-space:nowrap;">${escapeHtml(e.duration||'—')}</td>
-        <td class="col-yt"><span class="pf yt-ok"><span class="ic">${YT_ICON}</span>${e.youtube_date ? '<span class="mono" style="color:var(--ink-3);font-weight:500;">'+escapeHtml(e.youtube_date)+'</span>' : '✅'}</span></td>
-        <td class="col-sp"><span class="badge ${sp}">${SP_LABEL[sp]}</span>${prio}${spDates}</td>
-        <td class="num col-views" style="position:relative;">${fmtViews(e.views)}${COPY_REF_BTN}</td>
+        <td class="col-yt">${ytCell}</td>
+        <td class="col-sp">${spCell}</td>
+        <td class="num col-views" style="position:relative;">${isPlanned ? '—' : fmtViews(e.views)}${COPY_REF_BTN}</td>
       </tr>`;
   }).join('');
-  $$('#epRows tr[data-ep]').forEach(tr => tr.addEventListener('click', () => openDrawer(parseInt(tr.dataset.ep, 10))));
+  $$('#epRows tr[data-ep]').forEach(tr => tr.addEventListener('click', () => {
+    const ep = parseInt(tr.dataset.ep, 10);
+    const epData = EPISODES.find(x => x.ep === ep);
+    if (epData && epData.status !== 'planned') openDrawer(ep);
+  }));
   wireCopyRef(tbody);
 }
 
@@ -1030,19 +906,7 @@ function connectEventStream() {
 /* ============================================================
    Wiring
    ============================================================ */
-/* ===== Theme toggle (DS 0.3.0) — shared dash-theme key ===== */
-function setTheme(t) {
-  document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('dash-theme', t); } catch(e) {}
-  const btn = document.getElementById('themeToggle');
-  if (btn) {
-    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
-    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
-    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-  }
-}
-$('#themeToggle').addEventListener('click', () => setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'));
-window.addEventListener('storage', (e) => { if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue); });
+/* Theme toggle: moved to /_dashboards/_design/theme.js (DS 0.7.0, Sprint 1) */
 
 $$('.tab').forEach(tab => tab.addEventListener('click', () => {
   $$('.tab').forEach(t => t.setAttribute('aria-selected', t === tab ? 'true' : 'false'));
@@ -1068,15 +932,15 @@ document.addEventListener('keydown', e => { if ((e.key === 'Enter' || e.key === 
 /* ============================================================
    Boot
    ============================================================ */
-(function initTheme() {
-  var t;
-  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
-  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
-  setTheme(t);
-})();
 (async () => { await pollVault(); startPolling(); startTicker(); connectEventStream(); })();
 </script>
-<!-- ops-header.js (DS 0.5.0) -->
-<script src="/_dashboards/_design/ops-header.js"></script>
+<!-- theme.js + clipboard.js (DS 0.7.0, Sprint 1 engine) -->
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<script src="/_dashboards/_design/markdown-parser.js"></script>
+<!-- admin-bar.js (DS 0.6.0) -->
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
 </body>
 </html>

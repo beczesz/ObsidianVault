@@ -1,6 +1,9 @@
 ---
 ep_number: 3
 title: "A Hamm története"
+description: "Nagy Lajos, a székelyföldi Hamm ételkiszállító platform alapítója három év alatt nulláról építette fel a profitábilis vállalatot, melyet dániai tapasztalatok, hazatérési döntés és személyes kapcsolatok alapoznak meg. Az epizód azt mutatja, hogyan lehet a helyi piacot szisztematikusan megértve és alkalmazkodva felépíteni a multinacionális versenytársaknál fenntart"
+description_source: auto
+description_hash: 60294035a1d4a17e
 guest: "Nagy Lajos"
 guest_title: "A Hamm ételkiszállító platform alapítója"
 date_published: 2024-07-02
@@ -22,7 +25,6 @@ created: 2026-04-06
 id: bae26297-1b8a-4442-9be2-59779cee3618
 index_schema_version: 1
 ---
-
 # EP03 — A Hamm története | Nagy Lajos
 
 ## Epizód-összefoglaló

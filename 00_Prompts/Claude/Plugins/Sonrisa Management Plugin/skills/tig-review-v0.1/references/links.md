@@ -1,3 +1,15 @@
+---
+title: "TIG Review Links"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Collection of SharePoint links to access Istvan's monthly TIG reports and raw timesheet data from Sontime, plus naming convention notes for identifying TIG files by month and year."
+description_source: auto
+description_hash: 2c34cb2ab745b2f3
+id: 878b7497-dc3e-41c6-a48d-a4803f5d5dbe
+index_schema_version: 1
+bdos_index: true
+---
 # TIG Review Links
 
 ## Banfi Istvan TIG Folder (SharePoint)

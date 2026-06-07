@@ -1,12 +1,14 @@
 ---
 title: CPS Daily Lead Brief
+description: "Daily summary of qualified AI infrastructure and SaaS leads for CPS sales team, featuring five companies with scores 6+, including hot prospects like Runware (Series A funded, multi-region deployment) and Qdrant (hiring VP Cloud Engineering)."
+description_source: auto
+description_hash: 13397448d15965db
 date: 2026-03-20
 leads_found: 5
 hot_leads: 2
 id: f9403589-2641-4d0a-b7d2-b9abda94748c
 index_schema_version: 1
 ---
-
 # CPS Daily Lead Brief - 2026-03-20 (Friday)
 
 ## Summary

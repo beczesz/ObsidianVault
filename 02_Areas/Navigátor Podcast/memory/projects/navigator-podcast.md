@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast egy mélyreható beszélgetési műsor, ahol a házigazda és meghívott szakemberek közösen keresik az igazságot összetett világunk kérdéseiben. A koncepció, küldetés, értékek és YouTube stratégia részletei segítik a magyar vállalkozókat és technológia iránt érdeklődőket minőségi tartalom eléréséhez."
+description_source: auto
+description_hash: f3f0e117a0ffeda7
+id: 85a35b84-25ca-45fa-9fda-5c0e757651ab
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast
 
 ## Vízió

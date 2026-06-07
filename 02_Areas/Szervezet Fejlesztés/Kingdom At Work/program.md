@@ -1,3 +1,15 @@
+---
+title: "Kingdom At Work -- Budapest Conference"
+date: 2026-04-27
+author: Becze Szabolcs
+status: active
+description: "Draft schedule for a two-day Kingdom At Work conference in Budapest, September 25-26, 2026, featuring keynote speakers, worship, table discussions, and team introductions for participants from Hungary and Romania."
+description_source: auto
+description_hash: 706e472d0a0f4541
+id: 4c41773c-77a0-4bda-b879-99e982688c08
+index_schema_version: 1
+bdos_index: true
+---
 # Kingdom At Work -- Budapest Conference
 
 **Date:** September 25--26, 2026

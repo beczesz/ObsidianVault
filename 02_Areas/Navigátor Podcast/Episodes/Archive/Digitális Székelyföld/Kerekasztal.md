@@ -1,3 +1,15 @@
+---
+title: "Nagy-Imecs Péter"
+date: 2025-12-08
+author: Becze Szabolcs
+status: active
+description: "Nagy-Imecs Péter, Goodroid RPA cégvezetője, aki intelligens automatizáció és AI-megoldások fejlesztésére specializálódik, különösen KKV-k és önkormányzatok digitalizációjára. Konferenciaparti jegyzet résztvevői és beszélgetési témáiról, beleértve vezetési kérdéseket és AI-alkalmazásokat."
+description_source: auto
+description_hash: 8d43a2af04b729fc
+id: bd280984-6044-41bd-9694-fe965da9c019
+index_schema_version: 1
+bdos_index: true
+---
 **Résztvevők:**  Simon Mária Tímea, Nagy Imecs Péter, Komoróczi Zsolt és Csatlós Sándor
 
 

@@ -1,3 +1,15 @@
+---
+title: "Sertés fehérkaraj csontos szalonnás"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Csontján hagyott sertéskaraj szalonnával, 1,5 kg-os darabban, grillezéshez vagy sütőbe való, pácolási opciókkal."
+description_source: auto
+description_hash: 8534db77800aa95e
+id: 8cadd428-ccc9-424c-829f-f95fb49ee818
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés fehérkaraj csontos szalonnás
 
 ```yaml

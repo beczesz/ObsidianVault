@@ -1,3 +1,15 @@
+---
+title: "1. Customer Segments"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Identifies four primary customer segments for cloud platform services: mid-sized enterprises needing managed DevOps, startups requiring scalable affordable support, large enterprises seeking external expertise, and companies with existing teams needing backup. Includes pricing and future market expansion opportunities."
+description_source: auto
+description_hash: 2c096ea3a4f5d273
+id: ada03f8a-c409-4a7f-b805-48e1fe1dd4d6
+index_schema_version: 1
+bdos_index: true
+---
 Version: 1.3  
 Date: 2025-11-14  
 

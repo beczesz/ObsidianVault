@@ -1,3 +1,15 @@
+---
+title: "A Navigátor Podcast Alkotmánya"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast alapelvei: hiteles vendégek, mély beszélgetések, nyitott nézőpontok, gyakorlati értékek, közösségépítés. Professzionális, kíváncsi hangnem magyar nyelven, figyelemfelkeltő de őszinte kommunikáció."
+description_source: auto
+description_hash: 069b7f3bc92d9df1
+id: 9b20b606-10c1-4865-ad2f-15286bec8eea
+index_schema_version: 1
+bdos_index: true
+---
 # A Navigátor Podcast Alkotmánya
 
 ## Küldetés

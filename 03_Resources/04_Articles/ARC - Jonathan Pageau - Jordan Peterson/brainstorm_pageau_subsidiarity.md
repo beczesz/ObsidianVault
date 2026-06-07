@@ -1,4 +1,7 @@
 ---
+description: "Jonathan Pageau and Jordan Peterson argue that subsidiarity, the principle of nested hierarchical communities from family to nation to church, offers a philosophical cure for the modern meaning crisis caused by the erosion of intermediary institutions between isolated individuals and totalizing states."
+description_source: auto
+description_hash: 26b68a16ec26feab
 topic: Jonathan Pageau - "How did we get here?" Newsletter Deep Analysis
 created: 2026-05-01
 last_updated: 2026-05-01
@@ -7,7 +10,6 @@ source: Symbolic World Press newsletter, April 25, 2026
 id: 25d9c555-2f0c-4a22-81f3-b2839dd87227
 index_schema_version: 1
 ---
-
 # Brainstorm: Pageau's "How did we get here?" — Subsidiarity as the Answer to the Meaning Crisis
 
 ## Team

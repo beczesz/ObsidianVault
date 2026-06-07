@@ -1,3 +1,15 @@
+---
+title: "Tasks"
+date: 2026-05-12
+author: Becze Szabolcs
+status: active
+description: "Task management hub for an operations team tracking active and planned work including recruitment, documentation, strategy implementation, and client management with detailed contexts, owners, and progress status."
+description_source: auto
+description_hash: 0a251546f245ab7c
+id: af77fc7a-072c-4712-ae75-d11bf5b755a3
+index_schema_version: 1
+bdos_index: true
+---
 # Tasks
 
 ## Active
@@ -212,7 +224,7 @@
 **Státusz:** Folyamatosan fejlesztendő service
 **Prioritás:** Közepes
 
-**Kontextus:** Workshop napirendjén szerepelt. AI inference on-premise vagy privát cloudon. Saját infrastruktúrán futó LLM klienseknek. Létező dokumentáció: `Services/Inference Farm/`.
+**Kontextus:** Workshop napirendjén szerepelt. AI inference on-premise vagy privát cloudon. Saját infrastruktúrán futó LLM klienseknek. Létező dokumentáció: `Practices/Inference-Farm/` (Forge-managed practice area).
 
 - [ ] Inference Farm service aktuális státuszának felmérése
 - [ ] Következő fejlesztési lépések meghatározása

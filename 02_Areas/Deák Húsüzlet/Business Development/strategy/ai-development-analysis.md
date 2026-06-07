@@ -1,5 +1,8 @@
 ---
 title: AI vs. Hagyományos Fejlesztés – Sebességelemzés és Megtakarítás
+description: "Szabolcs egyéni szakértésén alapuló DH MVP projekt valós gyorsulási adatait (80 óra, 17 feladat befejezve) hasonlítja össze hagyományos fejlesztési költségvetéssel, bebizonyítva, hogy az AI-asszisztált fejlesztés 12× gyorsabb és 92% olcsóbb (4620 EUR versus 55440 EUR). Vezérigazgatók és co-venture dö"
+description_source: auto
+description_hash: 484a51f00d6d8b18
 project: DH (Deák Húsmíves Online Platform)
 version: 1.0
 date: 2026-03-21
@@ -7,7 +10,6 @@ author: Becze Szabolcs – Exar Labs
 id: a2a4981b-be5e-4ed6-9c2e-b0d5f8a92cc6
 index_schema_version: 1
 ---
-
 # AI vs. Hagyományos Fejlesztés – DH Elemzés
 
 _Dátum: 2026-03-21 | Projekt: DH MVP_

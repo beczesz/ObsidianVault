@@ -1,3 +1,15 @@
+---
+title: "AI Tips Raw"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Személyes produktivitási és AI-használati útmutató négy dimenzióban: felelősségvállalás és kontextuskezelés, mély megértés biztosítása, emberi empátia megtartása, valamint céltudatos cselekvés. Tapasztalt felhasználók számára, akik kritikus gondolkodást akarnak megőrizni az AI-integrációban."
+description_source: auto
+description_hash: ec5f97ce706d02f3
+id: 71c0f0b4-9bd4-4364-893b-c2e05e930e66
+index_schema_version: 1
+bdos_index: true
+---
 ## Fizikai - Felelősség vállalás - Ethos
 
 Az ember tud felelősséget vállalni.

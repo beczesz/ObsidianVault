@@ -1,4 +1,7 @@
 ---
+description: "Interjú Ruszuly Ervinnel, magyar táncossal és koreográfussal a férfiasság redefiníciójáról, táncról mint önkifejezésről és a férfiak sebezhetőségéről. Részletezett epizódanalízis a beszélgetés szerkezetéről, témáiról és dinamikájáról."
+description_source: auto
+description_hash: 6784cc16c490066f
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -15,7 +18,6 @@ quality: "Gold Standard"
 id: 4f8e69f8-fa0e-40d9-a567-744f92e822c7
 index_schema_version: 1
 ---
-
 # EP13 — Ruszuly Ervin: A férfiak elérzékenyülésnek, gyengeségnek érzik, ha egy férfi táncol
 
 ## Alapadatok

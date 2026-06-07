@@ -1,3 +1,15 @@
+---
+title: "MVMI"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "MVMI is a major Hungarian energy utility serving 3M+ households with two active CPS engagements: OpenShift migration and Azure DevOps managed services. The Azure DevOps service launch is urgent and requires immediate scope definition, team assignment, and kickoff planning."
+description_source: auto
+description_hash: d9453de7aca074da
+id: 06093c37-03ad-43a9-becb-e2fabf47c9e1
+index_schema_version: 1
+bdos_index: true
+---
 # MVMI
 
 ## Quick Info

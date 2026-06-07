@@ -1,3 +1,15 @@
+---
+title: "IgnisCafe   Alkotmány"
+date: 2025-12-26
+author: Becze Szabolcs
+status: active
+description: "IgnisCafe Alkotmány egy oktatási és közösségi tér vízióját, misszióját és értékeit rögzíti: tanulás, találkozás és inspirálás révén szeretnének biztonságos, szégyenmentes környezetet teremteni a folyamatos fejlődéshez. Az alapértékek között szerepel a proaktivitás, megújulás, bőségmentalitás és szolgálat."
+description_source: auto
+description_hash: f38a7cd2848b9e5e
+id: 623b0176-7bcc-460e-9c21-bf092e91f477
+index_schema_version: 1
+bdos_index: true
+---
 ## Vízió
 
 

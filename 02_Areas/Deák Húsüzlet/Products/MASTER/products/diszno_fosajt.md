@@ -1,3 +1,15 @@
+---
+title: "Disznó Fősajt"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Hagyományos disznófősajt kocsonyás állagú, fűszerezett, hideg tálakra ideális; 35 Ft/kg áron elérhető, egyben szokták adni, nem szeletelve."
+description_source: auto
+description_hash: a8e797e68d7ccb8d
+id: f562be8e-4ae2-4be2-a0ec-aa6dc1a930fc
+index_schema_version: 1
+bdos_index: true
+---
 # Disznó Fősajt
 
 ```yaml

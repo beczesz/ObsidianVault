@@ -2,6 +2,9 @@
 podcast: Navigátor Podcast
 episode: EP09
 title: "Készüljünk az információs korszakra!"
+description: "Átfogó interjú az informatikus-oktatóval Simon Károllyal a korszakváltás kihívásairól Székelyfölden: az információs kor kimaradásának veszélyeit, az oktatási átképzést és mesterséges intelligencia fejlődéstörténetét járja körül."
+description_source: auto
+description_hash: 8f8bb09d7dc31a8a
 guest: Dr. Simon Károly
 role: Informatikus, egyetemi tanár, IT+ Klaszter elnök, közéleti szereplő
 date_recorded: "2024-09-26"
@@ -38,7 +41,6 @@ tags:
 id: ad9ee5d1-bae4-4bac-9f72-cefa3a41f4e1
 index_schema_version: 1
 ---
-
 # EP09 – Dr. Simon Károly: Készüljünk az információs korszakra!
 
 ## Epizód kontextus

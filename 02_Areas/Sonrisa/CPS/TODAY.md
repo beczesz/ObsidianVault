@@ -1,6 +1,9 @@
 ---
 title: TODAY - CPS Action Queue
-last-updated: 2026-05-19
+description: "Live data source for a sales dashboard tracking daily outreach tasks, decisions, and pipeline actions. Includes task routing rules, date-based section matching, and tag priorities for a 90-day sales campaign."
+description_source: auto
+description_hash: 2f358a8833b9788c
+last-updated: 2026-05-27
 purpose: Single source for what needs action today. Read at every session start, update when work is done.
 convention: Tasks use 📅 YYYY-MM-DD as due date. Mark done with [x] + ✅ YYYY-MM-DD done date. Each task links to (a) client account NOTES.md, (b) the prepared outreach message.
 dashboard_contract: Sales/DASHBOARD_CONTRACT.md
@@ -8,7 +11,6 @@ dashboard_note: "Live source for the Today panel in Sales/dashboard.html. Day he
 id: f4039d7a-4a98-4a18-8eee-634b6a6e5a4f
 index_schema_version: 1
 ---
-
 <!--
   ===========================================================================
   LIVE DATA SOURCE for Sales/dashboard.html. Polled every 8s.
@@ -189,10 +191,37 @@ What worked: KBOSS got sent on 2026-05-13 despite the cleanup work. Two real tou
 - [ ] **Week 3 scrape run** -- per alternative-channels-2026-05-18.md recommended sequence: SN deep search (30 min) → Profession.hu manual scan (15 min) → MS Partner directory (10 min) → one new vertical Sonar query (~$0.025) → per-candidate parallel validation. Target: 2-3 new HOT + 5-8 new WARM. Budget: 90 min wall-time, ~$0.30 API cost. 📅 2026-05-22 #scrape
 - [ ] **Week 2 review** -- count touches sent (target 10, realistic 5-7), replies, calls booked. Update [[Sales/Dashboard|Dashboard]] W2 row. 📅 2026-05-22 #review #milestone
 
+## Today: 2026-05-27 (Wednesday) -- URGENT: Merkantil AID infra pricing call
+
+> **Engine clock:** Day 17 of 90, Week 3. **NEW ACTIVE LEAD added today: Merkantil Bank Zrt.** -- multi-workstream Sonrisa engagement (active since 2026-04-27), CPS just plugged in for the AID infrastructure deployment pricing workstream. Email router + AI Enablement training proposals already SENT to Merkantil 2026-05-21 (by non-CPS Sonrisa units, validity 2026-05-31). CPS scope today: provide a defensible infra number for Miklós Nándor to send to Merkantil by EOD.
+>
+> Pre-call read order (15 min): [[Accounts/Leads/Merkantil/NOTES]] -> [[Accounts/Leads/Merkantil/source-docs/03-further-opportunities-outline|further-opportunities outline §6 AI-assisted SDLC]] -> [[Accounts/Leads/Merkantil/source-docs/04-teams-transcript-202604-202605|Teams transcript 2026-05-27 fragment]].
+
+### URGENT (today, in this order)
+
+- [ ] **Merkantil — pre-call prep** -- read NOTES.md, the AID workstream context, and the 2026-05-27 Teams transcript fragment. 15 min. -> [[Accounts/Leads/Merkantil/NOTES]] 📅 2026-05-27 #prep #urgent
+- [ ] **Merkantil — Discovery call 12:00** -- with Bán József + Miklós Nándor + Becze Szabolcs (+ Ceclan Sanyi if joinable). Output: agreed CPS infrastructure deployment number (one-time setup + monthly managed service). Decision in-call, no "elvonulunk 1-2 napra" iteration (Miklós explicit constraint). 📅 2026-05-27 #meeting #urgent
+- [ ] **Merkantil — number to Miklós** -- post-call, immediately, send the agreed figure(s) to Miklós Nándor so he can dispatch the offer to Merkantil by EOD. 📅 2026-05-27 #followup #urgent
+
+### Post-call (this week)
+
+- [ ] **Merkantil — formal CPS proposal section drafting** -- within 48h, write up the CPS infra scope formally for inclusion in the next Merkantil proposal iteration (or as a standalone CPS exec summary). -> [[Accounts/Leads/Merkantil/NOTES]] 📅 2026-05-29 #drafting
+- [ ] **Merkantil — clarify Gábor's role/title** -- currently only first name + phone (+36 70 394 1260) known. Get last name and Merkantil-side role from Szacsúri László when he's back from OOO. 📅 2026-05-28 #research
+
+### Carryover from earlier weeks (review only, decide which to action)
+
+- [ ] **Loxon Solutions** -- live SysOps Engineer AWS Cloud posting (1 wk, actively reviewing) verified 2026-05-20. CTO Gábor Bicskei (25-yr veteran, 3rd-degree, cold, low LI activity). HU InMail draft ready in [[Accounts/Leads/Loxon_Solutions/NOTES]]. Decision (InMail vs free Connect) was paused for verify-before-send standing rule and Merkantil takes priority today. 📅 2026-05-27 #decision #lead
+- [ ] **Allonic** -- PARKED 2026-05-20: zero active postings, no trigger. SN monitor only. No action. [[Accounts/Leads/Allonic/NOTES]]
+- [ ] **ABRIS / Miklos warm intro** -- pending Miklos Komjathi response on the warm intro to Zsolt Godry. Check status. [[Accounts/Leads/ABRIS/NOTES]] 📅 2026-05-27 #followup
+- [ ] **CIG Pannonia (Attila + Pataki)** -- Day-5 nudges due 2026-05-23 / 2026-05-24, those windows passed. Decide nudge vs. let-lie. [[Accounts/Leads/CIG_Pannonia/NOTES]] 📅 2026-05-27 #followup
+- [ ] **SEON (Adam Berkecz)** -- Day-5 nudge due 2026-05-23, window passed. [[Accounts/Leads/SEON/NOTES]] 📅 2026-05-27 #followup
+- [ ] **KBOSS** -- Day-7 nudge target was 2026-05-20, window passed. [[Accounts/Leads/KBOSS_Szamlazz/NOTES]] 📅 2026-05-27 #followup
+
 ## Active lead index (quick links)
 
 | Lead | Stage | Lang | Send date | Account | Prepared message |
 |------|-------|------|-----------|---------|------------------|
+| **Merkantil Bank Zrt.** (TODAY 12:00) | Discovery | HU | 2026-05-27 | [[Accounts/Leads/Merkantil/NOTES]] | NOT outbound. Internal CPS infra-pricing call. Output: number to Miklós by EOD. |
 | **ABRIS Kft.** (TUESDAY MORNING) | HOT | HU | 2026-05-19 | [[Accounts/Leads/ABRIS/NOTES]] | Option A v1 in NOTES, finalize after JD read |
 | CIG Pannónia | Contacted | HU | 2026-05-12 ✅ | [[Accounts/Leads/CIG_Pannonia/NOTES]] | v2 #1 in [[Sales/Sales Enablement/outreach-batch-1-hot-leads]] |
 | KBOSS / Szamlazz.hu | Contacted | HU | 2026-05-13 ✅ | [[Accounts/Leads/KBOSS_Szamlazz/NOTES]] | v2 #4 in [[Sales/Sales Enablement/outreach-batch-1-hot-leads]] |

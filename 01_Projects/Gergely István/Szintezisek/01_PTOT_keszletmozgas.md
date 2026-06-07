@@ -1,5 +1,8 @@
 ---
 title: "PTOT 2025 — készletmozgás-elemzés"
+description: "Cikkszintű mennyiségi készletmozgás-jelentés 2025-ből hat gestiune-ra (BIRGITA, MUSKATLI, NAGYKERESKEDES, SZEGEDI, VEGYESKE, ZETEKINCSE) darabszámmal és mértékegységgel, forgási sebesség és holt készlet azonosítására alkalmas."
+description_source: auto
+description_hash: 958e39d560edc31e
 type: synthesis
 project: Gergely István
 source_file: "2025 PTOT xlsx.xlsx"
@@ -10,7 +13,6 @@ tags: [synthesis, inventory, stock]
 id: 20d57d85-35aa-4581-85e5-5ab7c5aa5082
 index_schema_version: 1
 ---
-
 # 2025 PTOT — készletmozgás (Productie/Total mozgás)
 
 ## Mit tartalmaz

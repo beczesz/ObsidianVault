@@ -1,4 +1,7 @@
 ---
+description: "Microsite Factory weboldal-szolgáltatás reklámozásához gyűjtött disztribúciós és hirdetési csatornák, különös tekintettel a romániai vállalkozókat célzó Facebook-csoportokra, valamint lokalizálási követelmények és posztolási stratégia a kisebb szervezeti csoportokba történő органikus eléréshez."
+description_source: auto
+description_hash: df81a375a228d487
 type: marketing-ideas
 area: ExarLabs
 created: 2026-05-22
@@ -6,7 +9,6 @@ status: backlog
 id: 9d662843-e32a-4086-9b26-386b0921575c
 index_schema_version: 1
 ---
-
 # ExarLabs — Marketing ötletek
 
 Csatorna- és hirdetési ötletek gyűjtője. Minden tétel egy lehetséges disztribúciós felület a Microsite Factory / weboldal-szolgáltatás reklámozásához.

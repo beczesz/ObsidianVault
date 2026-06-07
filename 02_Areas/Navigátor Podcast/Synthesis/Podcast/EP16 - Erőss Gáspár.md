@@ -1,4 +1,7 @@
 ---
+description: "Szabolcs személyes barátjával, Erőss Gáspárral készült interjú az izraeli életről, a 2023-as októberi háborúról, zsidó-keresztény identitásról és társadalmi egységről; kiemeli a közvetlen kommunikáció és áldozathozatal mint közösségi erő szerepét."
+description_source: auto
+description_hash: d111115f09604ec6
 version: 0.1
 date: 2026-04-06
 type: episode-synthesis
@@ -15,7 +18,6 @@ analytics_note: "Overview tab elérhető (2026-04-06). Reach, Engagement, Audien
 id: 5545b9d2-eb4e-47dc-b8eb-3fc1fd9a9fef
 index_schema_version: 1
 ---
-
 # EP16 — Erőss Gáspár: Az erő ami Izraelből árad
 
 ## Alapadatok

@@ -1,5 +1,8 @@
 ---
 title: Risks & Validation — Microsite Factory
+description: "Gemini Validator részletes kritikája a Microsite Factory üzleti modelljének: margin-illúzió alacsony árponton, GDPR-kockázatok az unsolicited demo-ban, nincs lock-in érv visszafelé sül a SMB-nél, időcsapda a done-for-you skálázásban, AI-verseny a piac közepén, magyar fogászatok szegmentálásának hiánya és az Industry"
+description_source: auto
+description_hash: f89780ea4f2b078d
 source: Gemini (Validator role) + Claude saját pre-validation
 url: https://gemini.google.com/app/a14b7323cb6a7de5
 imported: 2026-05-16
@@ -7,7 +10,6 @@ status: v2 — Gemini válasz integrálva
 id: a2fe75e1-3b6b-4b1d-a98c-cdadde86b6b7
 index_schema_version: 1
 ---
-
 # Risks & Validation — Microsite Factory
 
 > Gemini Validator brutális, részletes kritikát adott a 10 kérdésre. Ez a legértékesebb dokumentum a BMC-ben — itt tárul fel az ötlet legtöbb sebezhetősége. **Nem szabad átsiklani rajta.**

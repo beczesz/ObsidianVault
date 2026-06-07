@@ -1,3 +1,15 @@
+---
+title: "Tasks"
+date: 2026-05-11
+author: Becze Szabolcs
+status: active
+description: "A personal task tracker for the Ignis Academy founder covering immediate priorities like MVP development and grant spending strategy, alongside longer-term initiatives in networking, business model refinement, and IP protection."
+description_source: auto
+description_hash: 5ce07b0b88137cf9
+id: 648424be-8ed9-4b6b-8548-5d01fe507e1a
+index_schema_version: 1
+bdos_index: true
+---
 # Tasks
 
 ## Active

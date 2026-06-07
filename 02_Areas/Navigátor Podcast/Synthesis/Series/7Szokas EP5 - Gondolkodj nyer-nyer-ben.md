@@ -2,6 +2,9 @@
 series: "7 Szokás"
 episode: "EP5"
 title: "Gondolkodj nyer-nyer-ben – A bőségszemlélet ereje"
+description: "Covey nyer-nyer gondolkodásmódjáról szóló epizód, amely a hat interakciós modellt, a bőségszemléletet és a szerkezeti szinteket tárgyalja: jellemmé, kapcsolatokra, egyességekre, rendszerekre és folyamatokra."
+description_source: auto
+description_hash: db492995cc13561b
 host: "Beczesz Szabolcs"
 source_book: "Stephen Covey – A kiemelkedően eredményes emberek 7 szokása"
 youtube_id: "e0fW_ZLl-W4"
@@ -31,7 +34,6 @@ created: "2026-04-06"
 id: 8190cbb4-aeab-49fa-8cf2-153116bc5e88
 index_schema_version: 1
 ---
-
 # 7 Szokás EP5 – Gondolkodj nyer-nyer-ben: A bőségszemlélet ereje
 
 ## Sorozat kontextus

@@ -1,3 +1,15 @@
+---
+title: "🎯 Unified Product Master — 2026-05-07"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "A termékadatbázis-migrációt dokumentáló jegyzet, amely 46 sertés- és szarvasmarha terméket sorol fel a v1.1 sémával, új internal_code mezővel, kategóriák szerinti bontásban, ár- és opciós információkkal együtt. Product menedzsereknek és az integráció felülvizsgálóinak szól."
+description_source: auto
+description_hash: 6d502b04b7ecf4fb
+id: d3d5aa61-2f15-4718-b87f-18444f1e422f
+index_schema_version: 1
+bdos_index: true
+---
 # 🎯 Unified Product Master — 2026-05-07
 
 > **Single source of truth for the migration into `MASTER/products/*.md`.**

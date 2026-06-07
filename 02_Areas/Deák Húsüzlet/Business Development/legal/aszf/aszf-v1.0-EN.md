@@ -1,5 +1,8 @@
 ---
 title: "Terms and Conditions"
+description: "Legal agreement governing the Deák Húsmíves online meat delivery platform in Romania, specifying ordering procedures, payment methods, delivery terms within Odorheiu Secuiesc, food safety standards, complaint processes, and liability limitations for customers and EXARGROUPS S.R.L."
+description_source: auto
+description_hash: 03669d4ad9d10983
 version: "1.0"
 status: DRAFT
 created: 2026-04-17
@@ -15,7 +18,6 @@ changelog:
 id: 44b6d4e6-fb25-4136-b047-4a9b5710d757
 index_schema_version: 1
 ---
-
 # TERMS AND CONDITIONS
 
 **Deák Húsmíves Online Platform — deakhus.ro**

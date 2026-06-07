@@ -1,3 +1,15 @@
+---
+title: "Alapító Kliensek Program"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "Marketing kampány 5 szerződött családiház-tervezési projekt szerzésére március végéig, 30% kedvezménnyel és organikus Facebook-terjesztéssel célozva 35-60 éves helyieket felújítási szándékkal."
+description_source: auto
+description_hash: 3d379518743af126
+id: d47fda15-2370-49bd-a798-64ab62c14fec
+index_schema_version: 1
+bdos_index: true
+---
 # Alapító Kliensek Program
 
 ## Overview

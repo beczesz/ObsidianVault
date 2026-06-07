@@ -1,4 +1,15 @@
-
+---
+title: "Beginner Three"
+date: 2026-01-19
+author: Becze Szabolcs
+status: active
+description: "Intermediate fitness workout program featuring pull-up and push-up pyramids, handstand holds, metabolic conditioning runs, and structured squat circuits; designed for trainees progressing from Beginner Series One and Two."
+description_source: auto
+description_hash: ff2623d5f7663458
+id: b75fe564-3d40-4b4f-b345-426211c730b9
+index_schema_version: 1
+bdos_index: true
+---
 ## Warm-up (Bemelegítés)
 
 Use the **same warm-up** as in **Beginner Series One**.  

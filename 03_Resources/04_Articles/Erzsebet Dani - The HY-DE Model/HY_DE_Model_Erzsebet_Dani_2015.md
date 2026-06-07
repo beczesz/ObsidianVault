@@ -1,3 +1,15 @@
+---
+title: "The HY‑DE Model – Erzsébet Dani (2015)"
+date: 2025-09-18
+author: Becze Szabolcs
+status: active
+description: "Erzsébet Dani's 2015 framework for teaching students to balance hyperattention and deep attention in digital learning environments. Intended for educators, librarians and educational technologists seeking practical methods to harness rather than resist multitasking cognition."
+description_source: auto
+description_hash: 9af67b7a86a24a31
+id: 4390e362-9825-4ce6-b88e-14f5ab3e577d
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /04_Articles/Erzsebet Dani - The HY-DE Model/
 FILES:
   - HY_DE_Model_Erzsebet_Dani_2015.md

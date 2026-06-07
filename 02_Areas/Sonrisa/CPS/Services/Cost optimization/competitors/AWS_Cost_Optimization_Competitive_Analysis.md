@@ -1,3 +1,15 @@
+---
+title: "Strategic Analysis: AWS Cost Optimization Competitive Landscape"
+date: 2026-02-17
+author: Becze Szabolcs
+status: active
+description: "Internal strategic analysis comparing Amazon Q and Cribl against CPS's AWS Cost Health Check service, identifying competitive positioning and partnership opportunities in the cost optimization space. For CPS leadership and sales teams."
+description_source: auto
+description_hash: 501957a47ba64904
+id: 1b723858-b987-4052-a684-21f97572ecfe
+index_schema_version: 1
+bdos_index: true
+---
 # Strategic Analysis: AWS Cost Optimization Competitive Landscape
 
 **CPS Internal Strategic Document**

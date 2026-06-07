@@ -1,6 +1,9 @@
 ---
 episode: EP34
 title: "A kudarc a legerősebb tanítómester – Miért bukik el a startupok 75%-a?"
+description: "Süket Csaba podcast epizódja a startupok 75%-os kudarcának valódi okairól: nem a pénz vagy technológia, hanem sales hiánya, ötletvalidálás elmulasztása és csapatkonfliktusok. Az Emoti startup példáján keresztül tárgyalja az MVP megközelítést, a piaci érzékenységet és a székelyföldi vállalkozói ökoszisztéma fejlesztésének"
+description_source: auto
+description_hash: 2749b9cffa6fd988
 guest: "Süket Csaba"
 guest_title: "IT vállalkozó, startup alapító (Emoti)"
 youtube_id: "vS0SK2x1NQI"
@@ -30,7 +33,6 @@ created: "2026-04-06"
 id: b491c862-a727-4ecf-af9c-263d1ca494b9
 index_schema_version: 1
 ---
-
 # EP34 – A kudarc a legerősebb tanítómester: Miért bukik el a startupok 75%-a?
 
 ## Vendég kontextus

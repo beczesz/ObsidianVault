@@ -1,4 +1,15 @@
-
+---
+title: "Timeline"
+date: 2026-05-11
+author: Becze Szabolcs
+status: active
+description: "Kronológia egy innovációs pályázatról és kutatási projektről (Ignis Akadémia) májustól novemberig 2025-ben, amely az Ember vs. AI témakörét tárgyalja és EU-s finanszírozást elnyert."
+description_source: auto
+description_hash: 979d32765e495f7b
+id: e94ffdd3-5323-4ada-a9ae-7482352c86c6
+index_schema_version: 1
+bdos_index: true
+---
 ```timeline
 [line-3, body-2]
 

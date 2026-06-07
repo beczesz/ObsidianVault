@@ -1,3 +1,15 @@
+---
+title: "A Navigátor Podcast Alkotmánya"
+date: 2026-02-15
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast alapelveit és működési filozófiáját rögzítő dokumentum, amely definiálja a podcast vízióját (közös keresés a világban), misszióját (párbeszéd, keresés, megújulás) és alapvető értékeit az alkotónak. Podcast-készítőknek és a projektben érdekelteknek szól."
+description_source: auto
+description_hash: 58801aa27fdc7582
+id: 7740e8bd-278a-45f6-b578-789ba3f3e8d4
+index_schema_version: 1
+bdos_index: true
+---
 ## Vízió
 
 *Egy közeg ahol a meghívottammal együtt keressük a helyes utat a világban*

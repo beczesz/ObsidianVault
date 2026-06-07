@@ -1,3 +1,15 @@
+---
+title: "T&M Raw Complete Column Map (A-AD)"
+date: 2026-05-05
+author: Becze Szabolcs
+status: active
+description: "Complete reference map of the T&M timesheet columns A through AD, defining input fields (year, month, client, project, person, hours, rates), calculated metrics (value, invoice amount, profit, margin), and workflow status tracking for time and materials project billing."
+description_source: auto
+description_hash: 6627a01a84cd6871
+id: 88770d8e-76b1-42c2-bb3f-6dff0ba4b6ef
+index_schema_version: 1
+bdos_index: true
+---
 # T&M Raw Complete Column Map (A-AD)
 
 ## Input Columns (written by Claude or user)

@@ -1,11 +1,13 @@
 ---
 title: CPS Competitor Scan - Week of 2026-03-30
+description: "Weekly competitive intelligence covering six DevOps/cloud partners, identifying Kloia's expanding AWS credentials and Dedicatted's new agentic AI case study in regulated industries. Helps product and strategy teams track competitor positioning shifts against CPS's current Advanced Tier roadmap."
+description_source: auto
+description_hash: 6618b1dc4fda208b
 date: 2026-03-30
 author: Automated scan (CPS weekly task)
 id: aa6de0f4-7798-4aa2-8057-ba95f1139439
 index_schema_version: 1
 ---
-
 # CPS Competitor Scan - Week of 2026-03-30
 
 > **Scan method:** WebFetch blocked by network egress proxy (3rd consecutive week); data gathered via WebSearch.

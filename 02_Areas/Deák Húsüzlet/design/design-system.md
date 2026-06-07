@@ -1,5 +1,8 @@
 ---
 title: "Deák Húsmíves Design System"
+description: "Design system documentation for Deák Húsmíves, a Székelyudvarhely butcher shop PWA. Covers typography (Inter and Playfair Display), comprehensive color palette with warm burgundy and cream tones, and spacing standards for developers implementing the brand interface."
+description_source: auto
+description_hash: b698fcf3d7d04352
 version: "2.0"
 last_updated: "2026-04-21"
 status: "active"
@@ -8,7 +11,6 @@ claude_design_url: "https://claude.ai/design/p/de6b98ae-d170-4064-b2f6-e7c022228
 id: 3c01c5ec-de60-482a-94fb-6e2bf27b1546
 index_schema_version: 1
 ---
-
 # Deák Húsmíves -- Design System v2.0
 
 Brand and interface system for **Deák Húsmíves** (deakhus.ro), a local artisan butcher shop based in Székelyudvarhely, Romania (~30,000 population). The product is a **mobile-first PWA** (Vue 3 + Tailwind CSS + Frappe UI) for online ordering and home delivery of meat and prepared foods.

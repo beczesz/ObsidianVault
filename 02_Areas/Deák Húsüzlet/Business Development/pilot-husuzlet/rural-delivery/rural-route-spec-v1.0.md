@@ -1,3 +1,15 @@
+---
+title: "Falusi Route Pilot — Feature Specifikáció v1.1"
+date: 2026-05-03
+author: Becze Szabolcs
+status: active
+description: "Falusi Route Pilot specifikációja: a Székelyudvarhely környéki falvakba csütörtökönként szállító előrendelés-alapú húspiaci pilot program üzleti, logisztikai és UI-specifikációja. Termékmenedzserek és fejlesztőknek szól az implementációhoz."
+description_source: auto
+description_hash: 569c77bdefc406a3
+id: a694447f-fd48-4a47-974f-35af1d3d8f11
+index_schema_version: 1
+bdos_index: true
+---
 # Falusi Route Pilot — Feature Specifikáció v1.1
 
 **Dátum:** 2026-05-03

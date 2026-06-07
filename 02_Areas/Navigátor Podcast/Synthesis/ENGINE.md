@@ -1,4 +1,7 @@
 ---
+description: "Egy motor a Navigátor Podcast-csatorna epizód-auditálásához; vezeti az elemzési munkafolyamatot, készülékeket, sorrendet és minőségi szabványokat definiáló szintézisek írásához."
+description_source: auto
+description_hash: 805bba1c84001143
 version: 0.2
 date: 2026-04-06
 type: engine
@@ -6,7 +9,6 @@ purpose: "Reusable guide for any Claude session to produce deep episode synthese
 id: be97ac3d-ddb4-45d0-9c1d-a0378f265d1d
 index_schema_version: 1
 ---
-
 # Navigátor Podcast — Epizód-elemzés Engine
 
 > **Mi ez?** Egy motorja a csatorna auditnak. Ha új session-ben dolgozol, olvasd el ezt ELŐSZÖR.

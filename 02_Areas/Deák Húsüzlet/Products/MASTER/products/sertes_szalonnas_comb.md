@@ -1,3 +1,15 @@
+---
+title: "Sertés Szalonnás Comb"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Sertés szalonnás comb termékinformáció, mely szalonnával borított combdarabot ír le, 24,5 euró kilogrammonként. Tartalmazza a készletinformációkat, fordításokat és a termelői megjegyzéseket a feldolgozásról."
+description_source: auto
+description_hash: 9068b2809bfa1819
+id: bd2d4afb-9c44-4294-9233-6b4a77681f96
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Szalonnás Comb
 
 ```yaml

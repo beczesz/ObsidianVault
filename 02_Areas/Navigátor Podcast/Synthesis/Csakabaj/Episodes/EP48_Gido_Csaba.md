@@ -1,11 +1,13 @@
 ---
+description: "Harmadik szezon negyedik epizódja Gidó Csabával, ahol Józsa Levi a kreatív munka fenntarthatóságáról és a szándék és közönségfogadás közötti szakadékról beszélget. Az epizód implicit mentorálást nyújt fiatal kreatívoknak a kudarc és a hitelesség kezeléséről."
+description_source: auto
+description_hash: df7b230ad6061ada
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
 id: 8047c005-fbc1-4d12-8d3d-f5348a309fa9
 index_schema_version: 1
 ---
-
 # Csakabaj Podcast — Season 3
 
 ## Episode EP48 | S03E04: Gidó Csaba

@@ -1,3 +1,15 @@
+---
+title: "📌 Szabolcs’ Master “Try Later” Plugin Checklist"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Szabolcs' categorized checklist of Obsidian plugins to explore, from workflow and navigation tools to research management, plus idea notes for future vault automation and integration projects."
+description_source: auto
+description_hash: c12e1f5f843ade55
+id: df48890d-08c1-4b79-8229-3cb5fa412016
+index_schema_version: 1
+bdos_index: true
+---
 # 📌 Szabolcs’ Master “Try Later” Plugin Checklist
 
 ---

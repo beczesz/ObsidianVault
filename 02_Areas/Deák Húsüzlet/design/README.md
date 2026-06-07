@@ -1,3 +1,15 @@
+---
+title: "DH Design — Screen Catalog"
+date: 2026-05-05
+author: Becze Szabolcs
+status: active
+description: "Comprehensive reference guide for managing the DH Design screen catalog, including folder structure, how the generated index.html works with embedded manifest data, status color coding, sprint grouping logic, and step-by-step instructions for adding new screens and deploying updates to Netlify."
+description_source: auto
+description_hash: 89e8136f9cc6d39b
+id: 068d1b27-aab4-4fe6-956e-7a146ee26c5e
+index_schema_version: 1
+bdos_index: true
+---
 # DH Design — Screen Catalog
 
 > **Utolsó frissítés:** 2026-04-25 · **Aktuális build:** #35  

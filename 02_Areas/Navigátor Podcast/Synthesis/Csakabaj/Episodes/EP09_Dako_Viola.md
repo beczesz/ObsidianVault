@@ -1,4 +1,7 @@
 ---
+description: "Mélyinterjú Dakó Violával a természet spirituális pedagógiai szerepéről, személyes kalandokról és fenomenológiai tapasztalatokon alapuló önismeret-fejlődésről. Podcast epizód, amely az interjúvezetés új szintjét mutatja be az empátiára, jelenlét és őszinteségre fókuszálva."
+description_source: auto
+description_hash: 2f5dc6a069cab745
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -14,7 +17,6 @@ quality: "Gold Standard"
 id: b2fa2d3b-6a1d-4a39-a2bf-0dd954d7bbf1
 index_schema_version: 1
 ---
-
 # EP09 — Dakó Viola: Természet mint tanítómester — A spirituális kalandok fenomenológiája
 
 ## Alapadatok

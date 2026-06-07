@@ -1,12 +1,14 @@
 ---
 title: CPS Daily Lead Brief
+description: "Daily sales intelligence brief tracking 8 qualified DevOps leads identified across Hungary, Romania, and Western Europe, with detailed scoring, outreach strategies, and package recommendations for CPS managed services targeting hiring signals."
+description_source: auto
+description_hash: 3a2724a3bb0de3aa
 date: 2026-03-16
 leads_found: 8
 hot_leads: 3
 id: 8d4e1d2f-db9a-46c6-971c-51072ee928bd
 index_schema_version: 1
 ---
-
 # CPS Daily Lead Brief - March 16, 2026
 
 ## Summary

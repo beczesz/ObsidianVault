@@ -1,3 +1,15 @@
+---
+title: "Competitors"
+date: 2025-10-27
+author: Becze Szabolcs
+status: active
+description: "Competitive analysis of DevOps-as-a-Service providers examining pricing models, service tiers, and AWS partnership positioning to inform market strategy and pricing decisions."
+description_source: auto
+description_hash: 152bf68568b5f61c
+id: 133ced04-8641-4e98-9ae7-378e5fd899b6
+index_schema_version: 1
+bdos_index: true
+---
 ## Questions
 - show **lead time ↓, deploy freq ↑, CFR ↓, MTTR ↓**.
 - DORA metrics

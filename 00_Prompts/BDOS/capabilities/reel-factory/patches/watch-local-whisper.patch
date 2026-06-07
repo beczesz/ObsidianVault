@@ -1,0 +1,222 @@
+diff --git a/scripts/watch.py b/scripts/watch.py
+index 8aa0600..14bacdd 100755
+--- a/scripts/watch.py
++++ b/scripts/watch.py
+@@ -18,7 +18,7 @@ sys.path.insert(0, str(SCRIPT_DIR))
+ from download import download, is_url  # noqa: E402
+ from frames import MAX_FPS, auto_fps, auto_fps_focus, extract, format_time, get_metadata, parse_time  # noqa: E402
+ from transcribe import filter_range, format_transcript, parse_vtt  # noqa: E402
+-from whisper import load_api_key, transcribe_video  # noqa: E402
++from whisper import resolve_backend, transcribe_video  # noqa: E402
+ 
+ 
+ def main() -> int:
+@@ -40,9 +40,11 @@ def main() -> int:
+     )
+     ap.add_argument(
+         "--whisper",
+-        choices=["groq", "openai"],
++        choices=["groq", "openai", "local"],
+         default=None,
+-        help="Force a specific Whisper backend. Default: prefer Groq, fall back to OpenAI.",
++        help="Force a Whisper backend. 'local' = faster-whisper large-v3-turbo, "
++             "offline, no key. Default: API key if present (Groq>OpenAI), else local "
++             "if faster-whisper is installed.",
+     )
+     args = ap.parse_args()
+ 
+@@ -117,14 +119,16 @@ def main() -> int:
+             print(f"[watch] subtitle parse failed: {exc}", file=sys.stderr)
+ 
+     if not transcript_segments and not args.no_whisper:
+-        backend, api_key = load_api_key(args.whisper)
+-        if backend and api_key:
++        backend, api_key = resolve_backend(args.whisper)
++        if backend:
+             try:
+                 all_segments, used_backend = transcribe_video(
+                     video_path,
+                     work / "audio.mp3",
+                     backend=backend,
+                     api_key=api_key,
++                    start=start_sec if focused else None,
++                    end=end_sec if focused else None,
+                 )
+                 transcript_segments = filter_range(all_segments, start_sec, end_sec) if focused else all_segments
+                 transcript_text = format_transcript(transcript_segments)
+diff --git a/scripts/whisper.py b/scripts/whisper.py
+index bbdcc8f..1c3f6b1 100755
+--- a/scripts/whisper.py
++++ b/scripts/whisper.py
+@@ -31,6 +31,84 @@ GROQ_MODEL = "whisper-large-v3"
+ OPENAI_ENDPOINT = "https://api.openai.com/v1/audio/transcriptions"
+ OPENAI_MODEL = "whisper-1"
+ 
++# Local backend (faster-whisper / CTranslate2). large-v3-turbo: 809M params,
++# ~8x faster than large-v3, runs offline on CPU (incl. Apple Silicon). No key.
++LOCAL_MODEL = "large-v3-turbo"
++
++
++def local_available() -> bool:
++    """True if faster-whisper is importable (local backend possible)."""
++    try:
++        import faster_whisper  # noqa: F401
++        return True
++    except ImportError:
++        return False
++
++
++def resolve_backend(preferred: str | None = None) -> tuple[str, str | None] | tuple[None, None]:
++    """Pick a transcription backend.
++
++    - preferred == "local"            -> ("local", None)
++    - preferred in {"groq","openai"}  -> that API if its key exists, else (None, None)
++    - preferred is None               -> prefer an API key (Groq>OpenAI); if none,
++                                         auto-fall back to local when faster-whisper
++                                         is installed.
++    """
++    if preferred == "local":
++        return ("local", None)
++    backend, api_key = load_api_key(preferred)
++    if backend and api_key:
++        return (backend, api_key)
++    if preferred is None and local_available():
++        return ("local", None)
++    return (None, None)
++
++
++def transcribe_local(
++    video_path: str,
++    audio_out: Path,
++    model_name: str = LOCAL_MODEL,
++    start: float | None = None,
++    end: float | None = None,
++) -> list[dict]:
++    """Transcribe offline via faster-whisper. Language auto-detected.
++
++    First run downloads the model (~1.5 GB) to ~/.cache/huggingface; later runs
++    load from cache. When start/end are given, only that clip is transcribed and
++    segment times are shifted back to absolute (real video timeline). Returns
++    segments in the same {start,end,text} shape as the API path.
++    """
++    from faster_whisper import WhisperModel
++
++    print("[watch] extracting audio for local Whisper…", file=sys.stderr)
++    audio_path = extract_audio(video_path, audio_out, start=start, end=end)
++    offset = start or 0.0
++
++    print(
++        f"[watch] loading faster-whisper '{model_name}' on CPU "
++        f"(first run downloads the model)…",
++        file=sys.stderr,
++    )
++    model = WhisperModel(model_name, device="cpu", compute_type="int8")
++
++    seg_iter, info = model.transcribe(str(audio_path.resolve()), beam_size=5)
++    segments: list[dict] = []
++    for s in seg_iter:
++        text = (s.text or "").strip()
++        if text:
++            segments.append({
++                "start": round(float(s.start) + offset, 2),
++                "end": round(float(s.end) + offset, 2),
++                "text": text,
++            })
++
++    print(
++        f"[watch] transcribed {len(segments)} segments via local "
++        f"(lang={info.language}, p={info.language_probability:.2f})",
++        file=sys.stderr,
++    )
++    return segments
++
+ 
+ def load_api_key(preferred: str | None = None) -> tuple[str, str] | tuple[None, None]:
+     """Return (backend, api_key). Prefers Groq, falls back to OpenAI.
+@@ -82,18 +160,32 @@ def load_api_key(preferred: str | None = None) -> tuple[str, str] | tuple[None,
+     return None, None
+ 
+ 
+-def extract_audio(video_path: str, out_path: Path) -> Path:
+-    """Extract mono 16kHz 64kbps mp3 — ~480 kB/min, fits any Whisper limit."""
++def extract_audio(
++    video_path: str,
++    out_path: Path,
++    start: float | None = None,
++    end: float | None = None,
++) -> Path:
++    """Extract mono 16kHz 64kbps mp3 — ~480 kB/min, fits any Whisper limit.
++
++    When start/end are given, only that range is extracted. Critical for long
++    videos: without clipping, the whole audio is transcribed even in focused
++    (--start/--end) mode — minutes of needless CPU on local Whisper.
++    """
+     if shutil.which("ffmpeg") is None:
+         raise SystemExit("ffmpeg is not installed. Install with: brew install ffmpeg")
+ 
+     out_path.parent.mkdir(parents=True, exist_ok=True)
+-    cmd = [
+-        "ffmpeg",
+-        "-hide_banner",
+-        "-loglevel", "error",
+-        "-y",
+-        "-i", str(Path(video_path).resolve()),
++    cmd = ["ffmpeg", "-hide_banner", "-loglevel", "error", "-y"]
++    # -ss before -i = fast input seek; -to is then relative to the seek point.
++    if start is not None:
++        cmd += ["-ss", str(start)]
++    cmd += ["-i", str(Path(video_path).resolve())]
++    if end is not None:
++        duration = end - (start or 0.0)
++        if duration > 0:
++            cmd += ["-t", str(duration)]
++    cmd += [
+         "-vn",
+         "-acodec", "libmp3lame",
+         "-ar", "16000",
+@@ -266,11 +358,23 @@ def transcribe_video(
+     audio_out: Path,
+     backend: str | None = None,
+     api_key: str | None = None,
++    start: float | None = None,
++    end: float | None = None,
+ ) -> tuple[list[dict], str]:
+     """Run the full flow: extract audio → upload → parse segments.
+ 
++    When start/end are given, only that clip is transcribed and times are shifted
++    back to absolute. Without this, focused (--start/--end) mode still transcribes
++    the entire video — minutes of needless work on a long podcast.
++
+     Returns (segments, backend_used). Raises SystemExit on any failure.
+     """
++    if backend == "local":
++        segments = transcribe_local(video_path, audio_out, start=start, end=end)
++        if not segments:
++            raise SystemExit("Local Whisper returned no transcript segments")
++        return segments, f"local ({LOCAL_MODEL})"
++
+     if backend is None or api_key is None:
+         detected_backend, detected_key = load_api_key()
+         backend = backend or detected_backend
+@@ -285,7 +389,7 @@ def transcribe_video(
+         )
+ 
+     print(f"[watch] extracting audio for Whisper ({backend})…", file=sys.stderr)
+-    audio_path = extract_audio(video_path, audio_out)
++    audio_path = extract_audio(video_path, audio_out, start=start, end=end)
+     size_kb = audio_path.stat().st_size / 1024
+     print(f"[watch] audio: {size_kb:.0f} kB — uploading to {backend} Whisper…", file=sys.stderr)
+ 
+@@ -300,6 +404,12 @@ def transcribe_video(
+     if not segments:
+         raise SystemExit("Whisper returned no transcript segments")
+ 
++    offset = start or 0.0
++    if offset:
++        for seg in segments:
++            seg["start"] = round(seg["start"] + offset, 2)
++            seg["end"] = round(seg["end"] + offset, 2)
++
+     print(f"[watch] transcribed {len(segments)} segments via {backend}", file=sys.stderr)
+     return segments, backend
+ 

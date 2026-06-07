@@ -1,3 +1,15 @@
+---
+title: "Pistyur Veronika — Interjú felkészülés"
+date: 2026-03-06
+author: Becze Szabolcs
+status: active
+description: "Kérdezettünk felkészülési anyag a Navigator Podcast Veronika Pistyurral készülő interjújához. Tartalmazza Veronika biography-ját, az ötperces ív felépítését, valamint részletes kérdéseket az öt fázishoz, amelyek a médiavilágból a nonprofit vezetésbe való átmenetet, az ügy ereje gondolkodásmódot, és a személyes vezetői lét témá"
+description_source: auto
+description_hash: 5140584e5e7a6725
+id: 40eea98e-77c5-42a1-b797-74e14c30ee0f
+index_schema_version: 1
+bdos_index: true
+---
 # Pistyur Veronika — Interjú felkészülés
 **Navigator Podcast | Székelyudvarhely | 45 perc**
 **Cím: "Vezető vagy az életedben"**

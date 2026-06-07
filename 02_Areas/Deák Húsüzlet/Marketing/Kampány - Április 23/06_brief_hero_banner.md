@@ -1,5 +1,8 @@
 ---
 title: "Design Brief — Landing Page Hero Banner"
+description: "Design specification for a hero banner promoting Deák Húsüzlet's Founding 50 program on their landing page, with desktop (1440×600px) and mobile (375×500px) layouts, featuring headline, discount offer, availability counter, and CTA button in Hungarian, implemented as CSS-based responsive component rather than static image."
+description_source: auto
+description_hash: 50166e879f6470ba
 deliverable: deakhus.ro hero section
 format: 1440×600px (desktop) + 375×500px (mobile)
 language: Magyar
@@ -7,7 +10,6 @@ date: 2026-04-22
 id: 22631def-dca3-4b82-9be8-42cf29979086
 index_schema_version: 1
 ---
-
 # Design Brief: Hero Banner — Founding 50
 
 ## Feladat

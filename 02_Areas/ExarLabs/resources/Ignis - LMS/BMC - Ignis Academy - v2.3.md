@@ -1,4 +1,15 @@
- 
+---
+title: "BUSINESS MODEL CANVAS"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "AI-powered enterprise skills platform for corporate L&D leaders seeking measurable learning ROI, workforce intelligence dashboards, and data-driven skill gap management. Covers value proposition, customer segments, and platform differentiators focused on personalized development and enterprise integration."
+description_source: auto
+description_hash: 77be29b5ec124ccf
+id: 12f7420a-4c28-4fd4-9613-01f1b4291a41
+index_schema_version: 1
+bdos_index: true
+---
 # BUSINESS MODEL CANVAS
 
 Date: 2025-11-14  

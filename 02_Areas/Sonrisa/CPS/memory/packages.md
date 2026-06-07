@@ -1,3 +1,15 @@
+---
+title: "CPS Services & Packages"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "CPS service offerings spanning recurring support packages from €990 to €6,000 monthly for varying company sizes, optional add-ons like 24/7 on-call and security enhancement, one-time project services, and defined upsell paths for sales teams."
+description_source: auto
+description_hash: a980049259b916d4
+id: 99fb4f2a-77e7-47a8-bd95-2f04eddde94a
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Services & Packages
 
 ## Support Packages (Recurring Revenue)

@@ -1,4 +1,7 @@
 ---
+description: "Függőleges formatumú vallási reklámfilm-koncepció a Fókuszponthoz, amely az aprólékos figyelemzavartól a lelki összpontosítottságig vezet, végül Jézust nevezve meg. Nyolc jelenetből, kérdés-mátrixból és technikai megjegyzésekből áll."
+description_source: auto
+description_hash: bbf3bd419eb90aab
 type: forgatókönyv-draft
 reel: "#1 — Vertikális"
 version: v1B (GPT-5 API, validator/alternate)
@@ -10,7 +13,6 @@ model: gpt-5 (reasoning_effort=medium, 3136 reasoning tokens)
 id: 9eeee200-57db-4a3c-893e-8a114f5cf06f
 index_schema_version: 1
 ---
-
 # Reel #1 — Vertikális — v1B GPT-5
 
 ## Koncepció egy mondatban (GPT-5)

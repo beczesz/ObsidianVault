@@ -1,3 +1,15 @@
+---
+title: "**Engagement Model**"
+date: 2025-11-26
+author: Becze Szabolcs
+status: active
+description: "Sonrisa's managed AWS platform services model delivers fixed-price packages with dedicated engineering capacity, progressing through discovery, onboarding, and ongoing operations to reduce costs, enhance security, and stabilize cloud infrastructure while enabling client teams to focus on product development."
+description_source: auto
+description_hash: 398289c5eae1efb3
+id: 6e6d5fad-f179-4476-b73e-a6d0b030e6fa
+index_schema_version: 1
+bdos_index: true
+---
 Sonrisa Managed AWS Cloud Platform Services (CPS) provides comprehensive management of AWS workloads—including EC2, EKS, RDS, S3, and supporting services—at a **fixed, predictable monthly price**.  
 Our packages deliver dedicated engineering capacity (Safety Net €990, Essential €2,000, Growth €4,000, Scale €6,000) ensuring stable, secure, and cost-efficient cloud operations while your teams stay focused on product development.
 

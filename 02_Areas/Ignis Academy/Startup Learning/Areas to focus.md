@@ -1,4 +1,15 @@
-
+---
+title: "Areas to focus"
+date: 2025-10-27
+author: Becze Szabolcs
+status: active
+description: "Strategic analysis of Odorheiu Secuiesc's friction points and compensating advantages for a deep-tech education founder, with practical mitigation strategies and a roadmap framework for global expansion."
+description_source: auto
+description_hash: 244e7b58b81d7310
+id: 2666ce62-512e-4f70-9454-b39d229a1567
+index_schema_version: 1
+bdos_index: true
+---
 ## 🧩 2. What _disadvantages_ you actually face from Odorheiu Secuiesc
 
 Let’s be realistic, though. There _are_ friction points — but each can be compensated for with a clear strategy.

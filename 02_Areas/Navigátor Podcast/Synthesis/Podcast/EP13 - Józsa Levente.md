@@ -1,6 +1,9 @@
 ---
 episode: EP13
 title: "„A Podcast az Új Mainstream?" – Erdélyi podcast kultúra és a média jövője | Józsa Levente | EP13"
+description: "Józsa Levente fotós és a Csakabaj podcast alapítójának mélyinterjúja az erdélyi podcast kultúra, a hosszú formátum politikai ereje és a média jövőjéről. Tárgyalja a monetizációt, manipulációt és az 50 fős kemény mag közösség építésének valós kihívásait."
+description_source: auto
+description_hash: 6a83312ec90a0093
 guest: Józsa Levente
 guest_title: Fotós, a Csakabaj podcast alapítója és műsorvezetője
 youtube_id: CEBAnmXFlr8
@@ -31,7 +34,6 @@ created: 2026-04-06
 id: fdfd3c81-368b-44c7-a257-7b824d0cc85d
 index_schema_version: 1
 ---
-
 # EP13 – „A Podcast az Új Mainstream?" – Erdélyi podcast kultúra és a média jövője | Józsa Levente
 
 ## Bevezető kontextus

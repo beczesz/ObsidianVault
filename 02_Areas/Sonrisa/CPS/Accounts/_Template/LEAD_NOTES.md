@@ -1,4 +1,7 @@
 ---
+description: "A sales opportunity tracking template for documenting leads with sections for signal source, company details, pain points, value propositions, contact information, outreach angles, and follow-up actions. Used by sales teams to organize prospect research and coordinate engagement strategy."
+description_source: auto
+description_hash: 6ac22f3489d81d4f
 # ===========================================================================
 # CPS LEAD note, dashboard-driven schema, v1.0
 # ===========================================================================
@@ -77,7 +80,6 @@ created: 2026-05-14                # YYYY-MM-DD when added to the pipeline
 validated:                         # YYYY-MM-DD when last validated by Perplexity / research
 last_signal_check:                 # YYYY-MM-DD when signal freshness was last checked
 ---
-
 <!--
   Below this line is the drawer content. Sections by name map to drawer slots,
   see Sales/DASHBOARD_CONTRACT.md for the section-to-slot mapping.

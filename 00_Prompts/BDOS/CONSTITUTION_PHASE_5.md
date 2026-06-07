@@ -13,7 +13,7 @@ index_schema_version: 1
 # BDOS Constitution — Phase 5
 
 > **Effective date:** 2026-05-24
-> **Scope:** All 6 active agents — Librarian, Maestro, Curator, Presto, Sage, Broker.
+> **Scope:** All 7 active agents — Librarian, Maestro, Curator, Presto, Broker, Alfred, Forge.
 > **Supersedes:** Phase 2 operational log-stream requirement (operational markdown DEPRECATED for new events).
 > **Extends:** Phase 2 (3-stream invariant), Phase 3.1 (description mandate), Phase 4 (Memory OS / UUID).
 
@@ -40,7 +40,7 @@ This is not optional. An agent invocation that produces no DB rows is an observa
 00_Prompts/BDOS/capabilities/vault-indexing/cache/agent_observability.db
 ```
 
-Table: `agent_events` (DDL in `capabilities/vault-indexing/agent_obs_schema.sql`).
+Table: `agent_logs` (DDL in `capabilities/vault-indexing/agent_obs_schema.sql`).
 
 The sidecar JSON at `_dashboards/_design/agent_logs.json` is the transport layer for HTML dashboards. It is refreshed automatically on every DB insert by `agent_log.py`. Do not write to it directly.
 
@@ -84,9 +84,9 @@ Rationale: latency is a first-class observable. Hidden latency = hidden user exp
 
 ## 6. The DB is Append-Only
 
-**`agent_events` rows are never updated or deleted.**
+**`agent_logs` rows are never updated or deleted.**
 
-Corrections, retries, and revised interpretations are expressed as new rows, not as modifications to existing ones. The `parent_event_id` foreign key allows a correction row to reference the row it supersedes — use this convention rather than silent overwrites.
+Corrections, retries, and revised interpretations are expressed as new rows, not as modifications to existing ones. The `parent_operation_id` foreign key allows a correction row to reference the row it supersedes — use this convention rather than silent overwrites.
 
 The `obs_build_meta` table's `created_at` and `schema_version` keys are the only rows that may be upserted (schema initialization).
 
@@ -98,7 +98,7 @@ Phase 5 maintains a strict separation between two layers:
 
 | Layer | What it is | Deprecated? |
 |---|---|---|
-| **SQLite `agent_events`** | Machine-queryable operational events. Fine-grained, row-per-event. | No — this is the new primary layer |
+| **SQLite `agent_logs`** | Machine-queryable operational events. Fine-grained, row-per-event. | No — this is the new primary layer |
 | **Markdown Operational** (`logs/operational/*.md`) | Prose append-only per-invocation summaries in YAML-block format. | **Yes — DEPRECATED for new events** |
 | **Markdown Learning** (`logs/learning/*.md`) | Human-readable reflection stream. Pattern observations. | No — remains active |
 | **Markdown Version** (`logs/version/*.md`) | Human-readable evolution stream. Prompt and workflow changes. | No — remains active |
@@ -111,7 +111,7 @@ Neither layer is a substitute for the other. Both must be maintained for the sys
 
 ## 8. Reader Scope
 
-**All 6 agents are log-writers. Maestro is the global reader. Each other agent reads only its own scope.**
+**All 7 agents are log-writers. Maestro is the global reader. Each other agent reads only its own scope.**
 
 | Agent | Write scope | Read scope |
 |---|---|---|
@@ -119,10 +119,11 @@ Neither layer is a substitute for the other. Both must be maintained for the sys
 | Maestro | `agent='maestro'` | ALL agents (no filter) |
 | Curator | `agent='curator'` | `agent='curator'` only |
 | Presto | `agent='presto'` | `agent='presto'` only |
-| Sage | `agent='sage'` | `agent='sage'` only |
+| Alfred | `agent='alfred'` | `agent='alfred'` only |
 | Broker | `agent='broker'` | `agent='broker'` only |
+| Forge | `agent='forge'` | `agent='forge'` only |
 
-Maestro's `observe`, `reflect`, and `optimize` modes query the full `agent_events` table. Every Maestro observation run MUST itself be logged — so it is visible in future observation cycles (self-referential invariant).
+Maestro's `observe`, `reflect`, and `optimize` modes query the full `agent_logs` table. Every Maestro observation run MUST itself be logged — so it is visible in future observation cycles (self-referential invariant).
 
 Query tooling: `capabilities/vault-indexing/agent_log_query.py` provides a Python API and CLI for reading events. Maestro uses this in its observability modes.
 
@@ -162,5 +163,5 @@ Librarian `audit` mode detects the absence of `## Observability v2` in agent can
 - Log schemas (markdown streams): `LOG_SCHEMAS.md`
 - Phase 2 constitution: `CONSTITUTION_PHASE_2.md`
 - Phase 4 constitution: `CONSTITUTION_PHASE_4.md`
-- Agent canonicals: `agents/librarian.md`, `agents/maestro.md`, `agents/curator.md`, `agents/presto.md`, `agents/sage.md`, `agents/broker.md`
+- Agent canonicals: `agents/librarian.md`, `agents/maestro.md`, `agents/curator.md`, `agents/presto.md`, `agents/alfred.md`, `agents/broker.md`, `agents/forge.md`
 - Agent index: `00_AGENTS_INDEX.md`

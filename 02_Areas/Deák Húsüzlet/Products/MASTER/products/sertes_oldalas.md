@@ -1,3 +1,15 @@
+---
+title: "Sertés Oldalas"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Sertés oldalas termék metadata: csontos sertéshús, 26 Ft/kg, szeletelés és pácolás opciókkal (hagyományos vagy BBQ). Termékkatalógus szerkesztőknek és elektronikus rendszerre exportáláshoz."
+description_source: auto
+description_hash: 48cf3c8531d3dd24
+id: ebc0d804-9fe7-434c-a0cd-5bf86495f6a0
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Oldalas
 
 ```yaml

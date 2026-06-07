@@ -1,3 +1,15 @@
+---
+title: "email to mads"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Draft email to Mads Blankenburg about ProSharp OTel project status, including .NET developer onboarding, SOW revisions extending deadline to April 30, and required MSA fields needing completion before signing."
+description_source: auto
+description_hash: f92a5d00a4e80728
+id: f4cfd53e-82bf-46eb-827c-1fccd9b22be1
+index_schema_version: 1
+bdos_index: true
+---
 **To:** Mads Blankenburg (mads.blankenburg@tradeconnectors.org)
 **CC:** Ádám Kovács (adam.kovacs@pro-sharp.hu)
 **From:** Szabolcs Becze (becze.szabolcs@sonrisa.hu)

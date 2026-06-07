@@ -1,5 +1,8 @@
 ---
 title: "Dashboard és leszállított anyagok"
+description: "Interaktív offline HTML dashboard (Chart.js alapú) 7 tabbal: áttekintés, telephelyek, költségvetés, termékek, partnerek, idősor, készlet. Valós kasszaadatok, kattintható drill-down, szűrők (termék, év, telephely, light/dark mód). Mellékelt készlet-problémák Excel és reprodukálható Python pipeline (_build/ mappa)."
+description_source: auto
+description_hash: d44e991a695bb573
 type: deliverable-index
 project: Gergely István
 created: 2026-05-21
@@ -7,7 +10,6 @@ tags: [dashboard, deliverable, output]
 id: 9b5e9456-4015-4269-bdaf-3c4a43670c60
 index_schema_version: 1
 ---
-
 # Leszállított anyagok
 
 ## 📊 Interaktív dashboard v2 — `Dashboard_2025.html`

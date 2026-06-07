@@ -1,3 +1,15 @@
+---
+title: "Memory"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Personal reference guide for Szabolcs documenting Média Műhely, a Christian media studio in Romania, including team members, active clients, service offerings, ongoing projects, and open tasks related to content creation and client management."
+description_source: auto
+description_hash: c5eb92bc5353ecff
+id: 4ddeecdf-c840-49fa-89ce-59fd4e665b79
+index_schema_version: 1
+bdos_index: true
+---
 # Memory
 
 ## Me

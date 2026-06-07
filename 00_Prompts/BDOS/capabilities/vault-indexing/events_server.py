@@ -1,40 +1,35 @@
 #!/usr/bin/env python3
 """
-BDOS Vault — SSE Events Server (port 4322)
-===========================================
-Watches vault.db mtime for changes (the vault-indexing watcher updates it
-whenever it indexes markdown changes). Pushes a vault-update SSE event to
-all connected clients when vault.db is touched.
+BDOS Vault — Indexing Daemon (headless, no port)
+================================================
+Single-server consolidation (2026-05-29): this process used to be an SSE HTTP
+server on port 4322. That HTTP role is gone. The browser-facing server is now
+ONLY dash-server.mjs (port 4321): it serves files, pushes the `vault-update`
+SSE event (by polling vault.db mtime itself) and answers /health. Dashboards
+therefore only ever talk to localhost:4321.
 
-Runs alongside dash-server.mjs (port 4321) — clean separation of concerns:
-  dash-server.mjs  (4321) → serves static files + /__events for raw .md changes
-  events_server.py (4322) → vault-update events from vault.db mtime + scheduler
+What remains here is pure background work with NO socket to bind or conflict:
+  - Scheduler (owner machine): scheduler_loop() scans scheduled_jobs every 60s
+    and dispatches due jobs, recording results in agent_observability.db.
+  - Sidecar self-refresh (secondary machine, BDOS_DISABLE_SCHEDULER=1):
+    regenerates the agent_logs.json sidecar from the synced DB so the dashboard
+    DB/Scheduler Health pills stay fresh despite Google Drive lag.
 
-Scheduler integration (Phase B, 2026-05-24):
-  A scheduler_loop() daemon thread is started on main(). It scans
-  scheduled_jobs every 60 s and dispatches due jobs as subprocesses.
-  Job results are written to job_runs in agent_observability.db.
+The filename, the events.pid / events.log names, and the launch.py "events
+server" wiring are kept as-is to avoid PID/log migration churn; conceptually
+this is the "indexing daemon". Single-owner rule unchanged: the scheduler runs
+on exactly one machine (Mac), secondaries pass --no-scheduler.
 
 Usage:
-  python3 events_server.py          # default port 4322
-  PORT=4323 python3 events_server.py
-
-Client JS:
-  const es = new EventSource('http://localhost:4322/events');
-  es.addEventListener('message', ev => {
-    const d = JSON.parse(ev.data);
-    if (d.type === 'vault-update') refetchAndRender();
-  });
+  python3 events_server.py                      # scheduler ON (owner)
+  BDOS_DISABLE_SCHEDULER=1 python3 events_server.py   # secondary (sidecar refresh)
 
 Requires only stdlib — no pip install.
 """
 
-import http.server
-import socketserver
 import threading
 import time
 import os
-import json
 import sys
 from pathlib import Path
 
@@ -44,167 +39,90 @@ if str(_SCRIPT_DIR) not in sys.path:
     sys.path.insert(0, str(_SCRIPT_DIR))
 
 SCRIPT_DIR = _SCRIPT_DIR
-VAULT_DB = SCRIPT_DIR / "cache" / "vault.db"
-PORT = int(os.environ.get("PORT", 4322))
-POLL_INTERVAL = 1.0      # seconds between mtime checks
-HEARTBEAT_INTERVAL = 15  # seconds between SSE heartbeat comments
+from runtime import DB_PATH as VAULT_DB  # per-machine local index (this machine's watcher writes it)
+# Sidecar self-refresh (added 2026-05-29): on the NON-scheduler machine the
+# agent_logs.json sidecar is only ever produced on the owner (Mac) and reaches
+# us via Google Drive with multi-minute lag, so the dashboard Health pills (DB,
+# Scheduler) read it as stale even though the synced agent_observability.db is
+# current. When BDOS_DISABLE_SCHEDULER=1 we therefore regenerate the sidecar
+# locally from the synced DB on a short cadence. Only the secondary machine does
+# this (the owner refreshes via scheduler/agent activity), so the synced JSON
+# still has a single active writer per machine-role — no Drive write contention.
+SIDECAR_REFRESH_INTERVAL = int(os.environ.get("BDOS_SIDECAR_REFRESH_S", 60))
 
-# Thread-safe set of active response objects
-_clients_lock = threading.Lock()
-_clients: set = set()
-_last_mtime: float = 0.0
 
+def sidecar_refresh_loop():
+    """Background thread (secondary machine only): regenerate agent_logs.json
+    from the synced agent_observability.db every SIDECAR_REFRESH_INTERVAL seconds
+    so the dashboard Health pills stay fresh without waiting for Drive sync.
 
-def get_db_mtime() -> float:
+    Imports agent_log lazily (same dir) and opens its own short-lived DB
+    connection per cycle. Failures are logged but never kill the daemon."""
+    import sqlite3
     try:
-        return VAULT_DB.stat().st_mtime
-    except OSError:
-        return 0.0
-
-
-def broadcast_vault_update():
-    payload = json.dumps({"type": "vault-update", "ts": int(time.time())})
-    msg = f"data: {payload}\n\n".encode()
-    with _clients_lock:
-        dead = set()
-        for wfile in _clients:
+        import agent_log
+    except Exception as exc:  # pragma: no cover
+        print(f"[indexing-daemon] sidecar self-refresh disabled — agent_log import failed: {exc}")
+        return
+    print(f"[indexing-daemon] Sidecar self-refresh ON (every {SIDECAR_REFRESH_INTERVAL}s) — "
+          f"keeps DB/Scheduler pills fresh on the non-scheduler machine")
+    while True:
+        try:
+            con = sqlite3.connect(str(agent_log.DB_PATH), timeout=10)
+            con.row_factory = sqlite3.Row
             try:
-                wfile.write(msg)
-                wfile.flush()
-            except OSError:
-                dead.add(wfile)
-        _clients -= dead
-
-
-def watcher_loop():
-    """Background thread: poll vault.db mtime, broadcast on change."""
-    global _last_mtime
-    _last_mtime = get_db_mtime()
-    while True:
-        time.sleep(POLL_INTERVAL)
-        mt = get_db_mtime()
-        if mt and mt != _last_mtime:
-            _last_mtime = mt
-            broadcast_vault_update()
-
-
-def heartbeat_loop():
-    """Background thread: send SSE heartbeat comment every 15s."""
-    global _clients
-    ping = b": heartbeat\n\n"
-    while True:
-        time.sleep(HEARTBEAT_INTERVAL)
-        with _clients_lock:
-            dead = set()
-            for wfile in _clients:
-                try:
-                    wfile.write(ping)
-                    wfile.flush()
-                except OSError:
-                    dead.add(wfile)
-            _clients -= dead
-
-
-class EventsHandler(http.server.BaseHTTPRequestHandler):
-    def log_message(self, fmt, *args):
-        # Quiet: only log connections, not every heartbeat
-        if "GET /events" in (args[0] if args else ""):
-            print(f"[{time.strftime('%H:%M:%S')}] SSE client connected from {self.address_string()}")
-
-    def do_OPTIONS(self):
-        self.send_response(204)
-        self._cors()
-        self.end_headers()
-
-    def do_GET(self):
-        if self.path == "/events":
-            self._handle_sse()
-        elif self.path == "/health":
-            self.send_response(200)
-            self._cors()
-            self.send_header("Content-Type", "application/json")
-            self.end_headers()
-            body = json.dumps({
-                "ok": True,
-                "db_exists": VAULT_DB.exists(),
-                "db_mtime": _last_mtime,
-                "clients": len(_clients),
-            }).encode()
-            self.wfile.write(body)
-        else:
-            self.send_response(404)
-            self.end_headers()
-            self.wfile.write(b"Not found. Try /events or /health\n")
-
-    def _cors(self):
-        self.send_header("Access-Control-Allow-Origin", "*")
-        self.send_header("Access-Control-Allow-Headers", "Cache-Control")
-
-    def _handle_sse(self):
-        self.send_response(200)
-        self.send_header("Content-Type", "text/event-stream")
-        self.send_header("Cache-Control", "no-cache")
-        self.send_header("Connection", "keep-alive")
-        self._cors()
-        self.end_headers()
-
-        # Send retry directive
-        try:
-            self.wfile.write(b"retry: 3000\n\n")
-            self.wfile.flush()
-        except OSError:
-            return
-
-        with _clients_lock:
-            _clients.add(self.wfile)
-
-        # Hold the connection open — the background threads broadcast
-        try:
-            while True:
-                time.sleep(1)
-                # Check if connection is still alive by peeking
-                if self.wfile.closed:
-                    break
-        except (OSError, BrokenPipeError):
-            pass
-        finally:
-            with _clients_lock:
-                _clients.discard(self.wfile)
-
-
-class ThreadedHTTPServer(socketserver.ThreadingMixIn, http.server.HTTPServer):
-    daemon_threads = True
-    allow_reuse_address = True
+                agent_log._refresh_sidecar(con)
+            finally:
+                con.close()
+        except Exception as exc:
+            print(f"[indexing-daemon] sidecar refresh error: {exc}")
+        time.sleep(SIDECAR_REFRESH_INTERVAL)
 
 
 def main():
-    # Start background threads
-    wt = threading.Thread(target=watcher_loop, daemon=True, name="db-watcher")
-    wt.start()
-    ht = threading.Thread(target=heartbeat_loop, daemon=True, name="heartbeat")
-    ht.start()
-
-    # Phase B: BDOS Job Scheduler — daemon thread attached to events_server
-    try:
-        from scheduler import scheduler_loop
-        st = threading.Thread(target=scheduler_loop, daemon=True, name="scheduler")
-        st.start()
-        print(f"[events_server] Scheduler started (scan interval 60s)")
-    except ImportError as _e:
-        print(f"[events_server] WARNING: scheduler.py not found — scheduler disabled ({_e})")
-
-    server = ThreadedHTTPServer(("", PORT), EventsHandler)
-    print(f"[events_server] BDOS Vault SSE server — port {PORT}")
-    print(f"[events_server] Watching: {VAULT_DB}")
-    print(f"[events_server] Endpoint: http://localhost:{PORT}/events")
-    print(f"[events_server] Health:   http://localhost:{PORT}/health")
+    print("[indexing-daemon] BDOS Vault indexing daemon — headless (no port)")
+    print(f"[indexing-daemon] Local index: {VAULT_DB}")
     if not VAULT_DB.exists():
-        print(f"[events_server] WARNING: vault.db not found at {VAULT_DB}")
-        print(f"[events_server]          Start watch_event.py first (PID will be written to cache/watch.pid)")
+        print(f"[indexing-daemon] WARNING: vault.db not found at {VAULT_DB}")
+        print(f"[indexing-daemon]          Start watch_event.py first (writes cache/watch.pid)")
+
+    threads_started = 0
+
+    # Sidecar self-refresh on BOTH roles. Keeps agent_logs.json freshness
+    # (generated_at + the scheduled_jobs.last_run_at snapshot) current on a time
+    # cadence, decoupled from agent_log inserts. Required on the owner since the
+    # log-denoise (2026-05-29) removed the per-scan scheduler heartbeat that used
+    # to refresh the sidecar implicitly; without this the dashboard DB/Sched pills
+    # flap to "stale" during quiet periods even though the daemon is healthy.
+    srt = threading.Thread(target=sidecar_refresh_loop, daemon=True, name="sidecar-refresh")
+    srt.start()
+    threads_started += 1
+
+    if os.environ.get("BDOS_DISABLE_SCHEDULER") == "1":
+        print("[indexing-daemon] Scheduler disabled (BDOS_DISABLE_SCHEDULER=1) — sidecar refresh only")
+    else:
+        # Phase B: BDOS Job Scheduler — single-owner. Runs on exactly ONE machine,
+        # otherwise scheduled jobs double-fire against the synced agent_observability.db.
+        try:
+            from scheduler import scheduler_loop
+            st = threading.Thread(target=scheduler_loop, daemon=True, name="scheduler")
+            st.start()
+            threads_started += 1
+            print("[indexing-daemon] Scheduler started (scan interval 60s)")
+        except ImportError as _e:
+            print(f"[indexing-daemon] WARNING: scheduler.py not found — scheduler disabled ({_e})")
+
+    if threads_started == 0:
+        print("[indexing-daemon] No background work to do — exiting.")
+        return
+
+    # Block forever; daemon threads do the work. Ctrl-C / SIGTERM exits.
+    stop = threading.Event()
     try:
-        server.serve_forever()
+        while not stop.wait(3600):
+            pass
     except KeyboardInterrupt:
-        print("\n[events_server] Stopped.")
+        print("\n[indexing-daemon] Stopped.")
 
 
 if __name__ == "__main__":

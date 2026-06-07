@@ -1,3 +1,15 @@
+---
+title: "Csirke Egybe Comb"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Csirke combcsontok termék adatlap, amely az egész alsó és felső részt tartalmazza. Sütésre, grillezésre és pörkölt készítésre alkalmas, 17 lej/kg áron elérhető."
+description_source: auto
+description_hash: 4e5684cb41079158
+id: aa7ea4a9-fb13-4146-9b47-85030f696f5a
+index_schema_version: 1
+bdos_index: true
+---
 # Csirke Egybe Comb
 
 ```yaml

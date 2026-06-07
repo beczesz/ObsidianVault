@@ -1,5 +1,8 @@
 ---
 title: "Case Study: MVMI - Energy Platform Modernization"
+description: "MVMI case study documenting the migration of Hungary's largest energy billing platform from monolithic to OpenShift microservices, accelerating releases from quarterly to bi-weekly while serving 3M+ households. Includes client profile, technical challenges, implementation approach, and business outcomes relevant to enterprise modernization prospects."
+description_source: auto
+description_hash: b222a6b71f53f3cf
 id: cs-001
 industry: energy
 size: "3,000,000+ end customers, large enterprise"
@@ -12,7 +15,6 @@ status: active
 author: Sonrisa CPS
 index_schema_version: 1
 ---
-
 # Case Study: MVMI - Energy Platform Modernization
 
 > **One-liner for outreach:** "We migrated Hungary's largest energy billing platform (3M+ households) from monolith to OpenShift microservices -- accelerating releases from quarterly to bi-weekly while maintaining zero downtime."

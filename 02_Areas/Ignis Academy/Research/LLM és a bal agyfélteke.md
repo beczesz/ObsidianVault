@@ -1,3 +1,15 @@
+---
+title: "LLM és a bal agyfélteke"
+date: 2026-04-16
+author: Becze Szabolcs
+status: active
+description: "Feljegyzés az LLM bal agyféltekei jellemzőiről és a Mester és Küldött modellről. A szerző azt vizsgálja, hogy az LLM-ek miként tükrözik a bal agyfélteke eigenschaften: részletekre, rendszerre és kontrollosításra fókuszálnak, míg a jobb agyfélteke holistikus, empátiás képességeire nincs lehetőségük"
+description_source: auto
+description_hash: 30a5a30457859709
+id: 6524dfce-093e-43be-951a-572d69904859
+index_schema_version: 1
+bdos_index: true
+---
 [Notebook LLM](https://notebooklm.google.com/notebook/22a0cc95-b01d-4dc7-9a7b-c3730c66106c)
 
 ## A podcast 

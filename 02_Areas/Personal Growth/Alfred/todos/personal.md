@@ -17,6 +17,8 @@ scope: personal
 
 ## Active
 
+- [ ] Windows gépen tesztelni az activity-ledger SessionEnd hookot (python3/python + $CLAUDE_PROJECT_DIR portabilitás), Alfréd hozza fel 📅 2026-06-05 #bdos #reminder
+
 ## Archive
 
 <!-- Alfred a kipipált tételeket ide mozgatja (vagy archive/personal-YYYY.md-be). Semmi nem törlődik. -->

@@ -1,3 +1,15 @@
+---
+title: "Memory – Vision Corner"
+date: 2026-02-28
+author: Becze Szabolcs
+status: active
+description: "Szabolcs's reference guide for Vision Corner, Sonrisa's internal podcast featuring leadership conversations. Contains episode tracker, key people profiles, terminology, and production details for the monthly show recorded in Budapest and Székelyudvarhely."
+description_source: auto
+description_hash: 3e4cd456b12c0f49
+id: 626a0e6a-0d7a-4a79-9704-4e6c7f0d9146
+index_schema_version: 1
+bdos_index: true
+---
 # Memory – Vision Corner
 
 ## Me

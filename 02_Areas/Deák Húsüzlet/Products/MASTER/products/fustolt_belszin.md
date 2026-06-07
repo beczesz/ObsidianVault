@@ -1,3 +1,15 @@
+---
+title: "Füstölt Bélszín"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Füstölt sertésbélszín, hideg füstöléssel készítve, 0,3-0,5 kg-os darabok, vékony szeletelve. Értékesítési termék, 55 Ft/kg áron, nagy népszerűséggel."
+description_source: auto
+description_hash: 593fab8950f68241
+id: 8fb3ab31-3d91-46af-bf95-fce77bab640b
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Bélszín
 
 ```yaml

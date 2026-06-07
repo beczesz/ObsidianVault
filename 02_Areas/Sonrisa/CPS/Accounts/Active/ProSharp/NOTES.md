@@ -1,3 +1,15 @@
+---
+title: "ProSharp"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Active fixed-price project (EUR 11,900) implementing OpenTelemetry monitoring for Pro-Sharp's GDSN web application, led by Szanto Zoltan with delivery due April 30, 2026. Includes scope dispute resolution, contract details, and profitability notes for project stakeholders."
+description_source: auto
+description_hash: 89c899f95ecf6276
+id: 0c99f8df-a9f5-417c-87ba-c70794a57aa0
+index_schema_version: 1
+bdos_index: true
+---
 # ProSharp
 
 ## Quick Info

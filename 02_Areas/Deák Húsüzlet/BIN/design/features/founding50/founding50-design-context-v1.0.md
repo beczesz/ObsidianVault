@@ -1,5 +1,8 @@
 ---
 title: "Founding 50 Program — Teljes Feature Kontextus"
+description: "Comprehensive reference document for the Founding 50 feature covering project context, program parameters, user flows, UI components, backend logic, and implementation timeline for the Deák Húsmíves platform's early adopter initiative."
+description_source: auto
+description_hash: c16d147316f58b06
 version: "1.0"
 created: 2026-04-22
 purpose: "Claude Design átadás — egyetlen fájlban a teljes feature kontextus"
@@ -9,7 +12,6 @@ target_release: "v0.3 Beta (~2026-05-15)"
 id: cab3a3bc-2124-464e-b75c-3c31d2759e47
 index_schema_version: 1
 ---
-
 # Founding 50 Program — Teljes Feature Kontextus
 
 > **Cél:** Ez a dokumentum egyetlen helyre gyűjti a Founding 50 feature teljes kontextusát, hogy Claude Design (vagy bármilyen design tool) számára átadható legyen wireframe, UI design és UX flow készítéshez.

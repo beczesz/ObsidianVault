@@ -1,3 +1,15 @@
+---
+title: "CPS Daily Lead Scanner -- Daily Brief"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Daily automated scan of Hungarian tech companies for DevOps hiring needs identified one HOT prospect: KBOSS.hu/Szamlazz.hu, Hungary's largest invoicing SaaS with 100K+ users running on AWS and persistent DevOps openings. Sales team should validate posting activity and research infrastructure independence from Norwegian parent company Visma."
+description_source: auto
+description_hash: ffd646bc761db99e
+id: b4fd10c4-0c1e-4c03-9bc6-b4e84548e474
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Daily Lead Scanner -- Daily Brief
 **Date:** 2026-03-31 (Monday)
 **Profile:** #1 -- The Replacement Hire

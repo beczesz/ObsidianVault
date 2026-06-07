@@ -1,3 +1,15 @@
+---
+title: "CPS Competitor Scan - Week of 2026-03-16"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Weekly competitive intelligence tracking six DevOps service providers, identifying four significant changes including Kloia's AWS Premier partnership upgrade and SDH Global's aggressive pricing promotion with 20-50% discounts. Intended for CPS leadership evaluating competitive positioning and partnership strategy."
+description_source: auto
+description_hash: b4c97523322b39b7
+id: c0097eb7-3213-4e37-ba8e-50562c76b8a3
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Competitor Scan - Week of 2026-03-16
 
 > **Scan method:** WebFetch blocked by network proxy for all 6 domains; data gathered via web search (Google indexed content + snippet analysis)

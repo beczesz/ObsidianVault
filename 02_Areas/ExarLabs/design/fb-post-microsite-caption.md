@@ -1,3 +1,15 @@
+---
+title: "ExarLabs — első FB poszt (Microsite Factory, puha bejelentés)"
+date: 2026-05-22
+author: Becze Szabolcs
+status: active
+description: "ExarLabs Microsite Factory softer bejelentés helyi KKV-knak Facebook-poszthoz: 25 €/hónapos weboldal-építési szolgáltatás Caption, vizuál és GTM stratégiai megjegyzések. Ideation-fázisú, szándékosan nem szűkítő megközelítés."
+description_source: auto
+description_hash: eeded4f90bd195ba
+id: f57bb36e-25e1-4235-a878-d8ab49b20cb3
+index_schema_version: 1
+bdos_index: true
+---
 # ExarLabs — első FB poszt (Microsite Factory, puha bejelentés)
 
 **Vizuál:** `fb-post-microsite.png` (1080×1350, 4:5)

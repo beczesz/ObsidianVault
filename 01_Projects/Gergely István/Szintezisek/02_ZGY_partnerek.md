@@ -1,5 +1,8 @@
 ---
 title: "2025 ZGY — B2B vevők (partnerek) rangsora"
+description: "2025-ben számlázott B2B értékesítés 37 partner szerinti lebontása (695,6 ezer lei), ahol az első öt vevő az összes forgalom 53%-át adja, jellemzően éttermi, turisztikai és kiskereskedelmi ügyfelek. Függőségi kockázat azonosítására és kulcsvevő-menedzsmentre használható."
+description_source: auto
+description_hash: 0355dd5581f20b32
 type: synthesis
 project: Gergely István
 source_file: "2025ZGYxlsx.xlsx"
@@ -10,7 +13,6 @@ tags: [synthesis, sales, customers, b2b]
 id: a51e8564-2341-4e86-9245-97fceea9584d
 index_schema_version: 1
 ---
-
 # 2025 ZGY — partnerenkénti értékesítés (áfa nélkül)
 
 ## Mit tartalmaz

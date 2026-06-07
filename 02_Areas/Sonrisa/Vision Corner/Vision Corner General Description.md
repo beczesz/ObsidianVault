@@ -1,3 +1,15 @@
+---
+title: "Vision Corner General Description"
+date: 2026-01-29
+author: Becze Szabolcs
+status: active
+description: "Internal communication solution for Sonrisa addressing remote work isolation and workforce growth through monthly leadership podcasts with Q&A, starting November with studios in Budapest and Székelyudvarhely."
+description_source: auto
+description_hash: 1a78953bb35fb68a
+id: 1d537bc1-9250-4270-8603-c5eb1040e3a3
+index_schema_version: 1
+bdos_index: true
+---
 ### 1. Introduction – Summary of the Problems
 
 In recent times, Sonrisa has faced several challenges related to internal communication. Due to the COVID-19 pandemic, remote work has become the norm, and most employees have not returned to the office. This isolation has disrupted the flow of information, which used to spread organically by word of mouth. The company's workforce grew rapidly, which further complicated communication. Employees feel isolated and, in many cases, lack adequate information about what is happening within the company.

@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Synthesis of Csakabaj Podcast's first solo episode where host Józsa Levi analyzes Euro 2024 football championship, Hungarian fandom psychology, and national identity through associative cultural commentary. Useful for podcast creators studying authentic solo format and audience engagement strategies."
+description_source: auto
+description_hash: 6385a466b60e7b48
+id: d839029a-bcda-40c7-9975-55a8b286b43a
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP28 | Na mi a pálya? S01E01

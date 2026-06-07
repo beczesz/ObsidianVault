@@ -1,4 +1,7 @@
 ---
+description: "Deák Húsmíves online platform összes jogi dokumentumát tartalmazó gyűjtemény: v1.0 szerződési feltételek, adatvédelmi szabályzatok, és szerződések három nyelven, jogi review-ra várakozva. Platform fejlesztők és jogi csapat használja a dokumentum státusz és verziózás követésére."
+description_source: auto
+description_hash: e2a3da764558d230
 file: README.md
 version: v1.0
 date: 2026-04-17
@@ -7,7 +10,6 @@ owner: Szabolcs
 id: 12216f07-c88a-4ec4-a718-bb950310e3d2
 index_schema_version: 1
 ---
-
 # Legal dokumentumok — Deák Húsmíves Online Platform
 
 ## Áttekintés

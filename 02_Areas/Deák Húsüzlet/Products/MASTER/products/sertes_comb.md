@@ -1,3 +1,15 @@
+---
+title: "Sertés comb csontnélkül"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Boneless pork leg cut, lean and versatile meat used for roasting, cooking or grinding; priced at 25.0 per kg with high popularity rating."
+description_source: auto
+description_hash: eb27687ba0265441
+id: 92a64dc7-d8f2-4e0c-9478-e19bb5502363
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés comb csontnélkül
 
 ```yaml

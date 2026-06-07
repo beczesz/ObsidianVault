@@ -1,4 +1,7 @@
 ---
+description: "Szabolcs, az Exar Labs alapítója, a közelgő Deák Húsmíves Platform pilot-launchja előtti irracionalitásnak látszó félelmét térképezi fel strukturált AI-konzultációk segítségével, hogy azonosítsa a valós kockázatokat és a megbénítást okozó ismeretleneket."
+description_source: auto
+description_hash: 62d91f6da08076cd
 topic: Pre-launch félelmek és ismeretlenek feltérképezése
 created: 2026-04-26
 last_updated: 2026-04-26
@@ -6,7 +9,6 @@ status: active
 id: c999ef9e-68d7-4b87-9d41-e7e19a134446
 index_schema_version: 1
 ---
-
 # Brainstorm: Pre-launch félelmek és ismeretlenek feltérképezése
 
 ## Kontextus

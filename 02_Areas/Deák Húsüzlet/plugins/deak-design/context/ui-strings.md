@@ -1,3 +1,15 @@
+---
+title: "DH – UI Strings & Localization"
+date: 2026-04-17
+author: Becze Szabolcs
+status: active
+description: "UI strings and localization reference for the Butcher & Courier operational interface, with primary Romanian and secondary Hungarian translations covering 10 screens, status labels, navigation, error handling, and inline copy conventions for logistics operators."
+description_source: auto
+description_hash: eb18021b9667e9b0
+id: ebe6ee70-ffbf-4341-b0af-7af3fdc84e64
+index_schema_version: 1
+bdos_index: true
+---
 # DH – UI Strings & Localization
 > Verzió: 1.0 · Dátum: 2026-03-22
 > Felület: Butcher & Courier Operational Interface

@@ -1,4 +1,7 @@
 ---
+description: "Hungarian tech company with EUR 7M funding, lacks career page suggesting growth phase; potential target for fractional platform team services if scaling without dedicated engineering infrastructure."
+description_source: auto
+description_hash: 7d26198b56d4a8af
 type: lead
 id: abz
 company: "ABZ Innovation"
@@ -32,7 +35,6 @@ created: 2026-05-11
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # ABZ Innovation
 
 ## Signal

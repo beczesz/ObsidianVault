@@ -1,3 +1,15 @@
+---
+title: "06 – Szerepek és felelősségi körök a CPS csapatban"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "A CPS csapat hat kulcsszerepét (Sales Engineer, Technical Account Manager, Unit Member, Guildhead, vezetője, gyakornok) definiálja a felelősségi körök, kommunikációs csatornák és delegálási elvek alapján. Szervezeti felépítése a hierarchia helyett az egyértelmű felelősségvállalásra és tudatos fejlődésre építkezik."
+description_source: auto
+description_hash: 8abe284c6b840be1
+id: f07981ad-4dad-43ad-b7cd-22863cdd7359
+index_schema_version: 1
+bdos_index: true
+---
 # 06 – Szerepek és felelősségi körök a CPS csapatban
 
 ---

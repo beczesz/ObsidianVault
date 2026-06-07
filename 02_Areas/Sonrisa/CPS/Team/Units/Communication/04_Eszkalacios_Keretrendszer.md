@@ -1,3 +1,15 @@
+---
+title: "04 – Eszkaláció: hogyan kezeljük a nem technikai problémákat?"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "A nem technikai problémák kezelésére vonatkozó eszkaláció rendszere három szinten keresztül: csapati megoldás, Technical Account Manager bevonása, majd management-szintű intervenciója, a cél a kapcsolat helyreállítása és a stabilitás megteremtése."
+description_source: auto
+description_hash: 831a523411edd6d8
+id: d3953b81-addc-448c-b61c-c2d9e3d226e9
+index_schema_version: 1
+bdos_index: true
+---
 # 04 – Eszkaláció: hogyan kezeljük a nem technikai problémákat?
 
 ---

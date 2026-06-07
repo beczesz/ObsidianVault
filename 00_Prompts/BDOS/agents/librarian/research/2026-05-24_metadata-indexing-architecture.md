@@ -1,4 +1,7 @@
 ---
+description: "An architectural investigation for building a queryable, metadata-driven personal knowledge system in Python, evaluating libraries for markdown parsing, indexing, filesystem watching, and search to enable fast metadata queries without sacrificing readability."
+description_source: auto
+description_hash: 4a152470f7a014d1
 schema: librarian.research.v1
 date: 2026-05-24
 topic: metadata-indexing-architecture-for-bdos
@@ -10,7 +13,6 @@ tags: [architecture, metadata, indexing, python, token-optimization, bdos-evolut
 id: 4c48fb15-ec86-4a32-a620-f2221569d0f3
 index_schema_version: 1
 ---
-
 # BDOS Metadata Indexing Architecture — Research
 
 > How does a markdown-native cognitive vault evolve into a high-speed, metadata-aware, queryable operating system — without sacrificing human readability?

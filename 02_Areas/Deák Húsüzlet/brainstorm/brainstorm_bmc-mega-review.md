@@ -1,4 +1,7 @@
 ---
+description: "Brainstorming session documenting consensus between ChatGPT and Perplexity on reframing DHOP's business model v2.4 from urban meat delivery to a two-zone local supply platform, covering strategic direction, blocklist analysis, and specific updates needed for urban versus rural segments."
+description_source: auto
+description_hash: 37862a77b7f23f08
 topic: BMC v2.4 MEGA Review — 2 hónapos frissítés
 created: 2026-05-03
 last_updated: 2026-05-03
@@ -6,7 +9,6 @@ status: concluded
 id: c57714be-c013-4645-850d-31df2bd0875d
 index_schema_version: 1
 ---
-
 # Brainstorm: BMC v2.4 MEGA Review
 
 ## Team

@@ -28,8 +28,8 @@ pillars:
       - "Land 1 referenceable paying customer to anchor the cost-savings story"
       - "Decide: sell standalone, bundle into the OS, or both"
     source_files:
-      - "02_Areas/Sonrisa/CPS/Services/Inference Farm/Description.md"
-      - "02_Areas/Sonrisa/CPS/Services/Inference Farm/LLMaaS — ACE Opportunity Summary.md"
+      - "02_Areas/Sonrisa/CPS/Practices/Inference-Farm/proposals/01-sonrisa-llmaas-platform-description.md"
+      - "02_Areas/Sonrisa/CPS/Practices/Inference-Farm/proposals/02-aws-ace-opportunity-summary.md"
   - name: "Agentic AIOps"
     layer: "The processes"
     status: productized

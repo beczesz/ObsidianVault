@@ -1,3 +1,15 @@
+---
+title: "Design System — Deák Húsmíves"
+date: 2026-04-29
+author: Becze Szabolcs
+status: active
+description: "Central design resource for the Deák Húsmíves PWA detailing mobile-first visual system: warm earthy color palette with burgundy accents, typography rules using Inter and Playfair Display, 4px spacing grid, and component guidelines for developers and designers."
+description_source: auto
+description_hash: 12a6ee2f88e7d2c9
+id: f63fac19-297f-4a54-b7f8-871b2ab65dc3
+index_schema_version: 1
+bdos_index: true
+---
 # Design System — Deák Húsmíves
 
 > Source of truth for the DH PWA visual system. Synced from `design/design-system.md` v2.0 (2026-04-21) and wireframe tokens. For impeccable context use: `cd design && node ~/.agents/skills/impeccable/scripts/load-context.mjs`

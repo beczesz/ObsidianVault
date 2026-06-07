@@ -1,3 +1,15 @@
+---
+title: "Certifications & Partnership Tiers"
+date: 2026-04-13
+author: Becze Szabolcs
+status: active
+description: "Tracks current AWS Select Tier partnership status, active employee certifications (3 total across 2 people), and identifies gaps for advancing to Advanced Tier. Includes Azure partnership notes and action items for management review."
+description_source: auto
+description_hash: 28bffcf82ed3ed97
+id: 8fc02769-0c88-4a6b-af5d-0c9973d17327
+index_schema_version: 1
+bdos_index: true
+---
 # Certifications & Partnership Tiers
 
 Last updated: 2026-04-13

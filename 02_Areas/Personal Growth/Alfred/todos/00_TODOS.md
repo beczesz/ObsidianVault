@@ -39,6 +39,8 @@ Egy task egy checkbox-sor a scope-fájl `## Active` szekciójában:
 | family | [`family.md`](family.md) | Családi teendők, emlékeztetők |
 | fokuszpont | [`fokuszpont.md`](fokuszpont.md) | Fókuszpont projekt feladatai |
 | bdos | [`bdos.md`](bdos.md) | BDOS architektúra-fejlesztési backlog (2026-05-29 study) |
+| exarlabs | [`exarlabs.md`](exarlabs.md) | ExarLabs feladatok (csapatépítő Szováta 2026-05-30 batch + folyamatos) |
+| cps | [`cps.md`](cps.md) | Sonrisa CPS operatív feladatok (Atlassian billing, Oracle/MVMI/Euroleasing follow-ups, vault-gap teendők — inbox triage 2026-06-06) |
 
 > Új scope = új `<scope>.md` fájl ezzel a fejléccel + bejegyzés ide. A dashboard a `TODO_SCOPES` listából olvas (v0.2-ben auto-discover ebből az indexből).
 

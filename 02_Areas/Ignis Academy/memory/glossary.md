@@ -1,3 +1,15 @@
+---
+title: "Glossary"
+date: 2026-04-16
+author: Becze Szabolcs
+status: active
+description: "Reference guide for Ignis Academy's business terminology, internal jargon, acronyms, team members' nicknames, and partner organizations; used by leadership and staff navigating the AI-driven skills platform's strategy, metrics, and operations."
+description_source: auto
+description_hash: 80f7f8be2ba7e4c8
+id: 282d4b2a-d106-4ffa-87d1-409d7efdd0ab
+index_schema_version: 1
+bdos_index: true
+---
 # Glossary
 
 Workplace shorthand, acronyms, and internal language for Ignis Academy.

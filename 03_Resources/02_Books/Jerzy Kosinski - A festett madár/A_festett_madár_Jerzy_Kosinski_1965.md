@@ -1,5 +1,8 @@
 ---
 title: "A festett madár"
+description: "Jerzy Kosiński 1965-ös regénye egy sötét bőrű kisfiú háborús vándorlásáról; vizsgálja, hogyan torzítja el az emberi kegyetlenség és babona a gyermeki ártatlanságot a második világháborúban Kelet-Európában."
+description_source: auto
+description_hash: 3087486ec9bcfca7
 type: book
 author: "Jerzy Kosiński"
 year: 1965
@@ -13,7 +16,6 @@ processed_by: "AI Speed-Reading Agent"
 id: cf492b7a-3f41-4216-9edf-c346ffce71e4
 index_schema_version: 1
 ---
-
 # A festett madár — Jerzy Kosiński (1965)
 **Tézis (egy sorban):** A regény egy sötét hajú, olajbarna bőrű kisfiú kényszerű vándorlásán keresztül mutatja be, hogyan torzítja el az emberi kegyetlenség, babona és háborús erőszak a gyermeki ártatlanságot, és hogyan válik a túlélésért vívott harc az identitás elvesztésének árává.
 

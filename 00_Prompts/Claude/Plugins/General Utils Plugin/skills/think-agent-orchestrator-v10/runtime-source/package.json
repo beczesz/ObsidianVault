@@ -1,0 +1,14 @@
+{
+  "name": "think-engine",
+  "version": "0.10.1",
+  "description": "Think Agent Orchestrator runtime \u2014 Playwright-based browser AI driver. Lives outside the vault.",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "setup": "bash setup.sh",
+    "healthcheck": "node runtime/orchestrator.mjs --healthcheck"
+  },
+  "dependencies": {
+    "playwright": "^1.48.0"
+  }
+}

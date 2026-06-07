@@ -3,6 +3,9 @@ type: meeting
 date: 2025-10-09
 time: 08:20
 title:
+description: "Record of board meeting held on September 10, 2025 covering revenue sources, expenses, business plan review, and action items including contract verification, logo requests, and venue search."
+description_source: auto
+description_hash: 70c61ece28ba9569
 attendees: Kinga, Levi, Samu
 project: Média Műhely
 tags:
@@ -10,7 +13,6 @@ tags:
 id: 92616e77-ba02-4daa-bf26-8c1f95c93fad
 index_schema_version: 1
 ---
-
 **Date:** 2025-09-10  
 **Time:** 09:49  
 **Attendees:** {{attendees}}  

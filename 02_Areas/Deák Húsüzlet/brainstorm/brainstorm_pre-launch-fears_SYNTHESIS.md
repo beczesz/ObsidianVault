@@ -1,3 +1,15 @@
+---
+title: "DH Pilot — Multi-AI Brainstorm Szintézis"
+date: 2026-04-26
+author: Becze Szabolcs
+status: active
+description: "Szintézis négy AI agyától a DH Pilot digitális piacához: konszenzusosan azonosított 5 kritikus kockázat (testvér-konfliktus, logisztika, negatív szájhagyomány, kannibalizáció), egyetértés az alapító személyes kiszolgálásáról az első 10 rendelésnél, és 30 napos siker-checkpointek (visszatérők, panasz-arány, át"
+description_source: auto
+description_hash: 2372e5bafc9ffc11
+id: 960af96e-4af3-4b62-82ef-c86e58545d91
+index_schema_version: 1
+bdos_index: true
+---
 # DH Pilot — Multi-AI Brainstorm Szintézis
 ## Pre-launch félelmek feltérképezése | 2026-04-26
 

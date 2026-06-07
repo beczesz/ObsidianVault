@@ -2,6 +2,9 @@
 series: "7 Szokás"
 episode: "EP3"
 title: "Tudd előre, hova akarsz eljutni – A tervezés és a cél ereje"
+description: "A 2. szokás (Kezd a végével) arról szól, hogy minden kétszer születik meg: terv és megvalósítás során. Az epizód a célkitűzés erősségét, a temetés-gyakorlatot és azt tárgyalja, hogyan alakítja a cél az emberi észlelést a keretprobléma lencséjén keresztül."
+description_source: auto
+description_hash: 36e49f155522c46b
 host: "Beczesz Szabolcs"
 source_book: "Stephen Covey – A kiemelkedően eredményes emberek 7 szokása"
 youtube_id: "c3lejCP1RVk"
@@ -31,7 +34,6 @@ created: "2026-04-06"
 id: 212d5235-9e92-46f6-80aa-2b405a1c7325
 index_schema_version: 1
 ---
-
 # 7 Szokás EP3 – Tudd előre, hova akarsz eljutni: A tervezés és a cél ereje
 
 ## Sorozat kontextus

@@ -1,3 +1,15 @@
+---
+title: "Workshop Summary - 2026-03-24"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "A CPS csapat 2026-os operációs modelljét összefoglaló workshop (március 24.), amely a Sales, Delivery és Retention stratégiákat, az Unit modellt (TAM+csapattagok), kommunikációs elveket és support szinteket részletezi. Szabolcs csapata és az engineers számára készült átirat a meglévő klienskezelés és új lead-generálási folyamat dokumentációjából."
+description_source: auto
+description_hash: 35c4c7a230c401c7
+id: fde05f6e-a7f4-4d24-84fe-0cdf56cdc492
+index_schema_version: 1
+bdos_index: true
+---
 # Workshop Summary - 2026-03-24
 
 > Helyszín: Strada Luminisului (csapatépítő helyszín)

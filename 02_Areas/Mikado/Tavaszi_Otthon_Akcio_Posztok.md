@@ -1,3 +1,15 @@
+---
+title: "Tavaszi Otthon Akció - Facebook Posztok"
+date: 2026-02-15
+author: Becze Szabolcs
+status: active
+description: "Tavaszi Otthon Akcióval kapcsolatos Facebook posztok: egy teaser poszt vasárnap, majd egy részletes bejelentő poszt hétfőn 30 százalék kedvezménnyel az első öt kliensnek, valamint válaszsablon és infografika útmutató az érdeklődők kezelésére."
+description_source: auto
+description_hash: bfa5a07a083a6ab3
+id: ba2f89b5-54a3-4ec8-821a-25923e467954
+index_schema_version: 1
+bdos_index: true
+---
 # Tavaszi Otthon Akció - Facebook Posztok
 
 ---

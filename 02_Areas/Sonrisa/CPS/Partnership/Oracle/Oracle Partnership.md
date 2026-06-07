@@ -1,3 +1,15 @@
+---
+title: "Oracle Partnership"
+date: 2026-05-22
+author: Becze Szabolcs
+status: active
+description: "Active Level 1 Oracle partnership membership, approved May 2026, providing 5 training seats, foundational GTM collaboration, dev/test environments, and incentive-based credits for renewal. Managed by Szabolcs as partner administrator with annual USD 5,000 fee through Oracle EMEA Ltd."
+description_source: auto
+description_hash: 04962955ca0c2390
+id: 209372ef-ab6a-49e1-bd6e-05e202d27a6b
+index_schema_version: 1
+bdos_index: true
+---
 # Oracle Partnership
 
 ## Status: ACTIVE (approved 2026-05-08)

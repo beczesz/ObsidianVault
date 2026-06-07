@@ -1,3 +1,15 @@
+---
+title: "Termék frissítés — Onboarding prompt egy új Claude sessionhöz"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Onboarding prompt új Claude sessionhöz a Deák Húsmíves termékkatalógus kezelésére, amely tartalmazza a teljes pipeline-t: MD-fájlok szerkesztése, JSON-build, Netlify-deploy, és a konkrét módosítási procedúrákat (ár, leírás, opciók, új termék)."
+description_source: auto
+description_hash: 8b62c34513133d5a
+id: fbdea8d3-afde-4705-9248-81faa821396a
+index_schema_version: 1
+bdos_index: true
+---
 # Termék frissítés — Onboarding prompt egy új Claude sessionhöz
 
 > **Másold be ezt a promptot egy új sessionbe.** Tartalmazza az összes kontextust amire szükséged van a Deák Húsmíves termékkatalógus módosításához és deploymentjéhez.

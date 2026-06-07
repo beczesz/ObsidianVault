@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP06
 title: "5. Szakács-Paál István: Milyen legyen a polgármester?"
+description: "Szakács-Paál István polgármesterjelölttel készült portré videó analitikái; 2,742 nézettség mellett 21:41 perc átlagos megtekintési idővel erős közönségi elköteleződést mutat, FacebookFacebookon és WhatsAppenen aktívan megosztott helyi tartalom."
+description_source: auto
+description_hash: 8e6dae2957a9beeb
 guest: "Szakács-Paál István"
 guest_title: "Székelyudvarhely leendő polgármestere, HBC inkubátorház igazgatója"
 topic: "Választás előtti beszélgetés — polgármester-jelölti motiváció, közösségépítés, TEDx Udvarhely, HBC inkubátorház, Big Five és konfliktuskezelés, városfejlesztési vízió"
@@ -15,7 +18,6 @@ quality: deep
 id: bc963c75-b59d-4517-8659-0808c93c3dae
 index_schema_version: 1
 ---
-
 # EP06 — Szakács-Paál István: „Milyen legyen a polgármester?" — Választás előtti portré
 
 ## YouTube Studio Analytics

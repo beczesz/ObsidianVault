@@ -1,5 +1,8 @@
 ---
 title: "KAW 5 – Spirituális alapok: A spirituális vezetés"
+description: "Rick Betenbough spirituális vezetésről szóló személyes története a KAW sorozat zárásában: az egyedüli vezetés veszélyeitől a csapatvezető alázatig, valamint az engedelmesség és szellemi ellenállás tematikaival."
+description_source: auto
+description_hash: 1c4ea5a23648f2b4
 series: "Kingdom at Work (Betenbough)"
 episode: 5
 youtube_id: "7sA10ivRv48"
@@ -14,7 +17,6 @@ date_created: "2026-04-06"
 id: a9b41831-f8e7-4bf4-9449-9b97d6fea990
 index_schema_version: 1
 ---
-
 # KAW 5 – Spirituális alapok: A spirituális vezetés
 
 ## Epizód-ív

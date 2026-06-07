@@ -1,3 +1,15 @@
+---
+title: "07 – Hiányzó fejezetek (TODO)"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "Kidolgozandó fejezetek listája a CPS kézikönyvhöz: napi munkaszervezés, klientkommunikáció, jelenlét és szabadságok, becslések, tudásmegosztás, valamint értékteremtés. Minden fejezet kritikus a filozófia és gyakorlat összekapcsolásához."
+description_source: auto
+description_hash: 30897753747bdb57
+id: d99d73cc-4063-4176-9317-f18e9c4e8562
+index_schema_version: 1
+bdos_index: true
+---
 # 07 – Hiányzó fejezetek (TODO)
 
 **Státusz:** Kidolgozandó

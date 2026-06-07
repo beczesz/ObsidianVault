@@ -27,8 +27,69 @@ from build_index import (
     walk_vault, index_file, VAULT_ROOT, DB_PATH, SCHEMA_PATH, EXCLUDE_DIRS
 )
 
-PID_FILE = SCRIPT_DIR / "cache" / "watch.pid"
-LOG_FILE = SCRIPT_DIR / "cache" / "watch.log"
+# ---------------------------------------------------------------------------
+# Marketing Board Hook — triggers sidecar regen on relevant file changes
+# ---------------------------------------------------------------------------
+# Path patterns that warrant a marketing_board.json regen:
+#   1. Any seed file:        .../_inbox/seeds/*.md
+#   2. Any publication file: .../Marketing/Publications/*.md
+#   3. Any operational TODO:  .../_inbox/todos/*.md
+_MKTBOARD_PATTERNS = (
+    '/_inbox/seeds/',
+    '/Marketing/Publications/',
+    '/_inbox/todos/',
+)
+
+_mktboard_debounce_timer: threading.Timer | None = None
+_mktboard_debounce_lock = threading.Lock()
+_MKTBOARD_DEBOUNCE_SEC = 5.0  # coalesce burst events into a single regen
+
+
+def _is_marketing_board_relevant(path_str: str) -> bool:
+    """Return True if the changed path should trigger a marketing board regen."""
+    p = path_str.replace('\\', '/')
+    if not p.endswith('.md'):
+        return False
+    return any(pat in p for pat in _MKTBOARD_PATTERNS)
+
+
+def _fire_marketing_board_regen():
+    """Called from the debounce timer thread — spawns the refresh subprocess."""
+    import subprocess as _sp
+    refresh_script = SCRIPT_DIR / 'marketing_board_refresh.py'
+    if not refresh_script.exists():
+        log(f'[mktboard-hook] refresh script not found: {refresh_script}')
+        return
+    log('[mktboard-hook] Triggering marketing board sidecar refresh (debounced)...')
+    try:
+        result = _sp.run(
+            [sys.executable, str(refresh_script)],
+            capture_output=True, text=True, timeout=90,
+        )
+        if result.returncode == 0:
+            log(f'[mktboard-hook] Refresh complete. '
+                f'{(result.stdout + result.stderr).strip()[-200:]}')
+        elif result.returncode == 2:
+            log('[mktboard-hook] Refresh skipped (debounce inside refresh script).')
+        else:
+            log(f'[mktboard-hook] Refresh failed (exit {result.returncode}): '
+                f'{(result.stderr or result.stdout)[-300:]}')
+    except Exception as exc:
+        log(f'[mktboard-hook] Refresh exception: {exc}')
+
+
+def schedule_marketing_board_regen():
+    """Schedule a debounced marketing board regen (5s delay, coalesces bursts)."""
+    global _mktboard_debounce_timer
+    with _mktboard_debounce_lock:
+        if _mktboard_debounce_timer is not None:
+            _mktboard_debounce_timer.cancel()
+        _mktboard_debounce_timer = threading.Timer(
+            _MKTBOARD_DEBOUNCE_SEC, _fire_marketing_board_regen)
+        _mktboard_debounce_timer.daemon = True
+        _mktboard_debounce_timer.start()
+
+from runtime import PID_WATCHER as PID_FILE, LOG_WATCH as LOG_FILE
 DEBOUNCE_SEC = 0.5  # collect changes for 500ms before applying (avoids burst-event spam)
 
 
@@ -169,6 +230,12 @@ def apply_events(events: dict, conn, now: float):
         ''')
 
     conn.commit()
+
+    # Marketing board hook — schedule a debounced regen if any relevant file changed
+    all_changed = list(events.keys())
+    if any(_is_marketing_board_relevant(p) for p in all_changed):
+        schedule_marketing_board_regen()
+
     return len(applied_rel), len(deleted_rel)
 
 

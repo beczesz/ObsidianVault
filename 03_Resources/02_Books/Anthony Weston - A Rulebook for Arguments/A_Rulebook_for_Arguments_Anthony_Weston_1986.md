@@ -1,3 +1,15 @@
+---
+title: "A Rulebook for Arguments — Anthony Weston (1986)"
+date: 2025-09-21
+author: Becze Szabolcs
+status: active
+description: "Weston's concise handbook teaches practical rules for constructing and evaluating arguments across types: example, analogy, authority, causation, and deduction. Essential guide for students and writers seeking to reason clearly and ethically."
+description_source: auto
+description_hash: 5f7d219fcde5076b
+id: 4f87ab3f-8dbe-435c-b487-bbdab882cbab
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /02_Books/Anthony Weston - A Rulebook for Arguments/
 FILES:
   - A_Rulebook_for_Arguments_Anthony_Weston_1986.md

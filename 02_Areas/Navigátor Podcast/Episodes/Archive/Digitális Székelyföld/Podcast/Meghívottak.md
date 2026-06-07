@@ -1,3 +1,15 @@
+---
+title: "Meghívottak"
+date: 2025-12-08
+author: Becze Szabolcs
+status: active
+description: "Konferencia meghívottjainak listája a BME, ARM Hungary, binhatch és startup-ökoszisztéma képviselőivel. Panel- és előadási témák az MI-kutatás, hardverbiztonság, termékfejlesztés és regionális innováció körül."
+description_source: auto
+description_hash: e668406332291482
+id: beb8a77b-3f8f-474e-96b0-bc0d3efafb14
+index_schema_version: 1
+bdos_index: true
+---
 **1. Prof. Dr. Charaf Hassan** – BME, mesterséges intelligencia és oktatás;  
 részt vesz két panelben is:  
 – „Kutatás-fejlesztés és felsőoktatás – regionális szereplők a világpiacon”  

@@ -2,6 +2,9 @@
 podcast: Navigátor Podcast
 episode: EP32
 title: "„Nem vagyunk összeszerelő üzem" – Magyarország MI-stratégiája"
+description: "Magyarország mesterséges intelligencia kormánybiztosának interjúja az ország MI-stratégiájáról, az európai versenyképességről és az automatizáció hatásáról az emberi munkára. Palkovics hangsúlyozza, hogy Magyarország nem összeszerelő gazdaság, hanem teljes értéklánc-gyártó, és hogy a technológia az emberi képességeket kiegészíti, nem helyettesíti."
+description_source: auto
+description_hash: b11aefaa4541280a
 guest: Dr. Palkovics László
 role: Kormánybiztos, mesterséges intelligencia
 date_recorded: "2025-11-11"
@@ -36,7 +39,6 @@ tags:
 id: 2864c0f0-de8b-4737-aeda-a3a3021034d6
 index_schema_version: 1
 ---
-
 # EP32 – Dr. Palkovics László: „Nem vagyunk összeszerelő üzem" – Magyarország MI-stratégiája
 
 ## Epizód kontextus

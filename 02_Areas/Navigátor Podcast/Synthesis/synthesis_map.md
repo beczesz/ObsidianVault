@@ -1,4 +1,7 @@
 ---
+description: "Navigátor Podcast összes epizódjának leinventarizált nyilvántartása YouTube linkekkel, szintézis státuszokkal és teljesítményadatokkal, 40 epizódból álló sorozat szerkesztőinek és hallgatóknak."
+description_source: auto
+description_hash: ca2d8d313760ed2f
 version: 3.1
 date: 2026-04-09
 type: synthesis-map
@@ -11,7 +14,6 @@ note: >
 id: 420870f2-7f0e-4c48-9d22-43e5012eac88
 index_schema_version: 1
 ---
-
 # Synthesis Map — Navigátor Podcast
 
 > Gyors entry point: minden videó, szintézis státusz, YouTube cím és analytics.

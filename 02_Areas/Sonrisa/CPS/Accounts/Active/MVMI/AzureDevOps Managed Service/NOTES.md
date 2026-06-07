@@ -1,3 +1,15 @@
+---
+title: "MVMI - AzureDevOps Managed Service"
+date: 2026-04-29
+author: Becze Szabolcs
+status: active
+description: "Managed support service for MVMI's Azure DevOps platform, covering L3 technical support, system administration, and containerization consulting. Contract v3.1 pending final decisions on subcontractor restrictions and ISO 27001 compliance before signing."
+description_source: auto
+description_hash: 9643ec9b07c70e8c
+id: 2372a1a2-2348-4bc1-8d6f-1ea4a943b39f
+index_schema_version: 1
+bdos_index: true
+---
 # MVMI - AzureDevOps Managed Service
 
 ## Quick Info

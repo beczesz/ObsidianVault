@@ -1,3 +1,15 @@
+---
+title: "Form leírás"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Felhívás ingyenes AI-képzésekre, ahol az autor megosztja az elmúlt 1,5 év alatt szerzett ismereteit az MI praktikus alkalmazásáról és produktivitásnövelésről kezdőtől haladó szintig."
+description_source: auto
+description_hash: 64c38c4c38c66faa
+id: 0f78a679-9b5b-4963-90df-dc33c61084df
+index_schema_version: 1
+bdos_index: true
+---
 ## Üdvözlet
 
 Sziasztok,

@@ -1,5 +1,8 @@
 ---
 title: Business Model Canvas — Microsite Factory
+description: "A Microsite Factory v0.5 redefines the startup as a learning and portfolio-building venture targeting 40-50 service-sector SMBs at 2-3k EUR monthly revenue."
+description_source: auto
+description_hash: 0f780aa9da550015
 type: bmc
 status: draft
 version: 0.5
@@ -8,7 +11,6 @@ last_updated: 2026-05-16
 id: 04ff54bd-8a41-48c9-8df3-6798b7e38104
 index_schema_version: 1
 ---
-
 # Business Model Canvas — Microsite Factory
 
 > **v0.5 — Founder reframe.** Jelölések: `[STR]` = ChatGPT (Strategist), `[STR2]` = ChatGPT Round 2, `[RES]` = Perplexity (Researcher), `[VAL]` = Gemini (Validator), `[FND]` = Founder reframe, `[?]` = nyitott kérdés.

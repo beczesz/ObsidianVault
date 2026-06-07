@@ -1,3 +1,15 @@
+---
+title: "Raising a Modern‑Day Knight — Robert Lewis (1997)"
+date: 2025-10-21
+author: Becze Szabolcs
+status: active
+description: "Robert Lewis 1997-es könyve a keresztény apáknak ad útmutatást fiúik autentikus férfivá neveléséhez középkori lovagi eszményen keresztül; hangsúlyozza a tudatos beavatás, értékek átadása és közösség szerepét a férfias identitás kialakításában."
+description_source: auto
+description_hash: 8fca284750cb100a
+id: 6ae6182d-aac4-48a4-8cc2-9c8ddbc023d0
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /02_Books/Robert Lewis - Raising a Modern-Day Knight/
 FILES:
   - Raising_a_Modern_Day_Knight_Robert_Lewis_1997.md

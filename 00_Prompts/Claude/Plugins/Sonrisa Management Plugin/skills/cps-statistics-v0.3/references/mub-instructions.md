@@ -1,3 +1,15 @@
+---
+title: "Monthly Update Brief (MUB) - Generation Instructions"
+date: 2026-05-05
+author: Becze Szabolcs
+status: active
+description: "Comprehensive guide for generating Monthly Update Briefs from raw timesheet data, including classification rules for five hour categories, dedicated client project mappings, and source data specifications for dashboard updates. Intended for Szabolcs and team members maintaining the Phase 2 dashboard update workflow."
+description_source: auto
+description_hash: 6ff5253a53ebb465
+id: 93f03254-6925-4421-ae3d-1f153ffdb436
+index_schema_version: 1
+bdos_index: true
+---
 # Monthly Update Brief (MUB) - Generation Instructions
 
 **Version:** 0.4
@@ -62,7 +74,7 @@ All tasks NOT classified as Internal, Sick+Leave, MVMI Availability, or Other ar
 
 Team overhead required for CPS to function. Defined by the Sheet3 "Internal hours" pivot filter.
 
-**CRITICAL RULE:** Internal classification ONLY applies when the Sontime **Project name** is "Cloud Platform Services" (or other generic CPS containers like "Other", "Sonrisa Onboarding"). When hours are logged under a **dedicated client project** (e.g., "Silver 3.0", "Idomsoft - Legacy költöztetés", "Consultancy - Observer Service Remap", "Synlab Plasma (BigCommerce)"), ALL hours stay billable to that client -- even if the task name matches the Internal list below.
+**CRITICAL RULE:** Internal classification ONLY applies when the Sontime **Project name** is "Cloud Platform Services" (or other generic CPS containers like "Other", "Sonrisa Onboarding", "Sonrisa HR (Shared)", "Resource management"). When hours are logged under a **dedicated client project** (e.g., "Silver 3.0", "Idomsoft - Legacy költöztetés", "Consultancy - Observer Service Remap", "Synlab Plasma (BigCommerce)"), ALL hours stay billable to that client -- even if the task name matches the Internal list below.
 
 | Task name (Sontime) | Notes |
 |----------------------|-------|
@@ -188,6 +200,9 @@ Each MUB project block MUST include a `**Dashboard:**` line mapping the Sontime 
 | RSM | RSM | Presales |
 | Sontools | Sonrisa | Sontools |
 | Spinwheel (SIL-xxx) | Spinwheel | Silver 3.0 |
+| MVMI OMNI HyperCare | MVMI | HyperCare *(confirm dashboard name each month)* |
+| MVM Azure DevOps | MVMI | Azure DevOps Managed Service |
+| Infracont | Infracont | *(new client - confirm dashboard row before update)* |
 
 **IMPORTANT:** Dashboard Project names may change between months (e.g., MVMI phases). When a new month starts and the project name in T&M Raw has changed, update this table. If a task has no mapping here, ask the user for the Dashboard Client / Project.
 
@@ -432,3 +447,4 @@ When a new task appears in Sontime data that doesn't match any existing rule:
 | v0.2.1 | 2026-04-22 | Added: Workshop - business to Internal tasks. Added both short/full MVMI OMNI ticket name forms. Documented Sontime FirstName LastName format. Verified with March 2026 live data. |
 | v0.3 | 2026-04-22 | Major update: Task-level granularity (group by Sontime Task Name, not Project Name). Added TASK_TO_DASH mapping table. Added Dashboard ordering (T&M Raw order, not alphabetical). Added `**Dashboard:**` line to each project block. Updated template format. |
 | v0.4 | 2026-05-05 | Critical fix: Dedicated client Sontime projects (Silver 3.0, Idomsoft, Observer, Synlab, etc.) keep ALL hours as billable regardless of task name. Internal classification now only applies under "Cloud Platform Services" generic container. Added Dedicated Client Projects table. Fixed Banfi Istvan misclassification (58h Silver was showing as 54h, 31h IdomSoft was showing as 10h). |
+| v0.5 | 2026-06-04 | Added generic containers: "Sonrisa HR (Shared)", "Resource management", "CPS Support". Added TASK_TO_DASH entries: MVMI OMNI HyperCare (MVMI/HyperCare), MVM Azure DevOps (MVMI/Azure DevOps Managed Service), Infracont (new client). May 2026 live run. |

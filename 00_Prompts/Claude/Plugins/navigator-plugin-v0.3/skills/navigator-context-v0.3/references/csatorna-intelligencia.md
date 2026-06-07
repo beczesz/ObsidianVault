@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast — Csatorna Intelligencia"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast csatorna 52 epizódjából kinyert audiences, performance patterns és metadata-generálási szabályok. Szerkesztők, tartalomírók és a csatorna fejlesztéséért felelősek használják az adatok alapján a címek, thumbnail-ek, hook-ok és leírások optimalizálásához."
+description_source: auto
+description_hash: 115ecc0c298493c1
+id: e3d4416e-a949-4b87-97f2-86b5ccedd1e9
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast — Csatorna Intelligencia
 
 > Kinyert minták 52 epizód szintéziséből (2026-04-06). Használd ezeket a mintákat

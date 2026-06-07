@@ -1,3 +1,15 @@
+---
+title: "High Output Management — Andy Grove (1983)"
+date: 2025-09-18
+author: Becze Szabolcs
+status: active
+description: "Andy Grove's practical management manual teaching managers to maximize output through production-discipline, leveraging strategic tasks, and motivating peak performance. Applies manufacturing principles to all organizational functions, introducing OKRs and meeting frameworks that shaped Silicon Valley practice."
+description_source: auto
+description_hash: 7501fbecaf0626cf
+id: 734788fb-44c7-4a12-aaee-b017fa3c0dc9
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /02_Books/Andy Grove - High Output Management/
 FILES:
   - High_Output_Management_Andy_Grove_1983.md

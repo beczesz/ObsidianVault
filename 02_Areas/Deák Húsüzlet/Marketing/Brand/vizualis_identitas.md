@@ -1,11 +1,13 @@
 ---
 title: "Design Referencia — Deák Húsmíves vizuális rendszer"
+description: "A Deák Húsmíves mészáros üzlet teljes vizuális rendszerének referencia dokumentuma: színpaletta, tipográfia, logó formátumok, design elemek, brand voice és QR kód specifikáció a szórólapokhoz és plakátokhoz. Designer csapatnak szánva."
+description_source: auto
+description_hash: ce5cfc74f428c3f0
 date: 2026-04-22
 purpose: "Claude Design-nak: minden vizuális adat egy helyen"
 id: fa00bd81-7f9b-4042-803a-d8771ae7d592
 index_schema_version: 1
 ---
-
 # Design Referencia — Deák Húsmíves
 
 Ez a dokumentum összefoglalja a Deák Húsmíves vizuális identitását és a meglévő design elemeket. Claude Design számára referencia.

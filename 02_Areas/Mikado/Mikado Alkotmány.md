@@ -1,4 +1,15 @@
-
+---
+title: "A Mikado Alkotmánya"
+date: 2026-02-15
+author: Becze Szabolcs
+status: active
+description: "Egy építésziroda filozófiája és működési alapelvei, amely a mikado játékot használja szimbolaként a tervezéshez és csapatmunkához szükséges gondosságról, rendről, közösségről és erkölcsi értékekről."
+description_source: auto
+description_hash: de85036c4d7b3190
+id: 61141b53-1b78-4482-816d-f2d0b2f828e8
+index_schema_version: 1
+bdos_index: true
+---
 # A Mikado Alkotmánya
 
 ## Vízió

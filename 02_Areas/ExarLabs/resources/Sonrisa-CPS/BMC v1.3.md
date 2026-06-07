@@ -1,3 +1,15 @@
+---
+title: "1. Customer Segments"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Comprehensive breakdown of five customer segments targeted by CPS, detailing their characteristics, pain points, and corresponding service offerings from Essential to Custom packages, with pricing and future expansion opportunities in regulated industries and AI/ML companies."
+description_source: auto
+description_hash: 2c096ea3a4f5d273
+id: 45f9294b-a569-4b1a-8a04-65fcb6070d2d
+index_schema_version: 1
+bdos_index: true
+---
 Version: 1.3  
 Date: 2025-11-14  
 

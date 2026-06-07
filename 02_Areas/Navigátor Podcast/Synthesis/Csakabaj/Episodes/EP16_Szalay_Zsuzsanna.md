@@ -1,5 +1,8 @@
 ---
 title: "Gyermekeink mentális egészsége | Szalay Zsuzsanna | EP16"
+description: "Iskolai pszichológus Szalay Zsuzsanna beszélgetése a gyermekek és serdülők mentális egészségéről, hangsúlyozva a szülői attitűd, érzelmi szükségletek felismerésének fontosságát és az iskolai pszichológusi szolgáltatások alacsony ismeretségét. Szülők számára ajánlott: praktikus tanácsokat nyújt a gyermek"
+description_source: auto
+description_hash: 4d67d86f4d5673cd
 broadcast_date: 2024-06-26
 duration: "84 perc"
 guest_name: "Szalay Zsuzsanna"
@@ -13,7 +16,6 @@ topic_cluster: "Pszichológia, nevelés, mentális egészség"
 id: 698417fe-8c37-42ca-bb01-2e605a8b2482
 index_schema_version: 1
 ---
-
 # EP16 - Szalay Zsuzsanna: Gyermekeink mentális egészsége
 
 ## Alapadatok

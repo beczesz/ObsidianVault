@@ -1,11 +1,13 @@
 ---
+description: "A medical podcast episode featuring Dr. Kántor Tibor discussing healthcare topics with host Józsa Levi, exploring how medical expertise becomes accessible to general audiences while maintaining credibility and addressing patient concerns rooted in Hungarian healthcare culture."
+description_source: auto
+description_hash: a45ef919dc8cb80f
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
 id: fc638a88-3529-44c8-a3a3-38cb71b0cfa6
 index_schema_version: 1
 ---
-
 # Csakabaj Podcast — Season 3
 
 ## Episode EP50 | S03E06: Dr. Kántor Tibor

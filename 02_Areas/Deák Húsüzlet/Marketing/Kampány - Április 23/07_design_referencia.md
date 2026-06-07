@@ -1,11 +1,13 @@
 ---
 title: "Design Referencia — Deák Húsmíves vizuális rendszer"
+description: "Deák Húsmíves teljes vizuális és brand rendszere: színpaletta (piros, szürke), tipográfia specifikációk, logó formátumok, szórólap/plakát design elemek, brand voice és QR kód UTM paraméterek. Claude Design csapatának referencia dokumentuma."
+description_source: auto
+description_hash: ce5cfc74f428c3f0
 date: 2026-04-22
 purpose: "Claude Design-nak: minden vizuális adat egy helyen"
 id: 279ca0dd-b1b5-4ad0-b474-679716d19e6c
 index_schema_version: 1
 ---
-
 # Design Referencia — Deák Húsmíves
 
 Ez a dokumentum összefoglalja a Deák Húsmíves vizuális identitását és a meglévő design elemeket. Claude Design számára referencia.

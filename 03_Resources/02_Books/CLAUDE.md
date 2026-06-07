@@ -1,3 +1,15 @@
+---
+title: "Memory"
+date: 2026-04-19
+author: Becze Szabolcs
+status: active
+description: "Szabolcs's book processing system within his Obsidian vault, tracking 13 processed books with summaries, atomic ideas, and contrast notes organized by PARA structure. Useful for understanding how he manages knowledge extraction and book analysis for reference."
+description_source: auto
+description_hash: 136362b2712952cb
+id: de126ce6-3560-4319-a200-157e6ed05281
+index_schema_version: 1
+bdos_index: true
+---
 # Memory
 
 ## Owner

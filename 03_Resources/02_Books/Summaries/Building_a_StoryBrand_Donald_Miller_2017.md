@@ -1,4 +1,15 @@
-
+---
+title: "Building a StoryBrand: Clarify Your Message So Customers Will Listen (Donald Miller, 2017)"
+date: 2025-08-31
+author: Becze Szabolcs
+status: active
+description: "A marketing framework guide arguing that businesses must position customers as heroes rather than themselves, using Donald Miller's seven-part StoryBrand model to clarify messaging and improve sales for entrepreneurs and marketing professionals."
+description_source: auto
+description_hash: 67fc194ae6b2b5ac
+id: 1086a8ee-3ab1-42b6-8296-bc978c1434f0
+index_schema_version: 1
+bdos_index: true
+---
 ---
 title: "Building a StoryBrand: Clarify Your Message So Customers Will Listen"
 type: book

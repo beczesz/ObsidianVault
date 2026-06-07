@@ -1,4 +1,15 @@
-
+---
+title: "Beginner One"
+date: 2026-01-19
+author: Becze Szabolcs
+status: active
+description: "Beginner-level CrossFit workout program with five daily routines: warm-up progressions, then pull, push, handstand hold, and squat focused days. Each includes primary strength work, core exercises, and metabolic conditioning with scaling options for all fitness levels."
+description_source: auto
+description_hash: f4e61c8b6c52cc58
+id: 01f3a1ed-998e-4ce0-95c7-c5727e44f4c6
+index_schema_version: 1
+bdos_index: true
+---
 ## Warm-up (Bemelegítés)
 
 - Dead hang on bar (teljes lógás): 10–15 sec

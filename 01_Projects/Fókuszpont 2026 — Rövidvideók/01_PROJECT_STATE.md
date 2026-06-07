@@ -1,5 +1,8 @@
 ---
 name: Fókuszpont 2026 — Rövidvideók
+description: "A Fókuszpont 2026 imaest promóciójához szükséges 2-3 darab 30 másodperces rövidvideó tervezete, amely a közösségi elérésre fókuszál. A projekt meghatározza a célcsatornákat, üzeneteket, célközönséget és szükséges döntéseket az EP27 podcast szintézise alapján."
+description_source: auto
+description_hash: f856172f0ddf14fb
 type: project
 status: active
 created: 2026-05-18
@@ -9,7 +12,6 @@ tags: [fókuszpont, ignis, barna-atya, rövidvideó, székelyudvarhely]
 id: fa161d48-39f3-4097-b097-1e892b1a1af6
 index_schema_version: 1
 ---
-
 # Fókuszpont 2026 — Rövidvideók
 
 ## Cél (one-liner)

@@ -7,6 +7,9 @@
 # ===========================================================================
 type: team-board
 title: CPS Team
+description: "Live team data dashboard for CPS unit with headcount, roles, client delivery units, and profitability metrics; syncs to HTML dashboard every 8 seconds for project managers and leadership to track team health and staffing."
+description_source: auto
+description_hash: 2ee474e3501e6918
 updated: 2026-05-22
 # --- Delivery units (client -> TAM -> members) -------------------------------
 units:
@@ -245,7 +248,6 @@ recruitment:
     status: paused
     note: "First call when the team needs to grow with the pipeline."
 ---
-
 # CPS Team
 
 Live data for the team board lives in the frontmatter above. Edit it in Obsidian and `_dashboards/team.html` reflects the change within 8 seconds. Read-only dashboard, single source of truth is this file.

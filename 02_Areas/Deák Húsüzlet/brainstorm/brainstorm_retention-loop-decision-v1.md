@@ -1,4 +1,7 @@
 ---
+description: "Brainstorming session from April 2026 covering three interconnected topics: retention strategy (economic engine as primary driver, routine as missing dimension, three-layer stack), economic loop formalization (six-step cycle from user behavior to feedback), and decision memo with scenario-based actions and gate structure."
+description_source: auto
+description_hash: 24590ba8e4c2a861
 topic: DHOP Retention Strategy + Economic Loop + Decision Memo
 created: 2026-04-11
 last_updated: 2026-04-11
@@ -7,7 +10,6 @@ depends_on: brainstorm_strategiai-attekintes-v1.md
 id: d716c632-dc92-488e-87e6-625709d128ab
 index_schema_version: 1
 ---
-
 # Brainstorm: Retention Deep Dive + Economic Loop + Decision Memo
 
 ## Sessions

@@ -1,0 +1,1880 @@
+mely nekünk szépen jegyzeteljen, és összefoglalja.
+Igen, igen, pár szlájtban csak.
+Ameddig itt beszélgettünk, addig összehúztam azokat a dokumentációkat,
+amit eddig csináltam a Prényed, a Biznisz Modell alapján,
+meg mindenféle sok-sok dokumentum alapján,
+és tényleg ez a beszarádás szintű hatás,
+tehát egy nagyon ügyes kis prezentációt összedobott,
+arról, amiről itt beszélgettünk.
+Megpróbálom az elején keretezni azt, amit eddig mindbeszéltünk,
+tehát, hogy amit tisztaadon átszkippelnünk,
+és csak az arról fogunk beszélgetni,
+ami viszont új, és döntéseket kell hozzunk.
+Úgyhogy az első szlájdon láthatjuk a HDMI 2-esnek a...
+nincsen jel.
+Nem tudok connectálni, lehetszik.
+Rád kell kapcsolni az izére.
+Mindjárt.
+Most, most, most.
+Mi volt access-t, vagy mi volt ez?
+Ha nem, akkor lérakom az én jövét HDMI-en keresztül.
+Köszönöm, valami.
+Amúgy addig is, ameddig elindult.
+Most a következő, tehát már le van forgatva,
+de valamikor másfél hónap múlva meg fog jelenni egy epizódom,
+amiben a navigátorkot kezdtem,
+hogy hogyan használjuk az AI-t arra,
+hogy produktívabbak legyünk, meg emberi ebbek legyünk,
+valami huszonya azt épp, mert fogalmaztam meg.
+Rengeteget gondolkozok ezeken a dolgokon.
+Főleg menedzsmentben, meg ilyen irodai dolgokban érdemes megfontolni,
+de szerintem olyan általános alapelvek vannak benne,
+hogy ajánlom a figyelmetekbe.
+Magát tudok, tehát a szövegét, meg a háttér tananyagot,
+azt szívesen átküldem, hogyha meg akarjátok nézni.
+De olyan tippek vannak például benne,
+hogy hogyan legyék produktívabb,
+vagy hogyan érts meg dolgokat az összefüggéseiben,
+hogyan lehet tanulni vele hatékonyan,
+hogyan lehet empatikusabbá válni vele az AI-segítségével.
+Szóval egy csomó minden izgalmas dolgok van,
+és tudja, hogy ezek olyan dolgok, amit nem változnak,
+mert nem technológiai, nem függ attól,
+hogy most éppen a kopányod mintatki, vagy a klód mintatki,
+ne ezek általános érvényi dolgok.
+Egyáltalán a nagy nyelvi modellekre hogyan gondoljunk.
+Nem tudom, haladsz-e?
+És aztán majd még egy gondolatot elmondod.
+Húzd az időt.
+Húzd az időt.
+Az egyik nagy felfedezésem például január,
+a téli vakációban az, hogy az embernek van egy jobb is,
+egy balagyfélteke.
+A balagyfélteke az az analitikus gondolkodás érfelel,
+az a szétszedi a dolgokat elemeire,
+belezumol a részletekbe.
+A jobb agyfélteke inkább a művészi oldal érfelel,
+a megnapasztalásért, a rácsodálkozásért,
+az összefüggéseknek a megértéséért felel a jobb agyfélteke.
+És azért fontos, mert a nagy nyelvi modellek úgy működnek,
+mint egy ilyen balagyfélteke szteroida.
+És ennek műenféle melléktermékével.
+Tehát a balagyfélteke az egy zárt rendszer,
+egy zárt mennyiségű információból dolgozik.
+A mi balagyféltekeink is,
+és szimulálja a világot, megpróbálja kiszámolni,
+és egyszerűsített válaszokat adni.
+Emiatt van benne egy halucináció.
+Ugyanúgy olyan nagy nyelvi modellekben van egy halucináció.
+Úgy bennünk is van.
+Tehát amikor azt képzeljük, hogy értjük a világot,
+akkor egy balagyfélteke és arrogáns módon tekintünk a világra.
+Az az érzésünk, hogy mi jól értjük a világot.
+Valójában egy porszemek vagyunk mindannyianak,
+az egyik pszichológus mazsolák vagyunk.
+Egyik egy ilyen mazsora, másik olyan mazsula,
+de igazából mazsula az mazsula.
+Úgyhogy valójában a feladatunk az nekünk,
+fejlesztőknek az az, hogy minél több jobb agyféltekés feladatba vegyünk részt,
+ahhoz élő hatékonyabb tudjunk működni.
+Erről beszélgettünk amúgy a tegnapi nap is.
+Minden, ami a kreativitásért fele,
+azért, hogy megírtsük a dolgokat az empátiáért,
+az, hogy a jelenben legyünk,
+és a másik pedig a küldetés,
+hogy küldetésünk van, mint CPS csapatnak.
+Az a csapat, amelyek nincs küldetése, az össze-vissza bolyong ide-oda,
+de hogyha egy küldetés mentén megyünk,
+ezek mind-mind jobb agyféltekés dolgok.
+A balagyféltekések azok a dolgok, amiben elveszed a részletekbe,
+és eddig nagyon sokat kellett ilyen csináljunk,
+főleg amikor azon minisztratív feladatok,
+tipikusan balagyféltekés feladatok,
+ilyenkor a fókusz elmegy arról, ami igazán fontos,
+és ezt tudja kiváltani az AI.
+Tehát érte nagyon hálás vagyok egy csomó-csomó időt,
+amit amúgy szarántam volna magam az AI,
+az elmúlt hónapokkal megmentett nekem,
+és tudtam arra fókuszálni, ami igazán fontos.
+Jó, szóval ezt a prezentációt most csináltam egy órája.
+Egy rövid áttekintés, hogy hogyan is működik a CPS csapatunk.
+Három nagy kategóriája van, amiről kell beszélnünk,
+az első a sales, mert a csapatunknak külön kell legyen
+egy saját sales-es aktivitása,
+utána van egy delivery része és egy retention része,
+tehát hogy hogyan fogadunk be egy új projektet,
+és hogy hogyan tartunk meg egy új projektet.
+Lehetünk tovább.
+Szóval magával a sales-ről annyit érdemes mondani,
+hogy ezeken fogok végigmenni,
+egy csomó lead validáció lesz,
+amit ugyancsak AI-jal fogok csinálni.
+Lesz egy tipikus ilyen cég profil,
+amit keresni fogok.
+Olyan cégeket fogok keresni,
+amelyik kis és közép vállalkozások,
+tehát nem nagy vállalkozásokra fogunk lőni,
+de már kb azért van egy 10-20 alkalmazottja,
+van egy valószínűleg ABS vagy Azure infrája,
+ahol van vagy 3-30 ezer eurós havi költsége,
+és olyan cégeket, akik DevOps-osokat keresnek,
+és jó eséllyel nem engedhetnek meg maguknak egy full time senior DevOps-ejlesztőt,
+valószínűleg bajban is vannak,
+mert ha keresnek valakit,
+nyilván nem egy csapat DevOps-os volt a háttérben,
+és csak az egyiket cserélik le,
+hanem valószínűleg krízisben vannak,
+tipikusan úgy, mint a Grey Hill-en,
+ami most történt,
+hogy a DevOps-osok ott hagyta,
+és akkor értelem baj van, igen.
+DevOps-os vagy megoldást keresnek.
+Platform engineer.
+Platform engineer-t keresnek,
+nem embert keresnek, hanem megoldást.
+Tehát ők nem tudják azt, hogy szolgáltatás is van,
+ők emberben gondolkoznak,
+mert egy ilyen álláshirdetést adnak fel,
+hogy keresünk DevOps-ost,
+és én erre akarok rácsatolódni,
+hogyha ti DevOps-ost kerestek,
+van egy jobb ajánlatom,
+mert egy kisebb unitot fogunk nektek adni,
+ebben a unitban van senior is, medior is,
+vagy senior expert is,
+junior is,
+nagyobb lesz a lefedettség,
+és olcsóbban fogsz kijönni.
+Tehát, hogyha valami nagy baj van,
+akkor egy senior is be tud ugrani,
+egy lead-be tud ugrani,
+egy architekt be tud ugrani,
+és napvégén olcsóbban,
+jobb szolgáltatást napidagban fogsz kapni.
+Nem fog itthagyni,
+a knowledge az nem fog kifolyni,
+dokumentációt kapsz a végén szóval,
+igazából nincs vesztes ebbe az egészbe.
+Mert valójában outsourceded te azt,
+amivel amúgy sem akarsz foglalkozni,
+mert te azzal foglalkozol,
+hogy menjen a show, mi pedig mi vagyunk a backstage group.
+Na, úgyhogy ez a szép a sales pitch-em,
+és az AI fogja nekem validálni,
+gyakorlatilag be van állítva egy schedule,
+hogy minden nap scrape elé a netted,
+és egyre több helyről fogom majd összeszedni a lead-eket,
+egy háttér, ilyen research-ot fogok csinálni,
+hogy értsem, hogy hogy működik az a cég,
+hogy milyen domíniumban van.
+Most kaptam egy nagyon jó,
+most pénteken beugrott egy nagyon jó lehetőség,
+olyan, mintha egy kicsi NVM-i lenne,
+valami energiaszektorban egy cég,
+amelyik ugyanaz kéri,
+gyakorlatilag, amit már jól csináltunk referenciának,
+ezt el tudom mondani.
+Az AI mondta, hogy ne írjak neki,
+mert túl gyorsan, mert 18-szor rájörakták fel
+az opportunity-t, vagy a lehetőséget,
+és túl gyors, nem szabad ilyen gyorsan reagálni.
+Szóval ilyen szempontból is tanulgat az AI,
+hogy azért ne egyből reagálj,
+valószínűleg jövő héten, a hét elején fogok küldeni.
+Az AI szólt, hogy ne szólni,
+mert rájön, akkor scrape eltet.
+Igen, meg ha embert keresnek,
+először a fókusz, úgyis azon lesz,
+hogy az első CV-ket nézzék meg.
+És hogyha azt látják,
+hogy na, melyik ez a két-három CV,
+plusz itt van valami egy szolgáltatás,
+akkor lássuk, hogy...
+De ha egyből a szolgáltatás jön be,
+akkor azt ignorálják,
+ameddig a két-három CV nem érkezik be.
+Tudni, hogy az egyes személyeknél,
+vagy a freelancereknél jobb megoldás az,
+amit hozunk.
+Ha jól csináljuk,
+arószól csináljuk, akkor ne.
+Bocsi csak, hogy zárni el,
+hogy mit használsz a meszkréppel,
+hogy ilyen tanácsokat?
+Cowork.
+Cowork.
+Igen.
+Van, tehát beszarrás,
+tehát én is úgy vagyok vele,
+hogy szinte nap mint nap
+van egy ilyen beszarrás élményem,
+a mai nap reggel is megvolt itt
+a SINLAB UX designjával kapcsolatban,
+de a Product Developer Plugin-ját is
+most használtam reggel először.
+És az, amit eddig csináltam,
+az kiderült, hogy ugyanazt csinálom,
+mint a Product Developer Plugin-körbe próbáltam indítani.
+De ugyanígy van a Finance Plugin-nal,
+a Sales Plugin-nal,
+szóval ezeket mind-mind tudja.
+Ez a Cloud Cowork vagy a Copayneut Cowork?
+Cloud Cowork.
+És igen,
+ráadásul a Gyra integrációja az eszméletlen.
+Tehát úgy lövi fel a tiketekes,
+módosítja, s keresbenes,
+esztimáls raportokat csinál bevődre,
+hogy most gyakorlatilag ameddig beszéltetek,
+addig csináltam egy raportot,
+hogy utassan meg leheznek,
+hogy ez egy projekten, hogy haladunk.
+Szóval egy új világhoz érkeztünk,
+és kell adaptálódjunk.
+Én amúgy rengeteget foglalkozok azzal,
+hogy azok adaptálódni,
+szerintem elég ügyesen is csinálom eddig,
+de gyakorlatilag akkor lehet képbe maradni,
+hogyha egymásnak ötleteket adunk be.
+Nekem ilyen az én megértése,
+másnak ilyen a megértése.
+Ha egymásra tevődik,
+egyre több dolgot tudunk lefedni,
+és én alibáromot tanuljak tőletek,
+és tanuljunk egymástól.
+Ez érvényes mindenhol a deló.
+Tehát, hogy most egy gyors sprintbe
+fogunk felzárkózni ahhoz,
+hogy megértsük,
+hogy ezt a balagyfértekés szteroidos valamit
+hogyan használjuk arra,
+hogy mi minél többet töltsünk a jobb agyfértekényben.
+És ha egy csepp eszünk van,
+akkor ott is akarunk lenni,
+minél többet a jobb agyfértekényben,
+mert az az, ahol az izgalmas lenni,
+nem a balagyfértekés feladatoknál.
+Tehát az izgalmas része.
+Jó, tehát lesz egy szélzvalidáció,
+gyakorlatilag, amikor,
+tehát ez egy olyan lesz,
+mint amely egyre gyorsuló valami,
+hogy elején egy héten egy-kettőt kapok,
+amit tudok alinálni,
+és ahogy egyre gyorsulok,
+ez így duplázódik, duplázódik,
+duplázódik,
+már szerintem egy oda kell elérjünk,
+hogy naponta egy olyan ötöt el tudjak küldeni.
+Mert akkor azt jelenti,
+hogy lesz hetente 25
+olyan validált szélz lehetőség,
+amiből, hogyha egy bejön a 25-ből,
+akkor azt jelenti, hogy hetente egy klienységben.
+Nem kéne most nekünk hetente egy klienys,
+most az túl sok lenne.
+Gyakorlatilag, hogyha havonta lenne két klienysünk,
+az már szuper lenne.
+Úgyhogy a contracted rész,
+bocsánat, contacted rész,
+az az lesz, hogy naponta fogok párat elküldeni.
+Van egy pre-sales rész,
+amikor abból egy része azt mondja,
+hogy na, hogy nézzük meg,
+mit tudunk csinálni,
+és itt jön be már gyakorlatilag
+a Sales Engineering csapat,
+ahol van egy külön kicsi csapatunk erre,
+ahol van most ebben a pillanatban
+három személyi Zoli,
+Molnár Dani és István.
+Amikor először találkozunk a klienyssel,
+megértjük, hogy mit szeretnék,
+ez egy jobban féltekés feladat,
+amúgy a megértés.
+Gyakorlatilag figyelnünk kell,
+empatikusan jobban kell,
+megértsük a klienst egy fél óra,
+vagy egy óra alatt,
+mint ahogy a klienys önmagát értik.
+Össze kell rakjunk egy olyan áraajánlatot,
+ami hihető,
+és tartható a mi részünkről,
+és akkor adunk egy áraajánlatot.
+Amikor már ebbe a pre-sales fázisban vagyunk,
+akkor kb. a konverzió szerintem
+egy olyan ötven századék lesz.
+Mert az, hogy már szóba áll velünk,
+valami az egy nagy dolog.
+Itt egy ilyen short cut a pre-saleshez,
+ez az ingyenes cost optimization raport,
+amit csináltunk,
+meg valójában egyből kontaktálom,
+és azt mondom,
+figyeljetek,
+nem kerül ez semmi velektek.
+Gyertek, csináljuk ezt meg.
+Utána akkor,
+és azt mondja,
+jó van,
+hát akkor úgy,
+hogy az Onriva egyből reagál.
+Ez egy fontos dolog.
+Ki akarom emelni,
+hogy az Onriva-nak küldtem,
+vagy öt e-mailt,
+amire nem válaszoltak.
+És erre az e-mailre,
+hogy fogunk nektek pénzt fordulni,
+egyből válaszolt irével.
+Úgyhogy ez most nem is az Onriva-nak a...
+Ez egy oké sztáni.
+Azt jelenti,
+hogy ez egy valós igény,
+szívesen foglalkoznak ezzel,
+ráadásul AI-ot csináltuk,
+egyre gyorsabb lesz ezt majd AI-on megcsinálni.
+Ez egy úgy nevezik,
+hogy wrench szolgáltatás,
+tehát egy ég szolgáltatás,
+amikor berakjuk az éget az ajtón,
+és akkor már félig nyitva van,
+de nem csak félig van nyitva,
+hanem valójában ki van nyitva az a lehetőség,
+mert gyakorlatilag
+mi kell ahhoz,
+hogy egy ilyen ingyenes cost optimizésen raportot csináljunk.
+Szerződést,
+egy NDA-t alá kell írni,
+egy szerződést kell kössünk.
+Kredásöleket kell ugyanak az infrahívukhoz.
+Valószínűleg együtt fogjuk share screen-en keresztül
+így kattattatni azokat a permésöleket,
+amik szükségesek.
+Tehát már van egy személyes kapcsolat is.
+Mivel lefuttattuk ezt a raportot,
+és fogjuk jalsolni egy csomó mindent,
+már egy személyes kapcsolat kialakult a klienssel.
+Ráadásul innen a cross és up-sale szinte adott,
+mert azt mondjuk,
+hogy ezt is meg tudnánk csinálni,
+azt is meg tudnánk csinálni,
+pénzt is sporgunk nektek, stb.
+És hogyha még a végén a kliens azt mondja,
+hogy megcsináljuk mi magunknak,
+mert elég információt, elég értéket adtunk neki.
+Valójában mi már egy csomót kaptunk,
+még egy portfólió elemünk van,
+még egy tapasztalatunk van,
+az ABS partnership-ünkben még egy plusz kapcsolat.
+Szóval igazából, hogyha tiszta ingyen csináljuk ezeket,
+és 20 darabot összegyűjtünk belőle,
+és senki nem akar velünk együtt dolgozni,
+amit kizárt szerintem,
+fele kb. együtt fog dolgozni,
+vagy lehet, hogy még több,
+ha ez megtörténik,
+már akkor is nyertünk.
+Tehát, hogy ez a stratégiánk ebben a pillanatban,
+és akkor jön a von státus,
+amit itt zárul le,
+tehát ideális esetben az én szerepem itt zárul le,
+amikor megnyertük az egészet,
+akkor persze szerződésköt és stb.
+De innen általán is mehetünk a következő szlájdra.
+Nem tudom, hogy túl gyorsan mondom el,
+vagy mondom, hogy következő.
+Nem, mert éhes vagyok.
+Jó, éhes.
+Csináltottam én most.
+Egy óra van.
+Milyen egésztésebben a kezé?
+Jó, szóval a sales cycle-nek a következő rész.
+Egyed, ki csinálja a sales?
+Tehát én mindenképpen most én magamra veszem a sales,
+ez az én egyik feladatom.
+A Sonorizának is van egy sales-e,
+de ő azok a nagy ágyuk.
+Tehát Nándia és az account-menedzserek,
+akik hozzák a dirigentes projekteket,
+meg minden, ezeket is ki kell szolgálni.
+De ezek párhuzamosan működnek.
+Mondjam, úgyhogy ez a sales pipeline,
+amit a Sonoriza sales csinál,
+már azért egész jól működik,
+eltartja a csapatunkat.
+Most látok,
+május végéig már most látok.
+Úgyhogy jól jön ki a csapat,
+tehát hogy a zöld tartományban leszünk.
+Ez egy nagy dolog,
+mert egész 2025-ben azért szenvedtünk,
+hogy valahogy a sárga tartományból az őrbe kerüljünk.
+Május, és sosem láttam egy-két hónapnál előre.
+Tehát szörny volt,
+és stresszelő, pláne nyáron,
+hogy fingom nem volt,
+hogy milyen projektek fognak bejönni.
+Most látok három hónapra a juhé,
+és utána pedig látunk szeptemberig,
+hogy nem leszünk veszleségesek.
+Már az is nagy dolog,
+hogy most látunk szeptemberig.
+Na most az a cél,
+hogy akkor fertöltsük tovább a sales pipeline-t,
+tehát nem akarok állátlan lenni,
+amik azt mondom, hogy szóval vizaszélben.
+Valójában ő tart el minket,
+ő hozza a projekteket,
+eddig zérót hoztam én.
+Úgyhogy én fogom hozni a többit,
+remélhetőleg,
+és a másik,
+van egy olyan,
+a sales engineers csapat,
+gyakorlatilag ők fognak majd segíteni abban,
+hogy ezeket tudjuk átfordítani.
+Tehát, hogy én egy ideig el tudom magyarázni,
+de olyan vagyok, mint Krista,
+hogy Krista egy ideig tudja csinálni,
+és nagyon jól összetudja fogni,
+de egy idő után muszáj Istvánra hagyatkozzon az Observeren.
+Úgyhogy akkor lesz egy sales engineer csapat,
+akik konvertálnak jó,
+ezt most szerintem skippeljük,
+ezt a másik részét,
+hogyha mehetünk a következőbe.
+A von után jön három lépés,
+ezek mind javaslatok,
+most már kezdünk egyre inkább a javaslatok kategóriába menni.
+Először is kijelölünk egy technika lecán menedzsert.
+Az nem kell mindig a sales engineer legyen,
+mert egyrészt a három sales engineerünk
+az összes projektet nem fogja tudni élni,
+és nincs rá szükség.
+az aki tartja a kapcsolatot a klienssel,
+reprezentálja azt a projekten, kommunikását, többi.
+Erről fogunk beszélgetni,
+hogy konkrétan mit is csinál egy technical account manager.
+Igen, ez egy mitott kérdés.
+Akkor van a...
+Gyakorlatilag egy unitot kell köré jelítsünk,
+a technical account manager köré.
+Néha a technical account manager önmagában lesz a unit,
+mert olyan kicsi a projekt.
+Néha kell majd egy expert, egy junior.
+De ez a unitfajta gondolkodás enged meg két-három dolgot,
+egyrészt a skálázást, hogy több unitunk legyen,
+és miért decentralizált abban működjön.
+És a felelősséget minél ennek toljuk a hierarchiával.
+Ennek a másik pozitív hozadéka az, hogy juniorokat tudunk bevonni.
+Tehát a junioroknak van helye ebben a furcsa világban,
+mint most, ahol az AI úgymond azt engedi sugarni,
+hogy a junioroknak nincsen helye.
+Most nem tudom, hogy mi lesz a jövője ennek így a fejlesztésben,
+mert sok junior nagyon nehéz helyzet,
+de most látom más cégeknél, hogy rakják ki őket.
+De a másik oldalról rendek, hogy a szorizán belül nem így van,
+vannak junior programok, újra hozzuk be,
+és a CPS csapatban is lesz helye a junioroknak,
+valójában egy-egy unitba becsatlakoztatjuk őket.
+Az elején, hogyha pár hónapig nem termelnek,
+kényszer sem baj, mert amúgy is kicsi a fizetésük,
+és nem lesz nagy teher nekünk az, hogy juniorokat fogadjunk belőle.
+A cél az az, hogy három hónap múlva abszolút legyen hozzáállott értékük.
+Tehát most a két juniorokat így beveszünk,
+a cél az az, hogy az elején dolgozzon pár ilyen belső power-autométes plomb, stb.
+De utána aztán bekerüljenek valódi unitokba,
+és akkor gyakorlatilag a heavy liftinget egyre inkább majd rá tudjuk rakni.
+Ez nekik is érdekük, mert eszméletlenül hova fognak tudni felülni,
+hogyha igazi terhet kapnak.
+Jó, és akkor a ramp uphoz elindul,
+tehát hogy a unit megvan, elkezdünk ramp upolni a projekten,
+és valójában amit most megbeszéltünk, az az, hogy kialakultunk egy olyan struktúrát,
+ahol lesz egy monitoring rendszer, lesz egy ilyen alert system,
+meg ez a ticketing rendszer, az e-tilt beépítjük.
+Tehát gyakorlatilag az van, hogy amikor belően egy projekt kicsit úgy,
+mint a Forma 1-es ilyen pitve, amikor beérkezik a Forma 1-es autói körbeálljuk,
+és a unit elkezdi így mindenfélével felszerelni,
+hogy a projekt maga a lehetőleg, tehát 1-2-3 héten belül már befogadható legyen,
+gyorsan tudjunk reagálni, és az adminisztráció ne vegye el az időnket.
+Úgyhogy ez a rem, és legyen dokumentáció,
+tehát hogyha a unit tagjai cselérődnek, akkor gyorsan tudjanak ramp up-olni,
+hol kell loginolni, milyen credentialek vannak,
+miből áll a projekt, kivel kell kapcsolatba lépni,
+ezeket mind éjjel kéne csinálja, tehát hogy nekünk olyan dokumentációkat rakjon be,
+olyan dokumentációt generáljon, hogy egyrészt, ha akarja valaki olvashassa el,
+de egyszerűen fogja meg, és azt mondja, hogy leszedi, nem tudom, a mi wiki oldalunkról,
+a kóddal dokumentációt a projekt, és megkérdezi, hol kell be loginolja, ki a kapcsolat tartó,
+ha eszkalálni akarok, kihez kell menjek.
+Tehát már eleve egy AI segítsen nekünk, ebben ne kelljen egy-5-10 oldalas dokumentációt elorvasni.
+És eleve már az AI-nak mondjuk el, hogy most hoztuk ezt a döntést,
+a nagy-nagy döntéseket rakjuk be, hogy a projektnek legyen egy ilyen természetes ívő,
+mint egy történet, hogy el tudjunk mesélni egy projektet.
+Azért, hogy ha valaki később csatlakozik be, akkor gyakorlatilag végig tudja olvasni az egészet,
+és ezt mind AI tudjasság csinálni, hogy le kelljen, mi leüljünk.
+Amúgy például ide tartozik az előző slide-t, nem így vissza, de az előző slide-nál ott a Sales-nél,
+Én egy csomót használom már azt, amit kiépítettünk case study generátorként,
+volt egy prompt, amit együtt fejlesztettünk ki, hogy gyakorlatilag meginterjúol titeket,
+hogy kifejebb előttelentek az információt, hogy azon a projekten mi történt.
+Én már egy csomót használtam ezt, tehát van már 3 case study-nél,
+ezeket arra fogom tudni használni, hogy amikor egy Sales Lead validáció történik,
+és azt mondjuk, hogy ez egy Hot Lead, tehát majd ilyen kategóriában az a Hot Warp és Cold,
+amikor egy ilyen igazi Hot Lead-et kapok, mint például az energiaszektoros,
+már eleve előkészít nekem egy e-mailt, hogy azzal a nyelvezettől, amit én szeretnék használni,
+és azokat a releváns készítenékat bele fogja másolni.
+Figyelj, már van az MBM-nél, pont ilyen esetünk, ott egy monitoring rendszert raktunk össze, és többi, stb.
+Nyilván azt át fogom írni, hogy ne legyen ilyen AI mesterséges szaga,
+de már gyakorlatilag egy fél órát megsporolt nekem, hogy ne én kellett ezt leírjam.
+Tehát így akarom használni az AI-t, hogy abszolút automatizáljon mindent,
+senkinek legyen olyan dolgot csináljon, amit un.
+Jó.
+Bocs, ezt a készpöli generátor proceszt, ezt Nándira mutattad?
+Nem.
+Légyzi.
+Jó.
+Mert hogy van egy sales mappánk, amiben végtelen anyag van.
+Igen, igen, onnan is.
+Onnan is dolgozol, de hogy ezt götyával kimarázni.
+Jajaj.
+Mert nagyon sokszor urvasok időt cseszünk el ezzel.
+Az biztos.
+Tehát Cláudiaig, hetekig tökölt ott az ENVI-en.
+Úgyhogy ezt vissza kéne fidelni a közjó iránti pusztanelkesedésben.
+Jó simán.
+Na akkor ezt írjuk fel tudónak, hogy ezt meg fogjuk csinálni.
+Jó.
+Akkor, igen, tehát vannak a szerepek.
+Milyen szerepek vannak?
+Van a Technical Account Manager, aki elöljár, vezeti a csoportot,
+felelősséget vállal, egy személyben képes a projektet átlátni,
+minden kérdésre válaszolni, kommunikálni a kihens vele.
+Van a Unit Member, tehát valaki, aki bemegy a Technical Account Manager mögé.
+Ő a kovácsinas, amely megy salázatosan tanul és pakol.
+Szóval ezt a két szerepet láttam.
+Emelény még ott van a Sales Engineer, ami egy külön funkció.
+Itt a Sales Engineernek a feladata az, hogy képes legyen leülni egy klienssel,
+folyikonyan angolul beszélni, megérteni, stressztoleráns,
+mert néha a kliens stupid, mint például a színlabon.
+És egyszerűen az van, hogy a csapat érdekéért, meg az összképet látva egyszerűen gúszunk az árral.
+Ha nagyon sértő a kliens, végre megtehetjük magunknak azt, hogy ha elkezdünk sok-sok ilyen Sales Leader-t generálni,
+hogy egyszerűen azt mondjuk, hogy etikai megfontolások miatt nem fogjuk elváldani.
+És én ezt majd megfogalmazom úgy, hogy ne legyen sértő a kliensnek feltétlenül.
+Tehát nem akarom a szomorizátorsz helyzetbe hozni, de hogy egyértelműen lehet egy ilyen belső tűzfalunk,
+ami kizárja azokat a projekteket, ami nem helyes.
+Mi lehet a következő?
+Ez még mindig csak a váza az egésznek, utána aztán jöhetünk.
+De igazából, hogyha már most van valami, amit hozzászúrnátok, akkor jegyzet elünk.
+Nem tudom, hogy van eddig logikus-e, ahogy megálmodtam formált.
+Összegyűjtöttem azt, amit eddig közösen beszéltük.
+Jó, tehát mi történik ilyenkorai Rampup-nál?
+Monitoring setup, alerting, dokumentáció és egy quick ramp up deck.
+Valójában erről beszéltünk, úgyhogy mehetünk a következő szlájdra.
+Igen, és akkor most az a kérdés, hogy hogyan is működik valójában a klienes megtartása.
+Tehát egyrészt lesz egy folyamatos reporting.
+Ez öt szinten fog megtörténni.
+Ez a kapcsolattartás a kliense, reporting és communication.
+És valójában az van, hogy...
+Nincs értelmezeknek a nyilatnak ezt a coworkractable.
+Nem úgy gondoltam el, de mindegy.
+Tehát a lényeg az, hogy a riportolásnál fontos eszköz az, hogy havonta riportoljon.
+Meg kell tanuljunk GH segítségével nagyon-nagyon gyorsan egy riportot összedobni.
+Mert a riport egyszerre egy összefoglaló, egy dokumentáció.
+Valahova, ahol vissza lehet nyúlni.
+Ez az exekutívoknak szól.
+És upsell lehetőség.
+Olyan szempontból, hogy amikor észreveszünk valamit a reportingba, ott leírjuk,
+és akkor utána megkérdezzük a klienc, hogy nem akarod megcsinálni.
+Ez körülbelül egy olyan 4-5 ember napnyi munkába fog kerülni pluszba.
+És akkor vagy az van, hogy ezt most megcsináljuk ingyen,
+és aztán utána kihozzuk az órákat úgy, hogy később fogod ezt majd kifizetni,
+vagy az van, hogy most előtt ilyen overage-be kifizeted.
+Úgyhogy a reporting az egy nagyon fontos dolog,
+és ez rengeteg fejfájást okozott nekünk,
+de Mark nagyon alázatosan és szorgalmasan eddig ástra előre az utat.
+Ezt szeretném, hogyha amikor egy kicsit levegőzültünk Bánfi Istvánnal,
+és például Markkal újra álmodjuk ezt a reportingot,
+többféle reportingot el tudok képzelni,
+de a fontos az, hogy itt az AI segítsen nekünk.
+És a Covert-nél, ez is most történt beszorrás az elmúlt két hónapban,
+hogy eszméletlen jól válik a Word-el, a nagyon jó a formatája,
+tehát eddig ez még nem volt a kezünkben,
+de gyakorlatilag egy teljes, saját plugin kifejleszhetünk Covert-be,
+és a reportot megcsinálja nekünk, mi csak az input-ot kell adjuk.
+Ilyen táblázatokként meg minden, és a végén meg lesz az.
+Jó, igen, és akkor a kommunikáció,
+ez az, amiről majd din után fogunk beszélgetni,
+hogy azok a soft skill-ek egyre fontosabbaká váltak,
+hogy hogyan kommunikálunk a klienssel,
+mikor döntünk úgy, hogy eszkalálunk,
+hogyan eszkalálunk, és konkrétan milyen eszközöket használunk a kezünkben ehhez.
+Mert itt van egy csomó lehetőség, hogy kihez eszkalálunk például,
+lehet egy belső eszkaláció, a belső projektmenedzserhez való eszkaláció,
+akkor hozzám eszkalálni,
+én pedig már tudok egy szonrizatulajdonosok fele eszkalálni,
+tehát minél mint a hagymának itt egy csomó rétege van.
+Szerintem az egyiknek a kulcsa az az önbecsülés.
+Tehát azzal a belső önbecsüléssel és tartással kell rendelkezzünk,
+hogy mi nem kell minden szarben nyeljünk,
+hanem vannak pillanatok, amikor azt mondjuk, hogy nemet mondunk.
+Néha igen mondunk, néha nemet mondunk,
+és ezt a belső bölcsességünk dönté el, hogy mikor van az, amikor
+igen mondunk és úszunk az ára, és mikor van az, amikor azt mondjuk,
+hogy ez így nem jó.
+És akkor annak a különböző szintjén mondunk nemet.
+Van egy kicsi neve, nagyobb neve, egyre nagyobb neve,
+és a végén van egy nagybazi nagy neve.
+Úgyhogy ezt a fajta kommunikációt megtanul,
+hogy mondjuk szkillek, ezeket fel lehet szedni,
+de a mélyén az van, hogy minden egyes csapattag értékes.
+Én senkit nem akarok kiégetni, a család számomra egy érték,
+nem akarok látni túlórákat, hogyha nem szükséges.
+Néha persze bele fogunk csúszni,
+néha az van, hogy este kell dolgozni, mert ez belejár a munkánkkal,
+de amennyire csak lehet, úgy szervezzük a dolgunkat,
+hogy ne stupid módon a kliens arroganciája,
+vagy mindenféle miatt csúszunk ebbe vele,
+hanem ha valamire igen mondunk,
+önként mondjunk igent rá,
+tehát ne áldozatok legyünk ebben az egészben.
+És ha a kliens például csúnyán beszél velünk,
+mint ahogy Márka megtörtént,
+nem úgy, mint nem a kliens volt, hanem az a Dennis,
+hogy elég faragatlanul, én nagyon hálás vagyok,
+hogy ilyenkor egyből nem robbantál,
+azt mondtad, hogy oké, akkor ezt aludjunk egyet rá,
+két hét múlva bementünk hárman,
+Dennis kenyérekenhető volt,
+egy kicsit olyan darabos, mint egy ilyen orosz vaj,
+de kenyérekenhető volt.
+Jó, mehetünk tovább.
+Jó, milyen eszközöket fogunk használni?
+Milyen eszközöket fogunk használni?
+Először is eldöntöttük,
+hogy Gyrat fogunk használni,
+Power Automated, Compiler Studio,
+ez nagyon fontos, hogy nagy potenciált látok benne,
+el fog tudni jutni ér.
+Tehát a Compiler Studio pont azt eredményezi,
+hogy azok a felhasználók, mint például a HR,
+aki amúgy egy Power Automate Flow-t nem tudna
+önmagában módosítani,
+így fog tudni használni.
+Mondjam úgy, hogy
+veszélytesszi nekik ezeket a dolgukat.
+És akkor lesz egy ilyen Monitoring Stack,
+amit kiépítünk,
+és itt mindenféle eszközt fogunk
+használni, a Gyra Service Desk-et.
+Nem tudom, hogy megkaptad, de mi az a
+Monitoring Stack-je a Gyran-nak végül.
+Mit használ
+a Gyranál az ilyen
+monitorizásra?
+Nem kerestem.
+Egy zél van valami,
+azért nem csak status page.
+Úgyhogy a
+vagy itt a dolgot, vagy valamit bele kell kessünk,
+vagy valószínűleg.
+Hát szerintem ezt
+vagy ontellen megoldjuk.
+Jó, oké.
+Szóval vannak eszközeink már most,
+ezeket ki kell most dolgozzuk.
+és a Power Automate-t, azt szerintem
+olyan döntöttük el, hogy az
+logica press.
+Jó, igen.
+Amúgy a Monitoring-ra kapcsolatban
+láttam, hogy azért meg a sok fejemnál
+megvolt,
+azt szerintem akkor azt kell csinálni, hogy legyen egy
+egy
+Monitoring csapat,
+aki ahova fog foglalkozni,
+ha bejegy valami új klienes, akkor megcsinálni
+Monitoring-ot,
+hogy kevesebb
+Context Switch legyen,
+hogy akkor oké, megcsinál valaki az inflát,
+vagy aki megcsinálni Monitoring-ot,
+és akkor ilyen szinte is az van, hogy viszonylag egy dologgal
+kell foglalkozzál,
+de tökényes, hogy milyen
+szerintem a kököd kevesebb a Context Switch-t.
+Aha, ez egy jó útlet.
+Jó, továbbmerve.
+Milyen más eszközeink vannak?
+Tehát lesz egy ilyen Financial Dashboard,
+amit már több mint másfél éve építgetek.
+Ez egy nagyon fontos eszköz,
+mert nagyon-nagyon pontosan mutatja,
+hogy megy projekten mi rezdül.
+Pontosan látjuk az Observer-ön például,
+hogy mekkora veszteségünk van.
+Ezért is írunk minden egyes órát,
+és nézünk minden egyes órát,
+azért, hogy a realitással találkozunk,
+tehát ne kozmetikázzunk a dolgokat,
+hanem szembenézzünk a valósággal.
+Ezt a Dashboard-ot azért csinálom,
+hogy ez egy közös kottánk legyen,
+és láthatjuk abba, hogy hogyan működik,
+miben érdemes fektetni.
+Egyértelműen amúgy eddig a következtetése
+a Dashboard-nak az, hogy ez a managed service működik.
+Tehát, hogy ezt a modellet érdemes továbbvizik.
+Egyedüli baj az, hogy a managed service
+direkt, de egy klient sem fogja vásárolni,
+amíg nem ismer minket.
+Nem azt mondja, hogy gyertek be,
+és akkor megvásároljuk tőket,
+hanem ki kell majd találjuk azt a modellt,
+hogy hogyan tudunk becsúszni.
+A belső befektetéseket is tudjuk nézni.
+Tehát, hogy például az inference farm abszolút egy belső befektetés volt,
+meg tudjuk nézni pontosan,
+hogy mennyi pénzt költöttünk arra, hogy létezzen inference farmunk,
+de ezt is el tudjuk adni csehével,
+mint szolgáltatás.
+Jó, mehetünk talál.
+Vannak már most csomagjaink.
+A csomagokkal kapcsolatban azt jegyezném meg,
+hogy ezek
+gyakorlatilag a mi arccszüleményeink.
+Tehát, hogy mi pont ezek a csomagok vannak,
+miért így vannak egy így van, miért pont így vannak árazó.
+Amúgy most mi kikérésére az árakat eltörültük,
+de a háttérben azért megigyeztem,
+hogy kb. ezek a szintek vannak.
+Ha kitalálunk egy új csomagot,
+akkor gyakorlatilag az lesz, hogy időnként jön valakinek
+egy jó ötlete, miért ne csinálnák meg ezt.
+Elkezdünk dolgozni rajta,
+technológiailag megcsináljuk,
+és én gyakorlatilag egy óra alatt
+létrehozok egy új
+landingpaget neki,
+és utána már létezik a csomagunk.
+Ezt jelenti, igen?
+Az azért jó, mert ha el vannak
+titkolva a csomagok,
+nem tudom, szabad-e ilyet csinálni, vagy etikus.
+De hogy, mint Sales Engineer,
+rá lehet
+látni, hogy ez mekkora
+kicsit nagyobb a cég,
+drágában lehet
+számlazni.
+És az is van, hogy egy csomagkontextus
+tudom.
+Igen, ebből a bölcsességpont az,
+hogy a csomagok azért jók,
+mert ha van valami bőválaszt,
+akinek van gyermeke, az tudja,
+hogy ha a gyermektől megkérdezett,
+hogy mit szeretnél felvenni, az egy rossz kérdés.
+A gyermeknek az kell, hogy itt van ez a két ruha,
+melyiket akarod felvenni a kettő közül?
+Mert akkor viszont tud dönteni.
+És ez így működik a világban is,
+hogy fogalma sincs egy átlag
+cégvezetőnek, hogy
+a DevOps-ban mit is lehetne csinálni.
+De ha a csomagokat ajánlasz neki, akkor már tud kombinálni,
+már tud valamit csinálni.
+Úgyhogy eltörőjük az árakat,
+most egyben a pillanatban ezek vannak,
+de amúgy, ha már felmentek a honlapra, már nincsenek árakzárójelve.
+Úgyhogy ez egy
+allow slide, mehetünk tovább.
+És
+vannak más csomagok is,
+amit még nem kerültek fel.
+Tehát a Cloud Migration,
+itt is meg lesznek Case Study-ig,
+különben tudunk CSI-ni Python-okat felépíteni.
+Akkor Security Audit-ot felírtam,
+de itt igazából kellene valaki,
+aki Security-be beássa magát,
+vagy felveszünk valakit,
+aki Security-ből ügyes.
+Akkor itt van az inference farmunk,
+ez fenn van,
+Finof Service fenn van,
+és a...
+ezt nem tudom,
+mert tudom,
+a CPSF-enem,
+ez függessék,
+úgyhogy mehetünk tovább.
+De hogy ezt akartam mondani,
+ez a potenciál,
+ez a végtelen lehetőség,
+ez a mind a kezünkben van,
+hogy újabb csomagokat döntsünk el.
+És ez nem az van,
+hogy most a felső menedzsment gondolkozik,
+és megmondja a tutit,
+hogy most ez lesz,
+hanem az van,
+hogy együtt gondolkozunk,
+és erre is hívja titeket.
+Gyakorlatilag Szántó Zoli
+egy ónappal ezt őt mondta,
+hogy kéne olyan projekteket vállalni,
+ahol ilyen ott el tudunk használni,
+mert ebbe már van tapasztalatunk.
+Kicsit a ProSARP,
+egyből már kattintottunk,
+és mentünk,
+így javasoltunk a dolgokat nekik.
+Most már a ProSARP
+egy jó kis referenciapont lesz,
+az MVMB-vel együtt,
+úgyhogy simán rá fogok tudni majd menni,
+hogy elindítok egy külön ilyen sales pipeline-t,
+csak monitorozásra.
+Csak nem tudom,
+hogy ki az, aki monitorozást keres így az interneten.
+Valaki tudná nekem egy monitoring rendszert felépíteni,
+de hogy valahol elindulunk,
+és aztán majd meg...
+Az is lehető, amikor jön egy kliens,
+lejönünk vele beszélgetni,
+egy sales engineer-ről az oldalamon,
+és elkezdünk beszélgetni,
+rájönk arra,
+hogy egy monitoring rendszert is meg tudnánk csinálni,
+hú, egy nem tudom,
+meg tudnánk csinálni a CICB-vel,
+vagy játsz meg, nem tudom.
+Tehát, hogy az upsell-nek a lehetősége végtelen.
+És alig várom már,
+tehát 2026 végére azt szeretném,
+hogy egy csomó kliensünk legyen,
+tehát felépítsünk nem tudom,
+5-10 klienst,
+ami már amúgy csomónak számít egy egykora méretbe,
+hogy mindenfélével is dolgozzunk.
+Mert van egy ilyen stratégia,
+hogy nem tudom, hogy lesz erről külön a slide,
+de még nem ide.
+De igen,
+jó, bocsánat,
+menjünk egy slide-dal tovább,
+aztán visszamegyünk.
+Tehát gyakorlatilag ez a két nagy stratégiai pillér van,
+az enterprise oldal,
+és a kisklienseknek az oldal,
+amiről beszélgettünk,
+ugyanis az előnye a kicsi klienseknek az az,
+hogy tudunk kísérletezni,
+vissza tudjuk utasítani,
+hogyha nem tetszik,
+be tudunk integrálni juniorokat,
+tudunk gyakorolni soft skill-eket,
+tehát olyan helyzetbe tudunk hozni
+olyan embereket,
+akik még nem próbáltak leülni klienssel,
+hogy megpróbálhatják,
+ha nem jön össze,
+nem jön össze, whatever.
+Szóval ez az inkubátor a kiskliensekkel,
+ki tudjuk magunkat kupálni
+arra egy csomó technológiához,
+mindenhez és soft skill-einket kikupáljuk minden,
+hogy amikor elmegyünk a wall-hoz tárgyalni,
+vagy elmegyünk a nem tudom mihez,
+tehát le ez elmegy,
+akkor tudkozni egy sales engineer-t,
+a CTS csapatból egy sales engineer-t,
+nem tudom honnan,
+és gyakorlatilag egy ilyen pajsként úgy megvédve lesz,
+tehát lesz majd tud menni elő,
+de egy csomó mindenki majd fog tudni
+neki mindenfélét ajánlani,
+és ilyen lehetőséget.
+Tehát az Enterprise hozza nekünk
+a hosszú távú nagy stabil jövelőit,
+a kicsik klienesek pedig a tapasztalatot fogja tudni hozni,
+úgyhogy menjük vissza egy nyitvéssel.
+És milyen marketingeszközök vannak a kezünkben ebben a pillanatban,
+azt akartam így mondani,
+tehát van egy web oldalunk,
+aminek most már a mesterévé váltam,
+a covercard-tal,
+eszméletlen tempóval tudok fejleszteni benne,
+ami eddig nem volt jelent,
+tehát az elmúlt hónapokban vért is írtünk szó szerint,
+hogy valahogy már kinyitjünk egy oldalt,
+ez az adminisztrációval és a Sellveon miatt volt,
+tehát nagyon hosszú adminisztratív ilyen húkokon kellett átmenje,
+tehát Nóriuk kellett validálja,
+aztán Szulni Miki kellett validálja,
+aztán Klaudia kellett átnézze,
+aztán egy keletei Viktor az Ercoftól,
+akinek html-formában önti az egészetet.
+Szóval szörnyű rémálón volt,
+aztán annyira lassan ment,
+hogy egyszerűen szóltam Mikinek,
+inkább kérek elnézést, mint engedi,
+én létrehozom,
+ezentúl direktbe Nóri-tól sem fogom kérni,
+amúgy sincs ideje átnézni ezeket a dolgokat.
+Úgyhogy most gyakorlatilag annyira lecsökkentő az egész,
+hogy én a Szerbióba editálom a HTML-t,
+közben küldök egy-egyinket Mikinek meg Nórinak,
+de úgy sincs idejük átnézni.
+Úgyhogy gyakorlatilag, ha kitalálunk egy csomagot,
+egy óra múlva kín van az a csomag,
+és már kezdhetünk szélzelni.
+Már átállítok egy ilyen AI-agentet,
+vagy nézzem után,
+mert valami való lehet tudjuk élni.
+Úgyhogy izgalmas bizniszt fogunk elindítani.
+A website ehhez egy,
+azt biztosítja nekik a landing page-t.
+A Linkedin-en van egy Sondvisa profilok,
+majd tudunk blogokat kirakni,
+blogbejegyzéseket,
+és van egy stúdiónk is,
+ahol mindenféli tudunk forgatni,
+tehát médiaanyagokat is tudunk csinálni.
+Egyelőre most nem látom a csapatból ki az,
+aki szívesen jelentkezni a saját médiaanyagot forgasson,
+de ezt majd még kitaláljuk.
+Én amúgy szívesen beszélek csak magyarul.
+Tehát hogyha most én angolul kéne megszólaljak,
+azért az angolom nem annyira professzionális,
+mint amennyivel.
+Tehát én nem vagyok képes reprezentálni a Sondvisa.
+Zárójában nem tudom,
+hogy a Sondvisa képes reprezentálni saját magát.
+Tehát hogyha annyira nem vagyok benne, biztos, hogy most
+bárki mondjuk, például eznek nagyon jó az angolja.
+Úgyhogy az is lehet, hogy majd elhívjuk és
+veszünk majd vele egy jó pár ilyen promovanyagot.
+De hogy megvan a képességünk is használjuk.
+Tehát ez nem kicsi dolog amúgy egy stúdió,
+ahol a fény, a hang és a háttér és a vágás és mindent.
+Tehát hogy nem tudom, láttátok-e a grihi a videót.
+Az egy profi valami volt.
+Na összeraktuk, szórakoztunk egy jót vele.
+Szóval szeretem egy Zoperú-t.
+Mehetünk tovább.
+Jó, mehetünk tovább.
+Jó.
+Tehát akkor
+Szenyor és Junior elől beszélgettünk.
+Szerintem...
+Igen, tehát az igazi hozzáadott értéknak a csapatban
+most összesítve az az, hogy
+van egy csapat, amiben van Szenyor és Junior,
+és a Szenyor csak azzal foglalkozik, ami izgalmas,
+a Junior pedig azt tanulja, amit meg kell tanuljon.
+Tehát nagyon fog tudni fejlődni.
+Az átlag ár viszont fenntartható.
+Tehát már abszolút versenyképesek vagyunk
+az átlag árunkkal.
+Akár még kelete szemben is.
+De az, hogy az EU-n belül vagyunk, az egy hatalmas előny.
+Az EU-n belül egy olcsó régióba vagyunk.
+Tehát, hogy gyakorlatilag Ukrajna szintjén
+vanak az áraink.
+Tehát egy ukrány cég, amelyik
+nagyon jó versenytársunk,
+rengeteget tanultam tőlük.
+Az ő áraikkal már profitábilisak vagyunk.
+És gyakorlatilag így Németországban
+kétszer annyit kérhetünk,
+vagy két és fél szeret.
+Úgyhogy ez mind csak attól függ, hogy mennyi tapasztalatunk lesz.
+Tehát, hogyha egy...
+Az ukránok egy kicsit amatőrök voltak ilyen szempontból,
+amikor elkezdtünk interjút.
+Tehát megkértem a Bayert, hogy
+hogy kérjen egy áraajánlatot.
+És annyira azért nem volt a fügyesek.
+Nem tudom, zonják eddig volt a tapasztalatot.
+Ott voltál a...
+Igen, beszélgettem.
+Háromcég is volt, egy kettő, nem tudom.
+Kettő út.
+Hát igen, nem is felejtették,
+küldene az áraajánlatot, meg...
+Azok a németek voltak viszont,
+amikor kéfelejtették.
+Elég kurának volt az egész beszélgetésre.
+Beléptek a strácsok,
+kicsit fáradtak, mert most értek teambuilding-ről,
+és úgy a másodaposok.
+Ez egy beszélgetes hídítornak azért erős.
+Ez egy kicsit amatőtársájának.
+Na, mindenlegjünk azok.
+Szóval lépésről lépésre,
+ilyen szempontból is örnek a Gyarának,
+hogy az egy olyan megjeleníts biztosít a csapatnak,
+hogy nem azért nem egy ilyen összedobott forma,
+amit mi találtunk ki,
+hanem van egy formalitása.
+Na jó, oké. Szóval,
+igenis a skálázható kapacitás.
+Tehát az van, hogy valaki fél FT-t rendel meg,
+de a shit is the fan,
+akkor 0,5 FT-ről
+másfélre fel tudunk menni, vagy háromra,
+hogyha szükséges, hirtelen.
+És ez nagy előnye a csapatunknak.
+Amúgy én úgy érzem, a csapatunk most
+kellően
+nagy ahhoz, hogy el tudunk indulni,
+viszont kicsi ahhoz, hogy
+klienséget tudunk befogadni.
+Tehát, hogyha elindulunk ezen az úton,
+szerintem az év végéig fogunk növekedni.
+Most nyilván jön a két junior,
+de őket még annyira nem számolom bele,
+de valószínűleg tartom, hogyha még bejön egy pár kliens,
+akkor muszáj lesz tehát, hogy
+rá fog kényszeríteni arra, hogy növekedjünk.
+Itt van Rajmond a pipeline-ban
+nagyon szívesen csatlakozna, egy nagyon ügyes személy,
+úgyhogy ő lesz az első,
+akit fel fogok hívni.
+De utána, ha kezdünk növekedni,
+beindulnak az interjúk is.
+Gyakorlatilag az interjúk során
+azt kell kiszűrjük,
+hogy kik azok az a alázatos,
+gyorsan tanuló bátorharcosok,
+akik méltóak ahhoz, hogy ebben a csapatban dolgozzanak.
+Még van egy ilyen titkos,
+rejtett potenciálunk, az Kovács Attila,
+aki most el van rakva a Jumeon.
+Egy fél évig,
+kb. még előre látunk a Jumeon,
+viszont azt tudjuk, hogy a profitabilitás
+azon a projekten lecsökkent,
+tehát most egy olyan 48%-os
+hatékonysággal
+hatékonysággal működik az a projekt,
+hogyha emlékeztek, 100% az a cél, amit el akarunk érni,
+0% az azért dolgoztunk, hogy éljünk.
+48%-nál tart, tehát az a sárga tartomány,
+én nem vagyok el elégedett,
+de minden esetben stabilan hozza a bevételt is.
+Most ebben a pillanatban amúgy sem tudnám ki konkrétan
+mást adni, mert az Observerre
+még egyszerűort nem raknák rá.
+Tehát, hogy ez így.
+Jó, oké, mehetünk tovább.
+Jó, itt a szerepek vannak,
+tehát van, amiről még nem beszéltünk,
+Mátó Zoli, ő képviseli hivatalosan
+a Sonriza fele a
+kapcsolatunkat, nem tudom, mi még létezik ez a pozíció,
+lesz, hogy Gildhead végül.
+Persze, már már nem lesz szervezésétek is mindjárt,
+csak a HR még a...
+Szerződés, az mit jelent?
+Gildhead-eknek lesz. Külön szerződése?
+Szuper.
+Lesz egy hivatalos Gildhead-ünk,
+ő lesz a
+szakszervezeti vezető,
+de hogy
+ennél fontosabb az,
+hogy gyakorlatilag egy Gildhead
+egy másik szinten fogja tudni képviselni
+a csapatunkat, én egy másik szinten,
+úgyhogy ez egy nagyon jó lehetőség,
+hogy egyszerre lefegyük a
+unitok közötti kommunikációt,
+és a management közötti kommunikációt,
+nagyon jó diplomatákká kell várjunk,
+úgyhogy ez így szuper lesz.
+Őthetként gyakorlatilag az, hogy megszervezted
+ezt a csapatépítőt is,
+ez egy külön ajándék.
+Én nagyon sok csapatépítőt szerveztem,
+több mint húszat,
+és tudom, hogy mennyire eszméletlenül nehéz megszervezni,
+mondjuk neked elég könnyűnek úgy tűnik,
+mint hogyha könnyűen menne.
+Biztos, hogy járja a szerveztet,
+de nagyon szuper volt, köszönöm szépen megszervezted.
+Tényleg egyben tartod a csapatot,
+és a másik az, hogy
+mi fog jönni a jövőbe
+stratégikusan. Valószínűleg én távolodni fogok
+a csapattól.
+Tehát, hogyha 5 év múlva nézzünk,
+ha én még mindig abban a pozícióban vagyok, ahol most,
+akkor rosszul csináltam.
+Az én feladatom az, hogy absztrakciós szinten lassan
+fennel haladjak, vagy legalábbis el innen,
+és a mögöttöm levő űrt
+valaki majd betölti, tehát majd lesz
+egy business unit lead.
+Lehetséges az is, hogy megosztjuk, tehát lesz egy
+technikai szempontból, aki vezeti a business unit
+és gazdasági szempontból,
+stratégikus szempontból még lehet maradók.
+Nem tudom, hogy mi az, mi lesz, mit hoz a jövő,
+de arra kell készüljünk, hogy egyre jobban
+tudjunk autonóm módon működni.
+És
+önszerveződően minél inkább
+képesek legyünk arra, hogy
+az akadályukat vegyük, tanuljunk, tehát
+hogy most nincsenek receptek, ebben azt
+a kort éljük, amikor havonta
+változnak a dolgok, és gyorsan kell tudjunk
+reagálni, alázatosan,
+nyitottan kell menjünk, mert valójában
+gyorsan meg is lehet tanulni, nem azok,
+amikor komplikált a világunk most, hogy
+ne tudjuk ezeket megtanulni. Szóval, van egy
+guild hegyünk, lesznek
+és erről fogunk mindjárt beszélgetni.
+A technical account managerről már beszélgetünk,
+de akár belemehetünk a részletekbe,
+amit is akarnak, egy technical account manager,
+és a sales engineer, az is egy külön pozíció,
+arról is külön beszélhetünk, hogyha szeretnétek,
+mehetünk. Lássó a következő.
+Igen,
+felvedelőlt ez a kérdés, gyorsan generáltam
+ebben is egy slide-ot. Mit is csinál a
+support?
+Ez egy manage service-nek a része.
+Van a normal support, amelyik
+12 órát fed le a napba, azáltal,
+hogy az időzónákat eltoljuk,
+és azáltal, hogy vannak korán kellők és
+későn fekvők. Ezért munkaidőben ezt el tudjuk
+intézni, tehát kb. 12 órát a
+normál support el tud vállalni.
+Ide majd lesznek olyan projektek, amiket
+normál supportba adunk el, ilyen lesz az
+observer is például, és itt kell majd ezzel
+lát vállaljunk, és itt kell elérhető legyen.
+És ezek a csapatok mind különbözőek lesznek,
+tehát, hogy attól függően,
+hogy éppen abban a csapatban a unit
+valószínűleg a unit fogja majd ellátni azt a
+normál supportot. Itt az a feladatunk,
+hogy a normál supportban a unit
+egymás között le tudja osztani úgy a munkát,
+hogy senki ne legyen egyszerre szabad
+napon például, ha lehetséges.
+Ha pedig egyszerre mindenki szabad
+napon van, akkor valaki tudjon bejönni egy
+másik unitból, vagy éppen, hogyha
+nagy baj van, akkor inkázzon, akkor tudjon reagálni.
+Ha pedig felirve karácsony van,
+na ez egy kérdés, mit csinálunk
+itt ilyenkor? Én azt mondom, hogy a normál
+supportban ne vállaljunk.
+Tehát van lesznek majd olyan hivatalos ünnepnapok,
+amikor azt mondjuk, hogy a normál support leáll.
+Ha azt akarja, hogy legyen karácsony, akkor is
+akkor az legyen premium.
+Normál support,
+a 12 órát, az munkaidő.
+Tehát munkanapokon értjük a titeket.
+Munkanapokon értjük, igen, igen.
+Tehát a hétvéget.
+Tehát ez a normál munkavégzéshez
+fog tartozni, és itt is az
+én válaszom. Tehát most úgy mondom,
+ezeket, mintha eldöntöttem volna,
+semmi nincsen eldöntve, hanem inkább csak egy
+megpróbáltam összeszedni, azért nekednek így
+egy órát eltöltsünk, hogy idáig rájussunk.
+Az én javaslatom az, hogy azok
+a unitok lássák el a normál
+supportot, akik amúgy is dolgoznak a projekten,
+egymás között zsonglörködjék ki,
+és itt kell majd megbeszélni azokat
+a belső szabályzatokat, ezt hogyan csinálják konkrétan.
+Mindenesetre a felelősségi köre
+a Technical Account Manager-i lesz, hogy ez le legyen
+fed, vagy figyeljen arra, hogy
+mindig legyen valaki elérhető.
+24 hétegy support ez már egy más dió,
+mert ezért külön pénzt
+is kap a 24 hétegy support,
+és itt úgy kell majd megszervezzük ezt az egészet,
+hogy olyan projektek legyenek, hogy tényleg
+mindenhez legyen Credential, és egy
+5-6-7 hős csapat tudja ezt majd
+elintézni, de már kell egy
+Project Manager-ide, kell külön a Schedule, tehát ez egy
+komplex valami, és drága.
+Nem akarom olcsóan adni a klienseknek,
+viszont itt az is van, hogy egymásra
+terülnek, tehát egy csapat el tud látni egy pár
+projektet. És itt is kell látni azt,
+hogy ha egy projekten bennül
+túl sok eszkaláció van, tehát egy fel,
+egy hetente van 5, az baj.
+Az azt jelenti, hogy vagy a projekte van,
+valamit ki kell találni, hogy ne legyen annyi.
+És itt is az AI be tudjuk majd vetni,
+hogy segítsen
+abban a 24 hétegy supportban,
+csak akkor csörövüljön meg a telefon, csak akkor
+jusson el hozzá, kelljen fel a személy,
+hogyha egy AI nem tudja ellátni.
+És remélhetőleg 98%-át a tiketeknek
+kiszűrjük, ilyen
+nem is stílusú valamiben, hogy havonta
+pár tiket jön, az a
+komit tartható. És nem meglátjuk,
+hogy hány projekten tudjuk ezt csinálni.
+Egy csapat, mennyi
+tud ellátni, ennek függényében fogom majd beárazni.
+De a célunk az az, hogy ha olyan
+kliensek vannak, akikkel baj van,
+akkor azokat kiszálljuk. Azt mondjuk, hogy
+vagy nektek ötszörös árvállaljuk el,
+vagy nem tudunk együtt dolgozni.
+De itt sem kell mindent, tehát nem az a cél,
+hogy minden szart behozzunk ki a 24 hétegy szuporban,
+megfertőzi a csapatot,
+hanem az, hogy
+működjön. Ez egy nagyon fontos dolog,
+mert sokan kérik ezt. Nem sokan,
+hanem néhányan kérik ezt,
+és azok viszont
+az egy plusz át
+eddigbelni. Jó, mehetünk
+tovább.
+Jó,
+hogyan kommunikáljunk a
+belső kliensekkel? Van egy havi
+reportunk, erről beszéltünk.
+Ez már működik egy jó pár projekten,
+hogy vannak ilyen, akár baby stand-up-ok
+vagy beauty stand-up-ok, de ezek nagyon fontosak,
+hogy megkapjuk a megfelelő személyt le.
+Két projekten is kapufát rúgtunk,
+amikor ellennel próbáltunk kommunikálni,
+és azt hittük, hogy ellen a mi
+autoritásunk, és közben Dani azt mondta,
+hogy nem. Meg kell kapjuk
+egyszerűen ki az, akihez kell
+eszkalálni, ki az, akivel kell
+kommunikálni, de ez nem csak a letörtén,
+meg ez ugyanígy megtörtént a Green Hillen is,
+nem megfelelő személlyel kommunikáltunk,
+most tudjuk, hogy most már Reho Balázs az, aki
+vele kommunikálni, vagy még lehet még ő sem.
+Tehát most kiderült, hogy még lehet, hogy ő sem.
+És
+emellett a napi elérhetőség kellene.
+Tehát, hogyha a klienesnek az az érzése,
+hogy nem tud elérni minket nap, mint nap, az bari.
+Tehát a szoporthoz hozzátartozik
+az a jelenlét, hogy érezze,
+és amit mondott szántózzal, hogy valahogy meg kell oldjuk
+mindenféle alert-rendszeres
+notifikációval, hogyha a klienes
+egyet akarna velünk
+beszélni, akkor mindig legyen valaki,
+aki elég gyorsan tud kommunikálni.
+Valaki, aki...
+Nem kell felelítni megoldani elókat, csak hogy oké,
+ott vagyunk, tudunk róla.
+Igen. Egy fél óram voltól kezdve foglalkozni,
+vagy két óram voltól. Mit lenne, ha nap közepén foglalkozzék ezzel?
+De a klienesnek ez a szubjektív érzete,
+már meg van, és azt mondja oké, akkor rendben van.
+De az, hogy ír egy üzenetbe is...
+Itt tudom, mondjuk például megtörtént az, hogy írt,
+és mi nem küldtünk neki egy egnálat,
+a háttérmes, hogy tudomásul vettük.
+Az, hogy egy csendben bólintunk,
+azt a klienesnek fogja látni,
+nem tudom a viccet is, mert székelybácsival
+mindegy, nem mondom el.
+De ugye...
+Nem az, amikor...
+Bólintottam.
+Az ajtón...
+Valaki
+így az ajtón, így dörömbős,
+kérdezik, hogy te vagy az édesapám?
+Csend.
+Te vagy az édesapám?
+Aztán minden...
+Te vagy az édesapám?
+Egy egyetűt.
+Az öreg egy nagy véres ilyen vállal.
+Hát miért ütöttél?
+Hát én kérdeztem, hogy te vagy az.
+Hát én bólintottam.
+Szóval, hogy csendben nem...
+Ilyes, kell érezze a jelenlétünket.
+Ez nem technika, ez diplomácia.
+És kell értsük, hogy igen.
+Tehát a gyors visszajelzés,
+és a menedzsmenten
+folyamatosan kell egy ilyen kapcsolatunknak.
+Ezért telik nekem két és fél-három napban,
+hogy azt a statisztikákat megcsinálja.
+Mert ilyenkor azt csinálom,
+hogy veszem a nagy raw timesheet-et,
+és veszem projektenként az egészet,
+és akkor belírok egy projektbe egy összeget,
+most itt elköltöttünk x órát,
+mindig bemegyek a megfelelői csapatba,
+és megkérdezem, hogy ment az egész,
+volt-e valami eszkaláció,
+szép munka volt-e, vagy éppen szarva vagyunk,
+kihez kell forduljak,
+és mindig van a tizenvalamennyi projektünkből
+három, négy, öt, hat, hét,
+amivel kell foglalkozzak,
+és akkor ilyenkor a fejem ilyen ekkora.
+Tehát valahogy ez kéne, kicsit csökkentsen majd én,
+de hogy a menedzsment szintű kapcsolat
+az egy fontos dolog.
+Tehát az is lehet, hogy ilyenkor a technical account menedzserek azok,
+akik gyorsan összefoglalják nekem.
+Tehát ne kelljen sokat magyarázni.
+Kérdezek a technical account menedzserre,
+minden rendben volt, rendben volt, mehetünk tovább.
+Na most,
+ehhez kell egy érzékenység, amikor a technical account menedzser
+érezze, hogy a csendben nem lehet megbízni.
+Ezt most már sokszor tapasztaltam a klienseknél,
+hogy a kliens csendjében nem tudok megbízni.
+Ha minden rendben van, azt azt jelenti, hogy nincs minden rendben.
+Tehát, hogyha a kliens
+explicit azt nem mondja, hogy minden rendben van,
+akkor egyszer, valahogy ki kell erőszakoljuk belül,
+vagy nem tudom.
+Történt a griheaven is, vagy folyamatban van pontosan,
+hogy a kliens csendjében nem lehet megbízni,
+és meg történt az ellen csendjében is.
+De ellen csendben volt, minden, aztán utána
+hagyott a fekete leves.
+Jó. A Zonriváról nem is beszélve,
+egy ripost se jutott el hozzá
+a Zonrivához.
+Háromnegyedési csendben voltak,
+mert tartozik a Zonrizának
+egy csomó mindennel.
+Úgyhogy valójában most azzal profitáltunk,
+hogy nincs abban a helyzetben, hogy ne fizesse ki
+ezeket az összegeket.
+Egy normál kliens ilyenkor már kiakadt volna,
+hogy mi az, hogy 9 hónapja nem tudunk rólatok,
+eltyüntettek egy fél hónapra
+december és január között,
+amikor írunk nektek, nem válaszoltok.
+Tehát, hogy ez milyen service, és joggal mondják,
+mert az ő szubjektív meg lélésük az volt,
+hogy mi nem válaszolunk nekik.
+Persze, ez nem volt igaz,
+mert ott voltunk meg minden, tehát én végigkövettem,
+de na, adtunk neki 30% kedvezményt.
+Arra a hónapra.
+Na jó, mehetünk tovább.
+Eszkaláció.
+Hogyan eszkaláljunk? Először is
+az első a csapaton belül,
+második az, hogy a technical account manager
+eszkalál e-mailt küld minden,
+és a harmadik az az, hogy
+hozzám eszkalál, vagy a clients-inél
+a döntéshozónál, tehát erről már beszéltünk.
+Mehetünk tovább.
+Jó.
+Na, mielőtt
+akkor az első képésre ráférünk,
+ledaráltam azt, amit eddig
+gondoltunk erről a csapatról.
+Összefoglaltam meg, hogy van valami,
+ami esetleg még hiányzik benne,
+vagy valamit rosszul mondtunk.
+Egy pont, ahol megállhatunk.
+Jó.
+Akkor az első lépés arra gondoltam,
+hogy identifikáljuk a unitokat,
+hogy milyen unitjeink vannak,
+kezdjük az egyszerűenkel,
+mert az újan formálódott
+Green Hill meg a SynLab,
+ez egy tipikus unit alapú gondolkodás.
+Itt egyszerre Sales Engineer Molnár Dani
+és Technical Account Manager,
+és ahogy két unit tag az Marci
+és Zsolt.
+Ha most analizáljuk ezt a két
+unitnak a működését,
+az elején mindegyiknél azt tapasztaltuk,
+hogy van egy
+ramp-up időszak.
+A klienes fele, hogy lesz egy ramp-up időszak,
+ez bizonyos szempontból mind a kettőnél
+meg is bosszulta magát,
+tehát a klienes elégedetlen volt az elején,
+ezért szembe kellett nézni azzal
+a kudarccal a csapat, hogy a klienes elégedetlen.
+Ezt például az Erger Claps jobban csinálja,
+explicit a szerződésbe leírja,
+van két-három ramp-up időszak,
+amit külön fizet,
+és hogy ez arra van,
+hogy felvegyük az évet.
+Ezt én nem kommunikáltam le amúgy
+mind a két
+mind a két csapat fele,
+bocsánat a klienes fele,
+ezt kell jobban csináljam legközelebb,
+hogy amikor elindulunk, akkor ez tiszta legyen a role-map-nél,
+hogy van két-három hét,
+az alatt felvesszük a szagot, meg minden,
+ez teljesen fizeti, ha nem fizeti, akkor nem is beszélünk vele,
+és
+utána pedig elkezdünk dolgozni.
+Még milyen unitok vannak?
+Nézzük meg milyen olyan különálló csapatunk van,
+ahol valaki dolgozni.
+Van a dirigent, ahol nem tudom,
+most unitként mennyire tudunk gondolni,
+de igazából van önszerveződés,
+úgyhogy szerintem ez egy unit,
+és egyre inkább fogunk tudni önszerveződni,
+ott a technical account manager,
+a technical account manager,
+van egy önszerveződő csapat,
+pont a tegnapi nap hozhatok pár döntést,
+és javaslom, hogy ezzel az önbecsüléssel gondoljatok magatokra,
+hogy nektek jogotok van döntést hozni,
+jogotok van javasolni,
+már kivívtátok a tiszteletét a kliensnek,
+úgyhogy belül, amit ti jónak láttok,
+kizsonglőrködhettek a szerviz,
+az, hogy 480 órát kell lehozni,
+és nagyon jól tejel nekünk,
+úgyhogy ez egy nagyon fontos kliens,
+és nagyon jól tejel nekünk,
+és nagyon jól tejel nekünk,
+úgyhogy ez egy nagyon fontos kliens.
+Na még milyen unitok van?
+Beszélünk róla.
+Nem tudom, az Observer az inkább egy tipikus fix price projekt,
+tehát nem unit alapú,
+hanem csapat alapú,
+de akkor ott a szerepeket leosztani.
+Istvánnak most már nem csak a vezető szerepet adtuk,
+hanem gyakorlatilag az egész Observer projektnek
+az összefogását kapta,
+ez egy nagy teher.
+Imádkozunk érte, hogy ne érjen ki,
+és hogy megérkezzünk időbe.
+Utólag mindenképpen,
+amúgy az Observer szeretnék egy ilyen
+posz-mortem evaluálást,
+mert azt akarom, hogy azt lássák a
+felső vezetők, hogy nem megyünk,
+nem mozdulunk ki a felelősséggalól,
+megnevezünk, hogy itt rontottuk-e, itt rontottuk-e,
+ezt fogjuk másképp csinálni, sajnáljuk.
+Pont.
+Mert tényleg mi is rontottunk el dolgokat,
+nem csak mi, de nem akarok ki mozdulni
+a felelősséggalól. Amit fel lehet vállalni,
+vállaljuk fel.
+Milyen csapatjaink vannak?
+SocialBud.
+Most jelen pillanatban ki dolgozik?
+Marci, te is dolgoztál valamennyit.
+Ki dolgozik még a SocialBud?
+Én volt, én, meg
+Dávid volt,
+még azt hiszem rajtam.
+Szeklánsanyi volt, egy darabiből.
+De már nem vagy
+tagja a unitnak ilyen szempontból,
+de úgy tartott, hogy mind potenciálbe
+tudsz ograni, hogyha valójában.
+Az most nagyon bang az a projekt,
+de ez nem is baj,
+mert nagyon sok órát égettünk leinte,
+és most nagyon nincsen mozgás rajta.
+Én kb. két hetente
+beszélek Krisztával,
+vagy ha mondta egyszer beszélek Krisztával,
+megkészítem a riportokat nekik.
+Ennyi.
+Amúgy az szuper, a SocialBud bizonyos szempontból
+egy tipikus projekt,
+ahol az elején kapufát rogtunk,
+neki fogtunk nagyon proaktívan megcsinálni.
+Amúgy sem volt munkánk,
+tehát, hogy nem baj,
+hogy proaktívak voltunk.
+De hogy most jelen pillanatban
+nyorsan megnyitom, hogy hol tart a SocialBud.
+És jelen pillanatban még mindig
+veszteséges a SocialBud amúgy,
+mert nem hozta ki azt.
+De az elmúlt
+szempontból,
+mert nem hozta ki azt.
+De az elmúlt több mint 6 hónap
+abszolút nyereséges volt,
+úgyhogy jó irányban haladunk.
+Meglátjuk, mint tudunk ezzel csinálni.
+Az Onriva egy másik,
+ott ti a pillanat, az Onriva,
+most ebben a pillanatban
+Márk és Boti.
+Az Onriva egy másik
+volt beteg projekt,
+de az viszont nagyon jól kijött.
+Most már 72%-on tartunk,
+mert az elmúlt több mint
+fél év nagyon nyereséges volt.
+kis állatorvosi lót tanulunk az Onriva-ból,
+úgyhogy ez szerintem így rendben van.
+Itt nincs kimondva viszont ki a Technica
+lökál menedzserre. Ki volt mondva, hogy Sanyi az,
+de te már nem beszélél részt annyira.
+Úgyhogy ezt
+most nem akarunk ebben a pillanatban megbeszélni,
+de ez egy tudó,
+amit lejegyzünk,
+hogy meg kell kapjuk a Technica lökál menedzseret,
+akik fel van hatalmazva.
+Ez amúgy ki lemondva,
+amikor Sanyi áll
+az Onriva-ról.
+Amikor KV
+akkor tavaly április környékén
+engedted el ezt az Onriva-t?
+KV
+Na, ha ki van mondva,
+akkor én nagyon örvendek,
+te vagy van a Technica lökál menedzserre.
+Az okfű az hamarosan le fog járni,
+az a Sztornai Zsolt. Most már egyedül viszi,
+amúgy pont lezzelénkították az okfűt,
+úgyhogy emlékszem, hogy melyik teremben voltam,
+amikor megnéztük.
+Az egy tipikusan jó projekt az az okfű.
+Ilyenből kell sok nekünk az okfű.
+Unalmas,
+tejelnek minden hónapban.
+Szóval, ha ilyen projekteinkből
+felrakjuk az 50%-át a bevételünknek,
+bocsánat, a szükségletünknek
+a 100%-át,
+tehát, hogy ilyen unalmas
+projektek tartsanak el minket,
+akkor rengeteg időn felmarad,
+tehát nem az van, hogy lefoglalja az időnket,
+hanem rengeteg időn felmarad az izgalmas dolgokra.
+Plusz a Union Europe-nak nem unalmas az,
+ami nekünk unalmas.
+Jó, Diligentről beszéltünk,
+a Gree Hill színlapról beszéltünk,
+a Colosseum Dental csapatnál.
+Marci
+az a fő személyi,
+Boti van még ott a Colosseum Dental-nál,
+és még van-e valaki?
+Zoli.
+Hát,
+ha beszélek Marci-ban,
+ha elakadnak valami?
+Pont ez is a feladata,
+itt most,
+kérdés az, hogy mit nevezünk Techniculacour Manager-nek,
+mert valójában Csaba most már főként hozzád beszél, nem?
+Igen. Tehát, hogy az is lehet, hogy kilondhatjuk,
+hogy akkor legyen Marci,
+autoritási körünk lesz,
+ha azt érzett,
+valamirem, hogy biztos akkor ezt halálhatsz hozzám,
+vagy Zolihoz,
+nem bálám a Zolihoz először,
+és akkor utána mennénk felfele,
+amúgy egy tipikusan jó fejkliens,
+jól fizet,
+ez egy igazi sikertörténet,
+az árát. Itt kell viszont megbeszéljük,
+szerintem még a mai nap,
+valamikor, miután kicsit lepihentünk,
+hogy azt, amit kell szállítsunk,
+az hogy fogunk szállítani,
+mert ötven valamennyi napot esztimáltunk,
+ki is fogja fizetni,
+nagyon szokták,
+és nem tudom, hogy haladunk,
+az az érzés, amely elmentünk,
+a sidrack az egésznél,
+és krikusan így jönnek a konfliktusok.
+Nehéz, mert elég sok
+probléma volt ott
+nem tudom, mennyi idően két hétre ment el?
+Nem nézsz ez olyan?
+Szóval szerint azt mondta Csabó el,
+de ezt ugye, muszáj elmondjam, ez ugye jó,
+ez ugye, hogy Idzsi elment
+Indonéziába olyan messze,
+hogy még internet sincsen.
+Jól a gondolás helye.
+És neki volt egy olyan, egyedül valami
+credence-helye, hogy meg...
+Igen, Csabának sem volt,
+leültünk Csabába, ha megnézünk, hogy
+tud eladni nekünk credence-ot,
+és nem volt neki se joga ahhoz, hogy egyben nekünk
+Igen, szóval a komplikációk voltak,
+szerintem
+ez azért
+valószínűleg, hogy kicsit túl fog folyni
+az esztemálás utcban.
+De akkor időbe szólunk nekik,
+mert még a májusi határidő az, amit el kell érjünk.
+Még van időnk, én szólok Csabának,
+csak egyet kell tudom, hogy mit mondjak neki ők.
+Figyelj, ezt esztemáltunk, de ezek pluszba jöttek be.
+Hát ezt már Marcz tudja megmondani, szerintem.
+A pluszba jöttek meg,
+a táraformal is volt,
+ott van most probléma, hogy
+nem igazán van lekövetve a
+változások, amit javíteni kell majd,
+milyen extra dolgok,
+hogy
+tudjuk teljesíteni a többi feladatot,
+ha ahhoz kelleni fogunk,
+úgyhogy szerintem egy-egy-kettő ilyen dolog van.
+Na, ez most nem mindenki először,
+mert túl sok idő lesz, de
+erre már tipikusan fogjuk tudni használni a Gyrat,
+azt akarom, hogy legyen egy-egy értelmű
+projektmenedzsment a háttérbe, hol tartunk,
+miben fogunk kifolyni,
+mi az, ami pluszba jött, és a többi,
+hogy ezeket gyorsan tudjuk kommunikálni,
+és felest tudjunk generálni raportokat erről.
+Akkor van az MVMI,
+most áprilisig csend van,
+sőt, májusig csend van,
+ott majd ott még lesz egy ilyen hyperkerias időszak,
+a monitorium csapat majd rész kell mennyed.
+Addig nem lesz munka,
+és azután pedig nem tudjuk, hogy mennyi munka lesz még,
+de ezért nagyon jó referencia volt,
+nagyon jó tapasztalat volt,
+rengeteg pénz hozott, most nem hoz pénzt,
+érződik is a bevételünkön,
+hogy az azért rengeteg ingyen pénz volt benne.
+Már itt az emlőménye,
+lájunk meg egy kicsit.
+az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+de amik a pászlóként kap téged ott a mondjuk az ha bajnak az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+A következő mini projekt az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az az
+mostani állás szerint egy év alatt ki fogja hozni az observer magát, hogyha most valahogy áprilisban a hajba elkezd zúszni, akkor rendben van, akkor végig is igazából non-bit igaz volt ez a projekt, annak ellenére félre volt menedzser, mert félre volt csúszva ez az egész, mégis azért non-bit igaz volt ez a projekt, mert ki fogja hozni gazdaságinat.
+Jó, menjünk a következő szájra, ezek most már valaki kérdésebb, hogy erről már beszéltünk, normál support versus 24, hát egy support.
+Akarunk erről még külön beszélgetni, tehát hogy ezt a témakört mennyire beszélhetünk.
+Egyet értetek-e azzal, hogy a vaslattal legyen egy 24-es support csapat, aki önmagában létezik és külön felvállal a projekteket, és külön a sima support, az pedig a unitokra lesz bűzve.
+A normál support az a 12 óra az...
+Ez azt jelenti, hogy reggel 8-kor, ha elkezdi valaki Romániában, az reggel 7 óra Magyarországon,
+és hogyha valaki délután 6-kor fejezi be, az délután 7 óra nálunk Romániában.
+Tehát, hogy valahogy azt kell megmondjuk, hogy szétcsúsztassuk ezeket a munkaidőket, és akkor mindenki valójában munkaidőben tudja ezt szupportálni.
+Ráadásul van egy olyan játéka is ennek, hogy a normál clientsnek 2-4 órásessel átvállalunk.
+Tehát, hogyha azt mondjuk, hogy 2 óra alatt válaszolunk, akkor valójában az fog történni, hogy jön a clients este 6 órakor, és másnap reggel fogunk rá válaszolni.
+Tehát, hogy van egy játéka ennek, és ezért látom azt, hogy fog ez működni.
+És normál spot azt jelenti, hogy kommunikáljunk, vegyük át, nem muszáj pont akkor megoldani, nem?
+Pontosan. Átveszünk és megmondjuk, hogy kb. mikorra számíthat arra, hogy vélemény mondunk arra, hogy mi a...
+Mert lehet akkora a baj, hogy egy hétig fogjuk oldani, de az első kommunikáció, hogy got it, megkaptuk, az minél hamarabb.
+A második, amikor elkezdünk belemenni és diagnosztizálni az egészet, az viszont másnap már meg kell történni.
+Kivéve, hogyha low priority-m, akkor 72 órát vállaltunk.
+Tehát, hogyha... minél gyorsabb meg kell tudjuk tudni, hogy milyen szinten van ez a ticket.
+Tehát nem kell azért zseninek lenni, hogyha leáll az egész rendszer, az P1-es vagy P1-es vagy P1-es vagy P1-es.
+De ha valami nem működik, és azt mondja a klienes, hogy jába kattuntok a kérdőjelre itt már, ami jön fel a tooltip, akkor az P10-es.
+Igen, ez már az incidens management-hez tartozik.
+Amiről szó volt még tavaly, hogy keresünk erre egy toolt.
+Ez lesz a Jire Service Desk, nem?
+Hát amelyre lehet beleintegrálni, de hogy...
+Hát ez előszól, nem a Service Desk?
+Igen.
+Igen, de szó volt valami Ops Duty-ról is, akár...
+Ja, igen, igen.
+...hogy ami az on-kallósoknak, tehát a 2400-es szokoknak, valaki bele táblazni ki a felelős P1-es.
+Mában valami amúgy egy...
+Mert ez SMS-t, ez a Grammar-SIM-TBS, legjobb ámilyen csatornál.
+Szerintem erre fogjuk használni a Power Automate-et, vagy a Azure Logic Applet plusz a Gyra-t.
+Ha jön valahol valami, egy tiket, akkor mi majd átrújtoljuk oda, ahova a szenet.
+Nem, hogy ezért a Grammar-SIM-TBS egy külön funkcionálatása, mert a P1 együtt is lehet használni.
+Én ehhez kérdeznék még, hogy oké, hogy a normál szakportában egy két órás reakciói dövő,
+azt csak anyújtjelesen felkezdtünk foglalkozni a problémával,
+de arra nincsen vállalás, hogy még arra nyújtjuk a problémás.
+Igen.
+Arra nem szabad vállalásunk legyen.
+Ha bár, hogyha egy szerver újra nyújtással megoldódik, akkor az is lehet, hogy már egy füst alatt megoldjuk ezt az egészet.
+Szerintem a 90 pár századékban meg lehet így oldani a dolgokat.
+Igen, de hogy nem mondhatjuk azt, hogy ez garakció.
+Igen, mert azt tudja.
+És a másik, itt megint az is kérdés számomra mondjuk, hogy szabadokat vállalunk, akkor szabadokat mire vállalunk.
+Tehát, hogy általunk üzemelhetetek vagy, általunk felügyélek különhetetek.
+Igen. Tehát, ahol a monitoring rendszerünk mi van is kíván.
+saját, hogy on-premise, például ugye a Observer-nél, ahol az on-premise az nem ami hatása könyve.
+Nem ami szerver területünkben van, nem ami takarik, akkor nőtt takarik a szerver.
+De az on-premise futó szoftverre igen kell, már tudjuk.
+Igen, most szerintem az egy másik kérdés majd, hogy ott hogyan szeparáljuk el mi az ami szerverszak volt, és mi az ami...
+Igen.
+Vars, és majd ott különöztetjük el, hogy meg a papírnak, hogy ezért felülsőködik.
+Na, ez megint egy tipikusan olyan probléma volt, hogy jött Nándi, mint az alapító, és azt mondtuk, hogy mi mögötted vagyunk és segítünk neked.
+De ez a projekt, ez olyan volt, hogy ha most visszamennénk és a betűket így értelmeznénk, hogy mit is vállaltunk, akkor azt mondtuk volna, hogy hát ezt azért nem vállaljuk.
+De akkor Nándi azt mondta volna, figyeljetek, mindenre nem húzhatjátok az orrotokat.
+Tehát valamit csak kell vállaljatok, segítsetek ezt a projektet, mert jött éves szerzőr is.
+Szóval ez egy ilyen birkózás az egész között, hogy most akkor mit vállalunk és mit nem vállalunk.
+Úgyhogy, amikor majd szétszedjük ezt az egészszert és egy ilyen raportot leadunk a menedzsmentnél, akkor ez benne kell legyen, hogy az az igazság, hogy akkodalmas.
+Amit elvállaltunk, nem kellett volna elvállalni, de arra való tekintet, hogy az egész szomalúi zahajú mennyen is ússzunk és ne akadékos vagyunk.
+Töning proaktívak, elvállaltunk olyan dolgokat is, ami amúgy nem annyira kényelmes nekünk, mint például az, hogy on-premert futó szoktvereket.
+Egyébként ezzel a nyurában nincs gondoltam, hogy pontosan a vergiát, hogy akkor mi az a légy, mi az a minden légy, és hogyha vitása dolog, akkor azt hogyan fogjuk rendezni, más között meg mikor.
+Egyébként, hogy az időt volt ott kellett volna még kitolni, hogy akkor a határidő az nem márci úgy közepén, de márci úgy közepén.
+Ez nem is volt megkérdezve többünk, ez elbüntött.
+De most itt kérteszen a kontesztusban igaziból ez most mindegy.
+A másik, amit mondanak a 24 periótre, hogy ugye azért az 5 ember ülünk.
+Az minimum 5 ember.
+Minimum 5 ember.
+Mert ugye 3 űszak.
+Az 3 ember, és valaki szabív maga, aki nem beteg.
+Igen.
+Viszont akkor az, ha nem is feltétlenül az a három ember, az abban a 3 űszakban folyamatosan csak is kizárodat, hogy ezzel korlalkozik,
+az egész így úgy kell belültemlőzni, hogy az éppen határos mennyi, a merébetvérjen az is, hogy felülképpen korlalkozik.
+Tehát ne az legyen, hogy valamilyen olyan projektján van, ahol így a ház, és mellette mennék kapatizit hívást, hogy hát akkor így azért.
+Igen, de akkor már két másik ember is dolgozik olyan korlalkozik.
+Hát az attól függ, mert ugye.
+Jöhet ki rosszul.
+Igen.
+Tehát azért gondolom, hogy az minimum a terve.
+Lehet, hogy fel kell skálálszuk 6-7.
+Igen.
+Kell, hogy meg a biztosági szartani.
+Igen.
+Igen.
+Amúgy egész jó ki van alapulban már ennek a rendszere.
+Van egy PM-ünk, aki beírja az embereket.
+Meg van a módja, hogy hogyan fizetjük ki ezt az egészet.
+Apropó a kifizetés, a konyváknak meg közben így az a lap.
+Ez a nap sehogy, de.
+Csapai úgy, mint hogyha nem válaszolva a stávban.
+Nem tudom.
+Milyen helyzet tehet?
+Hát volt egy jó beszélni.
+Jó beszélni.
+Eltávolítása az elmúlt másfél hétben, és Lili elment szülési szabadságra.
+Konkrétan, ha egy díjták kellett egy sorolítani.
+Jó.
+Szóval azért nem.
+De majd, általán most már egészen várjuk.
+Ugye érjétek, ez garantáltan meg fog érkezni ez a pénz.
+Tehát, hogy kicsit ürelmet várok.
+Meg nézzem, hogy Bence hogyan tudja ezt menedzselni.
+Veszéltem a Bencevel, mondta, hogy aki épp szoktát írni a szabadságú más, hogy a jövő éppen már így.
+Na jó, jó. Oké. Ez akkor így lesz. Semmi nem fog elfelejítődni.
+Jó. Következő szlájd. Nézzük csak én. Junior program.
+Jó. Tehát most nem tudom, miért így írta össze az AI, de itt valójában arról van szó, hogy már eldöntöttük a juniorokat, felvesszük.
+A soft skillet-ről délután fogunk beszélgetni. Csak arról akarok neket beszélni, amiről akartok.
+Nem akarok itt okoskodni nektek. Tehát, hogy majd feldobom a témákat, hogy én miről tudnék beszélni,
+és így majd előttitek, hogy akartok-e arról beszélni.
+És menjünk tovább.
+Következő lépések.
+Jó, ezekről még beszéltünk.
+Ennyi ugye a végén.
+Értünk a végére. Még valamiről beszélnétek-e?
+Igen. Jó.
+Bocs, miután én már nagyon kicsit programot szeretném ára bezisztázni már rám.
+Kicsit kicsusszunk.
+De amúgy nagyon jó volt szerintem ez nagyon hasznos.
+Jó, ha az új Diligent-es projekten akkor mondom, hogy eleszekottatom.
+Igen.
+És a squad csapatban...
+Tehát ha jönnek új projektek...
+Tehát most a squad csapatban...
+Igen. Beszéljünk a squad csapatról.
+Emeljen fel a kérdeződik, aki a squad csapatban van.
+Dani Zoli és István.
+Ha jönnek új projektek, akkor megnézzük, hogy mennyi szabad kapacitásuk van éppen nekik.
+Valamennyi van. Tehát ezek a squad csapatot úgy kell elképzelni, hogy pár óra, amikor bemegyünk egy klienesemékkorba, amikor tervezni kell, esztimálni.
+Tehát nem azon, ahogy fél munkaidőben dolgozik egy het-hétig, hanem...
+A piszélet is, nem? Nem tekszik?
+Nem ugyanaz nagyjából, mint a piszélet?
+Akkor ugyanaz.
+Hogyha segítsék el a squad csapatban, akkor...
+Egy követő szintre, akkor...
+Akkor téged is?
+Igen.
+Jó, nézz is meg, hogy...
+Tehát én azt javaslom.
+Én azért nem vaktanak be a squad csapatba, mert...
+Ahogy mondtam nekem, az volt az én edély megélésem, hogy te nem szeretnél ezekkel foglalkozni.
+Igazából a Pressures és a Pressures Engineering az, ami...
+Abban az időben úgy éreztem, hogy még nem az én kenyerem, meg úgy lefáraszt.
+De attól függetlenül a squad csapatban, mint technikai tervezés, és...
+Jó.
+Egyelőre akkor, hogy nem veszlek be a csapatban, hanem a squad csapattal, beszélem meg, hogy mit tudunk ne levezetni.
+Ha szükség.
+Kicsi időt szálljunk majd rá, hogy négyszer közt egy kicsit beszélgessünk arról, hogy hogyan is képzeled el a jövődet.
+Mert én teljesen másképp képzelhetemen eddig is úgy látom, hogy érdemes át beszéljük.
+De hogy mindenképpen öröndek neki, hogy ebben az irányban haladunk, és a squad csapatnak a feladata az tényleg az, hogy oda dobálom be az újabb oportunitikat.
+És akinek van egy kicsi szabad kapacitása, az majd foglalkozik vele.
+És utána gyakorlatilag megfordítja a sales engineering csapat a nagy csapat számára az, hogy összerakjuk közösen, hogy milyen jövőt tudnak dolgozni.
+Igen, Zoli, a programmal kapcsolatban?
+Tudom, hogy ezt beszéltük tegnap esettel vagy reggelben, most már nem is tudom mikor, hogy melyik egyet kávézni meg a dolgok.
+De ezzel is beszéltük ezzel, hogy meglátom a filmk is, a pászkára rá van megfekvődve, mint a...
+A hídé még nem volt semmi, nem azért.
+Én támogatnám más keretek között ezt a kávézást, meg város nézést, meg nem tudom mi.
+De helyzet az, hogy mindenki kurva éhes.
+A másik lesz, hogy nem igazán...
+Ha minden hónapban tagad benne egy ilyen, akkor tényleg ezt mondanám, hogy oké, szálljunk rá, hogy mennyi város néz, meg kávéz lesz, nem tudom mi.
+Nem, én megállítom itt a...
+Meg a másik lesz, hogy...
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.
+Köszönöm.

@@ -1,4 +1,7 @@
 ---
+description: "Brainstorm session for day 1 of 90-day sales reset: validate 10 existing pipeline leads for active DevOps hiring and decision-maker LinkedIn profiles, then scrape Hungarian and Romanian markets for 5-10 new ICP-matched companies missed in April 2026 scan."
+description_source: auto
+description_hash: 02b337ce2b5ebd29
 topic: Lead Validation Scrape - 2026-05-11 Engine Warm-Up
 created: 2026-05-11
 last_updated: 2026-05-11
@@ -6,7 +9,6 @@ status: active
 id: e3bee11f-b2b8-4efa-9095-23144385c619
 index_schema_version: 1
 ---
-
 # Brainstorm: Lead Validation Scrape (2026-05-11 Engine Warm-Up)
 
 ## Objective

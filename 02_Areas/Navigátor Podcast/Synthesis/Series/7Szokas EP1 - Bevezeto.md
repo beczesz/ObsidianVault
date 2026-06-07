@@ -2,6 +2,9 @@
 series: "7 Szokás"
 episode: "EP1"
 title: "Bevezető – Miért releváns a 7 Szokás az AI korában?"
+description: "Stephen Covey 7 szokásainak relevanciáját az AI-korban bemutató bevezető epizód, amely a jellemetika és személyiségetika különbségét, a paradigmaváltás erejét, valamint a szokás bevezetésének gyakorlati módszerét tárgyalja önfejlesztésben érdeklődőknek."
+description_source: auto
+description_hash: b4bbc49a9aba38e0
 host: "Beczesz Szabolcs"
 source_book: "Stephen Covey – A kiemelkedően eredményes emberek 7 szokása"
 youtube_id: "eLR0Hw9cNJw"
@@ -31,7 +34,6 @@ created: "2026-04-06"
 id: 147b6cf5-447f-49e1-820b-2a1e693df2d0
 index_schema_version: 1
 ---
-
 # 7 Szokás EP1 – Bevezető: Miért releváns a 7 Szokás az AI korában?
 
 ## Sorozat kontextus

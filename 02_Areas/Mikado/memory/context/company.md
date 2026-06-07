@@ -1,3 +1,15 @@
+---
+title: "Mikado Építésziroda"
+date: 2026-02-15
+author: Becze Szabolcs
+status: active
+description: "Székelyudvarhelyi építésziroda, amely családi házak tervezésére szakosodik. Becze Juliánna alapította, öt-hat befejezett projekttel és facebook közösséggel rendelkezik; filozófiáját a mikado játék szimbolizmusa és együttműködésre alapuló értékek irányítják."
+description_source: auto
+description_hash: 628292f725db77a5
+id: 1ed90dae-c206-442b-8ca3-4c490cae6a7e
+index_schema_version: 1
+bdos_index: true
+---
 # Mikado Építésziroda
 
 ## About

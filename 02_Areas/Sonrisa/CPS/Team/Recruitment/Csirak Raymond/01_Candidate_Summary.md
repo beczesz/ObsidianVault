@@ -1,3 +1,15 @@
+---
+title: "Csirak Raymond - Candidate Assessment"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "Candidate assessment for AWS DevOps Engineer role: Raymond Csirak is a self-taught professional with 15+ years infrastructure experience and bare-metal Kubernetes expertise, but lacks AWS and advanced Terraform experience."
+description_source: auto
+description_hash: 298027f65af6e1fe
+id: f623daac-7a41-4368-a847-4a7ce86193a9
+index_schema_version: 1
+bdos_index: true
+---
 # Csirak Raymond - Candidate Assessment
 
 **Pozíció:** AWS DevOps Engineer (E5-E7 szint)

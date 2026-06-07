@@ -1,5 +1,8 @@
 ---
 title: "Amodei vs LeCun on Scaling"
+description: "A comparison of Anthropic's Dario Amodei and Meta's Yann LeCun on whether scaling alone suffices for AGI, covering their disagreement on architectural necessity, sample efficiency, and timelines for achieving general intelligence."
+description_source: auto
+description_hash: 06ef2984a948fbbf
 type: contrast
 tags: ["contrast", "AI", "scaling", "AGI", "architecture", "world-models"]
 status: "triaged"
@@ -9,7 +12,6 @@ processed_by: "AI Speed-Reading Agent"
 id: 52595fc8-f0ad-47a4-baec-5a8cdcf61a60
 index_schema_version: 1
 ---
-
 # Amodei vs LeCun on Scaling
 
 ## Dario Amodei (Anthropic)

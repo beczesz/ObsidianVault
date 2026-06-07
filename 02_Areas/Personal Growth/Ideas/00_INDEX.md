@@ -1,4 +1,7 @@
 ---
+description: "Élő index Sage-harvest végén frissülő ötletekről, melyek filozófiai kategóriában, inbox-ban és archívumban szerveződnek. Nyomon követi az új gondolatokat, atomi javaslattervezeteket és lecserélt koncepciókat."
+description_source: auto
+description_hash: 380dbe277ba78e94
 schema: sage.ideas.index.v1
 generated_at: 2026-05-24T16:00:00+02:00
 counts:
@@ -10,7 +13,6 @@ counts:
 id: 56c6f34c-b5eb-45ce-b7da-65006afc86c8
 index_schema_version: 1
 ---
-
 # Ideas — Sage által karbantartott index
 
 Élő index. Frissül minden Sage-harvest végén.

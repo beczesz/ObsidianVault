@@ -1,4 +1,15 @@
-
+---
+title: "24 7 support"
+date: 2025-09-09
+author: Becze Szabolcs
+status: active
+description: "Planning document for launching a 24/7 support team covering team composition, shift scheduling, ticketing workflow, KPIs, client onboarding, staff training, documentation management, monitoring setup, and sales strategy for internal stakeholders and leadership."
+description_source: auto
+description_hash: 5c2377d4b3860b89
+id: 5cf94c93-9caa-4b1d-95b2-f708bdf47ca2
+index_schema_version: 1
+bdos_index: true
+---
 ### 1. Costs
 Calculate the costs.
 ### 2. Team

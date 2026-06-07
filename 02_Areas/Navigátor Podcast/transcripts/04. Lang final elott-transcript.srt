@@ -1,0 +1,484 @@
+1
+00:00:00,000 --> 00:00:34,160
+Speaker 1: Sziasztok! Körülbelül egy éve már van bennem egy érzés azzal kapcsolatban, hogy valami közeleg és valami elfogja érni ezt az informatikai piacot. Bizonyos szempontból 2025-ben éreztük, hogy már lelassul ez a piac, de ezt az érzést a mai nap abszolút beigazolta, amikor beszéltem Láng Mátéval, a következő vendégemmel. Láng Máté, ha valaki, akkor ő ráláta arra, hogy mi történik itt az erdélyi és egyáltalán a globális piacon is, hogy milyen kvalitások kellenek manapságahoz, hogy egy informatikus sikeres tudjon lenni.
+
+2
+00:00:34,380 --> 00:01:04,976
+Speaker 1: Máté az élete jó részét, a felét Dubájban tölti, a másik felét Spanyolországban tölti, egy saját startupot is indított. Erről fogunk beszélgetni, hogy hogyan látja a globális piacot, hogy mi is történt így az elmúlt években itt a romániai szinten, és hogy körülbelül mi várható majd a jövőben. Ha érdekel ez a beszélgetés, akkor tarts velünk! Igen, hát elérkeztünk a digitális székelyföldnek a végéhez, és az az igazság, én is egy kicsit kivagyok fáradva, nem tudom, hogy te hogy állsz most még így szaminával.
+
+3
+00:01:05,336 --> 00:01:09,936
+Speaker 2: Relatív jól, köszönöm szépen, még a szívem nem robban fel a kávétől, addig nyomathatjuk.
+
+4
+00:01:10,912 --> 00:01:33,312
+Speaker 1: Igen, hát tudatosan hagytalak téged így a végére, mert éreztem, hogyha most ezt 40 percbe vagy 20 percbe kéne bele sűríteni, túl fontos a téma is. Nagyon fontos témákról akarok veled beszélgetni, de mielőtt még belevágunk ezekbe a témákba, szeretném, hogyha egy kicsit megismernének így a nézők téged. Röviden összefoglalod, hogy az egyetemet hol végezted, és utána milyen pozíciókban dolgoztál az elmúlt időszakban. 
+
+5
+00:01:33,312 --> 00:02:10,892
+Speaker 2: Persze, nagyon szívesen. Hát, ugye én szatmárémeti születésű vagyok, 2010-ben végeztem a sulit, és aztán utána, mint sokan mások, Kolozsvár felé vettem az irányt, a Bábösbólyi Tudományegyetem magyar informatikaszakára iratkoztam be, ahol szerintem egy nagyon jó képzést kaptunk három éven keresztül. Igazából azt elmondhatom így retrospektíven, hogy az egyetem szerintem a funkcióját az tökéletesen betöltötte. Elég hamar kapcsolatba kerültem az iparral is. Ugye? Hát, ugye itt a konferencia kapcsán is elmondhatjuk azt meg, akik itt helyben vannak, azok valószínűleg tudják, hogy ugye Simon Károly tanár.
+
+6
+00:02:10,944 --> 00:02:41,044
+Speaker 2: Már úr elég sok kezdeményezésnek az atya mondjuk úgy ilyen téren, tehát ez az egyetemnek az iparhoz való közelebb hozatalához azért ő igen magas mértékben hozzájárult. Azt is elmondhatom, hogy annak idején egy elég válogatott társasággal dolgozott ő gyakorlatilag együtt, tehát még sosem felejtem el, a Bulgakovban volt egy interjú olyan irányba, hogy.
+
+7
+00:02:43,072 --> 00:03:18,312
+Speaker 2: Ugye aki vele szeretett volna dolgozni, az mindenképpen egy követelményrendszer néhány pontjának meg kellett felejteni, tehát kötelező volt például RTDK dolgozatot publikálni, azon kívül kötelező volt potenciálisan, hogyha tovább javasolták további terv, akkor potenciálisan oda is ki kellett menni. Tehát ezeket a játékszabályokat a tanár úr az időben lefektette, de hát ezt tudva a levő volt, és tudtuk, hogy akkor ennek a munkának meg is lesz az eredménye. Valamint hamar kapcsolatba kerültünk a CodeSpring nevű céggel, ahol egy nagyon kiváló mentorprogramba vehettünk részt.
+
+8
+00:03:19,632 --> 00:03:50,688
+Speaker 2: Megint csak itt volt a konferencián a török Vistai Tamás, aki a másik mentorom, tehát az egyetemi meg a céges mentoraim közül őket tudnám erősen kiemelni. és ezúttal is köszönöm nekik a hozzájárulást a karrieremhez. Egy adott pillanatban éreztem egy kihívást, és dobbantottam egyet ettől a cégtől. Egy nagy céghez kerültem el, az Endava nevű céghez, ahol egy nagy fizetésfeldolgozó platformon dolgoztam. Ott relatív gyorsan lépkedtem föl a corporate landmétván,
+
+9
+00:03:50,768 --> 00:04:23,268
+Speaker 2: és egy adott pillanatban eljutottam egy ilyen úgynevezett software design lead szerepkörbe, amikor gyakorlatilag egy csapatnak a technikai kivitelezésért feleltem, tehát többnyire már akkor ilyen konzultatív, architektúra jellegű szerepkörben dolgoztam. És hát innen indult igazából az izgalmasabb, vagy a nagyobb váltás, pláne abban a kontextusban, amikor ez még nem volt teljesen népszerű, és a startup, mint fogalom, az még nem nagyon létezett, pláne nem a kolozsvári piacon. 2016 körül kaptam egy lehetőséget igazából.
+
+10
+00:04:23,308 --> 00:04:59,310
+Speaker 2: Majdnap még nem tudom, hogy ki ajánlott be egy angol befektető csoportnak a... az egyik... Oszlopos tagja megkeresett, hogy neki van egy személyes projektje, aminek építettek egy prototípust, és szeretnének egy komoly kolozsvári csapatot erre a prototípusra igazából felépíteni, és ugye arra, hogy ezt a terméket ezt továbbvigyük. Erre sikerült egy 5,5 millió eurós szírizé fundingot egy komoly londoni befektetőcsoporttól szerezni, és azon kívül pedig sikerült egy 20 valahány személyes technikai csapatot összerakni a kolozsváron, amelyeket én vezettem.
+
+11
+00:04:59,310 --> 00:05:40,812
+Speaker 2: Egyébként ennek a cégnek volt irodája Londonban, New Yorkban, Szingaporban és Kolozsváron. Ekkor kerültem ugye kapcsolatba a startup világgal, és... Mondhatom, hogy azóta nem tudtam ezt a dolgot elengedni, ez a startup, ez sajnos nem sikerült, nem tudott tovább menni, ugye volt már egy csomó előadás arról, hogy milyen kegyetlen ez a startup világ, ugye, hogy az első körben 60%, a második körben 30 valamennyi százalék morzsolódik le, mi sajnos ebbe 30 valamennyi százalékba tartoztunk, a series beat nem sikerült, voltak ígéretek, voltak jó potenciális beszélgetések, de aztán sajnos nem konkretizálódott semmi,
+
+12
+00:05:40,812 --> 00:06:33,668
+Speaker 2: és hát kifolyott ez a startup a pénzből, amire személyesen nagyon büszke vagyok, hogy a termék még fejlesztő nélkül ezután 3-4 bő évig még működött, és teljes mértékben kiszolgálta az ügyfeleket, nyilván új fejlesztés nem történt rajta, de karbantartás nélkül autópilóta módon megtalálta a kiutat, úgyhogy erre nagyon-nagyon büszke vagyok. Azután, nyilván miután egyszer az ember ilyen produktszégnél dolgozik, azután nagyon nehéz visszatérni, tehát mikor ez a cég csődbe ment, akkor komoly problémát jelentett elhelyezkedni a kolozsvári piacon megint, rengeteg munka lehetőség volt pedig abban az időben, tehát elhelyezkedhettem volna, anyagilag is teljesen korrekt bérezést tudtak volna biztosítani, de valahogy éreztem egy hiányt, hogy ez így nekem nem lesz elég, amíg aztán nagy nehezen találtam egy olyan céget,
+
+13
+00:06:33,668 --> 00:06:52,248
+Speaker 2: amelyikben megtaláltam a helyemet, ott egy infrastruktúra csapatot vezettem, ez egy scale-up volt, egy jóval későbbi stádium, matúrabb start-up cég, végül is felhetek még start-upnak hívják magukat, de gyakorlatilag azért ott már más szabályok érvényesek.
+
+14
+00:06:52,348 --> 00:06:54,228
+Speaker 1: Akkor ők már benne voltak a 99%-ba. 
+
+15
+00:06:54,588 --> 00:07:29,469
+Speaker 2: Igen, ők benne voltak a 99%-ba, ők egy nagyon szépet exiteltek, és aztán eladták egy nagy-nagy amerikai cégnek a scale-upot. És egyébként szép. szép exit-et tudhatnak be a tulajdonosok maguk mögött. Ott nyilván teljesen más problémák vagy más skálájú problémák voltak, ott már százvalahány fejlesztő volt, akinek ugye a munkáját segítette az én csapatom, ahol a platformot működhető infrastruktúrát tartottuk mi karban. Ezután dolgoztam még egy ugyancsak CTO-ként egy blockchain alapú befektetési alapnál,
+
+16
+00:07:29,750 --> 00:08:21,424
+Speaker 2: ami hát egy idő után sajnos a blockchain elleni kedvezőtlen körülmények között, meg valószínűleg a hype utáni crash miatt sajnos bezárásra került, és aztán utána belefogtam a Binhatch Agency-be, amikor úgy döntöttem, hogy lehet megpróbálnám saját magam is ezt a szoftverfejlesztésnek nevezett játékot saját szakára vállalkozóként. Ugye a Binhatch... Kettő lábon áll, szerintem Venture Studio-ként is működünk, ugyanis saját termékeink is vannak, szám szerint kettő, azon kívül pedig a bevételünk nagy része az még továbbra is tradicionális úgymond agency szolgáltatásból, software consulting szolgáltatásból folyik be, úgyhogy nagyjából 20 kollégával dolgozunk most együtt.
+
+17
+00:08:21,544 --> 00:08:25,144
+Speaker 1: Jelenleg most éppen földrajzilag hol élsz. 
+
+18
+00:08:25,784 --> 00:08:55,788
+Speaker 2: Hát ez egy jó kérdés. Jelenleg földrajzilag Dubaj, Malaga és Szatmári-Meti között valahol. Nemrég megállított a rendőr egy ilyen közúti ellenőrzés alkalmával, és elkérte az iratáimat, kérdezte, hogy honnan vagyok. Hát ugye az autón a román rendszám volt, ez Spanyországban történt mellesleg, és mondtam, hogy Romániából, akkor mondta, hogy szeretne egy személyt is elkérni, adtam egy magyar személyt. Ez már felvetett néhány kérdést, utána elkérte a jogosítványomat, ott adtam a dubai jogosítványomat, és megkérdezte, hogy egyébként mit csinálok itt,
+
+19
+00:08:55,788 --> 00:09:07,788
+Speaker 2: és mondtam, hogy itt élek. Tehát, hogy nagyjából ezen a komplexitáson tudom ezt a problémát jobban elmagyarázni, de gyakorlatilag igyekszem az időmetek között, a három helyiség között elosztani.
+
+20
+00:09:07,888 --> 00:09:09,048
+Speaker 1: És miért pont Dubaj. 
+
+21
+00:09:09,760 --> 00:09:46,260
+Speaker 2: Dubájban őszintén legesleg először főleg érdeklődésből mentünk ki. Egy adott pillanatban elkezdtek megjelenni a YouTube videóim között olyan ajánlások, amik kezdték magyarázni azt, hogy igazából Dubájban mennyire jó az élet, meg mennyire jó az ökoszisztény, pláne mint vállalkozó, mennyire izgalmas lehetőségek vannak kint, milyen jól van megszervezve az élet. Ezzel párhuzamosan elkezdtem azt is látni, hogy például a LinkedIn-en elkezdtek megjelenni olyan volt vagy aktuális kollégák, akik oda költöztek,
+
+22
+00:09:46,300 --> 00:10:18,492
+Speaker 2: és kíváncsi lettem olyan értelme, hogy akkor vajon tényleg úgy van, hogy minden, mint ahogy ezek a videók bemutatják. Ezzel párhuzamosan elolvastam a Sejk CEO nevű könyvet is, amit a Dubai Sejknek az aszisztense, tehát az ottani vezetőnek az aszisztense írt, arról, hogy milyen gondolat mentén építik ők az országokat. Elég propagandikusnak hangzott olyan értelemben, hogy nem hittem el, hogy azok a dolgok tényleg működhetnek úgy egy országban, ahogy ott körbeírják.
+
+23
+00:10:19,572 --> 00:11:04,960
+Speaker 2: Ezért mentem igazából ki. Én is és a feleségem is mindig, amikor valahova elmentünk, akár potenciális életviteli szándékkal, akkor mindig igyekeztünk először csak kislább ujjal bele mászni a mélyvízbe. Kimentünk két hónapra, és azt mondtuk, hogy ha egy hónap után még mindig úgy gondoljuk, hogy ez egy jó ötlet, akkor tovább léphetünk potenciálisan, keresgélhetünk hosszú távú vagy középhosszú távú letelepedési opciókat is, ami Dubaj esetében a legeslegegyszerűbb, egy ilyen investor letelepedési engedélynek a megsponzorizálása, ez egyébként pénzbe kerül, tehát ezt ki kell fizetni, ezt egy megalapított cég után lehet igényelni, legalább egy megalapított cég után az ember többet alapít, akkor csak egyszer kell kifizetni. 
+
+24
+00:11:04,960 --> 00:11:06,960
+Speaker 1: ez mekkora az az összeg. 
+
+25
+00:11:07,060 --> 00:11:19,200
+Speaker 2: Ez nagyjából két évente ilyen, most Euróban ilyen 2500 eurónyi összeg, úgyhogy az ügyintézést egy magyar ügyvéd, úriember segítségével jártuk végig.
+
+26
+00:11:19,552 --> 00:11:23,392
+Speaker 1: És akkor milyen volt a propagandához képest Dubáj? Mert még mindig ott vagytok.
+
+27
+00:11:23,572 --> 00:11:58,292
+Speaker 2: Igen, meglepően hasonló. Azt kell mondanom, hogy nyilván költői túlzás lehet, hogy van a könyvben, de azért 99%-ban igaznak találtam azokat, és pláne azokat a gondolatokat, ami alapján ezt az ökoszisztémát ők építették. Nagyon jó kivitelezés, nagyon jó szolgáltatások, teljesen digitalizált állami ökoszisztéma. Nagyon érdekesnek tartom például azt is, hogy ugye amiről mi most beszélgettünk, kormánydigitalizációról ott az ott 2012-ben merült feleleges legelőször, amikor mindenki nálunk úgymond i-governmentről,
+
+28
+00:11:58,312 --> 00:12:35,228
+Speaker 2: e-kormányzatról beszélt, akkor ők már m-governmentről beszéltek, ami mobil governmentet jelentett, tehát mobil kormányzást, ami gyakorlatilag azt jelentette, hogy... Bármilyen kormányzati funkció elérhető kell legyen egy mobiltelefonról, tehát ez a jogosítvány igénylésétől kezdve az adórezidensi igazoláson keresztül abszolút mindent magába foglal, és ez így is van egyébként szinte minden kormány entitásnak, minisztériumnak van egy saját applikációja, amiben egy központosított belépési rendszerre bárhova be lehet lépni, minden mindennel össze van integrálva,
+
+29
+00:12:35,268 --> 00:12:39,368
+Speaker 2: tehát egy nagyon kényelmes ökoszisztéma úgy magánszemélyként, mint cégként.
+
+30
+00:12:39,728 --> 00:12:40,928
+Speaker 1: És akkor Spanyolország. 
+
+31
+00:12:41,472 --> 00:13:11,672
+Speaker 2: Spanyolország az ezelőtt igazából hamarabbi szerelem volt, a Covid után pár hónappal, amikor a tiltások feloldottak, akkor úgy döntöttünk, hogy egy hosszabbat kirándulnék, egy kirándulnék, ez egy stresszes néhány év után történt, és hát teljes véletlenül a Vizertől egy olyan push notification-t kaptam, hogy csak ma 9,90 euró lehet utazni a következő helyszínekre,
+
+32
+00:13:11,772 --> 00:13:51,020
+Speaker 2: és megkérdeztem akkor a páromat, hogy hova menjünk, és teljesen véletlenül hallotta ezt egy kolléganőnk, aki azt javasolta, hogy látogassuk meg őket Malagába, ők downhill bicikli szerelmesek. És rajongók, és Kolozsváron éltek ezelőtt, és egy olyan pillanatban, amikor rájöttek arra, hogy igazából az egész évben ki lehetne használni a spanyol jó időt arra, hogy ezt a sportot üzhessék, akkor ők oda kiköltöztek. és meghívtak magunkhoz minket, akkor nyilván ugyanígy turistaként mentünk ki, tehát körbenéztünk, megtetszett az életvitel, megtetszett az, hogy azért ott elég nagy a lazasság, szép a természet,
+
+33
+00:13:51,140 --> 00:14:24,200
+Speaker 2: tehát ilyen kirándulóhelynek nagyon-nagyon tökéletesnek éreztük, és úgy gondoltuk, hogy el tudjuk képzelni azt, hogy akár potenciálisan többet is legyünk ott. Úgyhogy következő évben kutyástól, motorbiciklistől kimentünk egy eredetileg kéthónaposra tervezett ilyen székésenre, tehát ugye dolgoztunk is onnan, nem vakáció, annak kell képzelni, nyilván a hétvégénk, az esténk azok relaxációs programmal teltek el, tehát körbemotoroztuk ott az egész úgynevezett Costa del Sol régiót,
+
+34
+00:14:24,240 --> 00:14:57,620
+Speaker 2: ez ugye Malaga melletti tengerparti régiót Andalúziában jelenti. És abban az évben el is döntöttük, hogy szeretnénk befektetni egy ingatlanba. Láttuk azt, hogy jók a trendek olyan értelemben, hogy felértékelődő és fölfelé mutató híve volt az ingatlan befektetéseknek, valamint rengeteg külföldi, pláne a Covid után elkezdte keresni a napsütéses szép természetet, pláne északi országokból, Benelux államokból, idősek is,
+
+35
+00:14:57,620 --> 00:15:15,740
+Speaker 2: de aztán egyre inkább fiatalok is, akik ugye eddig nem tehették meg, hogy elmennek onnan, ahol a munkahelyük volt, miután ugye a remote munkakultúra az beütött, azután rájöttek arra, hogy nem feltétlenül kell a sötétbe ülni egy fél évet, és fogták a sátorfájukat, és odébb mentek a spanyol tengerpartra.
+
+36
+00:15:16,608 --> 00:15:49,828
+Speaker 1: Szuper, én azt hiszem, hogy ez jól körvonalazza, ha bár nagyon sok kérdésem lenne Dubája kapcsolatban is, meg az életvitelektekkel kapcsolatban, de azt hiszem, hogy ez nagyon jól körvonalazza azt, hogy hogyan éltek. Kicsit térjünk rá magára a startup világra, meg arra a cégre, amit most te vezetsz. Az első kérdésem az az, hogy külön kiemelted, hogy van egy outsourcing része, tehát egy ilyen agency része is. Ezt fontosnak látod, hogy ez amúgy két lábon álljon a cégetek, gondolom, az hozzá egy stabilitást, és akkor közben tudtok kalandozni itt ott a startup világában.
+
+37
+00:15:49,888 --> 00:15:53,048
+Speaker 1: Ezt amúgy tanácsolnád másnak is, hogy így fogjon neki egy startupnak. 
+
+38
+00:15:53,508 --> 00:16:27,360
+Speaker 2: Abszolút tanácsolnám. Olyan értelemben, hogy pláne ma láttuk több előadásban is, hogy azért a rizikó az megfelelő, nagy mértékben jelen van. A startup befektetések világában, tehát ezt ellensúlyozni mindig jó és stabilabb lábbal. Azt is hozzátenném, ugye, hogy ma felszólaltam amellett, hogy igyekeznünk kellene az értékláncba. magasabb lépcsőfokra fölépni, amikor a szoftver agency-kről beszélünk és a szoftver consulting cégek érték kínálatáról beszélünk.
+
+39
+00:16:28,210 --> 00:17:00,130
+Speaker 2: Igyekszünk olyan kollégákat fölvenni, akik föl tudják venni a BoxCastute komolyabb feladatok ellen is, akik megértik a cégekbe levő politikai és üzleti kihívásokat, és gyakorlatilag nagy hozzáadott értékkel tudnak vagy becsatlakozni a meglévő munkafolyamatokba. Ezt kevésbé szoktuk preferálni, de van olyan is, amikor erre van szükség, tehát ez az úgynevezett team augmentation jellegű modell. Vannak olyan kontextusok, amikor ez működik jól, és ezt is szívesen elvállaljuk,
+
+40
+00:17:00,170 --> 00:17:32,856
+Speaker 2: de az igazi hozzáadott értéket szerintem olyankor tudjuk produkálni, amikor a labdát az ügyfél átmeri dobni a mi oldalunkra, és gyakorlatilag egy nagyobb felelősség. A következő vállalás után... Tudunk közösen értéket teremteni, és a kontroll is egy kicsit átkerül a mi oldalunkra, nyilván üzleti folyamat szempontból az náluk van még továbbra is, mint az ő bizniszük, viszont a technikai megvalósítás, a kivitelezés, a szuport, a monitorizálás egy rendszernek az többnyire nálunk marad ideális esetben.
+
+41
+00:17:32,856 --> 00:18:17,996
+Speaker 2: Még annyit hozzá tennék talán, hogy másrészt pedig nagyon fontosnak tartjuk azt is, hogy a csapataink azok ilyen product jellegű próbálkozásainknak megfelelő módon ki legyenek téve. Tehát igyekszünk bevonni csapatokat folyamatosan olyan próbálkozásokba, akár már ötletfázistól kezdve, vagy research fázistól kezdve olyan próbálkozásokba, amik potenciálisan kivitelezésre készítünk elő. Ezt a kollégek meg is szokták egyébként köszönni, meg úgy érzem, hogy azok, akik nálunk szeretnek dolgozni, azok ezt folyton hangoztatják, hogy ezt szeretik, ezt a részt, hogy az agyuknak azt a részét is használjuk, amit talán mindegyik outsourcing cégnél sikerül kamatoztassanak.
+
+42
+00:18:18,746 --> 00:18:51,784
+Speaker 1: Igen, hát amiatt is tetszett nagyon a te erőadásod, mert... Nagyon szépen kiegészítettétek egymásjukat Csabával. Aki nem látta még azt az epizódot, azt ajánlom, hogy hallgassa meg ezt az epizódot is. Nagyon-nagyon tanulságos volt, ő arról beszélt, hogy melyek azok a rizikók, ami miatt egy startup becsődölhet. Van ennek elég sok rizikója, de meglepően kevés maga a technológiai oka, hogy nem technológiai veszélyek leselkednek a startupokra.
+
+43
+00:18:51,784 --> 00:19:22,124
+Speaker 1: Viszont a te előadásodban engem nagyon megérintett az, amit már amúgy is régóta éreztem. Az elmúlt egy évben egyfolytában úgy éreztem, hogy ez a vészharang szól bennem. Arról beszéltél, hogy a világ változik, és fel kell ébredjen úgy ez az outsourcing IT piac itt Romániában, de amúgy szerintem Magyarországon is, meg itt a közép-kelet-európában, hogy a világ változik, és mi is változnunk kell vele együtt. És ez az utolsó utáni vészcsengő. Kicsit kibontanád ezt a gondolatot? A gondolatot.
+
+44
+00:19:22,880 --> 00:19:56,000
+Speaker 2: Persze, megpróbálom. Hát ugye a Süget Csaba utáni felszólásom úgy kezdődött, hogy nem tudtam, hogy pontosan miről fog beszélni. Amikor az első statisztikák megjelentek, akkor aggódtam, amiatt, hogy ugye az anyám tyúkját kell ezt 40 percig szavalnom, mert az én előadásom már készen volt, és azért érintőlegesen beszéltünk ugyanarról a témáról, hogy nagyjából, de hál' Istennek úgy adta a sors, hogy nem máztunk bele egymásnak az előadásaiba. Tehát ő is szerintem egy nagyon jó értéket tudott közvetíteni, tehát az, amit ő elmondott 30 percben,
+
+45
+00:19:56,080 --> 00:20:34,208
+Speaker 2: az egy Y Combinator-os startup school-nak összekomprimált, összenyomott verziója, amiben minden egyes szóérték volt, és egyébként én is élvezettel hallgattam. Az én előadásom az valóban egy... inkább egy kontextus analízis, egy olyan refleksziós jelleggel történt. Dolgozunk együtt külső más cégekkel is, én pláne konzultánsként dolgozom együtt olyan cégekkel, akik elakadnak bizonyos problémáknak a megoldásába, vagy a vezetőség az ügyfél oldalról úgy gondolja, hogy nem feltétlenül azok az eredmények alakulnak ki,
+
+46
+00:20:34,308 --> 00:21:04,668
+Speaker 2: amiket ők elvárnak egy másik agency-vel való munkafolyamat során. Többször előfordult, hogy ilyenkor fölkértek arra, hogy nézzem át a folyamatokat, nézzem át a technológiákat, nézzem át azt, hogy ki hogy áll hozzá gyakorlatilag a napi munkához. Potenciálisan olyan stresszorok is lehetnek, amik egy ügyvezetőt egy ilyen úton elindítanak, hogy mondjuk egy valamilyen compliance-szertifikét, tehát egy ilyen megfelelési bizonyítvány nekkel be kell szerezni.
+
+47
+00:21:04,708 --> 00:21:39,379
+Speaker 2: Ez lehet többféle. Ugye itt az Európai Uniónak sok olyan próbálkozása volt, vagy ott a mi... ami olyan irányba kényszerítette a cégeket, amire nem voltak feltétlenül felkészülve, és gyakorlatilag ez az üzleti tevékenység befüggesztésével vagy teljes megállításával is jár, hogyha egy ilyen megfelelőségi döntés születik. Úgyhogy belelátok egy kicsit abba is, hogy milyen az ezáltal a konzultáns munkám által, belelátok abba is, hogy milyen egy átlag cégnél, mondjuk egy átlag outsourcing cégnél a hozzáállás,
+
+48
+00:21:39,379 --> 00:22:19,912
+Speaker 2: a kollégáinknak a különböző technológiai biznisz és komolysága, amivel hozzáállnak gyakorlatilag a feladatokhoz, valamint sajnos a lexikális tudás és a felkészültség, egy ilyen több rétű problémát véleg felfedezni, amit szerintem eddig a piac nagyon nem tárt fel, vagy nem volt ennyire evidens, Eddig ugye árazásban is Kelet-Európa az egy relatív, kényelmesen, megfelelően működthethető üzleti modellbe belefért német fizetéshez, vagy egy angol fizetéshez képest,
+
+49
+00:22:19,912 --> 00:22:51,472
+Speaker 2: még akkor is, hogyha tudták ezek a külföldi potenciális ügyfeleik az outsourcing cégeknek, hogy nem pont azt fogják kapni, amiért egyébként fizetnek, azért még mindig megérte, mert hogyha csak kétharmad arányban volt olyan jó, mint mondjuk egy német kolléga, és nem feltétlenül a technikai felkészültségben, sőt, kifejezetten nem a technikai felkészültségre, tenném most a hangsúlyt inkább hozzáállás kérdésére, még akkor is jobban megérte, ugyanis egy harmad vagy egy ötöd áron volt. A probléma az ott van, és azért...
+
+50
+00:22:52,891 --> 00:23:14,572
+Speaker 2: csengette meg ugye most a vészharangot, mert úgy látom, hogy az árazásban igen-igen közel vagyunk a nyugati piachoz, tehát ugye a belső munkatársak által támasztott elvárások vérezés szempontjából azok már nagyon súrolják a nyugat-európai határt. Én egyébként ennek örülök, mert az azt jelenti, hogy mindenki közben jól él, és ezt szeretném a saját kollégáinknak, meg magunknak is.
+
+51
+00:23:14,572 --> 00:23:16,371
+Speaker 1: Most hol tartunk a kétharmadán inkább. 
+
+52
+00:23:16,371 --> 00:23:49,292
+Speaker 2: Szerintem még talán több, mint a kétharmadánál is. Nyilván, hogy a netto bruttó közötti, országok közötti különbség az egyébként ezt a végeredményt, ezt akár befolyásolhatja ilyen-olyan irányban, de mindenképpen olyan szinten közelítjük már meg például egy berlini vagy londoni szoftvermérnöknek a fizetését, ami elgondolkodtatja a befektetőket és az ottani ügyvezetőket, hogy szeretné nekem még velünk dolgozni. Még mindig lehet olyan hozzáadott értékünk, hogy ügyesebb, gyorsabbak, jobban felkészültek vagyunk.
+
+53
+00:23:49,351 --> 00:23:58,204
+Speaker 2: Ez szerintem egyébként a kisebb szám. Egy százalék azoknak a kollégáknak, akikkel így a professzionális karrierem során találkoztam.
+
+54
+00:23:58,383 --> 00:24:52,860
+Speaker 1: Ahhoz, hogy megértsük a mostani piacunknak a helyzetét, te egy jó pár dolgot megemlítettél, szeretnék egyenként végigmenni rajta. Az egyik, amit megemlítettél, az az, hogy... Maga az outsourcing, ez nem egy magas hozzáadott értékű munka, ha bár eleinte a béreinkhez képest ez egy hatalmas különbség volt, de valójában a rizikót még mindig a befektetők vállalják kint külföldön, és amikor outsourcelnek hozzánk egy feladatot, ez nem magas hozzáadott értékű. Meg említetted azt is, hogy a te cégednél is igyekeztek ilyen product mindsetbe gondolkozni, tehát hogy ti veszitek át a teljes, vagy majdnem teljes technológiai termékfejlesztésnek egy-egy részét, a szupportot, és említetted, hogy ezt látod, hogy ha nem tud váltani Románia ebből az irányban, akkor ez egy komoly okozója lesz annak a lemaradásnak, ami várhatóan jönni fog.
+
+55
+00:24:54,015 --> 00:25:28,196
+Speaker 2: Igen, ez egyértelműen így van, és ennek az eredményét már látjuk a piacon. Tehát ugye nagyon sok olyan elbocsátás volt, vagy újra szervezés címszó alatt történő hosszú távú lemorzsolás a munkaerőnek, ami egyértelműen arra felé mutat, hogy azért itt valamilyen szinten meginog az a gazdasági egyensúly, ami eddig úgy tűnt, hogy hosszú távon fenntartható. Szerintem is mindenképpen az a hosszú távú célunk, hogy ezen az értékláncon próbáljunk meg följebb és följebb lépni.
+
+56
+00:25:28,595 --> 00:26:14,043
+Speaker 2: Ugye a legegyszerűbb formája annak, hogy kollaboráljunk egy külső céggel, az az, hogy egész egyszerűen órákat adunk el. Tehát gyakorlatilag az ügyfél azért fizet, hogy mi szuszogunk az ő érdekében, és nyilván valamilyen artefaktumunkat közben produkálunk. Ez lehet nagyon hatékony, hogyha nagyon ügyesek vagyunk, tehát előfordulhat az is, hogy egy profi konzultáns mondjuk 8 óra leszámlázásával megold egy komoly biznisz problémát, és ez gyakorlatilag külföldön sokszor elő is fordul, tehát egy németországi, vagy angol, vagy amerikai konzultáns, akit egy valamilyen problémának a megoldására felbérelnek, ő valószínűleg akár 5-6-szor is kereshet annyit, mint mondjuk egy itthoni kolléga,
+
+57
+00:26:14,043 --> 00:26:41,693
+Speaker 2: viszont az elvárások is, amit támaszt egy ilyen ügyfél, aki ezt a pénzt hajlandó kifizetni, az abszolút eredményorientált, tehát hogy elvárja azt, hogy igen, hogyha most teszem azt, nem tudom, 300-400 eurós németországi top-architektnek az órabérét, azt kifizeti, akkor ő két napon belül eredményt akar látni. Tehát lehet magas hozzáadott érték felé menni, viszont ahhoz ott kellene legyen a tudás, a felkészültség, az akarás.
+
+58
+00:26:43,619 --> 00:26:57,999
+Speaker 1: Most mit tanácsolnál egy helyi ilyen konzultáns cégnek, aki most ébredt fel és utolsó utáni figyelmeztetéseket meghallja? Órabér alapon dolgozik ebben a pillanatban, mit tud tenni. 
+
+59
+00:26:57,999 --> 00:27:28,489
+Speaker 2: El kell mondjam azt is, hogy még többnyire azért mi is órabér alapon dolgozunk, mert ez egy folyamat. Nem feltétlenül az az elsődleges megoldandó probléma egyébként, hogy az órabéres számlázás az egy mint keretrendszer, tehát az úgynevezett time and material az létezik. A kérdés mindig ott van, hogy abban a time and materiálban mennyi az igazi hozzáadott érték, amit szállítani lehet. Tehát az első lépés az szerintem az, és egyébként nagyon őszintén bevallva még azért többnyire mi is itt vagyunk, annak ellenére van egy néhány úgynevezett outcome based.
+
+60
+00:27:28,609 --> 00:28:01,171
+Speaker 2: Tehát ilyen eredményorientált árazású projektünk is, de azért azt el kell mondom, hogy mi is többnyire még time and materiálban dolgozunk, ez még azért egy bevett szokás. Viszont, hogyha arra próbálunk koncentrálni, hogy az alatt, az egységnyi idő alatt mennyi értéket tudunk teremteni az ügyfélnek, és egy transzparens módon próbálunk erről velük kommunikálni, az szerintem mindenképpen egy jó első lépés. Kicsit ilyen furcsás helyzet ez, mert ugye sokszor előfordult, és sokat hallottam azt, hogy mi szeretnénk azt, hogy az ügyféltől több kompetenciát kaphassunk,
+
+61
+00:28:01,231 --> 00:28:32,896
+Speaker 2: hogy nagyobb legyen a játékterületünk, amin mi gyakorlatilag aktiválhatunk. A 2010-es évek közepén volt egy ilyen érdekes helyzet, amikor szerettünk volna többet, de még nem voltunk azért teljesen erre felkészülve, de már volt annyi bizalma a külföldi ökoszisztémáknak, meg ügyfeleknek, hogy megbízzanak minket bizonyos feladatokkal. Nyilván egy néhányban beletört a Bicskánk, egy néhányban nem. Tehát mindenképpen a gyakorlat teszi a mestert, tehát ez csak úgy működik, hogyha megpróbáljuk egyszer átvenni ezeket a projekteket.
+
+62
+00:28:32,896 --> 00:29:03,456
+Speaker 2: potenciálisan technikai nagybácsi nélkül. Én ilyen technikai nagybácsinak szoktam azokat hívni, akikhez ugye föl lehet telefonálni mondjuk egy anyacéghez, egy német-angol céghez, és amikor úgy tűnik, hogy kezd a kártyavár összeomlani, akkor meg lehet őket kérdezni, hogy mégis most itt mit kellene kezdjünk ezzel a helyzettel. Az emberek edzésen keresztül tanulják ezt meg, de akkor nagyon fontos az, hogy a cégek is olyan következetet teremtsenek ezeknek a kollégáknak, ahol ezeket a mentális kardokat meg tudják élezni.
+
+63
+00:29:03,456 --> 00:29:38,149
+Speaker 2: Másik oldalról pedig a cégnek a talentája. és azért erre kompatibilis kell, hogy legyen. Ugye beszéltünk a konferencián sokszor arról, hogy a junioroknak a helyzete az most nem kifejezetten napos. Egy nagyon komplex világban, amilyen most a szoftvervilág, sajnos azt kell mondjam, hogy egy relatív közepesen fölkészült juniornak nem sok értéke van egy cégben. Egyetemen is tanítok, néha betanító tanárként, tehát nem főállásban,
+
+64
+00:29:38,149 --> 00:30:14,211
+Speaker 2: és azt látom, hogy sajnos nagyon sok mindent kell még elmondani a diákoknak. Itt az egyetemnek is valószínűleg, hogy van, amit még hozzá tegyen azért, hogy ez jobb irányba menjen, de az iparnak is. Tehát itt jobban össze lehetne fonni szerintem az egyetem és az ipari viszonyt. Egy júniornak talán akkor lenne esély egy ilyen kontextusban, hogyha nagyon-nagyon mély lexikális tudással lenne felvértezve, ugyanis azt látom, hogy az AI asszisztensek megjelenésével meg ugye egyre jobbak, tehát olyan ütembe fejlődnek,
+
+65
+00:30:14,232 --> 00:30:46,431
+Speaker 2: én is ezen 5-2 évvel egyébként nagyon szkeptikusan álltam ehhez hozzá, hogy most már abszolút használhatóak, és olyan gyorsságot adnak az embernek, hogy aki tudja őket jól használni, az akár szerintem 4-5x is gyorsabban tud programozni, mert hogy még lehet mások nagyobb szorzókról beszélnek, én egy kicsit konzervatívabban állok amúgy ehhez hozzá, de a 4-5x-ös szorzó is hatalmas, tehát hogy a 4-5x-ös szorzónak nyilván bármin üzleti modell az nagyon tud örülni. Úgyhogy a júniorok szerintem akkor tudnak igazából majd érvényesülni, hogyha egy mély lexikális tudással rendelkeznek,
+
+66
+00:30:46,512 --> 00:30:57,823
+Speaker 2: és relatív sok mindenhez értenek. És aztán van néhány olyan témakor, amiben aztán elmélyült tapasztalatot gyűjtenek, itt a cégeknek is nyilván. hogy be kell ezt majd ebbe szállni.
+
+67
+00:30:58,943 --> 00:31:28,363
+Speaker 1: Tehát említetted azt, hogy volt a szlájdodon egy olyan sor, hogy a csapatokat nem kell megvédeni, vagyis hogy túlságosan meg vannak védve ebben a pillanatban, gondolom a felelősségtől, a technológiai döntésektől, és az egyik, amire hívnád az, hogy vállaljanak rizikót és felelősséget többet a csapatok tudatosan. Volt egy olyan másik mondatod is, hogy már nem vagyunk éhes farkasok, inkább lustamacskákhoz vagyunk hasonlóak. Ezt kifejtenéd ezt a gondolatot. 
+
+68
+00:31:28,943 --> 00:31:58,883
+Speaker 2: Igen, hát akkor először a lustamacskásra próbálok válaszolni, de ez nem az én gondolatom. Ezt egy konferencián hallottam valahol Romániában, sajnos nem írtam fel a notepadembe, hogy konkrétan kitől, úgyhogy bocsánatot kérek, hogyha valakitől elloptam, a kódsz az hiányzott a prezentációból, de egyébként nagyon helyén valónak érzem. Tudok egy másik olyan bizniszkolcsot, aki azt mondta, hogy a mi generációnkat meg az előttünk valót azt a szegénységtől való félelem motiválta. Én nem én.
+
+69
+00:31:58,975 --> 00:32:14,955
+Speaker 2: Érdekes motiváló erő, és valószínűleg, hogy ez, és egyébként ez szerintem is helyén való, és ezt látom a mi generációnkban, tehát a mi generációnk, amikor a munkapiacra került, akkor szerintem egy olyan mértékű ambícióval kerültünk oda, meg akartuk váltani a világot, amit egy kicsit úgy láttuk.
+
+70
+00:32:14,955 --> 00:32:16,795
+Speaker 1: Mint az első generációs bevándorlók, nem. 
+
+71
+00:32:16,935 --> 00:33:01,175
+Speaker 2: Na többnyire igen, tehát szerintem ez is helyén való. Nem volt az opció, hogy mondjuk valaki ne dolgozzon, vagy hogy egy-két év után feladjuk, vagy hogy kifáradjunk, belefáradjunk a munka által okozott stresszbe. Ez az egyik dolog. A másik nem csak feltétlenül a munka, a fiatal munkavállalókra kitérve, hanem nagyobb kontextusban is, azért pláne a nagy cégeknél azt elmondhatjuk, hogy jellemző volt az, hogy nagyon nem kellett megölnie az embernek magát a munkával, tehát úgy bementünk, langyos volt, bementünk kilencre, két kávé, egy kis beszélgetés, tehát már szinte-szinte olyan szintre került el, mint az állami alkalmazottaknál a munkamorál, hogy itt kell lenni reggel kilenctől ötig,
+
+72
+00:33:01,175 --> 00:33:24,095
+Speaker 2: akkor hogy tudjuk lecsökkenteni minimumra azoknak az óráknak a számát, amikor fárasztó munkával kell foglalkozni. Ez egyébként nem is volt fel, mert ugye közben a fizetések azok meg hatalmas nagyra nőttek, tehát ugye valaki meg is említette, hogy mondjuk egy tanárhoz, egy iskolai tanárhoz képest egy junior programozó valószínűleg kétszeres orzót tudott simán elérni teljesen pályakezdő állapotból.
+
+73
+00:33:24,155 --> 00:33:26,735
+Speaker 1: És ezzel együtt egy hálátlanság is úgy érzem, hogy feljött bennünk.
+
+74
+00:33:26,895 --> 00:33:58,227
+Speaker 2: Abszolút egy hálátlanság is, meg egy valamilyen szintű arrogancia is szerintem. Tehát ugye sajnos... én is ebben a csoportban tartozom, tehát most a magunk nevében beszélek, önéleten én is fejlesztő vagyok, de hogy azt el kell mondani, hogy a fejlesztők legalábbis például a kolozsvári piacon kifejezetten egy adott pillanatban arrogánsan álltak hozzá, akár munkakereséshez, akár a többi társadalmi réteghez is, és a motiváció pedig igencsak eltűnt a háttérből, tehát elkezdtek eltűnni azok az erők, amik előrefelé vigyék ezt a bizniszt.
+
+75
+00:33:58,227 --> 00:34:29,647
+Speaker 2: Voltak olyan potenciális ügyfelei cégeknek, akik azt mondták, hogy van egy projekt, amit kötelező leszállítani, volt egy üzleti okból egy hard deadline, és megnyíltak gyakorlatilag majdnem végtelen büdzsék ennek a projektnek az elvállására, és sajnos Kolozsváron már nem tudták azok a cégek az ilyeneket kivitelezni, mert a kollégák azok jobban koncentráltak arra, hogy a work-life balance, akkor ők nem szeretnének hétvégén dolgozni, már be van már egy... egy bizonyos...
+
+76
+00:34:32,483 --> 00:35:03,243
+Speaker 2: vakáció tervezve az elkövetkező három hétben, akkor ezt most nem tudjuk elvállalni. Nem kell félreérteni, amúgy nem azt mondom, hogy folyamatosan az ember rúgja fel az életét, és, csak a munkának ilyen. És itt a cégek a hibásak, mert folyamatosan éveken keresztül megvédték, tehát az, amit kérdeztem, megvédték az embereket attól, hogyan is működik a mi üzletágunk. Ők nem érezték annak a súlyát, hogy mi van akkor, hogyha az az ügyfél legközelebb nem kopog be a mi hajtunkon, hanem egy olyan helyre fogja elvinni, ahol megoldják neki a problémáját, és még potenciálisan lehet, hogy kevesebb.
+
+77
+00:35:03,243 --> 00:35:34,191
+Speaker 2: pénzből is oldják meg a problémáját. Ez, amit nagyon veszélyesnek tartok, és ezért is én igyekszem bármikor, amikor valamilyen üzleti lehetőségünk van, akkor igyekszem a... A kollégánknak elmagyarázni a kontextust, elmagyarázni ki az ügyfél, mekkora az opportunity, potenciálisan miért szeretnénk azt, hogy esettek túlórázzanak, igyekszünk olyankor mi is több szuportot adni, és igyekszünk hálásak is lenni utána azoknak, akik ezen az úton velünk végig akarnak menni.
+
+78
+00:35:34,911 --> 00:36:06,171
+Speaker 2: És visszatérnék egy picit talán arra, hogy kérdezted az elején, hogy mi az, ami Dubájban megtetszett, vagy amit úgy éreztem, hogy talán különbözőbb az európai ökoszisztémához képest. Dubájban szerintem, hogyha lemész egy véletlenszerű vasárnap egy co-working space-be, akkor azt látod, hogy nagyjából 50%-ba tele van. Ez egy nagyon érdekes dolog, ugye egy olyan Európából jövve, ahol a vasárnap az ilyen teljesen munka elkerülős nap, tehát nincsen azzal se semmi gond,
+
+79
+00:36:06,211 --> 00:36:46,099
+Speaker 2: viszont a Dubáj ökoszisztémában még azt látom, hogy a délutánok is potenciálisan valamilyen hustle-rel, side hustle-rel telhetnek el, vagy ha nem mással, akkor orvasással. Ez egy nagyon-nagyon produktív környezet, és mindenki, aki oda kerül, úgy látom, hogy igazából erre a kapta fára van gyártva. Ezt sokan fel is hozzák, hát Dubajban mindenki munkamániás, vagy hogy mindenki folyton előre törekvő. Mindenki eldöntheti nyilván, hogy ez jó vagy rossz. Én egy picit hiányolom Európából azt, hogy ez a fajta kultúra talán teljesen eltűnt, vagy nem nagyon találom nyomát.
+
+80
+00:36:46,975 --> 00:37:05,015
+Speaker 2: pláne nyugat-európai, de most már az a baj, hogy nálunk sem. És azért mi nem rendelkezünk mondjuk egy Norvég befektető alap háttérrel, amikor ugye minden állampolgárnak valamilyen szinten biztosítva van a jóléte nekünk azért, de még sokat kellene pedálozni közép-kelet-európába, mert levagyunk már amúgy is maradva ötven évvel.
+
+81
+00:37:05,236 --> 00:37:39,356
+Speaker 1: Igen, hát miközben hallgattam az előadásodat, eszembe jutott ez a híres mondás, ez a gondolat, hogy a nehéz idők erős embereket termelnek, és az erős emberek pedig jó időket hoznak, a jó idők viszont gyenge embereket termelnek ki magukból. És talán, mintha ebbe a ciklusba lennénk most, hogy nagyon jó volt az elmúlt öt év, az elmúlt tíz év így az IT piacon, viszont mintha ez az ellustulás, ez az elpuhulás, ez kezdene érződni, és hogy ezek a poha emberek most mit fognak hozni,
+
+82
+00:37:39,435 --> 00:37:46,495
+Speaker 1: mintha ez lenne az egyik üzenete ennek a vészcsengőhúzásnak, hogy figyeljetek ide, mert baj jön. Biztosan.
+
+83
+00:37:47,263 --> 00:38:19,243
+Speaker 2: Abszolút ezzel egyetértek. Az a baj, amikor, és ezt például Robert Kiyosaki-nak is a könyvében olvashatjuk, én nem vagyok egyébként az alkalmazott státusz ellen egy kicsit sem, meg a céget vezettek, tehát mi a kollégáinkra igyekszünk odafigyelni, vigyázni, és nincsen azzal semmi baj, nem kell mindenkinek vállalkozni, rengeteg áldozatot követel, viszont például azt az eszmét, amit ő ott leír, hogy van az a szint az életvitelben az embernek, amikor már nem él rosszul, de még lehetne annál sokkal többet is tenni a jóléte vagy a továbbhaladása érdekében,
+
+84
+00:38:19,263 --> 00:38:58,836
+Speaker 2: ez lehet karrier vagy életszínvonal szempontjából, viszont egy olyan langyos zónába érkezik be, amikor már nincsen akkora nagy stresszor hátulról, amiért érdemes lenni, tehát a motiváció picit eltűnik, és akkor ott valaki úgy érzi, hogy ezen a szinten szeretne megállni. Azt is tudni kell mindenkinek amúgy, hogy mi az, ami elég, tehát hogy ugye anyagi szempontból az elképzelhető, hogy ez így elég, csak ugye ez a mi szakmánk, ez egy folyamatosan fejlődő szakma. És nem biztos, hogy mindig olyan kontextus van, amikor például az a projekt, vagy az az ügyfél, akivel dolgozol, az a top technológiákkal, legújabb módszertannal tud veled dolgozni.
+
+85
+00:38:59,176 --> 00:39:27,386
+Speaker 2: Olyankor szerintem a te feladatod kellene legyen az, hogy nagyon tudatosan figyelj arra, hogy karriervédelmi üzemmódba kapcsolj. Nyilván mi is igyekszünk a kollégáinknak segíteni, tehát például minden évben elmegyünk piacvezető konferenciákra, ahol külföldi előadók adnak elő nagy cégektől, tehát olyan nagy cégektől, ahol igazából a mi szakmánkat magas fokon űzik.
+
+86
+00:39:29,279 --> 00:40:17,839
+Speaker 2: Nagyon sok olyan ismerős, olyan barátom van, aki azt mondja, hogy ő ilyesmire nem költ, hát küldje el a cég, hogyha szeretné, hogy ő holnap jobb legyen, akkor elvárja, hogy akkor adjanak neki szabad napot, fizessék ki a konferenciát, még lehetőleg akkor valami pluszt is előtte, utána, hogy tudja kipihenni az út fáradalmait. Na ez most megváltozott, tehát itt most már egyértelmű az az üzenet, hogy mindenki magára kell elsősorban vigyázzon. Vannak olyan cégek, akik amúgy vigyáznak rá, tehát mi azért igyekszünk valahol a kettő között pozicionálódni, amúgy a mi kollégáink értékelik is, tehát volt egy céges felmérésünk, ahol egyértelműen kimondták azt, hogy például ez az oldala, ami cégünkben való létnek, ez neki kifejezetten imponáló, és az, hogy a kollégák is olyan magas technikai színvonalon vannak, amivel ők úgy érzik, hogy ez egy olyan környezet,
+
+87
+00:40:17,839 --> 00:40:48,673
+Speaker 2: amiben holnap-holnap után is szívesen bejönnek, és nem marad senki sem hátra. Nálunk is van olyan projekt, olyan technológia, ami nem feltétlenül a legutolsó. 3-4 évben pattant ki valakinek a fejéből, de hát azokat az ügyfeleket is ki kell szolgálni, viszont azt akkor próbáljuk ellensúlyozni talán olyan tanítási, meg exposure részen, ahol olyan dolgokról tanulhatnak, vagy olyan dolgokat próbálunk nekik földobni,
+
+88
+00:40:48,673 --> 00:40:51,373
+Speaker 2: olyan labdákat, amiket, hogyha leütnek, azzal mindenki jól jár.
+
+89
+00:40:51,833 --> 00:40:57,093
+Speaker 1: Téged amúgy mi motivál? Mi az, ami húz előre ennyire szenvedélyesen. 
+
+90
+00:40:57,093 --> 00:41:26,751
+Speaker 2: Ez egy nagyon jó kérdés, és igazából, ugye ma önreflexióról beszéltem, szerintem erről sokat lehet beszélni. Az egyik dolog az nyilván a siker. Tehát szeretném azt, hogy elmondhassam, ugye már pár start-upban mondtam, hogy beletört igazából a bicskám. Olyan értelemben nem feltétlenül veszem teljes mértékben a felelősséget csak az én vállamra, hogy azért ez egy sok komponensi dolog, tehát láttuk a Csaba előadásából is, hogy azért egy start-up nagyon sok mindenen elbukhat.
+
+91
+00:41:27,452 --> 00:42:00,081
+Speaker 2: Azt sem mondom, hogy mi nem hibáztunk, de szeretném azt, hogy egy olyan közösséget építsünk a Binhatch-en belül, ahol mindenki egyformán jól jár, ahol olyan technológiákat tudunk használni olyan problémáknak a megoldására, ami igazából tényleg értékes. Olyan ügyfeleknek, akik jól láthatóak, akik bizniszkritikus dolgokat oldnak meg, tehát nekem mindig az volt a kedvenc projektem, amelyiken ugye a legvizibilisebb volt, a legláthatóbb volt az, hogyha valamit sikerült javítani.
+
+92
+00:42:00,241 --> 00:42:34,115
+Speaker 2: Tehát ha valami olyat építesz, amit amúgy potenciálisan milliók használnak, akkor az azért mindig ad egy ilyen kielégülést az embernek, tehát abszolút. Talán ez az építői kultúra, meg ez az építői elégtétel az, amire azt mondanám, hogy előre visz, és azon kívül pedig nyilván azok az emberek, akiket jó környezetbe tudunk ez által tartani, és akiknek a szürke állományát ilyen dolgokra tudjuk használni, és olyan környezetet tudunk nekik teremteni, ahol ők jól érzik magukat.
+
+93
+00:42:34,695 --> 00:43:05,675
+Speaker 1: Az AI most, ahogy bejött, ezt mindenkitől megkérdezem, és nagyon kíváncsi vagyok a véleményedre, ahogy egyre inkább látom, hogy bejön, és egyre nagyobb teret vesz el most már a fejlesztőktől is, kódot generál, és dokumentációt generál, és gyakorlatilag anélkül már fejleszteni szinte elképzelhetetlen. Hogy látod, hogy kié lesz a jövő? Milyen kvalitásai kell legyenek annak a személynek, aki most kezdi tegyük fel az egyetemet? Mit tanuljon?
+
+94
+00:43:05,815 --> 00:43:09,356
+Speaker 1: Hogyan tanuljon, és kié lesz a jövő? Ki lesz az, aki sikeres lesz. 
+
+95
+00:43:11,743 --> 00:43:43,443
+Speaker 2: Hát elsősorban én talán inkább a szenyor kollégákkal kezdeném, mert ugye ott is szerintem lesz egy elég komoly transformáció olyan irányban, hogy az AI-zókat, akik eddig is nagyon jók voltak, azt nagyon nagy mértékben fel fogja gyorsítani. Pont azok a skillek, amik ahhoz kellettek, hogy egy termékből igazán jó, skálázható, biztonságos, gyors és egyéb ilyen non-funkcionális jelzőkkel illetett terméket tudjunk teremteni, azok most nagyon-nagyon felszínre törnek.
+
+96
+00:43:43,504 --> 00:44:17,495
+Speaker 2: Ugyanis például, hogyha az AI-jal való programozásról beszélünk, akkor nagyon pontosan el kell tudjuk mondani azt, hogy mit várunk el. Most, hogyha ezt cizelláton is jól meg tudjuk fogalmazni, akkor valószínűleg az eredmény is. Az nagyjából jó minőségű lesz. Nyilvánul utána pedig azt is folyamatos iterációkon keresztül ki kell tudni értékelni, el kell mondani, mi az, amit talán nem gondolt, mi az, ami abban a kontextusban vagy üzleti helyzetben nem jó fit. Tehát nekkel kérjük, hogy akkor írja ő át, vagy hogyha én őszintén a harmadik, negyedik próbálkozásnál nem sikerül elérjem, amit akarok,
+
+97
+00:44:17,515 --> 00:45:02,152
+Speaker 2: akkor azt mondom, jó, akkor ezt most megírom én, de a többi helyzetben igyekszem az AI-t használni. Tehát azt mondanám, hogy pont arra sok rétű tudásra van szükség, amit, és ez lesz talán a junioroknál nehéz, amit az edzés során lehetett igazából elsajátítani. Ez a tudás annak a feloldására is irányul, hogy az informatikában az Armos előadást, aki látta, az valószínűleg legalább akkor átlépett hátra, mint én, hogy most már nem tudom, a tizedik vagy tizenötödik virtualizációs színnél tartunk, tehát ugye ott van a hardware, azon ott van egy hypervisor, azon ott van egy operációs rendszer, aminek a tetején van egy konténer, a konténerbe fut egy alkalmazás, az alkalmazásra behúzunk egy library.
+
+98
+00:45:02,152 --> 00:45:32,031
+Speaker 2: Tehát, hogy itt már annyi minden van, amit át kell látni, akkor az ugye kommunikál egy hálózaton keresztül valakivel, annak a hálózatnak van egy protokollja. Tehát ezekben a dolgokban már annyi hiba csúszhat be, vagy annyi specifikum van, amik a működésbe folyásolják, hogy ezeket, hogyha valaki át akarja látni, akkor egy picit ezekhez az elméletének tartott fogalmakhoz azért hozzá kell tudni szólni, meg hozzá kell tudni nyúlni. Ezekben az abstrakciós cselekben látom például az igazi szenyoritásnak.
+
+99
+00:45:32,772 --> 00:46:06,816
+Speaker 2: Köszönöm, hogy megnéztétek! Nagyon nagy hozzáadott értékét, például egy incidensnek a megoldásában valaki, aki ilyenekkel gyakran találkozik, az exponencálisabban gyorsabban meg tudja oldani a problémát, mint mondjuk egy junior. Egész egyszerűen azért, mert nekünk volt rá időnk, hogy ezeket egyenként megtapasztaljuk, és az az igazság, hogy ennél kevésbé komplex környezetekben. Az én személyes véleményem az az, hogy ha egy junior be akar törni erre a munkaerőpiacra, akkor elsősorban szenvedésen kell szeresse az informatikát, mert nem lesz egy egyszerű menet.
+
+100
+00:46:06,996 --> 00:46:37,204
+Speaker 2: Tehát amikor mi informatikusnak mentünk annak idején, nagyon-nagyon jó képzést kaptunk, megint akkor felhoznám, és ezúttal is megköszönöm Demeter Csaba és a Bálint Zsuzsa tanáraimnak azt, hogy idáig eljutottak. Nagyon jó képzést kaptunk én értelmeben, és mindenki, aki a kezük alól kikerült, az azért ment informatikai egyetemre, mert szerette ezt a szakmát. Tehát azt kell mondjam, hogy ha jól tudom, akkor az osztálytársaim közül mindenki a szakmába dolgozik, aki ezt az egyetemi utat követte.
+
+101
+00:46:37,944 --> 00:47:08,674
+Speaker 2: Utána sajnos és szerencsére, mivel ilyen jól ment az informatikusoknak, és erről is beszéltem, ezért nagyon sok olyan ember is oda ment, aki egyébként valami másat szeret szenvedélyesen csinálni, viszont ezt jól megfizették. Az ő belső motivációjuk egy adott pillanatban nyilván lemorzsolódik. Tehát bekerültek egy munkakörnyezetbe, az abszolút kötelezőt azt ők tudták teljesíteni, nem rúgták ki őket, nem is olyan volt a kontextus, hogy bárkinek vizet érdekeljen az, hogy egy kollégát azt eltávolítson egy fizetett székről.
+
+102
+00:47:12,014 --> 00:47:44,032
+Speaker 2: Viszont elvesztődött egy picit talán ez az elit oldala az informatikának. Most azok az emberek, akik... Továbbra is az informatika szenvedélyes szereteté miatt kerülnek ebbe a szakmába, azok valószínűleg az egyetemi éveik alatt is, meg a céges éveik alatt is olyan tudásra fognak megpróbálni szert tenni, ami ezeket a témaköröket például, mint az előbb elmondtam, azért mélyen érinti. Onnantól kezdve a következő lépés nyilván a céges kultúrának a megtanulása,
+
+103
+00:47:44,032 --> 00:48:20,324
+Speaker 2: az ügyféle való kommunikációnak a megtanulása és egyéb ilyen biznisz jellegű feladatköröknek az elsajátítása, meg egész egyszerűen az üzleti életben való részvétel, meg a mindennapoknak a challenge-einek a megoldása, ami alatt rengeteget fejlődik egy kollega. Szóval én igazából erre fektetném a hangsúlyt, hogyha egy dolgot mondhatnék, hogy az a lexikális tudás, meg az a... Az a pragmatikusság és kritikus gondolkodás, amivel egy informatikus ma fel kell legyen vértezve, az abszolút eszenciális.
+
+104
+00:48:20,684 --> 00:48:56,284
+Speaker 2: Ezen kívül szerintem senki sem tudja megjósolni most ebben a pillanatban, hogy merre felé fog az ipar elmozdulni. Ez csak egy ilyen középtávú, maximum középtávú ajánlás lehet, és ez megváltozhat, úgyhogy mindenki magának döntse el, hogyha jó ötlet ebbe belemászni vagy nem. Nekem más lehetőség, nem hiszem, hogy lett volna, én pici gyerekkorom óta tudtam, hogy amikor első számítógépre láthattam a kezem, tudtam, hogy engem ez fog érdekelni, és szerencsére a szüleim is ilyen irányba tereltek, és maximálisan támogattak, hogy ebbe az irányba mozduljak el.
+
+105
+00:48:57,088 --> 00:49:34,828
+Speaker 1: Tehát, hogyha egy junior, bocsánat, egy érettségiző diák érzi magába ezt az elhívást, hogy az IT az, ami vonza, akkor számítson arra, hogy nehéz harc lesz, de csak akkor fogja tudni ezt a nehéz harcot végigvinni, hogyha tényleg szereti, mert ha nem, akkor a bicskája bele fog törni. Csak a nagy fizetés önmagában egyrészt nem is garantált, másrészt pedig a nagy fizetés önmagában nem motivál hosszú távon eléggé. Én nagyon sok embert láttam, akik kiégtek egyszerűen, és ez az AI gyakorlatilag felgyorsítja a kiégést, mert többet várnak el rövidebb idő alatt.
+
+106
+00:49:35,860 --> 00:50:10,040
+Speaker 1: Szóval meg kell kapni az, hogy ez tényleg ez az út, amin el akar indulni, vagy pedig nem. És hogyha elindult, akkor amit megtanultam most tőled az, hogy igazi product mindset-tel gondolkozzon, vállaljon felelősséget, holisztikusan értse meg, hogy mi az értelme annak, amit csinál, és úgy, ahogy mondtad, az érték hierarhiában minél magasabbra tegye ezt a létszet, minél nagyobb hozzáadott értéke legyen, és próbáljon meg a befektetőnek a fejével gondolkozni, amit még észrevettem nálad, hogy nagyon-nagyon mély ismereted van.
+
+107
+00:50:10,060 --> 00:50:28,300
+Speaker 1: Egyrészt a szakszavakat nagyon jól ismered, de a befektetői szakszavakat nagyon jól ismered. Amúgy ezeket hol tanultad? Hogyha most így az elmúlt tíz évet nézed, mi volt az a workshopokon tanultad, vagy az internetről olvastad, vagy ennek az egyvelege, vagy beszélgettél emberekkel, vagy mentorod volt, vagy hogyan lehet ezt felszedni, ezt a tudást. 
+
+108
+00:50:28,740 --> 00:51:01,192
+Speaker 2: Talán, hogyha egy... Egy rossz pontja van legalábbis a romániai iskolai meg egyetemi oktatásnak, akkor az az, hogy ez egyáltalán nincsen érintve semmilyen tantárkeretében, semmilyen oktatás, semmilyen workshop, semmilyen extra kurikulális tevékenység alatt. Nyilván vannak olyan dolgok, amik segítenek ahhoz, hogy valamilyen szinten simulj hozzá. Tehát vannak ilyen ötletbörze jellegű diákversenyek, vagy ilyen biznisz jellegű ötlet, és ilyen bizniszplenki dolgozó versenyek, amik segítenek,
+
+109
+00:51:01,212 --> 00:51:38,424
+Speaker 2: de például klasszikusan azért az informatikusok ezt nem keresik. Én személyesen őszintén, amikor bekerültem az első startupomba, és egy olyan környezetbe kerültem, ahol folyamatosan olyan terminusokat használtak a környezetemben, amit nem ismertem, akkor nyilván elkezdtem olvasni. Ez nagyon kevés volt, tehát ezáltal nem lettem okosabb. Nyilván, hogy akkor már megértettük egymást, de hogy a startup világban egyébként ez nagyon jelen van, ez a lingónak a használata, tehát rengeteg rövidítés van, rengeteg olyan dolog, ami a kultúrának a része, vagy a szubkultúrának a része, hogyha így szeretnénk megfogalmazni.
+
+110
+00:51:39,648 --> 00:52:17,388
+Speaker 2: Nyilván, hogy az a kitettség, amit az okoz, hogy például egy CEO-val, vagy egy Chief Product Officer, egy CPO-val el kell menni mondjuk egy nagy korporét ügyfélel beszélgetni, akkor az ember beletanul ebbe, hogy mi az, hogy term sheet, hogy mi az, hogy P&L sheet, tehát ezekben a dolgokban nyilván beletanulunk, meg mi az, hogy go to market plan, vagy mi az, hogy product roadmap, tehát ezek a dolgok, amiket sajnos tényleg az egyetemen nem nagyon tanítanak, és szerintem kellene. Beletanul azokba a dinamikákba is, amikkel keresztül megy egy start, tehát mi az, hogy board meeting, mikor kaphatunk befektetést, mikor jó valamit felhozni,
+
+111
+00:52:17,448 --> 00:52:49,352
+Speaker 2: mikor jó egy productot launcholni, mikor érdemes launcholni, hogy kommunikáljunk róla. Mivel a CTO szerepkörben voltam, azért gyakorlatilag minden más funkciójával a cégnek... Kolaborációba kerültem, tehát akár marketing, akár HR oldalon, tehát egy ilyen elég sokrétű munkám volt nyilván a csapatnak a technikai vezetése mellett. És hát utána pedig, amikor már ez a folyamat elindul, és amikor beleszerettem a startup világba, akkor elkezdtem tényleg fölkészülni.
+
+112
+00:52:49,432 --> 00:53:22,932
+Speaker 2: Tehát például van egy csomó nagyon jó és egyébként ingyenesen elérhető anyag, Y Combinator például az egy a nagy amerikai világon a leghíresebb startup inkubátor, akinek van egy startup school nevű programja, mindenkinek nagyon ajánlom, még akkor is, hogyha nem informatikus, tehát ilyen bármilyen biznisz doménban használható tudást lehet szerintem ott szerezni, ahol nagyon szépen elmagyarázzák a termékfejlesztésnek a buktatóit, a rossz kommunikációnak a buktatóit, a nem megfelelő pénzkezelésnek a buktatóit egy cég életébe.
+
+113
+00:53:23,052 --> 00:53:52,964
+Speaker 2: Tehát ilyen szempontból mindig azt mondom, hogy én programozó vagyok, ezt ma is elmondtam. A többi azt nagyjából rám ragadt, tehát... Vagy nehéz tanulások és drága tanulások árán, amik úgy a saját elkövetett hibákból kellett ezeket megtanulni, hogyha pedig nem, akkor azért elég sokat olvastam utána ennek a témakörnek, előadásokat néztem, start-up konferenciákra jártam. Ami talán jó az az, hogy ez egy elég befogadó közösség, tehát hogy talán pont azért, amit Csaba is elmondott ma az előadásában,
+
+114
+00:53:53,064 --> 00:54:26,648
+Speaker 2: hogy ugye nagyon sokan ebbe belebuknak, és ez egy ilyen elfogadott dolog. Tehát szoktak rendezni még szándékosan úgynevezett fuck-up nights-okat is, amikor konkrétan arról van szó, hogy ki hol rontotta el a bizniszét, a start-up-et, potenciálisan az életét megtörő, vagy... mellékvágára juttató dolgokról beszélnek ezek az emberek relatív nyíltan, és egy olyan felszabadultság érzést ad nekik azt, hogy ezt másokkal is megoszthatják, és tudjuk azt, hogy igazából nem csak mi vagyunk néha az éremnek a rossz oldalán, hanem más is.
+
+115
+00:54:26,968 --> 00:54:38,828
+Speaker 1: Záró kérdésként azt kérdezném tőled, hogy ha most visszamehetnél az időbe, és beszélhetnél egy öt percet Langmátéval, aki tíz évvel ezelőtti éned, mit üzennél neki. 
+
+116
+00:54:39,358 --> 00:55:22,452
+Speaker 2: Fú, hát ez egy nagyon érdekes kérdés. Talán azt üzenném neki, hogy legyen empatikusabb például. Értelemben, hogy pláne egy technikai felkészültségű ember, mint amilyen én is vagyok, amikor például egy ügyfél problémát kell megoldani, ami lehetne egy ideális technikai megoldáshoz vezet, akkor alapvetően egy ilyen undorral nyúl hozzá ehhez a problémakörhöz, tehát ilyen megerőszakolt szerepkörből próbál valamit varázsolni. És talán megpróbálnék simulékonyabban hozzáállni, és kevésbé fafejében hozzáállni a bizonyos kliensek, ügyfelek általán, ha termékfejlesztésről beszélünk, támasztott igények felé.
+
+117
+00:55:22,472 --> 00:55:55,572
+Speaker 2: Ez talán segített volna az első start-up-ba például olyan értelembe, hogy ne tartsanak például a fejlesztések olyan sokáig, ameddig potenciálisan tartottak. Csak annak ellenére, hogy a minőség az ott volt a hátamögött, de lehet, hogy az öt évvel ezelőtt én ennek elmagyaráznám azt, hogy vannak olyan rövidítések, amiket érdemesnél megcsinálni. Talán még akkor is, hogyha a minőség kárára megy, talán akkor is, hogyha egy szuboptimális vagy nem ideális helyzetet eredményez rövid távon, mert az életbemaradásnak az pedig lehet az áloga.
+
+118
+00:55:56,672 --> 00:56:13,252
+Speaker 1: Máté, köszönöm szépen az időet, nagyon értékes volt, és sok sikert neked a startupodhoz. Remélem, hogyha egy pár év múlva leülünk beszélgetni, akkor azt a sikert, amit te most így nagyjából körbeírtál, azt el is fogod tudni érni. Akkor viszont nagyon kíváncsi leszek, hogy mit látsz sikernek majd abban a pillanatban.
+
+119
+00:56:13,492 --> 00:56:17,352
+Speaker 2: Nagyon szépen köszönöm, és gratulálok a kezdeményezésed a podcastod. Köszönöm szépen.
+
+120
+00:56:17,572 --> 00:56:50,472
+Speaker 1: Az utóbbi időben nagyon sokat foglalkoztat a startupok világa, nagyon sokat foglalkoztat az oktatástéma, és a következő pár epizódomat erre szeretném szentelni, meghívni a legjobb vendégeket, akik meg tudnak szólalni ezekben a témákban. Ha szeretnél támogatni ebben a munkában, abban, hogy ezeket a témákat minél inkább ki tudjam bontani, és a mögöttük rejlő alapelveket meg tudjam érteni, és ezt podcast formájában veletek is megosszam, azzal tudtok támogatni, ha feliratkoztok erre a csatornára. Azt vettem észre, hogy körülbelül 80%-a a nézőknek nincs feliratkozva a csatornára.
+
+121
+00:56:50,472 --> 00:56:59,404
+Speaker 1: Gyertek és iratkozzatok fel! Ez nagyban segít és motivál engem is, hogy tovább folytassam ezt a kutatást. Ezeket az érdekes témákat hozzátok is elhozzam.
+

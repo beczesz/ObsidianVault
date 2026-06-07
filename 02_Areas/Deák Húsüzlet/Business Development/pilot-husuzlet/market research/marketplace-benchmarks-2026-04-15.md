@@ -1,12 +1,14 @@
 ---
 title: Marketplace Sales Model Research — eMAG, Allegro, Glovo, Wolt, helyi termelői platformok
+description: "Competitive commission benchmarks across eMAG (7-25%), Allegro (4-15%), Wolt/Glovo (25-30%), and local producer platforms (15-20%) to contextualize Deák negotiations; argues 3% savings pool fee (~0.4% revenue) is significantly below market, strengthening negotiating position through documented industry comparisons and hybrid model alternatives."
+description_source: auto
+description_hash: 3ef98965c30359bf
 date: 2026-04-15
 source: Perplexity research session
 session_url: https://www.perplexity.ai/search/hogyan-mukodik-az-emag-marketp-DS_HTtItTeW_tY9RrZK8.g
 id: 669885c8-3e53-472c-94fc-9a23f9bc3c2f
 index_schema_version: 1
 ---
-
 # Marketplace Benchmark Research
 
 ## 🎯 TL;DR — a Deák tárgyaláshoz

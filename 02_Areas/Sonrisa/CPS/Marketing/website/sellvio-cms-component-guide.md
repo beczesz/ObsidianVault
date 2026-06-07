@@ -1,3 +1,15 @@
+---
+title: "Sellvio CMS Component Guide"
+date: 2026-03-13
+author: Becze Szabolcs
+status: active
+description: "Technical reference for Sellvio CMS components used in Sonrisa landing pages, including setup instructions, core wrapper patterns, background colors, and templates for heroes, trust bars, titles, tabs, and layouts with HTML/CSS specifications for developers and content editors building CPS pages."
+description_source: auto
+description_hash: 0680969c09e1cfc0
+id: 725425ef-5471-4d53-a893-fdf2bd08b024
+index_schema_version: 1
+bdos_index: true
+---
 # Sellvio CMS Component Guide
 ## For Sonrisa CPS Landing Pages
 

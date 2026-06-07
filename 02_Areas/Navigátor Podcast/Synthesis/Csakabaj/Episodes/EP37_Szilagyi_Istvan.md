@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Synthesis of economist Szilágyi István's interview on Hungarian business thinking, tax strategy, and entrepreneurial creativity; explores the tension between regulatory constraints and sustainable growth for business professionals."
+description_source: auto
+description_hash: 3f5a63e64ec83c16
+id: 79dc9126-22aa-4cce-8efd-5c2b0dacff89
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP37 | S02E04 — Szilágyi István: Adó, Vállalkozás, Kreatívitás

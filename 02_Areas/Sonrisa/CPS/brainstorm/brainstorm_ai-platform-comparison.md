@@ -1,4 +1,7 @@
 ---
+description: "Early-stage analysis of five major AI platforms including ChatGPT 5.5, Claude Opus 4.7, Gemini 2.5 Pro, Perplexity, and Microsoft Copilot M365, comparing capabilities, benchmarks, pricing, and strengths to inform platform selection for team workflows."
+description_source: auto
+description_hash: 2292839fb32dd97c
 topic: AI Platform Comparison - Strengths & Capabilities
 created: 2026-04-24
 last_updated: 2026-04-24
@@ -6,7 +9,6 @@ status: active
 id: 552f2d87-6d71-447d-856c-c6d21cda634f
 index_schema_version: 1
 ---
-
 # Brainstorm: AI Platform Comparison
 
 ## Team

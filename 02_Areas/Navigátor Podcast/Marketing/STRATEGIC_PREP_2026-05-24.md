@@ -1,4 +1,7 @@
 ---
+description: "Assessment of Navigátor Podcast's strategic foundation for inherited audience stewardship. Documents existing ecosystem maturity, channel infrastructure, demographic patterns, and operational automation; identifies Facebook strategy and Spotify presence as gaps requiring development while confirming psychology-health content as strongest performer."
+description_source: auto
+description_hash: 787bf9a885238142
 schema: presto.strategic-prep.v1
 date: 2026-05-24
 presence: Navigátor Podcast Presence
@@ -8,7 +11,6 @@ smoke_test_readiness: possible
 id: 204a0ad5-e77f-44d3-8f92-303999e88ca2
 index_schema_version: 1
 ---
-
 # Navigátor Podcast Presence — Strategic Prep Assessment
 
 > **Scope:** Maintain and **evolve an existing audience ecosystem** — Hungarian long-form interview podcast. Historical continuity is the highest-priority constraint. NOT a new presence — an inherited one.

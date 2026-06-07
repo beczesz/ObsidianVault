@@ -1,3 +1,15 @@
+---
+title: "Meeting Prep -- Bozar Anita (MVMI)"
+date: 2026-04-02
+author: Becze Szabolcs
+status: active
+description: "Szabolcs és Bozar Anita (MVMI frontend üzemeltetési vezetője) közötti meetingtervezett áprilisban az Azure DevOps támogatási szerződés nyitott kérdéseinek tisztázásáról, különösen az SLA működésről, üzemeltetői kooperációról, hozzáférésekről és riportingról."
+description_source: auto
+description_hash: bdb7d6a350fef902
+id: 1f9cda5c-bf1b-43fe-ae7e-b7073ce51b03
+index_schema_version: 1
+bdos_index: true
+---
 # Meeting Prep -- Bozar Anita (MVMI)
 
 **Datum:** 2026 aprilis (jovo het, pontos datum kitoltendo)

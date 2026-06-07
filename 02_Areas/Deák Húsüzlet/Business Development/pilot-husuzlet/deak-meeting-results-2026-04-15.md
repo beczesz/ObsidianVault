@@ -1,5 +1,8 @@
 ---
 title: Deák Húsmíves Tárgyalás — Eredmények
+description: "Deák húsmíves pilótaprogramjának tárgyalási eredménye: 19,5% retail költség megosztása 3% vásárlókedvezmény, 6,6% platform, 9,9% Deák profit között, fázisokra osztva teljesítménymérőkkel."
+description_source: auto
+description_hash: dbd3761a8402b164
 date: 2026-04-15
 version: 1.0
 status: VÉGLEGESÍTVE
@@ -7,7 +10,6 @@ participants: Szabolcs (Exar Labs) + Deák Húsmíves tulajdonosok
 id: 133ab02d-55c2-46db-b6cf-d0afacf7f00b
 index_schema_version: 1
 ---
-
 # Deák Húsmíves Tárgyalás — Eredmények (2026-04-15)
 
 ## Összefoglaló

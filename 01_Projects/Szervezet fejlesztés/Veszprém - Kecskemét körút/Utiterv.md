@@ -1,4 +1,15 @@
-
+---
+title: "Utiterv"
+date: 2025-12-08
+author: Becze Szabolcs
+status: active
+description: "Részletes utiterv csütörtöktől szombatig több város érintésével, étkezésekkel, találkozásokkal és időpontokkal; tartalmaz térképlinket és még egyeztetendő programpontokat."
+description_source: auto
+description_hash: cc4e0a34835f17a4
+id: 535248ad-71ed-4e06-bcbd-6c30112912eb
+index_schema_version: 1
+bdos_index: true
+---
 ## **Csütörtök**
 
 ```timeline

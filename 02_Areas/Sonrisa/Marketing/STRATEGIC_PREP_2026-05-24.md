@@ -1,4 +1,7 @@
 ---
+description: "Inventory and readiness assessment of Sonrisa's Cloud Platform Services AI marketing presence: existing assets (3 published managed-services articles, landing pages, strategy docs), maturity gaps (AI-ops narrative not yet published), channel map, and communication risks for Szabolcs Becze's personal voice."
+description_source: auto
+description_hash: 265307a162ed1481
 schema: presto.strategic-prep.v1
 date: 2026-05-24
 presence: Sonrisa Enterprise AI Presence (CPS-led)
@@ -8,7 +11,6 @@ smoke_test_readiness: recommended-first
 id: b317ce06-309a-428e-9b79-e5b08848705d
 index_schema_version: 1
 ---
-
 # Sonrisa Enterprise AI Presence — Strategic Prep Assessment
 
 > **Scope:** Enterprise AI, AI operations, cloud operations, DevOps transformation, operational intelligence, AI-native company infrastructure — primarily through the **Cloud Platform Services (CPS)** business unit, with Becze Szabolcs as Head of CPS as the public face.

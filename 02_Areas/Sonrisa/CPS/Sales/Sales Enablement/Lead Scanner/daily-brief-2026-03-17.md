@@ -1,12 +1,14 @@
 ---
 title: CPS Daily Lead Brief
+description: "A daily lead brief from March 2026 tracking 12 qualified B2B SaaS prospects for cloud infrastructure services, with detailed scoring, outreach strategies, and contact recommendations for hot leads in fintech, cybersecurity, and gaming verticals."
+description_source: auto
+description_hash: 1fef2c4aa3c5e43f
 date: 2026-03-17
 leads_found: 6
 hot_leads: 3
 id: ff63c015-cfd5-42a3-bac8-9d2d94fab527
 index_schema_version: 1
 ---
-
 # CPS Daily Lead Brief - 2026-03-17
 
 ## Summary

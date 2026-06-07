@@ -1,3 +1,15 @@
+---
+title: "Sertés Csülök"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Friss sertés csülök termékoldal: kollagénben gazdag, csont és hús kombinációja párolt ételekhez és leveshez, 1.2-1.8 kg között választható méretben."
+description_source: auto
+description_hash: 917b1f08fccd7878
+id: 029725d5-3963-4b08-b58c-6536a876c76f
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Csülök
 
 ```yaml

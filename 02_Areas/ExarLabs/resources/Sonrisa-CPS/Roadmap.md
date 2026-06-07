@@ -1,3 +1,15 @@
+---
+title: "Sonrisa CPS — Unified Strategic Journey"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Sonrisa's roadmap to scale their managed services business from zero to €5M+ ARR in twelve months, with tactical steps to clear AWS partnership blockers and execute their first three customer conversions using their competitive advantage in integrated cloud migration and management services."
+description_source: auto
+description_hash: 54f03b248c4c1691
+id: 3427f793-fd53-460b-bf8c-d570da7dda9a
+index_schema_version: 1
+bdos_index: true
+---
 # Sonrisa CPS — Unified Strategic Journey
 
 **Document Version:** 2.0  

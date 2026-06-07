@@ -1,3 +1,15 @@
+---
+title: "Output Templates"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "A standardized collection of markdown templates for capturing book summaries, podcasts, articles, atomic ideas, and contrast notes using the PARA framework. Includes placeholders, required sections, and file organization guidelines for building a structured personal knowledge base."
+description_source: auto
+description_hash: dbe9f0f4ac01ca69
+id: fb488ea3-0a81-45e6-bebf-c21351444297
+index_schema_version: 1
+bdos_index: true
+---
 # Output Templates
 
 Use these templates verbatim as the skeleton for each note type. Replace `{{placeholders}}` with actual values. Keep every heading — leave sections empty with "…" only if genuinely not applicable.

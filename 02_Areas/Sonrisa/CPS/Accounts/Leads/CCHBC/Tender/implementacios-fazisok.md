@@ -1,3 +1,15 @@
+---
+title: "implementacios fazisok"
+date: 2026-05-20
+author: Becze Szabolcs
+status: active
+description: "Kubernetes alapú, felhő infrastruktúra bevezetésének részletezett ütemezése: fázisok, lépések, komponensek és célok a cloud provider kiválasztásától a CI/CD eszközökhöz."
+description_source: auto
+description_hash: f356806427a96f6c
+id: 312881c8-2b06-4f75-81f1-515478317a17
+index_schema_version: 1
+bdos_index: true
+---
 Implementációs fázisok
 Bevezetés
 Az ügyfelek megfelelő támogatásához nélkülözhetetlen egy megbízható infrastruktúra, ami a különböző szolgáltatásaink megbízható alapját biztosítja. Ez nem csak a CPS csapat érdeke - megfelelő tervezéssel általános vállalati szintre hozható. 

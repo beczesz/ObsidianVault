@@ -1,12 +1,14 @@
 ---
 title: DH Savings Engine — Kockázatok
+description: "A DH Savings Engine fejlesztésének kockázati audit listája, mely kitér a supply backend hiányára, feature complexity-re, pilot adatok validálására, email policy konfliktusokra és a Deák Húsmíves tulajdonosok közötti döntéshozatali blokkokra."
+description_source: auto
+description_hash: dbfde7717d9a2df9
 version: 1.1
 date: 2026-04-15
 note: Sprint 2 close után frissítve. Néhány kockázat csökkent (analytics létezik), néhány új (élesben mérünk).
 id: c7ca3e3e-2a50-4ab7-92de-6ef66f517fa4
 index_schema_version: 1
 ---
-
 # DH Savings Engine — Kockázat audit (v1.1)
 
 ## 1. Supply nincs bekötve

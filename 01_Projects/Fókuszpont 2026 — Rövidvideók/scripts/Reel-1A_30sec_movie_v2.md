@@ -1,4 +1,7 @@
 ---
+description: "30 másodperces spirituális reklámfilm a Fókuszpont 2026 rendezvényről. Négy kérdés szétszedi a figyelem szétszóródottságát, Barni atya arcának megjelenése pedig megoldást kínál, végül monstrancia-logó és eseményadatok zárják."
+description_source: auto
+description_hash: 7418e2f8f73f61dc
 type: forgatókönyv
 reel: "#1A — 30 mp · movie feeling"
 version: v2.1 (Szabolcs döntései beépítve)
@@ -12,7 +15,6 @@ brand_line: "Jézus a Fókuszpont és minden szem Rá szegeződik"
 id: 5390e561-72c6-4657-91b7-dd6440ec1877
 index_schema_version: 1
 ---
-
 # Reel #1A — 30 mp · Movie Feeling
 
 ## Koncepció

@@ -1,3 +1,15 @@
+---
+title: "Products — Master Data Workflow"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Master product dataset for a meat supplier, containing 46 products across six categories with markdown source files, JSON schema v1.1, internal product codes, and automated build workflow for web deployment."
+description_source: auto
+description_hash: fa73c998fd44cc78
+id: a0ad4bec-9319-4822-8193-b5936c9bda27
+index_schema_version: 1
+bdos_index: true
+---
 # Products — Master Data Workflow
 
 > **Status:** Aktív (v1.1 / schema v1.1 — 46 termék, deploy-ready 2026-05-07)

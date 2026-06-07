@@ -1,4 +1,7 @@
 ---
+description: "Episode featuring dietitian Both Richárd discussing omnivore diet, nutrition science, and health ethics on the Csakabaj Podcast; includes practical dietary applications and personal experiences relevant to nutrition professionals and health-conscious listeners."
+description_source: auto
+description_hash: 644df1fa1dee9135
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -13,7 +16,6 @@ quality: "Gold Standard"
 id: cf15f835-a819-417a-aa1a-87c97475287e
 index_schema_version: 1
 ---
-
 # EP04 — Both Richárd: Táplálkozás, omnivore diet, egészség
 
 ## Alapadatok

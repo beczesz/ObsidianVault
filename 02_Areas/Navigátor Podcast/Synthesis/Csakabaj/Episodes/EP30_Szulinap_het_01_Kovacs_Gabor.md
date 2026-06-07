@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Episode synthesis of Csakabaj Podcast's birthday special featuring Józsa Levi with comedians Kovács Levente and Gábor Lajos, analyzing the loose-format conversation on media, culture, comedy, and Hungarian podcast culture with full narrative arc and thematic breakdown."
+description_source: auto
+description_hash: af4deff88b4efad1
+id: 282966e8-49a8-4e97-8ea2-1a4f2d78bb91
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP30 | Szülinap-hét #1

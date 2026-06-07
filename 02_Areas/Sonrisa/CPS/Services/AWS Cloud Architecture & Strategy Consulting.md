@@ -1,3 +1,15 @@
+---
+title: "**Key Capabilities**"
+date: 2025-11-26
+author: Becze Szabolcs
+status: active
+description: "Professional AWS cloud architecture consulting service offering strategic assessments, architecture blueprint design, application guidance, and cost optimization to modernize enterprise cloud environments and address technical debt."
+description_source: auto
+description_hash: 42ccaf5ab2e7dec0
+id: 1ba60b3f-fa4d-43d8-ba02-43d87cc8fd0f
+index_schema_version: 1
+bdos_index: true
+---
 AWS Cloud Architecture & Strategy Consulting provides a structured approach to evaluating and designing cloud architectures on AWS. We assess and modernize environments across Amazon EC2, Amazon EKS and ECS, Amazon RDS and Aurora, Amazon S3, Amazon VPC, AWS IAM, and related services to support scalability, reliability, security, and cost efficiency.
 
 Organizations frequently operate with architectures that have accumulated technical debt, lack clear scalability patterns, contain security gaps, or do not align with business and compliance requirements. These issues impact delivery velocity, operational stability, and long-term growth. CPS addresses these challenges with certified cloud architects, AWS best practices, and a defined consulting methodology.

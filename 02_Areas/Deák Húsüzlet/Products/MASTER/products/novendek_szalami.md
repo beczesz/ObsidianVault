@@ -1,3 +1,15 @@
+---
+title: "Házi szalámi"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Háztartási szalámi termékadatlap, amely a finomszemcsés, enyhén fűszerezett szalámi árát, elérhetőségét és vastagság-opciót tartalmazza szendvicsek és hideg tálak készítéséhez."
+description_source: auto
+description_hash: 97b0db2448ce5b65
+id: 87d4d817-2f5f-4153-85f1-9ecd82f4ca11
+index_schema_version: 1
+bdos_index: true
+---
 # Házi szalámi
 
 ```yaml

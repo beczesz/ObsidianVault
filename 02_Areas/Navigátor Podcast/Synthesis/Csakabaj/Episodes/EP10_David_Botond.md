@@ -1,4 +1,7 @@
 ---
+description: "Dávid Botond üzletember mélyinterjúja, amely a kockázat, kudarc és személyes felelősség kérdéseit járja körül; Levi interjúvezetője kritikus párbeszédben tárja fel a sztoikus életfilozófia és a bizalom szerepét az üzletben."
+description_source: auto
+description_hash: 1e6f1d4e87b1388b
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -14,7 +17,6 @@ quality: "Gold Standard"
 id: a90f1592-95b1-40b7-a835-0c5b4a12af4e
 index_schema_version: 1
 ---
-
 # EP10 — Dávid Botond: A vállalkozó dilemmája — Kockázat, kudarc és személyes felelősség
 
 ## Alapadatok

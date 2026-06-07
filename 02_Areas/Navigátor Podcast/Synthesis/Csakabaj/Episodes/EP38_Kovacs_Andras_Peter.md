@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Csakabaj Podcast's Season 2 milestone episode featuring nationally-known standup comedian Kovács András Péter, exploring authenticity in performance and comedy craft through conversation between established entertainer and developing host."
+description_source: auto
+description_hash: bfeefd49e3150015
+id: 7909eff0-85cb-4179-93cb-b758cf926c68
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP38 | S02E05 — Kovács András Péter (KAP): Az Érzés Hitelességéről

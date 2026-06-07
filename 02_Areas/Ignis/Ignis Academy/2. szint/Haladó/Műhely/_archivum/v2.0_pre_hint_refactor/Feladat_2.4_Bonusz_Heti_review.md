@@ -1,0 +1,64 @@
+---
+title: "(Bónusz) Feladat 2.4 — Heti TODO review"
+date: 2026-05-14
+author: Becze Szabolcs
+status: active
+description: "Praktikus útmutató a heti TODO-review automatizálásához a Cowork AI-val; megtanít strukturált módszert a feladatok csoportosítására, priorizálására és a heti fókusz meghatározására."
+description_source: auto
+description_hash: 669756aee1cad24e
+id: 6bd7d46f-60f0-4089-866f-6252d79e1606
+index_schema_version: 1
+bdos_index: true
+---
+# (Bónusz) Feladat 2.4 — Heti TODO review
+
+## Szituáció
+
+A TODO-k bementése csak az első lépés. A valós haszon akkor jön, amikor hetente egyszer **átnézed a listát**: mit csináltál meg, mi csúszik, mi vált értelmetlenné, mit kell előrébb hozni.
+
+A legtöbb TODO rendszer azért hal el, mert ezt a heti review-t senki sem csinálja meg. A Cowork-kel viszont a review maga is automatizálható.
+
+## Feladat
+
+Ha már van legalább 10-15 TODO-d a Productivity plugin-ben (akár az F2.1-2.2-ből, akár az F2.3-ból, akár saját életedből), kérd meg a Cowork-öt egy heti review-ra.
+
+### Javasolt prompt:
+
+> "Készíts heti TODO-review-t. Nézd át az összes mentett feladatomat és csoportosítsd:
+> 1. **Lezárható** — már megcsináltam vagy értelmét vesztette (mit csináljak velük)
+> 2. **Sürgős, ezen a héten** — magas prioritás, határidő közelít
+> 3. **Halasztható** — fontos de még ráérek
+> 4. **Tisztázandó** — homályos vagy függ valakitől
+>
+> Minden tételhez javasolj 1 konkrét következő lépést. Végén: mi az a 3 dolog amire ezen a héten fókuszáljak?"
+
+## Elvárt kimenet
+
+Egy strukturált review riport:
+
+### Lezárható (X tétel)
+- TODO-k amik már nem aktuálisak → archiváld
+
+### Sürgős, ezen a héten (Y tétel)
+- A 3-5 legfontosabb tétel, dátummal és következő akcióval
+
+### Halasztható (Z tétel)
+- Mit lehet a következő hétre tolni
+
+### Tisztázandó (W tétel)
+- Kit kérdezz meg, mit pontosíts
+
+### Fókusz a héten
+1. ...
+2. ...
+3. ...
+
+## Tipp
+
+Ezt a feladatot **érdemes valóban heti rituáléként megcsinálni** — pl. minden hétfő reggel 15 perc. A Cowork emlékszik a múlt héten elvégzett feladatokra, így idővel egyre okosabb javaslatokat ad.
+
+## Tanulás
+
+- A Cowork nem csak listáz — **priorizál és csoportosít**
+- A heti review az AI-rendszerek **leggyakrabban kihagyott része**, pedig itt van a legtöbb érték
+- A "Fókusz a héten" 3 dolog formátum = klasszikus produktivitás-keretrendszer (Marc Andreessen, Cal Newport), de az AI-val 30 másodperc alatt készül

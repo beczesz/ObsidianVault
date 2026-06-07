@@ -1,4 +1,7 @@
 ---
+description: "Podcast-epizód Széles Ferenccel, aki számítógépes grafikát tanít, utazásáról hat hétig Ecuadorban biológus rokonával, valamint az Udvarhely-identitásról és 3D-oktatásról való gondolkodásáról. Az 1,27 órás interjú 755 nézésből 999 másodperc átlagos megtartást ért el, a feliratkozók adták a forgalom"
+description_source: auto
+description_hash: ec13a0abbc8f280b
 version: 0.3
 date: 2026-04-08
 type: episode-synthesis
@@ -21,7 +24,6 @@ status: complete
 id: fa77853e-4589-4374-8f48-f4fe647e615b
 index_schema_version: 1
 ---
-
 # EP07 — Széles Ferenc: Udvarhelytől Ecuadorig
 
 ## Alapadatok

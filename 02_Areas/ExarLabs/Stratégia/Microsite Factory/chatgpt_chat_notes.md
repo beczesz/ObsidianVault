@@ -1,5 +1,8 @@
 ---
 title: ChatGPT Strategist insights — Microsite Factory
+description: "Mikrosite Factory stratégiai pozicionálása AI-native outbound akvirálási motorként, vertikális iparág-specifikus tudásrétegek és composable backend architecture összetételét hangsúlyozva. Haladó felhasználók és termékvezérlésért gyakorlottak számára készült mély stratégiai elemzés."
+description_source: auto
+description_hash: b5b9740759a149f1
 source: https://chatgpt.com/c/6a004d97-9838-8391-bcdd-e4fac1b1fce5
 imported: 2026-05-16
 role: Strategist
@@ -7,7 +10,6 @@ status: imported
 id: c9282e09-ae7f-4d1d-b4bb-d832017d8545
 index_schema_version: 1
 ---
-
 # ChatGPT Strategist insights — Microsite Factory
 
 > Importált 2026-05-16. A chat tematikailag 2 fő szálra oszlik: (1) az ötlet stratégiai újraframelése, (2) statikus vs. framework / booking complexity boundary.

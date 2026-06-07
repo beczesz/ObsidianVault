@@ -1,4 +1,7 @@
 ---
+description: "Barion is a Budapest-based fintech payments processor where DevOps outreach should focus on compliance (PCI-DSS, PSD2) and payment uptime pain points rather than job postings. Research needed to identify CTO and AWS cloud spend before pain-based outreach."
+description_source: auto
+description_hash: 3271b593b67a3880
 type: lead
 id: barion
 company: "Barion Payment"
@@ -34,7 +37,6 @@ created: 2026-05-11
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # Barion Payment
 
 ## Signal

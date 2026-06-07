@@ -1,3 +1,15 @@
+---
+title: "Ipari húskészítmények adalékanyagai — Kutatási jegyzet"
+date: 2026-04-23
+author: Becze Szabolcs
+status: active
+description: "Kutatási jegyzet az ipari húskészítmények adalékanyagairól, amelyet a Deák Húsmíves kézműves cég marketingnyilatkozatai megalapozásához készítettünk. Részletezi, hogy mely E-számokat és egyéb kémiai anyagokat tartalmaznak az ipari termékek (tartósítók, ízfokozók, színezékek, foszfátok, stabilizátorok), és amel"
+description_source: auto
+description_hash: cf81be3ca51d6cf4
+id: 24ee3fa7-e137-4304-86f0-404bb0b62b24
+index_schema_version: 1
+bdos_index: true
+---
 # Ipari húskészítmények adalékanyagai — Kutatási jegyzet
 
 **Készült:** 2026-03-27 | **Frissítve:** 2026-03-31

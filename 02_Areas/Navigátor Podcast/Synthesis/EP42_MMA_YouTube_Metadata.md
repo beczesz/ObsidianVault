@@ -1,3 +1,15 @@
+---
+title: "EP42 — MMA Harcosok | Teljes YouTube Metadata Csomag"
+date: 2026-05-04
+author: Becze Szabolcs
+status: active
+description: "MMA-harcos vendégek (Yda Gabi és Kovács Krisztián) teljes YouTube metaadat-csomagja a Navigátor Podcast 42. epizódjához: cím, thumbnail-javaslatok, leírás, időkódok, hook és publikálási checklist."
+description_source: auto
+description_hash: c0de22e6d9aabfc4
+id: debdad9a-cc34-424a-adff-b34fbb6ff25a
+index_schema_version: 1
+bdos_index: true
+---
 # EP42 — MMA Harcosok | Teljes YouTube Metadata Csomag
 
 **Vendégek:** Yda Gabi & Kovács Krisztián (ketrecharcosok, Hargita Fight Night)

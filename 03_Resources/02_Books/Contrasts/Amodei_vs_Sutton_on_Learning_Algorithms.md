@@ -1,5 +1,8 @@
 ---
 title: "Amodei vs Sutton on Learning Algorithms"
+description: "Comparison of Amodei and Sutton's positions on whether current LLM scaling represents the path to AGI. Both agree compute beats human priors, but diverge on whether LLMs optimize the correct objective or merely a proxy for intelligence."
+description_source: auto
+description_hash: 7e28a89d71f3eaab
 type: contrast
 tags: ["contrast", "AI", "scaling", "bitter-lesson", "learning", "sample-efficiency"]
 status: "triaged"
@@ -9,7 +12,6 @@ processed_by: "AI Speed-Reading Agent"
 id: 1b8e97c0-ad35-4b25-ac69-e7764fdf3891
 index_schema_version: 1
 ---
-
 # Amodei vs Sutton on Learning Algorithms
 
 ## Dario Amodei (Anthropic)

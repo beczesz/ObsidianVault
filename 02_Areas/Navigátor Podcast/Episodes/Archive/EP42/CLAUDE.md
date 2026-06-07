@@ -1,3 +1,15 @@
+---
+title: "Memory"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Szabolcs Navigator podcastjának EP42 műsorának (Advanced AI Usage) fejlesztési gyűjteménye, amely négy emberi dimenzió (fizikai felelősség, intellektuális értelem, érzelmi empátia, spirituális céltudat) mentén szervezi az AI-használat gyakorlati tippjeit. Az összes tipp véglegesen kidolgozva van a kijelölt szerkezettel."
+description_source: auto
+description_hash: 5726886b4ed785c8
+id: 9be8439e-5631-4435-ac7d-13ea5fbd909e
+index_schema_version: 1
+bdos_index: true
+---
 # Memory
 
 ## Me

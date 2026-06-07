@@ -1,5 +1,15 @@
-
-
+---
+title: "Felnőtt verzió"
+date: 2026-05-19
+author: Becze Szabolcs
+status: active
+description: "Felnőtteknek szóló meghívás a Fókuszpont 2025 eseményre, amely június 18-án imádság, tanúságtétel és keresztény zenei szolgálat keretében Jézusra irányítja a figyelmet zavaros világban."
+description_source: auto
+description_hash: c7fbf2ef99576993
+id: 335749bd-4044-44ce-952a-35f5f1a73a29
+index_schema_version: 1
+bdos_index: true
+---
 # Felnőtt verzió
 
 Egy év telt el... és mennyi minden történt. Háborúk dúlnak. Választások osztják meg az embereket. Mesterséges intelligencia változtatja meg a világot.

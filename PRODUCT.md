@@ -1,12 +1,14 @@
 ---
 title: Ideas Vault, Product Brief
+description: "Personal operating system in Obsidian coordinating multiple parallel businesses and life domains for a single user. Markdown serves as source of truth with browser dashboards providing read-only operational views across Areas like Sonrisa CPS, Deák Húsüzlet, and ExarLabs."
+description_source: auto
+description_hash: b040f75c14e108a2
 register: product
 version: 1.0
 date: 2026-05-18
 id: 5faf5304-ab97-4cd9-a5ec-5d0e99e1b607
 index_schema_version: 1
 ---
-
 # Ideas Vault, Product Brief
 
 ## What this is

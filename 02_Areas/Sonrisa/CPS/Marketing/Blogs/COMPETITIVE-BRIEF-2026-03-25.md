@@ -1,3 +1,15 @@
+---
+title: "CPS Blog Series - Competitive Brief"
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "Competitive analysis of DevOps outsourcing providers for CPS blog series targeting IT leaders. Identifies Palark and SDH Global as main competitors with weak content strategies, positioning CPS to own the hire-versus-outsource keyword space through transparent pricing and honest messaging."
+description_source: auto
+description_hash: b068768083a0bc1f
+id: d9253be1-703e-4804-bfd6-5eaa64f363a1
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Blog Series - Competitive Brief
 ## Research Date: March 25, 2026
 

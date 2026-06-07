@@ -1,0 +1,96 @@
+1
+00:00:00,040 --> 00:00:07,160
+megkérdezzük a a c gpt-t valamiről és
+
+2
+00:00:03,959 --> 00:00:11,000
+azt tapasztaljuk hogy hogy nem a
+
+3
+00:00:07,160 --> 00:00:14,040
+valóságot adja vissza hanem hanem
+
+4
+00:00:11,000 --> 00:00:16,400
+kitalál valamit ennek az oka ez ez
+
+5
+00:00:14,040 --> 00:00:18,640
+nagyon egyszerű hogyha valamire nem
+
+6
+00:00:16,400 --> 00:00:21,320
+tudja a pontos választ egy nagynyelvű
+
+7
+00:00:18,640 --> 00:00:24,320
+modell akkor egy olyan választ próbál
+
+8
+00:00:21,320 --> 00:00:26,400
+generálni ami legalábbis hihető mert ő ő
+
+9
+00:00:24,320 --> 00:00:30,359
+mindig a hibát próbálja minimalizálni
+
+10
+00:00:26,400 --> 00:00:33,480
+mindig próbálja elkerülni a hibát és a a
+
+11
+00:00:30,359 --> 00:00:36,000
+valami az mindig kevesebb hiba mint a
+
+12
+00:00:33,480 --> 00:00:38,840
+semmi tehát hogyha semmit nem vál
+
+13
+00:00:36,000 --> 00:00:41,559
+valamire az az mindig maximális hiba
+
+14
+00:00:38,840 --> 00:00:44,480
+lesz tehát az a az az hogy ne
+
+15
+00:00:41,559 --> 00:00:46,440
+válaszoljon semmit az az software bug
+
+16
+00:00:44,480 --> 00:00:48,360
+egy egy nagynyelvi modellnél az
+
+17
+00:00:46,440 --> 00:00:49,640
+összeomlik a modellekes hogy ez az
+
+18
+00:00:48,360 --> 00:00:52,120
+embereknél is pont így van tehát a
+
+19
+00:00:49,640 --> 00:00:54,160
+tétlenség az nagyobb hiba mintogyha
+
+20
+00:00:52,120 --> 00:00:56,440
+hibásan elkezdünk és valamit valamit
+
+21
+00:00:54,160 --> 00:00:58,760
+elkezdünk cselekedni mert utólag aztán
+
+22
+00:00:56,440 --> 00:01:02,079
+tudjuk korrigálni az utunkat de hogyha
+
+23
+00:00:58,760 --> 00:01:05,800
+el se indulunk akkor valójában valójában
+
+24
+00:01:02,079 --> 00:01:05,800
+ez a legnagyobb hiba
+

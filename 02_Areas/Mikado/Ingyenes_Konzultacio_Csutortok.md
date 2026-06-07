@@ -1,3 +1,15 @@
+---
+title: "Ingyenes Konzultációs Órák – Csütörtök (Márc. 12) 10:00–12:00"
+date: 2026-03-09
+author: Becze Szabolcs
+status: active
+description: "Marketing anyagok a csütörtöki ingyenes építészeti konzultációhoz: Facebook posztok, csoportbejegyzés, személyes üzenetsablon és megvalósítási lista azoknak, akik házfelújításon vagy bővítésen gondolkodnak."
+description_source: auto
+description_hash: 50906175dffe1d47
+id: 1e1d0ffd-dff9-4bcd-aeb0-282af1b8b87a
+index_schema_version: 1
+bdos_index: true
+---
 # Ingyenes Konzultációs Órák – Csütörtök (Márc. 12) 10:00–12:00
 ### Marketing anyagok
 

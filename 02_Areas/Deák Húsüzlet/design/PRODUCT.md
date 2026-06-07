@@ -1,3 +1,15 @@
+---
+title: "Product"
+date: 2026-04-29
+author: Becze Szabolcs
+status: active
+description: "A mobile-first PWA for artisan meat home delivery in Székelyudvarhely, designed to help time-pressed local buyers reorder quality products habitually through a calm, decision-support interface that reinforces weekly routine over impulse purchasing."
+description_source: auto
+description_hash: d8a882297d6a3011
+id: 5ba56424-907d-47cf-b2fd-1531acf2463d
+index_schema_version: 1
+bdos_index: true
+---
 # Product
 
 ## Register

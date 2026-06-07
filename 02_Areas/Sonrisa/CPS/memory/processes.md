@@ -1,3 +1,15 @@
+---
+title: "Recurring Processes"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Monthly verification workflow for contractor Bánfi István's hours: cross-reference uploaded TIG with timesheet data, collect AM confirmations per project, then officially accept. Owned by Szabolcs with Hungarian email template and contact list provided."
+description_source: auto
+description_hash: 470590e225607b42
+id: 06d83fc9-540c-4dad-93d6-7ee6260a594b
+index_schema_version: 1
+bdos_index: true
+---
 # Recurring Processes
 
 **Last Updated:** 2026-04-16

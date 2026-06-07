@@ -1,3 +1,15 @@
+---
+title: "**Supported Migration Approaches**"
+date: 2025-11-26
+author: Becze Szabolcs
+status: active
+description: "Cloud Migration Services framework outlining four engagement phases: readiness assessment, architecture planning, migration execution, and cutover/optimization. Covers rehosting, re-platforming, refactoring, and hybrid approaches with fixed-price project pricing."
+description_source: auto
+description_hash: 190e23a740219672
+id: d10f9f75-f441-4a0b-b375-b9a082967ba6
+index_schema_version: 1
+bdos_index: true
+---
 Cloud Migration Services provides a structured, low-risk approach to moving workloads from on-premises or legacy platforms to AWS. We modernize infrastructure across compute, storage, networking, identity, and databases, enabling organizations to adopt a scalable, secure, and cost-efficient cloud environment aligned with AWS best practices.
 
 Many organizations face aging infrastructure, limited scalability, manual operational processes, and security concerns that slow delivery and increase operational overhead. CPS addresses these challenges with certified migration engineers, standardized methodologies, and tooling designed for predictable, efficient transitions to AWS.

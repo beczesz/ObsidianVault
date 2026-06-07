@@ -1,4 +1,7 @@
 ---
+description: "Brainstorm notes for a controlled user cohort experiment recruiting 50 early adopters for 3 months free delivery in Székelyudvarhely. Contains UX flow decisions, copy drafts, technical specs, KPIs, and open questions about launch timing and recruitment channels."
+description_source: auto
+description_hash: d4df17ab16046635
 topic: Founding 50 Program — DH-150
 created: 2026-04-22
 last_updated: 2026-04-22
@@ -6,7 +9,6 @@ status: active
 id: 034c60c2-b64b-40b5-9b0a-83ac03acda7d
 index_schema_version: 1
 ---
-
 # Brainstorm: Founding 50 Program (DH-150)
 
 ## Sessions

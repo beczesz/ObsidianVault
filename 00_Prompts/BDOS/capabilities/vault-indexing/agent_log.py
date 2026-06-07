@@ -1,5 +1,5 @@
 """
-agent_log.py — Writer API for agent_observability.db  (Phase 5, schema v1.2, 2026-05-24)
+agent_log.py — Writer API for agent_observability.db  (Phase 5, schema v1.2, 2026-05-24; sidecar v2, 2026-05-25)
 
 Table: agent_logs (28 columns) — see agent_obs_schema.sql for the full DDL.
 
@@ -68,7 +68,7 @@ MODEL_COSTS: dict[str, tuple[float, float]] = {
     'unknown':                  (0.003,  0.015),
 }
 
-VALID_AGENTS = frozenset(['librarian','maestro','curator','sage','presto','broker'])
+VALID_AGENTS = frozenset(['librarian','maestro','curator','presto','broker','alfred','forge'])
 VALID_EVENT_TYPES = frozenset([
     'task_started', 'task_completed', 'tool_call', 'query',
     'file_scan', 'index_update', 'token_usage', 'dashboard_update',
@@ -106,9 +106,10 @@ def _get_connection() -> sqlite3.Connection:
 
 def _refresh_sidecar(con: sqlite3.Connection) -> None:
     """
-    Export last 500 events to agent_logs.json for dashboard consumption.
-    Schema: { generated_at, schema_version, total_rows, events: [...] }
+    Export last 500 events + scheduled_jobs to agent_logs.json for dashboard consumption.
+    Schema v2: { generated_at, schema_version, total_rows, events: [...], scheduled_jobs: [...] }
     Each event: all DB columns as a plain dict (None -> null).
+    scheduled_jobs: full scheduled_jobs table rows (empty list if table missing or empty).
     """
     cur = con.execute("""
         SELECT id, timestamp, agent_name, agent_id, agent_version,
@@ -127,11 +128,26 @@ def _refresh_sidecar(con: sqlite3.Connection) -> None:
 
     total = con.execute('SELECT COUNT(*) FROM agent_logs').fetchone()[0]
 
+    # Export scheduled_jobs — backward-compat: empty list if table missing or empty
+    try:
+        sj_cur = con.execute("""
+            SELECT job_id, job_name, agent_name, description,
+                   schedule_type, schedule_hour, schedule_minute, schedule_weekday,
+                   interval_seconds, command, requires_approval, lock_duration_s,
+                   enabled, last_run_at, next_run_at, created_at, updated_at
+            FROM scheduled_jobs
+            ORDER BY agent_name, job_id
+        """)
+        scheduled_jobs = [dict(r) for r in sj_cur]
+    except Exception:
+        scheduled_jobs = []
+
     payload = {
-        'generated_at':   _now_iso(),
-        'schema_version': '1.2',
-        'total_rows':     total,
-        'events':         rows,
+        'generated_at':    _now_iso(),
+        'schema_version':  '2',
+        'total_rows':      total,
+        'events':          rows,
+        'scheduled_jobs':  scheduled_jobs,
     }
     SIDECAR_PATH.parent.mkdir(parents=True, exist_ok=True)
     tmp = SIDECAR_PATH.with_suffix('.tmp')

@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP17
 title: "ChatGPT | Hogyan növeljük az eredményességünket 2025-ben az AI-chatbotok segítségével | EP 17"
+description: "Szabolcs szólóepizoddja, amely programozóként indult AI-félelme helyett a ChatGPT intenzív tanulmányozásából eredő háromszoros produktivitás-növekedésre alapoz, hat gondolkodási alapra támaszkodva 30 konkrét tippet ad kezdőknek és haladóknak. A csatorna 15 hónappal publikálás után még aktív (19 nézés), főleg"
+description_source: auto
+description_hash: 9b88c78f9cd42793
 guest: "(szólóepizód — Beczesz Szabolcs)"
 guest_title: "Navigátor Podcast házigazda, menedzser, programozó"
 topic: "AI chatbot produktivitás — 6 gondolkodási alap + 30 konkrét ChatGPT tipp"
@@ -15,7 +18,6 @@ quality: deep
 id: 5e2b1e3f-df52-46a7-be4c-437ef66218f3
 index_schema_version: 1
 ---
-
 # EP17 — ChatGPT: „Minden ami bennünk gépi, azt a ChatGPT képes lesz szimulálni. Minden ami bennünk emberi, azt nem."
 
 ## YouTube Studio Analytics

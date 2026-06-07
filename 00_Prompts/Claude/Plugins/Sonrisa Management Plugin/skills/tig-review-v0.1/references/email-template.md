@@ -1,3 +1,15 @@
+---
+title: "TIG Confirmation Email Template"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Template for sending Hungarian hour confirmation emails to account managers for monthly timesheet verification, including subject format, body text, multi-project handling rules, and CC guidelines for finance and project managers."
+description_source: auto
+description_hash: ca485882c0b0c109
+id: b689f7d7-b612-4632-9dbe-7324a61094b9
+index_schema_version: 1
+bdos_index: true
+---
 # TIG Confirmation Email Template
 
 ## Subject Format

@@ -98,9 +98,9 @@ YouTube csatorna Brand Account a beczesz.szabolcs@gmail.com alatt. Podcast email
 | EP40 | Fegyelmezés | Gál Ildikó | ✅ Publikálva (2026-04-10) | — |
 | EP41 | Fegyelem | Gergely István | ✅ Publikálva (2026-04-20) | ncHyEJD6yaM |
 | EP42 | MMA | — | 🟡 SRT kész, feldolgozásra vár | — |
-| EP43 | AI képzés | — | 🟡 Soron következő | — |
-| EP44 | Gyász | — | 📋 Tervezett | — |
-| EP45 | Agrárdigitalizáció | — | 📋 Tervezett | — |
+| EP43 | Gyász | Farkas Kinga | 🟡 Forgatás kész, feldolgozás folyamatban | — |
+| EP44 | Agrárdigitalizáció | Miklós Ervin | 🟡 Forgatás kész, feldolgozás TBD | — |
+| EP45 | AI képzés | — | 📋 Tervezett | — |
 
 ## Folyamatban lévő
 
@@ -108,13 +108,13 @@ YouTube csatorna Brand Account a beczesz.szabolcs@gmail.com alatt. Podcast email
 - Csatorna audit végrehajtása (Fázis 4a folyamatban)
 - YouTube MCP integráció — Analytics működik, Data API kvóta 0
 - navigator-v0.1 scheduled task frissítése YouTube MCP tool-okra
-- ~~EP számozás korrekció~~ ✅ (EP39=Eberlein Éva, EP40=Fegyelmezés/Gál Ildikó, EP41=Fegyelem/Gergely István, EP42=MMA, EP43=AI képzés, EP44=Gyász [tervezett], EP45=Agrárdigitalizáció [tervezett])
+- ~~EP számozás korrekció~~ ✅ (EP39=Eberlein Éva, EP40=Fegyelmezés/Gál Ildikó, EP41=Fegyelem/Gergely István, EP42=MMA, EP43=Gyász/Farkas Kinga, EP44=Agrárdigitalizáció/Miklós Ervin, EP45=AI képzés [tervezett])
 - ~~Fegyelmezés epizód (EP40)~~ ✅ Publikálva (2026-04-10), teljes launch kész (pinned comment, 2 cards, end screen, FB poszt)
 - ~~Fegyelem epizód (EP41)~~ ✅ Publikálva (2026-04-20), teljes launch kész (cím, leírás, tagek, end screen, 2 playlist, 1 card @ 30:00)
 - **EP42 (MMA):** Következő publikálásra váró epizód — SRT elérhető
-- **EP43 (AI képzés):** Soron következő epizód
-- **EP44 (Gyász):** Tervezett epizód
-- **EP45 (Agrárdigitalizáció):** Tervezett epizód
+- **EP43 (Gyász / Farkas Kinga):** Forgatás kész, feldolgozás + publikálás folyamatban
+- **EP44 (Agrárdigitalizáció / Miklós Ervin):** Forgatás kész, feldolgozás + dátum TBD
+- **EP45 (AI képzés):** Tervezett epizód
 - 6 tematikus playlist + Created playlists szekció megjelenítve a csatorna főoldalán (2026-04-11)
 - **Fázis 4a aktív feladatok:** ✅ 15/15 cím+leírás kész! ✅ 62/62 Pinned Comments kész! Hátra: Cards (TOP 10 → összes). ✅ Channel layout kész (2026-04-11)
 - **Pinned Comments (2026-04-09):** ✅ 62/62 videón pinned cross-link komment — 100% COMPLETE! (@NavigatorPodcast Brand Account-ról)

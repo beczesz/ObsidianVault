@@ -21,6 +21,9 @@ last_harvest:
   notes:
     - path: thoughts/2026-05-24_middle-management-disappearance-bdos.md
       title: "A middle management réteg eltűnése — és a BDOS"
+description: "Project status update documenting smoke test completion for Sage v2 after correcting initial focus from editorial taste modeling to middle management layer and BDOS, with archived previous version and planned schema improvements."
+description_source: auto
+description_hash: 9d009355c6e058df
       category: philosophy
     - path: _inbox/atomic_proposals/cognition-replaces-middle-management.md
       title: "Cognition layer replaces middle management"
@@ -40,7 +43,6 @@ errors: []
 id: 6c96d458-c5c1-4be9-935e-cb0543d03b57
 index_schema_version: 1
 ---
-
 # Sage — Last Run
 
 **Status:** ok — smoke test harvest CORRECTED (v2). First version misfocused on "editorial taste modeling"; corrected to "middle management layer disappearance + BDOS" per user feedback.

@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Vezetők Imája, monthly leaders' prayer community archive.   Version: 0.1.1
+  =============================================================================
+  Renders from:
+    /02_Areas/Szervezet Fejlesztés/Vezetők Imája/alkalmak.md  (master table — 48+ alkalmak)
+    /02_Areas/Szervezet Fejlesztés/Vezetők Imája/Vezetők Imája.md  (vision + significance)
+  Read-only. Edit those files in Obsidian (or add new occasion file).
+  Live via SSE file-watcher push (events_server.py), 8s poll fallback.
+
+  Audit trail:
+    0.1.1 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app → .app-main + .app-shell layout. alfred-tasks.js added.
+    0.1.0 (2026-05-25) initial scaffold from _design/_template/. Sprint 5
+          workflow first real use. Parses alkalmak.md markdown table (48 rows),
+          renders per-occasion cards (number, date, speaker, theme, scripture,
+          host, Drive folder/doc links). Filters: search (text), year, speaker.
+          Stats header (total, year range, top 3 speakers). Vision block from
+          Vezetők Imája.md frontmatter `significance`. 100% dynamic — touch
+          alkalmak.md and SSE re-renders.
+  =============================================================================
+-->
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vezetők Imája — Archívum</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M16 7v18M9 16h14M11 11l5-4 5 4M11 21l5 4 5-4' stroke='%23D97757' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1); background: var(--bg-page); line-height: 1.45;
+  min-height: 100vh; -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+.app-main { max-width: 1200px; padding: 28px 36px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.masthead-toprow { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  text-decoration: none; padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+.home-link svg { flex-shrink: 0; }
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.version-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
+  border-radius: 999px;
+}
+.masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; color: var(--ink-1); }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta { color: var(--ink-3); max-width: 720px; font-size: 14px; margin-top: 8px; line-height: 1.55; }
+
+/* ===== Vision block ===== */
+.vision {
+  position: relative;
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l);
+  padding: 22px 26px; margin-top: 24px; display: grid; gap: 14px;
+  grid-template-columns: 1fr; box-shadow: var(--shadow-1);
+}
+.vision-eyebrow { font-size: 10px; text-transform: uppercase; letter-spacing: .14em; color: var(--ink-4); font-weight: 600; }
+.vision-quote { font-size: 15px; color: var(--ink-1); font-style: italic; line-height: 1.6; }
+.vision-quote::before { content: '\201E'; color: var(--accent); font-weight: 700; }
+.vision-quote::after { content: '\201D'; color: var(--accent); font-weight: 700; }
+.vision-source { font-size: 12px; color: var(--ink-3); font-family: 'JetBrains Mono', monospace; }
+.vision-list { font-size: 13px; color: var(--ink-2); line-height: 1.6; padding-left: 20px; }
+.vision-list li { margin-bottom: 4px; }
+
+/* ===== Stats row ===== */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-top: 24px; }
+.stat-card {
+  position: relative; background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l);
+  padding: 16px 18px; box-shadow: var(--shadow-1);
+}
+.stat-label { font-size: 10px; text-transform: uppercase; letter-spacing: .12em; color: var(--ink-4); font-weight: 600; margin-bottom: 6px; }
+.stat-value { font-size: 24px; font-weight: 700; color: var(--ink-1); font-variant-numeric: tabular-nums; }
+.stat-sub { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+
+/* ===== Filter bar ===== */
+.filterbar {
+  display: flex; flex-wrap: wrap; gap: 10px; align-items: center;
+  margin: 28px 0 14px; padding: 14px 16px;
+  background: var(--bg-tint); border: 1px solid var(--line-soft); border-radius: var(--radius-l);
+}
+.filterbar input, .filterbar select {
+  background: var(--bg-elev); border: 1px solid var(--line); color: var(--ink-1);
+  padding: 7px 12px; border-radius: var(--radius-m); font-size: 13px;
+  font-family: inherit; outline: none; transition: border-color var(--t-fast);
+}
+.filterbar input { flex: 1; min-width: 180px; }
+.filterbar input:focus, .filterbar select:focus { border-color: var(--accent); }
+.filterbar .chip-toggle {
+  font-size: 12px; color: var(--ink-3); padding: 6px 12px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev); cursor: pointer; transition: all var(--t-fast);
+  user-select: none;
+}
+.filterbar .chip-toggle.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+.filterbar .result-count { font-size: 12px; color: var(--ink-4); margin-left: auto; }
+
+/* ===== Occasion cards ===== */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+.card {
+  position: relative; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 18px 20px 16px; box-shadow: var(--shadow-1);
+  transition: box-shadow var(--t-fast), border-color var(--t-fast);
+  display: flex; flex-direction: column; gap: 8px;
+}
+.card:hover { box-shadow: var(--shadow-2); border-color: var(--line); }
+.card.unknown { border-style: dashed; opacity: 0.85; }
+
+.card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.card-num {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 600;
+  color: var(--accent-deep); background: var(--accent-tint);
+  padding: 2px 7px; border-radius: var(--radius-s);
+}
+.card-date {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.card h3 { font-size: 16px; font-weight: 600; color: var(--ink-1); line-height: 1.35; }
+.card .unknown-marker { color: var(--ink-4); font-style: italic; font-weight: 400; }
+
+.card-speaker { font-size: 13px; color: var(--ink-2); display: inline-flex; align-items: center; gap: 6px; }
+.card-speaker::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.card-scripture {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-3);
+  padding: 3px 8px; background: var(--bg-tint); border-radius: var(--radius-s);
+  display: inline-block; align-self: flex-start;
+}
+.card-host { font-size: 12px; color: var(--ink-3); margin-top: 2px; }
+.card-host-label { color: var(--ink-4); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; margin-right: 4px; }
+
+.card-links { display: flex; gap: 8px; margin-top: 8px; padding-top: 10px; border-top: 1px solid var(--line-soft); flex-wrap: wrap; }
+.card-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 11px; color: var(--ink-3); text-decoration: none;
+  padding: 4px 10px; border: 1px solid var(--line); border-radius: var(--radius-m);
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.card-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); }
+.card-link.obsidian { color: var(--ink-4); border-style: dashed; cursor: default; }
+.card-link.obsidian:hover { background: var(--bg-elev); }
+.card-link.missing { color: var(--gap); border-style: dashed; cursor: default; }
+.card-link.missing:hover { background: var(--bg-elev); }
+
+/* ===== Card copy-ref (DS §4a, MANDATORY) ===== */
+.card-copy-ref {
+  position: absolute; top: 10px; right: 10px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 500; color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.card:hover .card-copy-ref, .card:focus-within .card-copy-ref,
+.stat-card:hover .card-copy-ref, .stat-card:focus-within .card-copy-ref,
+.vision:hover .card-copy-ref, .vision:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ===== States ===== */
+.state {
+  text-align: center; padding: 60px 20px; color: var(--ink-4);
+  border: 1px dashed var(--line-soft); border-radius: var(--radius-l);
+  margin-top: 24px; font-size: 14px;
+}
+.state.error { color: var(--gap); border-color: rgba(192,57,43,.25); background: var(--gap-tint); }
+.section-label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em; font-weight: 600;
+  color: var(--ink-4); margin: 32px 0 12px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--line); }
+</style>
+</head>
+<body>
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<main class="app-main">
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Vissza az Ideas Vault launcher-re">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Váltás sötét témára" title="Nappali / éjszakai téma">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Sötét</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      SZERVEZET FEJLESZTÉS &middot; ARCHÍVUM
+      <span class="version-pill">v0.1.1</span>
+    </div>
+    <h1><span class="accent">Vezetők</span> Imája</h1>
+    <div class="submeta">Havonta egyszer összegyűlő keresztény vezető ima-közösség 2021 februárja óta. Politikai színezet nélkül, felekezettől függetlenül. Az alkalmak archívuma az <span class="mono" style="font-size:12px;background:var(--bg-tint);padding:1px 5px;border-radius:3px;">alkalmak.md</span>-ból dinamikusan generálva.</div>
+  </header>
+
+  <section class="vision" data-card-id="vision">
+    <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy ref
+    </button>
+    <div class="vision-eyebrow">VÍZIÓ</div>
+    <div class="vision-quote">Saruinkat levetve, egységben imádkozunk a városért — keresve Isten Országát.</div>
+    <div class="vision-source">2Mózes 3:2,5 &middot; az 1. alkalom alapigéje</div>
+    <ul class="vision-list" id="significanceList">
+      <li>A környezetünkben levő keresztény vezetőket összefogjuk</li>
+      <li>Istennek felajánlott szolgálat</li>
+      <li>Közösségformálás</li>
+    </ul>
+  </section>
+
+  <section class="stats" id="stats"><!-- populated by JS --></section>
+
+  <div class="filterbar">
+    <input type="search" id="searchInput" placeholder="Keresés a témákban, előadókban, igékben…" aria-label="Keresés">
+    <select id="yearFilter" aria-label="Év szűrő"><option value="">Minden év</option></select>
+    <select id="speakerFilter" aria-label="Előadó szűrő"><option value="">Minden előadó</option></select>
+    <button class="chip-toggle" id="missingToggle" type="button" title="Csak ismeretlen / hiányos rekordok">Hiányosak</button>
+    <span class="result-count" id="resultCount"></span>
+  </div>
+
+  <div class="section-label">Alkalmak</div>
+  <section id="content"><div class="state" id="loading">Betöltés…</div></section>
+</main>
+<aside id="alfred-tasks-sidebar"></aside>
+</div>
+
+<!-- Shared engine — must load BEFORE inline script (uses LiveUpdates) -->
+<script src="/_dashboards/_design/live-updates.js"></script>
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<script src="/_dashboards/_design/markdown-parser.js"></script>
+<script src="/_dashboards/_design/dom-utils.js"></script>
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
+
+<script>
+// ============================================================
+// PER-DASHBOARD CONFIG
+// ============================================================
+const DASH_STEM = 'vezetok-imaja';
+const ALKALMAK_URL = '/02_Areas/Szervezet Fejleszt%C3%A9s/Vezet%C5%91k%20Im%C3%A1ja/alkalmak.md';
+const VISION_URL   = '/02_Areas/Szervezet Fejleszt%C3%A9s/Vezet%C5%91k%20Im%C3%A1ja/Vezet%C5%91k%20Im%C3%A1ja.md';
+const UNKNOWN = '❓'; // ❓
+
+// ============================================================
+// Parsers
+// ============================================================
+
+function parseAlkalmakTable(md) {
+  const lines = md.split('\n');
+  const occasions = [];
+  let inTable = false;
+  for (const line of lines) {
+    if (/^\|\s*#\s*\|/.test(line)) { inTable = true; continue; }
+    if (inTable && /^\|\s*-+\s*\|/.test(line)) continue;
+    if (!line.startsWith('|')) {
+      if (inTable && (line.trim() === '' || line.startsWith('#'))) inTable = false;
+      continue;
+    }
+    if (!inTable) continue;
+    const cells = line.split('|').slice(1, -1).map((c) => c.trim());
+    if (cells.length < 6) continue;
+    const num = parseInt(cells[0], 10);
+    if (isNaN(num)) continue;
+    const occ = {
+      num,
+      date: cells[1] || '',
+      speaker: cells[2] || '',
+      theme: cells[3] || '',
+      scripture: cells[4] || '',
+      host: cells[5] || '',
+      driveRaw: cells[6] || '',
+    };
+    occ.driveFolder = extractDriveLink(occ.driveRaw, '📁');
+    occ.driveDoc    = extractDriveLink(occ.driveRaw, '📄');
+    const obs = occ.driveRaw.match(/\*Obsidian:\s*`([^`]+)`/);
+    occ.obsidianRef = obs ? obs[1] : '';
+    occ.missing     = /\*\(nincs/.test(occ.driveRaw);
+    occ.unknown     = (occ.speaker === UNKNOWN && occ.theme === UNKNOWN);
+    occasions.push(occ);
+  }
+  return occasions;
+}
+
+function extractDriveLink(s, emoji) {
+  // Build the regex manually so the emoji is a literal
+  const idx = s.indexOf('[' + emoji + ']');
+  if (idx < 0) return '';
+  const open = s.indexOf('(', idx);
+  const close = s.indexOf(')', open);
+  if (open < 0 || close < 0) return '';
+  return s.slice(open + 1, close);
+}
+
+function parseVision(md) {
+  const parsed = parseYamlFrontmatter(md);
+  if (!parsed || !parsed.frontmatter) return [];
+  return parsed.frontmatter.significance || [];
+}
+
+// ============================================================
+// Render
+// ============================================================
+
+const COPY_SVG = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+
+function statCardHtml(id, label, value, sub, valueStyle) {
+  return `<div class="stat-card" data-card-id="${escapeHtml(id)}">
+    <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>${COPY_SVG}copy ref</button>
+    <div class="stat-label">${escapeHtml(label)}</div>
+    <div class="stat-value tabular" ${valueStyle ? 'style="' + valueStyle + '"' : ''}>${value}</div>
+    <div class="stat-sub">${escapeHtml(sub)}</div>
+  </div>`;
+}
+
+function renderStats(occasions) {
+  const total = occasions.length;
+  const years = [...new Set(occasions.map((o) => o.date.slice(0, 4)).filter(Boolean))].sort();
+  const yearRange = years.length ? years[0] + '–' + years[years.length - 1] : '—';
+  const speakerCount = {};
+  occasions.forEach((o) => {
+    if (o.speaker && o.speaker !== UNKNOWN) speakerCount[o.speaker] = (speakerCount[o.speaker] || 0) + 1;
+  });
+  const topSpeakers = Object.entries(speakerCount).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const missing = occasions.filter((o) => o.unknown || o.missing).length;
+
+  const topSpeakersHtml = topSpeakers.length
+    ? topSpeakers.map((s) => escapeHtml(s[0]) + ' <span style="color:var(--ink-4)">·' + s[1] + '</span>').join('<br>')
+    : '—';
+
+  document.getElementById('stats').innerHTML =
+      statCardHtml('stat/total', 'Alkalmak', String(total), yearRange)
+    + statCardHtml('stat/years', 'Évek aktívan', String(years.length), '2021 óta havonta')
+    + statCardHtml('stat/speakers', 'Top előadók', topSpeakersHtml, '', 'font-size:14px;font-weight:500;line-height:1.4')
+    + statCardHtml('stat/missing', 'Hiányos rekordok', String(missing),
+        missing > 0 ? 'kitöltésre vár' : 'minden kitöltve ✓',
+        missing > 0 ? 'color:var(--warn)' : 'color:var(--ok)');
+}
+
+function populateFilters(occasions) {
+  const yearSel = document.getElementById('yearFilter');
+  const years = [...new Set(occasions.map((o) => o.date.slice(0, 4)).filter(Boolean))].sort().reverse();
+  for (const y of years) {
+    const opt = document.createElement('option');
+    opt.value = y; opt.textContent = y;
+    yearSel.appendChild(opt);
+  }
+  const spSel = document.getElementById('speakerFilter');
+  const speakers = [...new Set(occasions.map((o) => o.speaker).filter((s) => s && s !== UNKNOWN))].sort();
+  for (const s of speakers) {
+    const opt = document.createElement('option');
+    opt.value = s; opt.textContent = s;
+    spSel.appendChild(opt);
+  }
+}
+
+function renderCards(occasions) {
+  const container = document.getElementById('content');
+  if (occasions.length === 0) {
+    container.innerHTML = '<div class="state">Nincs az összes szűrőnek megfelelő alkalom.</div>';
+    return;
+  }
+  const sorted = [...occasions].sort((a, b) => b.num - a.num);
+  container.innerHTML = '<div class="grid">' + sorted.map(renderCard).join('') + '</div>';
+  wireCopyRef(container);
+}
+
+function renderCard(o) {
+  const id = 'alkalom/' + String(o.num).padStart(2, '0');
+  const speaker = (o.speaker === UNKNOWN || !o.speaker)
+    ? '<span class="unknown-marker">előadó ismeretlen</span>'
+    : escapeHtml(o.speaker);
+  const theme = (o.theme === UNKNOWN || !o.theme)
+    ? '<span class="unknown-marker">téma ismeretlen</span>'
+    : escapeHtml(o.theme);
+  const scripture = (o.scripture && o.scripture !== UNKNOWN)
+    ? '<div class="card-scripture">' + escapeHtml(o.scripture) + '</div>' : '';
+  const host = o.host
+    ? '<div class="card-host"><span class="card-host-label">Házigazda:</span>' + escapeHtml(o.host) + '</div>' : '';
+
+  let links = '';
+  if (o.driveFolder || o.driveDoc) {
+    links = '<div class="card-links">';
+    if (o.driveFolder) links += '<a class="card-link" href="' + escapeHtml(o.driveFolder) + '" target="_blank" rel="noopener" title="Drive mappa">📁 mappa</a>';
+    if (o.driveDoc)    links += '<a class="card-link" href="' + escapeHtml(o.driveDoc) + '" target="_blank" rel="noopener" title="Drive dokumentum">📄 dokumentum</a>';
+    links += '</div>';
+  } else if (o.obsidianRef) {
+    links = '<div class="card-links"><span class="card-link obsidian" title="Csak Obsidian fájlként">📝 ' + escapeHtml(o.obsidianRef) + '</span></div>';
+  } else if (o.missing) {
+    links = '<div class="card-links"><span class="card-link missing">nincs dokumentum</span></div>';
+  }
+
+  return '<article class="card ' + (o.unknown ? 'unknown' : '') + '" data-card-id="' + escapeHtml(id) + '">'
+    + '<button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>' + COPY_SVG + 'copy ref</button>'
+    + '<div class="card-head"><span class="card-num">#' + String(o.num).padStart(2, '0') + '</span>'
+    + '<span class="card-date">' + escapeHtml(o.date || '—') + '</span></div>'
+    + '<h3>' + theme + '</h3>'
+    + '<div class="card-speaker">' + speaker + '</div>'
+    + scripture + host + links
+    + '</article>';
+}
+
+function renderError(msg) {
+  document.getElementById('content').innerHTML =
+    '<div class="state error">Nem sikerült betölteni az adatokat: ' + escapeHtml(msg) + '</div>';
+}
+
+// ============================================================
+// Filter logic
+// ============================================================
+let allOccasions = [];
+const filters = { q: '', year: '', speaker: '', missingOnly: false };
+
+function applyFilters() {
+  let filtered = allOccasions;
+  if (filters.year)    filtered = filtered.filter((o) => o.date.startsWith(filters.year));
+  if (filters.speaker) filtered = filtered.filter((o) => o.speaker === filters.speaker);
+  if (filters.missingOnly) filtered = filtered.filter((o) => o.unknown || o.missing);
+  if (filters.q) {
+    const q = filters.q.toLowerCase();
+    filtered = filtered.filter((o) =>
+      (o.theme + ' ' + o.speaker + ' ' + o.scripture + ' ' + o.host).toLowerCase().includes(q)
+    );
+  }
+  document.getElementById('resultCount').textContent =
+    filtered.length + ' / ' + allOccasions.length + ' alkalom';
+  renderCards(filtered);
+}
+
+// ============================================================
+// Data fetch + boot
+// ============================================================
+async function fetchData() {
+  const [alkalmakRes, visionRes] = await Promise.allSettled([
+    fetch(ALKALMAK_URL, { cache: 'no-store' }),
+    fetch(VISION_URL,   { cache: 'no-store' }),
+  ]);
+  if (alkalmakRes.status !== 'fulfilled' || !alkalmakRes.value.ok) {
+    throw new Error('alkalmak.md fetch failed' + (alkalmakRes.reason ? ': ' + alkalmakRes.reason.message : ''));
+  }
+  const alkalmakMd = await alkalmakRes.value.text();
+  const occasions = parseAlkalmakTable(alkalmakMd);
+  let significance = [];
+  if (visionRes.status === 'fulfilled' && visionRes.value.ok) {
+    const visionMd = await visionRes.value.text();
+    significance = parseVision(visionMd);
+  }
+  return { occasions, significance };
+}
+
+async function refetchAndRender() {
+  try {
+    const { occasions, significance } = await fetchData();
+    allOccasions = occasions;
+    if (significance.length > 0) {
+      document.getElementById('significanceList').innerHTML =
+        significance.map((s) => '<li>' + escapeHtml(s) + '</li>').join('');
+    }
+    renderStats(occasions);
+    if (document.getElementById('yearFilter').children.length === 1) populateFilters(occasions);
+    applyFilters();
+    wireCopyRef(document);
+  } catch (e) {
+    renderError(e.message);
+  }
+}
+
+// Filter event wiring
+document.getElementById('searchInput').addEventListener('input', (e) => { filters.q = e.target.value.trim(); applyFilters(); });
+document.getElementById('yearFilter').addEventListener('change', (e) => { filters.year = e.target.value; applyFilters(); });
+document.getElementById('speakerFilter').addEventListener('change', (e) => { filters.speaker = e.target.value; applyFilters(); });
+document.getElementById('missingToggle').addEventListener('click', (e) => {
+  filters.missingOnly = !filters.missingOnly;
+  e.target.classList.toggle('active', filters.missingOnly);
+  applyFilters();
+});
+
+// Boot
+LiveUpdates.subscribe(refetchAndRender);
+LiveUpdates.mountStatusIndicator(document.querySelector('.masthead-toprow'));
+refetchAndRender();
+</script>
+</body>
+</html>

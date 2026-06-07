@@ -1,4 +1,7 @@
 ---
+description: "Hungarian-owned banking IT vendor (142 FTE, Budapest) specializing in Temenos T24 core banking software; actively hiring DevOps Fejlesztő on contract basis, signaling flexible capacity need rather than permanent headcount. Profile #1+#3 hybrid: fresh DevOps posting + DORA cascade pressure = managed cloud-ops service opportunity."
+description_source: auto
+description_hash: 8367cd9ebea3afed
 type: lead
 id: abris
 company: ABRIS Kft.
@@ -52,7 +55,6 @@ created: 2026-05-18
 validated: 2026-05-18
 last_signal_check: 2026-05-18
 ---
-
 # ABRIS Kft.
 
 ## Signal

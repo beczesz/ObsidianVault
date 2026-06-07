@@ -1,4 +1,7 @@
 ---
+description: "Budapest-based digital factoring fintech with 30-60 employees; prospect research tracking founder contact details and founder-to-founder sales approach strategy for compliance or cloud cost solutions."
+description_source: auto
+description_hash: 0769a38e9e976186
 type: lead
 id: pentech
 company: "Pentech"
@@ -33,7 +36,6 @@ created: 2026-05-11
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # Pentech
 
 ## Signal

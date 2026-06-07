@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   =============================================================================
-  Broker — Sales Engine Observatory.   Version: 0.5.1
+  Broker — Sales Engine Observatory.   Version: 0.5.11
   =============================================================================
   The Broker Dashboard is the representation layer for the BDOS Sales Engine
   Executor (Broker v0.2). It functions as:
@@ -53,6 +53,20 @@
   Visual tone: pipeline/CRM adjacent, clean. Stage-colored funnel.
 
   Audit trail:
+    0.5.11 (2026-05-29) FIX: copy-ref + live-sync were dead. Boot called wireCopyRef() (clipboard.js) and LiveUpdates.subscribe() (live-updates.js) inline, BEFORE those engine scripts loaded -> ReferenceError killed the boot tail. Moved engine-dependent boot into a deferred <script> after the src tags. Same defect fixed in librarian + curator.
+    0.5.10 (2026-05-28) tend: masthead avatar now shows the real Pixar portrait
+      (/00_Prompts/BDOS/agents/broker/avatar.png) filling the 48px ring; emoji 🤝
+      kept as 404 fallback. renderCapabilities no longer sets avatar textContent
+      (would wipe the <img>); profile.color still tints the ring.
+    0.5.9 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app -> .app-main + .app-shell layout. alfred-tasks.js added.
+    0.5.8 (2026-05-25) — promote DS 0.8.9: inline wirePanelAnchors() removed;
+          now auto-wired by /_design/clipboard.js. Modifier-key pass-through
+          + a11y attributes on panel anchors.
+    0.5.7 (2026-05-25) — promote: panel-anchor system (DS 0.8.0). id="panel-N-slug" on all
+          12 panel wrappers + .panel-anchor hover #N badge in each panel-head. wirePanelAnchors()
+          JS. scroll-margin-top:42px on [id^="panel-"].
+    0.5.6 (2026-05-25) refactor: extract canonical :root + dark + @media tokens → /_design/tokens.css (DS 0.7.0 engine extraction, Sprint 2a)
+    0.5.5 (2026-05-25) refactor: extract setTheme/copyText/wireCopyRef → /_design/{theme,clipboard}.js (DS 0.7.0 engine extraction, Sprint 1)
         0.5.0 (2026-05-24) — tend: schema realigned to brief (agent_events → agent_logs).
           log_level/input_tokens/output_tokens/total_tokens column names, error/critical levels.
     0.4.0 (2026-05-24) — tend: Logs panel added (agent_observability.db sidecar).
@@ -75,6 +89,17 @@
           (Phase 2.C placeholder). Schema-aware parsers: COHORT.md frontmatter,
           broker.sales-learning.v1. Graceful empty-state on all panels.
           Area-identity tokens from Presto family. DS 0.3.0 aligned.
+    0.5.4 (2026-05-25) — tend: card-copy-ref added per DS 4a (promote audit rollout).
+          .card-copy-ref CSS + copyText + wireCopyRef helpers added.
+          data-card-id on 18 bounded cards: 4 widgets (active-cohorts, total-leads,
+          win-rate, broker-version), 6 stage-cards (qualification, discovery, proposal,
+          negotiation, won, lost), 8 learning-cards (objection-pattern, cycle-timing,
+          cohort-signal, outreach-tone, qualification-criteria, competitor-context,
+          loss-pattern, referral-mechanic). position:relative on .widget, .stage-card,
+          .learning-card. wireCopyRef(document) called on boot. DASH_STEM='broker'.
+    0.5.3 (2026-05-25) — promote: Fix: agent_name field name in logs filter (e.agent → e.agent_name); removed stale Phase 2 banner. Promote rollout.
+    0.5.2 (2026-05-25) — promote: admin-bar.js (DS 0.6.0) replaces ops-header.js.
+          #bdos-ops-header → #bdos-admin-bar. Fixed dark WP-style top bar, 34px.
     0.5.1 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
 
   Conventions: see _dashboards/_design/DESIGN_SYSTEM.md (DS 0.3.0).
@@ -98,48 +123,26 @@
   document.documentElement.dataset.theme = t;
 })();
 </script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Surfaces — cream paper */
-  --bg-page:   #faf9f5;
-  --bg-elev:   #ffffff;
-  --bg-sunken: #f3f1ea;
-  --bg-tint:   #f5f4ef;
+/* Surfaces — cream paper */
 
   /* Ink scale */
-  --ink-1: #141413;
-  --ink-2: #3a3a37;
-  --ink-3: #6d6d6a;
-  --ink-4: #9c9c98;
-  --ink-5: #c8c8c2;
 
   /* Lines */
-  --line:      #e5e4df;
-  --line-soft: #efede7;
 
   /* Accent */
-  --accent:      #D97757;
-  --accent-deep: #b35a3f;
-  --accent-tint: #fbeee6;
 
   /* Status */
-  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
-  --warn:      #b07a18;  --warn-tint: #fbf2dc;
-  --gap:       #c0392b;  --gap-tint:  #fbeae6;
-  --idle:      #7a7a76;  --idle-tint: #efeeeb;
 
   /* Elevation */
-  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
-  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
 
   /* Radius */
-  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
 
   /* Motion */
-  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
-  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
 
   /* Broker-local area-identity tokens (family from Presto) */
   --area-dh:      #2d6a4f;  --area-dh-tint:  #d8f3dc;
@@ -160,32 +163,11 @@
 
 /* ===== Dark theme override (DS 0.3.0) ===== */
 :root[data-theme="dark"] {
-  --bg-page: #1a1916; --bg-elev: #232220; --bg-sunken: #2c2a26; --bg-tint: #262420;
-  --ink-1: #f5f4ef; --ink-2: #d6d4ce; --ink-3: #a8a6a0; --ink-4: #7c7a74; --ink-5: #54524d;
-  --line: #36342f; --line-soft: #2c2a26;
-  --accent: #e08a6a; --accent-deep: #f0a085; --accent-tint: #3a2a22;
-  --ok: #5cc08a; --ok-tint: #1e3329; --warn: #d6a94a; --warn-tint: #352c18;
-  --gap: #e57c6e; --gap-tint: #3a221e; --idle: #9a9892; --idle-tint: #2a2925;
-  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-  --area-dh-tint: #1a3325; --area-cps-tint: #1a2a40; --area-exar-tint: #2a1a40;
+--area-dh-tint: #1a3325; --area-cps-tint: #1a2a40; --area-exar-tint: #2a1a40;
   --area-nav-tint: #302010; --area-ignis-tint: #3a1a18;
   --stage-qual-tint: #0e2a30; --stage-disc-tint: #1a2a40; --stage-prop-tint: #302010;
   --stage-neg-tint: #352c18; --stage-won-tint: #1e3329; --stage-lost-tint: #2a2925;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-page: #1a1916; --bg-elev: #232220; --bg-sunken: #2c2a26; --bg-tint: #262420;
-    --ink-1: #f5f4ef; --ink-2: #d6d4ce; --ink-3: #a8a6a0; --ink-4: #7c7a74; --ink-5: #54524d;
-    --line: #36342f; --line-soft: #2c2a26;
-    --accent: #e08a6a; --accent-deep: #f0a085; --accent-tint: #3a2a22;
-    --ok: #5cc08a; --ok-tint: #1e3329; --warn: #d6a94a; --warn-tint: #352c18;
-    --gap: #e57c6e; --gap-tint: #3a221e; --idle: #9a9892; --idle-tint: #2a2925;
-    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-  }
-}
-
 html { font-size: 15px; }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -200,7 +182,7 @@ a { color: inherit; text-decoration: none; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-s); }
 button { font: inherit; background: transparent; border: 0; color: inherit; cursor: pointer; }
 
-.app { max-width: 1200px; margin: 0 auto; padding: 28px 36px 96px; }
+.app-main { max-width: 1200px; padding: 28px 36px 96px; }
 
 /* ===== Theme toggle (DS 0.3.0) ===== */
 .theme-toggle {
@@ -369,7 +351,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 
 /* ===== Responsive ===== */
 @media (max-width: 960px) {
-  .app { padding: 20px 18px 64px; }
+  .app-main { padding: 20px 18px 64px; }
   .widget-strip { grid-template-columns: repeat(2, 1fr); }
   .pipeline-stages { grid-template-columns: repeat(3, 1fr); }
   .cohort-grid { grid-template-columns: repeat(2, 1fr); }
@@ -382,8 +364,49 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   .cohort-grid { grid-template-columns: 1fr; }
   .learning-grid { grid-template-columns: 1fr; }
 }
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+.card-copy-ref {
+  position: absolute; top: 10px; right: 10px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.widget:hover .card-copy-ref,
+.widget:focus-within .card-copy-ref,
+.stage-card:hover .card-copy-ref,
+.stage-card:focus-within .card-copy-ref,
+.learning-card:hover .card-copy-ref,
+.learning-card:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+.widget { position: relative; }
+
+/* ===== Panel anchor (DS 0.8.0) ===== */
+[id^="panel-"] { scroll-margin-top: 42px; }
+.panel-anchor {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  color: var(--ink-5); background: transparent; border: none;
+  padding: 1px 4px; border-radius: var(--radius-s);
+  text-decoration: none; opacity: 0;
+  transition: opacity var(--t-fast), color var(--t-fast), background var(--t-fast);
+  white-space: nowrap; cursor: pointer; line-height: 1; flex-shrink: 0;
+}
+.panel-anchor-host:hover .panel-anchor,
+.panel-anchor-host:focus-within .panel-anchor { opacity: 1; }
+.panel-anchor:hover { color: var(--accent-deep); background: var(--accent-tint); }
+.panel-head .panel-anchor { margin-left: 2px; }
+.stage-card { position: relative; }
+.learning-card { position: relative; }
+
 /* ===== Avatar + Capabilities panel (0.2.0) ===== */
-.agent-avatar { display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; border:1.5px solid; font-size:26px; line-height:1; flex-shrink:0; transition:background .3s,border-color .3s; }
+.agent-avatar { display:inline-flex; align-items:center; justify-content:center; width:48px; height:48px; border-radius:50%; border:1.5px solid; font-size:26px; line-height:1; flex-shrink:0; overflow:hidden; transition:background .3s,border-color .3s; }
+.agent-avatar-img { width:100%; height:100%; object-fit:cover; display:block; }
+.agent-avatar-emoji { display:none; width:100%; height:100%; align-items:center; justify-content:center; }
 .cap-panel { display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:16px; margin-top:8px; }
 .cap-section { background:var(--bg-tint); border:1px solid var(--line); border-radius:8px; padding:14px 16px; display:flex; flex-direction:column; gap:8px; }
 .cap-section-label { font-size:10.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-3); margin-bottom:2px; }
@@ -400,8 +423,9 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 </style>
 </head>
 <body>
-<div id="bdos-ops-header"></div>
-<div class="app">
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<div class="app-main">
 
   <!-- ===== Masthead ===== -->
   <header class="masthead">
@@ -411,7 +435,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
         Ideas Vault
       </a>
       <div style="display:flex;align-items:center;gap:10px;">
-        <span class="agent-avatar" id="agentAvatar" title="Broker" style="background:rgba(164,117,81,.12);border-color:rgba(164,117,81,.3);">🤝</span>
+        <span class="agent-avatar" id="agentAvatar" title="Broker" style="background:rgba(164,117,81,.12);border-color:rgba(164,117,81,.3);"><img class="agent-avatar-img" src="/00_Prompts/BDOS/agents/broker/avatar.png" alt="Broker" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="agent-avatar-emoji" aria-hidden="true">🤝</span></span>
         <span id="liveStatusMount"></span>
         <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
           <span class="theme-icon">&#9790;</span>
@@ -422,7 +446,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     <div class="eyebrow">
       <span class="dot"></span>
       BDOS · Distribution Layer · Sales Engine
-      <span class="version-pill mono" id="versionPill">v0.4.0</span>
+      <span class="version-pill mono" id="versionPill">v0.5.11</span>
     </div>
     <h1>Broker <span class="accent">Observatory</span></h1>
     <div class="submeta">
@@ -439,30 +463,28 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     </div>
   </header>
 
-  <!-- ===== Phase 2 Banner ===== -->
-  <div class="phase-banner">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <span><strong>Phase 2.B active — Broker v0.2 placeholder.</strong> Pipeline state files (<span class="mono" style="font-size:11px">00_SALES_INDEX.md</span>, <span class="mono" style="font-size:11px">Sales/Pipeline.md</span>, <span class="mono" style="font-size:11px">Cohorts/</span>) not yet created. All panels render gracefully. First invocation of <span class="mono" style="font-size:11px">/brk-plan</span> will scaffold the state structure. Phase 2.C (token intelligence) pending.</span>
-  </div>
-
   <!-- ===== Panel 1: Header strip ===== -->
-  <div class="widget-strip">
-    <div class="widget">
+  <div class="widget-strip" id="panel-1-header-strip">
+    <div class="widget" data-card-id="header/active-cohorts">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
       <div class="widget-label">Active Cohorts</div>
       <div class="widget-value mono" id="activeCohorts">0</div>
       <div class="widget-sub" id="cohortsDetail">pipeline not yet created</div>
     </div>
-    <div class="widget">
+    <div class="widget" data-card-id="header/total-leads">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
       <div class="widget-label">Total Leads</div>
       <div class="widget-value mono" id="totalLeads">0</div>
       <div class="widget-sub">across all cohorts</div>
     </div>
-    <div class="widget">
+    <div class="widget" data-card-id="header/win-rate">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
       <div class="widget-label">Win Rate</div>
       <div class="widget-value mono" id="winRate">—</div>
       <div class="widget-sub">closed-won / total closed</div>
     </div>
-    <div class="widget">
+    <div class="widget" data-card-id="header/broker-version">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
       <div class="widget-label">Broker Agent</div>
       <div class="widget-value mono" id="brokerVersion">v0.2</div>
       <div class="widget-sub">9 modes · 11 slash commands</div>
@@ -470,38 +492,45 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 2: Sales Pipeline Overview ===== -->
-  <div class="panel">
+  <div class="panel panel-anchor-host" id="panel-2-pipeline">
     <div class="panel-head">
       Cross-Project Pipeline
       <span class="badge" id="pipelineBadge">0 open leads</span>
+      <a class="panel-anchor" href="#panel-2-pipeline" title="Link to this panel">#2</a>
     </div>
     <div class="pipeline-stages">
-      <div class="stage-card qualification">
+      <div class="stage-card qualification" data-card-id="stage/qualification">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="stage-name">Qualification</div>
         <div class="stage-count mono" id="stageQual">0</div>
         <div class="stage-sub">leads</div>
       </div>
-      <div class="stage-card discovery">
+      <div class="stage-card discovery" data-card-id="stage/discovery">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="stage-name">Discovery</div>
         <div class="stage-count mono" id="stageDisc">0</div>
         <div class="stage-sub">leads</div>
       </div>
-      <div class="stage-card proposal">
+      <div class="stage-card proposal" data-card-id="stage/proposal">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="stage-name">Proposal</div>
         <div class="stage-count mono" id="stageProp">0</div>
         <div class="stage-sub">leads</div>
       </div>
-      <div class="stage-card negotiation">
+      <div class="stage-card negotiation" data-card-id="stage/negotiation">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="stage-name">Negotiation</div>
         <div class="stage-count mono" id="stageNeg">0</div>
         <div class="stage-sub">leads</div>
       </div>
-      <div class="stage-card won">
+      <div class="stage-card won" data-card-id="stage/won">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="stage-name">Closed-Won</div>
         <div class="stage-count mono" id="stageWon">0</div>
         <div class="stage-sub">leads</div>
       </div>
-      <div class="stage-card lost">
+      <div class="stage-card lost" data-card-id="stage/lost">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="stage-name">Closed-Lost</div>
         <div class="stage-count mono" id="stageLost">0</div>
         <div class="stage-sub">leads</div>
@@ -517,10 +546,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   <div class="grid-2">
 
     <!-- Panel 3: Today's Sales Actions -->
-    <div class="panel">
+    <div class="panel panel-anchor-host" id="panel-3-todays-actions">
       <div class="panel-head">
         Today's Sales Actions
         <span class="badge" id="todayBadge">0 actions</span>
+        <a class="panel-anchor" href="#panel-3-todays-actions" title="Link to this panel">#3</a>
       </div>
       <div id="todayContent">
         <div class="empty-state">
@@ -533,10 +563,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     </div>
 
     <!-- Panel 5: Lead Conversion Funnel -->
-    <div class="panel">
+    <div class="panel panel-anchor-host" id="panel-5-conversion-funnel">
       <div class="panel-head">
         Conversion Funnel
         <span class="badge">visual — when data exists</span>
+        <a class="panel-anchor" href="#panel-5-conversion-funnel" title="Link to this panel">#5</a>
       </div>
       <div id="funnelContent">
         <div class="empty-state">
@@ -551,10 +582,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 4: Active Cohorts Grid ===== -->
-  <div class="panel">
+  <div class="panel panel-anchor-host" id="panel-4-active-cohorts">
     <div class="panel-head">
       Active Cohorts
       <span class="badge" id="cohortBadge">0 cohorts</span>
+      <a class="panel-anchor" href="#panel-4-active-cohorts" title="Link to this panel">#4</a>
     </div>
     <div id="cohortContent">
       <div class="empty-state">
@@ -567,14 +599,16 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 6: Sales Learnings ===== -->
-  <div class="panel">
+  <div class="panel panel-anchor-host" id="panel-6-sales-learnings">
     <div class="panel-head">
       Sales Learnings
       <span class="badge" id="learningsBadge">0 active</span>
+      <a class="panel-anchor" href="#panel-6-sales-learnings" title="Link to this panel">#6</a>
     </div>
     <div class="learning-grid" id="learningGrid">
       <!-- 8 learning types — rendered by JS, static fallback below -->
-      <div class="learning-card">
+      <div class="learning-card" data-card-id="learning/objection-pattern">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="learning-type">objection-pattern</div>
         <div class="learning-counts">
           <span class="lc-badge active" id="lc-objection-active">0</span>
@@ -582,7 +616,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
           <span class="lc-badge retired" id="lc-objection-retired">0</span>
         </div>
       </div>
-      <div class="learning-card">
+      <div class="learning-card" data-card-id="learning/cycle-timing">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="learning-type">cycle-timing</div>
         <div class="learning-counts">
           <span class="lc-badge active" id="lc-timing-active">0</span>
@@ -590,7 +625,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
           <span class="lc-badge retired" id="lc-timing-retired">0</span>
         </div>
       </div>
-      <div class="learning-card">
+      <div class="learning-card" data-card-id="learning/cohort-signal">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="learning-type">cohort-signal</div>
         <div class="learning-counts">
           <span class="lc-badge active" id="lc-cohort-active">0</span>
@@ -598,7 +634,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
           <span class="lc-badge retired" id="lc-cohort-retired">0</span>
         </div>
       </div>
-      <div class="learning-card">
+      <div class="learning-card" data-card-id="learning/outreach-tone">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="learning-type">outreach-tone</div>
         <div class="learning-counts">
           <span class="lc-badge active" id="lc-tone-active">0</span>
@@ -606,7 +643,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
           <span class="lc-badge retired" id="lc-tone-retired">0</span>
         </div>
       </div>
-      <div class="learning-card">
+      <div class="learning-card" data-card-id="learning/qualification-criteria">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="learning-type">qualification-criteria</div>
         <div class="learning-counts">
           <span class="lc-badge active" id="lc-qual-active">0</span>
@@ -614,7 +652,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
           <span class="lc-badge retired" id="lc-qual-retired">0</span>
         </div>
       </div>
-      <div class="learning-card">
+      <div class="learning-card" data-card-id="learning/competitor-context">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="learning-type">competitor-context</div>
         <div class="learning-counts">
           <span class="lc-badge active" id="lc-comp-active">0</span>
@@ -622,7 +661,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
           <span class="lc-badge retired" id="lc-comp-retired">0</span>
         </div>
       </div>
-      <div class="learning-card">
+      <div class="learning-card" data-card-id="learning/loss-pattern">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="learning-type">loss-pattern</div>
         <div class="learning-counts">
           <span class="lc-badge active" id="lc-loss-active">0</span>
@@ -630,7 +670,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
           <span class="lc-badge retired" id="lc-loss-retired">0</span>
         </div>
       </div>
-      <div class="learning-card">
+      <div class="learning-card" data-card-id="learning/referral-mechanic">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <div class="learning-type">referral-mechanic</div>
         <div class="learning-counts">
           <span class="lc-badge active" id="lc-referral-active">0</span>
@@ -654,10 +695,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   <div class="grid-2">
 
     <!-- Panel 7: Recent Outreach Drafts -->
-    <div class="panel">
+    <div class="panel panel-anchor-host" id="panel-7-outreach-drafts">
       <div class="panel-head">
         Outreach Drafts Awaiting Send
         <span class="badge" id="draftsBadge">0 pending</span>
+        <a class="panel-anchor" href="#panel-7-outreach-drafts" title="Link to this panel">#7</a>
       </div>
       <div id="draftsContent">
         <div class="empty-state">
@@ -670,10 +712,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     </div>
 
     <!-- Panel 8: Reflection Panel -->
-    <div class="panel">
+    <div class="panel panel-anchor-host" id="panel-8-reflection">
       <div class="panel-head">
         Latest Reflection
         <span class="badge" id="reflectionBadge">no reflections yet</span>
+        <a class="panel-anchor" href="#panel-8-reflection" title="Link to this panel">#8</a>
       </div>
       <div id="reflectionContent">
         <div class="empty-state">
@@ -688,9 +731,10 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 9: Cross-link with Presto ===== -->
-  <div class="panel">
+  <div class="panel panel-anchor-host" id="panel-9-sister-dashboard">
     <div class="panel-head">
       Distribution Layer — Sister Dashboard
+      <a class="panel-anchor" href="#panel-9-sister-dashboard" title="Link to this panel">#9</a>
     </div>
     <a class="sibling-card" href="/_dashboards/presto/index.html">
       <div class="sibling-icon">&#127892;</div>
@@ -710,10 +754,11 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 10: Operational Intelligence (Phase 2.C) ===== -->
-  <div class="panel">
+  <div class="panel panel-anchor-host" id="panel-10-ops-intel">
     <div class="panel-head">
       Operational Intelligence
       <span class="badge">Phase 2.C — pending</span>
+      <a class="panel-anchor" href="#panel-10-ops-intel" title="Link to this panel">#10</a>
     </div>
     <div class="ops-intel">
       <div class="ops-cell">
@@ -738,25 +783,28 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- ===== Panel 11: Capabilities (added 0.2.0 — live from AGENT_PROFILES.md) ===== -->
-  <div class="panel full" id="capPanel">
-    <div class="panel-head serif">Capabilities <span class="badge">live from AGENT_PROFILES.md</span> <span class="cap-panel-badge">auto-refresh 8s</span></div>
+  <div class="panel full panel-anchor-host" id="panel-11-capabilities">
+    <div class="panel-head serif">Capabilities <span class="badge">live from AGENT_PROFILES.md</span> <span class="cap-panel-badge">auto-refresh 8s</span> <a class="panel-anchor" href="#panel-11-capabilities" title="Link to this panel">#11</a></div>
     <div class="cap-panel" id="capContent">
       <div style="grid-column:1/-1;text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Loading capability profile…</div>
     </div>
   </div>
 
   <!-- ===== Panel 12: Logs (added 0.4.0 — agent_observability sidecar) ===== -->
-  <div class="panel full" id="logsPanel">
-    <div class="panel-head serif">Logs <span class="badge" id="logsPanelBadge">loading…</span></div>
+  <div class="panel full panel-anchor-host" id="panel-12-logs">
+    <div class="panel-head serif">Logs <span class="badge" id="logsPanelBadge">loading…</span> <a class="panel-anchor" href="#panel-12-logs" title="Link to this panel">#12</a></div>
     <div id="logsContent"><div style="text-align:center;padding:24px 0;color:var(--ink-4);font-size:12.5px;">Loading sidecar…</div></div>
   </div>
 
-</div><!-- /app -->
+</div><!-- end .app-main -->
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
 
 <script>
 /* ===== DASH STEM ===== */
 const DASH_STEM = 'broker';
 
+/* Clipboard helpers (copyText, wireCopyRef): /_dashboards/_design/clipboard.js (DS 0.7.0, Sprint 1) */
 /* ===== SOURCE FILES ===== */
 const BROKER_FILE           = '/00_Prompts/BDOS/agents/broker.md';
 const SALES_INDEX_FILE      = '/_dashboards/00_SALES_INDEX.md';
@@ -965,7 +1013,8 @@ function renderCapabilities(profile) {
     return;
   }
   if (avatarEl) {
-    avatarEl.textContent = profile.emoji;
+    // avatar is now an <img> + emoji fallback; update the fallback, never textContent (would wipe the img)
+    const _emo = avatarEl.querySelector('.agent-avatar-emoji'); if (_emo) _emo.textContent = profile.emoji;
     avatarEl.style.background  = hexToRgba(profile.color, 0.12);
     avatarEl.style.borderColor = hexToRgba(profile.color, 0.35);
     avatarEl.style.color       = profile.color;
@@ -1060,29 +1109,7 @@ function startPolling(interval) {
   return setInterval(() => { pollVault(); resetSyncBar(interval); }, interval);
 }
 
-/* ===== THEME TOGGLE (DS 0.3.0) ===== */
-function setTheme(t) {
-  document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('dash-theme', t); } catch(e) {}
-  const btn = el('themeToggle');
-  if (btn) {
-    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
-    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
-    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-  }
-}
-el('themeToggle').addEventListener('click', function() {
-  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-});
-window.addEventListener('storage', function(e) {
-  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
-});
-(function initTheme() {
-  var t;
-  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
-  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
-  setTheme(t);
-})();
+/* Theme toggle: moved to /_dashboards/_design/theme.js (DS 0.7.0, Sprint 1) */
 
 /* ===== TICKER ===== */
 syncTicker = setInterval(tickSyncLabel, 1000);
@@ -1093,7 +1120,7 @@ const LOGS_SIDECAR_URL = '/_dashboards/_design/agent_logs.json';
 let logsLastTs = null;
 
 function renderLogsPanel(events) {
-  const agentEvents = events.filter(e => e.agent === LOGS_AGENT);
+  const agentEvents = events.filter(e => e.agent_name === LOGS_AGENT);
   const badge = document.getElementById('logsPanelBadge');
   const wrap  = document.getElementById('logsContent');
   if (!agentEvents.length) {
@@ -1149,14 +1176,30 @@ async function loadLogsPanel() {
   } catch(e) {}
 }
 
+
+
 /* ===== BOOT — DS 0.4.0 event-driven live updates ===== */
+/* wirePanelAnchors() — auto-wired by /_design/clipboard.js (DS 0.8.9) */
+/* Initial paint only. The engine-dependent boot (wireCopyRef + LiveUpdates)
+   runs in the deferred block below, after clipboard.js + live-updates.js load. */
 pollVault();
 loadLogsPanel();
-LiveUpdates.subscribe(() => { pollVault(); loadLogsPanel(); });
-LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
 </script>
 <script src="/_dashboards/_design/live-updates.js"></script>
-<!-- ops-header.js (DS 0.5.0) -->
-<script src="/_dashboards/_design/ops-header.js"></script>
+<!-- theme.js + clipboard.js (DS 0.7.0, Sprint 1 engine) -->
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<!-- admin-bar.js (DS 0.6.0) -->
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
+<!-- Deferred boot (broker 0.5.11) — MUST run after the engine scripts above:
+     wireCopyRef lives in clipboard.js, LiveUpdates in live-updates.js. Running it
+     inline above threw a ReferenceError and silently killed copy-ref + live sync. -->
+<script>
+  wireCopyRef(document);
+  LiveUpdates.subscribe(() => { pollVault(); loadLogsPanel(); });
+  LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
+</script>
 </body>
 </html>

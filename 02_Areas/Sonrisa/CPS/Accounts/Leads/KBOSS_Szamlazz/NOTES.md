@@ -1,4 +1,7 @@
 ---
+description: "Hungary's largest invoicing platform (100K+ businesses, 50 employees, Visma-owned) has posted DevOps roles recurring 2025-2026 without success; likely single point of failure serving fintech compliance needs on EUR 5-20K monthly AWS spend where FinOps and managed operations could justify engagement immediately."
+description_source: auto
+description_hash: c58479e6708cf9b1
 type: lead
 id: kboss
 company: "KBOSS / Szamlazz.hu"
@@ -42,7 +45,6 @@ validated: 2026-04-01
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # KBOSS / Szamlazz.hu
 
 ## Signal

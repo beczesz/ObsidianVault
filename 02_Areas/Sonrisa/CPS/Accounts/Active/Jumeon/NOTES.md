@@ -1,3 +1,15 @@
+---
+title: "Jumeon"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Active client account managed by Kovacs Attila with 48% profit margin, stable revenue, and limited documentation. Key tasks include clarifying service details, MRR, and exploring margin improvement opportunities."
+description_source: auto
+description_hash: d62278df1b71bdb1
+id: b8bf41d4-188a-46ef-be21-017edfd25e64
+index_schema_version: 1
+bdos_index: true
+---
 # Jumeon
 
 ## Quick Info

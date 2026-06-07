@@ -1,6 +1,9 @@
 ---
 schema: sage.thought.v1
 title: Editorial taste modeling — az AI tőled (nem csak engagement-ből) tanul
+description: "Az AI marketing agent nem csak engagement-ből, hanem az approval-rejection mintáidból, átírásaidból és hangnem-preferenciáidból tanul meg az editorial ízlésed modellezésére. Ahogy AI-tartalom olcsóbbá válik, az editorial judgment és személyes identitás-építés lesz az igazi érték."
+description_source: auto
+description_hash: 9d884a3387c64a03
 date: 2026-05-24
 note_revision: 1
 source_chat_title: "ExarLabs - AI alapú operációs rendszer"
@@ -19,7 +22,6 @@ tags: [ai-native, editorial, governance, marketing, weekly-approval]
 id: 098ffeee-5299-4a91-b68a-7b0002e09b1a
 index_schema_version: 1
 ---
-
 ## Egy mondatban
 A weekly approval rendszer **filozófiai mechanizmus** is, nem csak biztonsági — közben a marketing agent **tőled tanul** (jóváhagyás, elutasítás, átírás, hangnem-preferencia mintákon át), nem csak az engagement-ből.
 

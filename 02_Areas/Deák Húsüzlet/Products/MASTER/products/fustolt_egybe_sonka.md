@@ -1,3 +1,15 @@
+---
+title: "Füstölt Egész Sonka"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Füstölt egész sonka termékleírás, 55 Ft/kg áron, szezonális húsvét és karácsonyhoz. Termelői megjegyzéseket és séma-információkat tartalmaz a katalógushoz."
+description_source: auto
+description_hash: f17e862350662944
+id: 46ccbbae-8d7b-40fb-afdc-456e525015df
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Egész Sonka
 
 ```yaml

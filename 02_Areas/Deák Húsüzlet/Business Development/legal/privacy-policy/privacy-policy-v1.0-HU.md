@@ -1,5 +1,8 @@
 ---
 title: "Adatvédelmi Szabályzat"
+description: "A deakhus.ro online platform adatvédelmi szabályozása, amely ismerteti az EXARGROUPS S.R.L. adatkezelési gyakorlatát, a gyűjtött személyes adatokat, Firebase Analytics használatát, cookie-kat és az érintett személyek jogait a GDPR alapján. Üzemeltetőknek és felhasználóknak egyaránt szükséges."
+description_source: auto
+description_hash: 66522c1a00c7abf0
 version: "1.0"
 status: DRAFT
 created: 2026-04-17
@@ -15,7 +18,6 @@ changelog:
 id: a22aa8b2-77bf-4be5-b2f7-1fbc9f62f90b
 index_schema_version: 1
 ---
-
 # ADATVÉDELMI SZABÁLYZAT
 
 **Deák Húsmíves Online Platform — deakhus.ro**

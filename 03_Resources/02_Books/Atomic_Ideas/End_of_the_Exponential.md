@@ -1,5 +1,8 @@
 ---
 title: "End of the Exponential"
+description: "Dario Amodei's concept of the approaching inflection point where current AI scaling phase transitions from exponential growth to a different paradigm, with capabilities advancing from high-school to PhD-level and the next phase requiring end-to-end task integration within 1-3 years."
+description_source: auto
+description_hash: 39c02572a9e2b0d4
 type: atomic
 tags: ["atomic", "AI", "AGI", "scaling", "inflection-point", "timeline"]
 status: "triaged"
@@ -9,7 +12,6 @@ processed_by: "AI Speed-Reading Agent"
 id: 8e09cf9c-a566-48c9-bb9d-5ac1d1992f7a
 index_schema_version: 1
 ---
-
 # End of the Exponential
 
 ## Definition

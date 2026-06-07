@@ -1,5 +1,8 @@
 ---
 title: "Case Study: [Client Nickname / Anonymized]"
+description: "Template for documenting client success stories with measurable outcomes, specific challenges solved, and competitive positioning against hiring alternatives; used by sales and marketing teams to build credibility with prospective customers facing similar infrastructure or DevOps challenges."
+description_source: auto
+description_hash: 28e6a278233df972
 id: cs-000
 industry: [tag from taxonomy]
 size: [employee count, e.g. "50-80 employees"]
@@ -12,7 +15,6 @@ status: [active / churned / completed-project]
 author: Sonrisa CPS
 index_schema_version: 1
 ---
-
 # Case Study: [Client Nickname]
 
 > **One-liner for outreach:** "[Specific, punchy result in one sentence -- include a number if possible]"

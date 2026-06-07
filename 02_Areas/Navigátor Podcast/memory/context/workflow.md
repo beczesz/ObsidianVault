@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast Workflow"
+date: 2026-03-09
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast epizódok publikálásának teljes munkafolyamata: SRT felirat generálása után plugin parancsokkal YouTube metaadat (hook, cím, thumbnail, leírás, időkódok) előállítása, majd videó feltöltése és kereszt-promóció Spotify és közösségi médiában."
+description_source: auto
+description_hash: 38c965ec1e03b1a6
+id: 647b1925-c5ce-4d43-9966-953d6253d642
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast Workflow
 
 ## Epizód publikálási folyamat

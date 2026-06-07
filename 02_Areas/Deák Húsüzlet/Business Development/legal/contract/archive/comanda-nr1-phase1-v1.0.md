@@ -1,5 +1,8 @@
 ---
 title: "Comandă nr. 1 — Faza Pilot (Phase 1)"
+description: "First pilot phase order establishing platform launch conditions for deakhus.ro with 6.8% platform fee, 30-day evaluation period, and specific KPI targets including second order rate and user registration thresholds for scaling decision."
+description_source: auto
+description_hash: 69e4df6c42a3ae8e
 version: "1.0"
 status: DRAFT
 created: 2026-04-16
@@ -12,7 +15,6 @@ changelog:
 id: 3a9a8c99-f78d-4a9b-9b54-4db13b78f8c8
 index_schema_version: 1
 ---
-
 # COMANDĂ NR. 1 — FAZA PILOT (Phase 1)
 
 ## Megrendelőlap / Act Adițional la Contract-Cadru

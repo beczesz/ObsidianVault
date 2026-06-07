@@ -1,3 +1,15 @@
+---
+title: "Product Variations — Feature Folder"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Szabolcs (Exar Labs) és a Deák Húsmíves termelők DH-173 feature mappája: 15 termékre (59 variation érték) vonatkozó specifikáció, per-termék opció mátrix és termelői input gyűjteménye. Sprint 4-hez szükséges backend-frontend fejlesztés dokumentációja."
+description_source: auto
+description_hash: 0cb238365e2026b7
+id: 45428e78-a127-45db-be0a-c9e547bde63c
+index_schema_version: 1
+bdos_index: true
+---
 # Product Variations — Feature Folder
 
 > **Jira:** [DH-173 — Termék testreszabás és preferencia mentés](https://exarlabs.atlassian.net/browse/DH-173)

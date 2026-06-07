@@ -1,4 +1,7 @@
 ---
+description: "Fleet telematics SaaS company monitoring 110,000+ vehicles globally seeks DevOps engineer with Linux and AWS expertise. Sole DevOps role at 52-person company with multi-region expansion needs across Italy, Poland, Hungary."
+description_source: auto
+description_hash: 65062a49df153407
 type: lead
 id: safefleet
 company: "SafeFleet Telematics"
@@ -35,7 +38,6 @@ created: 2026-03-27
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # SafeFleet Telematics
 
 ## Signal

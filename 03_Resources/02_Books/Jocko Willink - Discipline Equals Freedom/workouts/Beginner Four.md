@@ -1,4 +1,15 @@
-
+---
+title: "Beginner Series Four — Full Session"
+date: 2026-01-19
+author: Becze Szabolcs
+status: active
+description: "Complete beginner workout program featuring pull, push, lift, and squat movements with sprint-based intensity intervals. Designed for athletes progressing from volume work toward intermediate conditioning, emphasizing time-managed fatigue and technical execution under stress."
+description_source: auto
+description_hash: b35379d54c9bf4e4
+id: 5c95bcb4-e755-4863-8200-cd50f33e4729
+index_schema_version: 1
+bdos_index: true
+---
 # Beginner Series Four — Full Session
 
 ## Warm-up (Bemelegítés)

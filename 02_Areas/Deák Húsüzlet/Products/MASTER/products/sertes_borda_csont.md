@@ -1,3 +1,15 @@
+---
+title: "Sertés Bordacsont"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Fresh pork rib bones priced at 12.0 kg, rich-flavored and ideal for soups or braised dishes; high popularity score with availability confirmed."
+description_source: auto
+description_hash: 015d62bd8dae2509
+id: c18f8e22-4b2e-4aec-945d-324e1ea60209
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Bordacsont
 
 ```yaml

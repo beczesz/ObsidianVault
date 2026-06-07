@@ -1,3 +1,15 @@
+---
+title: "Deák Húsmíves — Wireframe Gallery"
+date: 2026-05-01
+author: Becze Szabolcs
+status: active
+description: "Wireframe gallery system for Deák Húsmíves project with modular HTML files deployed on Netlify; includes Savings Engine and GDPR consent flows with build versioning and deployment guidelines for team use."
+description_source: auto
+description_hash: 081baa4045797cd4
+id: 56c7bb3e-48ca-4bf0-b6d2-96927e423f54
+index_schema_version: 1
+bdos_index: true
+---
 # Deák Húsmíves — Wireframe Gallery
 
 ## Struktúra

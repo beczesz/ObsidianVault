@@ -1,4 +1,7 @@
 ---
+description: "Podcast-interjú Marosvásárhelyi színművésszel, Albert Orsolyával, aki a színház közönségszintet illetve az előadás kreatív sérülékenységéről, bemelegítés filozófiájáról és a jelenlét jelentőségéről beszél."
+description_source: auto
+description_hash: 98f704555c36ff08
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -15,7 +18,6 @@ quality: "Gold Standard"
 id: 2ad02201-4fde-430b-9a66-9658372d1e6a
 index_schema_version: 1
 ---
-
 # EP11 — Albert Orsolya: Szeretném hinni azt, hogy mindenkinek való a színház
 
 ## Alapadatok

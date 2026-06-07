@@ -1,3 +1,15 @@
+---
+title: "Vezetők Imája – Összes Alkalom"
+date: 2026-04-13
+author: Becze Szabolcs
+status: active
+description: "Komprehenzív nyilvántartás a vezetők imáról 2021 és 2026 között, előadók, bibliai alapigék, témák és Google Drive dokumentumokra mutató hivatkozások szerint rendezve."
+description_source: auto
+description_hash: e459e9c03a9b2384
+id: c125ae5d-f579-4a85-a54f-515cdc1883f4
+index_schema_version: 1
+bdos_index: true
+---
 # Vezetők Imája – Összes Alkalom
 
 > Utolsó frissítés: 2026-04-13  

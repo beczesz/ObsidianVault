@@ -1,4 +1,7 @@
 ---
+description: "Brainstorming notes for a controlled 50-person founding member pilot program in Székelyudvarhely, including concept refinement, UX/UI decisions, technical specifications, and tracking metrics from ChatGPT and Szabolcs collaboration."
+description_source: auto
+description_hash: d4df17ab16046635
 topic: Founding 50 Program — DH-150
 created: 2026-04-22
 last_updated: 2026-04-22
@@ -6,7 +9,6 @@ status: active
 id: 5138e002-4a7f-4e42-85b9-87fb05533436
 index_schema_version: 1
 ---
-
 # Brainstorm: Founding 50 Program (DH-150)
 
 ## Sessions

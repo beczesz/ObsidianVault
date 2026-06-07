@@ -1,3 +1,15 @@
+---
+title: "OKFO (Okfu)"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "OKFO is a national healthcare institution running an on-premises Azure DevOps Server installed by CPS with a 2-year consulting engagement. A stable, self-organizing account generating predictable healthy-margin revenue, exemplifying the reliable customer type CPS seeks to expand."
+description_source: auto
+description_hash: abd051aee654c7ee
+id: 16e8e5f5-7ba6-45f3-8900-f0bf57e6c043
+index_schema_version: 1
+bdos_index: true
+---
 # OKFO (Okfu)
 
 ## Quick Info

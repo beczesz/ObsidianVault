@@ -2,6 +2,9 @@
 series: "7 Szokás"
 episode: "EP2"
 title: "Légy proaktív – Az áldozat-mentalitástól a választás szabadságáig"
+description: "Az 1. szokás (Proaktivitás) gyakorlati kifejtése: az áldozat-mentalitástól a választási szabadságig, Frankl, Popper és Covey körmodelljén keresztül. Vezetők, értelmiségiek és önfejlesztésben érdeklődők számára."
+description_source: auto
+description_hash: 12f34afca032e410
 host: "Beczesz Szabolcs"
 source_book: "Stephen Covey – A kiemelkedően eredményes emberek 7 szokása"
 youtube_id: "c3nlIlWU8fk"
@@ -31,7 +34,6 @@ created: "2026-04-06"
 id: 16642264-aec3-4f73-8013-73773353c974
 index_schema_version: 1
 ---
-
 # 7 Szokás EP2 – Légy proaktív: Az áldozat-mentalitástól a választás szabadságáig
 
 ## Sorozat kontextus

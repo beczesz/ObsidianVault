@@ -1,3 +1,15 @@
+---
+title: "Master list of good ideas (merged, de-duplicated)"
+date: 2025-10-27
+author: Becze Szabolcs
+status: active
+description: "A consolidated business strategy for Sonrisa's CI/CD managed service offering, covering market positioning as an expert layer on hyperscalers, three-tier pricing models (Bronze/Silver/Gold), implementation playbooks with DevSecOps baked in, and go-to-market tactics including a fixed-fee readiness audit."
+description_source: auto
+description_hash: fc293164a544cd26
+id: 1fa6b40f-0aa8-407e-a929-fe5a573a07f1
+index_schema_version: 1
+bdos_index: true
+---
 # Master list of good ideas (merged, de-duplicated)
 
 ## 1) Market & Positioning

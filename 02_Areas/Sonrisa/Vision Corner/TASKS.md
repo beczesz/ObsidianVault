@@ -1,3 +1,15 @@
+---
+title: "Tasks"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Production checklist for a podcast series tracking guest interviews, episode questions, and studio expansion plans across multiple Central European locations."
+description_source: auto
+description_hash: 820c25fc46852c3b
+id: 0dfb4054-79e2-48cf-8444-53f1a9147766
+index_schema_version: 1
+bdos_index: true
+---
 # Tasks
 
 ## Active

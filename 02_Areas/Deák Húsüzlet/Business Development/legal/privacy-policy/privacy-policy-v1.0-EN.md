@@ -1,5 +1,8 @@
 ---
 title: "Privacy Policy"
+description: "Legal policy for Deák Húsmíves online ordering platform specifying data controller EXARGROUPS S.R.L., collected personal data for account and delivery purposes, processing under GDPR contract and legal bases, third-party sharing limited to delivery partner and Google Firebase, and user rights under GDPR articles."
+description_source: auto
+description_hash: 5ee245f3849b1504
 version: "1.0"
 status: DRAFT
 created: 2026-04-17
@@ -15,7 +18,6 @@ changelog:
 id: 84b0b13c-5610-4434-96f5-d570e2ecf0de
 index_schema_version: 1
 ---
-
 # PRIVACY POLICY
 
 **Deák Húsmíves Online Platform — deakhus.ro**

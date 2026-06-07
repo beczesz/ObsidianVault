@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Synthesis of a pediatrician interview episode covering fever, immunity, antibiotics, and vaccination myths for Csakabaj podcast, serving parent listeners seeking practical medical guidance and myth-correction."
+description_source: auto
+description_hash: 48aa027ff78e5d94
+id: 33277a47-fe2d-4924-bec3-abe0ca139afe
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP36 | S02E03 — Dr. Koncsag-Szász Előd: Gyermekorvosi Bölcsesség

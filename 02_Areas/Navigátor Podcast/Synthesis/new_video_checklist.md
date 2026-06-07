@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast — Új Videó Publikálási Checklist"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast csatornának szóló, új videóepizódok publikálásához szükséges lépések részletes checklistje. Tartalmazutazik a felvétel előtti előkészítéstől a metaadat-generáláson, YouTube publikáláson keresztül az első heti optimalizálásig, valamint a Shorts és cross-linking stratégiáig."
+description_source: auto
+description_hash: 4b7eecf254f2bf47
+id: 57c01a31-285e-4903-bda4-e8c442d9198d
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast — Új Videó Publikálási Checklist
 
 **Verzió:** 1.0 | **Dátum:** 2026-04-09

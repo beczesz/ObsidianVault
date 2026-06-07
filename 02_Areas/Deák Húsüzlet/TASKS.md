@@ -1,3 +1,15 @@
+---
+title: "TASKS.md — DH Feladatlista"
+date: 2026-04-22
+author: Becze Szabolcs
+status: active
+description: "A Deák Húsmíves projekt Jira feladatlistájának magyar és angol nyelvű nyomvantartása, amely Sprint 2 lezárásáról (v0.2), Sprint 3 aktív statuszáról (70% kész) és scope-módosításokról tájékoztat fejlesztőket és product managementot."
+description_source: auto
+description_hash: 4b1b4b19b2007606
+id: 168975a9-132f-4366-98ee-d2a4838bf7a7
+index_schema_version: 1
+bdos_index: true
+---
 # TASKS.md — DH Feladatlista
 > Utolsó Jira sync: **2026-04-22** | **153 ticket** összesen (DH-1 → DH-146) | **Sprint 2 LEZÁRVA ✅** (38/38 = 100%) | **Sprint 3 ACTIVE** — **7 Done / 2 IP / 1 To Do** (70%)
 

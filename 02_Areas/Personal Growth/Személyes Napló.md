@@ -1,3 +1,15 @@
+---
+title: "Személyes Napló"
+date: 2026-04-27
+author: Becze Szabolcs
+status: active
+description: "Személyes naplóbejegyzések 2026 áprilisából, amely a szerző lelki fejlődésének, vállalkozási kihívásainak és önismeretének utazását követi nyomon; támadja a halogatás, félelem és bizonytalanság témáit, miközben feltárja a fegyelem és hitbeli hit szerepét."
+description_source: auto
+description_hash: 558742057b5613cc
+id: 9da7680c-6a28-460b-b3e3-c305936b9cd7
+index_schema_version: 1
+bdos_index: true
+---
 ## 2026.04.27 A két ifjú
 
 Két történet is van az evangéliumokban amikor egy fiatal megkeresi Jézust, Jézusnak szimpatikus a fiatal, és el is hívja arra, hogy kövesse őt, de a fiatal valamilyen indoknál fogva nem teszi azt. 

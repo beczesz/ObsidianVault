@@ -1,4 +1,15 @@
-
+---
+title: "Reggeli rutin"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Személyre szabott reggeli checklist vezetőknek: éberség, fókusz és mentális stabilitás kialakítása minimális stimuláció mellett, elektrolit és idegrendszeri állam hangsúlyozásával."
+description_source: auto
+description_hash: c9aa44b7aa5531cc
+id: 3aa74380-6305-474e-842b-e11ee5318144
+index_schema_version: 1
+bdos_index: true
+---
 - [ ] Ébredés 5:15 kor vagy 6 kor hétvégén
 - [ ] Fogmosás, mosdás, wc
 - [ ] Méretkezés

@@ -1,3 +1,15 @@
+---
+title: "Direct Travel"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Record of an active CPS client with minimal documentation; includes status check items regarding project scope, package details, and contact information that need clarification."
+description_source: auto
+description_hash: 502056ef0f5e2651
+id: 11cc8a50-4fea-4469-a9e7-a57d68ce76ea
+index_schema_version: 1
+bdos_index: true
+---
 # Direct Travel
 
 ## Quick Info

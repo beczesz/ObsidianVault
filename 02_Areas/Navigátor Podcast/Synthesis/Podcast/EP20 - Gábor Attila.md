@@ -1,5 +1,8 @@
 ---
 title: "EP20 - Gábor Attila: Játékból Szenvedély — Hogyan Formál a PUBG?"
+description: "Gábor Attila, 19 éves PUBG e-sport játékos interjúja, amely feltárja, hogyan alakítanak ki valós kompetenciákat a kompetitív videojátékok és bizonyítja Sun Tzu 2500 éves stratégiai elvei azonos módon érvényesek az online csatapadlón és a valós életben is."
+description_source: auto
+description_hash: fac1032ba956e158
 podcast: Navigátor Podcast
 episode_number: 20
 guest: Gábor Attila
@@ -24,7 +27,6 @@ tags: [gaming, PUBG, esport, generációs-különbségek, stratégia, Sun-Tzu, c
 id: 94d44ee0-44f7-465c-8fc7-289754350c66
 index_schema_version: 1
 ---
-
 # EP20 — Gábor Attila: Játékból Szenvedély — Hogyan Formál a PUBG?
 
 ## Összefoglaló

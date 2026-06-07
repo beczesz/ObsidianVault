@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Román Szavak v3 – Tanuljunk!</title>
+  <!-- ResponsiveVoice: felhő alapú román TTS tartalék -->
+  <script src="https://code.responsivevoice.org/responsivevoice.js?key=FREE"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #e8f5e9 0%, #f3e5f5 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #4a148c;
+      margin-bottom: 16px;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    /* ── PROGRESS ───────────────────────────────── */
+    .progress-section {
+      width: 100%;
+      max-width: 700px;
+      margin-bottom: 24px;
+    }
+
+    .progress-label {
+      font-size: 1.1rem;
+      color: #5d4037;
+      margin-bottom: 8px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .progress-track {
+      position: relative;
+      background: #c8e6c9;
+      border-radius: 40px;
+      height: 64px;
+      width: 100%;
+      overflow: visible;
+      box-shadow: inset 0 3px 8px rgba(0,0,0,0.15);
+      border: 3px solid #a5d6a7;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #66bb6a, #43a047);
+      border-radius: 40px;
+      transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      min-width: 0;
+    }
+
+    .bear {
+      position: absolute;
+      top: 50%;
+      font-size: 2.6rem;
+      transform: translateY(-50%);
+      transition: left 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.25));
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .cave {
+      position: absolute;
+      right: -18px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 2.8rem;
+      filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.3));
+      z-index: 5;
+    }
+
+    .trees {
+      position: absolute;
+      bottom: -10px;
+      left: 0; right: 0;
+      pointer-events: none;
+      display: flex;
+      justify-content: space-around;
+      padding: 0 60px;
+    }
+    .tree { font-size: 1.2rem; opacity: 0.5; }
+
+    .counter {
+      font-size: 1rem;
+      color: #6d4c41;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    /* ── CARD ───────────────────────────────────── */
+    .card-container {
+      perspective: 1000px;
+      margin: 10px 0 24px;
+    }
+
+    .card {
+      width: min(340px, 90vw);
+      height: 340px;
+      background: white;
+      border-radius: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9rem;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      cursor: default;
+      animation: cardIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      user-select: none;
+    }
+
+    .card:hover {
+      transform: translateY(-4px) scale(1.02);
+      box-shadow: 0 18px 48px rgba(0,0,0,0.22);
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(30px) scale(0.9); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes cardRight {
+      0%   { transform: translateX(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateX(140%) rotate(12deg); opacity: 0; }
+    }
+
+    @keyframes cardLeft {
+      0%   { transform: translateX(0) rotate(0deg); opacity: 1; }
+      100% { transform: translateX(-140%) rotate(-12deg); opacity: 0; }
+    }
+
+    @keyframes cardDown {
+      0%   { transform: translateY(0) scale(1); opacity: 1; }
+      100% { transform: translateY(80px) scale(0.8); opacity: 0; }
+    }
+
+    .fly-right { animation: cardRight 0.35s ease-in forwards; }
+    .fly-left  { animation: cardLeft  0.35s ease-in forwards; }
+    .fly-down  { animation: cardDown  0.35s ease-in forwards; }
+
+    .category-badge {
+      font-size: 0.85rem;
+      background: #e1bee7;
+      color: #6a1b9a;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    /* ── BUTTONS ────────────────────────────────── */
+    .buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: 8px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 20px;
+      padding: 18px 32px;
+      font-size: 1.25rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.12s ease, box-shadow 0.12s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+      min-width: 130px;
+      letter-spacing: 0.3px;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.06);
+      box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+    }
+
+    .btn:active { transform: scale(0.96); }
+
+    .btn-yes  { background: linear-gradient(135deg, #66bb6a, #2e7d32); color: white; }
+    .btn-half { background: linear-gradient(135deg, #ffd54f, #f57f17); color: #3e2723; }
+    .btn-no   { background: linear-gradient(135deg, #ef5350, #b71c1c); color: white; }
+
+    /* ── TTS STATUS BADGE ────────────────────────── */
+    .tts-status {
+      font-size: 0.78rem;
+      margin-top: 10px;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-weight: bold;
+      display: inline-block;
+    }
+
+    .tts-status.google   { background: #e3f2fd; color: #1565c0; }
+    .tts-status.rv       { background: #f3e5f5; color: #6a1b9a; }
+    .tts-status.browser  { background: #fff8e1; color: #f57f17; }
+    .tts-status.none     { background: #fce4ec; color: #b71c1c; }
+
+    /* ── WORD REVEAL OVERLAY ─────────────────────── */
+    .word-overlay {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+
+    .word-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .word-overlay-bg {
+      position: absolute;
+      inset: 0;
+    }
+
+    .word-ro {
+      position: relative;
+      font-size: clamp(3rem, 10vw, 6rem);
+      font-weight: 900;
+      color: white;
+      text-align: center;
+      text-shadow: 0 4px 16px rgba(0,0,0,0.4);
+      letter-spacing: 2px;
+      padding: 0 24px;
+      line-height: 1.1;
+      animation: wordPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .word-hu {
+      position: relative;
+      font-size: clamp(1.4rem, 4vw, 2.2rem);
+      color: rgba(255,255,255,0.85);
+      margin-top: 16px;
+      font-style: italic;
+      text-align: center;
+      padding: 0 24px;
+      animation: wordPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .word-speaker {
+      position: relative;
+      font-size: 3rem;
+      margin-top: 24px;
+      animation: speakerPulse 0.8s ease-in-out infinite;
+    }
+
+    @keyframes wordPop {
+      from { transform: scale(0.5); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    @keyframes speakerPulse {
+      0%, 100% { transform: scale(1);    opacity: 1; }
+      50%       { transform: scale(1.25); opacity: 0.7; }
+    }
+
+    /* ── FINISHED ───────────────────────────────── */
+    .finished {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      padding: 30px;
+      background: white;
+      border-radius: 28px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+      max-width: 500px;
+      width: 90vw;
+      text-align: center;
+      animation: cardIn 0.5s ease;
+    }
+
+    .finished .trophy { font-size: 7rem; }
+    .finished h2 { font-size: 2rem; color: #2e7d32; }
+    .finished p  { font-size: 1.2rem; color: #555; }
+
+    .btn-restart {
+      background: linear-gradient(135deg, #7e57c2, #4527a0);
+      color: white;
+      font-size: 1.2rem;
+      padding: 16px 36px;
+      border-radius: 20px;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      transition: transform 0.12s;
+    }
+    .btn-restart:hover { transform: scale(1.06); }
+
+    /* ── TOAST ──────────────────────────────────── */
+    .toast {
+      position: fixed;
+      top: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-80px);
+      background: #333;
+      color: white;
+      padding: 12px 28px;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 600;
+      pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* ── CONFETTI ────────────────────────────────── */
+    .confetti-piece {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      animation: confettiFall 3s ease-in forwards;
+      pointer-events: none;
+      z-index: 999;
+    }
+    @keyframes confettiFall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<h1>🇷🇴 Tanulunk románul! 🐻</h1>
+
+<!-- Progress -->
+<div class="progress-section">
+  <div class="progress-label" id="progressLabel">A medve elindul a barlangba...</div>
+  <div class="progress-track">
+    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+    <span class="bear" id="bear" style="left: 4px">🐻</span>
+    <span class="cave">🏔️</span>
+    <div class="trees">
+      <span class="tree">🌲</span><span class="tree">🌳</span>
+      <span class="tree">🌲</span><span class="tree">🌳</span>
+      <span class="tree">🌲</span>
+    </div>
+  </div>
+  <div class="counter" id="counter"></div>
+</div>
+
+<!-- Card -->
+<div id="gameArea">
+  <div class="category-badge" id="categoryBadge"></div>
+  <div class="card-container">
+    <div class="card" id="card"></div>
+  </div>
+  <div class="buttons">
+    <button class="btn btn-no"   onclick="answer('no')">❌ Nem tudja</button>
+    <button class="btn btn-half" onclick="answer('half')">🤔 Félig tudja</button>
+    <button class="btn btn-yes"  onclick="answer('yes')">✅ Tudja!</button>
+  </div>
+  <div style="text-align:center; margin-top:8px;">
+    <span class="tts-status" id="ttsStatus">🔊 hang betöltés...</span>
+  </div>
+</div>
+
+<!-- Finished -->
+<div class="finished" id="finishedScreen">
+  <div class="trophy">🏆</div>
+  <h2>Bravo! Mindet tudja! 🎉</h2>
+  <p id="finishedStats"></p>
+  <button class="btn-restart" onclick="restartGame()">🔄 Újra játszunk!</button>
+</div>
+
+<!-- Word Reveal Overlay -->
+<div class="word-overlay" id="wordOverlay">
+  <div class="word-overlay-bg" id="overlayBg"></div>
+  <div class="word-ro" id="overlayWord"></div>
+  <div class="word-hu"  id="overlayHu"></div>
+  <div class="word-speaker" id="overlaySpeaker">🔊</div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── WORD DATA ─────────────────────────────────────────────────────────────────
+  const words = [
+    { ro: "măr",               hu: "alma",           emoji: "🍎", category: "Gyümölcsök" },
+    { ro: "pară",              hu: "körte",          emoji: "🍐", category: "Gyümölcsök" },
+    { ro: "strugure",          hu: "szőlő",          emoji: "🍇", category: "Gyümölcsök" },
+    { ro: "piersică",          hu: "őszibarack",     emoji: "🍑", category: "Gyümölcsök" },
+    { ro: "prună",             hu: "szilva",         emoji: "🫐", category: "Gyümölcsök" },
+    { ro: "fasole",            hu: "bab",            emoji: "🫘", category: "Zöldségek" },
+    { ro: "salată",            hu: "saláta",         emoji: "🥬", category: "Zöldségek" },
+    { ro: "castravete",        hu: "uborka",         emoji: "🥒", category: "Zöldségek" },
+    { ro: "ardei",             hu: "paprika",        emoji: "🫑", category: "Zöldségek" },
+    { ro: "cartof",            hu: "burgonya",       emoji: "🥔", category: "Zöldségek" },
+    { ro: "nucă",              hu: "dió",            emoji: "🌰", category: "Zöldségek" },
+    { ro: "varză",             hu: "káposzta",       emoji: "🥦", category: "Zöldségek" },
+    { ro: "roșie",             hu: "paradicsom",     emoji: "🍅", category: "Zöldségek" },
+    { ro: "morcov",            hu: "sárgarépa",      emoji: "🥕", category: "Zöldségek" },
+    { ro: "dimineața",         hu: "reggel",         emoji: "🌅", category: "Napszakok" },
+    { ro: "ziua",              hu: "nappal",         emoji: "☀️", category: "Napszakok" },
+    { ro: "prânz",             hu: "dél / ebéd",     emoji: "🍽️", category: "Napszakok" },
+    { ro: "seara",             hu: "este",           emoji: "🌙", category: "Napszakok" },
+    { ro: "se culcă",          hu: "lefekszik",      emoji: "😴", category: "Napszakok" },
+    { ro: "copil",             hu: "gyerek",         emoji: "👦", category: "Tevékenységek" },
+    { ro: "copii",             hu: "gyerekek",       emoji: "👫", category: "Tevékenységek" },
+    { ro: "cântă",             hu: "énekel",         emoji: "🎤", category: "Tevékenységek" },
+    { ro: "dansează",          hu: "táncol",         emoji: "💃", category: "Tevékenységek" },
+    { ro: "învață",            hu: "tanul",          emoji: "📚", category: "Tevékenységek" },
+    { ro: "se joacă",          hu: "játszik",        emoji: "🎲", category: "Tevékenységek" },
+    { ro: "desenează",         hu: "rajzol",         emoji: "✏️", category: "Tevékenységek" },
+    { ro: "pictează",          hu: "fest",           emoji: "🎨", category: "Tevékenységek" },
+    { ro: "înoată",            hu: "úszik",          emoji: "🏊", category: "Tevékenységek" },
+    { ro: "se îmbracă",        hu: "felöltözik",     emoji: "👗", category: "Tevékenységek" },
+    { ro: "acasă",             hu: "otthon",         emoji: "🏠", category: "Tevékenységek" },
+    { ro: "calculator",        hu: "számítógép",     emoji: "💻", category: "Tevékenységek" },
+    { ro: "cuburi",            hu: "kockák",         emoji: "🧩", category: "Tevékenységek" },
+    { ro: "fotbal",            hu: "foci",           emoji: "⚽", category: "Tevékenységek" },
+    { ro: "bazinul de înot",   hu: "uszoda",         emoji: "🏊", category: "Tevékenységek" },
+    { ro: "terenul de fotbal", hu: "focipálya",      emoji: "🏟️", category: "Tevékenységek" },
+  ];
+
+  // ── TTS ENGINE ────────────────────────────────────────────────────────────────
+  // Priority: 1) Google Translate audio  2) ResponsiveVoice  3) Web Speech API
+  let ttsEngine = 'detecting';
+
+  function setTtsStatus(engine) {
+    ttsEngine = engine;
+    const el = document.getElementById('ttsStatus');
+    const map = {
+      google:  { cls: 'google',  text: '🔊 Google Translate hang (legjobb minőség)' },
+      rv:      { cls: 'rv',      text: '🔊 ResponsiveVoice román hang' },
+      browser: { cls: 'browser', text: '⚠️ Böngésző hang (gyengébb minőség)' },
+      none:    { cls: 'none',    text: '🔇 Hang nem elérhető' },
+    };
+    const info = map[engine] || map.none;
+    el.className = 'tts-status ' + info.cls;
+    el.textContent = info.text;
+  }
+
+  // 1. Google Translate TTS via <audio>
+  function speakGoogle(text, onSuccess, onFail) {
+    const url = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=ro&client=gtx&q=' + encodeURIComponent(text);
+    const audio = new Audio(url);
+    audio.oncanplaythrough = () => {
+      audio.play().then(onSuccess).catch(onFail);
+    };
+    audio.onerror = onFail;
+    // Timeout: if no response in 2.5s, try fallback
+    const timer = setTimeout(onFail, 2500);
+    audio.oncanplaythrough = () => {
+      clearTimeout(timer);
+      audio.play().then(onSuccess).catch(onFail);
+    };
+  }
+
+  // 2. ResponsiveVoice
+  function speakRV(text, onSuccess, onFail) {
+    if (typeof responsiveVoice === 'undefined') { onFail(); return; }
+    try {
+      responsiveVoice.speak(text, 'Romanian Female', {
+        rate: 0.9,
+        onstart: onSuccess,
+        onerror: onFail,
+      });
+    } catch(e) { onFail(); }
+  }
+
+  // 3. Web Speech API fallback
+  function speakBrowser(text) {
+    const synth = window.speechSynthesis;
+    if (!synth) return;
+    synth.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang  = 'ro-RO';
+    utter.rate  = 0.85;
+    utter.pitch = 1.1;
+    const roVoice = synth.getVoices().find(v => v.lang.startsWith('ro'));
+    if (roVoice) utter.voice = roVoice;
+    synth.speak(utter);
+  }
+
+  // Unified speak – auto-detects best engine on first call
+  let engineTested = false;
+
+  function speak(text) {
+    if (!engineTested) {
+      // First call: test engines in order
+      speakGoogle(
+        text,
+        () => { engineTested = true; setTtsStatus('google'); },
+        () => {
+          speakRV(
+            text,
+            () => { engineTested = true; setTtsStatus('rv'); },
+            () => {
+              engineTested = true;
+              const hasBrowserRo = window.speechSynthesis &&
+                window.speechSynthesis.getVoices().some(v => v.lang.startsWith('ro'));
+              setTtsStatus(hasBrowserRo ? 'browser' : 'none');
+              if (hasBrowserRo) speakBrowser(text);
+            }
+          );
+        }
+      );
+    } else {
+      // Subsequent calls: use confirmed engine
+      if (ttsEngine === 'google') {
+        speakGoogle(text, () => {}, () => {
+          // Google suddenly failed, fall to RV
+          setTtsStatus('rv');
+          speakRV(text, () => {}, () => speakBrowser(text));
+        });
+      } else if (ttsEngine === 'rv') {
+        speakRV(text, () => {}, () => speakBrowser(text));
+      } else if (ttsEngine === 'browser') {
+        speakBrowser(text);
+      }
+    }
+  }
+
+  // Warm up engine check on page load (silent test with short pause)
+  window.addEventListener('load', () => {
+    // Delay so ResponsiveVoice has time to load
+    setTimeout(() => {
+      const testUrl = 'https://translate.googleapis.com/translate_tts?ie=UTF-8&tl=ro&client=gtx&q=a';
+      const testAudio = new Audio(testUrl);
+      testAudio.volume = 0;
+      testAudio.oncanplaythrough = () => { setTtsStatus('google'); engineTested = false; };
+      testAudio.onerror = () => {
+        if (typeof responsiveVoice !== 'undefined') {
+          setTtsStatus('rv');
+        } else {
+          const hasBrowserRo = window.speechSynthesis &&
+            window.speechSynthesis.getVoices().some(v => v.lang.startsWith('ro'));
+          setTtsStatus(hasBrowserRo ? 'browser' : 'none');
+        }
+        engineTested = false;
+      };
+    }, 800);
+  });
+
+  // ── OVERLAY COLOURS ───────────────────────────────────────────────────────────
+  const overlayColors = {
+    yes:  { from: '#2e7d32', to: '#1b5e20' },
+    half: { from: '#e65100', to: '#bf360c' },
+    no:   { from: '#b71c1c', to: '#7f0000' },
+  };
+
+  // ── GAME STATE ────────────────────────────────────────────────────────────────
+  let deck = [];
+  let masteredCount = 0;
+  let totalWords = words.length;
+  let isAnimating = false;
+
+  function shuffle(arr) {
+    const a = [...arr];
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  function initGame() {
+    deck = shuffle(words.map((w, i) => ({ ...w, id: i })));
+    masteredCount = 0;
+    updateProgress();
+    showCard();
+    document.getElementById('finishedScreen').style.display = 'none';
+    const ga = document.getElementById('gameArea');
+    ga.style.display      = 'flex';
+    ga.style.flexDirection = 'column';
+    ga.style.alignItems   = 'center';
+  }
+
+  function showCard() {
+    if (deck.length === 0) { showFinished(); return; }
+    const word = deck[0];
+    const card = document.getElementById('card');
+    card.className   = 'card';
+    card.textContent = word.emoji;
+    document.getElementById('categoryBadge').textContent = word.category;
+    updateProgress();
+  }
+
+  function answer(result) {
+    if (isAnimating || deck.length === 0) return;
+    isAnimating = true;
+
+    const card = document.getElementById('card');
+    const word = deck.shift();
+
+    // Speak + reveal
+    speak(word.ro);
+    showWordOverlay(word, result);
+
+    // Animate card
+    const animClass = { yes: 'fly-right', half: 'fly-down', no: 'fly-left' }[result];
+    card.classList.add(animClass);
+
+    if (result === 'yes') {
+      masteredCount++;
+      spawnConfetti();
+    } else if (result === 'half') {
+      const at = Math.floor(deck.length / 2) + Math.floor(Math.random() * (Math.ceil(deck.length / 2) + 1));
+      deck.splice(Math.min(at, deck.length), 0, word);
+    } else {
+      const at = 1 + Math.floor(Math.random() * Math.min(3, deck.length + 1));
+      deck.splice(Math.min(at, deck.length), 0, word);
+    }
+
+    setTimeout(() => { isAnimating = false; showCard(); }, 1600);
+  }
+
+  // ── WORD OVERLAY ──────────────────────────────────────────────────────────────
+  let overlayTimer = null;
+
+  function showWordOverlay(word, result) {
+    const overlay = document.getElementById('wordOverlay');
+    const bg      = document.getElementById('overlayBg');
+    const wordEl  = document.getElementById('overlayWord');
+    const huEl    = document.getElementById('overlayHu');
+
+    const c = overlayColors[result];
+    bg.style.background = `linear-gradient(135deg, ${c.from}, ${c.to})`;
+    wordEl.textContent  = word.ro;
+    huEl.textContent    = word.hu;
+
+    // Re-trigger animation
+    wordEl.style.animation = 'none';
+    huEl.style.animation   = 'none';
+    void wordEl.offsetWidth;
+    wordEl.style.animation = '';
+    huEl.style.animation   = '';
+
+    overlay.classList.add('visible');
+    clearTimeout(overlayTimer);
+    overlayTimer = setTimeout(() => overlay.classList.remove('visible'), 1400);
+  }
+
+  // ── PROGRESS ──────────────────────────────────────────────────────────────────
+  function updateProgress() {
+    const pct = totalWords > 0 ? (masteredCount / totalWords) * 100 : 0;
+    document.getElementById('progressFill').style.width = pct + '%';
+
+    const track  = document.getElementById('progressFill').parentElement;
+    const maxLeft = track.offsetWidth - 60;
+    const bearLeft = Math.min((pct / 100) * (maxLeft - 4) + 4, maxLeft);
+    document.getElementById('bear').style.left = bearLeft + 'px';
+
+    document.getElementById('counter').textContent =
+      `✅ Tudja: ${masteredCount}  |  📚 Még hátra: ${deck.length}  |  🎯 Összesen: ${totalWords}`;
+
+    const labels = ['A medve elindul a barlangba...','Haladunk! A medve megy! 🐾','Már több mint a fele! Szuper! 🌟','Majdnem a barlangban! Hajrá! 🏃','A medve hazaért! BRAVO! 🎉'];
+    const idx = pct === 0 ? 0 : pct < 50 ? 1 : pct < 80 ? 2 : pct < 100 ? 3 : 4;
+    document.getElementById('progressLabel').textContent = labels[idx];
+  }
+
+  // ── FINISHED ──────────────────────────────────────────────────────────────────
+  function showFinished() {
+    document.getElementById('gameArea').style.display = 'none';
+    const fin = document.getElementById('finishedScreen');
+    fin.style.display = 'flex';
+    document.getElementById('finishedStats').textContent =
+      `Összesen ${totalWords} szót tanultál meg románul! Büszke vagyok rád! 🌈`;
+    spawnConfetti(80);
+    setTimeout(() => speak('Bravo! Foarte bine!'), 600);
+  }
+
+  function restartGame() { initGame(); }
+
+  // ── TOAST ─────────────────────────────────────────────────────────────────────
+  let toastTimer;
+  function showToast(msg, color) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = color || '#333';
+    t.classList.add('show');
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 1800);
+  }
+
+  // ── CONFETTI ──────────────────────────────────────────────────────────────────
+  const confettiColors = ['#f44336','#e91e63','#9c27b0','#3f51b5','#03a9f4','#4caf50','#ffeb3b','#ff9800'];
+  function spawnConfetti(count = 18) {
+    for (let i = 0; i < count; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top  = '-20px';
+        el.style.background = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        el.style.animationDuration = (2 + Math.random() * 2) + 's';
+        el.style.animationDelay    = Math.random() * 0.5 + 's';
+        el.style.borderRadius = Math.random() > 0.5 ? '50%' : '3px';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+      }, i * 30);
+    }
+  }
+
+  // ── START ─────────────────────────────────────────────────────────────────────
+  initGame();
+</script>
+</body>
+</html>

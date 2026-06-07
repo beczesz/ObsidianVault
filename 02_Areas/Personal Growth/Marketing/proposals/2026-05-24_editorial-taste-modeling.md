@@ -1,4 +1,7 @@
 ---
+description: "Framework for deciding whether to distribute an editorial taste modeling thought to Personal Builder or Sonrisa audiences."
+description_source: auto
+description_hash: f0519a79b0cee8f0
 schema: presto.distribution-proposal.v1
 date: 2026-05-24
 source_atomic: "[[../../Ideas/_inbox/atomic_proposals/editorial-taste-modeling]]"
@@ -11,7 +14,6 @@ status: draft-proposal-awaiting-user-decision
 id: 7a09023b-5732-41de-b751-6ab219457984
 index_schema_version: 1
 ---
-
 # Distribution Proposal — Editorial Taste Modeling
 
 > Presto v0.4 — multi-mode (adapt + reflect), draft-proposal only. NO content drafting. NO publishing.

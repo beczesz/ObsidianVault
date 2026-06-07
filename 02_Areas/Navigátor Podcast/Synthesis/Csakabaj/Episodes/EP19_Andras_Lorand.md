@@ -1,5 +1,8 @@
 ---
 title: "Itt az idő, hogy megértsük a cigányságot | András Lóránd | EP19"
+description: "Podcast-epizód András Lóránddal a roma integráció szociológiai megközelítéséről, amely az asszimilációs mítoszok feloldásáról és az autonóm közösségfejlődés szükségességéről szól. Olyan hallgatók számára, akik szeretnék megérteni a roma marginalizáció szerkezeti okait és az igazi integráció alternatíváit."
+description_source: auto
+description_hash: 4d0e65bc037686c7
 broadcast_date: 2024-08-21
 duration: "111 perc"
 guest_name: "András Lóránd"
@@ -13,7 +16,6 @@ topic_cluster: "Szociológia, roma integráció, társadalmi egyenlőtlenség, i
 id: 07872eac-6e79-45f2-841d-b5df9eaa2c35
 index_schema_version: 1
 ---
-
 # EP19 - András Lóránd: A cigányság mint szociológiai spektrum
 
 ## Alapadatok

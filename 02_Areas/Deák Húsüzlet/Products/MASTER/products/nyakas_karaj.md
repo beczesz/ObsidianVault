@@ -1,3 +1,15 @@
+---
+title: "Sertés nyakaskaraj"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Sertés nyakaskaraj termékadat: márványos hús a nyak és karaj között, 33 Ft/kg, elérhető. Forma és pácolás opciók (sima/dupla, nem pácolt/hagyományos/barbecue) dokumentálva, fotó-stratégia megadva."
+description_source: auto
+description_hash: df62d8777a3b8683
+id: 20cac654-46a3-4cf2-816d-2ea99be1990e
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés nyakaskaraj
 
 ```yaml

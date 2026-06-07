@@ -1,4 +1,7 @@
 ---
+description: "A Navigátor Podcast csatorna teljes teljesítményelemzése, amely 354,213 megtekintésből kiindulva azonosítja a 35-64 éves női közönség dominanciáját, a pszichológia/egészség témák vezető szerepét, és az algoritmus által támogatott szóvátozási mechanizmusokat. A dokumentum 53 epizód szintézisét, demográfiai elemzést és forgalmi"
+description_source: auto
+description_hash: 76c0c62120780844
 version: 0.1
 date: 2026-04-08
 type: channel-synthesis
@@ -6,7 +9,6 @@ source: "YouTube Analytics API (2024-05-01 → 2026-04-08) + 37 epizód szintéz
 id: 0920db11-6a6d-4e3d-9fc5-89eb7a8d03b0
 index_schema_version: 1
 ---
-
 # Navigátor Podcast — Csatorna-szintű Szintézis
 
 > Ez a dokumentum a Csatorna Audit Fázis 3: az összes rendelkezésre álló adat összesítése egyetlen stratégiai dokumentumba.

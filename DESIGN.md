@@ -1,11 +1,13 @@
 ---
 title: Ideas Vault, Design System
+description: "Comprehensive design system extracted from the CPS Sales dashboard, defining color tokens, typography scales, spacing rules, component styles, and layout constraints for the root dashboard and all sub-dashboards. Essential reference for anyone building or maintaining dashboard UI."
+description_source: auto
+description_hash: 79b24ea3d02d841c
 version: 1.0
 date: 2026-05-18
 id: 657d663e-2d37-413e-aa6e-6d7384fc8a9a
 index_schema_version: 1
 ---
-
 # Ideas Vault, Design System
 
 Extracted from `Sales/dashboard.html` (CPS Sales dashboard). The Sales dashboard is the visual reference; the root dashboard and any future sub-dashboards inherit this system.

@@ -1,3 +1,15 @@
+---
+title: "Memory"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Personal movie recommendation vault for Szabolcs and his family with two curated lists: adults preferring character-driven dramas with emotional depth and redemption themes since 2000 IMDB 6.5+, and children aged 6-9 favoring Disney/Pixar animated films with heartwarming stories."
+description_source: auto
+description_hash: 91af4ee431cfb396
+id: e9c0bdee-6a93-4e05-a446-ab3934d87219
+index_schema_version: 1
+bdos_index: true
+---
 # Memory
 
 ## Me

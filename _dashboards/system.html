@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  BDOS System Architecture — graph-mode architecture dashboard.
+  Kattintható node-ok és élek, per-node + per-edge markdown dokumentáció
+  oldalsó drawerből, élő /health státusz minden csomóponton.
+  Version: 0.2.0
+  =============================================================================
+  Reads (read-only):
+    • GET /health            — { overall, components{ id:{status,detail,metric,last_checked} } }
+    • GET /api/db/schema     — tables/columns/row-counts (vault.db + agent_observability.db)
+    • GET /_dashboards/_design/system-docs/nodes/<id>.md  — per-node doc
+    • GET /_dashboards/_design/system-docs/edges/<from>__<to>.md — per-edge doc
+  Action endpoints (localhost-only):
+    • POST /api/cli/run {"message":"…"} — ad-hoc Claude Code (Sonnet), read-only tools
+    • POST /api/reindex                 — rebuild vault.db
+
+  Shared engine: tokens.css + theme.js + clipboard.js + admin-bar.js + live-updates.js
+  See: /_dashboards/CLAUDE.md · /_dashboards/_design/DESIGN_SYSTEM.md
+
+  Audit trail:
+    0.2.0 (2026-05-30) major rewrite — graph layout (CSS Grid + SVG edge overlay),
+      per-node and per-edge kattintható dokumentáció, markdown fetch + minimal inline
+      renderer, right-side drawer (520px, slide-in ease-out-expo), edge hover/dim
+      interakció, node hover connected-edge highlight, focus trap, ESC zár,
+      mobile list-mode (< 900px), a11y (role=dialog, aria-modal, aria-label minden
+      node-on, keyboard tabindex, Enter trigger). DASH_STEM + card-copy-ref DS §4a.
+      CLI console és DB schema modal megtartva mint drawer secondary action.
+      /health polling 5s + LiveUpdates.subscribe. Admin bar + theme toggle.
+    0.1.0 (2026-05-29) initial build. Layered band diagram (CLIENT→EXTERNAL),
+      live status from /health, node popovers, CLI console + DB schema modals.
+-->
+<html lang="hu">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BDOS rendszer-architektúra</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS §1b) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg-page); color: var(--ink-1);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased; line-height: 1.5;
+}
+
+/* ── layout shell (DS 0.9.0 app-shell) ── */
+.app-shell { display: flex; flex-direction: row; max-width: 1440px; margin: 0 auto; }
+.app-main  { flex: 1; min-width: 0; max-width: 1200px; padding: 28px 28px 96px; }
+
+/* ── masthead ── */
+.masthead-toprow { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.home-link { display: inline-flex; align-items: center; gap: 6px; text-decoration: none; color: var(--ink-3); font-size: 12px; font-weight: 500; padding: 5px 10px; border: 1px solid var(--line); border-radius: 999px; }
+.home-link:hover { color: var(--ink-1); border-color: var(--ink-3); }
+.home-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.theme-toggle { display: inline-flex; align-items: center; gap: 6px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; font-size: 12px; color: var(--ink-2); cursor: pointer; font-family: inherit; font-weight: 500; }
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.eyebrow { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; }
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; font-weight: 500; }
+h1 { font-size: clamp(24px, 3vw, 36px); font-weight: 700; letter-spacing: -0.02em; margin: 12px 0 6px; }
+h1 .accent { color: var(--accent); }
+.submeta { color: var(--ink-3); font-size: 14px; max-width: 70ch; }
+
+/* ── rollup ── */
+.rollup { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin: 20px 0 8px; padding: 12px 16px; border: 1px solid var(--line); border-radius: 14px; background: var(--bg-elev); }
+.rollup-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--idle); flex: none; }
+.rollup[data-overall="ok"]  .rollup-dot { background: var(--ok); }
+.rollup[data-overall="warn"] .rollup-dot { background: var(--warn); }
+.rollup[data-overall="gap"]  .rollup-dot { background: var(--gap); }
+.rollup-text { font-size: 14px; font-weight: 600; }
+.rollup[data-overall="ok"]  .rollup-text { color: var(--ok); }
+.rollup[data-overall="warn"] .rollup-text { color: var(--warn); }
+.rollup[data-overall="gap"]  .rollup-text { color: var(--gap); }
+.rollup-meta { margin-left: auto; display: flex; align-items: center; gap: 14px; font-size: 12px; color: var(--ink-3); }
+.legend { display: flex; gap: 10px; flex-wrap: wrap; }
+.legend span { display: inline-flex; align-items: center; gap: 4px; font-size: 11px; }
+.legend i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.legend .l-ok { background: var(--ok); } .legend .l-warn { background: var(--warn); }
+.legend .l-gap { background: var(--gap); } .legend .l-idle { background: var(--idle); }
+
+/* ── graph canvas wrapper ── */
+.graph-wrapper { position: relative; margin-top: 20px; }
+.graph-canvas {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: repeat(8, auto);
+  gap: 10px 8px;
+  position: relative;
+  z-index: 1;
+  padding: 16px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+/* SVG edge overlay */
+.graph-edges {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  overflow: visible;
+}
+.graph-edges path { pointer-events: stroke; cursor: pointer; }
+
+/* ── layer labels ── */
+.layer-label {
+  font-size: 10px; letter-spacing: 0.09em; text-transform: uppercase;
+  color: var(--ink-4); font-weight: 600; align-self: center;
+  writing-mode: horizontal-tb; padding: 2px 4px;
+}
+
+/* ── node buttons ── */
+.node {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 10px; border-radius: 10px;
+  border: 1px solid var(--line); background: var(--bg-elev);
+  cursor: pointer; font-family: inherit; font-size: 12px;
+  font-weight: 500; letter-spacing: -0.005em;
+  color: var(--ink-1);
+  transition: transform 180ms cubic-bezier(.215,.61,.355,1),
+              box-shadow 180ms cubic-bezier(.215,.61,.355,1),
+              opacity 180ms ease,
+              border-color 180ms ease;
+  position: relative; white-space: nowrap;
+}
+.node:hover  { transform: scale(1.04); box-shadow: var(--shadow-2); }
+.node:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.node.dim { opacity: 0.25; }
+.node-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--idle); flex: none; }
+.node[data-status="ok"]   { border-color: color-mix(in srgb, var(--ok) 40%, var(--line)); }
+.node[data-status="ok"]   .node-dot { background: var(--ok); }
+.node[data-status="warn"] { border-color: color-mix(in srgb, var(--warn) 40%, var(--line)); }
+.node[data-status="warn"] .node-dot { background: var(--warn); }
+.node[data-status="gap"]  { border-color: var(--gap); }
+.node[data-status="gap"]  .node-dot { background: var(--gap); }
+.node[data-status="idle"] .node-dot { background: var(--idle); }
+/* vault_md star node */
+.node.star { border-color: var(--accent); background: var(--accent-tint); font-weight: 600; box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent); }
+
+/* card-copy-ref (DS §4a) */
+.node { position: relative; }
+.card-copy-ref {
+  position: absolute; top: -6px; right: -6px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 5px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 9px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast);
+  white-space: nowrap; z-index: 10; line-height: 1;
+}
+.node:hover .card-copy-ref,
+.node:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ── grid placement helpers ── */
+/* CLIENT row 1 */
+.gc-client     { grid-column: 1 / 8; grid-row: 1; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 8px; border: 1px dashed var(--line-soft); border-radius: 10px; }
+/* TRANSPORT row 2 */
+.gc-transport  { grid-column: 3 / 10; grid-row: 2; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; padding: 6px; }
+/* SERVER row 3-4 */
+.gc-server     { grid-column: 1 / 10; grid-row: 3 / 5; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px; border: 1px dashed var(--line-soft); border-radius: 10px; }
+/* PROCESSING row 3-4 right */
+.gc-processing { grid-column: 10 / 13; grid-row: 3 / 5; display: flex; flex-direction: column; gap: 8px; align-items: stretch; padding: 8px; }
+/* DATA row 5-6 */
+.gc-data       { grid-column: 3 / 10; grid-row: 5 / 7; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; padding: 8px; border: 1px dashed var(--line-soft); border-radius: 10px; }
+/* DAEMON row 7 left */
+.gc-daemon     { grid-column: 1 / 5; grid-row: 7; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 6px; }
+/* EXTERNAL row 7 right */
+.gc-external   { grid-column: 10 / 13; grid-row: 7; display: flex; flex-direction: column; gap: 8px; }
+
+/* zone label inside wrapper */
+.zone-label {
+  font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-4); font-weight: 600; width: 100%;
+  margin-bottom: 4px;
+}
+
+/* ── drawers ── */
+.scrim {
+  position: fixed; inset: 0; z-index: 90;
+  background: rgba(0,0,0,0.30);
+  opacity: 0; transition: opacity 220ms ease;
+  pointer-events: none;
+}
+.scrim.open { opacity: 1; pointer-events: auto; }
+
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 91;
+  width: min(520px, 96vw);
+  background: var(--bg-elev); border-left: 1px solid var(--line);
+  box-shadow: -4px 0 32px rgba(0,0,0,0.12);
+  display: flex; flex-direction: column; overflow: hidden;
+  transform: translateX(100%);
+  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+.drawer.open { transform: translateX(0); }
+
+.drawer-head {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 18px 20px 14px; border-bottom: 1px solid var(--line); flex-shrink: 0;
+}
+.drawer-head-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--idle); flex: none; margin-top: 4px; }
+.drawer-head-meta { flex: 1; min-width: 0; }
+.drawer-head h1 { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 4px; }
+.drawer-head .drawer-subtitle { font-size: 12px; color: var(--ink-3); font-family: 'JetBrains Mono', monospace; }
+.drawer-close { background: none; border: none; color: var(--ink-3); font-size: 22px; cursor: pointer; line-height: 1; padding: 4px; border-radius: 6px; margin-top: -2px; }
+.drawer-close:hover { color: var(--ink-1); background: var(--bg-sunken); }
+.drawer-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.drawer-body { flex: 1; overflow-y: auto; padding: 20px; }
+
+/* drawer markdown rendering */
+.drawer-md h2 { font-size: 14px; font-weight: 600; color: var(--ink-1); margin: 20px 0 6px; border-bottom: 1px solid var(--line-soft); padding-bottom: 4px; }
+.drawer-md h2:first-child { margin-top: 0; }
+.drawer-md h3 { font-size: 13px; font-weight: 600; color: var(--ink-2); margin: 14px 0 4px; }
+.drawer-md p { font-size: 13.5px; color: var(--ink-2); margin-bottom: 10px; line-height: 1.6; }
+.drawer-md ul, .drawer-md ol { margin: 4px 0 10px 18px; }
+.drawer-md li { font-size: 13px; color: var(--ink-2); margin-bottom: 3px; line-height: 1.5; }
+.drawer-md code { font-family: 'JetBrains Mono', monospace; font-size: 11.5px; background: var(--bg-sunken); padding: 1px 5px; border-radius: 3px; color: var(--ink-1); }
+.drawer-md pre { background: var(--bg-sunken); border: 1px solid var(--line); border-radius: 8px; padding: 12px; margin: 8px 0 12px; overflow-x: auto; }
+.drawer-md pre code { background: none; padding: 0; font-size: 12px; }
+.drawer-md a { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 2px; }
+.drawer-md a:hover { color: var(--accent); }
+.drawer-md .todo-note { font-size: 12px; color: var(--ink-3); font-style: italic; background: var(--warn-tint); border: 1px solid color-mix(in srgb, var(--warn) 20%, transparent); padding: 4px 10px; border-radius: 6px; margin: 4px 0 8px; }
+
+/* drawer frontmatter pill row */
+.drawer-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+.drawer-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--ink-3); background: var(--bg-sunken); }
+.drawer-pill.accent { border-color: var(--accent); color: var(--accent-deep); background: var(--accent-tint); }
+
+/* drawer secondary actions */
+.drawer-actions { padding: 14px 20px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; gap: 8px; flex-shrink: 0; }
+.btn { font-family: inherit; font-size: 12px; font-weight: 500; padding: 7px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--bg-page); color: var(--ink-1); cursor: pointer; }
+.btn:hover { border-color: var(--ink-3); }
+.btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn-primary:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+
+/* empty / error states inside drawer */
+.drawer-empty { text-align: center; padding: 40px 20px; color: var(--ink-3); }
+.drawer-empty h3 { font-size: 15px; font-weight: 600; margin-bottom: 8px; color: var(--ink-2); }
+.drawer-empty p { font-size: 13px; line-height: 1.6; margin-bottom: 12px; }
+.drawer-empty code { font-family: 'JetBrains Mono', monospace; font-size: 11px; background: var(--bg-sunken); padding: 2px 6px; border-radius: 4px; }
+.drawer-empty .edit-hint { font-size: 11px; color: var(--ink-4); margin-top: 8px; }
+.loading-state { color: var(--ink-3); font-size: 13px; padding: 20px 0; }
+
+/* ── edge FROM→TO header in drawer ── */
+.edge-header { display: flex; align-items: center; gap: 8px; margin-bottom: 14px; padding: 10px 14px; background: var(--bg-sunken); border-radius: 8px; flex-wrap: wrap; }
+.edge-from, .edge-to { font-size: 12px; font-weight: 600; font-family: 'JetBrains Mono', monospace; padding: 3px 8px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: 6px; color: var(--ink-1); }
+.edge-arrow { color: var(--accent); font-size: 14px; }
+.edge-protocol { font-size: 11px; color: var(--ink-3); font-family: 'JetBrains Mono', monospace; }
+
+/* ── modals ── */
+.overlay { position: fixed; inset: 0; z-index: 100; background: rgba(0,0,0,0.45); display: none; align-items: center; justify-content: center; padding: 20px; }
+.overlay.open { display: flex; }
+.modal { background: var(--bg-elev); border: 1px solid var(--line); border-radius: 16px; width: min(96vw, 760px); max-height: 86vh; display: flex; flex-direction: column; overflow: hidden; }
+.modal-head { display: flex; align-items: center; gap: 10px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+.modal-head h2 { font-size: 15px; margin: 0; font-weight: 600; }
+.modal-close { margin-left: auto; background: none; border: none; color: var(--ink-3); font-size: 20px; cursor: pointer; line-height: 1; border-radius: 6px; padding: 2px; }
+.modal-close:hover { color: var(--ink-1); }
+.modal-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.modal-body { padding: 16px 18px; overflow: auto; }
+
+/* CLI */
+.cli-transcript { font-family: 'JetBrains Mono', monospace; font-size: 12.5px; background: var(--bg-page); border: 1px solid var(--line); border-radius: 10px; padding: 12px; min-height: 160px; max-height: 42vh; overflow: auto; white-space: pre-wrap; color: var(--ink-2); }
+.cli-turn { margin-bottom: 12px; }
+.cli-q { color: var(--ink-1); font-weight: 600; }
+.cli-a { color: var(--ink-2); }
+.cli-meta { color: var(--ink-3); font-size: 11px; }
+.cli-inputrow { display: flex; gap: 10px; margin-top: 12px; }
+.cli-input { flex: 1; font-family: inherit; font-size: 13px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--bg-page); color: var(--ink-1); resize: vertical; min-height: 56px; }
+.cli-hint { font-size: 11px; color: var(--ink-3); margin-top: 6px; }
+
+/* DB schema */
+.db-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.db-tab { font-size: 12px; padding: 6px 12px; border: 1px solid var(--line); border-radius: 999px; background: var(--bg-page); color: var(--ink-2); cursor: pointer; font-family: inherit; }
+.db-tab.active { background: var(--accent-tint); border-color: var(--accent); color: var(--accent-deep); }
+.db-table { border: 1px solid var(--line); border-radius: 10px; margin-bottom: 8px; overflow: hidden; }
+.db-table-head { display: flex; align-items: center; gap: 10px; padding: 9px 12px; cursor: pointer; font-size: 13px; }
+.db-table-head:hover { background: var(--bg-page); }
+.db-table-name { font-family: 'JetBrains Mono', monospace; font-weight: 500; }
+.db-rows { margin-left: auto; font-size: 11px; color: var(--ink-3); font-family: 'JetBrains Mono', monospace; }
+.db-cols { display: none; padding: 4px 12px 12px; }
+.db-table.open .db-cols { display: block; }
+.db-col { display: flex; gap: 10px; font-size: 12px; padding: 3px 0; color: var(--ink-2); font-family: 'JetBrains Mono', monospace; border-top: 1px solid var(--line-soft); }
+.db-col .c-type { color: var(--ink-3); }
+.db-col .c-pk { color: var(--accent); }
+
+.state { color: var(--ink-3); font-size: 13px; padding: 10px 0; }
+
+/* ── mobile list mode ── */
+@media (max-width: 900px) {
+  .graph-wrapper { overflow: hidden; }
+  .graph-canvas { display: block; }
+  .gc-client, .gc-transport, .gc-server, .gc-processing, .gc-data, .gc-daemon, .gc-external {
+    display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; padding: 10px;
+    border: 1px solid var(--line-soft); border-radius: 10px;
+  }
+  .graph-edges { display: none; }
+  .zone-label { font-size: 10px; }
+  .drawer { width: 100vw; }
+}
+</style>
+</head>
+<body>
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<div class="app-main">
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Vissza az Ideas Vault launcherhez">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Téma váltása">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Sötét</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      BDOS · SYSTEM OBSERVATORY
+      <span class="version-pill">v0.2.0</span>
+    </div>
+    <h1><span class="accent">BDOS</span> rendszer-architektúra</h1>
+    <div class="submeta">Élő kliens-szerver gráf. Kattints egy csomópontra vagy egy élre a dokumentációért. Minden node státusza a /health végpontból frissül.</div>
+  </header>
+
+  <div class="rollup" id="rollup" data-overall="idle">
+    <span class="rollup-dot"></span>
+    <span class="rollup-text" id="rollup-text">Állapot lekérése…</span>
+    <div class="rollup-meta">
+      <div class="legend">
+        <span><i class="l-ok"></i>fut</span>
+        <span><i class="l-warn"></i>degradált</span>
+        <span><i class="l-gap"></i>hiba</span>
+        <span><i class="l-idle"></i>inaktív</span>
+      </div>
+      <span id="rollup-refresh">—</span>
+    </div>
+  </div>
+
+  <div class="graph-wrapper" id="graphWrapper">
+    <div class="graph-canvas" id="graphCanvas">
+
+      <!-- CLIENT zone -->
+      <div class="gc-client">
+        <div class="zone-label">Kliens (böngésző)</div>
+        <!-- nodes injected by JS -->
+      </div>
+
+      <!-- TRANSPORT zone -->
+      <div class="gc-transport">
+        <div class="zone-label">Transport · localhost:4321</div>
+      </div>
+
+      <!-- SERVER zone -->
+      <div class="gc-server">
+        <div class="zone-label">Szerver · dash-server.mjs</div>
+      </div>
+
+      <!-- PROCESSING zone -->
+      <div class="gc-processing">
+        <div class="zone-label">Feldolgozás</div>
+      </div>
+
+      <!-- DATA zone -->
+      <div class="gc-data">
+        <div class="zone-label">Adatréteg</div>
+      </div>
+
+      <!-- DAEMON zone -->
+      <div class="gc-daemon">
+        <div class="zone-label">Daemon</div>
+      </div>
+
+      <!-- EXTERNAL zone -->
+      <div class="gc-external">
+        <div class="zone-label">Külső / sync</div>
+      </div>
+
+    </div><!-- /graph-canvas -->
+    <!-- SVG edges rendered here by JS -->
+  </div><!-- /graph-wrapper -->
+
+</div><!-- /app-main -->
+</div><!-- /app-shell -->
+
+<!-- ── right-side drawer ── -->
+<div class="scrim" id="drawerScrim" aria-hidden="true"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-label="Részletek">
+  <div class="drawer-head">
+    <span class="drawer-head-dot" id="drawerDot"></span>
+    <div class="drawer-head-meta">
+      <h1 id="drawerTitle">—</h1>
+      <div class="drawer-subtitle" id="drawerSubtitle"></div>
+    </div>
+    <button class="drawer-close" id="drawerClose" aria-label="Bezárás">&times;</button>
+  </div>
+  <div class="drawer-body" id="drawerBody">
+    <div class="loading-state">Betöltés…</div>
+  </div>
+  <div class="drawer-actions" id="drawerActions"></div>
+</aside>
+
+<!-- CLI console modal -->
+<div class="overlay" id="cli-overlay">
+  <div class="modal" role="dialog" aria-label="Ad-hoc Claude konzol">
+    <div class="modal-head">
+      <span class="node-dot" style="background:var(--ok); width:10px; height:10px; border-radius:50%;"></span>
+      <h2>Ad-hoc Claude konzol</h2>
+      <button class="modal-close" data-close aria-label="Bezárás">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="cli-transcript" id="cli-transcript"><span class="state">Kérdezz a vaultról. A Claude Code (Sonnet, subscription) olvashatja a vaultot (read-only), de nem ír / töröl.</span></div>
+      <div class="cli-inputrow">
+        <textarea class="cli-input" id="cli-input" placeholder="pl. Hány nyitott task van bdos scope-ban?"></textarea>
+        <button class="btn btn-primary" id="cli-send">Küldés</button>
+      </div>
+      <div class="cli-hint">Cmd/Ctrl+Enter küld · localhost-only · read-only eszközök</div>
+    </div>
+  </div>
+</div>
+
+<!-- DB schema modal -->
+<div class="overlay" id="db-overlay">
+  <div class="modal" role="dialog" aria-label="Adatbázis séma">
+    <div class="modal-head">
+      <span style="background:var(--ok); width:10px; height:10px; border-radius:50%; display:inline-block;"></span>
+      <h2>Adatbázis séma</h2>
+      <button class="modal-close" data-close aria-label="Bezárás">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div class="db-tabs" id="db-tabs"></div>
+      <div id="db-content"><div class="state">Séma betöltése…</div></div>
+    </div>
+  </div>
+</div>
+
+<script src="/_dashboards/_design/live-updates.js"></script>
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<script src="/_dashboards/_design/admin-bar.js"></script>
+
+<script>
+// ============================================================
+// BDOS System Architecture v0.2.0
+// Graph layout + SVG edges + markdown drawer
+// ============================================================
+
+const DASH_STEM = 'system';
+
+// ── Node registry ────────────────────────────────────────────
+const NODES = {
+  // client
+  dashboard_ui:      { zone: 'gc-client',     label: 'Dashboard UI',       layer: 'client' },
+  adminbar:          { zone: 'gc-client',      label: 'AdminBar',           layer: 'client' },
+  capture_box:       { zone: 'gc-client',      label: 'Capture box',        layer: 'client' },
+  liveupdates:       { zone: 'gc-client',      label: 'LiveUpdates (SSE)',  layer: 'client' },
+  // transport
+  http:              { zone: 'gc-transport',   label: 'HTTP REST',          layer: 'transport' },
+  sse:               { zone: 'gc-transport',   label: 'SSE /__events',      layer: 'transport' },
+  // server
+  server:            { zone: 'gc-server',      label: 'dash-server.mjs',    layer: 'server' },
+  static_server:     { zone: 'gc-server',      label: 'Static server',      layer: 'server' },
+  ep_health:         { zone: 'gc-server',      label: '/health',            layer: 'server' },
+  ep_process:        { zone: 'gc-server',      label: '/api/alfred/process',layer: 'server' },
+  ep_capture:        { zone: 'gc-server',      label: '/api/alfred/capture',layer: 'server' },
+  ep_search:         { zone: 'gc-server',      label: '/api/search',        layer: 'server' },
+  fs_watch:          { zone: 'gc-server',      label: 'fs.watch',           layer: 'server' },
+  launchagent:       { zone: 'gc-server',      label: 'LaunchAgent',        layer: 'server' },
+  // processing
+  claude_cli:        { zone: 'gc-processing',  label: 'Claude CLI',         layer: 'processing' },
+  oauth_token:       { zone: 'gc-processing',  label: 'OAuth token',        layer: 'processing' },
+  haiku_fallback:    { zone: 'gc-processing',  label: 'Haiku fallback',     layer: 'processing' },
+  capture_fallback:  { zone: 'gc-processing',  label: 'Capture-only',       layer: 'processing' },
+  // data
+  vault_md:          { zone: 'gc-data',        label: 'Markdown vault ★',   layer: 'data',  star: true },
+  vault_db:          { zone: 'gc-data',        label: 'vault.db (FTS5)',    layer: 'data' },
+  obs_db:            { zone: 'gc-data',        label: 'observability.db',   layer: 'data' },
+  sidecars:          { zone: 'gc-data',        label: 'JSON sidecars',      layer: 'data' },
+  // daemon
+  watcher:           { zone: 'gc-daemon',      label: 'watch_event.py',     layer: 'daemon' },
+  daemon:            { zone: 'gc-daemon',      label: 'events_server.py',   layer: 'daemon' },
+  scheduler:         { zone: 'gc-daemon',      label: 'Scheduler',          layer: 'daemon' },
+  // external
+  gdrive:            { zone: 'gc-external',    label: 'Google Drive sync',  layer: 'external' },
+  windows_peer:      { zone: 'gc-external',    label: 'Windows peer',       layer: 'external' },
+};
+
+const CONSOLE_NODES = new Set(['claude_cli', 'ep_process']);
+const DB_NODES      = { vault_db: 'vault.db', obs_db: 'agent_observability.db' };
+
+// ── Edge registry ────────────────────────────────────────────
+const EDGES = [
+  { from: 'dashboard_ui',    to: 'http',            protocol: 'HTTP fetch',   label: 'GET /health, /api/*' },
+  { from: 'liveupdates',     to: 'sse',             protocol: 'SSE',          label: 'EventSource /__events' },
+  { from: 'capture_box',     to: 'http',            protocol: 'HTTP POST',    label: '/api/alfred/capture' },
+  { from: 'http',            to: 'server',          protocol: 'HTTP REST' },
+  { from: 'sse',             to: 'server',          protocol: 'SSE stream' },
+  { from: 'server',          to: 'ep_health',       protocol: 'route' },
+  { from: 'server',          to: 'ep_process',      protocol: 'route' },
+  { from: 'server',          to: 'ep_capture',      protocol: 'route' },
+  { from: 'server',          to: 'ep_search',       protocol: 'route' },
+  { from: 'server',          to: 'static_server',   protocol: 'route' },
+  { from: 'server',          to: 'fs_watch',        protocol: 'embedded' },
+  { from: 'fs_watch',        to: 'sse',             protocol: 'event push' },
+  { from: 'ep_process',      to: 'claude_cli',      protocol: 'spawn',        label: 'Tier-1 subprocess' },
+  { from: 'claude_cli',      to: 'haiku_fallback',  protocol: 'fallback',     label: 'OAuth fail / quota' },
+  { from: 'haiku_fallback',  to: 'capture_fallback',protocol: 'fallback',     label: 'API fail' },
+  { from: 'claude_cli',      to: 'oauth_token',     protocol: 'token read' },
+  { from: 'ep_search',       to: 'vault_db',        protocol: 'SQL FTS5' },
+  { from: 'server',          to: 'vault_db',        protocol: 'SQL read' },
+  { from: 'server',          to: 'obs_db',          protocol: 'SQL write/read',label: 'agent events' },
+  { from: 'server',          to: 'sidecars',        protocol: 'file write' },
+  { from: 'claude_cli',      to: 'vault_md',        protocol: 'file read (RO)' },
+  { from: 'ep_capture',      to: 'vault_md',        protocol: 'file write',   label: 'Alfred inbox' },
+  { from: 'watcher',         to: 'daemon',          protocol: 'IPC' },
+  { from: 'daemon',          to: 'vault_db',        protocol: 'SQL write',    label: 'incremental reindex' },
+  { from: 'daemon',          to: 'vault_md',        protocol: 'file watch (RO)' },
+  { from: 'launchagent',     to: 'server',          protocol: 'launchd' },
+  { from: 'launchagent',     to: 'daemon',          protocol: 'launchd' },
+  { from: 'gdrive',          to: 'vault_md',        protocol: 'file sync',    label: 'bi-directional' },
+  { from: 'windows_peer',    to: 'gdrive',          protocol: 'sync peer' },
+];
+
+// Build edgeKey
+function edgeKey(e) { return e.from + '__' + e.to; }
+
+// ── Live status ──────────────────────────────────────────────
+let LAST = {};
+
+function escHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+
+// ── Build node buttons ────────────────────────────────────────
+function buildNodes() {
+  for (const [id, def] of Object.entries(NODES)) {
+    const zone = document.querySelector('.' + def.zone);
+    if (!zone) continue;
+    const btn = document.createElement('button');
+    btn.className = 'node' + (def.star ? ' star' : '');
+    btn.dataset.node = id;
+    btn.dataset.status = 'idle';
+    btn.dataset.cardId = 'nodes/' + id;
+    btn.setAttribute('aria-label', def.label + ': lekérés…');
+    btn.tabIndex = 0;
+    btn.innerHTML =
+      '<span class="node-dot"></span>' +
+      '<span class="node-label">' + escHtml(def.label) + '</span>' +
+      '<button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card onclick="event.stopPropagation()">' +
+        '<svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+        'copy' +
+      '</button>';
+    btn.addEventListener('click', () => openNodeDrawer(id));
+    btn.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openNodeDrawer(id); } });
+    btn.addEventListener('mouseenter', () => highlightConnected(id));
+    btn.addEventListener('mouseleave', resetHighlight);
+    zone.appendChild(btn);
+  }
+  // wire copy-refs
+  wireCopyRef(document.getElementById('graphCanvas'));
+}
+
+// ── /health refresh ──────────────────────────────────────────
+async function refresh() {
+  let data;
+  try {
+    const r = await fetch('/health', { cache: 'no-store' });
+    data = await r.json();
+  } catch {
+    setRollup('gap', 'Szerver nem elérhető (localhost:4321)');
+    document.querySelectorAll('.node').forEach(n => { n.dataset.status = 'gap'; n.querySelector('.node-dot').style.background = 'var(--gap)'; });
+    return;
+  }
+  LAST = data.components || {};
+  setRollup(data.overall || 'ok', overallText(data));
+  document.getElementById('rollup-refresh').textContent = 'frissítve ' + new Date().toLocaleTimeString('hu-HU');
+  for (const [id, c] of Object.entries(LAST)) {
+    const b = document.querySelector('.node[data-node="' + id + '"]');
+    if (!b) continue;
+    b.dataset.status = c.status;
+    const dot = b.querySelector('.node-dot');
+    dot.style.background = '';  // let CSS handle via data-status
+    b.setAttribute('aria-label', (NODES[id]?.label || id) + ': ' + c.status + (c.detail ? ' — ' + c.detail : ''));
+  }
+}
+
+function overallText(d) {
+  const c = d.components || {};
+  const reds = Object.values(c).filter(v => v.status === 'gap');
+  const ambers = Object.values(c).filter(v => v.status === 'warn');
+  if (reds.length) return reds.length + ' hiba — kattints a piros csomópontra';
+  if (ambers.length) return ambers.length + ' figyelmeztetés — minden alapfunkció megy';
+  return 'Minden rendszer zöld';
+}
+function setRollup(overall, text) {
+  const r = document.getElementById('rollup');
+  r.dataset.overall = overall;
+  document.getElementById('rollup-text').textContent = text;
+}
+
+// ── SVG edge drawing ─────────────────────────────────────────
+let svgEl = null;
+let _svgDebounce = null;
+
+function getNodeCenter(id) {
+  const btn = document.querySelector('.node[data-node="' + id + '"]');
+  if (!btn) return null;
+  const canvas = document.getElementById('graphWrapper');
+  const cr = canvas.getBoundingClientRect();
+  const br = btn.getBoundingClientRect();
+  return {
+    x: br.left - cr.left + br.width / 2,
+    y: br.top  - cr.top  + br.height / 2
+  };
+}
+
+function buildEdgeSvg() {
+  if (svgEl) svgEl.remove();
+  const wrapper = document.getElementById('graphWrapper');
+  const w = wrapper.offsetWidth;
+  const h = wrapper.offsetHeight;
+
+  svgEl = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svgEl.setAttribute('class', 'graph-edges');
+  svgEl.setAttribute('width', w);
+  svgEl.setAttribute('height', h);
+  svgEl.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+  svgEl.setAttribute('aria-hidden', 'true');
+
+  // Arrow marker
+  const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+  const mkr = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+  mkr.setAttribute('id', 'arrowDefault');
+  mkr.setAttribute('markerWidth', '8'); mkr.setAttribute('markerHeight', '8');
+  mkr.setAttribute('refX', '6'); mkr.setAttribute('refY', '3');
+  mkr.setAttribute('orient', 'auto');
+  const poly = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  poly.setAttribute('points', '0 0, 8 3, 0 6');
+  poly.setAttribute('fill', 'var(--line)');
+  mkr.appendChild(poly);
+  defs.appendChild(mkr);
+
+  const mkrH = document.createElementNS('http://www.w3.org/2000/svg', 'marker');
+  mkrH.setAttribute('id', 'arrowAccent');
+  mkrH.setAttribute('markerWidth', '8'); mkrH.setAttribute('markerHeight', '8');
+  mkrH.setAttribute('refX', '6'); mkrH.setAttribute('refY', '3');
+  mkrH.setAttribute('orient', 'auto');
+  const polyH = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
+  polyH.setAttribute('points', '0 0, 8 3, 0 6');
+  polyH.setAttribute('fill', 'var(--accent)');
+  mkrH.appendChild(polyH);
+  defs.appendChild(mkrH);
+
+  svgEl.appendChild(defs);
+
+  EDGES.forEach(edge => {
+    const a = getNodeCenter(edge.from);
+    const b = getNodeCenter(edge.to);
+    if (!a || !b) return;
+
+    // Cubic bezier control points
+    const dx = b.x - a.x, dy = b.y - a.y;
+    const cx1 = a.x + dx * 0.4 + (Math.abs(dy) > 60 ? 0 : -dy * 0.25);
+    const cy1 = a.y + dy * 0.1;
+    const cx2 = b.x - dx * 0.4;
+    const cy2 = b.y - dy * 0.1;
+    const d = `M ${a.x} ${a.y} C ${cx1} ${cy1} ${cx2} ${cy2} ${b.x} ${b.y}`;
+
+    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+    path.setAttribute('d', d);
+    path.setAttribute('fill', 'none');
+    path.setAttribute('stroke', 'var(--line)');
+    path.setAttribute('stroke-width', '1.5');
+    path.setAttribute('marker-end', 'url(#arrowDefault)');
+    path.setAttribute('data-edge-key', edgeKey(edge));
+    path.setAttribute('tabindex', '0');
+    path.setAttribute('aria-label', edge.from + ' → ' + edge.to + ' (' + edge.protocol + ')');
+    path.style.transition = 'stroke 220ms ease, stroke-width 220ms ease, opacity 180ms ease';
+    path.style.cursor = 'pointer';
+
+    // Optional mid-label
+    if (edge.label) {
+      const mx = (a.x + b.x) / 2 + (b.y - a.y) * 0.05;
+      const my = (a.y + b.y) / 2 - Math.abs(dx) * 0.04;
+      const txt = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+      txt.setAttribute('x', mx); txt.setAttribute('y', my);
+      txt.setAttribute('text-anchor', 'middle');
+      txt.setAttribute('font-size', '9');
+      txt.setAttribute('fill', 'var(--ink-4)');
+      txt.setAttribute('font-family', 'JetBrains Mono, monospace');
+      txt.setAttribute('pointer-events', 'none');
+      txt.textContent = edge.label;
+      svgEl.appendChild(txt);
+    }
+
+    path.addEventListener('click', () => openEdgeDrawer(edge));
+    path.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openEdgeDrawer(edge); } });
+    path.addEventListener('mouseenter', () => {
+      path.setAttribute('stroke', 'var(--accent)');
+      path.setAttribute('stroke-width', '2.5');
+      path.setAttribute('marker-end', 'url(#arrowAccent)');
+      // pulse endpoint nodes
+      [edge.from, edge.to].forEach(nid => {
+        const btn = document.querySelector('.node[data-node="' + nid + '"]');
+        if (btn) { btn.style.boxShadow = '0 0 0 3px color-mix(in srgb, var(--accent) 30%, transparent)'; }
+      });
+    });
+    path.addEventListener('mouseleave', () => {
+      path.setAttribute('stroke', 'var(--line)');
+      path.setAttribute('stroke-width', '1.5');
+      path.setAttribute('marker-end', 'url(#arrowDefault)');
+      [edge.from, edge.to].forEach(nid => {
+        const btn = document.querySelector('.node[data-node="' + nid + '"]');
+        if (btn) { btn.style.boxShadow = ''; }
+      });
+    });
+
+    svgEl.appendChild(path);
+  });
+
+  wrapper.appendChild(svgEl);
+}
+
+function rebuildEdges() {
+  clearTimeout(_svgDebounce);
+  _svgDebounce = setTimeout(buildEdgeSvg, 100);
+}
+
+// ── Node hover → highlight connected edges ───────────────────
+function highlightConnected(nodeId) {
+  const connected = new Set(EDGES.filter(e => e.from === nodeId || e.to === nodeId).map(edgeKey));
+  const connectedNodes = new Set();
+  EDGES.filter(e => e.from === nodeId || e.to === nodeId).forEach(e => {
+    connectedNodes.add(e.from); connectedNodes.add(e.to);
+  });
+  document.querySelectorAll('.node').forEach(btn => {
+    const nid = btn.dataset.node;
+    if (!connectedNodes.has(nid)) btn.classList.add('dim');
+    else btn.classList.remove('dim');
+  });
+  if (svgEl) {
+    svgEl.querySelectorAll('path[data-edge-key]').forEach(path => {
+      const k = path.getAttribute('data-edge-key');
+      if (connected.has(k)) {
+        path.setAttribute('stroke', 'var(--accent)');
+        path.setAttribute('stroke-width', '2.5');
+        path.setAttribute('marker-end', 'url(#arrowAccent)');
+        path.style.opacity = '1';
+      } else {
+        path.style.opacity = '0.15';
+      }
+    });
+  }
+}
+
+function resetHighlight() {
+  document.querySelectorAll('.node').forEach(btn => btn.classList.remove('dim'));
+  if (svgEl) {
+    svgEl.querySelectorAll('path[data-edge-key]').forEach(path => {
+      path.setAttribute('stroke', 'var(--line)');
+      path.setAttribute('stroke-width', '1.5');
+      path.setAttribute('marker-end', 'url(#arrowDefault)');
+      path.style.opacity = '1';
+    });
+  }
+}
+
+// ── Drawer open / close ──────────────────────────────────────
+let _drawerOpen = false;
+let _prevFocus = null;
+
+function openDrawer() {
+  _drawerOpen = true;
+  _prevFocus = document.activeElement;
+  document.getElementById('drawer').classList.add('open');
+  document.getElementById('drawerScrim').classList.add('open');
+  document.getElementById('drawerScrim').setAttribute('aria-hidden', 'false');
+  // focus close button
+  setTimeout(() => document.getElementById('drawerClose').focus(), 230);
+}
+
+function closeDrawer() {
+  _drawerOpen = false;
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawerScrim').classList.remove('open');
+  document.getElementById('drawerScrim').setAttribute('aria-hidden', 'true');
+  if (_prevFocus) { try { _prevFocus.focus(); } catch(e){} }
+  document.getElementById('drawerActions').innerHTML = '';
+}
+
+// ── Minimal markdown→HTML renderer ──────────────────────────
+function mdToHtml(md) {
+  const lines = md.split('\n');
+  let html = '';
+  let inCode = false, codeLang = '', codeLines = [];
+  let inList = false, listItems = [];
+
+  function flushList() {
+    if (!inList) return;
+    html += '<ul>' + listItems.map(li => '<li>' + inlineFormat(li) + '</li>').join('') + '</ul>';
+    listItems = []; inList = false;
+  }
+
+  for (const raw of lines) {
+    if (raw.startsWith('```')) {
+      flushList();
+      if (!inCode) { inCode = true; codeLang = raw.slice(3).trim(); codeLines = []; }
+      else {
+        html += '<pre><code>' + escHtml(codeLines.join('\n')) + '</code></pre>';
+        inCode = false; codeLang = ''; codeLines = [];
+      }
+      continue;
+    }
+    if (inCode) { codeLines.push(raw); continue; }
+
+    if (raw.startsWith('## ')) { flushList(); html += '<h2>' + escHtml(raw.slice(3)) + '</h2>'; continue; }
+    if (raw.startsWith('### ')) { flushList(); html += '<h3>' + escHtml(raw.slice(4)) + '</h3>'; continue; }
+    if (raw.startsWith('- ') || raw.startsWith('* ')) {
+      inList = true;
+      listItems.push(raw.slice(2));
+      continue;
+    }
+    flushList();
+    const trimmed = raw.trim();
+    if (!trimmed) continue;
+    if (trimmed.includes('[TODO:') || trimmed.includes('[TODO]')) {
+      html += '<p class="todo-note">' + inlineFormat(trimmed) + '</p>';
+    } else {
+      html += '<p>' + inlineFormat(trimmed) + '</p>';
+    }
+  }
+  flushList();
+  return html;
+}
+
+function inlineFormat(s) {
+  return escHtml(s)
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+}
+
+// ── Parse YAML frontmatter ────────────────────────────────────
+function parseSimpleFrontmatter(text) {
+  const fm = {};
+  if (!text.startsWith('---')) return { fm, body: text };
+  const end = text.indexOf('\n---', 3);
+  if (end < 0) return { fm, body: text };
+  const block = text.slice(3, end).trim().split('\n');
+  for (const line of block) {
+    const sep = line.indexOf(':');
+    if (sep < 0) continue;
+    const k = line.slice(0, sep).trim();
+    const v = line.slice(sep + 1).trim().replace(/^["']|["']$/g, '');
+    fm[k] = v;
+  }
+  return { fm, body: text.slice(end + 4).trim() };
+}
+
+// ── Node drawer ───────────────────────────────────────────────
+async function openNodeDrawer(id) {
+  const def = NODES[id];
+  const comp = LAST[id] || { status: 'idle', detail: '', metric: '' };
+  const statusColor = { ok: 'var(--ok)', warn: 'var(--warn)', gap: 'var(--gap)', idle: 'var(--idle)' }[comp.status] || 'var(--idle)';
+
+  document.getElementById('drawerDot').style.background = statusColor;
+  document.getElementById('drawerTitle').textContent = def?.label || id;
+  document.getElementById('drawerSubtitle').textContent = 'node · ' + (def?.layer || '') + ' · ' + comp.status;
+  document.getElementById('drawerBody').innerHTML = '<div class="loading-state">Dokumentáció betöltése…</div>';
+
+  // secondary actions
+  const acts = [];
+  if (CONSOLE_NODES.has(id)) acts.push('<button class="btn btn-primary" onclick="openCli()">Konzol megnyitása</button>');
+  if (DB_NODES[id]) acts.push('<button class="btn btn-primary" onclick="openDb(' + (id === "obs_db" ? 1 : 0) + ')">Séma megnyitása</button>');
+  document.getElementById('drawerActions').innerHTML = acts.join('');
+
+  openDrawer();
+
+  // Fetch markdown doc
+  const url = '/_dashboards/_design/system-docs/nodes/' + id + '.md';
+  try {
+    const r = await fetch(url, { cache: 'no-store' });
+    if (!r.ok) {
+      renderDrawerEmpty(id, 'nodes', url);
+      return;
+    }
+    const text = await r.text();
+    const { fm, body } = parseSimpleFrontmatter(text);
+    renderNodeDoc(fm, body, comp);
+  } catch {
+    renderDrawerEmpty(id, 'nodes', url);
+  }
+}
+
+function renderNodeDoc(fm, body, comp) {
+  const pills = [];
+  if (fm.layer) pills.push('<span class="drawer-pill accent">' + escHtml(fm.layer) + '</span>');
+  if (fm.status_endpoint) pills.push('<span class="drawer-pill">' + escHtml(fm.status_endpoint) + '</span>');
+  if (comp.metric) pills.push('<span class="drawer-pill">' + escHtml(comp.metric) + '</span>');
+  if (comp.detail) pills.push('<span class="drawer-pill">' + escHtml(comp.detail) + '</span>');
+
+  let html = '';
+  if (pills.length) html += '<div class="drawer-pills">' + pills.join('') + '</div>';
+  html += '<div class="drawer-md">' + mdToHtml(body) + '</div>';
+  document.getElementById('drawerBody').innerHTML = html;
+}
+
+function renderDrawerEmpty(id, type, docUrl) {
+  const displayPath = '/_dashboards/_design/system-docs/' + type + '/' + id + (type === 'edges' ? '' : '') + '.md';
+  document.getElementById('drawerBody').innerHTML =
+    '<div class="drawer-empty">' +
+      '<h3>Még nincs dokumentálva</h3>' +
+      '<p>A <code>' + escHtml(displayPath) + '</code> fájl nem található vagy üres.</p>' +
+      '<p>Szeretnél írni? Szerkeszd a markdown forrást — ne a dashboardot.</p>' +
+      '<p class="edit-hint">Szabály: Edit a markdown forrást, ne a dashboardot.</p>' +
+    '</div>';
+}
+
+// ── Edge drawer ───────────────────────────────────────────────
+async function openEdgeDrawer(edge) {
+  document.getElementById('drawerDot').style.background = 'var(--idle)';
+  document.getElementById('drawerTitle').textContent = edge.from + ' → ' + edge.to;
+  document.getElementById('drawerSubtitle').textContent = 'edge · ' + edge.protocol;
+  document.getElementById('drawerActions').innerHTML = '';
+
+  const edgeHeader =
+    '<div class="edge-header">' +
+      '<span class="edge-from">' + escHtml(edge.from) + '</span>' +
+      '<span class="edge-arrow">→</span>' +
+      '<span class="edge-to">' + escHtml(edge.to) + '</span>' +
+      '<span class="edge-protocol">' + escHtml(edge.protocol) + (edge.label ? ' · ' + escHtml(edge.label) : '') + '</span>' +
+    '</div>';
+
+  document.getElementById('drawerBody').innerHTML = edgeHeader + '<div class="loading-state">Dokumentáció betöltése…</div>';
+  openDrawer();
+
+  const key = edgeKey(edge);
+  const url = '/_dashboards/_design/system-docs/edges/' + key + '.md';
+  try {
+    const r = await fetch(url, { cache: 'no-store' });
+    if (!r.ok) {
+      document.getElementById('drawerBody').innerHTML = edgeHeader;
+      renderDrawerEmpty(key, 'edges', url);
+      return;
+    }
+    const text = await r.text();
+    const { fm, body } = parseSimpleFrontmatter(text);
+    document.getElementById('drawerBody').innerHTML = edgeHeader + '<div class="drawer-md">' + mdToHtml(body) + '</div>';
+  } catch {
+    document.getElementById('drawerBody').innerHTML = edgeHeader;
+    renderDrawerEmpty(key, 'edges', url);
+  }
+}
+
+// ── Close handlers ────────────────────────────────────────────
+document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+document.getElementById('drawerScrim').addEventListener('click', closeDrawer);
+
+// Focus trap in drawer
+document.getElementById('drawer').addEventListener('keydown', function(e) {
+  if (e.key !== 'Tab') return;
+  const focusables = Array.from(this.querySelectorAll('button, a, input, textarea, [tabindex]:not([tabindex="-1"])'));
+  if (!focusables.length) return;
+  const first = focusables[0], last = focusables[focusables.length - 1];
+  if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
+  else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
+});
+
+// Global ESC (overlay close wins, then drawer)
+document.addEventListener('keydown', function(e) {
+  if (e.key !== 'Escape') return;
+  const cliOpen = document.getElementById('cli-overlay').classList.contains('open');
+  const dbOpen  = document.getElementById('db-overlay').classList.contains('open');
+  if (cliOpen) { document.getElementById('cli-overlay').classList.remove('open'); return; }
+  if (dbOpen)  { document.getElementById('db-overlay').classList.remove('open'); return; }
+  if (_drawerOpen) { closeDrawer(); return; }
+});
+
+// ── CLI console ───────────────────────────────────────────────
+const cliOverlay   = document.getElementById('cli-overlay');
+const cliTranscript = document.getElementById('cli-transcript');
+const cliInput     = document.getElementById('cli-input');
+function openCli() { closeDrawer(); cliOverlay.classList.add('open'); setTimeout(() => cliInput.focus(), 50); }
+async function cliSend() {
+  const msg = cliInput.value.trim(); if (!msg) return;
+  const btn = document.getElementById('cli-send');
+  btn.disabled = true; cliInput.disabled = true;
+  if (cliTranscript.querySelector('.state')) cliTranscript.innerHTML = '';
+  const turn = document.createElement('div'); turn.className = 'cli-turn';
+  turn.innerHTML = '<div class="cli-q">› ' + escHtml(msg) + '</div><div class="cli-a">fut… (Sonnet)</div>';
+  cliTranscript.appendChild(turn); cliTranscript.scrollTop = cliTranscript.scrollHeight;
+  cliInput.value = '';
+  try {
+    const r = await fetch('/api/cli/run', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ message: msg }) });
+    const d = await r.json();
+    const ans = d.ok ? d.response : ('HIBA: ' + (d.error || 'ismeretlen'));
+    turn.innerHTML = '<div class="cli-q">› ' + escHtml(msg) + '</div><div class="cli-a">' + escHtml(ans) + '</div>' +
+      '<div class="cli-meta">' + (d.model || '') + (d.elapsed_ms ? ' · ' + Math.round(d.elapsed_ms / 100) / 10 + 's' : '') + '</div>';
+  } catch {
+    turn.querySelector('.cli-a').textContent = 'HIBA: a szerver nem válaszolt.';
+  } finally {
+    btn.disabled = false; cliInput.disabled = false; cliInput.focus();
+    cliTranscript.scrollTop = cliTranscript.scrollHeight;
+  }
+}
+cliInput.addEventListener('keydown', e => { if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) { e.preventDefault(); cliSend(); } });
+document.getElementById('cli-send').addEventListener('click', cliSend);
+
+// ── DB schema ─────────────────────────────────────────────────
+const dbOverlay = document.getElementById('db-overlay');
+let DB_DATA = null;
+async function openDb(idx) {
+  closeDrawer();
+  dbOverlay.classList.add('open');
+  if (!DB_DATA) {
+    try { const r = await fetch('/api/db/schema', { cache: 'no-store' }); DB_DATA = await r.json(); }
+    catch { document.getElementById('db-content').innerHTML = '<div class="state">Séma nem tölthető be.</div>'; return; }
+  }
+  renderDbTabs(idx || 0);
+}
+function renderDbTabs(active) {
+  const dbs = (DB_DATA && DB_DATA.databases) || [];
+  document.getElementById('db-tabs').innerHTML = dbs.map((db, i) =>
+    '<button class="db-tab' + (i === active ? ' active' : '') + '" data-db="' + i + '">' + db.name + '</button>').join('');
+  document.querySelectorAll('.db-tab').forEach(t => t.addEventListener('click', () => renderDbTabs(+t.dataset.db)));
+  renderDbTables(active);
+}
+function renderDbTables(idx) {
+  const db = (DB_DATA.databases || [])[idx]; if (!db) return;
+  const content = document.getElementById('db-content');
+  const tables = (db.tables || []).filter(t => !t.name.includes('_fts'));
+  content.innerHTML = tables.map(t =>
+    '<div class="db-table"><div class="db-table-head"><span class="db-table-name">' + t.name + '</span>' +
+    '<span class="db-rows">' + (t.rows == null ? '' : t.rows + ' rec') + '</span></div>' +
+    '<div class="db-cols">' + (t.columns || []).map(c =>
+      '<div class="db-col"><span>' + c.name + '</span><span class="c-type">' + (c.type || '') + '</span>' +
+      (c.pk ? '<span class="c-pk">PK</span>' : '') + '</div>').join('') + '</div></div>').join('');
+  content.querySelectorAll('.db-table-head').forEach(h => h.addEventListener('click', () => h.parentElement.classList.toggle('open')));
+}
+
+// Close modal buttons
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => {
+  cliOverlay.classList.remove('open'); dbOverlay.classList.remove('open');
+}));
+[cliOverlay, dbOverlay].forEach(o => o.addEventListener('click', e => { if (e.target === o) o.classList.remove('open'); }));
+
+// ── Boot ──────────────────────────────────────────────────────
+buildNodes();
+refresh();
+setInterval(refresh, 5000);
+
+// Build SVG after a short delay to let layout settle
+setTimeout(buildEdgeSvg, 200);
+
+// Rebuild on resize (debounced)
+const ro = new ResizeObserver(rebuildEdges);
+ro.observe(document.getElementById('graphWrapper'));
+window.addEventListener('resize', rebuildEdges);
+
+if (window.LiveUpdates && LiveUpdates.subscribe) LiveUpdates.subscribe(refresh);
+</script>
+</body>
+</html>

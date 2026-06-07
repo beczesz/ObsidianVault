@@ -1,8 +1,11 @@
 ---
-description: Presto RUN mode — egy kampány aktuális open task-jának futtatása a megfelelő /marketing:* skill-lel. Skill-router a task type alapján. Confirmation kötelező.
+description: Presto RUN mode — egy kampány aktuális open task-jának futtatása a megfelelő /marketing:* skill-lel. Skill-router a task type alapján. Confirmation kötelező. DEPRECATED v0.8.0 — új munkáknál /pres-seed → /pres-draft → /pres-prepare → /pres-approve pipeline kanonikus.
 id: 44f0358d-6563-422a-b19e-dc6aaade5ae7
 index_schema_version: 1
+status: deprecated
 ---
+
+> **DEPRECATED v0.8.0** — Ez a parancs visszafelé kompatibilis a meglévő `CAMPAIGN.md`-alapú kampányokkal. Új munkáknál a kanonikus út: `/pres-seed` → `/pres-draft` → `/pres-prepare` → `/pres-approve`. Presto lefuttatja `run` módban, de migrálási javaslatot tesz.
 
 A felhasználó egy kampány-feladatot futtat.
 

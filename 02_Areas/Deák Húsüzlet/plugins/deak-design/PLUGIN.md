@@ -1,3 +1,15 @@
+---
+title: "deak-design Plugin"
+date: 2026-04-18
+author: Becze Szabolcs
+status: active
+description: "Technical reference for the Deák Húsmíves design system plugin, documenting wireframe generation skills, UI components, color tokens, and screen audit notes. Essential resource for wireframe creators requiring current design standards and component specifications."
+description_source: auto
+description_hash: 35a253ff906f992c
+id: a979bf7e-b019-4125-9478-c274c667dfb9
+index_schema_version: 1
+bdos_index: true
+---
 # deak-design Plugin
 
 ```yaml

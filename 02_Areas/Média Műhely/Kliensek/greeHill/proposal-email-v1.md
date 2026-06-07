@@ -1,3 +1,15 @@
+---
+title: "proposal email v1"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "First draft of a corporate video production proposal email to a client named Daniela, detailing end-to-end post-production services with itemized scope, hourly rates (EUR 45/hour), cost estimates (EUR 1,620-2,700), revision policy, and delivery timeline for video editing and short-form content creation."
+description_source: auto
+description_hash: 3c0e4a12ce19a366
+id: 7b3daa67-8ff0-4665-b404-5acfad178516
+index_schema_version: 1
+bdos_index: true
+---
 Hi Daniela,
 
 Thank you for the great conversation yesterday - it was really helpful to understand what you are looking for.

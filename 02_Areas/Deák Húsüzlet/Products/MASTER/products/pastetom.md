@@ -1,3 +1,15 @@
+---
+title: "Pástétom"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Creamy pork pâté product catalog entry with pricing, availability status, and bilingual Hungarian-Romanian descriptions for a 330g piece unit."
+description_source: auto
+description_hash: adac7f9d88b1e8d0
+id: 233a7332-9901-433d-8c4d-1651b8733cc0
+index_schema_version: 1
+bdos_index: true
+---
 # Pástétom
 
 ```yaml

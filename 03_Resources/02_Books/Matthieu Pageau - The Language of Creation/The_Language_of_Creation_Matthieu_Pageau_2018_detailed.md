@@ -1,3 +1,15 @@
+---
+title: "The Language of Creation — Detailed Analysis"
+date: 2025-10-03
+author: Becze Szabolcs
+status: active
+description: "A detailed exegesis of Matthieu Pageau's 2018 commentary interpreting Genesis through symbolic cosmology rather than scientific materialism, exploring how heaven and earth, time and space function as spiritual metaphysical categories. Scholars and readers interested in theological symbolism and alternative biblical hermeneutics."
+description_source: auto
+description_hash: a796037c45333834
+id: 1521c168-1373-4e94-8a10-c953698937e9
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /02_Books/Matthieu Pageau - The Language of Creation/
 
 ---

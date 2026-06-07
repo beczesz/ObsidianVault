@@ -1,4 +1,7 @@
 ---
+description: "Szabolcs által összeállított, finalizált forgatókönyv a 30 másodperces Fókuszpont-reelhez, amely két AI-verzió erősségeit egyesíti: Opus kérdés-mátrixa és csendtechnikája, valamint GPT-5 templom-motívuma és imperatívuszai. Tartalmazza a 9 jelenet pontos időzítésével a voiceover vázat, a shot-listát"
+description_source: auto
+description_hash: 2224e3fa9b9bda5f
 type: forgatókönyv-final
 reel: "#1 — Vertikális (Isten ↔ ember)"
 version: v1 FINAL (Opus + GPT-5 szintézis)
@@ -14,7 +17,6 @@ brand_line: "Jézus a Fókuszpont és minden szem Rá szegeződik"
 id: a4cc76d5-6a1a-4a06-a2dc-8632c8b5ba32
 index_schema_version: 1
 ---
-
 # Reel #1 — Vertikális — **v1 FINAL (szintézis)**
 
 > **Szabolcs:** ez a két AI-verzió szintézise. A v1A (Opus) erőssége: kérdés-mátrix fokozatossága + 3 mp csend. A v1B (GPT-5) erőssége: a templom-ajtó motívum, a „Mi tart ébren?" / „És mégis üres marad valami." sorok, és a záró imperatívuszok („Állj meg. Emeld a tekinteted."). A FINAL ezeket egyesíti.

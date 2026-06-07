@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Józsa Levi's solo narrative account of climbing Mount Kilimanjaro, exploring how personal challenge reveals capacity and limitation while reflecting on friendship, physical experience, and meaning-making through memory and storytelling."
+description_source: auto
+description_hash: df91fbfb7b410e16
+id: d42cb650-5c1c-4942-a5e3-f40739a59a32
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP35 | S02E02 — Kilimandzsáró: Emlékezés és Abentúra

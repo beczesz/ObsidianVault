@@ -1,4 +1,7 @@
 ---
+description: "Három AI-session brainstorm a zónadetekció optimális megoldásáról: GPS-javaslat, kétgombos kiszállítási kör választó, és checkout település-validáció hibrid modelljének konszenzusa. Fejlesztőknek és product managereknek szól."
+description_source: auto
+description_hash: 07a121b5de7598d8
 topic: DH Zóna-detekció — Minimális módosítással
 created: 2026-05-02
 last_updated: 2026-05-03
@@ -6,7 +9,6 @@ status: active
 id: 940619e0-133a-47ff-857e-3814777e6224
 index_schema_version: 1
 ---
-
 # Brainstorm: Zóna-detekció minimális módosítással
 
 ## Team

@@ -1,3 +1,15 @@
+---
+title: "YAML Front-Matter Specification"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Mandatory YAML metadata structure for Speed-Reading Agent markdown notes, specifying required fields like title, type, author, tags, and status to enable Obsidian dataview queries and vault organization. Includes field definitions, conditional requirements, and type-specific examples."
+description_source: auto
+description_hash: 7a1e0bf6a9c76154
+id: b7b698b8-8e52-4e56-b269-41d5005fc10f
+index_schema_version: 1
+bdos_index: true
+---
 # YAML Front-Matter Specification
 
 Every Markdown note produced by the Speed-Reading Agent **must** begin with a YAML front-matter block. This ensures consistent metadata for Obsidian Dataview queries, graph views, and vault-wide search.

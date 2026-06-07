@@ -1,4 +1,7 @@
 ---
+description: "Brainstorming és döntések a DHOP platform bevételi modelljéről: 2026-04-15-i meeting megállapodása szerint 19,5% retail savings pool elosztása 3% customer / 6,6% platform / 9,9% Deák között, fázisokra bontva. Fenntartja a Deák buy-in-t, de alacsony customer share és phase triggerek definiálása maradt nyitott kérd"
+description_source: auto
+description_hash: 2adf8e6da28f0eb5
 topic: Platform Pricing / Revenue Share Model (DH)
 created: 2026-04-15
 last_updated: 2026-04-16
@@ -6,7 +9,6 @@ status: VALIDATED — meeting results confirm model
 id: f80fa874-63c6-406d-9842-febc829188b0
 index_schema_version: 1
 ---
-
 # Brainstorm: Platform Pricing / Revenue Share Model
 
 ## Sessions

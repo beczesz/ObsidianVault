@@ -1,3 +1,15 @@
+---
+title: "Introduction"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Szabolcs Becze introduces his family, ExarLabs company founded on faith principles, and their calling to purchase a house in Odorheiu Secuiesc as a ministry center, requesting $36,000 to complete the 2026 payment toward the property."
+description_source: auto
+description_hash: 36a4c2133cd44985
+id: 7958315a-1bcf-49d0-8e50-a7dd61fe4699
+index_schema_version: 1
+bdos_index: true
+---
 # Introduction
 
 My name is Szabolcs Becze (Szabi), I was born and live in Odorheiu Secuiesc, which is part of Transylvania, Romania. My wife Julia and I have 3 children. Julia is working as an architect and I studied Computer Science.

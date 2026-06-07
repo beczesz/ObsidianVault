@@ -1,3 +1,15 @@
+---
+title: "Reference Files — DO NOT EDIT"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Canonical reference documentation for Deák Húsmíves product schema and Frappe backend doctypes, including production-compliant JSON schema and sample data structures that serve as source of truth for local development and build validation."
+description_source: auto
+description_hash: 4bb7c0d109e3eddf
+id: 3ef1f3a0-67ba-4c6b-8e51-c4abcc25abed
+index_schema_version: 1
+bdos_index: true
+---
 # Reference Files — DO NOT EDIT
 
 These files are the **canonical source of truth** for the Deák Húsmíves product schema and data structure. They reflect the production Frappe backend doctypes:

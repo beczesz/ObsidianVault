@@ -8,10 +8,12 @@
  *   LiveUpdates.subscribe(refetchAndRender);   // call your data-load function
  *
  * Architecture:
- *   Primary:  SSE EventSource → http://localhost:4322/events  (vault.db mtime watcher)
+ *   Primary:  SSE EventSource → /__events  (dash-server.mjs, port 4321) — the
+ *             single browser-facing server. It pushes `vault-update` (vault.db /
+ *             marketing-board changes) and `change` (raw .md edits) named events.
  *   Fallback: setInterval(8000) polling — activates automatically if SSE fails to
- *             connect within 3 seconds (e.g. events_server.py not running, or
- *             opened via file:// without dash-server).
+ *             connect within 3 seconds (e.g. dash-server not running, or opened
+ *             via file:// without dash-server).
  *
  * Status indicator:
  *   Call LiveUpdates.mountStatusIndicator(containerEl) to inject the pill into
@@ -24,13 +26,16 @@
  *   getState()                         → 'connecting'|'active'|'polling'|'error'
  *
  * Version history:
+ *   0.5.0 (2026-05-29) single-server consolidation — SSE moved from the old
+ *         events_server.py (4322) to dash-server.mjs /__events (4321). Listens
+ *         for the `vault-update` and `change` named events. Port 4322 retired.
  *   0.4.0 (2026-05-24) initial — promote: event-driven SSE family-wide.
  * ============================================================
  */
 (function(global) {
   'use strict';
 
-  const SSE_URL    = 'http://localhost:4322/events';
+  const SSE_URL    = '/__events';   // dash-server.mjs (4321) — single server
   const FALLBACK_INTERVAL = 8000;   // ms — polling fallback interval
   const SSE_TIMEOUT_MS    = 3000;   // ms — wait for SSE before activating fallback
   const HEARTBEAT_STALE_MS = 60000; // ms — >60s since last event → show stale
@@ -91,16 +96,17 @@
     try {
       _evtSrc = new EventSource(SSE_URL);
 
-      _evtSrc.addEventListener('message', function(ev) {
+      // dash-server.mjs emits NAMED events: `vault-update` (vault.db / marketing
+      // board changes) and `change` (raw .md edits). Either means "refetch".
+      // `message` kept as a fallback for any unnamed-event source.
+      var _onPush = function() {
         clearTimeout(_sseTimeout);
         _stopFallbackPolling();
-        try {
-          var data = JSON.parse(ev.data);
-          if (data.type === 'vault-update') {
-            _trigger();
-          }
-        } catch(e) {}
-      });
+        _trigger();
+      };
+      _evtSrc.addEventListener('vault-update', _onPush);
+      _evtSrc.addEventListener('change', _onPush);
+      _evtSrc.addEventListener('message', _onPush);
 
       _evtSrc.onopen = function() {
         clearTimeout(_sseTimeout);
@@ -172,8 +178,8 @@
   function _tooltipText(s) {
     var ago = _lastEventTs ? Math.round((Date.now() - _lastEventTs) / 1000) + 's ago' : 'never';
     var engine = s === 'active' ? 'SSE (event-driven)' :
-                 s === 'polling' ? '8s poll (fallback — events_server.py not running)' :
-                 s === 'connecting' ? 'connecting to events_server.py…' :
+                 s === 'polling' ? '8s poll (fallback — dash-server not running)' :
+                 s === 'connecting' ? 'connecting to dash-server /__events…' :
                  'disconnected';
     return 'Engine: ' + engine + ' · Last update: ' + ago + ' · State: ' + s;
   }
@@ -200,11 +206,11 @@
       '<div class="lu-modal" role="dialog" aria-modal="true" aria-label="Live updates info">',
       '<button class="lu-modal-close" aria-label="Close">&times;</button>',
       '<h3>Live Update Engine</h3>',
-      '<p>The dashboard family uses <strong>event-driven live updates</strong> via <code>events_server.py</code> — a tiny SSE server that watches the vault SQLite index (<code>vault.db</code>) for changes.</p>',
-      '<p>When the vault watcher (<code>watch_event.py</code>, powered by watchdog 6.x) indexes new markdown, <code>vault.db</code> is updated, and the events server pushes a <code>vault-update</code> event to all connected dashboards — sub-second latency.</p>',
-      '<p>To start the watcher + events server:</p>',
+      '<p>The dashboard family uses <strong>event-driven live updates</strong> via <code>dash-server.mjs</code> (port 4321) — the single server that serves the dashboards and also pushes Server-Sent Events on <code>/__events</code>.</p>',
+      '<p>When the vault watcher (<code>watch_event.py</code>, powered by watchdog 6.x) indexes new markdown, <code>vault.db</code> is updated; dash-server detects the change and pushes a <code>vault-update</code> event to all connected dashboards — sub-second latency. Raw <code>.md</code> edits push a <code>change</code> event.</p>',
+      '<p>To start the indexing watcher + daemon:</p>',
       '<p><code>cd 00_Prompts/BDOS/capabilities/vault-indexing &amp;&amp; ./start.sh</code></p>',
-      '<p>If the events server is not running, dashboards fall back to <strong>8-second polling</strong> automatically. The status pill in the header shows the current mode.</p>',
+      '<p>If dash-server is not running, dashboards fall back to <strong>8-second polling</strong> automatically. The status pill in the header shows the current mode.</p>',
       '<p><strong>Status colors:</strong> green = event-stream active &nbsp;·&nbsp; amber = polling fallback &nbsp;·&nbsp; red = error/offline</p>',
       '</div>'
     ].join('');

@@ -1,5 +1,8 @@
 ---
 title: "Comandă nr. 1 — Faza Pilot (Phase 1)"
+description: "Pilot phase order for deakhus.ro e-commerce platform launched with limited users in Odorheiu Secuiesc; includes 6.8% platform fee, 3-month duration, and scaling criteria requiring 50 registered users and 20 repeat customers within 30 days."
+description_source: auto
+description_hash: 0b4af8336c529880
 version: "1.4"
 status: DRAFT
 created: 2026-04-16
@@ -21,7 +24,6 @@ changelog:
 id: 66c3d0b7-6567-4be8-973a-0e63c230b698
 index_schema_version: 1
 ---
-
 # COMANDĂ NR. 1 — FAZA PILOT (Phase 1)
 
 ## Megrendelőlap / Act Adițional la Contract-Cadru

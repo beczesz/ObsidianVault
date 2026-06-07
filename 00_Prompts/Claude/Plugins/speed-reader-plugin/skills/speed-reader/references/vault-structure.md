@@ -1,3 +1,15 @@
+---
+title: "Vault Structure, File Naming & Save-To Header"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Complete guide to organizing the Idea Vault using PARA structure, file naming conventions for books, podcasts, articles, atomic ideas, and contrast notes, plus the Save-To header format for directing where each file should be stored. Essential reference for maintaining consistent vault structure and automation."
+description_source: auto
+description_hash: f239b05cb34f464c
+id: d716239a-dbec-4ba1-8996-3face9f8d6f0
+index_schema_version: 1
+bdos_index: true
+---
 # Vault Structure, File Naming & Save-To Header
 
 ## Vault Overview

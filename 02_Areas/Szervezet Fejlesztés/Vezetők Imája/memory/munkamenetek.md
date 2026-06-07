@@ -1,3 +1,15 @@
+---
+title: "Munkamenetek Naplója – Vezetők Imája"
+date: 2026-02-28
+author: Becze Szabolcs
+status: active
+description: "Munkamenet-dokumentáció a vezetők imája közösség 46. alkalomának előkészítéséről, mely március 2-én Deák Sanyi házigazdaságán zajlik. Tartalmazza az eddig elvégzett lépéseket, a résztvevőket és az előrejelzett feladatokat."
+description_source: auto
+description_hash: 5896471229bf3c6a
+id: 91af4087-4371-4031-9f37-1893b8c762ad
+index_schema_version: 1
+bdos_index: true
+---
 # Munkamenetek Naplója – Vezetők Imája
 
 ## 2026-02-28 – 1. munkamenet (46. alkalom előkészítése)

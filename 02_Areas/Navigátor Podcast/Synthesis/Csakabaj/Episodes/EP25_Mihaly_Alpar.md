@@ -1,4 +1,7 @@
 ---
+description: "Mihály Alpár motoros-tartalomgyártóval Józsa Levi beszélget a motorozás identitásépítő szerepéről, a kockázat és szabadság dialógusáról, valamint arról, hogy az autentikus tartalomgyártás közösségi felelősségvállalás. Az epizód a motorozás szimbolikus és szociális dimenzióit tárja fel."
+description_source: auto
+description_hash: 25fa701362ec4f9e
 version: 1.0
 type: csakabaj-synthesis
 episode: 25
@@ -11,7 +14,6 @@ synthesis_status: gold_standard
 id: 66233b90-27c9-4441-a17b-53622e8fe5be
 index_schema_version: 1
 ---
-
 # Csakabaj S01E25 — Motoros kalandok, tartalomgyártás, biztonságban az úton
 **Guest:** Mihály Alpár (motoros, tartalomgyártó) | **Host:** Józsa Levi  
 **Date:** 2024-12-11 | **Duration:** 74 minutes | **SRT Entries:** 1,840

@@ -1,5 +1,15 @@
-
-
+---
+title: "email thread"
+date: 2026-05-20
+author: Becze Szabolcs
+status: active
+description: "Szervezett email lánc egy görög ügyfél RFP-jéről (CCH Cloud Managed Services), amely AI/AIOps képességeket vár május végéig. Az anyag tartalmazza az AIOps elvárások részletezését: proaktív monitoring, prediktív analitika, agentic AI, self-learning automation és quarterly PoC-k demonstrációját."
+description_source: auto
+description_hash: 487da68d3d7a3ac4
+id: 2217702f-8e50-4128-8046-2519f807e57a
+index_schema_version: 1
+bdos_index: true
+---
 Sent from Outlook for iOS<https://aka.ms/o0ukef>
 ________________________________
 From: Molnár Attila [AICCST] <Molnar.Attila4@ext.telekom.hu>

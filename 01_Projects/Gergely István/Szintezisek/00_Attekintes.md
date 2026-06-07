@@ -1,5 +1,8 @@
 ---
 title: "Gergely István — cég 2025 adatainak áttekintése"
+description: "Romániai vegyes kereskedési vállalat 2025-ös pénzügyi áttekintése hat telephellyel, kasszás és számlás értékesítés adataival, valamint készletmozgás és partnerelemzéssel."
+description_source: auto
+description_hash: ec9d295fba03086d
 type: synthesis-overview
 project: Gergely István
 period: 2025
@@ -15,7 +18,6 @@ tags: [synthesis, retail, finance, romania]
 id: 78400be7-5d36-4208-bd0d-57caee044418
 index_schema_version: 1
 ---
-
 # Áttekintés — mit látunk az 5 fájlban
 
 ## Mi ez a cég?

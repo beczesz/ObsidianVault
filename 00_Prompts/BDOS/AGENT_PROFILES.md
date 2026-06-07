@@ -4,7 +4,7 @@ date: 2026-05-24
 author: Becze Szabolcs
 status: active
 version: 1.0
-description: Single source of truth a BDOS agent-család vizuális identity-jéhez (avatar emoji + szín) és teljes capability inventory-jához (tools, connectors, MCPs, APIs, plugins, skills, test access trace). Dashboardok élőben olvassák — minden vizuális/capability megjelenítés ide hivatkozik.
+description: Single source of truth a BDOS agent-család vizuális identity-jéhez (avatar emoji + szín) és teljes capability inventory-jához (tools, connectors, MCPs, APIs, plugins, skills, test access trace). 7 aktív agent (Librarian, Maestro, Curator, Alfred, Presto, Broker, Forge) + Sage deprecated section. Dashboardok élőben olvassák.
 tags: [BDOS, agents, profiles, capabilities, inventory]
 id: f7c9e525-7334-4140-ba2a-8f9f06a1835b
 index_schema_version: 1
@@ -184,9 +184,12 @@ capabilities:
 
 ---
 
-## Sage
+## ~~Sage~~ (DEPRECATED 2026-05-28, merged into Alfred v0.3)
+
+Capabilities absorbed into Alfred. The profile below is kept for historical reference only. Alfred is the active source of truth for cognition.
 
 ```yaml
+# DEPRECATED 2026-05-28 — see Alfred section below
 avatar:
   emoji: "🦉"
   color: "#5B7C99"   # twilight blue — wisdom, contemplative night
@@ -231,6 +234,60 @@ capabilities:
     plugin_skills_invoked: []
     operational_logs_observed: 1      # first real harvest (smoke test)
     chatgpt_chats_read: 1             # ExarLabs - AI alapú operációs rendszer
+```
+
+---
+
+## Alfred
+
+```yaml
+avatar:
+  emoji: "🧭"
+  color: "#4A7B6F"   # deep teal — calm executive navigator
+  symbolism: "compass — human-facing executive layer, finds direction for the user"
+
+capabilities:
+  tools:
+    - Read
+    - Write
+    - Edit
+    - Glob
+    - Grep
+    - Bash
+  connectors_mcp:
+    - filesystem
+    - Chrome MCP (for ChatGPT Referencia chat harvest + Alfred Inbox sync)
+  apis: []
+  plugins: []
+  skills:
+    own_commands_count: 17
+    own_commands:
+      - /alf-capture
+      - /alf-sync
+      - /alf-today
+      - /alf-status
+      - /alf-todo
+      - /alf-remind
+      - /alf-done
+      - /alf-tasks
+      - /alf-harvest
+      - /alf-curate
+      - /alf-chat
+      - /alf-learn
+      - /alf-learnings
+      - /alf-learning-accept
+      - /alf-learning-edit
+      - /alf-learning-reject
+      - /alf-learning-retire
+    can_invoke:
+      - "Librarian retrieve (curate mode, via main Claude)"
+  test_access_trace:
+    last_updated: 2026-05-28
+    chrome_mcp_used: true             # harvest channel (ChatGPT Referencia + Alfred Inbox)
+    thinking_engine_used: false
+    plugin_skills_invoked: []
+    operational_logs_observed: 0      # v0.3 launched 2026-05-28; Sage historical logs in sage/ archive
+  cognition_source_note: "Alfred v0.3 is the active cognition owner (Sage-merged). Scheduler jobs: alfred-daily-harvest + alfred-weekly-curate."
 ```
 
 ---
@@ -294,6 +351,8 @@ capabilities:
     plugin_skills_invoked: []         # only assessment/proposal modes ran, no draft-content
     operational_logs_observed: 2      # strategic-prep-phase-1 + distribution-proposal-editorial-taste-modeling
   sage_integration:
+    # NOTE: Alfred is now the cognition owner (Sage merged into Alfred v0.3, 2026-05-28).
+    # The sage-signals/ folder name is kept as-is for backward compatibility.
     permitted_flow_inbox: "02_Areas/Personal Growth/Ideas/_inbox/sage-signals/"
     can_read_sage_outputs: true
     can_write_sage_outputs: false
@@ -346,9 +405,57 @@ capabilities:
     plugin_skills_invoked: []
     operational_logs_observed: 0   # capability designed today but not yet operationally invoked
   sage_integration:
+    # NOTE: Alfred is now the cognition owner (Sage merged into Alfred v0.3, 2026-05-28).
+    # The sage-signals/ folder name is kept as-is for backward compatibility.
     permitted_flow_inbox: "02_Areas/Personal Growth/Ideas/_inbox/sage-signals/"
     can_read_sage_outputs: true
     can_write_sage_outputs: false
+```
+
+---
+
+## Forge
+
+```yaml
+avatar:
+  emoji: "🔨"
+  color: "#9B4F3A"   # warm brick red — forge-fire warmth, distinct from Broker leather (#A47551) and Presto peachy orange (#D17A5F)
+  symbolism: "hammer — capability forging, iterative refinement, practice stewardship"
+
+capabilities:
+  tools:
+    - Read         # v0.1 expected; v0.2 finalizes
+    - Write
+    - Edit
+    - Glob
+    - Grep
+    - Bash
+  connectors_mcp:
+    - filesystem
+  apis: []         # may add Thinking Engine later (v0.3+) for cross-area pattern reflection
+  plugins: []      # capability-development plugins TBD
+  skills:
+    own_commands_count: 0   # v0.2 design pending; reserve forge- prefix
+    own_commands: []        # planned: /forge-status, /forge-today, /forge-capture, /forge-refine, /forge-index, /forge-measure, /forge-handoff, /forge-learn, /forge-reflect, /forge-learnings, /forge-learning-accept, /forge-learning-reject, /forge-learning-retire
+    can_invoke: []          # cross-agent handoff to Broker / Presto via /forge-handoff (v0.2)
+  test_access_trace:
+    last_updated: 2026-05-27
+    chrome_mcp_used: false
+    thinking_engine_used: false
+    plugin_skills_invoked: []
+    operational_logs_observed: 0    # v0.1 just created — no operational invocation yet
+  sage_integration:
+    # NOTE: Alfred is now the cognition owner (Sage merged into Alfred v0.3, 2026-05-28).
+    # The sage-signals/ folder name is kept as-is for backward compatibility.
+    permitted_flow_inbox: "02_Areas/Personal Growth/Ideas/_inbox/sage-signals/"   # capability-gap signals (v0.2)
+    can_read_sage_outputs: true
+    can_write_sage_outputs: false
+  broker_integration:
+    handoff_flow: "practice → engagement (when pattern matures, ready for client proposal)"
+    cross_link_files: ["Practices/<area>/related-projects.md"]
+  practice_areas_active:
+    - "02_Areas/Sonrisa/CPS/Practices/Inference-Farm/"
+    - "02_Areas/ExarLabs/Practices/Microsites/"
 ```
 
 ---
@@ -360,15 +467,17 @@ capabilities:
 | Librarian | 📚 | 6 | 1 | 0 | 1 | 6 |
 | Maestro | 🎼 | 6 | 1 | 0 | 1 | 10+3 |
 | Curator | 🖼️ | 6 | 2 | 0 | 1 | 7 |
-| Sage | 🦉 | 6 | 2 | 0 | 0 | 14 |
+| Alfred | 🧭 | 6 | 2 | 0 | 0 | 17 |
 | Presto | 🐰 | 6 | 1 | 3 (via TEO) | 1 | 16 |
 | Broker | 🤝 | 6 | 1 | 0 | 0 | 12 |
+| **Forge** | 🔨 | 6 (v0.1) | 1 | 0 | 0 | 0 (v0.2 planned: ~13) |
+| ~~Sage~~ | ~~🦉~~ | DEPRECATED | | | | 14 (commands removed) |
 
-**Family totals:**
-- 65 own slash commands
+**Family totals (7 active agents):**
+- 71 own slash commands (+ ~13 planned for Forge v0.2)
 - 1 family-wide API access (Thinking Engine via Presto)
 - Cowork marketing plugin (Presto only)
-- Chrome MCP (Sage practical, via main orchestrator)
+- Chrome MCP (Alfred operative, via main orchestrator)
 
 ---
 

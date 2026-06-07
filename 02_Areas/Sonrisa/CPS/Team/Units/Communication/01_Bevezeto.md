@@ -1,3 +1,15 @@
+---
+title: "01 – Bevezető: Miért van szükség erre a kézikönyvre?"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "Introductory chapter explaining why this handbook is necessary: the shift from hourly billing to value-based services in Central-Eastern European IT outsourcing, the critical role of proactive client communication in managed services, and how structured transparency prevents misunderstandings."
+description_source: auto
+description_hash: 2355056042ae980d
+id: 69ad9b2e-cc55-4126-9320-f92d5ff8cf9b
+index_schema_version: 1
+bdos_index: true
+---
 # 01 – Bevezető: Miért van szükség erre a kézikönyvre?
 
 ---

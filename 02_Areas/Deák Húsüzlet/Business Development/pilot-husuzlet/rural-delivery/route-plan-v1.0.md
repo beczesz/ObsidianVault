@@ -1,3 +1,15 @@
+---
+title: "Falusi Route — Útvonal dokumentáció"
+date: 2026-05-02
+author: Becze Szabolcs
+status: active
+description: "Székelyudvarhelyből induló körút-dokumentáció, amely 55 km-es hurkot ír le délkeleti falvakra és vissza, kiindulópontokkal és gazdasági számításokkal a helyi hússzállítás megvalósításához. Szabolcs által tervezett, DH-184-es Jira-tickethez kapcsolódó operatív útmutató."
+description_source: auto
+description_hash: de30fbe349b0ff09
+id: 870443ed-f519-49a0-bb0b-589139d4b6b3
+index_schema_version: 1
+bdos_index: true
+---
 # Falusi Route — Útvonal dokumentáció
 
 **Dátum:** 2026-05-02

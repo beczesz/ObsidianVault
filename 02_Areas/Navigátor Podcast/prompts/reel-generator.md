@@ -1,3 +1,15 @@
+---
+title: "reel generator"
+date: 2026-01-23
+author: Becze Szabolcs
+status: active
+description: "I understand. I'm ready to analyze YouTube video transcripts or content and extract the top 10 most viral short-form moments optimized for 20-45 second reels."
+description_source: auto
+description_hash: 890c53057d259862
+id: 649d542e-4eef-499b-ab69-a6598f82b505
+index_schema_version: 1
+bdos_index: true
+---
 ## Viral Reel Moment Extractor (20–45s)
 
 **Role & Goal**

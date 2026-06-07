@@ -1,5 +1,8 @@
 ---
 title: "Zen and the Art of Motorcycle Maintenance"
+description: "A philosophical autobiography tracing a father-son motorcycle journey from Minnesota to California, interwoven with essays on Quality as a pre-intellectual reality that bridges rational and intuitive understanding. Influential for intellectuals, craftspeople, and those exploring technology's role in human meaning-making."
+description_source: auto
+description_hash: a8b0398b88ed8630
 type: book
 author: "Robert M. Pirsig"
 year: 1974
@@ -11,7 +14,6 @@ processed_by: "AI Speed-Reading Agent"
 id: 5c025285-b286-4687-9065-0deb80b548fd
 index_schema_version: 1
 ---
-
 SAVE-TO: /03_Resources/02_Books/Robert M. Pirsig - Zen and the Art of Motorcycle Maintenance/
 FILES:
   - Zen_and_the_Art_of_Motorcycle_Maintenance_Robert_M_Pirsig_1974.md

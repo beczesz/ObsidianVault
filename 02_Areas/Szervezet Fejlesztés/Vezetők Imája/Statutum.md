@@ -1,3 +1,15 @@
+---
+title: "Vízió"
+date: 2026-02-28
+author: Becze Szabolcs
+status: active
+description: "Vezetők imára és közös Isten-keresésre létrehozott közössége, ahol az erkölcsi alapelvek és a spirituális megújulás összekapcsolódnak a gyakorlati döntéshozatalban. Alázat, bátorság, integritás és felelősségvállalás által vezérelt jövőkép."
+description_source: auto
+description_hash: 06330a7cb62c0112
+id: 9da9704c-bcb7-4752-b5f6-8f250ed37940
+index_schema_version: 1
+bdos_index: true
+---
 # Vízió
 
 Egy olyan közösséggé válni, ahol az Isten által elhívott vezetők “saruikat levetve”, egységben imádkoznak és keresik Isten Országát.

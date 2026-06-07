@@ -1,3 +1,15 @@
+---
+title: "Forgatások"
+date: 2026-02-09
+author: Becze Szabolcs
+status: active
+description: "A Média Műhely székelyudvarhelyi stúdiója nyílt napokat szervez, ahol szervezetek felfedezhetik, hogyan használhatnak videó, podcast és egyéb médiakészítést az eredményes kommunikációhoz."
+description_source: auto
+description_hash: bcd1b07e7299f59b
+id: 766ca079-2a7b-4a7e-b81a-a541ba9fd68f
+index_schema_version: 1
+bdos_index: true
+---
 ## Open Days
 
 ###### Prpbléma, fájdalom pont

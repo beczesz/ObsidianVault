@@ -1,3 +1,15 @@
+---
+title: "Cowork -- Legfrissebb Fejlesztések"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "A Cowork platform legutóbbi fejlesztéseit dokumentálja: februári nagy bővítés 10 új pluginnal, vállalati funkciók, új connectorok; illetve januári első plugin csomag nyílt forráskódúvá tétele. Hasznos az Anthropic termékeket követő fejlesztőknek és csapatvezetőknek."
+description_source: auto
+description_hash: bd70b410cfc6bbf2
+id: d535f814-74b3-46b7-93c4-0fdc25c974d0
+index_schema_version: 1
+bdos_index: true
+---
 # Cowork -- Legfrissebb Fejlesztések
 
 > Utolsó frissítés: 2026-03-23

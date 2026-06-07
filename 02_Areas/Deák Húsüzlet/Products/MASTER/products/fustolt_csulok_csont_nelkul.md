@@ -1,3 +1,15 @@
+---
+title: "Füstölt Csülök Csont Nélkül"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Füstölt, kicsontozott sertéscsülök termékleírása és specifikációja; 1,0-1,5 kg közötti súlyban elérhető, hideg vagy meleg felhasználáshoz. Adminisztratív adatokat és méretopciós metaadatokat tartalmaz beszerzéshez és katalógusépítéshez."
+description_source: auto
+description_hash: c7c724d3eaef6283
+id: 2ac0cc7d-a91f-440c-a010-8de310e19ade
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Csülök Csont Nélkül
 
 ```yaml

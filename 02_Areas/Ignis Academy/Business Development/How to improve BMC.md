@@ -1,3 +1,15 @@
+---
+title: "How to improve BMC"
+date: 2025-11-24
+author: Becze Szabolcs
+status: active
+description: "Actionable refinements for Business Model Canvas: tighten revenue mechanics with committed band pricing and fair usage policies, redefine north star KPI from completion rates to skill application rate, emphasize admin value through invisible integration and zero-touch provisioning, and leverage university pedagogy research as competitive moat."
+description_source: auto
+description_hash: b180469236f3492a
+id: 3735f684-58f6-4956-abc7-ac485c7a2b65
+index_schema_version: 1
+bdos_index: true
+---
 #### **1. Tighten Revenue Mechanics (The biggest risk)**
 
 Your note on "Seat definition ambiguity" is the most critical `#TODO` in the document.

@@ -1,3 +1,15 @@
+---
+title: "Sajtos Cérna Kolbász"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Sajtos Cérna Kolbász, vékony sajttal töltött spárgával kötött kolbász, mely főzésre, sütésre és grillelésre egyaránt alkalmas. Termékadatok: 48,0 Ft/kg, belső kód 9201, május 7-én felvéve."
+description_source: auto
+description_hash: 652cafe3eeaf4cee
+id: d603feef-9e7e-47d3-8d15-6c4e093014bf
+index_schema_version: 1
+bdos_index: true
+---
 # Sajtos Cérna Kolbász
 
 ```yaml

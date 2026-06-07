@@ -1,3 +1,15 @@
+---
+title: "Webinar — Bevezető szint"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Bevezető webinar terv az AI haladó felhasználásáról, amelyet a Navigator Podcast EP42 epizódjára építenek. A képzés négy emberi dimenzió (fizikai, intellektuális, érzelmi, spirituális) keretében mutatja be az AI-t mint eszközt, konkrét gyakorlatokkal kezdő és közepes szintű felhasználók számára."
+description_source: auto
+description_hash: 79757a365c5e6505
+id: 27f11902-c0a8-42ef-be34-9515a378c02b
+index_schema_version: 1
+bdos_index: true
+---
 # Webinar — Bevezető szint
 ## AI a mindennapi életben: 4 emberi dimenzió
 

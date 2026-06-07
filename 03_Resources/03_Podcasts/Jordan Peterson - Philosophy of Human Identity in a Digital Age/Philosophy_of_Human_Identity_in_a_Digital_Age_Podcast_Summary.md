@@ -1,3 +1,15 @@
+---
+title: "A Philosophy of Human Identity in a Digital Age – Jordan B. Peterson, Jonathan Pageau & Mary Harrington"
+date: 2025-09-19
+author: Becze Szabolcs
+status: active
+description: "Podcast discussion exploring human identity in the digital age through philosophical, theological and symbolic lenses, arguing that genuine identity is aspirational and relational rather than fluid self-construction, drawing on concepts like imago Dei and sacrifice."
+description_source: auto
+description_hash: 383306577a6c37b8
+id: fbbe79ef-e822-421d-a8e6-cfa74e5a56d0
+index_schema_version: 1
+bdos_index: true
+---
 <!-- SAVE-TO: /03_Podcasts/Jordan Peterson - A Philosophy of Human Identity in a Digital Age/Philosophy_of_Human_Identity_in_a_Digital_Age_Podcast_Summary.md -->
 
 ---

@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP30
 title: "Jövő Iskolája: AI, tanárok, diákok | Dr. Csala Dénes EP30"
+description: "Navigátor Podcast 30. epizódja Dr. Csala Dénessel az AI oktatási paradigmaváltásáról, az emberi méltóságról az AI-korban, valamint annak YouTube-analitikájáról, amely átlagon felüli megtekintettséget és nézettségi időt mutat, főként magyarországi és romániai közönségből, mobil eszközökön."
+description_source: auto
+description_hash: 3350bf69a3d221af
 guest: "Dr. Csala Dénes"
 guest_title: "Adattudós, egyetemi oktató (Lancaster University, Bristol, MIT Abu Dhabi szatellit)"
 topic: "AI és oktatás — mikro-képesítések, kritikus gondolkodás, IQ-szakadék, UBI, emberi méltóság"
@@ -15,7 +18,6 @@ quality: deep
 id: b99b58ed-489e-40dc-8602-a3bf44f9f27c
 index_schema_version: 1
 ---
-
 # EP30 — Dr. Csala Dénes: „Meg kell különböztessük a megoldást és a megértést."
 
 ## Vendég háttér

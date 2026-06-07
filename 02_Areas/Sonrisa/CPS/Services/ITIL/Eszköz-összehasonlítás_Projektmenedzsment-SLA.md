@@ -1,3 +1,15 @@
+---
+title: "Projektmenedzsment & SLA Követő Eszközök -- CPS Összehasonlítás"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "CPS MSP-jelöltjeinek ITSM és SLA eszközei 2026 összehasonlítása. Jira Service Management, Freshservice, ManageEngine ServiceDesk Plus, és más megoldások értékelése ügyfelenként eltérő SLA kezelés, MSP-mód és ITIL-alapú munkafolyamatokra, 13 főre vonatkozóan."
+description_source: auto
+description_hash: 140c87b35d35c4da
+id: eec5e89a-c903-4e96-9ca8-8dfa2c7812f3
+index_schema_version: 1
+bdos_index: true
+---
 # Projektmenedzsment & SLA Követő Eszközök -- CPS Összehasonlítás
 
 **Dátum:** 2026-03-21

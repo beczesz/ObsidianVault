@@ -1,5 +1,8 @@
 ---
 title: "Design Brief — Szórólap A5 duplex"
+description: "Szórólap tervezési rief az A5 duplex Deák Húsmíves szórólaphoz, amely a meglévő v11 design alapján frissített verziót készít a Founding 50 program kommunikálására. Tervezőknek és marketing csapatnak szól a technikai specifikációval, szövegmásolatokkal és a vizuális újragondolás iránymutatásaival."
+description_source: auto
+description_hash: 1a122f6fd25a1b85
 deliverable: Founding 50 szórólap
 format: 148×210mm (A5), duplex (eleje + hátoldal)
 language: Magyar
@@ -8,7 +11,6 @@ reference: Marketing/szorolap/szorolap_v11_eleje.html, szorolap_v11_hatoldal.htm
 id: 62e9734b-6b54-4ac8-b189-2429f7c5d09a
 index_schema_version: 1
 ---
-
 # Design Brief: Szórólap — Founding 50
 
 ## Feladat

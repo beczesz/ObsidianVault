@@ -1,3 +1,15 @@
+---
+title: "05 – Időloggolás: mérés a jobb döntésekért, nem ellenőrzésért"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "Az időloggolás célja a rendszers teljesítmény megértése és javabb üzleti döntések meghozatala, nem az egyéni kontroll. Három kategóriát használunk: számlázható projektek, belső működés és belső befektetések, minden bejegyzéshez részletes leírással."
+description_source: auto
+description_hash: ce2aefbe5ccbece5
+id: 76c9ba07-886d-4a4d-9f7a-1dbd9d40293a
+index_schema_version: 1
+bdos_index: true
+---
 # 05 – Időloggolás: mérés a jobb döntésekért, nem ellenőrzésért
 
 ---

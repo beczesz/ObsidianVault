@@ -72,7 +72,7 @@ A főnaptár-dashboard (`_dashboards/index.html`, v0.7.0) ennek a kettősségnek
 
 ---
 
-## 4. Az aktív agentek (6 db)
+## 4. Az aktív agentek (7 db)
 
 Minden agent **két fájlban** él:
 - **Canonical:** `00_Prompts/BDOS/agents/<name>.md` — részletes spec, ember-olvasható
@@ -101,28 +101,29 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**. Forrás-az-igaz
 **Pozíció:** Librarian testvére — Librarian a persistence layer kartográfusa, Curator a representation layer kurátora.
 **Speciális:** `_dashboards/_design/DESIGN_SYSTEM.md` a forrás-az-igazságra a stílusokra. Dashboard-server portja: 4321.
 
-### 4.4 Sage — v0.2 LIVE (scheduling pending)
-**Funkció:** Cognition Curator. A BDOS cognition layer operátora.
-**Módok (5):** `harvest`, `curate`, `chat`, `learning-ops`, info-csoport (`status`, `summary`, `find`, `edit`, `promote`, `index`)
-**Slash (14):** `/sage-status`, `/sage-harvest`, `/sage-curate`, `/sage-summary`, `/sage-find`, `/sage-chat`, `/sage-edit`, `/sage-promote`, `/sage-index`, `/sage-learnings`, `/sage-learning-accept`, `/sage-learning-reject`, `/sage-learning-retire`, `/sage-learning-edit`
+### 4.4 ~~Sage~~ (DEPRECATED 2026-05-28, merged into Alfred v0.3)
+
+Sage capabilities absorbed into Alfred. See §4.4b below for Alfred.
+
+**Archive:** `00_Prompts/BDOS/agents/sage/` mappa megmarad (SAGE_DESIGN_v0.1.md, learnings, state, cron) — Alfred a source-of-truth. Canonical + registration fájlok törölve. `sage-signals/` mappa neve backward-compat marad; Alfred írja.
+
+### 4.4b Alfred — v0.3 LIVE
+**Funkció:** Executive Cognition Layer + Cognition Curator. A BDOS human interface rétege + Sage-merged kognitív kurátor.
+**Módok (12):** `capture`, `sync`, `today`, `status`, `todo`, `remind`, `done`, `tasks` (operative) + `harvest`, `curate`, `chat`, `learn` (kognitív, Sage-merged).
+**Slash (17):** `/alf-capture`, `/alf-sync`, `/alf-today`, `/alf-status`, `/alf-todo`, `/alf-remind`, `/alf-done`, `/alf-tasks`, `/alf-harvest`, `/alf-curate`, `/alf-chat`, `/alf-learn`, `/alf-learnings`, `/alf-learning-accept`, `/alf-learning-edit`, `/alf-learning-reject`, `/alf-learning-retire`
 
 **Mit csinál:**
-- Naponta 06:00-kor a **ChatGPT "Referencia chat"-ből** (Chrome MCP-vel) gondolatokat extractál
-- Strukturált note-okká alakítja → `02_Areas/Personal Growth/Ideas/thoughts/`
-- Atomic note-okat ápol history-szekcióval → `02_Areas/Personal Growth/Ideas/atomic/`
-- Hétfő 06:05-kor `curate` mód: trend-analízis, kategória-revízió, kapcsolat-keresés, Librarian-kérések main Claude orchestrátoron át
+- Naponta 04:00-kor a **ChatGPT "Referencia chat"-ből** (Chrome MCP-vel) gondolatokat extractál (harvest mód)
+- Strukturált note-okká alakítja: `02_Areas/Personal Growth/Ideas/thoughts/`
+- Atomic note-okat ápol: `02_Areas/Personal Growth/Ideas/atomic/`
+- Hétfő 04:05-kor `curate` mód: trend-analízis, kategória-revízió, kapcsolat-keresés
+- Operative csatorna: `sync` mód a ChatGPT "Alfred Inbox"-ból ops-dump olvasáshoz
 
-**Innováció — meta-learning loop:** Sage explicit, user-reviewable tanulságokat ír a saját munkájáról (`00_Prompts/BDOS/agents/sage/learnings/proposals|active|retired`). Cap: 15 active / 2000 token preamble. Ez NEM rejtett súly — minden tanulság markdown, user edit/törölheti.
+**Meta-learning loop (Sage-örökség):** Alfred explicit, user-reviewable tanulságokat vezet (`00_Prompts/BDOS/agents/alfred/learnings/proposals|active|retired`). Cap: 15 active / 2000 token preamble.
 
-**Csend default:** Sage csak akkor notifikál, ha minta van. Inkább 1 erős signal, mint 10 zaj.
+**Csend default:** Alfred csak akkor notifikál, ha minta van. Inkább 1 erős signal, mint 10 zaj.
 
-**Teljes design:** `00_Prompts/BDOS/agents/sage/SAGE_DESIGN_v0.1.md` (v0.2 állapotban).
-
-**Vault output home:** `02_Areas/Personal Growth/Ideas/` (thoughts/ + atomic/ + _inbox/ + _journal/ + curate/ + 00_INDEX.md + 00_CATEGORIES.md).
-
-**Referencia chat URL:** `https://chatgpt.com/g/g-p-67987afa409c8191b7ce9f798c887544-szemelyes-gondolatok/c/6a1265db-8910-83eb-8677-1e977c03fc01`
-
-**Status:** placeholder fájlok mind a helyén, **scheduling pending** — a remote/local cron architektúra-kérdés miatt halasztva. Lokális macOS launchd plist a tervezett megoldás (smoke test után).
+**Storage:** `02_Areas/Personal Growth/Alfred/` + `02_Areas/Personal Growth/Ideas/` (idea-output) + `agents/alfred/` (state, learnings, cron).
 
 ### 4.5 Presto — v0.2 LIVE (formerly Herald)
 **Funkció:** Marketing Engine Executor. Distribution layer egyik fele (one-to-many).
@@ -164,7 +165,7 @@ A `00_AGENTS_INDEX.md` "Planned agents" szekciója:
 - Exploration Agent — Radikális ötletek, fork-szerű exploráció
 - Validator — Cross-check, második vélemény
 
-**Cél: 4-5 aktív agent**, nem 15-20 (agent sprawl elkerülése). Jelenleg 6 — épp a felső határnál vagyunk.
+**Cél: 5-7 aktív agent**, nem 15-20 (agent sprawl elkerülése). Jelenleg 7 — a határnál vagyunk; Forge v0.2 mielőtt bármilyen új agent.
 
 ---
 
@@ -175,10 +176,11 @@ A főnaptár Agents-tabján (force-directed graph) ezek élként renderelődnek:
 - **Maestro → mindenki** (orchestrates the family, team-* módok)
 - **Maestro ↔ Curator** (dual view of the family: dynamic vs static)
 - **Curator → mindenki** (representation layer építője az összesnek)
-- **Sage → Librarian** (curate-kor Sage kéréseket fogalmaz, main Claude továbbít)
-- **Sage → Presto** (cognition → distribution, permitted flow a falon át — szigorú szabályokkal)
-- **Sage → Broker** (ugyanaz a wall + permitted flow)
+- **Alfred → Librarian** (curate-kor Alfred kéréseket fogalmaz, main Claude továbbít)
+- **Alfred → Presto** (cognition → distribution, permitted flow a falon át — sage-signals/ inbox)
+- **Alfred → Broker** (ugyanaz a wall + permitted flow)
 - **Presto ↔ Broker** (sibling distribution agents)
+- **Broker ↔ Forge** (engagement pattern filing + practice-to-proposal handoff)
 
 **Flat orchestration:** a BDOS jelenleg flat — agentek nem hívják egymást direkt. Main Claude orchestrál. Hierarchia akkor élesedik, ha 3+ worker egy domain alatt (jelenleg messze vagyunk).
 
@@ -192,7 +194,7 @@ A főnaptár Agents-tabján (force-directed graph) ezek élként renderelődnek:
 4. **Flat orchestration.** Agent nem hív agentet direkt — main Claude közvetít.
 5. **Verzió-szinkron.** Canonical (`00_Prompts/BDOS/agents/<name>.md`) és registration (`.claude/agents/<name>.md`) verzió-mezője mindig egyezzen.
 6. **No hardcode dashboardokban.** A `_dashboards/*` HTML soha nem tartalmaz konkrét tartalmat — minden adat futásidőben jön a `.md` source-of-truth fájlokból.
-7. **Sage csend default.** Sage csak akkor notifikál, ha minta van. Inkább elcsendesedik, mint zajos.
+7. **Csend default (Alfred örökli Sage-tól).** Alfred csak akkor notifikál, ha minta van. Inkább elcsendesedik, mint zajos.
 8. **Inbox > false positive.** Minden agent: bizonytalan művelet → `_inbox/`, soha hallucinált note/akció.
 9. **Append-only journal.** Minden agent-akció auditolt egy `_journal/`-ban (vagy adat-jellegű audit trail-ben).
 10. **A főnaptár-dashboard a vault élő tükre.** Ha valamit nem ír egy markdown fájl, az nem jelenik meg a dashboardon.
@@ -208,13 +210,14 @@ A 6 agent neve **5 etimológiai forrásból**, **stilisztikailag koherens**:
 | **Librarian** | angol, funkcionális | knowledge manager |
 | **Maestro** | olasz, zenei (karmester) | orchestrator |
 | **Curator** | latin, szerep | representation kurátor |
-| **Sage** | angol, bölcsesség | cognition érlelő |
+| **Alfred** | germán, "elf counsel" | executive assistant, human interface |
 | **Presto** | olasz, zenei (tempó) + press + Pixar | marketing executor |
 | **Broker** | angol, funkcionális | sales intermediary |
+| **Forge** | angol, ipari | capability/practice steward |
 
-**Mintázat:** keverék angol funkcionális (Librarian, Sage, Broker) + latin/szerep (Curator) + olasz/zenei (Maestro, Presto). Egy új agent névadásakor érdemes a meglévő mintázathoz illeszkedni vagy újabb réteget tudatosan bevezetni.
+**Mintázat:** keverék angol funkcionális (Librarian, Alfred, Broker, Forge) + latin/szerep (Curator) + olasz/zenei (Maestro, Presto). Egy új agent névadásakor érdemes a meglévő mintázathoz illeszkedni vagy újabb réteget tudatosan bevezetni.
 
-**Slash prefix konvenció:** 3-4 betű, kebab-case (`lib-`, `dash-`, `pres-`, `brk-`, `maestro-`, `sage-`).
+**Slash prefix konvenció:** 3-5 betű, kebab-case (`lib-`, `dash-`, `pres-`, `brk-`, `maestro-`, `alf-`, `forge-`).
 
 ---
 
@@ -224,7 +227,7 @@ Minden agent egy **single source of truth** fájlt tart karban, amit a dashboard
 
 | Agent | State fájl |
 |---|---|
-| Sage | `00_Prompts/BDOS/agents/sage/state/last_run.md` (schema: `sage.lastrun.v1`) |
+| Alfred | `00_Prompts/BDOS/agents/alfred/state/last_seen.md` (schema: `alfred.lastseen.v1` — migrated from Sage) |
 | Presto | `02_Areas/<area>/Marketing/Pipeline.md` per Area |
 | Curator | `_dashboards/00_DASHBOARD_INDEX.md` |
 | Maestro | `<project-area>/brand-spine-state.md` per projekt + `00_AGENTS_INDEX.md` |
@@ -235,20 +238,21 @@ Minden agent egy **single source of truth** fájlt tart karban, amit a dashboard
 
 ---
 
-## 10. Meta-learning loop (Sage innovációja)
+## 10. Meta-learning loop (Sage innovációja, Alfred örökli)
 
-Ez az **egyetlen agent** ami **a saját munkájáról** is tanul — explicit, human-readable módon.
+Ez az architektúra **több agentnél** él — explicit, human-readable módon.
 
-**Helye:** `00_Prompts/BDOS/agents/sage/learnings/`
+**Alfred helye:** `00_Prompts/BDOS/agents/alfred/learnings/`
+**Presto helye:** `00_Prompts/BDOS/agents/presto/audience-learnings/`
 **Életciklus:** `proposed → active → retired`
 **Cap:** max 15 active / 2000 token preamble
-**Védelmek:** kötelező evidence-szel (min. 2 journal-hivatkozás), user-reviewable, retirable
+**Védelmek:** kötelező evidence-szel (min. 2 hivatkozás), user-reviewable, retirable
 
-**Tanulság-típusok (8):** `harvest-pattern`, `category-naming`, `atomic-detection`, `user-taste`, `voice-style`, `failure-mode`, `linking-pattern`, `signal-noise`
+**Alfred tanulság-típusok (8):** `harvest-pattern`, `category-naming`, `atomic-detection`, `user-taste`, `voice-style`, `failure-mode`, `linking-pattern`, `signal-noise`
 
-**Filozófia:** Sage tanul, **de láthatóan tanul**. Minden tanulság markdown. Nem rejtett súly. **Sage javaslattevő, te döntéshozó** — pont mint a publish-gate marketing oldalon.
+**Filozófia:** az agent tanul, **de láthatóan tanul**. Minden tanulság markdown. Nem rejtett súly. **Az agent javaslattevő, te döntéshozó** — pont mint a publish-gate marketing oldalon.
 
-Ez a minta **kiterjeszthető más agentekre** (Presto editorial taste, Broker negotiation patterns, stb.) — de jelenleg csak Sage rendelkezik vele.
+Ez a minta Broker (sales patterns) és Forge (practice learnings) felé is terjeszthető.
 
 ---
 
@@ -262,8 +266,8 @@ Ez a minta **kiterjeszthető más agentekre** (Presto editorial taste, Broker ne
 | **Agents** | d3.js v7 force-directed graph 6 agent-csomóponttal, 4 színkódolt élkategóriával, draggable, kattintható |
 
 **Per-agent detail dashboards:**
-- **Sage:** `_dashboards/sage/index.html` v0.1.0 — 9 panel, élő-fetch, zero hardcode, schema `sage.lastrun.v1`-ből olvas
-- **Többi (Librarian, Maestro, Curator, Presto, Broker):** **nincs még** — "Detail page coming soon" overlay a kártyán
+- **Alfred:** `_dashboards/alfred/index.html` (or `sage/index.html` legacy rename) — 9 panel, élő-fetch, zero hardcode
+- **Többi (Librarian, Maestro, Curator, Presto, Broker, Forge):** részleges, Curator `build` módban bővíthető
 
 **Design system:** `_dashboards/_design/DESIGN_SYSTEM.md` (Curator karbantartja, v0.1.0).
 
@@ -275,10 +279,10 @@ Ez a minta **kiterjeszthető más agentekre** (Presto editorial taste, Broker ne
 
 ## 12. Pending work — mi következik
 
-### Sage
-- [ ] **Smoke test:** user beilleszti a mockolt referenciát a Referencia chatbe (lásd `00_Prompts/BDOS/agents/sage/REFERENCE_FORMAT.md` §smoke test). Aztán kézzel `/sage-harvest`, megnézzük a dashboardon.
-- [ ] **Local scheduling:** macOS launchd plist írása `~/Library/LaunchAgents/`-be — daily 06:00 (`sage-harvest`) + hétfő 06:05 (`sage-curate`). NE Anthropic cloud routine — Sage Chrome MCP-t és lokális fájlrendszert igényel.
-- [ ] **Első éles futás után** — figyelni az első learning-proposalokra, finomítani.
+### Alfred
+- [ ] **Scheduling verify:** `alfred-daily-harvest` + `alfred-weekly-curate` jobs seeded az `agent_observability.db`-ben (`seed_alfred_cognition_jobs()`). Ellenőrizd a scheduler dashboard-on.
+- [ ] **Harvest smoke test:** `/alf-harvest` kézzel, megnézzük az output-ot (thoughts/ + atomic/).
+- [ ] **Első éles curate futás után** — figyelni az első alfred learning-proposalokra, finomítani.
 
 ### Broker
 - [ ] **v0.2 design:** modes spec, slash commands generálása (`brk-status`, `brk-today`, stb. — Presto-mintára), `SalesEngine.md` template a per-Area state-hez, `_dashboards/00_SALES_INDEX.md` cross-project aggregátor.
@@ -288,7 +292,11 @@ Ez a minta **kiterjeszthető más agentekre** (Presto editorial taste, Broker ne
 - [ ] Per-agent dashboard build (Librarian, Maestro, Curator, Presto, Broker) — mind élő-fetch, hardcode-mentes, a Sage dashboard mint reference implementation
 - [ ] Curator-on át (`/dash-build`), 1-2 per session ütemben
 
-### Tervezett agentek (a 4-5 cap miatt csak akkor, ha tényleg kellenek)
+### Forge
+- [ ] **v0.2 design:** modes spec + slash commands (forge- prefix, ~13 cmd) + per-area practice filing workflow
+- [ ] Registration fájl létrehozása: `.claude/agents/forge.md` (v0.2 TODO via Maestro `team-introduce`)
+
+### Tervezett agentek (a 7-cap miatt csak akkor, ha tényleg kellenek)
 - Product Strategist
 - Operations Steward
 - Exploration Agent
@@ -305,7 +313,7 @@ A leggyorsabb ramp-up sorrend:
 3. `00_Prompts/BDOS/00_BDOS_PRIMER.md` — ez a dokumentum (ha még nem olvastad)
 4. `00_Prompts/BDOS/brainstorm/brainstorm_cognition_stack_2026-05-23.md` — a cognition stack felismerés (alap-filozófia)
 5. `CLAUDE.md` (vault root) — vault konvenciók, PARA
-6. `00_Prompts/BDOS/agents/sage/SAGE_DESIGN_v0.1.md` — a legrészletesebb agent-spec (v0.2 állapotban)
+6. `00_Prompts/BDOS/agents/alfred.md` — a legrészletesebb kognitív agent-spec (Sage-merged v0.3)
 7. `_dashboards/_design/DESIGN_SYSTEM.md` — dashboard design system
 8. `_dashboards/index.html` — főnaptár (Areas/Agents tabs)
 
@@ -370,13 +378,15 @@ Verzió-sync, AGENTS_INDEX-konzisztencia, broken cross-referencia.
 
 **Curator (7):** `/dash-survey`, `/dash-build`, `/dash-tend`, `/dash-retire`, `/dash-audit`, `/dash-serve`, `/dash-promote`
 
-**Sage (14):** `/sage-status`, `/sage-harvest`, `/sage-curate`, `/sage-summary`, `/sage-find`, `/sage-chat`, `/sage-edit`, `/sage-promote`, `/sage-index`, `/sage-learnings`, `/sage-learning-accept`, `/sage-learning-reject`, `/sage-learning-retire`, `/sage-learning-edit`
+**Alfred (17):** `/alf-capture`, `/alf-sync`, `/alf-today`, `/alf-status`, `/alf-todo`, `/alf-remind`, `/alf-done`, `/alf-tasks`, `/alf-harvest`, `/alf-curate`, `/alf-chat`, `/alf-learn`, `/alf-learnings`, `/alf-learning-accept`, `/alf-learning-edit`, `/alf-learning-reject`, `/alf-learning-retire`
 
-**Presto (7):** `/pres-status`, `/pres-today`, `/pres-plan`, `/pres-run`, `/pres-resume`, `/pres-measure`, `/pres-index`
+**Presto (16):** `/pres-status`, `/pres-today`, `/pres-plan`, `/pres-run`, `/pres-resume`, `/pres-measure`, `/pres-index`, `/pres-adapt`, `/pres-reflect`, `/pres-audience`, `/pres-discover`, `/pres-learnings`, `/pres-learning-accept`, `/pres-learning-reject`, `/pres-learning-retire`, `/pres-learning-edit`
 
-**Broker (0):** placeholder, slash command-ek v0.2-ben
+**Broker (12):** `/brk-status`, `/brk-today`, `/brk-plan`, `/brk-run`, `/brk-resume`, `/brk-measure`, `/brk-index`, `/brk-reflect`, `/brk-learnings`, `/brk-learning-accept`, `/brk-learning-reject`, `/brk-learning-retire`
 
-**Összesen:** 44 slash command (6+10+7+14+7+0).
+**Forge (0):** placeholder, slash command-ek v0.2-ben (forge- prefix foglalt)
+
+**Összesen:** ~71 slash command aktív (Forge v0.2-ben +~13).
 
 ---
 
@@ -385,5 +395,6 @@ Verzió-sync, AGENTS_INDEX-konzisztencia, broken cross-referencia.
 | Verzió | Dátum | Változás |
 |---|---|---|
 | 1.0 | 2026-05-24 | Első kiadás — 6 aktív agent (Librarian v0.5, Maestro v0.2, Curator v0.2, Sage v0.2, Presto v0.2, Broker v0.1 placeholder). Főnaptár v0.7.0 Areas/Agents tabs. Sage dashboard v0.1.0. |
+| 1.1 | 2026-05-28 | Sage deprecated (Alfred v0.3-ba merged). Agent count 6 → 7 (Alfred + Forge added). Slash command inventory updated. Graph edges updated. Invariant #7 Alfred-ra repointed. |
 
 **Frissítendő:** új agent érkezésekor, meglévő agent major-verzió ugrásakor, vagy ha architekturális invariáns változik.

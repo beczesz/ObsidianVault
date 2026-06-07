@@ -1,3 +1,15 @@
+---
+title: "Legacy / Archived Files — DO NOT USE"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Archived pre-v1.0 product files kept for historical reference only; current source of truth is Products/MASTER/products/*.md generated as products-v1.X.json since the versioning scheme changed from 3.x to 1.0 on 2026-05-07."
+description_source: auto
+description_hash: 1f4186bc0cba7b28
+id: 320a3641-6d35-4c21-9f96-53ceb969fd2e
+index_schema_version: 1
+bdos_index: true
+---
 # Legacy / Archived Files — DO NOT USE
 
 > These files are **archived from the pre-v1.0 era** when the product versioning scheme used 3.x numbers.

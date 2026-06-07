@@ -1,3 +1,15 @@
+---
+title: "Összegzése az eddigi beszélgetéseknek"
+date: 2026-04-16
+author: Becze Szabolcs
+status: active
+description: "Összefoglalás az ember és AI közötti esszenciális különbségekről négy dimenzió mentén (fizikai felelősség, intellektuális megértés, valódi empátia, értelmes vágyak), valamint javasolt fókusz az emberi kvalitások fejlesztésére és delegálásra az AI korszakában. Az írót érdekli, hogyan strukturálják tanulmánnyá vagy podcastsorozattá ezt a vizsgálat"
+description_source: auto
+description_hash: 6934efd6460999fd
+id: b0039d13-0bc7-4fe5-83e8-eab9b63480d2
+index_schema_version: 1
+bdos_index: true
+---
 Valóban sok mindent érintettünk már és egyet értek, hogy jó lenne szűkíteni és fókuszálni egy területre. Van is egy javaslatom, de előtte röviden összefoglalnám számomra a jelentőségét az előző témáknak.
 
 Kb. egy éve merült fel bennem először a kérdés, hogy mitől ember az ember, mi az amit az AI akkor sem tud elvenni tőlünk ha rohamosan fejlődik tovább. 

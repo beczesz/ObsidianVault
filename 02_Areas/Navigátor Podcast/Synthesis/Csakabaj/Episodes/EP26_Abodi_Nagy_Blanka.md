@@ -1,4 +1,7 @@
 ---
+description: "Az S01 finálé epizód vendég Abodi Nagy Blankával, aki a kudarcot újrakezdési lehetőségként értelmezi: bankrotúcián, karrierváltásokon és válláson keresztül az anyaságban és női vezetésben fedezi fel az igazi identitást. Az intim beszélgetés a nőként való önmeghatározás és a családfogalom redefiníciójáról szól."
+description_source: auto
+description_hash: df0ae601d89062e1
 version: 1.0
 type: csakabaj-synthesis
 episode: 26
@@ -11,7 +14,6 @@ synthesis_status: gold_standard
 id: afdcf57c-dc13-4d4d-b871-8fd6393ddc8f
 index_schema_version: 1
 ---
-
 # Csakabaj S01E26 — A kudarc a sárkányod, amit neked kell legyőzni (S01 FINALE)
 **Guest:** Abodi Nagy Blanka (kudarc, újrakezdés, női identitás) | **Host:** Józsa Levi  
 **Date:** 2024-12-25 | **Duration:** 95 minutes | **SRT Entries:** 1,888

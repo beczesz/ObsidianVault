@@ -1,3 +1,15 @@
+---
+title: "Exar Labs – Cég kontextus"
+date: 2026-03-04
+author: Becze Szabolcs
+status: active
+description: "Exar Labs egy székelyudvarhely-i 12 fős szoftverfejlesztő cég, amely outsourcing függőségből való kiszabadulásra törekszik AI-alapú üzleti rendszerek és saját digitális termékek fejlesztésén keresztül. Technológiai alapja a Frappe framework és modern AI-workflow, infrastruktúrája oktatási központ és tartalomgyártó stúdió."
+description_source: auto
+description_hash: 1a74037553b52cf9
+id: c1d49070-94c8-4183-9b20-1db0767a1ade
+index_schema_version: 1
+bdos_index: true
+---
 # Exar Labs – Cég kontextus
 
 ## Alapadatok

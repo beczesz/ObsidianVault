@@ -1,11 +1,13 @@
 ---
+description: "Stúdióban rögzítendő közelképek, talking head felvételek és voiceover szövegek a Fókuszpont kampány három reeljéhez; archív és on-location anyagok külön kezelendők."
+description_source: auto
+description_hash: e8ad54b950ed9c81
 type: shot-lista / forgatási csekklista
 purpose: Stúdió-forgatáson felveendő vágóképek (NEM tavalyi archív, NEM on-location)
 date: TBD (stúdió-nap)
 id: 3eaf8f5d-49b5-490b-b49b-a3355846386c
 index_schema_version: 1
 ---
-
 # Stúdióban felveendő vágóképek
 
 > Minden olyan vágókép, amit kontrollált fényben, stúdió-környezetben kell felvenni a három reelhez. A tavalyi archív felvételek (monstrancia, Csiszér, közösség) és az on-location forgatások (Anna+Dani selfie, kávézó, busz) NEM szerepelnek itt.

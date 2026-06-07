@@ -1,4 +1,7 @@
 ---
+description: "Peer-to-peer mobilizációs Reel fiatalok számára, ahol Anna és Dani selfie-stílusban hívnak meg másokat a Fókuszpontra. Tavalyi közösségi snitteket, éneket, mozgást montázs-szerűen használ az intim hangulat mellett, hogy elkerülje a formális vallási kommunikációt."
+description_source: auto
+description_hash: 4aa1c94324501dce
 type: forgatókönyv
 reel: "#2 — Horizontális (fiatal ↔ fiatal)"
 version: v2 (Szabolcs döntései beépítve)
@@ -13,7 +16,6 @@ target: fiatalok, peer-to-peer megosztás (Stories, TikTok, csoport-csetek)
 id: 666eed24-7719-4f03-ada2-1a0c98e4dd4b
 index_schema_version: 1
 ---
-
 # Reel #2 — Horizontális · Fiatalos peer-to-peer
 
 ## Koncepció

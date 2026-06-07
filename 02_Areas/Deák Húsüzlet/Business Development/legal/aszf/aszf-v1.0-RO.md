@@ -1,5 +1,8 @@
 ---
 title: "Termeni și Condiții Generale"
+description: "Termeni și Condiții Generale pentru platforma online deakhus.ro operată de EXARGROUPS S.R.L., reglementând utilizarea platformei, procesul de comandă, livrare, plată și drepturi ale consumatorilor pentru produse alimentare proaspete și congelate în zona Odorheiu Secuiesc."
+description_source: auto
+description_hash: e2783728e10a3201
 version: "1.0"
 status: DRAFT
 created: 2026-04-17
@@ -15,7 +18,6 @@ changelog:
 id: c10f6c28-9d6d-418f-916c-108dfdbb540f
 index_schema_version: 1
 ---
-
 # TERMENI ȘI CONDIȚII GENERALE
 
 **Deák Húsmíves Online Platform — deakhus.ro**

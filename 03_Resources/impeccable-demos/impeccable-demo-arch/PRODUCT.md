@@ -1,3 +1,15 @@
+---
+title: "PRODUCT.md — OBLIQUE / Architecture Studio (fiktív demó)"
+date: 2026-05-21
+author: Becze Szabolcs
+status: active
+description: "Fictional architecture studio portfolio landing page demonstrating editorial layout, warm material aesthetic, and motion-driven design. Targets clients and design professionals seeking craftsmanship and visual clarity."
+description_source: auto
+description_hash: c1a3e614464cb659
+id: d3ccbfb5-5a29-43fd-9680-d517df1d0fe5
+index_schema_version: 1
+bdos_index: true
+---
 # PRODUCT.md — OBLIQUE / Architecture Studio (fiktív demó)
 
 > Tanuló-demó. A stúdió, a projektek, a díjak és a személyek mind kitaláltak.

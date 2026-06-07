@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Synthesis of Csakabaj Podcast's 33rd episode featuring political analyst Illyés Gergely discussing Romania's electoral instability and regional implications. Includes narrative analysis, thematic breakdown, and PopScore assessment for serious Hungarian podcast listeners interested in Central European politics and current events."
+description_source: auto
+description_hash: e076e07bcdf4875d
+id: 01372690-eb37-4b96-aa1f-7e0f33484070
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP33 | Szülinap-hét #5

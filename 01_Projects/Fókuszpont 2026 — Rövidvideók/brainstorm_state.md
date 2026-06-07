@@ -1,5 +1,8 @@
 ---
 name: Fókuszpont 2026 — Brainstorm State
+description: "Fókuszpont 2026 imaesehez szóló két 30 másodperces reel forgatókönyvének brainstorm-fázisa: vertikális reel (szétszórt figyelem→fókusz Jézusra, kontemplatív) és horizontális reel (közösségi meghívás fiataloknak). Tartalmazz stratégiai döntéseket, dramaturgiai vázat, szereposztást és nyitott kérd"
+description_source: auto
+description_hash: b2bc63a9c706b20f
 type: think-engine-session
 created: 2026-05-18
 status: active
@@ -8,7 +11,6 @@ session_topic: 2-3 db 30 mp-es Fókuszpont reel forgatókönyv-fejlesztés
 id: 3554f333-6b23-4a19-bcdd-cbcafd6d7e7e
 index_schema_version: 1
 ---
-
 # Brainstorm State — Fókuszpont 2026 Rövidvideók
 
 ## Goal

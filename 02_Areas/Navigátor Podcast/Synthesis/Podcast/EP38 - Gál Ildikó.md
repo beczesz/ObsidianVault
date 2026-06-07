@@ -1,6 +1,9 @@
 ---
 ep_number: 38
 title: "„Ez a te családod. Én a te anyád vagyok" – Az örökbefogadó anya üzenete"
+description: "Klinikai pszichológus és örökbefogadó anya Ildikó személyes és gyakorlati betekintése az örökbefogadás folyamatába, az érzelmi kötődés kialakulásáról és az identitás kérdéseiről. Szakemberként és anyaként osztja meg 17 évi gyermekvédelmi tapasztalatát és Anna örökbefogadásának történetét."
+description_source: auto
+description_hash: 78bed517bf431f20
 guest: "Gál Ildikó"
 guest_title: "Klinikai pszichológus, 17 év gyermekvédelmi tapasztalat, örökbefogadó anya"
 date_published: 2026-02-17
@@ -22,7 +25,6 @@ created: 2026-04-06
 id: 96c27443-dd9f-4825-adc1-0fce05ed1dbe
 index_schema_version: 1
 ---
-
 # EP38 — „Ez a te családod. Én a te anyád vagyok" – Az örökbefogadó anya üzenete | Gál Ildikó
 
 ## Epizód-összefoglaló

@@ -1,0 +1,6172 @@
+1
+00:00:00,120 --> 00:00:03,719
+Miközben hallgattam az előadásodat,
+
+2
+00:00:01,640 --> 00:00:06,240
+eszembe jutott ez a híres mondás, ez a
+
+3
+00:00:03,719 --> 00:00:08,719
+gondolat, hogy a nehéz idők erős
+
+4
+00:00:06,240 --> 00:00:11,000
+embereket termelnek, és az erős emberek
+
+5
+00:00:08,719 --> 00:00:12,920
+pedig jó időket hoznak. A jó idők
+
+6
+00:00:11,000 --> 00:00:15,080
+viszont gyenge embereket termelnek ki
+
+7
+00:00:12,920 --> 00:00:17,359
+magukból. És talán mintogyha ebbe a
+
+8
+00:00:15,080 --> 00:00:19,640
+ciklusban lennénk most, hogy nagyon jó
+
+9
+00:00:17,359 --> 00:00:22,600
+volt az elmúlt öt év, az elmúlt 10 év
+
+10
+00:00:19,640 --> 00:00:24,640
+így az IT piacon. viszont mintha ez az
+
+11
+00:00:22,600 --> 00:00:26,560
+ellulás, ez az elpuhulás, ez kezdene
+
+12
+00:00:24,640 --> 00:00:28,240
+érződni, és hogy ezek a poha emberek
+
+13
+00:00:26,560 --> 00:00:29,920
+most mit fognak hozni, mintogyha ez e ez
+
+14
+00:00:28,240 --> 00:00:32,239
+lenne az egyik üzenete ennek a
+
+15
+00:00:29,920 --> 00:00:36,960
+vészcsengőhúzásnak, hogy figyeljetek
+
+16
+00:00:32,239 --> 00:00:36,960
+ide, mert baj jön biztosan.
+
+17
+00:00:38,120 --> 00:00:42,239
+Sziasztok! Körülbelül egy éve már van
+
+18
+00:00:40,239 --> 00:00:45,160
+bennem egy érzés azzal kapcsolatban,
+
+19
+00:00:42,239 --> 00:00:47,640
+hogy valami közeleg, és valami el fogja
+
+20
+00:00:45,160 --> 00:00:49,920
+érni ezt az informatikai piacot.
+
+21
+00:00:47,640 --> 00:00:52,480
+Bizonyos szempontból 2025-ben éreztük,
+
+22
+00:00:49,920 --> 00:00:56,079
+hogy már lelassul ez a piac, de ezt az
+
+23
+00:00:52,480 --> 00:00:58,840
+érzést a mai nap abszolút beigazolta,
+
+24
+00:00:56,079 --> 00:01:01,760
+amikor beszéltem Langmátéval a következő
+
+25
+00:00:58,840 --> 00:01:04,080
+vendégemmel. Langmáté, ha valaki, akkor
+
+26
+00:01:01,760 --> 00:01:06,200
+ő rálát arra, hogy mi történik itt az
+
+27
+00:01:04,080 --> 00:01:08,360
+erdélyi és egyáltalán a globális piacon
+
+28
+00:01:06,200 --> 00:01:11,200
+is, hogy milyen kvalitások kellenek
+
+29
+00:01:08,360 --> 00:01:14,520
+manapság ahhoz, hogy egy informatikus
+
+30
+00:01:11,200 --> 00:01:17,200
+sikeres tudjon lenni. Máté az élete jó
+
+31
+00:01:14,520 --> 00:01:19,799
+részét, a felét Dubában tölti. a másik
+
+32
+00:01:17,200 --> 00:01:21,960
+felét Spanyolországban tölti, egy saját
+
+33
+00:01:19,799 --> 00:01:23,360
+startupot is indított. Erről fogunk
+
+34
+00:01:21,960 --> 00:01:25,400
+beszélgetni, hogy hogyan látja a
+
+35
+00:01:23,360 --> 00:01:27,320
+globális piacot, hogy mi is történt így
+
+36
+00:01:25,400 --> 00:01:30,600
+az elmúlt években itt a romániai
+
+37
+00:01:27,320 --> 00:01:32,560
+szinten, és hogy körülbelül mi várható
+
+38
+00:01:30,600 --> 00:01:35,079
+majd a jövőben. Ha érdekel ez a
+
+39
+00:01:32,560 --> 00:01:37,680
+beszélgetés, akkor tarts velünk. Igen,
+
+40
+00:01:35,079 --> 00:01:39,759
+hát elérkeztünk a a digitális
+
+41
+00:01:37,680 --> 00:01:40,880
+székelyföldnek a végéhez, és az az
+
+42
+00:01:39,759 --> 00:01:42,119
+igazság, én is egy kicsit ki vagyok
+
+43
+00:01:40,880 --> 00:01:43,520
+fáradva. Nem tudom, hogy te hogy állsz
+
+44
+00:01:42,119 --> 00:01:45,799
+most még így szaminával.
+
+45
+00:01:43,520 --> 00:01:47,439
+>> Relatív jól. Köszönöm szépen. Még a míg
+
+46
+00:01:45,799 --> 00:01:49,079
+a szívem nem robban fel a kávétól, addig
+
+47
+00:01:47,439 --> 00:01:51,079
+nyomathatjuk.
+
+48
+00:01:49,079 --> 00:01:52,840
+>> Igen. Hát tudatosan hagytalak téged így
+
+49
+00:01:51,079 --> 00:01:54,799
+a a végére, mert éreztem, hogy ha most
+
+50
+00:01:52,840 --> 00:01:57,719
+ezt 40 percbe vagy 20 percbe kéne
+
+51
+00:01:54,799 --> 00:01:58,880
+belűríteni, túl fontos a téma is. Nagyon
+
+52
+00:01:57,719 --> 00:02:00,960
+fontos témákról akarok veled
+
+53
+00:01:58,880 --> 00:02:02,680
+beszélgetni, de mielőtt még belevágunk
+
+54
+00:02:00,960 --> 00:02:04,759
+ezekbe a témákba, szeretném, hogyha egy
+
+55
+00:02:02,680 --> 00:02:06,840
+kicsit megismernének így a nézők téged,
+
+56
+00:02:04,759 --> 00:02:10,160
+röviden összefoglalod, hogy az egyetemet
+
+57
+00:02:06,840 --> 00:02:11,760
+hol végezted, és utána milyen pozíciókb
+
+58
+00:02:10,160 --> 00:02:13,640
+dolgoztál az elmúlt időszakban? Persze
+
+59
+00:02:11,760 --> 00:02:16,319
+nagyon szívesen. Hát ugye én szatmá
+
+60
+00:02:13,640 --> 00:02:19,120
+németi születéső vagyok. 2010-ben
+
+61
+00:02:16,319 --> 00:02:20,920
+végeztem a sulit és aztán utána mint
+
+62
+00:02:19,120 --> 00:02:23,560
+sokan mások kolozsvár felé vettem az
+
+63
+00:02:20,920 --> 00:02:27,000
+irányt. A Bábesai tudományegyetem magyar
+
+64
+00:02:23,560 --> 00:02:28,560
+informatika szakára iratkoztam be, ahol
+
+65
+00:02:27,000 --> 00:02:30,800
+szerintem egy nagyon jó képzést kaptunk
+
+66
+00:02:28,560 --> 00:02:32,160
+három éven keresztül.
+
+67
+00:02:30,800 --> 00:02:34,040
+Igazából azt elmondhatom így
+
+68
+00:02:32,160 --> 00:02:35,680
+retrospektíven, hogy az egyetem az
+
+69
+00:02:34,040 --> 00:02:39,159
+szerintem a funkcióját az tökéletesen
+
+70
+00:02:35,680 --> 00:02:41,920
+betöltötte. Ö elég hamar ö kapcsolatba
+
+71
+00:02:39,159 --> 00:02:43,280
+kerültem az iparral is. Ugye hát ugye
+
+72
+00:02:41,920 --> 00:02:45,680
+itt a konferencia kapcsán is
+
+73
+00:02:43,280 --> 00:02:47,120
+elmondhatjuk azt meg akik itt helyben
+
+74
+00:02:45,680 --> 00:02:50,200
+vannak azok valószínűleg tudják, hogy
+
+75
+00:02:47,120 --> 00:02:52,760
+ugye Simon Károly tanár úr
+
+76
+00:02:50,200 --> 00:02:56,440
+elég sok kezdeményezésnek
+
+77
+00:02:52,760 --> 00:02:58,560
+a az atja mondjuk úgy ilyen ilyen téren.
+
+78
+00:02:56,440 --> 00:03:01,080
+Tehát ez a
+
+79
+00:02:58,560 --> 00:03:03,680
+az egyetemnek az iparhoz való közelebb
+
+80
+00:03:01,080 --> 00:03:05,560
+hozatalához azért ő igen magas mértékben
+
+81
+00:03:03,680 --> 00:03:07,440
+hozzájárult.
+
+82
+00:03:05,560 --> 00:03:11,280
+Azt is elmondhatom ugye, hogy annak
+
+83
+00:03:07,440 --> 00:03:13,400
+idején egy elég válogatott
+
+84
+00:03:11,280 --> 00:03:15,120
+társasággal dolgozott ő gyakorlatilag
+
+85
+00:03:13,400 --> 00:03:17,879
+együtt. Tehát még sose felejtettem el a
+
+86
+00:03:15,120 --> 00:03:21,720
+Bulgakovban volt egy ilyen interjú a a
+
+87
+00:03:17,879 --> 00:03:23,319
+olyan olyan irányba, hogy
+
+88
+00:03:21,720 --> 00:03:25,519
+ugye aki vele szeretett volna dolgozni,
+
+89
+00:03:23,319 --> 00:03:27,159
+az az mindenképpen egy néhány
+
+90
+00:03:25,519 --> 00:03:28,560
+követelményen, egy követelmi rendszer
+
+91
+00:03:27,159 --> 00:03:31,080
+néhány pontjának meg kellett felelni.
+
+92
+00:03:28,560 --> 00:03:34,200
+kötelező volt például RTDK dolgozatot
+
+93
+00:03:31,080 --> 00:03:36,120
+publikálni, azon kívül kötelező volt
+
+94
+00:03:34,200 --> 00:03:37,640
+potenciálisan, hogyha tovább tovább
+
+95
+00:03:36,120 --> 00:03:39,239
+javasolták további terr, akkor
+
+96
+00:03:37,640 --> 00:03:41,840
+potenciálisan oda is ki kellett venni.
+
+97
+00:03:39,239 --> 00:03:44,640
+Tehát ezeket a játékszabályokat
+
+98
+00:03:41,840 --> 00:03:46,319
+a tanár úr az időben időben lefektette,
+
+99
+00:03:44,640 --> 00:03:47,799
+de hát ez tud tudva a levél volt és
+
+100
+00:03:46,319 --> 00:03:50,239
+tudtuk, hogy akkor ennek a munkának meg
+
+101
+00:03:47,799 --> 00:03:52,840
+is lesz az eredménye. Valamint hamar
+
+102
+00:03:50,239 --> 00:03:54,920
+kapcsolatba kerültünk a Có Spring nevű
+
+103
+00:03:52,840 --> 00:03:58,000
+céggel, ahol egy egy nagyon kiváló
+
+104
+00:03:54,920 --> 00:03:59,720
+mentorprogramba vehettünk részt. Ott meg
+
+105
+00:03:58,000 --> 00:04:01,720
+megint csak itt volt a konferencián a
+
+106
+00:03:59,720 --> 00:04:03,840
+törökvistai Tamás, aki a mondjuk, hogy a
+
+107
+00:04:01,720 --> 00:04:06,360
+másik mentorom, tehát a az egyetemi meg
+
+108
+00:04:03,840 --> 00:04:08,599
+a céges mentoraim közül őket tudnám
+
+109
+00:04:06,360 --> 00:04:10,640
+erősen kiemelni.
+
+110
+00:04:08,599 --> 00:04:13,000
+És ezúttal is köszönöm nekik a
+
+111
+00:04:10,640 --> 00:04:14,439
+hozzájárulást a karrieremhez.
+
+112
+00:04:13,000 --> 00:04:17,479
+Egy adott pillanatban éreztem egy
+
+113
+00:04:14,439 --> 00:04:20,479
+kihívást és dobbantottam egyet ettől a
+
+114
+00:04:17,479 --> 00:04:22,639
+cégtől. Egy nagy céghez kerültem el az
+
+115
+00:04:20,479 --> 00:04:25,199
+nevű céghez, ahol egy nagy fizetés
+
+116
+00:04:22,639 --> 00:04:27,520
+feldolgozó platformon dolgoztam. Ott
+
+117
+00:04:25,199 --> 00:04:29,240
+relatív gyorsan lépkedtem föl a a
+
+118
+00:04:27,520 --> 00:04:30,600
+corporate ranglétrán és egy adott
+
+119
+00:04:29,240 --> 00:04:31,840
+pillanatban bejutottam egy ilyen
+
+120
+00:04:30,600 --> 00:04:34,199
+úgynevezett Software design lead
+
+121
+00:04:31,840 --> 00:04:36,639
+szerepkörbe, amikor gyakorlatilag egy
+
+122
+00:04:34,199 --> 00:04:38,280
+csapatnak a technikai kivitelezéséért
+
+123
+00:04:36,639 --> 00:04:40,720
+feleltem. Tehát többnyire már akkor
+
+124
+00:04:38,280 --> 00:04:43,199
+ilyen konzultatív architektúra jellegű
+
+125
+00:04:40,720 --> 00:04:46,120
+szerepkörben dolgoztam. És hát innen
+
+126
+00:04:43,199 --> 00:04:48,120
+indult igazából az izgalmasabb vagy a
+
+127
+00:04:46,120 --> 00:04:49,560
+nagyobb váltás, amikor pláne abban a
+
+128
+00:04:48,120 --> 00:04:52,400
+kontextusban, amikor ez még nem volt
+
+129
+00:04:49,560 --> 00:04:54,240
+teljesen népszerű, és a startup, mint
+
+130
+00:04:52,400 --> 00:04:57,560
+fogalom, az még nem nagyon létezett,
+
+131
+00:04:54,240 --> 00:05:01,039
+pláne nem a kolozsvári piacon.
+
+132
+00:04:57,560 --> 00:05:02,479
+2016 körül kaptam egy lehetőséget.
+
+133
+00:05:01,039 --> 00:05:04,560
+Igazából mai napig nem tudom, hogy ki
+
+134
+00:05:02,479 --> 00:05:07,039
+ajánlott be egy angol befektető
+
+135
+00:05:04,560 --> 00:05:09,720
+csoportnak a
+
+136
+00:05:07,039 --> 00:05:11,720
+az egyik oszlopos tagja megkeresett,
+
+137
+00:05:09,720 --> 00:05:13,600
+hogy neki van egy személyes projektje,
+
+138
+00:05:11,720 --> 00:05:15,600
+aminek építettek egy prototípust, és
+
+139
+00:05:13,600 --> 00:05:18,600
+szeretnének egy komoly kolozsvári
+
+140
+00:05:15,600 --> 00:05:20,160
+csapatot erre a prototípusra
+
+141
+00:05:18,600 --> 00:05:22,759
+igazából felépíteni, és ugye arra, hogy
+
+142
+00:05:20,160 --> 00:05:25,880
+ezt a terméket ezt tovább vigyük, erre
+
+143
+00:05:22,759 --> 00:05:28,600
+sikerült egy 5,5 millió eurós series a
+
+144
+00:05:25,880 --> 00:05:31,080
+fundingot egy komoly londoni befektető
+
+145
+00:05:28,600 --> 00:05:33,240
+csoporttól szerezni, és a azon kívül
+
+146
+00:05:31,080 --> 00:05:35,360
+pedig sikerült egy huszon valahány
+
+147
+00:05:33,240 --> 00:05:36,960
+személyes technikai csapatot
+
+148
+00:05:35,360 --> 00:05:39,479
+összeraknunk Kolozsváron, amelyeket én
+
+149
+00:05:36,960 --> 00:05:42,440
+vezettem. Egyébként ennek a cégnek volt
+
+150
+00:05:39,479 --> 00:05:45,960
+irodája Londonban, New Yorkban,
+
+151
+00:05:42,440 --> 00:05:47,800
+Szingaporban és Kolozsváron.
+
+152
+00:05:45,960 --> 00:05:52,080
+Ekkor kerültem ugye kapcsolatba a
+
+153
+00:05:47,800 --> 00:05:53,639
+startup világgal és
+
+154
+00:05:52,080 --> 00:05:55,199
+mondhatom, hogy azóta nem tudtam ezt a
+
+155
+00:05:53,639 --> 00:05:58,080
+dolgot elengedni. Ez a startup, ez
+
+156
+00:05:55,199 --> 00:05:59,919
+sajnos nem sikerült nem tudott tovább
+
+157
+00:05:58,080 --> 00:06:01,520
+menni. Ugye volt már egy csomó előadás
+
+158
+00:05:59,919 --> 00:06:03,400
+arról, hogy milyen kegyetlen ez a ez a
+
+159
+00:06:01,520 --> 00:06:06,039
+startup világ, ugye, hogy a az első
+
+160
+00:06:03,400 --> 00:06:08,599
+körben 60%, a második körben 30
+
+161
+00:06:06,039 --> 00:06:10,160
+valamennyi morzsolódik le. Mi sajnos
+
+162
+00:06:08,599 --> 00:06:12,280
+ebbe 30 valamennyi százalék-ba
+
+163
+00:06:10,160 --> 00:06:16,280
+tartoztunk. a Series Beat nem sikerült.
+
+164
+00:06:12,280 --> 00:06:17,880
+Voltak ígéretek, voltak jó potenciális
+
+165
+00:06:16,280 --> 00:06:19,599
+beszélgetések, de aztán sajnos nem
+
+166
+00:06:17,880 --> 00:06:22,440
+konkretizálódott semmi. És hát kifogy
+
+167
+00:06:19,599 --> 00:06:23,840
+kifogyott ez a startup a pénzből, amire
+
+168
+00:06:22,440 --> 00:06:25,880
+személyesen nagyon büszke vagyok, hogy a
+
+169
+00:06:23,840 --> 00:06:27,560
+termék még fejlesztő nélkül ezután
+
+170
+00:06:25,880 --> 00:06:30,560
+három-négy
+
+171
+00:06:27,560 --> 00:06:32,800
+bő évig még működött, és teljes
+
+172
+00:06:30,560 --> 00:06:34,800
+mértékben kiszolgálta az ügyfeleket.
+
+173
+00:06:32,800 --> 00:06:37,319
+Nyilván új fejlesztés nem történt rajta,
+
+174
+00:06:34,800 --> 00:06:40,039
+de karbantartás nélkül autópilóta módon
+
+175
+00:06:37,319 --> 00:06:41,400
+megtalálta a kiutat.
+
+176
+00:06:40,039 --> 00:06:42,919
+Úgyhogy erre nagyon nagyon büszke
+
+177
+00:06:41,400 --> 00:06:45,160
+vagyok.
+
+178
+00:06:42,919 --> 00:06:46,840
+Azután nyilván miután egyszer az ember
+
+179
+00:06:45,160 --> 00:06:49,840
+ilyen product cégnél dolgozik, azután
+
+180
+00:06:46,840 --> 00:06:51,120
+nagyon nehéz visszatérni. Tehát mikor ez
+
+181
+00:06:49,840 --> 00:06:53,120
+a cég csődbe ment, akkor komoly
+
+182
+00:06:51,120 --> 00:06:56,759
+problémát jelentett ugye elhelyezkedni a
+
+183
+00:06:53,120 --> 00:06:58,720
+kolozsvári piacon megint. Ö rengeteg
+
+184
+00:06:56,759 --> 00:07:01,440
+munkalehetőség volt pedig abb az időben,
+
+185
+00:06:58,720 --> 00:07:02,400
+tehát elhelyezkedhettem volna, anyagilag
+
+186
+00:07:01,440 --> 00:07:05,199
+is
+
+187
+00:07:02,400 --> 00:07:06,639
+teljesen korrekt bérezést
+
+188
+00:07:05,199 --> 00:07:08,400
+tudtak volna biztosítani, de valahogy
+
+189
+00:07:06,639 --> 00:07:10,039
+éreztem egy hiányt, hogy ez ez így nekem
+
+190
+00:07:08,400 --> 00:07:12,240
+nem lesz elég, amíg aztán nagy nehezen
+
+191
+00:07:10,039 --> 00:07:14,400
+találtam egy egy olyan céget, amelyik
+
+192
+00:07:12,240 --> 00:07:17,120
+amelyben megtaláltam a helyemet. Ott egy
+
+193
+00:07:14,400 --> 00:07:19,800
+infrastruktúra csapatot csapatot
+
+194
+00:07:17,120 --> 00:07:21,960
+vezettem. Az az egy az egy scaleup volt,
+
+195
+00:07:19,800 --> 00:07:24,240
+egy jóval későbbi stádium matúabb
+
+196
+00:07:21,960 --> 00:07:26,080
+startup cég végülis, vagy hát ők még
+
+197
+00:07:24,240 --> 00:07:27,479
+startupnak hívják magukat, de
+
+198
+00:07:26,080 --> 00:07:29,680
+gyakorlatilag azért ott már más
+
+199
+00:07:27,479 --> 00:07:30,400
+szabályok
+
+200
+00:07:29,680 --> 00:07:32,800
+érvényesek.
+
+201
+00:07:30,400 --> 00:07:33,080
+>> Akkor ők már benne voltak a 99%-ban, ami
+
+202
+00:07:32,800 --> 00:07:35,560
+meg
+
+203
+00:07:33,080 --> 00:07:37,280
+>> Igen, ők benne voltak a 99%-ban. Ők egy
+
+204
+00:07:35,560 --> 00:07:39,960
+nagyon szépet exiteltek, és aztán
+
+205
+00:07:37,280 --> 00:07:43,360
+eladták egy nagy-nagy amerikai cégnek a
+
+206
+00:07:39,960 --> 00:07:45,039
+a scaleupot, és egy szép szép exitet
+
+207
+00:07:43,360 --> 00:07:47,720
+tudhatnak be a tulajdonosok maguk
+
+208
+00:07:45,039 --> 00:07:49,520
+mögött. Ö ott nyilván teljesen más
+
+209
+00:07:47,720 --> 00:07:51,520
+problémák vagy máskálájú problémák
+
+210
+00:07:49,520 --> 00:07:54,159
+voltak. Ott már 100 valahány fejlesztő
+
+211
+00:07:51,520 --> 00:07:57,159
+volt akinek ugye a munkáját segítette az
+
+212
+00:07:54,159 --> 00:08:01,479
+én csapatom, ahol a platformot működhető
+
+213
+00:07:57,159 --> 00:08:03,840
+infrastruktúrát tartottuk mi karban. Ö
+
+214
+00:08:01,479 --> 00:08:06,400
+ezután dolgoztam még egy, ugyancsak
+
+215
+00:08:03,840 --> 00:08:09,720
+CTO-ként egy blockchain alapú
+
+216
+00:08:06,400 --> 00:08:12,000
+befektetési alapnál, ami hát egy idő
+
+217
+00:08:09,720 --> 00:08:15,360
+után sajnos a blockchain ellen
+
+218
+00:08:12,000 --> 00:08:19,199
+kedvezőtlen körülmények között meg
+
+219
+00:08:15,360 --> 00:08:21,800
+valószínűleg a hype utáni
+
+220
+00:08:19,199 --> 00:08:23,599
+crash miatt az sajnos sajnos bezárásra
+
+221
+00:08:21,800 --> 00:08:25,639
+került.
+
+222
+00:08:23,599 --> 00:08:27,520
+És aztán utána belefogtam a Binatch
+
+223
+00:08:25,639 --> 00:08:30,199
+Agencybe, amikor úgy döntöttem, hogy
+
+224
+00:08:27,520 --> 00:08:32,279
+lehet megpróbálnám saját magam is ezt a
+
+225
+00:08:30,199 --> 00:08:35,399
+szoftverfejlesztésnek nevezett játékot
+
+226
+00:08:32,279 --> 00:08:37,240
+saját szakára vállalkozóként.
+
+227
+00:08:35,399 --> 00:08:40,519
+Ugye a Binatch
+
+228
+00:08:37,240 --> 00:08:42,519
+kettő lábon áll, szerintem venture
+
+229
+00:08:40,519 --> 00:08:45,120
+stúdióként is működünk, ugyanis saját
+
+230
+00:08:42,519 --> 00:08:48,959
+termékeink is vannak.
+
+231
+00:08:45,120 --> 00:08:51,320
+Szám szerint kettő. azonkívül pedig a
+
+232
+00:08:48,959 --> 00:08:53,920
+bevétel nagy rész az még továbbra is
+
+233
+00:08:51,320 --> 00:08:55,800
+tradicionális úgymond agency
+
+234
+00:08:53,920 --> 00:08:58,079
+szolgáltatásból, software consulting
+
+235
+00:08:55,800 --> 00:08:59,880
+szolgáltatásból folyik be. Nagyjából 20
+
+236
+00:08:58,079 --> 00:09:02,959
+kollégával dolgozunk most együtt
+
+237
+00:08:59,880 --> 00:09:03,920
+>> jelenleg. Most éppen földrajzilag hol
+
+238
+00:09:02,959 --> 00:09:06,399
+élsz?
+
+239
+00:09:03,920 --> 00:09:08,920
+>> Hát ez egy jó kérdés.
+
+240
+00:09:06,399 --> 00:09:11,480
+Jelenleg földrajzilag Dubaj, Malaga és
+
+241
+00:09:08,920 --> 00:09:14,079
+Szatmár németi között valahol nemrég
+
+242
+00:09:11,480 --> 00:09:15,920
+megállított a rendőr egy ilyen közúti
+
+243
+00:09:14,079 --> 00:09:17,519
+ellenőrzés alkalmával, és elkérte az
+
+244
+00:09:15,920 --> 00:09:18,880
+irataimat, kérdezte, hogy honnan honnan
+
+245
+00:09:17,519 --> 00:09:20,240
+vagyok? Hát ugye az autónak román
+
+246
+00:09:18,880 --> 00:09:22,760
+rendszám volt. Ez Spanyolországban
+
+247
+00:09:20,240 --> 00:09:24,120
+történt melltam, hogy Romániából akkor
+
+248
+00:09:22,760 --> 00:09:26,640
+mondta, hogy szeretne egy személytit is
+
+249
+00:09:24,120 --> 00:09:28,959
+elkérni. Adtam egy magyar személyit. Ez
+
+250
+00:09:26,640 --> 00:09:30,440
+már fel felvetett néhány kérdést. Utána
+
+251
+00:09:28,959 --> 00:09:32,240
+elkért a jogosítványomat. Odaadtam a
+
+252
+00:09:30,440 --> 00:09:34,040
+Dubai jogosítványomat, és megkérdezte,
+
+253
+00:09:32,240 --> 00:09:35,680
+hogy egyébként mit csinálok itt? És
+
+254
+00:09:34,040 --> 00:09:38,000
+mondtam, hogy itt élek. Tehát, hogy
+
+255
+00:09:35,680 --> 00:09:40,480
+nagyjából ezen a komplexitáson tudom ezt
+
+256
+00:09:38,000 --> 00:09:43,240
+a problémát jobban elmagyarázni.
+
+257
+00:09:40,480 --> 00:09:45,480
+De gyakorlatilag igyekszem az időmetek
+
+258
+00:09:43,240 --> 00:09:46,399
+között a három három helység között
+
+259
+00:09:45,480 --> 00:09:47,839
+elosztani manság.
+
+260
+00:09:46,399 --> 00:09:50,880
+>> És miért pont Dubá?
+
+261
+00:09:47,839 --> 00:09:53,880
+>> A Dubában őszintén leges legelőször
+
+262
+00:09:50,880 --> 00:09:55,160
+főleg érdeklődésből mentünk ki. Ö egy
+
+263
+00:09:53,880 --> 00:09:58,839
+adott pillanatban meg elkezdtek
+
+264
+00:09:55,160 --> 00:10:00,800
+megjelenni a a YouTube videóim között
+
+265
+00:09:58,839 --> 00:10:02,519
+olyan ajánlások, amik
+
+266
+00:10:00,800 --> 00:10:04,160
+kezdték magyarázni azt, hogy igazából
+
+267
+00:10:02,519 --> 00:10:05,839
+Dubajban mennyire jó az élet, meg
+
+268
+00:10:04,160 --> 00:10:08,200
+mennyire jó az ökoszisztém, pláne mint
+
+269
+00:10:05,839 --> 00:10:10,079
+vállalkozó, mennyire izgalmas
+
+270
+00:10:08,200 --> 00:10:13,279
+lehetőségek vannak kint, milyen jól van
+
+271
+00:10:10,079 --> 00:10:15,000
+megszervezve az élet. És ezzel
+
+272
+00:10:13,279 --> 00:10:16,640
+párhuzamosan elkezdtem azt is látni,
+
+273
+00:10:15,000 --> 00:10:20,600
+hogy például a LinkedInemen elkezdtek
+
+274
+00:10:16,640 --> 00:10:23,200
+megjelenni olyan volt vagy aktuális
+
+275
+00:10:20,600 --> 00:10:25,839
+kollégák, akik
+
+276
+00:10:23,200 --> 00:10:27,240
+akik odaköltöztek, és kíváncsi lettem
+
+277
+00:10:25,839 --> 00:10:28,680
+olyan értelemben, hogy akkor vajon
+
+278
+00:10:27,240 --> 00:10:30,000
+tényleg úgy van-e minden, mint ahogy
+
+279
+00:10:28,680 --> 00:10:32,800
+ezek a videók bemutatják. Ezzel
+
+280
+00:10:30,000 --> 00:10:37,079
+párhuzamosan elolvastam a Seik CEO nevű
+
+281
+00:10:32,800 --> 00:10:39,079
+könyvet is, ami amit a a Dubai Seiknek
+
+282
+00:10:37,079 --> 00:10:41,680
+az asszisztense, tehát ugye az ottani
+
+283
+00:10:39,079 --> 00:10:43,320
+vezetőnek az asszisztens írt arról, hogy
+
+284
+00:10:41,680 --> 00:10:45,440
+milyen
+
+285
+00:10:43,320 --> 00:10:48,000
+milyen milyen gondolat mentén építik ők
+
+286
+00:10:45,440 --> 00:10:49,920
+a az országokat. És
+
+287
+00:10:48,000 --> 00:10:51,440
+elég propagandikusnak hangzott olyan
+
+288
+00:10:49,920 --> 00:10:53,519
+értelemben, hogy nem hittem el, hogy
+
+289
+00:10:51,440 --> 00:10:57,680
+azok a dolgok tényleg működhetnek úgy
+
+290
+00:10:53,519 --> 00:11:00,800
+egy országba, hogy ott ott körbeírják. M
+
+291
+00:10:57,680 --> 00:11:03,800
+ezért ezért mentem igazából ki én is és
+
+292
+00:11:00,800 --> 00:11:05,519
+a a feleségem is mindig amikor valahova
+
+293
+00:11:03,800 --> 00:11:08,079
+így elmentünk akár potenciális
+
+294
+00:11:05,519 --> 00:11:09,880
+életviteli szándékkal, akkor mindig
+
+295
+00:11:08,079 --> 00:11:14,880
+igyekeztünk először csak kislábujjal
+
+296
+00:11:09,880 --> 00:11:16,560
+belemászni a a mélyvízbe. Ö kimentünk
+
+297
+00:11:14,880 --> 00:11:18,160
+két hónapra, és azt mondtuk, hogyha egy
+
+298
+00:11:16,560 --> 00:11:19,320
+hónap után még mindig úgy gondoljuk,
+
+299
+00:11:18,160 --> 00:11:21,959
+hogy ez egy jó ötlet, akkor
+
+300
+00:11:19,320 --> 00:11:24,240
+továbbléphetünk potenciálisan
+
+301
+00:11:21,959 --> 00:11:27,120
+keresgélhetünk hosszútávú vagy
+
+302
+00:11:24,240 --> 00:11:29,519
+középszútávú letelepedési opciókat is,
+
+303
+00:11:27,120 --> 00:11:31,720
+ami a Dubai esetében a legesleegyszerűbb
+
+304
+00:11:29,519 --> 00:11:33,399
+egy ilyen investor
+
+305
+00:11:31,720 --> 00:11:35,320
+letelepedési engedélynek a
+
+306
+00:11:33,399 --> 00:11:36,720
+megszonzorizálása. Ez egyébként pénzbe
+
+307
+00:11:35,320 --> 00:11:38,680
+kerül, tehát ezt ki kell fizetni. Ezt a
+
+308
+00:11:36,720 --> 00:11:40,639
+cég egy megalapított cég után lehet
+
+309
+00:11:38,680 --> 00:11:42,120
+igényelni. Legalább egy megalapított cég
+
+310
+00:11:40,639 --> 00:11:44,200
+után az ember többet alapít, akkor csak
+
+311
+00:11:42,120 --> 00:11:45,519
+egyszer kell kifizetni. Tehát ez egy
+
+312
+00:11:44,200 --> 00:11:47,680
+>> ez mekkora ez az összeg?
+
+313
+00:11:45,519 --> 00:11:50,560
+>> Ez nagyjából két évente ilyen most
+
+314
+00:11:47,680 --> 00:11:54,240
+Euróban ilyen 2500 eur-nyi összeg,
+
+315
+00:11:50,560 --> 00:11:57,839
+úgyhogy az ügyintézést egy magyar ügyvéd
+
+316
+00:11:54,240 --> 00:11:59,440
+úriember segítségével jártuk végig.
+
+317
+00:11:57,839 --> 00:12:01,200
+>> És akkor milyen volt a propagandához
+
+318
+00:11:59,440 --> 00:12:02,040
+képest Dubá? Mert még mindig ott
+
+319
+00:12:01,200 --> 00:12:04,560
+vagytok.
+
+320
+00:12:02,040 --> 00:12:07,519
+>> Igen, meglepően hasonló. Azt kell
+
+321
+00:12:04,560 --> 00:12:09,600
+mondanom, hogy nyilván költői túlzás
+
+322
+00:12:07,519 --> 00:12:11,880
+lehet, hogy van a könyvben, de azért
+
+323
+00:12:09,600 --> 00:12:14,279
+99%-ban
+
+324
+00:12:11,880 --> 00:12:16,279
+igaznak találtam azokat és pláne azokat
+
+325
+00:12:14,279 --> 00:12:19,360
+a gondolatokat, ami alapján ezt az
+
+326
+00:12:16,279 --> 00:12:20,959
+ökoszisztémát ők építették.
+
+327
+00:12:19,360 --> 00:12:23,839
+Nagyon jó kivitelezés, nagyon jó
+
+328
+00:12:20,959 --> 00:12:25,920
+szolgáltatások, teljesen digitalizált
+
+329
+00:12:23,839 --> 00:12:27,720
+állami ökoszisztém. Tehát nagyon
+
+330
+00:12:25,920 --> 00:12:29,079
+érdekesnek tartom például azt is, hogy
+
+331
+00:12:27,720 --> 00:12:31,399
+ugye amiről mi most beszélgettünk
+
+332
+00:12:29,079 --> 00:12:33,519
+kormány digitalizációról, az ott
+
+333
+00:12:31,399 --> 00:12:35,560
+2012-ben merült felleges legelőször,
+
+334
+00:12:33,519 --> 00:12:38,320
+amikor mindenki nálunk úgymond
+
+335
+00:12:35,560 --> 00:12:40,160
+e-governmentről, e e kormányzatról
+
+336
+00:12:38,320 --> 00:12:42,959
+beszélt, akkor ők már mgvermentről
+
+337
+00:12:40,160 --> 00:12:45,240
+beszéltek, ami mobil governmentet
+
+338
+00:12:42,959 --> 00:12:48,040
+jelentett, tehát mobil kormányzást, ami
+
+339
+00:12:45,240 --> 00:12:50,399
+gyakorlatilag azt jelentette, hogy
+
+340
+00:12:48,040 --> 00:12:52,040
+bármilyen kormányzati funkció elérhető
+
+341
+00:12:50,399 --> 00:12:55,399
+kell legyen egy mobiltelefonról. Tehát
+
+342
+00:12:52,040 --> 00:12:57,920
+ez a jogosítvány igénylésétől kezdve az
+
+343
+00:12:55,399 --> 00:12:59,720
+adórezidensi igazoláson keresztül
+
+344
+00:12:57,920 --> 00:13:01,680
+abszolút mindent magába foglal. És ez
+
+345
+00:12:59,720 --> 00:13:03,800
+így is van egyébként. Szinte minden
+
+346
+00:13:01,680 --> 00:13:05,760
+kormány
+
+347
+00:13:03,800 --> 00:13:08,040
+entitássnak, minisztériumnak van egy van
+
+348
+00:13:05,760 --> 00:13:10,720
+egy saját applikációja, amibe egy
+
+349
+00:13:08,040 --> 00:13:12,480
+központosított belépési rendszerre
+
+350
+00:13:10,720 --> 00:13:13,880
+bárhova be lehet lépni, minden mindennel
+
+351
+00:13:12,480 --> 00:13:15,920
+össze van integrálva. Tehát egy nagyon
+
+352
+00:13:13,880 --> 00:13:18,000
+kényelmes ökoszisztéma úgy
+
+353
+00:13:15,920 --> 00:13:20,480
+magánszemélyként, mint cégként.
+
+354
+00:13:18,000 --> 00:13:22,720
+>> És akkor Spanyolország. Spanyolország az
+
+355
+00:13:20,480 --> 00:13:26,880
+ezelőtt igazából hamarabb hamarabbi
+
+356
+00:13:22,720 --> 00:13:29,440
+szerelem volt. A covid után
+
+357
+00:13:26,880 --> 00:13:31,240
+pár hónappal ugye amikor amikor a
+
+358
+00:13:29,440 --> 00:13:33,160
+tiltások azok feloldottak, akkor úgy
+
+359
+00:13:31,240 --> 00:13:35,040
+döntöttünk, hogy egy hosszabbat
+
+360
+00:13:33,160 --> 00:13:38,839
+kirándulnék. Ugye egy kirándulának ez
+
+361
+00:13:35,040 --> 00:13:41,199
+egy stresszes néhány év után történt, és
+
+362
+00:13:38,839 --> 00:13:44,120
+hát teljes véletlenül a Wizardől egy
+
+363
+00:13:41,199 --> 00:13:48,079
+olyan push notificationt kaptam, hogy
+
+364
+00:13:44,120 --> 00:13:50,800
+csak ma 9,90 centér lehet utazni a
+
+365
+00:13:48,079 --> 00:13:54,240
+következő helyszínekre. És megkérdeztem
+
+366
+00:13:50,800 --> 00:13:56,440
+a akkor a páromat, hogy hova menjünk, és
+
+367
+00:13:54,240 --> 00:13:59,519
+teljesen véletlenül hallotta ezt egy egy
+
+368
+00:13:56,440 --> 00:14:01,759
+kolléganőnk, aki azt javasolta, hogy
+
+369
+00:13:59,519 --> 00:14:04,920
+látogassuk meg őket Malagába. ők
+
+370
+00:14:01,759 --> 00:14:07,440
+downhill bicikli szerelmesek és rajongók
+
+371
+00:14:04,920 --> 00:14:08,800
+és Kolozsváron éltek ezelőtt és egy
+
+372
+00:14:07,440 --> 00:14:10,680
+adott pillanatban, amikor rájöttek arra,
+
+373
+00:14:08,800 --> 00:14:13,519
+hogy igazából az egész évben ki lehetne
+
+374
+00:14:10,680 --> 00:14:15,360
+használni a spanyol jó időt arra, hogy
+
+375
+00:14:13,519 --> 00:14:17,240
+ezt a sportot űzhessék, akkor ők oda
+
+376
+00:14:15,360 --> 00:14:19,480
+kiköltöztek
+
+377
+00:14:17,240 --> 00:14:21,279
+és meghívtak magunkhoz minket. Akkor
+
+378
+00:14:19,480 --> 00:14:22,880
+nyilván ugyanígy turistaként mentünk ki,
+
+379
+00:14:21,279 --> 00:14:24,480
+tehát körbenéztünk, megtetszett az
+
+380
+00:14:22,880 --> 00:14:28,519
+életvitel, megtetszett az, hogy azért
+
+381
+00:14:24,480 --> 00:14:30,519
+ott elég elég nagy a a lazaság, szép a
+
+382
+00:14:28,519 --> 00:14:32,839
+természet. Tehát ilyen kirándulóhelynek
+
+383
+00:14:30,519 --> 00:14:34,600
+nagyon-nagyon tökéletesnek éreztük, és
+
+384
+00:14:32,839 --> 00:14:37,480
+úgy gondoltuk, hogy el tudjuk képzelni
+
+385
+00:14:34,600 --> 00:14:40,240
+azt, hogy akár potenciálisan többet is
+
+386
+00:14:37,480 --> 00:14:42,839
+legyünk ott. Úgyhogy következő évben
+
+387
+00:14:40,240 --> 00:14:45,639
+kutyástól, motorbiciklistől kimentünk
+
+388
+00:14:42,839 --> 00:14:47,920
+egy eredetileg két hónaposra tervezett
+
+389
+00:14:45,639 --> 00:14:50,040
+ilyen stakationre, tehát ugye dolgoztunk
+
+390
+00:14:47,920 --> 00:14:52,880
+is onnan, nem vakáció. Ak kell
+
+391
+00:14:50,040 --> 00:14:56,279
+elképzelni. Nyilván a hétvégénk, a a
+
+392
+00:14:52,880 --> 00:14:58,399
+hétvégeink, az esténk azok relaxációs
+
+393
+00:14:56,279 --> 00:15:01,160
+programmal t teltek el. Tehát
+
+394
+00:14:58,399 --> 00:15:03,000
+körbemotoroztuk ott az egész úgynevezett
+
+395
+00:15:01,160 --> 00:15:06,560
+Costa Sol régiót. Ez ugye Malaga
+
+396
+00:15:03,000 --> 00:15:08,199
+melletti tengerparti régiót Andalúziában
+
+397
+00:15:06,560 --> 00:15:10,480
+jelenti.
+
+398
+00:15:08,199 --> 00:15:12,160
+És abban az évben el is döntöttük, hogy
+
+399
+00:15:10,480 --> 00:15:14,959
+szeretnénk befektetni egy ingatlanba,
+
+400
+00:15:12,160 --> 00:15:18,320
+láttuk azt, hogy jók a a trendek olyan
+
+401
+00:15:14,959 --> 00:15:20,160
+értelemben, hogy felértékelődő
+
+402
+00:15:18,320 --> 00:15:22,240
+és fölfelé mutató íve volt az
+
+403
+00:15:20,160 --> 00:15:25,040
+ingatlanbefektetéseknek,
+
+404
+00:15:22,240 --> 00:15:28,720
+valamint rengeteg külföldi ugye pláne a
+
+405
+00:15:25,040 --> 00:15:30,839
+covid után elkezdte keresni a napsütéses
+
+406
+00:15:28,720 --> 00:15:35,040
+szép természetet, pláne ugye északi
+
+407
+00:15:30,839 --> 00:15:36,839
+országokból, Benelux államokból
+
+408
+00:15:35,040 --> 00:15:39,519
+idősek is, de aztán egyre inkább
+
+409
+00:15:36,839 --> 00:15:41,199
+fiatalok is, akik ugye Ugye eddig nem
+
+410
+00:15:39,519 --> 00:15:43,880
+tehették meg, hogy elmennek onnan, ahol
+
+411
+00:15:41,199 --> 00:15:45,880
+a munkahelyük volt. Miután ugye a remote
+
+412
+00:15:43,880 --> 00:15:47,600
+munkakultúra az az beütött, azután
+
+413
+00:15:45,880 --> 00:15:50,240
+rájöttek arra, hogy nem feltétlenül kell
+
+414
+00:15:47,600 --> 00:15:53,120
+a sötétbe ülni fél évet, és fogták a
+
+415
+00:15:50,240 --> 00:15:54,839
+sátorfájukat, és odébb mentek a spanyol
+
+416
+00:15:53,120 --> 00:15:56,360
+tengerpartra.
+
+417
+00:15:54,839 --> 00:15:58,600
+>> Szuper. Én azt hiszem, hogy ez jól
+
+418
+00:15:56,360 --> 00:16:00,120
+körvonalazza, habár nagyon sok kérdésem
+
+419
+00:15:58,600 --> 00:16:02,600
+lenne Dubáljal kapcsolatban is, meg az
+
+420
+00:16:00,120 --> 00:16:03,560
+életvitelekkel kapcsolatban, de azt
+
+421
+00:16:02,600 --> 00:16:06,440
+hiszem, hogy ez ez nagyon jól
+
+422
+00:16:03,560 --> 00:16:08,399
+körvonalazza azt, hogy hogyan éltek. Ö
+
+423
+00:16:06,440 --> 00:16:10,120
+kicsit térjünk rá magára a startup
+
+424
+00:16:08,399 --> 00:16:12,240
+világra meg
+
+425
+00:16:10,120 --> 00:16:14,000
+meg arra a cégre, amit most te vezetsz.
+
+426
+00:16:12,240 --> 00:16:15,440
+Az első kérdésem az az, hogy külön
+
+427
+00:16:14,000 --> 00:16:18,279
+kiemelted, hogy van egy outsourcing
+
+428
+00:16:15,440 --> 00:16:20,560
+része, tehát egy ilyen agency része is.
+
+429
+00:16:18,279 --> 00:16:23,399
+Ezt fontosnak látod, hogy ez amúgy egy
+
+430
+00:16:20,560 --> 00:16:24,959
+két lábon álljon a cégetek. Gondolom az
+
+431
+00:16:23,399 --> 00:16:27,480
+hoz egy stabilitást, és akkor közbe
+
+432
+00:16:24,959 --> 00:16:29,319
+tudtok kalandozni itt ott a startup
+
+433
+00:16:27,480 --> 00:16:31,800
+világában. Ezt amúgy tanácsolnád másnak
+
+434
+00:16:29,319 --> 00:16:34,040
+is, hogy így fogjon neki egy startupnak?
+
+435
+00:16:31,800 --> 00:16:36,560
+>> Abszolút tanácsolnám.
+
+436
+00:16:34,040 --> 00:16:38,440
+olyan értelemben ugye, hogy pláne ma
+
+437
+00:16:36,560 --> 00:16:40,720
+láttuk több előadásban is, hogy azért a
+
+438
+00:16:38,440 --> 00:16:42,839
+rizikó az megfel az megfelelően nagy
+
+439
+00:16:40,720 --> 00:16:44,959
+mértékben jelen van a startup
+
+440
+00:16:42,839 --> 00:16:46,839
+befektetések világába. Tehát ezt
+
+441
+00:16:44,959 --> 00:16:48,480
+ellensúlyozni mindig jó egy stabilabb
+
+442
+00:16:46,839 --> 00:16:50,079
+lábbal.
+
+443
+00:16:48,480 --> 00:16:52,560
+Azt is hozzátenném ugye, hogy ma
+
+444
+00:16:50,079 --> 00:16:56,079
+felszólaltam amellett, hogy igyekeznünk
+
+445
+00:16:52,560 --> 00:16:58,680
+kellene a az értékláncba egy magasabb
+
+446
+00:16:56,079 --> 00:17:00,680
+lépcsőfokra föllépni, amikor a szoftver
+
+447
+00:16:58,680 --> 00:17:03,519
+agencykről beszélünk és a software
+
+448
+00:17:00,680 --> 00:17:06,720
+consulting cégek
+
+449
+00:17:03,519 --> 00:17:08,520
+érték kínálatáról beszélünk.
+
+450
+00:17:06,720 --> 00:17:11,120
+Igyekszünk olyan olyan kollégákat
+
+451
+00:17:08,520 --> 00:17:13,600
+fölvenni, akik föl tudják venni a
+
+452
+00:17:11,120 --> 00:17:16,720
+boxkesztűt komolyabb feladatok ellen is,
+
+453
+00:17:13,600 --> 00:17:19,559
+akik megértik a cégekben levő politikai
+
+454
+00:17:16,720 --> 00:17:21,720
+és üzleti kihívásokat
+
+455
+00:17:19,559 --> 00:17:24,160
+és gyakorlatilag nagy hozzáadott
+
+456
+00:17:21,720 --> 00:17:26,760
+értékkel tudnak vagy becsatlakozni a
+
+457
+00:17:24,160 --> 00:17:28,520
+meglévő munkafolyamatokba.
+
+458
+00:17:26,760 --> 00:17:30,080
+Ezt kevésbé szoktuk preferálni, de van
+
+459
+00:17:28,520 --> 00:17:32,400
+olyan is, amikor erre van szükség. Tehát
+
+460
+00:17:30,080 --> 00:17:35,480
+ez az úgynevezett team augmentation
+
+461
+00:17:32,400 --> 00:17:37,360
+jellegű modell. Vannak olyan kontextusa,
+
+462
+00:17:35,480 --> 00:17:39,400
+amik akkor ez működik jól, és ezt is
+
+463
+00:17:37,360 --> 00:17:41,240
+szívesen elvállaljuk, de az igazi
+
+464
+00:17:39,400 --> 00:17:43,559
+hozzáadott értéket szerintem olyankor
+
+465
+00:17:41,240 --> 00:17:46,840
+tudjuk produkálni, amikor a labdát az
+
+466
+00:17:43,559 --> 00:17:47,919
+ügyfél átmeri dobni a mi oldalunkra, és
+
+467
+00:17:46,840 --> 00:17:51,360
+gyakorlatilag egy nagyobb
+
+468
+00:17:47,919 --> 00:17:53,640
+felelősségvállalás után
+
+469
+00:17:51,360 --> 00:17:55,960
+tudunk tudunk közösen értéket teremteni,
+
+470
+00:17:53,640 --> 00:17:58,159
+és a kontroll is egy kicsit átkerül a mi
+
+471
+00:17:55,960 --> 00:18:00,120
+oldalunkra. Nyilván üzlet üzleti
+
+472
+00:17:58,159 --> 00:18:01,400
+folyamat szempontból az náluk van még
+
+473
+00:18:00,120 --> 00:18:02,799
+továbbra is, mert nyilván ez az ő
+
+474
+00:18:01,400 --> 00:18:06,400
+bizniszük. viszont a technikai
+
+475
+00:18:02,799 --> 00:18:08,720
+megvalósítás, a kivitelezés, a support,
+
+476
+00:18:06,400 --> 00:18:11,360
+a monitorizálás egy rendszernek, az az
+
+477
+00:18:08,720 --> 00:18:14,280
+többnyire nálunk marad ideális esetben.
+
+478
+00:18:11,360 --> 00:18:17,039
+Még annyit hozzátennék talán, hogy
+
+479
+00:18:14,280 --> 00:18:20,720
+másrész pedig nagyon fontosnak tartjuk
+
+480
+00:18:17,039 --> 00:18:22,760
+azt is, hogy a csapataink azok ilyen
+
+481
+00:18:20,720 --> 00:18:25,400
+product jellegű próbálkozásainknak
+
+482
+00:18:22,760 --> 00:18:27,679
+megfelelő módon ki legyenek téve. Tehát
+
+483
+00:18:25,400 --> 00:18:29,400
+igyekszünk bevonni csapatokat
+
+484
+00:18:27,679 --> 00:18:32,240
+folyamatosan olyan olyan
+
+485
+00:18:29,400 --> 00:18:35,280
+próbálkozásokba, akár már ötletfázistól
+
+486
+00:18:32,240 --> 00:18:36,520
+kezdve, vagy research fázól kezdve olyan
+
+487
+00:18:35,280 --> 00:18:38,840
+olyan próbálkozásokban, amit
+
+488
+00:18:36,520 --> 00:18:41,559
+potenciálisan kivitelezésre
+
+489
+00:18:38,840 --> 00:18:43,720
+készítünk elő. Ezt a kollégák meg is
+
+490
+00:18:41,559 --> 00:18:45,200
+szokták egyébként köszönni. úgy érzem,
+
+491
+00:18:43,720 --> 00:18:47,280
+hogy azok, akik nálunk szeretnek
+
+492
+00:18:45,200 --> 00:18:49,000
+dolgozni, azok ezt ezt folyton
+
+493
+00:18:47,280 --> 00:18:51,200
+hangoztatják, hogy ezt ezt szeretik, ezt
+
+494
+00:18:49,000 --> 00:18:53,159
+a részt, hogy a az agyuknak azt a részét
+
+495
+00:18:51,200 --> 00:18:55,200
+is használjuk, amit talán mindegyik
+
+496
+00:18:53,159 --> 00:18:57,080
+outsourcing cégnél sikerül
+
+497
+00:18:55,200 --> 00:18:59,159
+kamatoztassanak.
+
+498
+00:18:57,080 --> 00:19:02,200
+>> Igen. Hát a am a amiatt is tetszett
+
+499
+00:18:59,159 --> 00:19:04,640
+nagyon a te elő előadásod, mert nagyon
+
+500
+00:19:02,200 --> 00:19:07,880
+szépen kiegészít kiegészítettétek egymás
+
+501
+00:19:04,640 --> 00:19:10,120
+süket Csabával. Ö, a aki nem látta még
+
+502
+00:19:07,880 --> 00:19:11,640
+azt az epizódot, azt ajánlom, hogy hogy
+
+503
+00:19:10,120 --> 00:19:13,200
+hallgassa meg ezt az epizódot, és
+
+504
+00:19:11,640 --> 00:19:15,080
+nagyon-nagyon
+
+505
+00:19:13,200 --> 00:19:17,720
+tanulságos volt. Ő arról beszélt, hogy
+
+506
+00:19:15,080 --> 00:19:21,120
+egy melyek azok a rizikók, ami miatt egy
+
+507
+00:19:17,720 --> 00:19:24,559
+startup becsődölhet. Van ennek elég sok
+
+508
+00:19:21,120 --> 00:19:27,919
+rizikója, de meglepően kevés maga a a
+
+509
+00:19:24,559 --> 00:19:30,280
+technológiai oka, hogy nem technológiai
+
+510
+00:19:27,919 --> 00:19:32,960
+veszélyek leselkednek a startupokra.
+
+511
+00:19:30,280 --> 00:19:34,720
+viszont a te előadásodban nekem engem
+
+512
+00:19:32,960 --> 00:19:37,080
+nagyon megérintett az, amit már amúgy is
+
+513
+00:19:34,720 --> 00:19:38,799
+régóta éreztem. Az elmúlt egy évben
+
+514
+00:19:37,080 --> 00:19:42,000
+egyfolytában úgy érző éreztem, hogy ez a
+
+515
+00:19:38,799 --> 00:19:43,400
+vészharang szól bennem. Arról beszéltél,
+
+516
+00:19:42,000 --> 00:19:46,679
+hogy a világ változik, és fel kell
+
+517
+00:19:43,400 --> 00:19:48,240
+ébredjen úgy a ez az outsourcing IT piac
+
+518
+00:19:46,679 --> 00:19:50,480
+itt Romániában, de amúgy szerintem
+
+519
+00:19:48,240 --> 00:19:52,280
+Magyarországon is, meg itt
+
+520
+00:19:50,480 --> 00:19:54,159
+Közép-kelet-Európában,
+
+521
+00:19:52,280 --> 00:19:55,919
+hogy hogy a világ változik, és mi is
+
+522
+00:19:54,159 --> 00:19:59,000
+változnunk kell vele együtt. És ez az
+
+523
+00:19:55,919 --> 00:20:01,120
+utolsó utáni vészcsengő. kicsit
+
+524
+00:19:59,000 --> 00:20:03,120
+kibontanád ezt a gondolatot?
+
+525
+00:20:01,120 --> 00:20:05,880
+>> Persze, megpróbálom. Hát ugye a Süket
+
+526
+00:20:03,120 --> 00:20:06,840
+Csaba utáni felszólásom ugye úgy
+
+527
+00:20:05,880 --> 00:20:08,200
+kezdődött, hogy nem tudtam, hogy
+
+528
+00:20:06,840 --> 00:20:09,919
+pontosan miről fog beszélni, mikor az
+
+529
+00:20:08,200 --> 00:20:12,400
+első statisztikák megjelentek, akkor
+
+530
+00:20:09,919 --> 00:20:14,360
+aggódtam amiatt, hogy ugye az anyám
+
+531
+00:20:12,400 --> 00:20:16,120
+tyukját kellett ezt 40 percig szavalnom,
+
+532
+00:20:14,360 --> 00:20:19,400
+mert ugye az én előadásom már készen
+
+533
+00:20:16,120 --> 00:20:21,000
+volt, és azért érintőlegesen
+
+534
+00:20:19,400 --> 00:20:23,840
+beszéltünk ugyanarról a témáról, hogy
+
+535
+00:20:21,000 --> 00:20:25,400
+nagyjából, de hál istennek úgy adta a
+
+536
+00:20:23,840 --> 00:20:28,480
+sors, hogy nem nem másztunk bele
+
+537
+00:20:25,400 --> 00:20:30,200
+egymásnak az előadásaiba. Tehát
+
+538
+00:20:28,480 --> 00:20:32,400
+ő is szerintem egy nagyon jó értéket
+
+539
+00:20:30,200 --> 00:20:35,840
+tudott egyébként közvetíteni. Tehát az,
+
+540
+00:20:32,400 --> 00:20:38,559
+amit ő elmondott 30 percbe, az egy White
+
+541
+00:20:35,840 --> 00:20:40,480
+Combinatoros Startup School-nak a össze
+
+542
+00:20:38,559 --> 00:20:42,280
+összekomprimált, összenyomt verziója,
+
+543
+00:20:40,480 --> 00:20:44,000
+amiben minden minden egyes szóérték
+
+544
+00:20:42,280 --> 00:20:46,720
+volt, és egyébként én is élvezette
+
+545
+00:20:44,000 --> 00:20:50,440
+hallgattam. Az én előadásom az valóban
+
+546
+00:20:46,720 --> 00:20:52,400
+egy inkább egy kontextus analízis, egy
+
+547
+00:20:50,440 --> 00:20:55,679
+ilyen önreflexiós
+
+548
+00:20:52,400 --> 00:20:58,240
+jelleggel történt. Ugye dolgozunk együtt
+
+549
+00:20:55,679 --> 00:21:00,120
+külső más cégekkel is. Én pláne
+
+550
+00:20:58,240 --> 00:21:01,840
+konzultánsként dolgozom együtt olyan
+
+551
+00:21:00,120 --> 00:21:04,840
+cégekkel, akik elakadnak bizonyos
+
+552
+00:21:01,840 --> 00:21:07,320
+problémáknak a megoldásában, vagy a
+
+553
+00:21:04,840 --> 00:21:09,120
+vezetőség az ügyféloldalról úgy
+
+554
+00:21:07,320 --> 00:21:11,520
+gondolja, hogy nem feltétlen azok az
+
+555
+00:21:09,120 --> 00:21:14,640
+eredmények
+
+556
+00:21:11,520 --> 00:21:16,559
+alakulnak ki, amiket amiket ők elvárnak
+
+557
+00:21:14,640 --> 00:21:18,799
+egy egy másik agencyvel való
+
+558
+00:21:16,559 --> 00:21:20,320
+munkafolyamat során.
+
+559
+00:21:18,799 --> 00:21:21,919
+többször előfordult, hogy ilyenkor
+
+560
+00:21:20,320 --> 00:21:23,320
+fölkértek arra, hogy nézzem át a
+
+561
+00:21:21,919 --> 00:21:25,200
+folyamatokat, nézzem át a
+
+562
+00:21:23,320 --> 00:21:28,720
+technológiákat, nézzem át azt, hogy ki
+
+563
+00:21:25,200 --> 00:21:30,279
+hogy áll hozzá gyakorlatilag a a napi
+
+564
+00:21:28,720 --> 00:21:32,360
+munkához.
+
+565
+00:21:30,279 --> 00:21:34,559
+Potenciálisan olyan stresszorok is
+
+566
+00:21:32,360 --> 00:21:36,520
+lehetnek, amik egy ügyvezetőt egy ilyen
+
+567
+00:21:34,559 --> 00:21:40,080
+úton elindítanak, hogy mondjuk egy
+
+568
+00:21:36,520 --> 00:21:41,120
+valamilyen compliance certifikétát,
+
+569
+00:21:40,080 --> 00:21:42,880
+tehát egy ilyen megfelelési
+
+570
+00:21:41,120 --> 00:21:44,960
+bizonyítványt meg kell be kell szerezni.
+
+571
+00:21:42,880 --> 00:21:48,120
+Ez lehet többféle. Ugye itt az Európai
+
+572
+00:21:44,960 --> 00:21:50,919
+Uniónak sok olyan próbálkozása volt, ami
+
+573
+00:21:48,120 --> 00:21:52,760
+ami olyan irányba kényszerítette a
+
+574
+00:21:50,919 --> 00:21:55,440
+cégeket, amire nem voltak feltétlenül
+
+575
+00:21:52,760 --> 00:21:57,120
+felkészülve, és gyakorlatilag ez a a
+
+576
+00:21:55,440 --> 00:21:59,279
+tevéken az üzleti tevékenység
+
+577
+00:21:57,120 --> 00:22:00,840
+befüggesztésével vagy teljes teljes
+
+578
+00:21:59,279 --> 00:22:02,559
+megállításával is ár, hogyha egy ilyen
+
+579
+00:22:00,840 --> 00:22:04,760
+megfelelősségi
+
+580
+00:22:02,559 --> 00:22:07,039
+döntés születik.
+
+581
+00:22:04,760 --> 00:22:09,919
+Úgyhogy belelátok egy kicsit abba is,
+
+582
+00:22:07,039 --> 00:22:11,799
+hogy milyen a ezáltal ez az konzultáns
+
+583
+00:22:09,919 --> 00:22:14,400
+munkám által belelátok abba is, hogy
+
+584
+00:22:11,799 --> 00:22:18,240
+milyen egy átlagcégnél, mondjuk egy
+
+585
+00:22:14,400 --> 00:22:22,200
+átlag outsourcing cégnél a a hozzáállása
+
+586
+00:22:18,240 --> 00:22:25,440
+a kollégáinknak, a a
+
+587
+00:22:22,200 --> 00:22:28,400
+különböző technológiai, biznisz és
+
+588
+00:22:25,440 --> 00:22:30,120
+komoly komolyság komolysága, amivel
+
+589
+00:22:28,400 --> 00:22:31,880
+hozzáállnak gyakorlatilag a a
+
+590
+00:22:30,120 --> 00:22:34,679
+feladatokhoz, valamint sajnos a
+
+591
+00:22:31,880 --> 00:22:37,080
+lexikális tudás és a felkész készültség,
+
+592
+00:22:34,679 --> 00:22:40,120
+tehát egy ilyen több rétű problémát
+
+593
+00:22:37,080 --> 00:22:43,120
+vélek felfedezni, amit szerintem eddig a
+
+594
+00:22:40,120 --> 00:22:46,679
+piac nagyon nem tárt fel, vagy nem volt
+
+595
+00:22:43,120 --> 00:22:49,080
+ennyire evidens, ugyanis
+
+596
+00:22:46,679 --> 00:22:51,480
+eddig ugye árazásban is Kelet-Európa az
+
+597
+00:22:49,080 --> 00:22:54,640
+egy az egy relatív kényelmesen,
+
+598
+00:22:51,480 --> 00:22:56,880
+megfelelően működtethető üzleti modellbe
+
+599
+00:22:54,640 --> 00:22:58,559
+belefért egy német fizetéshez vagy egy
+
+600
+00:22:56,880 --> 00:23:01,720
+angol fizetéshez képest, még akkor is,
+
+601
+00:22:58,559 --> 00:23:03,840
+hogyha tudták ezek a ezek a külföldi
+
+602
+00:23:01,720 --> 00:23:05,600
+potenciális ügyfeleik az outsourcing
+
+603
+00:23:03,840 --> 00:23:07,640
+cégeknek, hogy nem pont azt fogják
+
+604
+00:23:05,600 --> 00:23:10,679
+kapni, amiért egyébként fizetnek. Azért
+
+605
+00:23:07,640 --> 00:23:12,400
+még mindig megérte, mert hogyha csak
+
+606
+00:23:10,679 --> 00:23:14,080
+kétharmad arányban volt olyan jó, mint
+
+607
+00:23:12,400 --> 00:23:16,080
+mondjuk egy német kolléga, és nem
+
+608
+00:23:14,080 --> 00:23:17,640
+feltétlenül a technikai felkészültségre,
+
+609
+00:23:16,080 --> 00:23:19,200
+sőt kifejezetten nem a technikai
+
+610
+00:23:17,640 --> 00:23:20,720
+felkészültségre
+
+611
+00:23:19,200 --> 00:23:22,960
+tenném most a hangsúlyt, inkább
+
+612
+00:23:20,720 --> 00:23:25,159
+hozzáállás kérdésére.
+
+613
+00:23:22,960 --> 00:23:28,200
+még akkor is jobban megérte, ugyanis
+
+614
+00:23:25,159 --> 00:23:31,000
+1egharmad vagy egy ötöd áron volt. A
+
+615
+00:23:28,200 --> 00:23:33,000
+probléma az ott van, és azért cs
+
+616
+00:23:31,000 --> 00:23:35,960
+csengette meg ugye most a vészharangot,
+
+617
+00:23:33,000 --> 00:23:37,440
+mert úgy látom, hogy ugye az árazásban
+
+618
+00:23:35,960 --> 00:23:41,080
+igen-igen közel vagyunk a nyugati
+
+619
+00:23:37,440 --> 00:23:43,240
+piachoz, tehát ugye a belső munkatársak
+
+620
+00:23:41,080 --> 00:23:45,400
+által támasztott elvárások bérezés
+
+621
+00:23:43,240 --> 00:23:47,640
+szempontjából, azok már nagyon súrolják
+
+622
+00:23:45,400 --> 00:23:49,200
+a nyugat-európai határt. Én egyébként
+
+623
+00:23:47,640 --> 00:23:50,919
+ennek örülök, mert az azt jelenti, hogy
+
+624
+00:23:49,200 --> 00:23:52,679
+mindenki közben jól él, és ezt szeretném
+
+625
+00:23:50,919 --> 00:23:52,799
+a saját kollégáinknak, meg magunknak is.
+
+626
+00:23:52,679 --> 00:23:54,559
+T
+
+627
+00:23:52,799 --> 00:23:56,240
+>> most hol tartunk a kétharmadnál inkább?
+
+628
+00:23:54,559 --> 00:23:58,880
+Szerintem még talán több mint a
+
+629
+00:23:56,240 --> 00:24:01,039
+kéthmadánál is. Nyilván, hogy a nettó,
+
+630
+00:23:58,880 --> 00:24:02,760
+bruttó közötti országok közötti
+
+631
+00:24:01,039 --> 00:24:05,520
+különbség az egyébként ezt a
+
+632
+00:24:02,760 --> 00:24:08,600
+végeredményt, ezt akár befolyásolhatja
+
+633
+00:24:05,520 --> 00:24:10,799
+ilyen-olyan irányban, de mindenképpen
+
+634
+00:24:08,600 --> 00:24:12,440
+olyan szinten közelítjük már meg például
+
+635
+00:24:10,799 --> 00:24:14,240
+egy berlini vagy londoni
+
+636
+00:24:12,440 --> 00:24:17,200
+szoftvermérnöknek a fizetését, ami
+
+637
+00:24:14,240 --> 00:24:18,919
+elgondolkodtatja a befektetőket és a az
+
+638
+00:24:17,200 --> 00:24:21,039
+ottani ügyvezetőket, hogy hogy
+
+639
+00:24:18,919 --> 00:24:23,559
+szeretnének-e még velünk dolgozni. Még
+
+640
+00:24:21,039 --> 00:24:26,240
+mindig lehet olyan hozzáadott értékünk,
+
+641
+00:24:23,559 --> 00:24:28,799
+hogy ügyesebbek, gyorsabbak, jobban
+
+642
+00:24:26,240 --> 00:24:31,480
+felkészültek vagyunk. Ez szerintem
+
+643
+00:24:28,799 --> 00:24:32,960
+egyébként a kisebb százaléka azoknak a
+
+644
+00:24:31,480 --> 00:24:35,320
+kollégáknak, akikkel így a
+
+645
+00:24:32,960 --> 00:24:36,840
+professzionális karrieren
+
+646
+00:24:35,320 --> 00:24:38,039
+során találkoztam.
+
+647
+00:24:36,840 --> 00:24:40,360
+>> Ahhoz, hogy megértsük a mostani
+
+648
+00:24:38,039 --> 00:24:41,919
+piacunknak a helyzetét, te egy jó pár
+
+649
+00:24:40,360 --> 00:24:44,000
+dolgot megemlítettél, szeretnék
+
+650
+00:24:41,919 --> 00:24:46,559
+egyenként végigmenni rajta. Az egyik,
+
+651
+00:24:44,000 --> 00:24:48,399
+amit megemlítettél, az az, hogy maga az
+
+652
+00:24:46,559 --> 00:24:51,080
+outsourcing, ez nem egy magas hozzáadott
+
+653
+00:24:48,399 --> 00:24:53,159
+értékű munka, habár a eleinte a
+
+654
+00:24:51,080 --> 00:24:55,720
+béreinkhez képest ez egy hatalmas
+
+655
+00:24:53,159 --> 00:24:58,880
+különbség volt, de valójában a rizikót
+
+656
+00:24:55,720 --> 00:25:00,960
+még mindig a befektetők vállalják kint
+
+657
+00:24:58,880 --> 00:25:04,320
+külföldön, és amikor outsörcelnek
+
+658
+00:25:00,960 --> 00:25:06,159
+hozzánk egy egy feladatot, ez nem magas
+
+659
+00:25:04,320 --> 00:25:08,880
+hozzáadott értékű. Meg említetted azt
+
+660
+00:25:06,159 --> 00:25:10,559
+is, hogy a te cégednél is igyekeztek
+
+661
+00:25:08,880 --> 00:25:13,760
+ilyen product mindsetbe gondolkozni,
+
+662
+00:25:10,559 --> 00:25:17,159
+tehát hogy ti veszitek át a teljes, vagy
+
+663
+00:25:13,760 --> 00:25:19,080
+majdnem teljes technológiai
+
+664
+00:25:17,159 --> 00:25:21,679
+fejlesztést, a termékfejlesztésnek
+
+665
+00:25:19,080 --> 00:25:23,279
+egy-egy részét, a supportot.
+
+666
+00:25:21,679 --> 00:25:25,279
+És említetted, hogy ezt látod, hogy ha
+
+667
+00:25:23,279 --> 00:25:27,880
+nem tud váltani Románia ebben az
+
+668
+00:25:25,279 --> 00:25:30,000
+irányban, akkor akkor ez egy komoly
+
+669
+00:25:27,880 --> 00:25:32,279
+okozója lesz annak a lemaradásnak, ami
+
+670
+00:25:30,000 --> 00:25:34,559
+várhatóan jönni fog.
+
+671
+00:25:32,279 --> 00:25:36,760
+>> Igen, ez egyértelműen így van. És ennek
+
+672
+00:25:34,559 --> 00:25:38,799
+az eredményét már látjuk a piacon. Tehát
+
+673
+00:25:36,760 --> 00:25:41,120
+ugye nagyon sok olyan elbocsátás volt
+
+674
+00:25:38,799 --> 00:25:44,000
+vagy újraszervezés
+
+675
+00:25:41,120 --> 00:25:46,640
+címszó alatt történő hosszútávú
+
+676
+00:25:44,000 --> 00:25:48,600
+lemorzsolása a munkaerőnek, ami ami
+
+677
+00:25:46,640 --> 00:25:51,600
+egyértelműen arrafelé mutat, hogy azért
+
+678
+00:25:48,600 --> 00:25:54,679
+itt valamilyen szinten meginog az a
+
+679
+00:25:51,600 --> 00:25:58,720
+gazdasági egyensúly, ami eddig úgy tűnt,
+
+680
+00:25:54,679 --> 00:26:01,440
+hogy hogy hosszú távon fenntartható.
+
+681
+00:25:58,720 --> 00:26:03,320
+Szerintem is mindenképpen az a az a
+
+682
+00:26:01,440 --> 00:26:05,399
+hosszútávú célunk, hogy ezen az
+
+683
+00:26:03,320 --> 00:26:08,080
+értékláncon próbáljunk meg föl följebb
+
+684
+00:26:05,399 --> 00:26:11,320
+és följebb lépni. Ugye a legegyszerűbb
+
+685
+00:26:08,080 --> 00:26:13,480
+formája annak, hogy kollaboráljunk egy
+
+686
+00:26:11,320 --> 00:26:15,159
+külső külső céggel, az az, hogy egész
+
+687
+00:26:13,480 --> 00:26:16,760
+egyszerűen órákat adunk el. Tehát
+
+688
+00:26:15,159 --> 00:26:19,440
+gyakorlatilag az ügyfél azért fizet,
+
+689
+00:26:16,760 --> 00:26:21,000
+hogy mi szuszogunk az ő érdekeéiben, és
+
+690
+00:26:19,440 --> 00:26:24,000
+nyilván valamit valamilyen
+
+691
+00:26:21,000 --> 00:26:25,960
+artefaktumunkat közben produkálunk.
+
+692
+00:26:24,000 --> 00:26:28,360
+Ez lehet nagyon hatékony, hogyha nagyon
+
+693
+00:26:25,960 --> 00:26:29,760
+ügyesek vagyunk. Tehát ugye előfordulhat
+
+694
+00:26:28,360 --> 00:26:31,480
+az is, hogy egy például egy profi
+
+695
+00:26:29,760 --> 00:26:33,559
+konzultáns mondjuk nyolc óra
+
+696
+00:26:31,480 --> 00:26:35,600
+leszámlázásával megold egy komoly biznis
+
+697
+00:26:33,559 --> 00:26:39,480
+problémát, és ez gyakorlatilag külföldön
+
+698
+00:26:35,600 --> 00:26:41,600
+sokszor elő is fordul. Tehát
+
+699
+00:26:39,480 --> 00:26:43,640
+egy németországi vagy angol vagy
+
+700
+00:26:41,600 --> 00:26:46,520
+amerikai konzultánsakint egy valamilyen
+
+701
+00:26:43,640 --> 00:26:48,159
+problémának a megoldására felbérelnek, ő
+
+702
+00:26:46,520 --> 00:26:49,840
+valószínűleg, hogy akár ötször vagy
+
+703
+00:26:48,159 --> 00:26:52,799
+hatszor is kereshet annyit, mint mondjuk
+
+704
+00:26:49,840 --> 00:26:54,480
+egy egy itthoni kolléga. viszont az
+
+705
+00:26:52,799 --> 00:26:56,399
+elvárások is, amit
+
+706
+00:26:54,480 --> 00:26:58,000
+amit támaszt egy ilyen ügyfél, aki ezt a
+
+707
+00:26:56,399 --> 00:27:00,720
+pénzt hajlandó kifizetni, az abszolút
+
+708
+00:26:58,000 --> 00:27:03,039
+eredményorientált. Tehát, hogy elvárja
+
+709
+00:27:00,720 --> 00:27:06,360
+azt, hogy igen, hogyha most teszem azt
+
+710
+00:27:03,039 --> 00:27:08,760
+nem tudom, 300-400€-s németországi top
+
+711
+00:27:06,360 --> 00:27:10,559
+architektnek az órabérét azt kifizeti,
+
+712
+00:27:08,760 --> 00:27:11,880
+akkor ő két napon belül eredményt akar
+
+713
+00:27:10,559 --> 00:27:15,880
+látni.
+
+714
+00:27:11,880 --> 00:27:17,279
+Tehát lehet magas hozzáadott érték felé
+
+715
+00:27:15,880 --> 00:27:19,360
+felé menni. Viszont ahhoz ott kellene
+
+716
+00:27:17,279 --> 00:27:22,880
+legyen a tudás, a felkészültség, az
+
+717
+00:27:19,360 --> 00:27:25,240
+akarás, a az ökoszisztéma.
+
+718
+00:27:22,880 --> 00:27:28,080
+>> Most mit tanácsolnál egy helyi ilyen
+
+719
+00:27:25,240 --> 00:27:31,399
+ilyen konzultáns cégnek, aki most ébred
+
+720
+00:27:28,080 --> 00:27:34,480
+fel és utolsó utáni figyelmeztetésedet
+
+721
+00:27:31,399 --> 00:27:37,279
+meghallja? Órabéralapon dolgozik ebben a
+
+722
+00:27:34,480 --> 00:27:38,520
+pillanatban. Mit tud tenni?
+
+723
+00:27:37,279 --> 00:27:40,080
+El kell mondjam azt is, hogy még
+
+724
+00:27:38,520 --> 00:27:42,480
+többnyire azért mi is órabéralapon
+
+725
+00:27:40,080 --> 00:27:44,559
+dolgozunk, mert ez egy folyamat.
+
+726
+00:27:42,480 --> 00:27:46,559
+Nem feltétlenül az az elsődleges
+
+727
+00:27:44,559 --> 00:27:48,399
+megoldandó probléma egyébként, hogy az
+
+728
+00:27:46,559 --> 00:27:49,880
+órabér számlázás az egy mint
+
+729
+00:27:48,399 --> 00:27:52,760
+keretrendszer, tehát az úgynevez time
+
+730
+00:27:49,880 --> 00:27:53,919
+and material az létezik. A kérdés mindig
+
+731
+00:27:52,760 --> 00:27:56,080
+ott van, hogy abból a time and
+
+732
+00:27:53,919 --> 00:27:57,640
+materiából mennyi az igazi hozzáadott
+
+733
+00:27:56,080 --> 00:27:59,600
+érték, amit szállítani lehet. Tehát az
+
+734
+00:27:57,640 --> 00:28:01,720
+első lépés az szerintem az. És egy
+
+735
+00:27:59,600 --> 00:28:03,200
+egyébként nagyon őszintén bevallva még
+
+736
+00:28:01,720 --> 00:28:05,480
+azért többnyire mi is itt vagyunk, annak
+
+737
+00:28:03,200 --> 00:28:07,559
+ellenére, hogy van egy néhány
+
+738
+00:28:05,480 --> 00:28:09,120
+úgynevezett outcome base, tehát ilyen
+
+739
+00:28:07,559 --> 00:28:11,760
+eredményorientált
+
+740
+00:28:09,120 --> 00:28:13,080
+árazású projektünk is, de azért azt el
+
+741
+00:28:11,760 --> 00:28:14,799
+kell mondanom, hogy mi is többnyire még
+
+742
+00:28:13,080 --> 00:28:17,720
+time and materiába dolgozunk. Ez még
+
+743
+00:28:14,799 --> 00:28:19,200
+azért egy bevett bevett szokás.
+
+744
+00:28:17,720 --> 00:28:20,840
+Viszont, hogyha arra próbálunk
+
+745
+00:28:19,200 --> 00:28:23,320
+koncentrálni, hogy azalatt az egységnyi
+
+746
+00:28:20,840 --> 00:28:24,679
+idő alatt mennyi mennyi értéket tudunk
+
+747
+00:28:23,320 --> 00:28:26,799
+teremteni az ügyfélnek, és egy
+
+748
+00:28:24,679 --> 00:28:28,960
+transzparens módon próbálunk erről velük
+
+749
+00:28:26,799 --> 00:28:32,399
+kommunikálni, az szerintem mindenképpen
+
+750
+00:28:28,960 --> 00:28:34,840
+egy jó első lépés. Kicsit ilyen furcsás
+
+751
+00:28:32,399 --> 00:28:36,320
+helyzet ez, mert ugye sokszor előfordul
+
+752
+00:28:34,840 --> 00:28:37,919
+és sokat hallottam azt, hogy hát mi
+
+753
+00:28:36,320 --> 00:28:39,799
+szeretnénk azt, hogy az ügyféltől több
+
+754
+00:28:37,919 --> 00:28:43,159
+kompetenciát kaphassunk, hogy nagyobb
+
+755
+00:28:39,799 --> 00:28:46,120
+legyen a játékterületünk, amin amin mi
+
+756
+00:28:43,159 --> 00:28:48,240
+gyakorlatilag aktiválhatunk.
+
+757
+00:28:46,120 --> 00:28:51,200
+A 2010-es évek közepén volt egy ilyen
+
+758
+00:28:48,240 --> 00:28:52,519
+érdekes helyzet, amikor szerettünk volna
+
+759
+00:28:51,200 --> 00:28:55,000
+többet, de még nem voltunk azért
+
+760
+00:28:52,519 --> 00:28:57,000
+teljesen erre felkészülve. De már volt
+
+761
+00:28:55,000 --> 00:28:59,240
+annyi bizalma a külföldi
+
+762
+00:28:57,000 --> 00:29:00,679
+ökoszisztémáknak meg ügyfeleknek, hogy
+
+763
+00:28:59,240 --> 00:29:02,039
+hogy megbízzanak minket bizonyos
+
+764
+00:29:00,679 --> 00:29:04,039
+feladatokkal. Nyilván egy néhányba
+
+765
+00:29:02,039 --> 00:29:06,960
+beletört a bicskánk, egy néhányba nem.
+
+766
+00:29:04,039 --> 00:29:08,440
+Tehát mindenképpen a a gyakorlat teszi a
+
+767
+00:29:06,960 --> 00:29:09,960
+mester. Tehát ez csak úgy működik,
+
+768
+00:29:08,440 --> 00:29:11,960
+hogyha megpróbáljuk egyszer átvenni
+
+769
+00:29:09,960 --> 00:29:14,200
+ezeket a projekteket potenciálisan
+
+770
+00:29:11,960 --> 00:29:15,919
+technikai nagybácsi nélkül. Én ilyen
+
+771
+00:29:14,200 --> 00:29:17,360
+technikai nagybácsinak szoktam azokat
+
+772
+00:29:15,919 --> 00:29:19,519
+hívni, akikhez ugye föl lehet
+
+773
+00:29:17,360 --> 00:29:22,200
+telefonálni, mondjuk egy anyacékhez, egy
+
+774
+00:29:19,519 --> 00:29:24,320
+német angol céghez, és amikor úgy tűnik,
+
+775
+00:29:22,200 --> 00:29:25,960
+hogy kezd a kártyavár összeomlani, akkor
+
+776
+00:29:24,320 --> 00:29:28,039
+meg lehet őket kérdezni, mégis most itt
+
+777
+00:29:25,960 --> 00:29:30,880
+mit kellene kezdjünk ezzel a ezzel a
+
+778
+00:29:28,039 --> 00:29:33,360
+helyzettel. A az emberek edzésen
+
+779
+00:29:30,880 --> 00:29:35,080
+keresztül tanulják ezt meg, de akkor
+
+780
+00:29:33,360 --> 00:29:36,679
+nagyon fontos az, hogy a cégek is olyan
+
+781
+00:29:35,080 --> 00:29:39,960
+környezetet teremtsenek ezeknek a
+
+782
+00:29:36,679 --> 00:29:42,679
+kollégáknak, ahol ezeket a a mentális
+
+783
+00:29:39,960 --> 00:29:45,919
+kardokat meg tudják élezni. Másik
+
+784
+00:29:42,679 --> 00:29:48,480
+oldalról pedig ugye a cégnek a talent
+
+785
+00:29:45,919 --> 00:29:50,799
+állománya is azért erre kompatibilis
+
+786
+00:29:48,480 --> 00:29:52,399
+kell, hogy legyen. Ugye beszéltünk a
+
+787
+00:29:50,799 --> 00:29:54,519
+konferencián sokszor arról, hogy a
+
+788
+00:29:52,399 --> 00:29:56,720
+junioroknak a helyzete az az most nem
+
+789
+00:29:54,519 --> 00:29:59,360
+kifejezetten
+
+790
+00:29:56,720 --> 00:29:59,360
+napos.
+
+791
+00:30:00,519 --> 00:30:04,360
+Egy nagyon komplex világban, amilyen
+
+792
+00:30:02,480 --> 00:30:07,279
+most a szoftver világ, sajnos azt kell
+
+793
+00:30:04,360 --> 00:30:09,440
+mondjam, hogy egy relatív közepesen
+
+794
+00:30:07,279 --> 00:30:11,120
+fölkészült juniornak nem sok értéke van
+
+795
+00:30:09,440 --> 00:30:13,320
+egy cégben.
+
+796
+00:30:11,120 --> 00:30:15,600
+Egyetemen is tanítok
+
+797
+00:30:13,320 --> 00:30:19,960
+néha betanító tanárként, tehát nem
+
+798
+00:30:15,600 --> 00:30:21,200
+főállásban. És azt látom, hogy hogy
+
+799
+00:30:19,960 --> 00:30:23,519
+sajnos nagyon sok mindent kell még
+
+800
+00:30:21,200 --> 00:30:25,840
+elmondani a diákoknak. Itt az egyetemnek
+
+801
+00:30:23,519 --> 00:30:27,399
+is valószínűleg, hogy van, amit még
+
+802
+00:30:25,840 --> 00:30:29,000
+hozzátegyen azért, hogy ez jobb jobb
+
+803
+00:30:27,399 --> 00:30:30,840
+irányba menjen, de az iparnak is, tehát
+
+804
+00:30:29,000 --> 00:30:35,279
+itt jobban össze lehetne fonni szerintem
+
+805
+00:30:30,840 --> 00:30:37,640
+az egyetem és az ipari viszonyt.
+
+806
+00:30:35,279 --> 00:30:39,559
+Egy juniornak talán akkor lenne esélye
+
+807
+00:30:37,640 --> 00:30:43,120
+egy ilyen kontextusban, hogyha
+
+808
+00:30:39,559 --> 00:30:45,440
+nagyon-nagyon mély lexikális tudással
+
+809
+00:30:43,120 --> 00:30:48,320
+lenne felvértezve. ugyanis azt látom,
+
+810
+00:30:45,440 --> 00:30:50,039
+hogy ugye az AI asszisztensek
+
+811
+00:30:48,320 --> 00:30:52,519
+megjelenésével meg ugye egyre egyre
+
+812
+00:30:50,039 --> 00:30:53,919
+jobbak, tehát olyan ütembe fejlődnek. Én
+
+813
+00:30:52,519 --> 00:30:56,440
+is azelőtt két évvel egyébként nagyon
+
+814
+00:30:53,919 --> 00:30:58,480
+szkeptikusan álltam ehhez hozzá, hogy
+
+815
+00:30:56,440 --> 00:31:00,880
+most már abszolút használhatóak és olyan
+
+816
+00:30:58,480 --> 00:31:02,600
+gyorságot adnak az embernek, hogy aki
+
+817
+00:31:00,880 --> 00:31:04,639
+tudja őket jól használni, az akár
+
+818
+00:31:02,600 --> 00:31:06,120
+szerintem négy-ötz is gyorsabban tud
+
+819
+00:31:04,639 --> 00:31:07,559
+programozni, mert hogy még lehet mások
+
+820
+00:31:06,120 --> 00:31:09,679
+nagyobb szorzókról beszélnek. Én egy
+
+821
+00:31:07,559 --> 00:31:11,360
+kicsit konzervatívabban állok amúgy
+
+822
+00:31:09,679 --> 00:31:13,120
+ehhez hozzá, de a 4-5szörös szorzó is
+
+823
+00:31:11,360 --> 00:31:15,440
+hatalmas. Tehát, hogy a négyzörös
+
+824
+00:31:13,120 --> 00:31:18,320
+szorzónak nyilván bármilyen üzleti
+
+825
+00:31:15,440 --> 00:31:19,919
+modell az az nagyon tud örülni. Úgyhogy
+
+826
+00:31:18,320 --> 00:31:22,120
+a juniorok szerintem akkor tudnak
+
+827
+00:31:19,919 --> 00:31:23,880
+igazából majd érvényesülni, hogyha egy
+
+828
+00:31:22,120 --> 00:31:26,519
+egy mély lexikális tudással
+
+829
+00:31:23,880 --> 00:31:28,240
+rendelkeznek, és
+
+830
+00:31:26,519 --> 00:31:29,960
+relatív sok mindenhez értenek egy
+
+831
+00:31:28,240 --> 00:31:31,840
+kicsit, és aztán van egy néhány olyan
+
+832
+00:31:29,960 --> 00:31:34,159
+témakor, amiben aztán elmélyült
+
+833
+00:31:31,840 --> 00:31:35,639
+tapasztalatot gyűjtenek. Itt a cégeknek
+
+834
+00:31:34,159 --> 00:31:37,159
+is nyilván, hogy be kell ezt majd ebbe
+
+835
+00:31:35,639 --> 00:31:39,360
+szállnia.
+
+836
+00:31:37,159 --> 00:31:42,000
+Tehát említetted azt, hogy volt a
+
+837
+00:31:39,360 --> 00:31:45,240
+slajodon egy olyan sor, hogy a
+
+838
+00:31:42,000 --> 00:31:46,919
+csapatokat nem kell megvédeni a vagyis,
+
+839
+00:31:45,240 --> 00:31:49,080
+hogy túlságosan meg vannak védve ebben a
+
+840
+00:31:46,919 --> 00:31:52,559
+pillanatban, gondolom a a felelősségtől,
+
+841
+00:31:49,080 --> 00:31:54,039
+a a technológiai döntésektől, és az
+
+842
+00:31:52,559 --> 00:31:55,799
+egyik, amire hívnád, az az, hogy
+
+843
+00:31:54,039 --> 00:31:58,240
+vállaljanak rizikót és felelősséget,
+
+844
+00:31:55,799 --> 00:32:01,440
+többet a csapatok tudatosan.
+
+845
+00:31:58,240 --> 00:32:03,559
+Volt egy olyan másik mondatod is, hogy
+
+846
+00:32:01,440 --> 00:32:05,360
+már nem vagyunk éhes farkasok, inkább
+
+847
+00:32:03,559 --> 00:32:07,159
+lustamacskákhoz vagyunk hasonlóak. Ezt
+
+848
+00:32:05,360 --> 00:32:09,240
+kifejtenéd ezt a gondolatot?
+
+849
+00:32:07,159 --> 00:32:10,919
+>> Igen, hát akkor először a lusta
+
+850
+00:32:09,240 --> 00:32:12,440
+macskásra próbálok választani. Egyébként
+
+851
+00:32:10,919 --> 00:32:13,679
+ez nem az én gondoltam, ezt egy
+
+852
+00:32:12,440 --> 00:32:15,760
+konferencián hallottam valahol
+
+853
+00:32:13,679 --> 00:32:17,840
+Romániában sajnos nem írtam fel a
+
+854
+00:32:15,760 --> 00:32:19,080
+notepadembe, hogy konkrétan kitől,
+
+855
+00:32:17,840 --> 00:32:21,799
+úgyhogy bocsánatot kérek, hogyha
+
+856
+00:32:19,080 --> 00:32:24,080
+valakitől elloptam. A kód az hiányzott a
+
+857
+00:32:21,799 --> 00:32:26,639
+a prezentációból, de egyébként nagyon
+
+858
+00:32:24,080 --> 00:32:29,760
+helyénvalónak érzem.
+
+859
+00:32:26,639 --> 00:32:32,000
+Tudok egy egy másik olyan
+
+860
+00:32:29,760 --> 00:32:34,000
+business coachot, aki azt mondta, hogy a
+
+861
+00:32:32,000 --> 00:32:35,840
+mi generációnkat meg az előttünk valót,
+
+862
+00:32:34,000 --> 00:32:37,480
+azt a szegénységtől való félelem
+
+863
+00:32:35,840 --> 00:32:40,279
+motiválta. Mi egy nagyon érdekes
+
+864
+00:32:37,480 --> 00:32:41,799
+motiváló erő, és valószínűleg, hogy hogy
+
+865
+00:32:40,279 --> 00:32:43,880
+ez és egyébként ez szerintem is
+
+866
+00:32:41,799 --> 00:32:45,760
+helyénvaló, és ezt látom a a mi
+
+867
+00:32:43,880 --> 00:32:47,440
+generációnkban, tehát a mi generációnk,
+
+868
+00:32:45,760 --> 00:32:49,399
+amikor a munkapiacra került, akkor
+
+869
+00:32:47,440 --> 00:32:51,120
+szerintem egy olyan mértékű ambícióval
+
+870
+00:32:49,399 --> 00:32:53,120
+kerültünk oda, meg akartuk váltani a
+
+871
+00:32:51,120 --> 00:32:54,799
+világot, amit egy kicsit úgy lát,
+
+872
+00:32:53,120 --> 00:32:57,639
+>> mint az első generációs bevándorlók,
+
+873
+00:32:54,799 --> 00:32:59,840
+nem? Na, többnyire igen. Tehát szerintem
+
+874
+00:32:57,639 --> 00:33:01,440
+ez is helyénvaló.
+
+875
+00:32:59,840 --> 00:33:04,519
+Nem nem volt az opció, hogy mondjuk
+
+876
+00:33:01,440 --> 00:33:07,639
+valaki ne dolgozzon, vagy hogy egy-két
+
+877
+00:33:04,519 --> 00:33:09,799
+év után feladjuk, vagy hogy kifáradjunk,
+
+878
+00:33:07,639 --> 00:33:12,880
+belefáradjunk a munka által okozott ugye
+
+879
+00:33:09,799 --> 00:33:15,519
+stresszbe. Ez az egyik dolog. A a másik
+
+880
+00:33:12,880 --> 00:33:18,039
+nem csak feltétlenül a munka a fiatal
+
+881
+00:33:15,519 --> 00:33:20,519
+munkavállalókra kitérve, hanem nagyobb
+
+882
+00:33:18,039 --> 00:33:22,679
+kontextusba is. Azért pláne a nagy
+
+883
+00:33:20,519 --> 00:33:24,360
+cégeknél azt azt elmondhatjuk, hogy
+
+884
+00:33:22,679 --> 00:33:26,279
+jellemző volt az, hogy nagyon nem
+
+885
+00:33:24,360 --> 00:33:28,399
+kellett megölnie az embernek magát a
+
+886
+00:33:26,279 --> 00:33:31,039
+munkával. Tehát úgy bement langyos volt.
+
+887
+00:33:28,399 --> 00:33:32,480
+Bementünk kilencre, két kávé, egy kis
+
+888
+00:33:31,039 --> 00:33:35,080
+beszélgetés, tehát már szinte szinte
+
+889
+00:33:32,480 --> 00:33:37,559
+olyan szintre került el, mint az állami
+
+890
+00:33:35,080 --> 00:33:39,720
+alkalmazottaknál a munkamorál, hogy itt
+
+891
+00:33:37,559 --> 00:33:41,960
+kell lenni reggel 9:00-től 5-ig, akkor
+
+892
+00:33:39,720 --> 00:33:43,559
+hogy tudjuk lecsökkenteni minimumra
+
+893
+00:33:41,960 --> 00:33:46,240
+azoknak az óráknak a számát, amikor
+
+894
+00:33:43,559 --> 00:33:48,039
+fárasztó munkával kell foglalkozni.
+
+895
+00:33:46,240 --> 00:33:50,279
+Ez egyébként nem is volt fair, mert ugye
+
+896
+00:33:48,039 --> 00:33:51,919
+közben a fizetések azok meg hatalmas
+
+897
+00:33:50,279 --> 00:33:53,519
+nagyra nőttek. Tehát ugye valaki meg is
+
+898
+00:33:51,919 --> 00:33:55,600
+említette, hogy mondjuk egy egy
+
+899
+00:33:53,519 --> 00:33:57,480
+tanárhoz, egy iskolai tanárhoz képest
+
+900
+00:33:55,600 --> 00:34:00,399
+egy junior programozó valószínűleg
+
+901
+00:33:57,480 --> 00:34:02,279
+kétszeres szorzót tudott simán elérni
+
+902
+00:34:00,399 --> 00:34:03,799
+teljesen pályakezdő állapotból.
+
+903
+00:34:02,279 --> 00:34:05,080
+>> És ezzel együtt egy hálátlanság is, úgy
+
+904
+00:34:03,799 --> 00:34:07,159
+érzem, hogy feljött bennünk.
+
+905
+00:34:05,080 --> 00:34:08,800
+>> Abszolút egy hálátlanság is, meg egy
+
+906
+00:34:07,159 --> 00:34:11,359
+valamilyen szintű arogancia is
+
+907
+00:34:08,800 --> 00:34:13,079
+szerintem. Tehát ugye a sajnos én is
+
+908
+00:34:11,359 --> 00:34:14,679
+ebbe a csoportba tartozom, tehát most a
+
+909
+00:34:13,079 --> 00:34:16,119
+magunk nevében beszélekten én is
+
+910
+00:34:14,679 --> 00:34:18,159
+fejlesztő vagyok, de hogy azt el kell
+
+911
+00:34:16,119 --> 00:34:20,079
+mondani, hogy a fejlesztők legalábbis
+
+912
+00:34:18,159 --> 00:34:22,240
+például Kolozsvári piacon kifejezetten
+
+913
+00:34:20,079 --> 00:34:25,159
+egy adott pillanatban arrogánsan álltak
+
+914
+00:34:22,240 --> 00:34:27,879
+hozzá akár munkakereséshez, akár a többi
+
+915
+00:34:25,159 --> 00:34:31,760
+társadalmi réteghez is. És a motiváció
+
+916
+00:34:27,879 --> 00:34:34,399
+pedig igencsak eltűnt a háttérből, tehát
+
+917
+00:34:31,760 --> 00:34:36,560
+elkezdtek eltűnni azok a azok az erők,
+
+918
+00:34:34,399 --> 00:34:39,560
+amik előrefelé vigyék ezt a bizniszt.
+
+919
+00:34:36,560 --> 00:34:41,639
+voltak olyan voltak olyan potenciális
+
+920
+00:34:39,560 --> 00:34:43,240
+ügyfelei cégeknek, akik azt mondták,
+
+921
+00:34:41,639 --> 00:34:45,599
+hogy van egy projekt, amit kötelező
+
+922
+00:34:43,240 --> 00:34:47,839
+leszállítani. Volt egy üzleti okból egy
+
+923
+00:34:45,599 --> 00:34:49,720
+hard deadline, és megnyíltak
+
+924
+00:34:47,839 --> 00:34:51,440
+gyakorlatilag majdnem végtelen büdzsék
+
+925
+00:34:49,720 --> 00:34:53,919
+ennek a projektnek az elvárására. És
+
+926
+00:34:51,440 --> 00:34:55,440
+sajnos Kolozsváron már nem tudtuk nem
+
+927
+00:34:53,919 --> 00:34:58,920
+tudták azok a cégek az ilyeneket
+
+928
+00:34:55,440 --> 00:35:00,800
+kivitelezni, mert a kollégák azok jobban
+
+929
+00:34:58,920 --> 00:35:02,720
+koncentráltak arra, hogy ugye worklife
+
+930
+00:35:00,800 --> 00:35:05,920
+balance, akkor ők nem szeretnének
+
+931
+00:35:02,720 --> 00:35:09,400
+hétvégén dolgozni. ö már be van be van
+
+932
+00:35:05,920 --> 00:35:09,400
+már egy öt
+
+933
+00:35:10,760 --> 00:35:14,400
+tervezve az elkövetkező három hétben,
+
+934
+00:35:12,800 --> 00:35:15,920
+akkor azt most nem tudjuk elvállalni.
+
+935
+00:35:14,400 --> 00:35:17,599
+Nem kell félreérteni. Amúgy nem azt
+
+936
+00:35:15,920 --> 00:35:21,359
+mondom, hogy folyamatosan az ember rúgja
+
+937
+00:35:17,599 --> 00:35:23,960
+fel az életét és csak a munkának éljen.
+
+938
+00:35:21,359 --> 00:35:26,079
+De hogyha és itt a cégek a hibásak, mert
+
+939
+00:35:23,960 --> 00:35:27,839
+folyamatosan éveken keresztül megvédték,
+
+940
+00:35:26,079 --> 00:35:29,280
+tehát ez amit kérdezte, megvédték az
+
+941
+00:35:27,839 --> 00:35:31,119
+embereket attól, hogy hogyan is működik
+
+942
+00:35:29,280 --> 00:35:33,240
+a mi üzletgunk.
+
+943
+00:35:31,119 --> 00:35:34,440
+ők nem érezték annak a súlyát, hogy mi
+
+944
+00:35:33,240 --> 00:35:36,480
+van akkor, hogyha az az ügyfél
+
+945
+00:35:34,440 --> 00:35:38,040
+legközelebb nem kopog be a miónkon,
+
+946
+00:35:36,480 --> 00:35:39,880
+hanem egy olyan helyre fogja elvinni,
+
+947
+00:35:38,040 --> 00:35:41,400
+ahol megoldják neki a problémáját, és
+
+948
+00:35:39,880 --> 00:35:44,800
+még potenciálisan lehet, hogy kevesebb
+
+949
+00:35:41,400 --> 00:35:46,720
+pénzből is oldják meg a problémáját.
+
+950
+00:35:44,800 --> 00:35:49,680
+Ugye ez amit nagyon veszélyesnek tartok,
+
+951
+00:35:46,720 --> 00:35:52,400
+hogy és ezért is én igyekszem bármikor,
+
+952
+00:35:49,680 --> 00:35:55,319
+amikor valamilyen üzleti lehetőségünk
+
+953
+00:35:52,400 --> 00:35:57,079
+van, akkor igyekszem a a kollégánknak
+
+954
+00:35:55,319 --> 00:35:58,760
+elmagyarázni a kontextust, elmagyarázni,
+
+955
+00:35:57,079 --> 00:36:00,760
+hogy ki az ügyfél, mekkora az
+
+956
+00:35:58,760 --> 00:36:03,000
+opportunity,
+
+957
+00:36:00,760 --> 00:36:05,440
+potenciálisan miért szeretnénk azt, hogy
+
+958
+00:36:03,000 --> 00:36:07,880
+esetek túlórázzanak. Igyekszünk olyankor
+
+959
+00:36:05,440 --> 00:36:09,599
+mi is több szupportot adni, és
+
+960
+00:36:07,880 --> 00:36:11,640
+igyekszünk hálásak is lenni utána
+
+961
+00:36:09,599 --> 00:36:13,640
+azoknak, akik ezen az úton velünk végig
+
+962
+00:36:11,640 --> 00:36:15,760
+akarnak menni.
+
+963
+00:36:13,640 --> 00:36:17,560
+Visszatérnék egy picit talán arra, hogy
+
+964
+00:36:15,760 --> 00:36:20,000
+kérdezted az elején, hogy mi az, amit
+
+965
+00:36:17,560 --> 00:36:22,599
+ami Dubában megtetszett, vagy ami amit
+
+966
+00:36:20,000 --> 00:36:25,640
+úgy éreztem, hogy talán különböző az
+
+967
+00:36:22,599 --> 00:36:28,440
+európai ökoszisztémához képest.
+
+968
+00:36:25,640 --> 00:36:30,359
+Dubajba szerintem, hogyha lemész egy
+
+969
+00:36:28,440 --> 00:36:31,960
+véletlenszerű vasárnap egy coworking
+
+970
+00:36:30,359 --> 00:36:34,680
+space-be,
+
+971
+00:36:31,960 --> 00:36:36,839
+akkor azt látod, hogy nagyjából 50%-baan
+
+972
+00:36:34,680 --> 00:36:38,440
+tele van. Ez egy nagyon érdekes dolog,
+
+973
+00:36:36,839 --> 00:36:40,960
+ugye egy olyan Európából jöv, ahol a
+
+974
+00:36:38,440 --> 00:36:43,680
+vasárnap az ilyen teljesen munka
+
+975
+00:36:40,960 --> 00:36:45,960
+munkaelkerülős nap. Tehát nincsen azzal
+
+976
+00:36:43,680 --> 00:36:47,839
+se semmi gond. Viszont a Dubai
+
+977
+00:36:45,960 --> 00:36:50,200
+ökoszisztémában még azt látom, hogy a
+
+978
+00:36:47,839 --> 00:36:52,240
+délutánok is potenciálisan valamilyen
+
+979
+00:36:50,200 --> 00:36:53,599
+hassleel, side hasustsellel telhetnek
+
+980
+00:36:52,240 --> 00:36:58,240
+el, vagy ha nem mással, akkor
+
+981
+00:36:53,599 --> 00:37:01,160
+orvasással. egy nagyon-nagyon produktív
+
+982
+00:36:58,240 --> 00:37:04,240
+környezet, és mindenki, aki odakerül, az
+
+983
+00:37:01,160 --> 00:37:06,520
+val vagy úgy látom, hogy igazából erre a
+
+984
+00:37:04,240 --> 00:37:08,040
+kaptafára van gyártva. Ezt sok sokan fel
+
+985
+00:37:06,520 --> 00:37:10,640
+is hozzák, hogy hát Dubajban mindenki
+
+986
+00:37:08,040 --> 00:37:13,160
+munka munkamániás, vagy hogy mindenki
+
+987
+00:37:10,640 --> 00:37:14,560
+folyton előre törekvő. Mindenki
+
+988
+00:37:13,160 --> 00:37:17,880
+eldöntheti nyilván, hogy ez jó vagy
+
+989
+00:37:14,560 --> 00:37:21,000
+rossz. Ön picit hiányolom Európából azt,
+
+990
+00:37:17,880 --> 00:37:23,200
+hogy hogy ez a ez a fajta kultúra talán
+
+991
+00:37:21,000 --> 00:37:26,000
+teljesen eltűnt, vagy nem nagyon nem
+
+992
+00:37:23,200 --> 00:37:27,599
+nagyon találom nyomát a a pláne a
+
+993
+00:37:26,000 --> 00:37:28,920
+nyugat-európai, de most már az a baj,
+
+994
+00:37:27,599 --> 00:37:32,119
+hogy nálunk sem. És azért mi nem
+
+995
+00:37:28,920 --> 00:37:34,079
+rendelkezünk mondjuk egy norvég
+
+996
+00:37:32,119 --> 00:37:36,119
+befektető alap háttérrel, amikor ugye
+
+997
+00:37:34,079 --> 00:37:38,599
+minden állampolgárnak valamilyen szinten
+
+998
+00:37:36,119 --> 00:37:39,960
+biztosítva van a jóléte. Nekünk azért
+
+999
+00:37:38,599 --> 00:37:41,599
+még sokat kellene pedálozni
+
+1000
+00:37:39,960 --> 00:37:44,280
+középkelet-Európában, mert le vagyunk
+
+1001
+00:37:41,599 --> 00:37:45,839
+már amúgy is maradva 50 évvel. Igen. Hát
+
+1002
+00:37:44,280 --> 00:37:48,359
+miközben hallgattam az előadásodat,
+
+1003
+00:37:45,839 --> 00:37:51,720
+eszembe jutott ez a ez a híres mondás,
+
+1004
+00:37:48,359 --> 00:37:53,680
+ez a gondolat, hogy a nehéz idők erős
+
+1005
+00:37:51,720 --> 00:37:56,000
+embereket
+
+1006
+00:37:53,680 --> 00:37:58,640
+termelnek, és az erős emberek pedig jó
+
+1007
+00:37:56,000 --> 00:38:01,440
+időket hoznak. A jó idők viszont gyenge
+
+1008
+00:37:58,640 --> 00:38:03,880
+embereket termelnek ki magukból. És
+
+1009
+00:38:01,440 --> 00:38:06,200
+talán mintogyha ebbe a ciklusban lennénk
+
+1010
+00:38:03,880 --> 00:38:09,400
+most, hogy nagyon jó volt az elmúlt öt
+
+1011
+00:38:06,200 --> 00:38:12,119
+év, az elmúlt 10 év így az IT piacon.
+
+1012
+00:38:09,400 --> 00:38:15,359
+viszont mintha ez az ellulás, ez az
+
+1013
+00:38:12,119 --> 00:38:17,240
+elpuhulás, ez ez kezdene érződni, és
+
+1014
+00:38:15,359 --> 00:38:19,000
+hogy ezek a puha emberek most mit fognak
+
+1015
+00:38:17,240 --> 00:38:21,720
+hozni, mintogyha ez ez lenne az egyik
+
+1016
+00:38:19,000 --> 00:38:25,640
+üzenete ennek a vészcsengőhúzásnak, hogy
+
+1017
+00:38:21,720 --> 00:38:27,760
+figyeljetek ide, mert baj jön biztosan.
+
+1018
+00:38:25,640 --> 00:38:29,920
+>> Abszolút ezzel egyetértek. Ugye az a
+
+1019
+00:38:27,760 --> 00:38:32,200
+baj, amikor és ezt például ugye Robert
+
+1020
+00:38:29,920 --> 00:38:33,839
+Kioszakinak is a könyvében olvashatjuk,
+
+1021
+00:38:32,200 --> 00:38:35,680
+én nem vagyok egyébként az alkalmazotti
+
+1022
+00:38:33,839 --> 00:38:37,960
+státusz ellen egy kicsit sem. Meg a ugye
+
+1023
+00:38:35,680 --> 00:38:39,480
+céget vezetek, tehát mi a kollégáinkra
+
+1024
+00:38:37,960 --> 00:38:41,440
+igyekszünk
+
+1025
+00:38:39,480 --> 00:38:42,640
+odafigyelni, vigyázni, és nincsen azzal
+
+1026
+00:38:41,440 --> 00:38:45,200
+semmi baj, nem kell mindenkinek
+
+1027
+00:38:42,640 --> 00:38:47,240
+vállalkozni, rengeteg áldozatot követel.
+
+1028
+00:38:45,200 --> 00:38:48,680
+viszont például azt az eszmét, amit ő
+
+1029
+00:38:47,240 --> 00:38:51,119
+ott leír, hogy van az a szint az
+
+1030
+00:38:48,680 --> 00:38:53,240
+életvitelben az embernek, amikor már nem
+
+1031
+00:38:51,119 --> 00:38:56,000
+él rosszul, de már de még lehetne annál
+
+1032
+00:38:53,240 --> 00:38:57,800
+sokkal többet is tenni a jóléte, vagy a
+
+1033
+00:38:56,000 --> 00:38:59,640
+továbbhaladása érdekében. Ez lehet
+
+1034
+00:38:57,800 --> 00:39:01,400
+karrier vagy életszínvonal
+
+1035
+00:38:59,640 --> 00:39:03,760
+szempontjából, viszont egy olyan langyos
+
+1036
+00:39:01,400 --> 00:39:05,640
+zónába érkezik be, amikor már nincsen
+
+1037
+00:39:03,760 --> 00:39:08,160
+akkora nagy stresszor hátulról, amiért
+
+1038
+00:39:05,640 --> 00:39:10,720
+érdemes lenne. Tehát a motiváció picit
+
+1039
+00:39:08,160 --> 00:39:12,359
+eltűnik, és akkor ott valaki úgy érzi,
+
+1040
+00:39:10,720 --> 00:39:14,760
+hogy ezen a szinten, ezen a szinten
+
+1041
+00:39:12,359 --> 00:39:16,359
+szeretne megállni.
+
+1042
+00:39:14,760 --> 00:39:18,720
+Azt is tudni kell mindenkinek amúgy,
+
+1043
+00:39:16,359 --> 00:39:20,800
+hogy mi az, ami elég. Tehát, hogy ugye
+
+1044
+00:39:18,720 --> 00:39:22,680
+anyagi szempontból az elképzelhető, hogy
+
+1045
+00:39:20,800 --> 00:39:24,599
+ez ez így elég. Csak ugye ez a mi
+
+1046
+00:39:22,680 --> 00:39:26,560
+szakmánk, ez egy folyamatosan fejlődő
+
+1047
+00:39:24,599 --> 00:39:29,319
+szakma, és nem biztos, hogy mindig olyan
+
+1048
+00:39:26,560 --> 00:39:30,720
+kontextus van, amikor az a például az a
+
+1049
+00:39:29,319 --> 00:39:32,960
+projekt, vagy az az ügyfél, akivel
+
+1050
+00:39:30,720 --> 00:39:35,599
+dolgozol, az a top technológiákkal,
+
+1051
+00:39:32,960 --> 00:39:38,280
+legújabb módszertannal tud
+
+1052
+00:39:35,599 --> 00:39:40,359
+tud veled dolgozni. olyankor szerintem a
+
+1053
+00:39:38,280 --> 00:39:42,640
+te feladatod kellene legyen az, hogy
+
+1054
+00:39:40,359 --> 00:39:45,400
+hogy nagyon tudatosan figyelj arra, hogy
+
+1055
+00:39:42,640 --> 00:39:47,720
+karrier karriervédelmi
+
+1056
+00:39:45,400 --> 00:39:50,280
+üzemmódba kapcsolj. Nyilván mi is
+
+1057
+00:39:47,720 --> 00:39:52,520
+igyekszünk a a kollégáinknak segíteni,
+
+1058
+00:39:50,280 --> 00:39:56,599
+tehát például minden évben elmegyünk
+
+1059
+00:39:52,520 --> 00:40:00,680
+piacvezető konferenciákra, ahol külföldi
+
+1060
+00:39:56,599 --> 00:40:01,880
+előadók adnak elő
+
+1061
+00:40:00,680 --> 00:40:03,680
+nagy cégektől, tehát olyan nagy
+
+1062
+00:40:01,880 --> 00:40:07,480
+cégektől, ahol igazából a mi mi
+
+1063
+00:40:03,680 --> 00:40:09,640
+szakmánkat magas fokon űzik.
+
+1064
+00:40:07,480 --> 00:40:10,839
+Nagyon sok olyan ismerősöm, barátom van,
+
+1065
+00:40:09,640 --> 00:40:13,319
+aki azt mondja, hát ő ilyesmre nem
+
+1066
+00:40:10,839 --> 00:40:14,800
+küldt. Hát küldje el a cég, hogyha
+
+1067
+00:40:13,319 --> 00:40:17,560
+szeretné, hogy ő holnap jobb legyen,
+
+1068
+00:40:14,800 --> 00:40:20,480
+akkor elvárja, hogy akkor a adjanak neki
+
+1069
+00:40:17,560 --> 00:40:23,359
+szabadnapot, fizessék ki a konferenciát,
+
+1070
+00:40:20,480 --> 00:40:25,440
+még lehetőleg akkor valami pluszt is
+
+1071
+00:40:23,359 --> 00:40:27,680
+előtte utána, hogy tudja kipihenni az út
+
+1072
+00:40:25,440 --> 00:40:29,920
+fáradalmait. Na ez most megváltozott.
+
+1073
+00:40:27,680 --> 00:40:31,920
+Tehát itt most már egyértelmű az üzenet,
+
+1074
+00:40:29,920 --> 00:40:33,400
+hogy itt mindenki magára kell elsősorban
+
+1075
+00:40:31,920 --> 00:40:34,800
+vigyázzon. Vannak olyan cégek, akik
+
+1076
+00:40:33,400 --> 00:40:36,599
+amúgy vigyáznak rád. Tehát mi azért
+
+1077
+00:40:34,800 --> 00:40:38,440
+igyekszünk valahol a kettő között
+
+1078
+00:40:36,599 --> 00:40:40,079
+pozicionálódni. Amúgy a mi kollégáink
+
+1079
+00:40:38,440 --> 00:40:42,000
+értékelik is. Tehát volt egy céges
+
+1080
+00:40:40,079 --> 00:40:44,280
+felmérésünk, ahol egyértelműen kimondták
+
+1081
+00:40:42,000 --> 00:40:46,040
+azt, hogy például ez az oldal a a mi
+
+1082
+00:40:44,280 --> 00:40:48,160
+cégünkben való
+
+1083
+00:40:46,040 --> 00:40:50,520
+létnek, ez ez nekik kifejezetten
+
+1084
+00:40:48,160 --> 00:40:53,000
+imponáló, és az, hogy a kollégák is egy
+
+1085
+00:40:50,520 --> 00:40:55,000
+olyan magas technikai színvonalon
+
+1086
+00:40:53,000 --> 00:40:57,079
+vannak, amivel amivel ők úgy érzik, hogy
+
+1087
+00:40:55,000 --> 00:40:58,520
+ez egy olyan környezet, amibe amibe
+
+1088
+00:40:57,079 --> 00:41:01,079
+holnap holnap után így szívesen
+
+1089
+00:40:58,520 --> 00:41:02,480
+bejönnek, és nem marad senki sem hátra.
+
+1090
+00:41:01,079 --> 00:41:04,560
+Nálunk is van olyan projekt, olyan
+
+1091
+00:41:02,480 --> 00:41:06,880
+technológia, ami nem feltétlenül az ú a
+
+1092
+00:41:04,560 --> 00:41:09,240
+legutolsó
+
+1093
+00:41:06,880 --> 00:41:11,240
+három-négy évbe pattant ki valakinek a
+
+1094
+00:41:09,240 --> 00:41:12,760
+fejéből, de hát azokat az ügyfeleket is
+
+1095
+00:41:11,240 --> 00:41:15,920
+ki kell szolgálni. Viszont azt akkor
+
+1096
+00:41:12,760 --> 00:41:18,319
+próbáljuk ellensúlyozni talán olyan
+
+1097
+00:41:15,920 --> 00:41:21,400
+tanítási meg
+
+1098
+00:41:18,319 --> 00:41:23,400
+exposure részen, ahol ahol olyan
+
+1099
+00:41:21,400 --> 00:41:25,960
+dolgokról tanulhatnak, vagy olyan
+
+1100
+00:41:23,400 --> 00:41:27,720
+dolgokat próbálunk
+
+1101
+00:41:25,960 --> 00:41:30,280
+nekik földobni, olyan labdákat, amiket
+
+1102
+00:41:27,720 --> 00:41:33,400
+hogyha leütnek, azzal mindenki jól jár.
+
+1103
+00:41:30,280 --> 00:41:36,880
+Téged amúgy mi motivál? Mi az, ami ami
+
+1104
+00:41:33,400 --> 00:41:38,760
+ami húz előre ennyire szenvedélyesen?
+
+1105
+00:41:36,880 --> 00:41:41,000
+>> Ez egy nagyon jó kérdés, és igazából
+
+1106
+00:41:38,760 --> 00:41:44,200
+ugye ma önreflexióról beszéltem,
+
+1107
+00:41:41,000 --> 00:41:46,000
+szerintem erről sokat lehet beszélni.
+
+1108
+00:41:44,200 --> 00:41:47,240
+Az egyik dolog az nyilván a siker. Tehát
+
+1109
+00:41:46,000 --> 00:41:49,359
+szeretném szeretném azt, hogy
+
+1110
+00:41:47,240 --> 00:41:51,119
+elmondhassam, ugye már pár startupba
+
+1111
+00:41:49,359 --> 00:41:54,400
+mondtam, hogy beletört igazából a a
+
+1112
+00:41:51,119 --> 00:41:57,359
+bicskám, olyan értelemben nem
+
+1113
+00:41:54,400 --> 00:41:59,040
+feltétlenül veszem teljes mértékbe a a
+
+1114
+00:41:57,359 --> 00:42:00,560
+felelősséget az csak az én vállamra,
+
+1115
+00:41:59,040 --> 00:42:02,839
+hogy azért ez egy sok komponensű dolog.
+
+1116
+00:42:00,560 --> 00:42:04,079
+Tehát láttuk a Csaba előadásából is,
+
+1117
+00:42:02,839 --> 00:42:05,880
+hogy azért egy startupat nagyon sok
+
+1118
+00:42:04,079 --> 00:42:06,960
+mindenen elbukhat.
+
+1119
+00:42:05,880 --> 00:42:09,400
+Azt se mondom, hogy amúgy mi nem
+
+1120
+00:42:06,960 --> 00:42:11,400
+hibáztunk, de szeretném azt, hogy egy
+
+1121
+00:42:09,400 --> 00:42:14,200
+olyan közösséget építsünk a a Bin
+
+1122
+00:42:11,400 --> 00:42:16,839
+hatchen belül, ahol ahol mindenki
+
+1123
+00:42:14,200 --> 00:42:19,079
+egyformán jól jár, ahol olyan
+
+1124
+00:42:16,839 --> 00:42:21,359
+technológiákat tudunk használni olyan
+
+1125
+00:42:19,079 --> 00:42:24,960
+problémáknak a megoldására, ami igazából
+
+1126
+00:42:21,359 --> 00:42:27,559
+tényleg értékes, olyan ügyfeleknek, akik
+
+1127
+00:42:24,960 --> 00:42:29,359
+jól láthatóak, akik bizniszkritikus
+
+1128
+00:42:27,559 --> 00:42:32,680
+dolgokat oldak meg. Tehát nekem mindig
+
+1129
+00:42:29,359 --> 00:42:34,240
+az volt a a kedvenc
+
+1130
+00:42:32,680 --> 00:42:36,359
+projektem, amelyiken ugye a
+
+1131
+00:42:34,240 --> 00:42:37,760
+legvizibilisebb volt, a legláthatóbb
+
+1132
+00:42:36,359 --> 00:42:40,359
+volt az, hogyha valamit sikerült
+
+1133
+00:42:37,760 --> 00:42:42,160
+javítani. Tehát a valami olyat olyat
+
+1134
+00:42:40,359 --> 00:42:44,000
+építesz, amit amúgy a potenciálisan
+
+1135
+00:42:42,160 --> 00:42:45,960
+milliók használnak, akkor az azért
+
+1136
+00:42:44,000 --> 00:42:48,440
+mindig ad egy ilyen
+
+1137
+00:42:45,960 --> 00:42:50,319
+egy ilyen kielégülést a az embernek.
+
+1138
+00:42:48,440 --> 00:42:53,040
+Tehát abszolút
+
+1139
+00:42:50,319 --> 00:42:57,200
+talán ez a ez az építői kultúra meg ez
+
+1140
+00:42:53,040 --> 00:42:59,000
+az építői ö elégtétel az, ami amire azt
+
+1141
+00:42:57,200 --> 00:43:01,240
+mondanám, hogy hogy előre visz. És
+
+1142
+00:42:59,000 --> 00:43:04,119
+azonkívül pedig nyilván azok az emberek,
+
+1143
+00:43:01,240 --> 00:43:06,520
+akiket akiket jó környezetben tudunk
+
+1144
+00:43:04,119 --> 00:43:08,640
+ezáltal tartani, és akiknek a szürke
+
+1145
+00:43:06,520 --> 00:43:10,280
+állományát ilyen dolgokra tudjuk
+
+1146
+00:43:08,640 --> 00:43:11,839
+használni, és olyan környezetet tudunk
+
+1147
+00:43:10,280 --> 00:43:13,319
+nekik teremteni, ahol ők jól érzik
+
+1148
+00:43:11,839 --> 00:43:16,400
+magukat.
+
+1149
+00:43:13,319 --> 00:43:17,640
+A az AI most ahogy bejött, ezt
+
+1150
+00:43:16,400 --> 00:43:19,040
+mindenkitől megkérdezem, és nagyon
+
+1151
+00:43:17,640 --> 00:43:21,559
+kíváncsi vagyok a véleményedre, ahogy
+
+1152
+00:43:19,040 --> 00:43:23,240
+ahogy egyre inkább látom, hogy bejön és
+
+1153
+00:43:21,559 --> 00:43:27,520
+egyre nagyobb teret veszel most már a
+
+1154
+00:43:23,240 --> 00:43:29,920
+fejlesztőktől is, kódot generál és
+
+1155
+00:43:27,520 --> 00:43:33,079
+és dokumentációt generál és és
+
+1156
+00:43:29,920 --> 00:43:36,319
+gyakorlatilag anélkül már fejleszteni
+
+1157
+00:43:33,079 --> 00:43:39,359
+szinte elképzelhetetlen.
+
+1158
+00:43:36,319 --> 00:43:40,800
+Hogy látod, hogy kié lesz a jövő? Milyen
+
+1159
+00:43:39,359 --> 00:43:42,319
+kvalitásai kell legyenek annak a
+
+1160
+00:43:40,800 --> 00:43:44,160
+személynek, aki most kezdi? Tegyük fel
+
+1161
+00:43:42,319 --> 00:43:46,599
+az egyetemet, mit tanuljon, hogyan
+
+1162
+00:43:44,160 --> 00:43:47,839
+tanuljon, és ki lesz a jövő, ki lesz az,
+
+1163
+00:43:46,599 --> 00:43:49,960
+aki sikeres lesz.
+
+1164
+00:43:47,839 --> 00:43:52,280
+>> Ühüm.
+
+1165
+00:43:49,960 --> 00:43:54,599
+Hát elsősorban én talán inkább a szenior
+
+1166
+00:43:52,280 --> 00:43:55,920
+kollégákkal kezdeném, mert ugye ott is
+
+1167
+00:43:54,599 --> 00:43:59,480
+szerintem lesz egy elég komoly
+
+1168
+00:43:55,920 --> 00:44:01,400
+transzformáció olyan irányba, hogy az AI
+
+1169
+00:43:59,480 --> 00:44:03,280
+azokat, akik eddig is nagyon jók voltak,
+
+1170
+00:44:01,400 --> 00:44:06,119
+azt azt nagyon nagy mértékben fel fogja
+
+1171
+00:44:03,280 --> 00:44:08,359
+gyorsítani. pont azok a skillek, amik
+
+1172
+00:44:06,119 --> 00:44:11,640
+ahhoz kellettek, hogy egy egy termékből
+
+1173
+00:44:08,359 --> 00:44:15,000
+igazán jó, skálázható, biztonságos,
+
+1174
+00:44:11,640 --> 00:44:17,240
+gyors és egyéb ilyen nonfunkcionális
+
+1175
+00:44:15,000 --> 00:44:19,480
+jelzőkkel illetett terméket tudjunk
+
+1176
+00:44:17,240 --> 00:44:21,960
+teremteni, azok most nagyon
+
+1177
+00:44:19,480 --> 00:44:23,400
+nagyon-nagyon felszínre törnek. Ugyanis
+
+1178
+00:44:21,960 --> 00:44:25,520
+például, hogyha az AI-jal való
+
+1179
+00:44:23,400 --> 00:44:27,119
+programozásról beszélünk, akkor nagyon
+
+1180
+00:44:25,520 --> 00:44:29,800
+pontosan el kell tudjuk mondani azt,
+
+1181
+00:44:27,119 --> 00:44:32,359
+hogy mit várunk el. Most, hogyha ezt
+
+1182
+00:44:29,800 --> 00:44:34,440
+cizelláton is jól meg tudjuk fogalmazni,
+
+1183
+00:44:32,359 --> 00:44:38,000
+akkor valószínűleg az eredmény is az
+
+1184
+00:44:34,440 --> 00:44:39,760
+nagyjából jó jó minőségű lesz. Nyilván,
+
+1185
+00:44:38,000 --> 00:44:41,599
+hogy utána pedig azt is folyamatos
+
+1186
+00:44:39,760 --> 00:44:42,880
+iterációkon keresztül ki kell tudni
+
+1187
+00:44:41,599 --> 00:44:44,559
+értékelni. Meg kell mondani, hogy mi az,
+
+1188
+00:44:42,880 --> 00:44:46,720
+amit talán nem gondolt jól, mi az, ami
+
+1189
+00:44:44,559 --> 00:44:48,720
+abban a kontextusban vagy üzleti
+
+1190
+00:44:46,720 --> 00:44:50,599
+helyzetben
+
+1191
+00:44:48,720 --> 00:44:52,559
+nem jó fit, és azokat meg kell kérjük,
+
+1192
+00:44:50,599 --> 00:44:53,559
+hogy akkor írja ő át, vagy hogyha én
+
+1193
+00:44:52,559 --> 00:44:55,319
+őszintén harmadik- negyedik
+
+1194
+00:44:53,559 --> 00:44:56,839
+próbálkozásnál nem sikerül elérjem, amit
+
+1195
+00:44:55,319 --> 00:44:59,359
+akarok, akkor azt mondom, jó, akkor ezt
+
+1196
+00:44:56,839 --> 00:45:01,079
+most megírom én, de a többi
+
+1197
+00:44:59,359 --> 00:45:03,119
+többi helyzetben igyekszem az AI-t
+
+1198
+00:45:01,079 --> 00:45:07,240
+használni. Tehát azt mondanám, hogy pont
+
+1199
+00:45:03,119 --> 00:45:09,200
+arra a sokrétű tudásra van szükség, amit
+
+1200
+00:45:07,240 --> 00:45:11,400
+és ez lesz talán a junioroknál nehéz,
+
+1201
+00:45:09,200 --> 00:45:15,040
+amit amit az edzés során lehetett
+
+1202
+00:45:11,400 --> 00:45:16,680
+igazából el elsajátítani.
+
+1203
+00:45:15,040 --> 00:45:18,880
+Ez a tudás ez
+
+1204
+00:45:16,680 --> 00:45:21,119
+annak a feloldására is
+
+1205
+00:45:18,880 --> 00:45:23,240
+irányul, ugye, hogy az informatikában
+
+1206
+00:45:21,119 --> 00:45:26,000
+szát az armos előadást, aki látta, az az
+
+1207
+00:45:23,240 --> 00:45:28,079
+valószínűleg legalább akkorát lépett
+
+1208
+00:45:26,000 --> 00:45:30,480
+hátra, mint én. Ugy már nem tudom a 10.
+
+1209
+00:45:28,079 --> 00:45:31,960
+15 virtualizációs színnél tartunk. Tehát
+
+1210
+00:45:30,480 --> 00:45:34,040
+ugye ott van a hardware, azon ott van a
+
+1211
+00:45:31,960 --> 00:45:36,200
+egy hypervisor, az am van egy operációs
+
+1212
+00:45:34,040 --> 00:45:37,920
+rendszer, aminek a tetején van egy nem
+
+1213
+00:45:36,200 --> 00:45:39,880
+tudom, egy konténer. A konténerbe fut
+
+1214
+00:45:37,920 --> 00:45:41,160
+egy alkalmazás, az alkalmazásba behúzunk
+
+1215
+00:45:39,880 --> 00:45:43,400
+egy libraryt, tehát hogy itt már annyi
+
+1216
+00:45:41,160 --> 00:45:45,160
+minden van, amit át kell látni, akkor az
+
+1217
+00:45:43,400 --> 00:45:46,920
+ugye kommunikál egy
+
+1218
+00:45:45,160 --> 00:45:48,400
+egy hálózaton keresztül valakivel, annak
+
+1219
+00:45:46,920 --> 00:45:50,200
+a hálózatnak van egy protokollja. Tehát
+
+1220
+00:45:48,400 --> 00:45:52,720
+ezekbe a dolgokba már annyi hiba
+
+1221
+00:45:50,200 --> 00:45:53,839
+csúszhat be, vagy annyi specifikum van,
+
+1222
+00:45:52,720 --> 00:45:55,480
+amik
+
+1223
+00:45:53,839 --> 00:45:57,200
+amik a működést befolyásolják, hogy
+
+1224
+00:45:55,480 --> 00:46:00,520
+ezeket, hogyha valaki át akarja látni,
+
+1225
+00:45:57,200 --> 00:46:02,680
+akkor egy picit ezekhez a elméletinek
+
+1226
+00:46:00,520 --> 00:46:04,480
+tartott fogalmakhoz azért hozzá kell
+
+1227
+00:46:02,680 --> 00:46:07,480
+tudni szólni, meg hozzá kell tudni
+
+1228
+00:46:04,480 --> 00:46:11,400
+nyúlni. Ezekbe az absztrakciós cselekbe
+
+1229
+00:46:07,480 --> 00:46:13,119
+látom például az igazi szenoritásnak a
+
+1230
+00:46:11,400 --> 00:46:17,079
+nagyon nagy hozzáadott értékét. Tehát
+
+1231
+00:46:13,119 --> 00:46:18,960
+például egy incidensnek a megoldásában
+
+1232
+00:46:17,079 --> 00:46:21,480
+valaki, aki ilyenekkel gyakran
+
+1233
+00:46:18,960 --> 00:46:23,160
+találkozik, az exponenciálisabban,
+
+1234
+00:46:21,480 --> 00:46:24,680
+gyorsabban meg tudja oldani a problémát,
+
+1235
+00:46:23,160 --> 00:46:26,400
+mint mondjuk egy unió. Egész egyszerűen
+
+1236
+00:46:24,680 --> 00:46:29,119
+azért, mert nekünk volt rá időnk, hogy
+
+1237
+00:46:26,400 --> 00:46:30,920
+ezeket egyenként megtapasztaljuk, és az
+
+1238
+00:46:29,119 --> 00:46:34,160
+az igazság, hogy ennél jó kevésbé
+
+1239
+00:46:30,920 --> 00:46:36,119
+komplex környezetekbe.
+
+1240
+00:46:34,160 --> 00:46:39,480
+Az én személyes véleményem az az, hogyha
+
+1241
+00:46:36,119 --> 00:46:41,000
+egy junior be akar törni erre a
+
+1242
+00:46:39,480 --> 00:46:42,520
+munkaerőpiac, akkor elsősorban
+
+1243
+00:46:41,000 --> 00:46:44,680
+szenvedésen kell szeresse az
+
+1244
+00:46:42,520 --> 00:46:46,880
+informatikát, mert nem lesz egy egyszerű
+
+1245
+00:46:44,680 --> 00:46:49,599
+menet. Tehát amikor mi informatikusnak
+
+1246
+00:46:46,880 --> 00:46:52,079
+mentünk annak idején,
+
+1247
+00:46:49,599 --> 00:46:54,599
+nagyon-nagyon jó képzést kaptunk megint
+
+1248
+00:46:52,079 --> 00:46:56,640
+akkor felhoznám és ezúton is megköszönöm
+
+1249
+00:46:54,599 --> 00:46:58,839
+Demeter Csaba és Bálin Zsuzsa
+
+1250
+00:46:56,640 --> 00:47:01,359
+tanáraimnak a azt, hogy idáig
+
+1251
+00:46:58,839 --> 00:47:02,599
+eljuttattak.
+
+1252
+00:47:01,359 --> 00:47:05,119
+Nagyon jó képzést kaptunk ilyen
+
+1253
+00:47:02,599 --> 00:47:07,079
+értelemben, és mindenki, aki a kezük
+
+1254
+00:47:05,119 --> 00:47:09,119
+alól kikerült, az azért ment informatika
+
+1255
+00:47:07,079 --> 00:47:10,520
+egyetemre, mert szerette ezt a szakmát.
+
+1256
+00:47:09,119 --> 00:47:12,319
+Tehát azt kell mondjam, hogy ha jól
+
+1257
+00:47:10,520 --> 00:47:14,280
+tudom, akkor az osztálytársaim közül
+
+1258
+00:47:12,319 --> 00:47:17,880
+mindenki a szakmába dolgozik, aki ezt az
+
+1259
+00:47:14,280 --> 00:47:19,559
+egyetemi utat követte. Utána sajnos ugye
+
+1260
+00:47:17,880 --> 00:47:21,319
+sajnos és szerencsére mivel ilyen jól
+
+1261
+00:47:19,559 --> 00:47:22,800
+ment az informatikusoknak, és erről is
+
+1262
+00:47:21,319 --> 00:47:25,079
+beszéltem, ezért nagyon sok olyan ember
+
+1263
+00:47:22,800 --> 00:47:26,720
+is odament, aki egyébként valami más
+
+1264
+00:47:25,079 --> 00:47:29,599
+szeret szenvedélyesen csinálni, viszont
+
+1265
+00:47:26,720 --> 00:47:31,520
+ezt jól megfizették.
+
+1266
+00:47:29,599 --> 00:47:33,319
+Az ő belső motivációjuk egy adott
+
+1267
+00:47:31,520 --> 00:47:35,200
+pillanatban nyilván lemorzsolódik. Tehát
+
+1268
+00:47:33,319 --> 00:47:37,319
+bekerültek egy munkakörnyezetbe, az
+
+1269
+00:47:35,200 --> 00:47:39,040
+abszolút kötelezőt, azt ők tudták
+
+1270
+00:47:37,319 --> 00:47:40,640
+teljesíteni, nem rúgták ki őket, nem is
+
+1271
+00:47:39,040 --> 00:47:43,200
+olyan volt a kontextus, hogy bárkinek
+
+1272
+00:47:40,640 --> 00:47:45,440
+üzet érdeke legyen az, hogy egy egy
+
+1273
+00:47:43,200 --> 00:47:49,200
+kollégát azt eltávolítson egy fizetőt
+
+1274
+00:47:45,440 --> 00:47:51,520
+fizetett székről.
+
+1275
+00:47:49,200 --> 00:47:55,319
+Viszont elveszed elvesztődött egy picit
+
+1276
+00:47:51,520 --> 00:47:57,160
+talán a ez a ez a az elit oldal az
+
+1277
+00:47:55,319 --> 00:48:00,240
+informatikának. Na most azok az emberek,
+
+1278
+00:47:57,160 --> 00:48:02,960
+akik továbbra is az informatika
+
+1279
+00:48:00,240 --> 00:48:04,800
+szenvedélyes szereteté miatt kerülnek
+
+1280
+00:48:02,960 --> 00:48:07,040
+ebbe a szakmába, azok valószínűleg az
+
+1281
+00:48:04,800 --> 00:48:10,079
+egyetemi éveik alatt is, meg a céges
+
+1282
+00:48:07,040 --> 00:48:11,680
+éveik alatt is
+
+1283
+00:48:10,079 --> 00:48:14,160
+olyan tudásra fognak megpróbálni
+
+1284
+00:48:11,680 --> 00:48:15,599
+szertenni, ami ami ami ezeket a
+
+1285
+00:48:14,160 --> 00:48:18,559
+témaköröket például, mint az előbb
+
+1286
+00:48:15,599 --> 00:48:20,520
+elmondtam, azért mélyen érinti. onnantól
+
+1287
+00:48:18,559 --> 00:48:23,000
+kezdve a következő lépés nyilván a céges
+
+1288
+00:48:20,520 --> 00:48:25,920
+kultúrának a megtanulása, az ügyfélrel
+
+1289
+00:48:23,000 --> 00:48:27,520
+való kommunikációnak a a megtanulása és
+
+1290
+00:48:25,920 --> 00:48:29,480
+egyéb ilyen
+
+1291
+00:48:27,520 --> 00:48:31,920
+biznis jellegű feladatköröknek az
+
+1292
+00:48:29,480 --> 00:48:33,880
+elsajátítása, meg a egész egyszerűen az
+
+1293
+00:48:31,920 --> 00:48:37,800
+üzleti életben való részvétel, meg a
+
+1294
+00:48:33,880 --> 00:48:40,480
+mindennapoknak a a a challengeinek a a
+
+1295
+00:48:37,800 --> 00:48:42,440
+megoldása, ami alatt rengeteget fejlődik
+
+1296
+00:48:40,480 --> 00:48:45,160
+egy kolléga.
+
+1297
+00:48:42,440 --> 00:48:47,160
+Szóval én igazából erre erre fektetném a
+
+1298
+00:48:45,160 --> 00:48:49,359
+hangsúlyt, hogyha ha egy dolgot
+
+1299
+00:48:47,160 --> 00:48:52,079
+mondhatnék, hogy a az a lexikális tudása
+
+1300
+00:48:49,359 --> 00:48:53,880
+meg az a
+
+1301
+00:48:52,079 --> 00:48:55,760
+az a pragmatikusság és kritikus
+
+1302
+00:48:53,880 --> 00:48:57,720
+gondolkodás, amivel egy informatikus ma
+
+1303
+00:48:55,760 --> 00:49:00,599
+fel kell legyen vértezve, az az abszolút
+
+1304
+00:48:57,720 --> 00:49:02,680
+esszenciális. Ezenkívül, bocsánat, nem
+
+1305
+00:49:00,599 --> 00:49:04,599
+még ennyi, hogy ezen kívül szerintem azt
+
+1306
+00:49:02,680 --> 00:49:06,240
+senki sem tudja megjósolni most ebben a
+
+1307
+00:49:04,599 --> 00:49:09,079
+pillanatban, hogy merrefelé fog az ipar
+
+1308
+00:49:06,240 --> 00:49:11,559
+elmozdulni.
+
+1309
+00:49:09,079 --> 00:49:13,880
+Ezt ez csak egy ilyen közép középtávú,
+
+1310
+00:49:11,559 --> 00:49:15,880
+maximum középtávú ajánlás lehet, és ez
+
+1311
+00:49:13,880 --> 00:49:17,839
+megváltozhat úgy, hogy mindenki magának
+
+1312
+00:49:15,880 --> 00:49:20,040
+döntse el, hogyha jó ötlet ebbe
+
+1313
+00:49:17,839 --> 00:49:21,920
+belemászni, vagy nem. Nekem más
+
+1314
+00:49:20,040 --> 00:49:24,040
+lehetőség, nem hiszem, hogy lett volna.
+
+1315
+00:49:21,920 --> 00:49:25,640
+Én pici gyerekkorom óta tudtam, hogy
+
+1316
+00:49:24,040 --> 00:49:26,839
+amikor első számítógépre rátettem a
+
+1317
+00:49:25,640 --> 00:49:29,040
+kezem, tudtam, hogy engem ez fog
+
+1318
+00:49:26,839 --> 00:49:32,319
+érdekelni, és szerencsére a szüleim is
+
+1319
+00:49:29,040 --> 00:49:33,799
+ilyen irányba tereltek, és maximálisan
+
+1320
+00:49:32,319 --> 00:49:35,319
+támogattak, hogy ebbe az irányba
+
+1321
+00:49:33,799 --> 00:49:39,319
+mozduljak el.
+
+1322
+00:49:35,319 --> 00:49:42,400
+Tehát, hogyha egy junior, bocsánat, egy
+
+1323
+00:49:39,319 --> 00:49:44,520
+egy érettségiző diák
+
+1324
+00:49:42,400 --> 00:49:46,559
+érzi magába ezt az elhívást, hogy az IT
+
+1325
+00:49:44,520 --> 00:49:48,359
+az, ami vonza, akkor számítson arra,
+
+1326
+00:49:46,559 --> 00:49:49,640
+hogy nehéz harc lesz, de csak akkor
+
+1327
+00:49:48,359 --> 00:49:51,400
+fogja tudni ezt a nehéz harcot
+
+1328
+00:49:49,640 --> 00:49:53,520
+végigvinni, hogyha tényleg szereti, mert
+
+1329
+00:49:51,400 --> 00:49:56,160
+ha nem, akkor a a bicskája bele fog
+
+1330
+00:49:53,520 --> 00:49:58,040
+törni. Csak a nagy fizetés önmagába,
+
+1331
+00:49:56,160 --> 00:49:59,480
+egyrészt nem is garantált, másrészt
+
+1332
+00:49:58,040 --> 00:50:01,599
+pedig
+
+1333
+00:49:59,480 --> 00:50:04,440
+nem fogja a nagy fizetés önmagában nem
+
+1334
+00:50:01,599 --> 00:50:06,640
+motivál hosszútávon eléggé. Én én nagyon
+
+1335
+00:50:04,440 --> 00:50:08,799
+sok embert láttam, akik kiégtek
+
+1336
+00:50:06,640 --> 00:50:10,760
+egyszerűen, és ez az AI, ez csak
+
+1337
+00:50:08,799 --> 00:50:12,720
+gyakorlatilag felgyorsítja a kiégést,
+
+1338
+00:50:10,760 --> 00:50:15,880
+mert többet várnak el rövidebb idő
+
+1339
+00:50:12,720 --> 00:50:18,040
+alatt. Szóval meg kell kapni azt, hogy
+
+1340
+00:50:15,880 --> 00:50:19,359
+ez tényleg ez az út, amin el akar
+
+1341
+00:50:18,040 --> 00:50:22,040
+indulni, vagy pedig nem. És hogyha
+
+1342
+00:50:19,359 --> 00:50:24,280
+elindult, akkor amit megtanultam most
+
+1343
+00:50:22,040 --> 00:50:26,319
+tőled, az az, hogy igazi product
+
+1344
+00:50:24,280 --> 00:50:28,000
+mindsettel gondolkozzon, vállaljon
+
+1345
+00:50:26,319 --> 00:50:29,680
+felelősséget, holisztikusan értse meg,
+
+1346
+00:50:28,000 --> 00:50:34,000
+hogy mi az mi az értelme annak, amit
+
+1347
+00:50:29,680 --> 00:50:36,119
+csinál. És és a a úgy, ahogy mondtad, a
+
+1348
+00:50:34,000 --> 00:50:38,599
+az értékhierarchiában minél magasabbra
+
+1349
+00:50:36,119 --> 00:50:40,280
+tegye ezt a a létszet, minél nagyobb
+
+1350
+00:50:38,599 --> 00:50:42,160
+hozzáadott értéke legyen, és próbáljon
+
+1351
+00:50:40,280 --> 00:50:44,040
+meg a befektetőnek a fejével
+
+1352
+00:50:42,160 --> 00:50:45,920
+gondolkozni.
+
+1353
+00:50:44,040 --> 00:50:48,160
+Amit még észrevettem nálad, hogy hogy
+
+1354
+00:50:45,920 --> 00:50:49,480
+nagyon-nagyon mély ismereted van.
+
+1355
+00:50:48,160 --> 00:50:51,520
+Egyrészt a szakszavakat nagyon jól
+
+1356
+00:50:49,480 --> 00:50:52,839
+ismered, de a befektetői szakszavakat
+
+1357
+00:50:51,520 --> 00:50:54,440
+nagyon jól ismered. Amúgy ezeket hol
+
+1358
+00:50:52,839 --> 00:50:57,319
+tanultad meg? Hogyha most így az elmúlt
+
+1359
+00:50:54,440 --> 00:50:58,760
+10 évet nézed, mi volt az a ilyen
+
+1360
+00:50:57,319 --> 00:51:00,760
+workshopokon tanultad, vagy az
+
+1361
+00:50:58,760 --> 00:51:03,280
+internetről olvastad, vagy ennek az
+
+1362
+00:51:00,760 --> 00:51:05,160
+egyelege, vagy beszélgettél emberekkel,
+
+1363
+00:51:03,280 --> 00:51:07,000
+vagy mentorod volt, vagy h hogy hogyan
+
+1364
+00:51:05,160 --> 00:51:10,599
+lehet ezt felszedni ezt a tudást?
+
+1365
+00:51:07,000 --> 00:51:12,359
+>> Talán, hogyha egy egy rossz pontja van a
+
+1366
+00:51:10,599 --> 00:51:14,000
+legalábbis a romániai iskolai meg
+
+1367
+00:51:12,359 --> 00:51:16,160
+egyetemi oktatásnak, akkor az az, hogy
+
+1368
+00:51:14,000 --> 00:51:17,680
+ez egyáltalán nem nincsen érintve
+
+1369
+00:51:16,160 --> 00:51:19,359
+semmilyen tantár keretén belül,
+
+1370
+00:51:17,680 --> 00:51:21,280
+semmilyen oktatás, semmilyen workshop,
+
+1371
+00:51:19,359 --> 00:51:23,200
+semmilyen extra kururikuláris
+
+1372
+00:51:21,280 --> 00:51:25,359
+tevékenység alatt. Nyilván vannak olyan
+
+1373
+00:51:23,200 --> 00:51:27,240
+dolgok, amik segítenek a ahhoz, hogy
+
+1374
+00:51:25,359 --> 00:51:28,200
+hogy valamilyen szinten simul simulj
+
+1375
+00:51:27,240 --> 00:51:30,599
+hozzá. Tehát azért vannak ilyen
+
+1376
+00:51:28,200 --> 00:51:34,000
+ötletbörze jellegű mint tudom én
+
+1377
+00:51:30,599 --> 00:51:36,480
+diákversenyek vagy ilyen biznis
+
+1378
+00:51:34,000 --> 00:51:38,720
+jellegű ötlet
+
+1379
+00:51:36,480 --> 00:51:40,200
+késő ilyen biznisplani dolgozó versenyek
+
+1380
+00:51:38,720 --> 00:51:44,359
+amik segítenek, de például klasszikusan
+
+1381
+00:51:40,200 --> 00:51:45,799
+azért az informatikusok ezt nem keresik.
+
+1382
+00:51:44,359 --> 00:51:47,880
+Én személyesen őszintén, amikor
+
+1383
+00:51:45,799 --> 00:51:49,359
+bekerültem az első startupomba, és egy
+
+1384
+00:51:47,880 --> 00:51:51,640
+olyan környezetbe kerültem, ahol
+
+1385
+00:51:49,359 --> 00:51:54,119
+folyamatosan olyan terminusokat
+
+1386
+00:51:51,640 --> 00:51:55,599
+használtak a a környezetemben, amit amit
+
+1387
+00:51:54,119 --> 00:51:57,400
+nem ismertem, akkor nyilván elkezdtem
+
+1388
+00:51:55,599 --> 00:51:59,960
+olvasni. Ez nagyon kevés volt. Tehát
+
+1389
+00:51:57,400 --> 00:52:01,359
+ezáltal nem lettem okosabb. Nyilván,
+
+1390
+00:51:59,960 --> 00:52:03,559
+hogy akkor már megértettük egymást, de
+
+1391
+00:52:01,359 --> 00:52:05,359
+hogy a startup világban egyébként ez
+
+1392
+00:52:03,559 --> 00:52:07,440
+nagyon jellen van, ez a a lingónak a
+
+1393
+00:52:05,359 --> 00:52:10,280
+használata. Tehát rengeteg rövidítés
+
+1394
+00:52:07,440 --> 00:52:11,839
+van, rengeteg olyan dolog, ami a
+
+1395
+00:52:10,280 --> 00:52:14,599
+kultúrának a része, ami vagy a
+
+1396
+00:52:11,839 --> 00:52:18,119
+szubkultúrának a része, hogyha
+
+1397
+00:52:14,599 --> 00:52:21,319
+hogyha így szeretnénk megfogalmazni. És
+
+1398
+00:52:18,119 --> 00:52:23,839
+nyilván, hogy a az a kitettség, ami amit
+
+1399
+00:52:21,319 --> 00:52:26,880
+az okoz, hogy például egy CEO-val vagy
+
+1400
+00:52:23,839 --> 00:52:28,799
+egy chief product officer, egy CPO-val
+
+1401
+00:52:26,880 --> 00:52:31,040
+el kell menni mondjuk egy nagy corporate
+
+1402
+00:52:28,799 --> 00:52:32,520
+ügyféllrel beszélgetni, akkor az ember
+
+1403
+00:52:31,040 --> 00:52:34,880
+beletanul abba, hogy mi az, hogy
+
+1404
+00:52:32,520 --> 00:52:36,520
+termset, hogy mi az, hogy PNL sheet,
+
+1405
+00:52:34,880 --> 00:52:38,200
+hogy tehát, hogy ezekbe ezekbe a
+
+1406
+00:52:36,520 --> 00:52:39,880
+dolgokba nyilván beletanulunk, meg mi
+
+1407
+00:52:38,200 --> 00:52:41,160
+az, hogy go to marketplan, vagy mi az,
+
+1408
+00:52:39,880 --> 00:52:43,440
+hogy product roadmap. Tehát ezek a
+
+1409
+00:52:41,160 --> 00:52:45,160
+dolgok, amiket sajnos tényleg az
+
+1410
+00:52:43,440 --> 00:52:47,079
+egyetemen nem nagyon tanítanak, és
+
+1411
+00:52:45,160 --> 00:52:49,040
+szerintem kellene
+
+1412
+00:52:47,079 --> 00:52:51,000
+beletanul azokba a dinamikákba, és
+
+1413
+00:52:49,040 --> 00:52:52,520
+amiken keresztül megy egy start. Tehát
+
+1414
+00:52:51,000 --> 00:52:54,520
+tehát mi a mi az, hogy board meinting,
+
+1415
+00:52:52,520 --> 00:52:56,200
+mikor mikor kaphatunk befektetést, mikor
+
+1416
+00:52:54,520 --> 00:52:57,760
+jó valamit fölhozni, mikor jó egy
+
+1417
+00:52:56,200 --> 00:52:59,520
+productot lancsolni, mikor érdemes
+
+1418
+00:52:57,760 --> 00:53:02,079
+luncsolni, hogy kommunikáljunk róla.
+
+1419
+00:52:59,520 --> 00:53:05,520
+Tehát mivel a CTO szerepkörben voltam,
+
+1420
+00:53:02,079 --> 00:53:08,760
+azért gyakorlatilag minden más
+
+1421
+00:53:05,520 --> 00:53:11,520
+funkciójával a cégnek
+
+1422
+00:53:08,760 --> 00:53:13,480
+kollaborációba kerültem. Tehát
+
+1423
+00:53:11,520 --> 00:53:15,880
+akár marketing, akár hájáró oldalon,
+
+1424
+00:53:13,480 --> 00:53:17,839
+tehát egy ilyen elég sok rétű munkám
+
+1425
+00:53:15,880 --> 00:53:20,240
+volt nyilván a csapatnak a technikai
+
+1426
+00:53:17,839 --> 00:53:22,640
+vezetése mellett. És hát
+
+1427
+00:53:20,240 --> 00:53:23,799
+utána pedig amikor már ez a ez a
+
+1428
+00:53:22,640 --> 00:53:26,040
+folyamat elindul, és amikor
+
+1429
+00:53:23,799 --> 00:53:27,640
+beleszerettem a a startup világba, akkor
+
+1430
+00:53:26,040 --> 00:53:29,680
+elkezdtem tényleg fölkészülni. Tehát
+
+1431
+00:53:27,640 --> 00:53:32,079
+például van egy csomó nagyon jó is
+
+1432
+00:53:29,680 --> 00:53:34,000
+egyébként ingyenesen elérhető anyag. Y
+
+1433
+00:53:32,079 --> 00:53:36,400
+combinator például az egy nagy amerikai,
+
+1434
+00:53:34,000 --> 00:53:38,359
+talán világon a leghíresebb startup
+
+1435
+00:53:36,400 --> 00:53:40,319
+inkubátor, akinek van egy Startup School
+
+1436
+00:53:38,359 --> 00:53:42,680
+nevű programja. Mindenkinek nagyon
+
+1437
+00:53:40,319 --> 00:53:44,640
+ajánlom, még akkor is, hogyha nem
+
+1438
+00:53:42,680 --> 00:53:47,839
+informatikus, tehát ilyen bármilyen
+
+1439
+00:53:44,640 --> 00:53:50,240
+biznis doménban használható tudást lehet
+
+1440
+00:53:47,839 --> 00:53:51,680
+szerintem ott szerezni, ahol nagyon
+
+1441
+00:53:50,240 --> 00:53:54,799
+szépen elmagyarázzák a
+
+1442
+00:53:51,680 --> 00:53:57,880
+termékfejlesztőnek a buktatóit, a rossz
+
+1443
+00:53:54,799 --> 00:53:59,640
+kommunikációnak a buktatóit,
+
+1444
+00:53:57,880 --> 00:54:02,520
+a nem megfelelő pénzkezelésnek a
+
+1445
+00:53:59,640 --> 00:54:04,160
+buktatóit egy cég életében. Tehát ilyen
+
+1446
+00:54:02,520 --> 00:54:05,799
+szempontból mindig azt mondom, hogy én
+
+1447
+00:54:04,160 --> 00:54:08,960
+programozó vagyok, ezt ma is elmondtam,
+
+1448
+00:54:05,799 --> 00:54:11,200
+a többi azt nagyjából rámragadt. Tehát
+
+1449
+00:54:08,960 --> 00:54:13,760
+vagy nehéz tanulások és drága tanulások
+
+1450
+00:54:11,200 --> 00:54:15,359
+árán, amikor ugye a saját elkövetett
+
+1451
+00:54:13,760 --> 00:54:17,599
+hibákból kellett ezeket megtanulni.
+
+1452
+00:54:15,359 --> 00:54:19,480
+Hogyha pedig nem, akkor azért elég sokat
+
+1453
+00:54:17,599 --> 00:54:21,280
+olvastam utána ennek a témakörnek,
+
+1454
+00:54:19,480 --> 00:54:24,119
+előadásokat néztem, startup
+
+1455
+00:54:21,280 --> 00:54:26,359
+konferenciákra jártam. Ami talán jó, az
+
+1456
+00:54:24,119 --> 00:54:29,400
+az, hogy ez egy elég befogadó közösség,
+
+1457
+00:54:26,359 --> 00:54:31,119
+tehát hogy pont talán pont azért, amit
+
+1458
+00:54:29,400 --> 00:54:32,440
+Csaba is elmondott ma az előadásában,
+
+1459
+00:54:31,119 --> 00:54:35,319
+hogy ugye nagyon sokan ebbe bele
+
+1460
+00:54:32,440 --> 00:54:37,520
+belebuknak, és
+
+1461
+00:54:35,319 --> 00:54:39,280
+ez egy ilyen elfogadott dolog, tehát
+
+1462
+00:54:37,520 --> 00:54:41,119
+szoktak rendezni még szándékosan ilyen
+
+1463
+00:54:39,280 --> 00:54:42,799
+úgynevezett fuckup nightsokat is, amikor
+
+1464
+00:54:41,119 --> 00:54:45,480
+konkrétan arról van szó, hogy ki hol
+
+1465
+00:54:42,799 --> 00:54:49,480
+rontotta el a bizniszét, a startupetát
+
+1466
+00:54:45,480 --> 00:54:52,240
+potenciálisan az életét megtörő vagy
+
+1467
+00:54:49,480 --> 00:54:53,920
+mellékvágányra juttató dolgokról
+
+1468
+00:54:52,240 --> 00:54:56,440
+beszélni. Ezek az emberek relatív
+
+1469
+00:54:53,920 --> 00:54:58,200
+nyíltan, és egy olyan felszabadultság
+
+1470
+00:54:56,440 --> 00:54:59,599
+érzést ad nekik az, hogy ezt másokkal is
+
+1471
+00:54:58,200 --> 00:55:03,240
+megoszthatják, és tudjuk azt, hogy
+
+1472
+00:54:59,599 --> 00:55:05,359
+igazából nem csak mi vagyunk néha nem az
+
+1473
+00:55:03,240 --> 00:55:08,079
+éremnek a rossz oldalán, hanem más is.
+
+1474
+00:55:05,359 --> 00:55:10,839
+>> Záró kérdésként azt kérdezném tőled,
+
+1475
+00:55:08,079 --> 00:55:13,640
+hogy ha most visszamehetnél az időbe, és
+
+1476
+00:55:10,839 --> 00:55:16,720
+beszélhetnél egy öt percet Langmátéval,
+
+1477
+00:55:13,640 --> 00:55:18,079
+aki 10 évvel ezelőtti éned, mit üzennél
+
+1478
+00:55:16,720 --> 00:55:20,680
+neki?
+
+1479
+00:55:18,079 --> 00:55:22,039
+>> Fú, hát ez egy nagyon érdekes kérdés.
+
+1480
+00:55:20,680 --> 00:55:24,640
+Talán azt üzenném neki, hogy legyen
+
+1481
+00:55:22,039 --> 00:55:27,440
+empatikusabb. Például olyan értelemben,
+
+1482
+00:55:24,640 --> 00:55:30,359
+hogy pláne egy technikai felkészültségű
+
+1483
+00:55:27,440 --> 00:55:32,280
+ember, mint amilyen én is vagyok, amikor
+
+1484
+00:55:30,359 --> 00:55:34,079
+például egy ügyfél problémát kell
+
+1485
+00:55:32,280 --> 00:55:35,920
+megoldani, ami lehet, nem egy ideális
+
+1486
+00:55:34,079 --> 00:55:38,680
+technikai megoldáshoz vezet, akkor
+
+1487
+00:55:35,920 --> 00:55:40,680
+alapvetően egy ilyen undorral nyúl nyúl
+
+1488
+00:55:38,680 --> 00:55:43,240
+hozzá ehhez a ehhez a problémakörhöz.
+
+1489
+00:55:40,680 --> 00:55:46,359
+Tehát ilyen megerőszakolt szerepkörből
+
+1490
+00:55:43,240 --> 00:55:48,960
+próbál valamit valamit varázsolni,
+
+1491
+00:55:46,359 --> 00:55:51,640
+és talán megpróbálnék simulékonyabban
+
+1492
+00:55:48,960 --> 00:55:55,079
+hozzá hozzáállni, és kevésbé fafejűen
+
+1493
+00:55:51,640 --> 00:55:56,119
+hozzáállni a bizonyos bizonyos kliensek,
+
+1494
+00:55:55,079 --> 00:55:58,160
+ügyfelek által, plá a
+
+1495
+00:55:56,119 --> 00:56:01,200
+termékfejlesztésről beszélünk,
+
+1496
+00:55:58,160 --> 00:56:04,280
+támasztott igények igények felé. Ez ez
+
+1497
+00:56:01,200 --> 00:56:06,880
+talán segített volna az első startatba
+
+1498
+00:56:04,280 --> 00:56:08,720
+például olyan értelemben, hogy ne
+
+1499
+00:56:06,880 --> 00:56:10,400
+ne tartsanak például a fejlesztések
+
+1500
+00:56:08,720 --> 00:56:12,400
+olyan sokáig, ameddig potenciálisan
+
+1501
+00:56:10,400 --> 00:56:14,200
+tartottak. Annak ellenére ugye, hogy a
+
+1502
+00:56:12,400 --> 00:56:15,920
+minőség az ott volt a háta mögött, de
+
+1503
+00:56:14,200 --> 00:56:17,359
+lehet, hogy
+
+1504
+00:56:15,920 --> 00:56:20,559
+az öt évvel ezelőtt énemnek
+
+1505
+00:56:17,359 --> 00:56:22,400
+elmagyaráznám azt, hogy vannak olyan
+
+1506
+00:56:20,559 --> 00:56:24,280
+rövidítések, amiket érdemesnél
+
+1507
+00:56:22,400 --> 00:56:26,000
+megcsinálni. Talán még akkor is, hogyha
+
+1508
+00:56:24,280 --> 00:56:28,520
+minőség kárára megy, talán akkor is,
+
+1509
+00:56:26,000 --> 00:56:30,720
+hogyha egy suboptimális vagy nem ideális
+
+1510
+00:56:28,520 --> 00:56:33,319
+helyzetet eredményez rövidtávon, mert az
+
+1511
+00:56:30,720 --> 00:56:34,920
+életbemaradásnak az pedig lehet a az
+
+1512
+00:56:33,319 --> 00:56:36,880
+áloga.
+
+1513
+00:56:34,920 --> 00:56:40,319
+Máté, köszönöm szépen az időt. Nagyon
+
+1514
+00:56:36,880 --> 00:56:42,000
+értékes volt és sok sikert neked a a
+
+1515
+00:56:40,319 --> 00:56:43,440
+startupodhoz. Remélem, hogyha egy pár év
+
+1516
+00:56:42,000 --> 00:56:46,039
+múlva leülünk beszélgetni, akkor azt a
+
+1517
+00:56:43,440 --> 00:56:48,039
+sikert, amit te most így nagyjából
+
+1518
+00:56:46,039 --> 00:56:49,440
+körbeírtál, azt el is fogod tudni írni.
+
+1519
+00:56:48,039 --> 00:56:50,920
+Akkor viszont nagyon kíváncsi leszek,
+
+1520
+00:56:49,440 --> 00:56:51,760
+hogy mit látsz sikernek majd abban a
+
+1521
+00:56:50,920 --> 00:56:53,319
+pillanatban.
+
+1522
+00:56:51,760 --> 00:56:55,240
+>> Nagyon szépen köszönöm és gratulálok a
+
+1523
+00:56:53,319 --> 00:56:57,359
+kezdeményedzést a podcasthoz. Köszönöm
+
+1524
+00:56:55,240 --> 00:56:59,359
+szépen. Az utóbbi időben nagyon sokat
+
+1525
+00:56:57,359 --> 00:57:01,640
+foglalkoztat a startupok világa, nagyon
+
+1526
+00:56:59,359 --> 00:57:03,680
+sokat foglalkoztat az oktatást téma, és
+
+1527
+00:57:01,640 --> 00:57:05,559
+a következő pár epizódomat erre
+
+1528
+00:57:03,680 --> 00:57:07,400
+szeretném szentelni, meghívni a legjobb
+
+1529
+00:57:05,559 --> 00:57:09,359
+vendégeket, akik meg tudnak szólalni
+
+1530
+00:57:07,400 --> 00:57:11,280
+ezekben a témákban. Ha szeretnél
+
+1531
+00:57:09,359 --> 00:57:13,119
+támogatni ebbe a munkába abban, hogy
+
+1532
+00:57:11,280 --> 00:57:15,640
+ezeket a témákat minél inkább ki tudjam
+
+1533
+00:57:13,119 --> 00:57:17,960
+bontani, és a mögöttük rejlő alapelveket
+
+1534
+00:57:15,640 --> 00:57:20,079
+meg tudjam érteni, és ezt podcast
+
+1535
+00:57:17,960 --> 00:57:22,160
+formájában veletek is megosszam, azzal
+
+1536
+00:57:20,079 --> 00:57:24,400
+tudtok támogatni, ha feliratkoztok erre
+
+1537
+00:57:22,160 --> 00:57:27,359
+a csatornára. Azt vettem észre, hogy
+
+1538
+00:57:24,400 --> 00:57:29,400
+körülbelül 80%-a a nézőknek nincs
+
+1539
+00:57:27,359 --> 00:57:31,599
+feliratkozva a csatornára. Gyertek és
+
+1540
+00:57:29,400 --> 00:57:33,720
+iratkozzatok fel. Ez nagyban segít és
+
+1541
+00:57:31,599 --> 00:57:35,680
+motivál engem is, hogy tovább folytassam
+
+1542
+00:57:33,720 --> 00:57:40,079
+ezt a kutatást, és ezeket az érdekes
+
+1543
+00:57:35,680 --> 00:57:40,079
+témákat hozzátok is elhozzam.
+

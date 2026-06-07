@@ -1,3 +1,15 @@
+---
+title: "Memory"
+date: 2026-05-11
+author: Becze Szabolcs
+status: active
+description: "Szabolcs's foundational knowledge vault for Ignis Academy, documenting project structure, team roster, key terminology, and organizational context for the AI-driven enterprise skills platform and its 275k EUR EU grant. Essential reference for stakeholders and internal documentation."
+description_source: auto
+description_hash: a44b4320b4a07c12
+id: 88ca7fa7-52a0-4b53-99a4-994692ba1426
+index_schema_version: 1
+bdos_index: true
+---
 # Memory
 
 > **📂 Mappa-struktúra:** Az Ignis Academy mappa magában tartalmazza:

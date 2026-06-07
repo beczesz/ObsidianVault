@@ -1,4 +1,7 @@
 ---
+description: "RFP for Coca-Cola HBC's Azure managed services platform; Magyar Telekom is prime bidder and Sonrisa is positioned to supply AIOps, Agentic AI, and FinOps differentiators."
+description_source: auto
+description_hash: a2720cd7d958d028
 type: lead
 id: cchbc
 company: "Coca-Cola HBC (CCHBC)"
@@ -60,7 +63,6 @@ created: 2026-05-19
 validated: 2026-05-19
 last_signal_check: 2026-05-19
 ---
-
 # Coca-Cola HBC (CCHBC)
 
 ## Signal

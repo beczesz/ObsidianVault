@@ -1,4 +1,7 @@
 ---
+description: "Machine learning model for predicting podcast episode popularity based on universal appeal (57%), practical applicability (36%), and expertise depth (7%). Validated on Hungarian interviews; helps content creators and strategists identify which episodes will reach broad audiences versus niche listeners."
+description_source: auto
+description_hash: 85f8476a5d81302e
 version: 1.5
 date: 2026-04-09
 type: popscore-model-universal
@@ -9,7 +12,6 @@ status: "Converged — weights locked after 4 validation rounds"
 id: 2f3da349-ee3d-4611-bb11-7764a90582c5
 index_schema_version: 1
 ---
-
 # PopScore v1.5 — Universal Podcast Popularity Prediction Model
 
 > Predict the relative popularity potential of any podcast episode based on three content dimensions.

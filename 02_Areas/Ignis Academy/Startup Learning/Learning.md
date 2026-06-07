@@ -1,4 +1,15 @@
-
+---
+title: "Learning"
+date: 2025-10-27
+author: Becze Szabolcs
+status: active
+description: "A structured 3-month startup learning roadmap for founders, progressing from foundational concepts through customer validation, MVP design, business modeling, funding strategy, and leadership development. Each stage includes specific resources, exercises, and Obsidian documentation outputs tailored to building an adaptive AI learning platform."
+description_source: auto
+description_hash: 1bcbfb329b77de06
+id: 128d9caf-8c3f-4f73-8525-f4c7db96a1f8
+index_schema_version: 1
+bdos_index: true
+---
 ## 🧭 Founder's Startup Learning Roadmap (Tailored for You)
 
 ### **Stage 0 — Orientation (1 week)**

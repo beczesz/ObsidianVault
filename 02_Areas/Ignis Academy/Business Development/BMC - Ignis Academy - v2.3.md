@@ -1,4 +1,15 @@
- 
+---
+title: "BUSINESS MODEL CANVAS"
+date: 2025-11-27
+author: Becze Szabolcs
+status: active
+description: "Comprehensive business model framework for Ignis Academy, an AI-powered enterprise skills platform emphasizing measurable ROI, personalized learning pathways, and workforce intelligence dashboards for corporate clients and individual learners."
+description_source: auto
+description_hash: 77be29b5ec124ccf
+id: 1d89b859-3677-4992-ad51-14be6931e83e
+index_schema_version: 1
+bdos_index: true
+---
 # BUSINESS MODEL CANVAS
 
 Date: 2025-11-14  

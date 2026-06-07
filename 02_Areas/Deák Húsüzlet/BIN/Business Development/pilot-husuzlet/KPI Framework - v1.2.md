@@ -1,5 +1,8 @@
 ---
 title: DH Metrics & KPI Framework
+description: "Egy DH (Digital Handl?) pilot projekt 30 napos mérési és KPI keretrendszere, amely a hipotetikus feltételezéseket (BMC) validálja valós adatokkal; döntésre hangsúlyozva a 14 napos Second Order Rate-et mint North Star metrikus az igazi felhasználó visszatérésének mérésére."
+description_source: auto
+description_hash: 6aad2e6fcebdefa9
 version: 1.2
 date: 2026-04-04
 project: DH (Deák Húsmíves Online Platform)
@@ -8,7 +11,6 @@ status: active
 id: 5dafce42-6443-4197-a6f9-8e259310ce62
 index_schema_version: 1
 ---
-
 # DH Metrics & KPI Framework
 ### Pilot fázis — első 30 nap
 

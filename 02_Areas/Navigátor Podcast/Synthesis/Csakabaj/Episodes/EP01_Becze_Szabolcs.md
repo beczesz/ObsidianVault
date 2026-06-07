@@ -1,4 +1,7 @@
 ---
+description: "Becze Szabolcs, IT-vállalkozó és ExarLabs alapító beszélgetése az információs korról, vállalkozásról és technológiáról, ahol személyes tapasztalatok, etikai kérdések és gyakorlati alkalmazások összefonódnak. A Csakabaj Podcast első epizódjaként bemutatja a gazdát, Levit aktív párbeszédpartnerként, aki elméleti kereteket, személyes dimenz"
+description_source: auto
+description_hash: 7c35e0186e9e97a0
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -13,7 +16,6 @@ quality: "Gold Standard"
 id: 76576d40-669c-4e8f-8a64-0661a6bb61d7
 index_schema_version: 1
 ---
-
 # EP01 — Becze Szabolcs: Információs kor, vállalkozás, technológia
 
 ## Alapadatok

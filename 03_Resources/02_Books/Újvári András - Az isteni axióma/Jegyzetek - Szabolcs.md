@@ -1,3 +1,15 @@
+---
+title: "Jegyzetek   Szabolcs"
+date: 2026-02-02
+author: Becze Szabolcs
+status: active
+description: "Szabolcs könyvét kritikai olvasásként feldolgozó részletes jegyzet, amely a szerző teológiai és filozófiai gondolataihoz, valamint értelmezési módszeréhez ad visszajelzést és reflexiókat."
+description_source: auto
+description_hash: 1c4de0e84dda94da
+id: 9129f0f4-5682-4426-b39d-f2b1ddcda9c3
+index_schema_version: 1
+bdos_index: true
+---
 ## Bevezető
 
 Ez az első, hogy valaki elküldte a könyvének az első változatát, megtiszteltetésnek veszem. Azt hiszem valóban nincs sok ember akinek ezt érdemben megmutathatod, hiszen annyira specifikus az ami iránt érdeklődünk és azt hiszem tényleg jó embernek mutattad meg, mert élveztem és komolyan is igyekeztem venni a feladatot. 

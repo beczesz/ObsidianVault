@@ -1,3 +1,15 @@
+---
+title: "03 – Mit tapasztal a kliens belőlünk? Bizalomépítés és bizalomrombolás a gyakorlatban"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "A kliens perspektívájából vizsgálja a bizalomépítés és bizalomrombolás gyakorlati mechanizmusait öt szinten: havi riporttól a management kapcsolaton keresztül. Operatív vezetők számára, akik szolgáltatásai jellemzője a jelenlét és kiszámíthatóság."
+description_source: auto
+description_hash: e32031c5835f0177
+id: 9f9db6eb-9f3a-4acb-ad80-cbff3ba7b360
+index_schema_version: 1
+bdos_index: true
+---
 # 03 – Mit tapasztal a kliens belőlünk? Bizalomépítés és bizalomrombolás a gyakorlatban
 
 ---

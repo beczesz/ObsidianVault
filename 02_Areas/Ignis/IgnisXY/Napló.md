@@ -1,4 +1,15 @@
-
+---
+title: "Napló"
+date: 2025-12-26
+author: Becze Szabolcs
+status: active
+description: "Személyes napló a fiataloknak szóló közösségi tér koncepciójáról, amely Barni atya kezdeményezéseként és Réti Levi meglévő terveivel összhangban egy katolikus értékalapú, családbarát klubot céloz meg Udvarhelyen."
+description_source: auto
+description_hash: 97211082ff007f76
+id: 9409eabb-6395-4d43-b504-c0a1c6b85d1c
+index_schema_version: 1
+bdos_index: true
+---
 ## 2025.12.26 Következtetések
 
 Mi az ami lelkesít benne?

@@ -1,3 +1,15 @@
+---
+title: "Szabó Andor - Értékelés"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Szabó Andor 2026 februári teljesítménye E2 szinten, megbízható munkatárs képe: jó bizalmi szint (6.5), termelési sebesség és kapacitás juniorhoz képest erős (6-6), proaktivitása pedig kimagasló. Fejlesztendő: feladatok teljes lezárása, munkakörnyezet rendben tartása, segítségkérés időben."
+description_source: auto
+description_hash: cc244dec3b987495
+id: 9d7c46b4-519f-423f-a1cb-99641dcab53c
+index_schema_version: 1
+bdos_index: true
+---
 # Szabó Andor - Értékelés
 **Időszak**: 2026 Február
 **Szint**: E2 (Junior)

@@ -24,7 +24,7 @@ index_schema_version: 1
 - **Email thread**: [Tender/email-thread.md](Tender/email-thread.md)
 - **Internal implementation phases doc** (KEY new input): [Tender/implementacios-fazisok.md](Tender/implementacios-fazisok.md)
 - **Glossary**: [GLOSSARY.md](GLOSSARY.md)
-- **Inference Farm**: [../../../Services/Inference Farm/Description.md](../../../Services/Inference%20Farm/Description.md)
+- **Inference Farm**: [../../../Practices/Inference-Farm/proposals/01-sonrisa-llmaas-platform-description.md](../../../Practices/Inference-Farm/proposals/01-sonrisa-llmaas-platform-description.md)
 
 ## Team & Round 1 raw findings
 

@@ -1,3 +1,15 @@
+---
+title: "WP39 – Fegyelmezés | Gál Ildikó | YouTube Metaadat"
+date: 2026-02-21
+author: Becze Szabolcs
+status: active
+description: "Gál Ildikó gyermekpszichológussal a fegyelmezés kritikus szülői szerepéről szóló podcast interjú, amely konkrét történeteket és nevelési stratégiákat tartalmaz a határozottság és érzelmi biztonság közötti egyensúlyról. Szülők és nevelési szakemberek számára készült gyakorlatias útmutató."
+description_source: auto
+description_hash: 846442697d49f27a
+id: b490e87c-48e4-45f5-b16c-76b26840543d
+index_schema_version: 1
+bdos_index: true
+---
 # WP39 – Fegyelmezés | Gál Ildikó | YouTube Metaadat
 
 ---

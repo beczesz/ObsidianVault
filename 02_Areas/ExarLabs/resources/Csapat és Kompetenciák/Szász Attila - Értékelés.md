@@ -1,3 +1,15 @@
+---
+title: "Szász Attila - Értékelés"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Szász Attila 2026 februári teljesítményi értékelésének sablonja E6 szinten, mely technikai készségektől a stratégiai gondolkodásig hat kompetenciaterületen értékeli az eddig kitöltésre váró értékeket és fejlődési célokat."
+description_source: auto
+description_hash: 45451b7c7519801b
+id: 8e438ca6-cb9c-404b-9f44-70bf1fbd4622
+index_schema_version: 1
+bdos_index: true
+---
 # Szász Attila - Értékelés
 **Időszak**: 2026 Február
 **Szint**: E6 (Senior)

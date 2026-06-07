@@ -1,3 +1,15 @@
+---
+title: "Founding 50 Program — Feature Specification"
+date: 2026-05-01
+author: Becze Szabolcs
+status: active
+description: "Detailed technical specification for Founding 50 early adopter program including user flows, UI components, data models, and implementation requirements for recruiting first 50 members with three-month free shipping benefit; intended for developers and product managers implementing v0.3 beta launch."
+description_source: auto
+description_hash: 7cdab9ae1195195a
+id: 9bbcda79-91a9-4dd9-8be4-157bc112aa2c
+index_schema_version: 1
+bdos_index: true
+---
 # Founding 50 Program — Feature Specification
 
 **Jira ticket:** DH-150

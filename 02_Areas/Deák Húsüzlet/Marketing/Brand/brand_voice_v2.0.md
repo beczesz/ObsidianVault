@@ -1,5 +1,8 @@
 ---
 title: "Deák Húsmíves — Brand Voice v2.0"
+description: "Deák Húsmíves brand voice dokumentáció, amely definiálja az ügyfélkommunikáció hangnemét, üzeneteit és tiltólistáját. Marketingesek, grafikusok és közösségimédia-kezelők használják a konzisztens márka-reprezentáció biztosítására."
+description_source: auto
+description_hash: e523d91d93c34372
 version: 2.0
 date: 2026-04-23
 authors: Claude (Orchestrator) + ChatGPT (Deák GPT) + Perplexity (Research)
@@ -13,7 +16,6 @@ changelog: |
 id: dc745ea7-ea49-4f82-bf0a-19dc76270045
 index_schema_version: 1
 ---
-
 # Deák Húsmíves — Brand Voice v2.0
 
 > **„A Deák nem elad — hanem segít jól dönteni."**

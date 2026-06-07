@@ -1,3 +1,15 @@
+---
+title: "Azure DevOps Platform Services"
+date: 2026-04-27
+author: Becze Szabolcs
+status: active
+description: "Comprehensive service offering for deploying, migrating, and operating Azure DevOps environments, covering both on-premises Server and cloud Services editions with two models: implementation and ongoing SLA-backed managed support."
+description_source: auto
+description_hash: 73a35f793ca012e7
+id: 86036626-f85b-44eb-8132-24feb0ef2abe
+index_schema_version: 1
+bdos_index: true
+---
 # Azure DevOps Platform Services
 
 Azure DevOps Platform Services provides end-to-end implementation, migration, and managed support for Azure DevOps environments - both Azure DevOps Server (on-premises) and Azure DevOps Services (cloud). We design, deploy, and operate the platform so your development teams can focus on shipping software, not managing tooling.

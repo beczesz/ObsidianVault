@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  TEMPLATE — replace with: <Dashboard Name>, <one-line description>.   Version: 0.1.0
+  =============================================================================
+  Replace this whole header before commit. Required fields:
+    • Dashboard name + one-line "what this shows" description
+    • Version (start at 0.1.0)
+    • Renders from: <markdown source path(s)>
+    • Read-only. Edit <source>.md in Obsidian.
+    • Audit trail: start with "0.1.0 (YYYY-MM-DD) initial: ..." line
+
+  This template uses ALL shared libs from DS 0.7.2:
+    • tokens.css      — link in <head> before <style>
+    • theme.js        — auto-wires #themeToggle + cross-tab storage sync
+    • clipboard.js    — provides window.copyText + window.wireCopyRef
+    • markdown-parser.js — provides window.parseYamlFrontmatter
+    • live-updates.js — auto-fallback SSE/poll, mounts status pill
+    • admin-bar.js    — fixed dark top bar with 5 health pills
+    • dom-utils.js    — window.escapeHtml + window.toSlug
+    • agent-logs.js   — sidecar fetcher (only if rendering an agent dashboard)
+
+  See: /_dashboards/CLAUDE.md  (discovery layer)
+       /_dashboards/_design/ARCHITECTURE.md  (normative spec)
+       /_dashboards/_design/_template/checklist.md  (pre-commit list)
+       /_dashboards/_design/lint.mjs  (`node lint.mjs <this-file>`)
+
+  Audit trail:
+    0.1.0 (2026-05-25) initial scaffold from _design/_template/.
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TEMPLATE — replace</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23D97757' stroke-width='2.2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS §1b) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<!-- Canonical tokens (DS §1 + §1a) — DO NOT inline :root tokens. -->
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+.app { max-width: 1200px; margin: 0 auto; padding: 28px 36px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  text-decoration: none; padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+.home-link svg { flex-shrink: 0; }
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.version-pill {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
+  border-radius: 999px; letter-spacing: 0; text-transform: none;
+}
+.masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; color: var(--ink-1); }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta { color: var(--ink-3); max-width: 700px; font-size: 14px; margin-top: 8px; line-height: 1.55; }
+
+/* ===== Card grid ===== */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-top: 24px; }
+.card {
+  position: relative;  /* required for .card-copy-ref absolute positioning */
+  background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l);
+  padding: 18px 20px 16px; box-shadow: var(--shadow-1);
+  transition: box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.card:hover { box-shadow: var(--shadow-2); border-color: var(--line); }
+.card h3 { font-size: 15px; font-weight: 600; color: var(--ink-1); margin-bottom: 6px; }
+.card p { font-size: 13px; color: var(--ink-3); line-height: 1.5; }
+
+/* ===== Card copy-ref (DS §4a, MANDATORY) ===== */
+.card-copy-ref {
+  position: absolute; top: 10px; right: 10px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 500; color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.card:hover .card-copy-ref, .card:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ===== Empty / error states ===== */
+.state {
+  text-align: center; padding: 60px 20px; color: var(--ink-4);
+  border: 1px dashed var(--line-soft); border-radius: var(--radius-l);
+  margin-top: 24px; font-size: 14px;
+}
+.state.error { color: var(--gap); border-color: rgba(192,57,43,.25); background: var(--gap-tint); }
+</style>
+</head>
+<body>
+<!-- Admin bar mount-point (DS §5c) — first body element, before content. -->
+<div id="bdos-admin-bar"></div>
+
+<main class="app">
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Back to Ideas Vault launcher">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      TEMPLATE
+      <span class="version-pill">v0.1.0</span>
+    </div>
+    <h1>Replace with <span class="accent">Dashboard Name</span></h1>
+    <div class="submeta">One-sentence description of what this dashboard shows.</div>
+  </header>
+
+  <section id="content">
+    <div class="state" id="loading">Loading…</div>
+  </section>
+</main>
+
+<!-- ============================================================ -->
+<!-- Shared engine — DO NOT inline equivalents of these.          -->
+<!-- ============================================================ -->
+<!-- Live updates (DS §5) — SSE + poll fallback + status pill -->
+<script src="/_dashboards/_design/live-updates.js"></script>
+<!-- Theme + clipboard helpers (DS 0.7.0, Sprint 1) -->
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<!-- Markdown parser (DS 0.7.2, Sprint 3) -->
+<script src="/_dashboards/_design/markdown-parser.js"></script>
+<!-- DOM/string utilities (DS 0.7.3, Sprint 5) -->
+<script src="/_dashboards/_design/dom-utils.js"></script>
+<!-- Admin bar (DS §5c) — must load LAST among shared chrome -->
+<script src="/_dashboards/_design/admin-bar.js"></script>
+
+<script>
+// ============================================================
+// PER-DASHBOARD CONFIG — edit these
+// ============================================================
+const DASH_STEM = 'template';                                   // == HTML filename without .html
+const DATA_URL  = '/02_Areas/.../SOMETHING.md';                 // markdown source path
+
+// ============================================================
+// Data fetch + render
+// ============================================================
+async function fetchData() {
+  const res = await fetch(DATA_URL, { cache: 'no-store' });
+  if (!res.ok) throw new Error('fetch failed: ' + res.status);
+  return res.text();
+}
+
+function renderError(msg) {
+  document.getElementById('content').innerHTML =
+    `<div class="state error">Could not load data: ${escapeHtml(msg)}</div>`;
+}
+
+function renderEmpty() {
+  document.getElementById('content').innerHTML =
+    `<div class="state">No data yet. Edit ${escapeHtml(DATA_URL)} in Obsidian to populate.</div>`;
+}
+
+function renderCards(items) {
+  const container = document.getElementById('content');
+  if (!items || items.length === 0) { renderEmpty(); return; }
+  container.innerHTML = `<div class="grid">${items.map((item) => {
+    const id = toSlug(item.name || item.title || 'item');
+    return `
+      <article class="card" data-card-id="${escapeHtml(id)}">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          copy ref
+        </button>
+        <h3>${escapeHtml(item.name || item.title || '(unnamed)')}</h3>
+        <p>${escapeHtml(item.description || '')}</p>
+      </article>
+    `;
+  }).join('')}</div>`;
+  // Wire copy-ref buttons after dynamic render (clipboard.js exposes window.wireCopyRef)
+  wireCopyRef(container);
+}
+
+async function refetchAndRender() {
+  try {
+    const md = await fetchData();
+    const parsed = parseYamlFrontmatter(md);
+    if (!parsed) { renderEmpty(); return; }
+    // Adjust to your data shape — frontmatter may be a single object OR have an `items:` array
+    const items = parsed.frontmatter.items || [];
+    renderCards(items);
+  } catch (e) {
+    renderError(e.message);
+  }
+}
+
+// ============================================================
+// Boot — subscribe to LiveUpdates (SSE + poll fallback)
+// ============================================================
+LiveUpdates.subscribe(refetchAndRender);
+LiveUpdates.mountStatusIndicator(document.querySelector('.masthead-toprow'));
+refetchAndRender();
+</script>
+</body>
+</html>

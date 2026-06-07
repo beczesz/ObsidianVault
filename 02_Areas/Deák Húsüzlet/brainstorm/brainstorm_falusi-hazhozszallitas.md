@@ -1,4 +1,7 @@
 ---
+description: "A falusi húsházhozszállítás fix-route pre-order modelljét szintetizáló brainstorm. Konzenzus-stratégia: ingyenes szállítás 120 RON felett, heti két kiszállítás, 10–15 rendelés/route a jövedelmezőséghez szükséges; piacpotenciál Hargita megyében 2000–3500 háztartás."
+description_source: auto
+description_hash: 99e52313d3bacc79
 topic: Falusi házhozszállítási modell — a DH pilot kiterjesztése vidékre
 created: 2026-05-01
 last_updated: 2026-05-01
@@ -6,7 +9,6 @@ status: SYNTHESIZED — 3 AI input összegezve, döntésre vár
 id: a3450a6e-8581-4daf-84b1-0ab792ab6405
 index_schema_version: 1
 ---
-
 # Brainstorm: Falusi házhozszállítási modell
 
 ## Kiindulópont

@@ -1,3 +1,15 @@
+---
+title: "1. VALUE PROPOSITION — Improvements"
+date: 2025-11-14
+author: Becze Szabolcs
+status: active
+description: "Detailed improvement roadmap for BMC v2.1 across all nine canvas blocks, targeting Series A investor expectations. Includes specific quantifications, pricing tiers, partner incentive models, financial metrics (CAC, LTV, NRR), and operational milestones to elevate the document from 8.8 to 9.5-10/10 readiness for enterprise SaaS evaluation."
+description_source: auto
+description_hash: 715bf5cfc343cd53
+id: 6de466f0-a15b-4cbb-8562-6f83d2d352fa
+index_schema_version: 1
+bdos_index: true
+---
 Below is a **formal, comprehensive improvement plan** for **BMC v2.1**, structured along the nine building blocks of the Business Model Canvas and reflecting what a **Series A investor, an accelerator, or an EU evaluator** would expect from a top-tier enterprise SaaS BMC.
 
 The goal is to evolve v2.1 from **8.8/10** to a **9.5–10/10 investor-ready document**.

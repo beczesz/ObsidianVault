@@ -1,5 +1,8 @@
 ---
 title: "EP26 - Balázs Anna & Zoltáni Kinga: Életfonal — Daganatos betegséggel vívott harc és újjászületés"
+description: "Az EP26 két mellrák-túlélő nő, Anna és Kinga interjúja a diagnózistól a gyógyulásig, amely feltárja a várakozás kínját, a közlés dilemmáját és az önszeretet szükségességét. Érzelmi mélysége és tabu-témakezelése miatt kiemelkedő megtartottságot ér el."
+description_source: auto
+description_hash: 1f60b566281cd74e
 podcast: Navigátor Podcast
 episode_number: 26
 guest: "Balázs Anna, Zoltáni Kinga"
@@ -24,7 +27,6 @@ tags: [daganat, rák, túlélés, hit, gyász, közösség, éberség, halálkö
 id: 75097e9d-4a84-4f9d-aaeb-fa31f3f8cbf3
 index_schema_version: 1
 ---
-
 # EP26 — Balázs Anna & Zoltáni Kinga: Életfonal — Daganatos betegséggel vívott harc és újjászületés
 
 ## Összefoglaló

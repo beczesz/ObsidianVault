@@ -1,3 +1,15 @@
+---
+title: "Pistyur Veronika — Interjú terv v2"
+date: 2026-03-06
+author: Becze Szabolcs
+status: active
+description: "v2 interjúterv a Navigator Podcasthez Pistyur Veronikával, amely az „Nincs csoda kell témáját boncolgatja: a sikert kitartás, szerencse és munka alapján kutatja, szembenéz a díjak mögötti valósággal, és feldolgozza a proaktivitás versus viktimológia kérdését."
+description_source: auto
+description_hash: 579e2cd5a33f172a
+id: 9fc951d0-8939-44df-9653-1b963f40bc7a
+index_schema_version: 1
+bdos_index: true
+---
 # Pistyur Veronika — Interjú terv v2
 **Navigator Podcast | Székelyudvarhely | 45 perc**
 **Cím: "Vezető vagy az életedben"**

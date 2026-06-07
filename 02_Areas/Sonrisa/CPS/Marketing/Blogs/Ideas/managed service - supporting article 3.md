@@ -1,3 +1,15 @@
+---
+title: "Availability Is an Engineering Problem, Not an HR Problem"
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "A parked article explaining why 24/7 availability requires engineering systems and team rotations rather than hiring more people, targeted at engineering managers facing on-call burnout, with CPS managed on-call service as the solution."
+description_source: auto
+description_hash: 6d8efe5aadd8fc7c
+id: e3e3184d-af52-4cd4-ad53-39c1712d1db1
+index_schema_version: 1
+bdos_index: true
+---
 # Availability Is an Engineering Problem, Not an HR Problem
 
 > ⚠️ **STATUS: PARKED — Do not publish yet**

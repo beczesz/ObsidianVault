@@ -1,3 +1,15 @@
+---
+title: "Introduction"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Personal introduction of Szabolcs Becze from Romania, documenting his faith journey from agnostic to Kingdom Company founder, his prophetic calling to establish a prayer house in Odorheiu Secuiesc, and his plans to adopt a child, written for readers interested in faith-driven entrepreneurship and community leadership."
+description_source: auto
+description_hash: a950b08e81bfaa8f
+id: 3f44d733-6b6d-430b-9ba2-10b2845055e1
+index_schema_version: 1
+bdos_index: true
+---
 # Introduction
 
 My name is Szabolcs Becze (Szabi), I was born and live in Odorheiu Secuiesc, which is part of Transylvania, Romania. My wife Julia and I have 3 children. Julia is working as an architect and I studied Computer Science.

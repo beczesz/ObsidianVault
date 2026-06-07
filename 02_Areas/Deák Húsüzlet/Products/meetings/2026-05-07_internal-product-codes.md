@@ -1,3 +1,15 @@
+---
+title: "Internal Product Codes — Baczo Annamaria Sziget (Nota de comanda)"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Rendelési belső lista sertés, borjú és növendék húsféléiről, belsőségekről, valamint feldolgozott termékekről (kolbász, szalámi, füstölt áruk). Baczo Annamaria Sziget termelőjének 2026. május 9-i parancslistája termékkódokkal és RON/kg árakkal, számos pre-v1.0 archívumban hiányzó termékkel"
+description_source: auto
+description_hash: 7134da4565d45615
+id: 2a43fd1b-a80d-4c05-8702-56a074dc37aa
+index_schema_version: 1
+bdos_index: true
+---
 # Internal Product Codes — Baczo Annamaria Sziget (Nota de comanda)
 
 > **Forrás:** 2 fénykép — Szabolcs küldte 2026-05-07

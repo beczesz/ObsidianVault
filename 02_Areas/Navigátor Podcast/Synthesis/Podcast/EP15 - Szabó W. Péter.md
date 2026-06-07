@@ -1,4 +1,7 @@
 ---
+description: "Szabó W. Péter, a Tengr.ai alapító és UX kutató, beszél a mesterséges intelligencia mindennapi alkalmazásáról, valamint a képgenerálás, neurális hálók és etikai kérdések technikai mélymerüléséről a nézők számára, akik AI-ról szeretnének többet megtudni."
+description_source: auto
+description_hash: ea2882e68444af7b
 version: 0.1
 date: 2026-04-06
 type: episode-synthesis
@@ -15,7 +18,6 @@ analytics_note: "Overview tab elérhető (2026-04-06). Reach, Engagement, Audien
 id: 08d6b4e5-e10a-494a-a512-b2088a5ccba4
 index_schema_version: 1
 ---
-
 # EP15 — Szabó W. Péter: Mit hoz a mesterséges intelligencia a mindennapjainkba?
 
 ## Alapadatok

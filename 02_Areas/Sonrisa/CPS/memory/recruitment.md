@@ -1,3 +1,15 @@
+---
+title: "Recruitment Process & Guidelines"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "Recruitment criteria emphasizing character over technical skills, with detailed red flags for narcissistic traits and interview questions assessing humility, proactivity, empathy, and self-reflection. Includes current hiring needs for junior developers and paused candidates."
+description_source: auto
+description_hash: 49ad490fe42e4294
+id: 45934c9d-cf54-45b3-8e77-61c8f29adcea
+index_schema_version: 1
+bdos_index: true
+---
 # Recruitment Process & Guidelines
 
 ## Core Principle

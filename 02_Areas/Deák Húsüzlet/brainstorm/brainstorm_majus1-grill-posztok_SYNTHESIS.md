@@ -1,4 +1,7 @@
 ---
+description: "Május 1-i húsgrill csomag promóciójára készített öt Facebook poszt stratégia, részletes leírásokkal, vizuális ajánlásokkal és ütemezéssel. Marketing szakembereknek és kreatívoknak szól, akik Deák húsok termékeit szeretnék közösségi médiában hatékonyan értékesíteni."
+description_source: auto
+description_hash: ae2016f7fcbe8392
 topic: Május 1-i Grillcsomag Facebook Posztok — TOP 5 SZINTÉZIS
 created: 2026-04-29
 source: Think Engine v0.7 (ChatGPT + Gemini + Perplexity)
@@ -6,7 +9,6 @@ status: final
 id: fbe19906-7bc6-4b9b-9413-a60df7d5f1f5
 index_schema_version: 1
 ---
-
 # 🔥 Május 1-i Grillcsomag — TOP 5 Facebook Poszt
 
 **Forrás:** ChatGPT (Creative) + Gemini (Co-Creative) + Perplexity (Researcher)

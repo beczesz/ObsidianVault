@@ -1,3 +1,15 @@
+---
+title: "You Budgeted €50,000 for a DevOps Engineer. Here Is Why It Costs €100,000."
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "Breakdown of true year-one costs for hiring a senior DevOps engineer, showing how €50,000 budgeted salary actually costs €90,000-120,000 total when including recruitment, onboarding, tooling, and management overhead. Targets CFOs and engineering leaders evaluating hiring versus managed service options."
+description_source: auto
+description_hash: d0bdfeab2b350367
+id: b0e3789a-2b38-443d-b883-c04632040b88
+index_schema_version: 1
+bdos_index: true
+---
 # You Budgeted €50,000 for a DevOps Engineer. Here Is Why It Costs €100,000.
 
 > **Series:** Managed Service Series - Article 3 of 3

@@ -1,6 +1,9 @@
 ---
 schema: sage.atomic.v1
 title: Cognition layer replaces middle management
+description: "AI-native cognition stacks functionally replace middle management by automating knowledge management, orchestration, curation, and operations through specialized agents, leaving humans to handle meaning-making, prioritization, and final decisions. This enables founders to manage complexity previously requiring 5-15 person management layers."
+description_source: auto
+description_hash: f5c9e37a7225a3a4
 slug: cognition-replaces-middle-management
 note_revision: 1
 status: nascent
@@ -13,7 +16,6 @@ source_thoughts:
 id: d399db61-8857-4672-a876-a422b3f2cf6a
 index_schema_version: 1
 ---
-
 ## A gondolat (absztrakt)
 Az AI-native cognition stack (BDOS-jellegű rendszer) **funkcionálisan átveszi a klasszikus middle management szerepét**. Ami marad az embernek: meaning-making, prioritás-választás, ízlés, végső döntés. Az új organizational forma: **founder + AI-stack** olyan komplexitást kezel, amit korábban 5-15 fős középvezetői réteg igényelt.
 

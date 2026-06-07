@@ -1,5 +1,8 @@
 ---
 title: "KAW 3 – Spirituális alapok: Bevezetés a királyságba"
+description: "A Kingdom at Work teológiai alapozása, amely Jézus királyság-központú tanítása és annak alkalmazása az üzleti életben körül forog. Rick Betenbough azt fejti ki, hogy a királyság nem kizárólag jövőbeli, hanem jelenbeli valóság, amely a hétköznapi munka teológiai megértésének kulcsa."
+description_source: auto
+description_hash: 87a43a5a4533e2c2
 series: "Kingdom at Work (Betenbough)"
 episode: 3
 youtube_id: "-4YaJjirbfo"
@@ -14,7 +17,6 @@ date_created: "2026-04-06"
 id: 0cc61818-6c57-43fa-9a53-1b1d342491a8
 index_schema_version: 1
 ---
-
 # KAW 3 – Spirituális alapok: Bevezetés a királyságba
 
 ## Epizód-ív

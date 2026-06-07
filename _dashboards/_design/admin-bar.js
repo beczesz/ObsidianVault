@@ -1,6 +1,23 @@
 /**
- * admin-bar.js — BDOS Admin Bar  (DS 0.8.21, 2026-05-29)
+ * admin-bar.js — BDOS Admin Bar  (DS 0.8.23, 2026-05-30)
  * =======================================================
+ * 0.8.23 (2026-05-30) Global 'S'/'s' shortcut: navigates to the system screen
+ *        (SYSTEM_URL, /_dashboards/system.html), mirroring the "System" admin-bar
+ *        button, just as 'A'/'a' opens the Agent Quick-Nav. Exception: when already
+ *        on the system screen (pathname ends /system.html), nothing comes up.
+ *        Same input guard as 'A' (skipped in INPUT/TEXTAREA/SELECT/contenteditable
+ *        and with any modifier key). Agent-nav popup open: agent-initial letters
+ *        still take precedence (unchanged). SYSTEM_URL const extracted; the System
+ *        button reuses it.
+ * 0.8.22 (2026-05-29) Global ESC-back navigation. When no overlay (popup or
+ *        drawer) is open and focus is NOT in a text-entry field (INPUT /
+ *        TEXTAREA / contenteditable), pressing ESC navigates back:
+ *        history.length > 1 ? history.back() : location.assign(LAUNCHER_URL).
+ *        Falls back to the launcher when there is no browsing history (e.g.
+ *        a directly-opened tab). Overlay-close wins (popup or drawer ESC
+ *        still closes the overlay as before). Input guard: INPUT, TEXTAREA,
+ *        SELECT, or [contenteditable] — ESC does its native thing (blur/clear).
+ *        Integrated into the existing capture-phase ESC listener in mount().
  * 0.8.21 (2026-05-29) checkScheduler() rewired: instead of scanning events[]
  *        for 'scheduler'-tagged rows (those rows are being stripped from the
  *        observability DB), liveness is now derived from scheduled_jobs[].
@@ -46,12 +63,17 @@
  *
  * Global keyboard shortcuts:
  *   A / a (no modifier) — when popup CLOSED: open Agent Quick-Nav popup.
- *   Escape              — close popup (capture phase, highest priority).
+ *   S / s (no modifier) — navigate to the system screen (system.html). Mirrors the
+ *                         "System" button. No-op when already on system.html.
+ *   Escape              — overlay-first: if popup or drawer open, close it.
+ *                         When nothing is open AND focus is NOT in a text
+ *                         field: navigate back (history.back() or launcher).
  *   A/L/M/C/P/S/B/F etc.— when popup is OPEN: quick-jump to agent dashboard.
  *                         Keys are derived dynamically from AGENT_CARDS[i].name[0],
  *                         so 'A' jumps to Alfred while the popup is open.
- *   Input guard: all shortcuts ignored when focus is on INPUT, TEXTAREA,
- *                SELECT, or [contenteditable].
+ *   Input guard: all shortcuts (including ESC-back) ignored when focus is on
+ *                INPUT, TEXTAREA, SELECT, or [contenteditable] — ESC does its
+ *                native browser action there (blur/clear field).
  *
  * Public API:
  *   AdminBar.mount()           — auto-called on DOMContentLoaded
@@ -190,6 +212,7 @@
   const DASH_SERVER     = 'http://localhost:4321';   // single browser-facing server
   const SIDECAR_PATH    = '/_dashboards/_design/agent_logs.json';
   const SCHEDULER_URL   = '/_dashboards/scheduler/index.html';
+  const SYSTEM_URL      = '/_dashboards/system.html';
   const LAUNCHER_URL    = '/_dashboards/index.html';
   const REFRESH_MS      = 30_000;    // poll every 30 s
   const BAR_HEIGHT_PX   = 34;
@@ -262,7 +285,7 @@
   //   Pill idle:   rgba(255,255,255,.08) bg, #a7aaad text
 
   const CSS = `
-/* ===== Admin Bar (DS 0.8.8) ===== */
+/* ===== Admin Bar (DS 0.8.22) ===== */
 #bdos-admin-bar {
   position: fixed;
   top: 0;
@@ -965,7 +988,7 @@
     const agentsBtn = document.getElementById('bdos-ab-agents-btn');
     if (agentsBtn) agentsBtn.addEventListener('click', openAgentNav);
     const btn = document.getElementById('bdos-ab-system-btn');
-    if (btn) btn.addEventListener('click', () => { window.location.href = '/_dashboards/system.html'; });
+    if (btn) btn.addEventListener('click', () => { window.location.href = SYSTEM_URL; });
   }
 
   // ---------------------------------------------------------------------------
@@ -1173,21 +1196,52 @@
 
     // ---------------------------------------------------------------------------
     // ESC handler — capture phase so it fires BEFORE the drawer listener and
-    // before any inline onkeydown on child elements. Closes popup unconditionally
-    // when popup is open; also closes drawer if open.
-    // DS 0.8.7 fix: previously ESC only worked via the drawer's listener, which
-    // is registered lazily in ensureDrawer() — so if the drawer was never opened,
-    // ESC had no effect on the popup.
+    // before any inline onkeydown on child elements.
+    //
+    // Priority chain (DS 0.8.22):
+    //   1. INPUT GUARD — if focus is in a text-entry field, do nothing and let
+    //      the browser handle ESC natively (blur / clear the field).
+    //   2. OVERLAY-CLOSE — if the Agent Quick-Nav popup is open, close it.
+    //      stopPropagation so no other handler receives the event.
+    //   3. DRAWER-CLOSE — if the system drawer is open, close it.
+    //   4. NAVIGATE BACK — nothing is open: go to the previous history entry,
+    //      or fall back to the launcher when there is no history (directly-opened
+    //      tab, e.g. pasted URL or desktop shortcut).
+    //
+    // DS 0.8.7 fix preserved: this listener is registered unconditionally at
+    // mount() time so ESC works even if the drawer was never opened.
     // ---------------------------------------------------------------------------
     document.addEventListener('keydown', function(e) {
       if (e.key !== 'Escape') return;
+
+      // 1. Input guard: let ESC do its native thing inside text-entry fields.
+      const tag = (document.activeElement && document.activeElement.tagName) || '';
+      if (['INPUT', 'TEXTAREA', 'SELECT'].includes(tag.toUpperCase())) return;
+      if (document.activeElement && document.activeElement.isContentEditable) return;
+
+      // 2. Overlay-close: popup wins.
       const nav = document.getElementById('bdos-agent-nav');
       if (nav && nav.classList.contains('open')) {
         e.stopPropagation();
         closeAgentNav();
         return;
       }
-      closeDrawer();
+
+      // 3. Drawer-close.
+      const drawer = document.getElementById('bdos-ops-drawer');
+      if (drawer && drawer.classList.contains('open')) {
+        e.stopPropagation();
+        closeDrawer();
+        return;
+      }
+
+      // 4. Navigate back: nothing is open, focus is not in a text field.
+      e.preventDefault();
+      if (window.history && window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.assign(LAUNCHER_URL);
+      }
     }, true /* capture */);
 
     // ---------------------------------------------------------------------------
@@ -1224,6 +1278,16 @@
       if (e.key === 'a' || e.key === 'A') {
         e.preventDefault();
         openAgentNav();
+        return;
+      }
+
+      // S/s navigates to the system screen — mirrors the "System" admin-bar button.
+      // Exception: when already ON the system screen (system.html, standalone or
+      // embedded), nothing should come up.
+      if (e.key === 's' || e.key === 'S') {
+        if (/\/system\.html$/.test(window.location.pathname)) return;
+        e.preventDefault();
+        window.location.href = SYSTEM_URL;
       }
     });
 

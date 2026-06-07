@@ -1,0 +1,1409 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  CPS Account Management Dashboard, live HTML view.   Version: 0.1.3
+  =============================================================================
+  Active project lifecycle dashboard. 10-stage kanban + Today panel + per-project
+  detail drawer. Sibling of sales.html (which owns the lead-to-Won lens); this
+  dashboard owns the Backlog-to-Closed/Lost project lifecycle.
+
+  Renders from:
+    /02_Areas/Sonrisa/CPS/Accounts/Active/PROJECTS.md   (kanban, 1 card = 1 engagement)
+    /02_Areas/Sonrisa/CPS/AM_TODAY.md                    (today panel feed)
+    /02_Areas/Sonrisa/CPS/Accounts/Active/<Name>/NOTES.md  (per-project drawer, lazy)
+    /02_Areas/Sonrisa/CPS/Accounts/Leads/<Name>/NOTES.md   (transitional Backlog cards)
+
+  Read-only. Edit the markdown source in Obsidian. The dashboard rebuilds itself.
+
+  Audit trail:
+    0.1.3 (2026-05-29) tend: version-pill normalized family-wide. CSS: font-size 10.5px, padding 2px 8px, font-weight 500 (was 10px, 1px 7px, no weight). Markup: mono class added.
+    0.1.2 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app -> .app-main + .app-shell layout. alfred-tasks.js added. Scrim+drawer remain outside .app-shell.
+    0.1.1 (2026-05-28) Curator tend — wide-screen kanban full-bleed. Above the
+          .app 1480px cap, #panel-2-kanban now breaks out to full viewport width
+          (margin: calc(50% - 50vw); width: 100vw; side borders/radius dropped;
+          36px gutters) so all 10 stage columns use the available width on wide
+          monitors. Text panels stay centered & readable. Pure CSS @media
+          (min-width:1481px); no token / JS change.
+    0.1.0 (2026-05-27) initial build from _design/_template/ — 10-stage kanban
+          (Backlog → Initial meeting → Define project need → RFP/RFI → Won →
+          Contracted → Delivery → Renewal → Closed → Lost), Today panel from
+          AM_TODAY.md, summary strip, right-side drawer with lazy NOTES.md fetch
+          (handles both Active/ and Leads/ wiki-link paths). DS 0.7.3 baseline:
+          all shared engines (tokens.css, theme.js, clipboard.js, live-updates.js,
+          markdown-parser.js, dom-utils.js, admin-bar.js).
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CPS Account Management</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M6 9h4v14H6zM13 9h4v14h-4zM20 9h4v14h-4z' fill='%23D97757'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS §1b) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<!-- Canonical tokens (DS §1 + §1a) -->
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Domain-specific stage tokens (AM 10-stage palette).
+   Defined in :root so lint B3 (no custom hex outside :root) passes.
+   The colour family is intentionally close to sales.html pipeline tokens
+   so the two dashboards feel like one family. */
+:root {
+  --am-backlog:        #7a7a76;  --am-backlog-tint:        #efeeeb;
+  --am-initial:        #4a5568;  --am-initial-tint:        #edf0f4;
+  --am-define:         #2563a5;  --am-define-tint:         #e8eff8;
+  --am-rfp:            #6b46c1;  --am-rfp-tint:            #f1eafd;
+  --am-won:            #1f7a4d;  --am-won-tint:            #e6f3ec;
+  --am-contracted:     #3f489d;  --am-contracted-tint:     #ebedf8;
+  --am-delivery:       #b07a18;  --am-delivery-tint:       #fbf2dc;
+  --am-renewal:        #aa3a82;  --am-renewal-tint:        #fbe6f1;
+  --am-closed:         #1f5391;  --am-closed-tint:         #e8eff8;
+  --am-lost:           #c0392b;  --am-lost-tint:           #fbeae6;
+  --shadow-3: 0 12px 32px rgba(20,20,19,.10), 0 4px 12px rgba(20,20,19,.06);
+  --t-slow: 320ms cubic-bezier(.16,.84,.32,1);
+}
+:root[data-theme="dark"] {
+  --am-backlog:        #9a9892;  --am-backlog-tint:        #2a2925;
+  --am-initial:        #8a9ab5;  --am-initial-tint:        #1e2530;
+  --am-define:         #6aa3e0;  --am-define-tint:         #1e2a3a;
+  --am-rfp:            #a585e0;  --am-rfp-tint:            #2a1e3a;
+  --am-won:            #5cc08a;  --am-won-tint:            #1e3329;
+  --am-contracted:     #8890d0;  --am-contracted-tint:     #1e2038;
+  --am-delivery:       #d6a94a;  --am-delivery-tint:       #352c18;
+  --am-renewal:        #d880b8;  --am-renewal-tint:        #3a1e30;
+  --am-closed:         #6aa3e0;  --am-closed-tint:         #1e2a3a;
+  --am-lost:           #e57c6e;  --am-lost-tint:           #3a221e;
+  --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --am-backlog:        #9a9892;  --am-backlog-tint:        #2a2925;
+    --am-initial:        #8a9ab5;  --am-initial-tint:        #1e2530;
+    --am-define:         #6aa3e0;  --am-define-tint:         #1e2a3a;
+    --am-rfp:            #a585e0;  --am-rfp-tint:            #2a1e3a;
+    --am-won:            #5cc08a;  --am-won-tint:            #1e3329;
+    --am-contracted:     #8890d0;  --am-contracted-tint:     #1e2038;
+    --am-delivery:       #d6a94a;  --am-delivery-tint:       #352c18;
+    --am-renewal:        #d880b8;  --am-renewal-tint:        #3a1e30;
+    --am-closed:         #6aa3e0;  --am-closed-tint:         #1e2a3a;
+    --am-lost:           #e57c6e;  --am-lost-tint:           #3a221e;
+    --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
+  }
+}
+
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+
+.app-main { max-width: 1480px; padding: 28px 36px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  text-decoration: none; padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+.home-link svg { flex-shrink: 0; }
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; letter-spacing: 0; font-weight: 500; }
+.masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; color: var(--ink-1); }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta { color: var(--ink-3); max-width: 760px; font-size: 14px; margin-top: 8px; line-height: 1.55; }
+
+/* ===== Panel scaffolding ===== */
+.panel {
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  padding: 20px 22px 18px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-1);
+}
+.panel-head {
+  display: flex; align-items: baseline; gap: 12px; margin-bottom: 14px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--line-soft);
+}
+.panel-head h2 {
+  font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em;
+  color: var(--ink-2);
+}
+.panel-head .sub { font-size: 12.5px; color: var(--ink-4); }
+[id^="panel-"] { scroll-margin-top: 42px; }
+.panel-anchor {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  color: var(--ink-5);
+  background: transparent;
+  border: none;
+  padding: 1px 4px;
+  border-radius: var(--radius-s);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--t-fast), color var(--t-fast), background var(--t-fast);
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.panel-anchor-host:hover .panel-anchor,
+.panel-anchor-host:focus-within .panel-anchor { opacity: 1; }
+.panel-anchor:hover { color: var(--accent-deep); background: var(--accent-tint); }
+.panel-head .panel-anchor { margin-left: 2px; align-self: center; }
+
+/* ===== Summary strip ===== */
+.summary-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  margin-bottom: 22px;
+}
+.summary-card {
+  position: relative;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  padding: 12px 14px 10px;
+  box-shadow: var(--shadow-1);
+}
+.summary-card .label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  font-weight: 600; color: var(--stage-color, var(--ink-3));
+  display: flex; align-items: center; gap: 6px;
+}
+.summary-card .label::before {
+  content: ''; display: inline-block; width: 7px; height: 7px;
+  border-radius: 50%; background: var(--stage-color, var(--ink-4));
+}
+.summary-card .count {
+  font-size: 22px; font-weight: 700; letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums; margin-top: 4px;
+  color: var(--ink-1);
+}
+.summary-card .count.is-zero { color: var(--ink-5); }
+
+/* ===== Today panel ===== */
+.today-day-head {
+  font-size: 13px; color: var(--ink-2); margin-bottom: 12px;
+  display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+}
+.today-day-head .date { font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--ink-1); }
+.today-day-head .weekday { color: var(--ink-3); font-size: 12px; }
+.today-sub {
+  margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line-soft);
+}
+.today-sub:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+.today-sub-name {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  font-weight: 600; color: var(--ink-4); margin-bottom: 10px;
+}
+.task {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 10px; align-items: start;
+  padding: 10px 12px;
+  background: var(--bg-tint);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-m);
+  margin-bottom: 6px;
+  font-size: 13px; line-height: 1.5;
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast);
+}
+.task:hover { background: var(--bg-sunken); border-color: var(--line); }
+.task.is-done { opacity: 0.55; }
+.task .check {
+  width: 14px; height: 14px;
+  border: 1.5px solid var(--ink-4);
+  border-radius: 3px;
+  margin-top: 3px;
+  flex-shrink: 0;
+}
+.task.is-done .check { background: var(--ok); border-color: var(--ok); }
+.task.is-done .check::after { content: '✓'; color: var(--bg-elev); font-size: 10px; font-weight: 700; }
+.task .body { min-width: 0; color: var(--ink-2); }
+.task .body .project {
+  font-weight: 600; color: var(--ink-1); margin-right: 5px;
+}
+.task .body .project.is-linkable { color: var(--accent-deep); cursor: pointer; text-decoration: underline dotted; text-underline-offset: 3px; }
+.task .meta {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+  flex-shrink: 0; font-size: 11px;
+}
+.task .due {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-3);
+  font-variant-numeric: tabular-nums;
+}
+.task .due.is-overdue { color: var(--am-lost); font-weight: 600; }
+.task .due.is-today { color: var(--accent); font-weight: 600; }
+.task .tags { display: flex; gap: 4px; flex-wrap: wrap; }
+.task .tag {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .04em;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  color: var(--ink-3); padding: 1px 6px; border-radius: 3px;
+  font-weight: 500;
+}
+.task .tag.t-urgent { color: var(--am-lost); border-color: var(--am-lost-tint); background: var(--am-lost-tint); }
+.task .tag.t-kickoff { color: var(--am-won); border-color: var(--am-won-tint); background: var(--am-won-tint); }
+.task .tag.t-review { color: var(--am-delivery); border-color: var(--am-delivery-tint); background: var(--am-delivery-tint); }
+.task .tag.t-post-call { color: var(--accent-deep); border-color: var(--accent-tint); background: var(--accent-tint); }
+
+/* ===== Kanban ===== */
+.kanban {
+  display: grid;
+  grid-template-columns: repeat(10, minmax(220px, 1fr));
+  gap: 12px;
+  overflow-x: auto;
+  align-items: start;
+  padding-bottom: 6px;
+}
+.lane {
+  background: var(--bg-tint);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius-l);
+  padding: 12px 10px 14px;
+  min-width: 0;
+  display: flex; flex-direction: column;
+}
+.lane-head {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px; padding: 0 4px 10px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 10px;
+}
+.lane-head .name {
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--stage-color, var(--ink-2));
+  display: inline-flex; align-items: center; gap: 6px;
+  line-height: 1.2;
+  min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.lane-head .name::before {
+  content: ''; width: 8px; height: 8px; border-radius: 50%;
+  background: var(--stage-color, var(--ink-4));
+  flex-shrink: 0;
+}
+.lane-head .count {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px; font-weight: 500;
+  color: var(--ink-3);
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 1px 7px;
+  font-variant-numeric: tabular-nums;
+}
+.lane-empty {
+  font-size: 11.5px; color: var(--ink-5); font-style: italic;
+  padding: 14px 8px; text-align: center;
+}
+.lane-cards { display: flex; flex-direction: column; gap: 8px; }
+
+.project-card {
+  position: relative;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--stage-color, var(--ink-5));
+  border-radius: var(--radius-m);
+  padding: 12px 12px 11px;
+  cursor: pointer;
+  transition: transform var(--t-fast), box-shadow var(--t-fast), border-color var(--t-fast);
+}
+.project-card:hover { transform: translateY(-1px); box-shadow: var(--shadow-2); }
+.project-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.project-card .name {
+  font-size: 14px; font-weight: 600; color: var(--ink-1);
+  letter-spacing: -0.01em; line-height: 1.25;
+  margin-bottom: 6px; padding-right: 24px;
+  word-break: break-word;
+}
+.project-card .teaser {
+  font-size: 12px; color: var(--ink-3); line-height: 1.5;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+.project-card .meta-row {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 6px; margin-top: 8px; padding-top: 8px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 10.5px;
+}
+.project-card .due {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-4);
+  font-variant-numeric: tabular-nums;
+  text-transform: uppercase; letter-spacing: .04em;
+}
+.project-card .due.is-overdue { color: var(--am-lost); font-weight: 600; }
+.project-card .due.is-soon { color: var(--accent); font-weight: 600; }
+.project-card .tags {
+  display: flex; gap: 3px; flex-wrap: wrap; max-width: 65%;
+  justify-content: flex-end;
+}
+.project-card .tag {
+  font-size: 9.5px; text-transform: uppercase; letter-spacing: .04em;
+  color: var(--ink-4); background: var(--bg-tint);
+  padding: 1px 5px; border-radius: 3px;
+  font-weight: 500;
+}
+
+/* ===== Card copy-ref (DS §4a, MANDATORY) ===== */
+.card-copy-ref {
+  position: absolute; top: 8px; right: 8px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 6px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 9.5px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 500; color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.project-card:hover .card-copy-ref, .project-card:focus-within .card-copy-ref,
+.summary-card:hover .card-copy-ref, .summary-card:focus-within .card-copy-ref,
+.panel:hover > .card-copy-ref, .panel:focus-within > .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* The panel-level copy-ref sits in the head row */
+.panel { position: relative; }
+.panel > .card-copy-ref { top: 12px; right: 14px; }
+
+/* ===== Empty / error states ===== */
+.state {
+  text-align: center; padding: 40px 20px; color: var(--ink-4);
+  border: 1px dashed var(--line-soft); border-radius: var(--radius-m);
+  font-size: 13.5px;
+}
+.state.error { color: var(--gap); border-color: rgba(192,57,43,.25); background: var(--gap-tint); }
+
+/* ===== Drawer ===== */
+.scrim {
+  position: fixed; inset: 0; background: rgba(20,20,19,.36);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--t-med); z-index: 50;
+}
+.scrim.is-open { opacity: 1; pointer-events: auto; }
+.drawer {
+  position: fixed; top: 0; right: 0; height: 100vh;
+  width: min(660px, 96vw);
+  background: var(--bg-page);
+  box-shadow: var(--shadow-3);
+  z-index: 51;
+  transform: translateX(100%);
+  transition: transform var(--t-slow);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+}
+.drawer.is-open { transform: translateX(0); }
+.drawer-head {
+  padding: 22px 28px 18px;
+  border-bottom: 1px solid var(--line);
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 12px; align-items: start;
+  flex-shrink: 0;
+  background: var(--bg-page);
+}
+.drawer-head .eyebrow {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 6px;
+  font-size: 11px;
+}
+.stage-pill {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 10.5px; text-transform: uppercase; letter-spacing: .12em;
+  font-weight: 700; padding: 3px 9px; border-radius: 4px;
+  color: var(--stage-color, var(--ink-2));
+  background: var(--stage-tint, var(--bg-sunken));
+}
+.stage-pill::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--stage-color, var(--ink-4));
+}
+.drawer-head h2 {
+  font-size: 24px; font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.18; color: var(--ink-1);
+}
+.drawer-head .submeta {
+  margin-top: 8px; font-size: 13px; color: var(--ink-3);
+  display: flex; gap: 14px; flex-wrap: wrap; align-items: center;
+}
+.drawer-head .submeta .due-chip {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-2); background: var(--bg-tint);
+  border: 1px solid var(--line); border-radius: 999px;
+  padding: 1px 9px; font-size: 11.5px;
+}
+.drawer-head .submeta .source-chip {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--ink-3); font-size: 11px;
+  padding: 1px 7px; background: var(--bg-sunken);
+  border-radius: 4px;
+}
+.drawer-close {
+  appearance: none; border: 1px solid var(--line); background: var(--bg-elev);
+  width: 32px; height: 32px; border-radius: 8px;
+  cursor: pointer; display: inline-flex; align-items: center; justify-content: center;
+  color: var(--ink-2);
+  transition: all var(--t-fast);
+}
+.drawer-close:hover { border-color: var(--ink-4); color: var(--ink-1); }
+.drawer-body {
+  padding: 22px 28px 32px;
+  overflow-y: auto;
+  flex-grow: 1;
+  scrollbar-gutter: stable;
+}
+.drawer-body::-webkit-scrollbar { width: 10px; }
+.drawer-body::-webkit-scrollbar-thumb { background: var(--ink-5); border-radius: 999px; border: 2px solid var(--bg-page); }
+.drawer-body::-webkit-scrollbar-track { background: transparent; }
+
+.drawer-section {
+  padding: 16px 0;
+  border-bottom: 1px solid var(--line-soft);
+}
+.drawer-section:first-child { padding-top: 4px; }
+.drawer-section:last-child { border-bottom: none; }
+.drawer-section > h3 {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .14em;
+  color: var(--ink-4); font-weight: 700; margin-bottom: 12px;
+}
+
+.md-body { color: var(--ink-2); font-size: 14px; line-height: 1.6; }
+.md-body p { margin-bottom: 10px; }
+.md-body p:last-child { margin-bottom: 0; }
+.md-body strong { color: var(--ink-1); font-weight: 600; }
+.md-body em { color: var(--ink-2); font-style: italic; }
+.md-body ul, .md-body ol { padding-left: 22px; margin-bottom: 12px; }
+.md-body li { margin-bottom: 4px; }
+.md-body code {
+  font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+  background: var(--bg-tint); border: 1px solid var(--line);
+  border-radius: 3px; padding: 1px 6px;
+  color: var(--ink-2);
+}
+.md-body table {
+  width: 100%; border-collapse: collapse;
+  margin-bottom: 12px; font-size: 13px;
+}
+.md-body th, .md-body td {
+  text-align: left; padding: 6px 10px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.md-body th {
+  color: var(--ink-4); font-weight: 600;
+  text-transform: uppercase; letter-spacing: .04em;
+  font-size: 11px;
+  background: var(--bg-tint);
+}
+.md-body td:first-child { color: var(--ink-3); width: 38%; }
+.md-body td strong { color: var(--ink-1); }
+.md-body a { color: var(--accent-deep); text-decoration: underline; text-underline-offset: 2px; }
+.md-body a:hover { color: var(--accent); }
+.md-body input[type="checkbox"] { margin-right: 6px; transform: translateY(1px); }
+
+.drawer-loading {
+  display: flex; align-items: center; gap: 10px;
+  color: var(--ink-4); font-size: 13px;
+  padding: 20px 0;
+}
+.drawer-loading .spinner {
+  width: 14px; height: 14px; border: 2px solid var(--line);
+  border-top-color: var(--accent); border-radius: 50%;
+  animation: spin 720ms linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.drawer-error {
+  background: var(--gap-tint); border: 1px solid rgba(192,57,43,.25);
+  border-radius: var(--radius-m); padding: 14px 16px;
+  color: var(--ink-2); font-size: 13px;
+}
+.drawer-error code {
+  font-family: 'JetBrains Mono', monospace; font-size: 11.5px;
+  background: var(--bg-elev); padding: 1px 6px; border-radius: 3px;
+}
+
+/* ===== Responsive ===== */
+/* Wide screens (above the .app 1480px cap): the kanban panel breaks out to the
+   full viewport width so all 10 stage columns use the available space, while the
+   text panels (masthead / today / summary) stay centered and readable.
+   Curator tend 2026-05-28 (DS 0.8.15). */
+@media (min-width: 1481px) {
+  #panel-2-kanban {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    border-left: 0;
+    border-right: 0;
+    border-radius: 0;
+    padding-left: 36px;
+    padding-right: 36px;
+  }
+}
+@media (max-width: 1280px) {
+  .kanban { grid-template-columns: repeat(5, minmax(220px, 1fr)); }
+}
+@media (max-width: 760px) {
+  .app-main { padding: 18px 14px 60px; }
+  .kanban { grid-template-columns: repeat(2, minmax(220px, 1fr)); }
+  .drawer { width: 100vw; }
+}
+</style>
+</head>
+<body>
+<!-- Admin bar mount-point (DS §5c) — first body element -->
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<main class="app-main">
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Back to Ideas Vault launcher">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      CPS · ACCOUNT MANAGEMENT
+      <span class="version-pill mono">v0.1.3</span>
+    </div>
+    <h1>CPS <span class="accent">Account Management</span></h1>
+    <div class="submeta">Active project lifecycle: Backlog → Closed/Lost. Sibling of Sales (lead-to-Won) — this dashboard owns post-Won engagement and project delivery.</div>
+  </header>
+
+  <!-- ===== Summary strip ===== -->
+  <section class="summary-strip" id="summaryStrip" aria-label="Stage summary"></section>
+
+  <!-- ===== Today panel ===== -->
+  <section class="panel panel-anchor-host" id="panel-1-today">
+    <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      copy ref
+    </button>
+    <div class="panel-head">
+      <h2>Today</h2>
+      <span class="sub" id="todayHeadSub">AM_TODAY.md — current day's action queue</span>
+      <a class="panel-anchor" href="#panel-1-today" title="Másolás vágólapra">#1</a>
+    </div>
+    <div id="todayContent">
+      <div class="state">Loading…</div>
+    </div>
+  </section>
+
+  <!-- ===== Kanban ===== -->
+  <section class="panel panel-anchor-host" id="panel-2-kanban">
+    <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+      <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      copy ref
+    </button>
+    <div class="panel-head">
+      <h2>Project Pipeline</h2>
+      <span class="sub">PROJECTS.md — 10 stages, one card per engagement. Click a card for detail.</span>
+      <a class="panel-anchor" href="#panel-2-kanban" title="Másolás vágólapra">#2</a>
+    </div>
+    <div id="kanban" class="kanban">
+      <div class="state">Loading PROJECTS.md…</div>
+    </div>
+  </section>
+</main><!-- end .app-main -->
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
+
+<!-- ===== Drawer ===== -->
+<div class="scrim" id="scrim" aria-hidden="true"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <header class="drawer-head">
+    <div>
+      <div class="eyebrow">
+        <span class="stage-pill" id="drawerStage">Stage</span>
+      </div>
+      <h2 id="drawerTitle">Project</h2>
+      <div class="submeta" id="drawerSubmeta"></div>
+    </div>
+    <button class="drawer-close" id="drawerClose" aria-label="Close detail drawer" title="Close (Esc)">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </header>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<!-- ============================================================ -->
+<!-- Shared engine — DO NOT inline equivalents of these.          -->
+<!-- ============================================================ -->
+<script src="/_dashboards/_design/live-updates.js"></script>
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<script src="/_dashboards/_design/markdown-parser.js"></script>
+<script src="/_dashboards/_design/dom-utils.js"></script>
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
+
+<script>
+// ============================================================
+// PER-DASHBOARD CONFIG
+// ============================================================
+const DASH_STEM = 'account-management';
+const PROJECTS_URL = '/02_Areas/Sonrisa/CPS/Accounts/Active/PROJECTS.md';
+const AM_TODAY_URL = '/02_Areas/Sonrisa/CPS/AM_TODAY.md';
+
+// 10-stage canonical pipeline. Order matters (left-to-right in kanban).
+const STAGES = [
+  { id: 'backlog',    label: 'Backlog',            tokenColor: 'var(--am-backlog)',    tokenTint: 'var(--am-backlog-tint)',    matchPrefixes: ['backlog'] },
+  { id: 'initial',    label: 'Initial meeting',    tokenColor: 'var(--am-initial)',    tokenTint: 'var(--am-initial-tint)',    matchPrefixes: ['initial meeting','initial'] },
+  { id: 'define',     label: 'Define project need',tokenColor: 'var(--am-define)',     tokenTint: 'var(--am-define-tint)',     matchPrefixes: ['define project need','define'] },
+  { id: 'rfp',        label: 'RFP / RFI',          tokenColor: 'var(--am-rfp)',        tokenTint: 'var(--am-rfp-tint)',        matchPrefixes: ['rfp / rfi','rfp/rfi','rfp / rfi','rfp','rfi'] },
+  { id: 'won',        label: 'Won',                tokenColor: 'var(--am-won)',        tokenTint: 'var(--am-won-tint)',        matchPrefixes: ['won'] },
+  { id: 'contracted', label: 'Contracted',         tokenColor: 'var(--am-contracted)', tokenTint: 'var(--am-contracted-tint)', matchPrefixes: ['contracted'] },
+  { id: 'delivery',   label: 'Delivery',           tokenColor: 'var(--am-delivery)',   tokenTint: 'var(--am-delivery-tint)',   matchPrefixes: ['delivery'] },
+  { id: 'renewal',    label: 'Renewal',            tokenColor: 'var(--am-renewal)',    tokenTint: 'var(--am-renewal-tint)',    matchPrefixes: ['renewal'] },
+  { id: 'closed',     label: 'Closed',             tokenColor: 'var(--am-closed)',     tokenTint: 'var(--am-closed-tint)',     matchPrefixes: ['closed'] },
+  { id: 'lost',       label: 'Lost',               tokenColor: 'var(--am-lost)',       tokenTint: 'var(--am-lost-tint)',       matchPrefixes: ['lost'] },
+];
+const STAGES_BY_ID = Object.fromEntries(STAGES.map(s => [s.id, s]));
+function stageFromHeader(text) {
+  const t = String(text).toLowerCase().trim();
+  for (const s of STAGES) {
+    for (const pre of s.matchPrefixes) {
+      if (t === pre || t.startsWith(pre)) return s;
+    }
+  }
+  return null;
+}
+
+// ============================================================
+// Helpers (escapeHtml / toSlug from /_design/dom-utils.js are globals)
+// ============================================================
+const STAGE_TAG_NAMES = new Set(STAGES.map(s => s.id).concat(['initial-meeting','define-project-need','rfp','rfi']));
+
+function isoToday() { return new Date().toISOString().slice(0, 10); }
+function daysBetween(a, b) {
+  // a, b are YYYY-MM-DD; returns b - a in days (integer)
+  if (!a || !b) return null;
+  const da = new Date(a + 'T00:00:00Z'), db = new Date(b + 'T00:00:00Z');
+  return Math.round((db - da) / 86400000);
+}
+
+// ============================================================
+// Parse PROJECTS.md
+// ============================================================
+function parseProjects(md) {
+  const lines = md.split('\n');
+  const cards = []; // { id, name, stageId, tags, due, teaser, wikiLink }
+  let currentStage = null;
+
+  for (const line of lines) {
+    const h2 = line.match(/^##\s+(.+?)\s*$/);
+    if (h2) {
+      const s = stageFromHeader(h2[1]);
+      currentStage = s ? s.id : null;
+      continue;
+    }
+    if (!currentStage) continue;
+
+    const task = line.match(/^-\s+\[[ xX]\]\s+(.+)$/);
+    if (!task) continue;
+    const text = task[1];
+    const nameMatch = text.match(/\*\*([^*]+)\*\*/);
+    if (!nameMatch) continue;
+    const name = nameMatch[1].trim();
+
+    // Tags (drop stage-named ones — stage comes from the column)
+    const rawTags = [...text.matchAll(/#([\w-]+)/g)].map(m => m[1]);
+    const tags = rawTags.filter(t => !STAGE_TAG_NAMES.has(t.toLowerCase()));
+
+    // Date
+    const dueMatch = text.match(/@\{(\d{4}-\d{2}-\d{2})\}/);
+    const due = dueMatch ? dueMatch[1] : null;
+
+    // Wiki-link [[path]] or [[path|alias]]
+    const wikiMatch = text.match(/\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/);
+    const wikiLink = wikiMatch ? wikiMatch[1].trim() : null;
+
+    // Teaser = everything else, stripped
+    const teaser = text
+      .replace(/\*\*[^*]+\*\*/, '')
+      .replace(/#[\w-]+/g, '')
+      .replace(/@\{[^}]+\}/g, '')
+      .replace(/\[\[[^\]]+\]\]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    const id = toSlug(name);
+    cards.push({ id, name, stageId: currentStage, tags, due, teaser, wikiLink });
+  }
+  return cards;
+}
+
+// ============================================================
+// Parse AM_TODAY.md
+// ============================================================
+function parseAmToday(md) {
+  const lines = md.split('\n');
+  const days = [];
+  let currentDay = null;
+  let currentSub = null;
+
+  const dayHeaderLabelRe = /^##\s+(Today|Tomorrow):\s+(\d{4}-\d{2}-\d{2})(?:\s*\(([^)]+)\))?/i;
+  const dayHeaderWeekdayRe = /^##\s+(Monday|Tuesday|Wednesday|Thursday|Friday|Saturday|Sunday):\s+(\d{4}-\d{2}-\d{2})/i;
+  const subHeaderRe = /^###\s+(.+)$/;
+  const taskRe = /^(\s*)-\s+\[([x ])\]\s+(.+)$/i;
+  const anyH2Re = /^##\s+/;
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+
+    let date = null, weekday = null;
+    let m = line.match(dayHeaderLabelRe);
+    if (m) { weekday = m[3] || m[1]; date = m[2]; }
+    else {
+      m = line.match(dayHeaderWeekdayRe);
+      if (m) { weekday = m[1]; date = m[2]; }
+    }
+    if (date) {
+      currentDay = { date, weekday, subsections: [] };
+      currentSub = null;
+      days.push(currentDay);
+      continue;
+    }
+    if (anyH2Re.test(line) && currentDay) {
+      currentDay = null;
+      currentSub = null;
+      continue;
+    }
+    if (!currentDay) continue;
+
+    const sm = line.match(subHeaderRe);
+    if (sm) {
+      currentSub = { name: sm[1].trim(), tasks: [] };
+      currentDay.subsections.push(currentSub);
+      continue;
+    }
+    if (!currentSub) continue;
+
+    const tm = line.match(taskRe);
+    if (!tm) continue;
+
+    const done = tm[2].toLowerCase() === 'x';
+    const taskText = tm[3];
+    const tags = [...taskText.matchAll(/#([\w-]+)/g)].map(x => x[1]);
+    const dueMatch = taskText.match(/📅\s*(\d{4}-\d{2}-\d{2})/);
+    const projectMatch = taskText.match(/\*\*([^*]+)\*\*/);
+    const wikiMatch = taskText.match(/\[\[([^\]|]+)(?:\|[^\]]+)?\]\]/);
+
+    // Strip noise for display
+    const clean = taskText
+      .replace(/📅\s*\d{4}-\d{2}-\d{2}/g, '')
+      .replace(/✅\s*\d{4}-\d{2}-\d{2}/g, '')
+      .replace(/#[\w-]+/g, '')
+      .replace(/\[\[[^\]]+\]\]/g, '')
+      .replace(/->/g, '')
+      .replace(/→/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+
+    currentSub.tasks.push({
+      done,
+      project: projectMatch ? projectMatch[1].trim() : null,
+      due: dueMatch ? dueMatch[1] : null,
+      tags,
+      wikiLink: wikiMatch ? wikiMatch[1].trim() : null,
+      cleanText: clean,
+    });
+  }
+  return days;
+}
+
+function pickTodayDay(days) {
+  if (!days.length) return null;
+  const today = isoToday();
+  let idx = days.findIndex(d => d.date === today);
+  if (idx === -1) idx = days.findIndex(d => d.date >= today);
+  if (idx === -1) idx = days.length - 1;
+  return days[idx];
+}
+
+// ============================================================
+// State
+// ============================================================
+const STATE = {
+  cards: [],
+  todayDays: [],
+  todayDay: null,
+  notesCache: new Map(), // wikiLink-key → { ok, body | err }
+};
+
+// ============================================================
+// Renderers
+// ============================================================
+function renderSummary() {
+  const counts = {};
+  for (const s of STAGES) counts[s.id] = 0;
+  for (const c of STATE.cards) {
+    if (counts[c.stageId] !== undefined) counts[c.stageId]++;
+  }
+  const total = STATE.cards.length;
+  const strip = document.getElementById('summaryStrip');
+  const cards = STAGES.map(s => {
+    const n = counts[s.id];
+    const slug = toSlug('stage-' + s.id);
+    return `
+      <article class="summary-card" data-card-id="summary/${escapeHtml(s.id)}"
+               style="--stage-color: ${s.tokenColor}; --stage-tint: ${s.tokenTint};">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          copy ref
+        </button>
+        <div class="label">${escapeHtml(s.label)}</div>
+        <div class="count ${n === 0 ? 'is-zero' : ''}">${n}</div>
+      </article>
+    `;
+  }).join('');
+  const totalCard = `
+    <article class="summary-card" data-card-id="summary/total"
+             style="--stage-color: var(--accent); --stage-tint: var(--accent-tint);">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy ref
+      </button>
+      <div class="label">Total active</div>
+      <div class="count ${total === 0 ? 'is-zero' : ''}">${total}</div>
+    </article>
+  `;
+  strip.innerHTML = totalCard + cards;
+  wireCopyRef(strip);
+}
+
+function dueLabel(due) {
+  if (!due) return { label: '', cls: '' };
+  const today = isoToday();
+  const delta = daysBetween(today, due);
+  if (delta === null) return { label: '', cls: '' };
+  if (delta < 0)  return { label: `${due} · ${-delta}d overdue`, cls: 'is-overdue' };
+  if (delta === 0) return { label: `${due} · today`, cls: 'is-today is-soon' };
+  if (delta <= 7) return { label: `${due} · in ${delta}d`, cls: 'is-soon' };
+  return { label: due, cls: '' };
+}
+
+function renderTodayPanel() {
+  const container = document.getElementById('todayContent');
+  const sub = document.getElementById('todayHeadSub');
+  if (!STATE.todayDays.length) {
+    sub.textContent = 'AM_TODAY.md — no day sections parsed';
+    container.innerHTML = `<div class="state">No day sections parsed from AM_TODAY.md.</div>`;
+    return;
+  }
+  const day = STATE.todayDay;
+  if (!day) {
+    sub.textContent = 'AM_TODAY.md — no current day match';
+    container.innerHTML = `<div class="state">No current-day section found in AM_TODAY.md.</div>`;
+    return;
+  }
+  sub.textContent = `AM_TODAY.md — showing ${day.date}`;
+  const totalTasks = day.subsections.reduce((a, s) => a + s.tasks.length, 0);
+  if (totalTasks === 0) {
+    container.innerHTML = `
+      <div class="today-day-head">
+        <span class="date">${escapeHtml(day.date)}</span>
+        <span class="weekday">${escapeHtml(day.weekday || '')}</span>
+      </div>
+      <div class="state">No tasks queued for this day.</div>
+    `;
+    return;
+  }
+  const blocks = day.subsections.map(sub => {
+    if (!sub.tasks.length) return '';
+    const tasks = sub.tasks.map(t => {
+      const due = t.due ? dueLabel(t.due) : { label: '', cls: '' };
+      const projectMatch = t.project ? STATE.cards.find(c => c.name === t.project) : null;
+      const projectCls = projectMatch ? 'is-linkable' : '';
+      const projectAttr = projectMatch ? `data-project-id="${escapeHtml(projectMatch.id)}"` : '';
+      const tag = (t.tags || []).find(x => ['urgent','kickoff','review','post-call','milestone'].includes(x.toLowerCase()));
+      const tagCls = tag ? `t-${tag}` : '';
+      return `
+        <div class="task ${t.done ? 'is-done' : ''}" ${projectAttr}>
+          <div class="check"></div>
+          <div class="body">
+            ${t.project ? `<span class="project ${projectCls}" ${projectAttr}>${escapeHtml(t.project)}</span>` : ''}
+            <span>${escapeHtml(t.cleanText)}</span>
+          </div>
+          <div class="meta">
+            ${due.label ? `<span class="due ${due.cls}">${escapeHtml(due.label)}</span>` : ''}
+            ${tag ? `<div class="tags"><span class="tag ${tagCls}">${escapeHtml(tag)}</span></div>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+    return `
+      <div class="today-sub">
+        <div class="today-sub-name">${escapeHtml(sub.name)}</div>
+        ${tasks}
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = `
+    <div class="today-day-head">
+      <span class="date">${escapeHtml(day.date)}</span>
+      <span class="weekday">${escapeHtml(day.weekday || '')}</span>
+    </div>
+    ${blocks}
+  `;
+
+  // Wire project click → drawer
+  container.querySelectorAll('.task[data-project-id]').forEach(el => {
+    el.addEventListener('click', () => {
+      const card = STATE.cards.find(c => c.id === el.dataset.projectId);
+      if (card) openDrawer(card);
+    });
+  });
+}
+
+function renderKanban() {
+  const container = document.getElementById('kanban');
+  if (!STATE.cards.length) {
+    container.innerHTML = `<div class="state">No project cards parsed from PROJECTS.md.</div>`;
+    return;
+  }
+  const byStage = {};
+  for (const s of STAGES) byStage[s.id] = [];
+  for (const c of STATE.cards) {
+    if (byStage[c.stageId]) byStage[c.stageId].push(c);
+  }
+
+  const html = STAGES.map(s => {
+    const cards = byStage[s.id];
+    const cardsHtml = cards.length === 0
+      ? `<div class="lane-empty">No projects</div>`
+      : cards.map(c => {
+          const due = dueLabel(c.due);
+          const tags = c.tags.slice(0, 3).map(t => `<span class="tag">${escapeHtml(t)}</span>`).join('');
+          return `
+            <article class="project-card"
+                     tabindex="0" role="button"
+                     data-card-id="project/${escapeHtml(c.id)}"
+                     data-project-id="${escapeHtml(c.id)}"
+                     style="--stage-color: ${s.tokenColor}; --stage-tint: ${s.tokenTint};">
+              <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                copy ref
+              </button>
+              <div class="name">${escapeHtml(c.name)}</div>
+              ${c.teaser ? `<div class="teaser">${escapeHtml(c.teaser)}</div>` : ''}
+              <div class="meta-row">
+                <span class="due ${due.cls}">${escapeHtml(due.label || '—')}</span>
+                <div class="tags">${tags}</div>
+              </div>
+            </article>
+          `;
+        }).join('');
+    return `
+      <div class="lane" style="--stage-color: ${s.tokenColor}; --stage-tint: ${s.tokenTint};">
+        <div class="lane-head">
+          <span class="name">${escapeHtml(s.label)}</span>
+          <span class="count">${cards.length}</span>
+        </div>
+        <div class="lane-cards">${cardsHtml}</div>
+      </div>
+    `;
+  }).join('');
+  container.innerHTML = html;
+
+  // Wire click + keyboard
+  container.querySelectorAll('.project-card').forEach(el => {
+    const card = STATE.cards.find(c => c.id === el.dataset.projectId);
+    if (!card) return;
+    el.addEventListener('click', (e) => {
+      // Ignore copy-ref clicks (they stopPropagation themselves)
+      if (e.target.closest('.card-copy-ref')) return;
+      openDrawer(card);
+    });
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openDrawer(card);
+      }
+    });
+  });
+  wireCopyRef(container);
+}
+
+// ============================================================
+// Drawer
+// ============================================================
+function resolveNotesUrl(wikiLink) {
+  if (!wikiLink) return null;
+  // Strip any trailing |alias (parser already does this) and trailing .md
+  let path = wikiLink.replace(/\.md$/, '');
+  // Wiki-link is typically relative to CPS root, e.g.
+  //   Accounts/Active/MVMI/NOTES
+  //   Accounts/Leads/Merkantil/NOTES
+  // Prefix with absolute CPS root.
+  const base = '/02_Areas/Sonrisa/CPS/';
+  // If path already starts with /, treat as absolute vault path
+  if (path.startsWith('/')) return path + '.md';
+  return base + path + '.md';
+}
+
+function openDrawer(card) {
+  const drawer = document.getElementById('drawer');
+  const scrim = document.getElementById('scrim');
+  const titleEl = document.getElementById('drawerTitle');
+  const stageEl = document.getElementById('drawerStage');
+  const submetaEl = document.getElementById('drawerSubmeta');
+  const bodyEl = document.getElementById('drawerBody');
+
+  const stage = STAGES_BY_ID[card.stageId];
+  titleEl.textContent = card.name;
+  stageEl.textContent = stage ? stage.label : card.stageId;
+  drawer.style.setProperty('--stage-color', stage ? stage.tokenColor : 'var(--ink-3)');
+  drawer.style.setProperty('--stage-tint', stage ? stage.tokenTint : 'var(--bg-tint)');
+
+  const parts = [];
+  if (card.due) parts.push(`<span class="due-chip">${escapeHtml(card.due)}</span>`);
+  if (card.wikiLink) parts.push(`<span class="source-chip">${escapeHtml(card.wikiLink)}</span>`);
+  if ((card.tags || []).length) {
+    parts.push(`<span style="color: var(--ink-4); font-size: 12px;">${card.tags.slice(0, 6).map(escapeHtml).join(' · ')}</span>`);
+  }
+  submetaEl.innerHTML = parts.join('');
+
+  bodyEl.innerHTML = `<div class="drawer-loading"><span class="spinner"></span> Loading NOTES.md…</div>`;
+  scrim.classList.add('is-open');
+  drawer.classList.add('is-open');
+  scrim.setAttribute('aria-hidden', 'false');
+
+  loadNotes(card, bodyEl);
+}
+
+function closeDrawer() {
+  const drawer = document.getElementById('drawer');
+  const scrim = document.getElementById('scrim');
+  drawer.classList.remove('is-open');
+  scrim.classList.remove('is-open');
+  scrim.setAttribute('aria-hidden', 'true');
+}
+
+async function loadNotes(card, bodyEl) {
+  const url = resolveNotesUrl(card.wikiLink);
+  if (!url) {
+    bodyEl.innerHTML = `<div class="drawer-error">No wiki-link in PROJECTS.md card. Add <code>[[Accounts/Active/&lt;Name&gt;/NOTES]]</code> to enable detail rendering.</div>`;
+    return;
+  }
+  const cacheKey = url;
+  if (STATE.notesCache.has(cacheKey)) {
+    const c = STATE.notesCache.get(cacheKey);
+    renderNotesIntoDrawer(c, url, bodyEl);
+    return;
+  }
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) {
+      const entry = { ok: false, err: `HTTP ${res.status}` };
+      STATE.notesCache.set(cacheKey, entry);
+      renderNotesIntoDrawer(entry, url, bodyEl);
+      return;
+    }
+    const text = await res.text();
+    const entry = { ok: true, body: text };
+    STATE.notesCache.set(cacheKey, entry);
+    renderNotesIntoDrawer(entry, url, bodyEl);
+  } catch (e) {
+    const entry = { ok: false, err: e.message };
+    STATE.notesCache.set(cacheKey, entry);
+    renderNotesIntoDrawer(entry, url, bodyEl);
+  }
+}
+
+function renderNotesIntoDrawer(entry, url, bodyEl) {
+  if (!entry.ok) {
+    bodyEl.innerHTML = `
+      <div class="drawer-error">
+        Could not load <code>${escapeHtml(url)}</code> — ${escapeHtml(entry.err || 'unknown error')}.<br>
+        The NOTES file may not exist yet, or the wiki-link path may be wrong.
+      </div>
+    `;
+    return;
+  }
+  // Strip frontmatter if present
+  let md = entry.body;
+  if (md.startsWith('---')) {
+    const end = md.indexOf('\n---', 3);
+    if (end !== -1) md = md.slice(end + 4).replace(/^\s*\n/, '');
+  }
+
+  // Active NOTES.md uses H1 title + multiple H2 sections.
+  // Render H2 → drawer-section with h3, body is a small markdown-ish slice.
+  const sections = splitMdByH2(md);
+  if (sections.length === 0) {
+    bodyEl.innerHTML = `<div class="drawer-section"><div class="md-body">${mdToHtml(md)}</div></div>`;
+    return;
+  }
+  // First "section" before any H2 may include the H1 title — skip H1 if it matches the card title.
+  const blocks = sections.map(s => {
+    const h = escapeHtml(s.heading || 'Notes');
+    return `
+      <div class="drawer-section">
+        <h3>${h}</h3>
+        <div class="md-body">${mdToHtml(s.body)}</div>
+      </div>
+    `;
+  }).join('');
+  bodyEl.innerHTML = blocks;
+}
+
+function splitMdByH2(md) {
+  const lines = md.split('\n');
+  const sections = [];
+  let cur = null;
+  let pre = [];
+  for (const line of lines) {
+    const h2 = line.match(/^##\s+(.+?)\s*$/);
+    if (h2) {
+      if (cur) sections.push(cur);
+      cur = { heading: h2[1].trim(), body: '' };
+      continue;
+    }
+    if (cur) cur.body += line + '\n';
+    else pre.push(line);
+  }
+  if (cur) sections.push(cur);
+  return sections;
+}
+
+// Minimal markdown → HTML. Handles: bold, italic, inline code, links, wiki-links,
+// bullet lists, numbered lists, simple GFM tables (used by Quick Info), and
+// task list `- [ ]` / `- [x]`. Block-level paragraphing by blank line.
+function mdToHtml(md) {
+  if (!md || !md.trim()) return '<p><em>(empty)</em></p>';
+  const lines = md.split('\n');
+  const out = [];
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+
+    // Skip blank lines
+    if (!line.trim()) { i++; continue; }
+
+    // Table (GFM-like)
+    if (line.includes('|') && i + 1 < lines.length && /^\s*\|?[\s:-]+\|/.test(lines[i + 1])) {
+      const tbl = [];
+      let j = i;
+      while (j < lines.length && lines[j].includes('|')) {
+        tbl.push(lines[j]);
+        j++;
+      }
+      out.push(renderTable(tbl));
+      i = j;
+      continue;
+    }
+
+    // Bullet list (or task list)
+    if (/^\s*[-*]\s+/.test(line)) {
+      const items = [];
+      let j = i;
+      while (j < lines.length && /^\s*[-*]\s+/.test(lines[j])) {
+        const item = lines[j].replace(/^\s*[-*]\s+/, '');
+        items.push(item);
+        j++;
+      }
+      out.push('<ul>' + items.map(it => `<li>${renderInline(it)}</li>`).join('') + '</ul>');
+      i = j;
+      continue;
+    }
+
+    // Numbered list
+    if (/^\s*\d+\.\s+/.test(line)) {
+      const items = [];
+      let j = i;
+      while (j < lines.length && /^\s*\d+\.\s+/.test(lines[j])) {
+        items.push(lines[j].replace(/^\s*\d+\.\s+/, ''));
+        j++;
+      }
+      out.push('<ol>' + items.map(it => `<li>${renderInline(it)}</li>`).join('') + '</ol>');
+      i = j;
+      continue;
+    }
+
+    // H3+ headings inside body
+    const h3 = line.match(/^###\s+(.+)$/);
+    if (h3) { out.push(`<p><strong>${renderInline(h3[1])}</strong></p>`); i++; continue; }
+    // H1 (file title) — render as small caption
+    const h1 = line.match(/^#\s+(.+)$/);
+    if (h1) { out.push(`<p><strong>${renderInline(h1[1])}</strong></p>`); i++; continue; }
+
+    // Paragraph: collect contiguous non-blank, non-list, non-table lines
+    const para = [];
+    let j = i;
+    while (j < lines.length && lines[j].trim() && !/^\s*[-*]\s+/.test(lines[j]) && !/^\s*\d+\.\s+/.test(lines[j])) {
+      para.push(lines[j]);
+      j++;
+    }
+    out.push(`<p>${renderInline(para.join(' '))}</p>`);
+    i = j;
+  }
+  return out.join('\n');
+}
+
+function renderTable(lines) {
+  // Filter the separator line (---|---)
+  const rows = lines.map(l => l.trim().replace(/^\|/, '').replace(/\|$/, '')).filter(r => r.length);
+  if (rows.length < 2) return '';
+  const split = (r) => r.split('|').map(c => c.trim());
+  const header = split(rows[0]);
+  // Separator at index 1
+  const body = rows.slice(2).map(split);
+  let html = '<table><thead><tr>';
+  for (const h of header) html += `<th>${renderInline(h)}</th>`;
+  html += '</tr></thead><tbody>';
+  for (const r of body) {
+    html += '<tr>';
+    for (let k = 0; k < header.length; k++) {
+      html += `<td>${renderInline(r[k] || '')}</td>`;
+    }
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  return html;
+}
+
+function renderInline(s) {
+  if (!s) return '';
+  // Escape first
+  let t = escapeHtml(s);
+
+  // Task checkbox `[ ]` / `[x]` at start
+  t = t.replace(/^\[\s\]\s*/, '<input type="checkbox" disabled> ');
+  t = t.replace(/^\[x\]\s*/i, '<input type="checkbox" checked disabled> ');
+
+  // Inline code `code`
+  t = t.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Bold **text**
+  t = t.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+  // Italic *text* (single-star, no overlap with bold)
+  t = t.replace(/(^|[^*])\*([^*\n]+)\*([^*]|$)/g, '$1<em>$2</em>$3');
+
+  // Markdown links [text](url)
+  t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, txt, url) => {
+    const safeUrl = url.replace(/"/g, '&quot;');
+    return `<a href="${safeUrl}" target="_blank" rel="noopener">${txt}</a>`;
+  });
+
+  // Wiki-links [[path|alias]] or [[path]] — render as plain text (no link)
+  t = t.replace(/\[\[([^\]|]+)\|([^\]]+)\]\]/g, '<em>$2</em>');
+  t = t.replace(/\[\[([^\]]+)\]\]/g, '<em>$1</em>');
+
+  return t;
+}
+
+// ============================================================
+// Boot — fetch + render + subscribe
+// ============================================================
+async function fetchText(url) {
+  const res = await fetch(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error('fetch ' + url + ' failed: ' + res.status);
+  return res.text();
+}
+
+async function refetchAndRender() {
+  try {
+    const [projectsMd, todayMd] = await Promise.allSettled([
+      fetchText(PROJECTS_URL),
+      fetchText(AM_TODAY_URL),
+    ]);
+
+    if (projectsMd.status === 'fulfilled') {
+      STATE.cards = parseProjects(projectsMd.value);
+    } else {
+      STATE.cards = [];
+      console.warn('PROJECTS.md fetch failed:', projectsMd.reason);
+    }
+
+    if (todayMd.status === 'fulfilled') {
+      STATE.todayDays = parseAmToday(todayMd.value);
+      STATE.todayDay = pickTodayDay(STATE.todayDays);
+    } else {
+      STATE.todayDays = [];
+      STATE.todayDay = null;
+      console.warn('AM_TODAY.md fetch failed:', todayMd.reason);
+    }
+
+    renderSummary();
+    renderTodayPanel();
+    renderKanban();
+
+    // Invalidate the NOTES cache on every refresh so drawer-open re-fetches.
+    STATE.notesCache.clear();
+  } catch (e) {
+    console.error('refetchAndRender error', e);
+    document.getElementById('todayContent').innerHTML =
+      `<div class="state error">Error: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+// Drawer wiring (one-time)
+document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+document.getElementById('scrim').addEventListener('click', closeDrawer);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeDrawer();
+});
+
+// Wire copy-ref on the static panel-level buttons
+wireCopyRef(document.body);
+
+// Live updates
+LiveUpdates.subscribe(refetchAndRender);
+LiveUpdates.mountStatusIndicator(document.querySelector('.masthead-toprow'));
+refetchAndRender();
+</script>
+</body>
+</html>

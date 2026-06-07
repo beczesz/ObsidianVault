@@ -1,6 +1,9 @@
 ---
 episode: EP22
 title: "Hangszerjavítás vagy művészet? - A zenészek megmentője | Tódor Botond | EP 22"
+description: "Tódor Botond, Erdély egyetlen professzionális fúvós hangszerjavítója beszél az elhanyagolt mesterségről: a képzésről, a legendás hangszerek anatómiájáról, a javítási eljárásokról és arról, miért hiányzik az utánpótlás. A Navigátor Podcast legmagasabb megtartási mutatójú epizódja."
+description_source: auto
+description_hash: ff9bf61f79d99ee4
 guest: "Tódor Botond"
 role: "Fúvós hangszerjavító és zenész"
 guest_background: "Csíkszentsimonból származó hangszerész, a Liszt Ferenc Művészeti Egyetem hangszerészképzésén végzett Budapesten. Erdély egyetlen professzionális fúvós hangszerjavítója. Szaxofonos és tárogatós, a Vigabend zenekar tagja 2011 óta. Három mesterrel tanult Budapesten (Andrik István, Balog Miklós, Andréka Gábor)."
@@ -26,7 +29,6 @@ cluster_episodes: [EP22, EP02, EP12, EP35]
 id: 674967f1-d536-4e3f-a1d2-59c6425b30bd
 index_schema_version: 1
 ---
-
 # EP22 — Hangszerjavítás vagy művészet? — Tódor Botond
 
 ## Bevezető kontextus

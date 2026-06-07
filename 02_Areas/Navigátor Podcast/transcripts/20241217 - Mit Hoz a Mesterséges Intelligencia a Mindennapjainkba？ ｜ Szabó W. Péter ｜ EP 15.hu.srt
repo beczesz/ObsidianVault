@@ -1,0 +1,7800 @@
+1
+00:00:00,000 --> 00:00:04,960
+nagyon gyakran feltődik az a kérdés hogy
+
+2
+00:00:01,800 --> 00:00:07,559
+meg tudjuk-e mondani azt valamiről és
+
+3
+00:00:04,960 --> 00:00:10,840
+hosszútvon meg fogjuk tudni
+
+4
+00:00:07,559 --> 00:00:13,559
+mondani-e hogy hogy azt ember vagy gép
+
+5
+00:00:10,840 --> 00:00:15,559
+készítette hogy az deep fake vagy nem és
+
+6
+00:00:13,559 --> 00:00:18,439
+jelen pillanatban úgy néz ki hogy ezt
+
+7
+00:00:15,559 --> 00:00:21,320
+csak akkor tudjuk megmondani hogyha
+
+8
+00:00:18,439 --> 00:00:24,680
+ismerjük azt a modellt ami generálja
+
+9
+00:00:21,320 --> 00:00:27,199
+mert azzal be lehet tanítani egy olyan
+
+10
+00:00:24,680 --> 00:00:30,400
+másik modellt ami megmondja hogy ezt
+
+11
+00:00:27,199 --> 00:00:32,640
+most a a tengerá generálta vagy ezt most
+
+12
+00:00:30,400 --> 00:00:35,530
+a mid journey generálta vagy ezt most a
+
+13
+00:00:32,640 --> 00:00:37,719
+d generálta mert mert hogy ezek ismert
+
+14
+00:00:35,530 --> 00:00:39,920
+[Zene]
+
+15
+00:00:37,719 --> 00:00:41,920
+modellek nemrég fejeztem be a
+
+16
+00:00:39,920 --> 00:00:43,719
+beszélgetést szabó péterrel egy
+
+17
+00:00:41,920 --> 00:00:45,520
+hihetetlenül intenzív és izgalmas
+
+18
+00:00:43,719 --> 00:00:47,520
+beszélgetés volt amelyben egy kicsit
+
+19
+00:00:45,520 --> 00:00:50,160
+áttekintettük a mesterséges
+
+20
+00:00:47,520 --> 00:00:52,480
+intelligenciának az elmúlt 40 évét hogy
+
+21
+00:00:50,160 --> 00:00:55,680
+milyen nagyobb dolgok történtek és mitől
+
+22
+00:00:52,480 --> 00:00:58,079
+lett a chat gpti az elmúlt időszakban
+
+23
+00:00:55,680 --> 00:01:00,039
+ekkora médiaszenzáció nagyon izgalmas
+
+24
+00:00:58,079 --> 00:01:01,559
+témákat érintettünk egyrészt hogy a hét
+
+25
+00:01:00,039 --> 00:01:03,440
+köznapi ember hogyan is tudja ezeket
+
+26
+00:01:01,559 --> 00:01:05,360
+használni mi történik akkor hogyha
+
+27
+00:01:03,440 --> 00:01:07,320
+lemarad erről és milyen előnyei vannak
+
+28
+00:01:05,360 --> 00:01:09,159
+milyen veszélyei vannak beszéltünk egy
+
+29
+00:01:07,320 --> 00:01:11,240
+kicsit a jövőről is arról hogy mi fog
+
+30
+00:01:09,159 --> 00:01:13,320
+körülbelül történni a következő években
+
+31
+00:01:11,240 --> 00:01:17,320
+mire számíthatunk úgyhogy tartsatok
+
+32
+00:01:13,320 --> 00:01:19,880
+velünk és iratkozzatok fel a csatornákra
+
+33
+00:01:17,320 --> 00:01:21,920
+üdvözöllek péter a navigátor podcastbe
+
+34
+00:01:19,880 --> 00:01:23,400
+köszönöm hogy elvállaltad a beszélgetést
+
+35
+00:01:21,920 --> 00:01:27,119
+én legalábbis nagyon vártam ezt a
+
+36
+00:01:23,400 --> 00:01:29,360
+beszélgetést és csapjunk akkor bele
+
+37
+00:01:27,119 --> 00:01:31,040
+köszönöm szépen a meghívást én is vártam
+
+38
+00:01:29,360 --> 00:01:32,960
+talán a leg legjobb kezdés az hogyha egy
+
+39
+00:01:31,040 --> 00:01:35,280
+kicsit a hallgatókat is képbe helyezzük
+
+40
+00:01:32,960 --> 00:01:38,079
+hogy mikkel foglalkoztál eddig és miért
+
+41
+00:01:35,280 --> 00:01:40,680
+szerettem volna veled leülni kicsit
+
+42
+00:01:38,079 --> 00:01:43,520
+mesélnél arról a szakmai háttérről
+
+43
+00:01:40,680 --> 00:01:46,040
+ahonnan jössz és hogy hogy milyen
+
+44
+00:01:43,520 --> 00:01:48,040
+nagyobb cégekbe vettél részt milyen
+
+45
+00:01:46,040 --> 00:01:51,320
+nagyobb teljesítményeket szeretsz
+
+46
+00:01:48,040 --> 00:01:53,920
+úgymond magadénak tudni és és amire
+
+47
+00:01:51,320 --> 00:01:57,280
+büszke is vagy az elmúlt évek során a
+
+48
+00:01:53,920 --> 00:02:00,759
+karrieremben szerintem a a az egyik
+
+49
+00:01:57,280 --> 00:02:04,000
+legfontosabb mérföldkő az
+
+50
+00:02:00,759 --> 00:02:07,960
+az az volt amikor kikerültem londonba az
+
+51
+00:02:04,000 --> 00:02:10,879
+már több mint 10 évvel ezelőtt volt egy
+
+52
+00:02:07,960 --> 00:02:13,640
+egy startupnak az igazgatói székébe
+
+53
+00:02:10,879 --> 00:02:16,480
+csöppentem egy egy what users do nevű
+
+54
+00:02:13,640 --> 00:02:19,000
+startupnak amit egy
+
+55
+00:02:16,480 --> 00:02:23,680
+eg egy brit úriember bizonyos lid adle
+
+56
+00:02:19,000 --> 00:02:26,480
+alapított és neki sajnos volt egy
+
+57
+00:02:23,680 --> 00:02:31,560
+nagyon durva kvázi életveszélyes
+
+58
+00:02:26,480 --> 00:02:34,959
+balesete a amit szerencsé túlélt viszont
+
+59
+00:02:31,560 --> 00:02:34,959
+13 hónapra
+
+60
+00:02:35,200 --> 00:02:40,840
+beteg szabadságra került ameddig
+
+61
+00:02:38,000 --> 00:02:42,599
+felépült és kellett valaki aki
+
+62
+00:02:40,840 --> 00:02:46,920
+helyettesíti
+
+63
+00:02:42,599 --> 00:02:49,360
+őt szakmailag és és így kerültem kvázi
+
+64
+00:02:46,920 --> 00:02:51,120
+egyik napról a másikra londonba én én
+
+65
+00:02:49,360 --> 00:02:53,400
+úgy gondolom hogy
+
+66
+00:02:51,120 --> 00:02:55,879
+a szerencsétlenségben volt egy olyan
+
+67
+00:02:53,400 --> 00:02:58,360
+óriási szerencse hogy itt
+
+68
+00:02:55,879 --> 00:03:00,640
+rengeteget tanultam arról hogy hogy
+
+69
+00:02:58,360 --> 00:03:03,640
+működnek a startupok
+
+70
+00:03:00,640 --> 00:03:05,640
+hogy működik a a gazdaság hogy lehet
+
+71
+00:03:03,640 --> 00:03:08,840
+nagy cégekkel
+
+72
+00:03:05,640 --> 00:03:10,799
+tárgyalni bármi ilyesmi meg meg meg
+
+73
+00:03:08,840 --> 00:03:12,480
+szakmailag is tudtam fejlődni akkor még
+
+74
+00:03:10,799 --> 00:03:15,040
+felhasználó élménykutatással
+
+75
+00:03:12,480 --> 00:03:17,799
+foglalkoztam ugye a what users do egy
+
+76
+00:03:15,040 --> 00:03:20,440
+egy user experience research platform
+
+77
+00:03:17,799 --> 00:03:23,599
+volt aminek aztán volt egy sikeres
+
+78
+00:03:20,440 --> 00:03:25,879
+exitje aminek hát a az
+
+79
+00:03:23,599 --> 00:03:28,799
+előkészítésében én is részt vettem és
+
+80
+00:03:25,879 --> 00:03:31,239
+úgy gondolom hogy hogy valamennyire a
+
+81
+00:03:28,799 --> 00:03:34,959
+tevékenységem meghatározta legalábbis
+
+82
+00:03:31,239 --> 00:03:37,879
+azt az egy évét vagy 13 hónapját ameddig
+
+83
+00:03:34,959 --> 00:03:39,519
+lt helyettesítettem és ezt igazából l
+
+84
+00:03:37,879 --> 00:03:42,959
+tudnám
+
+85
+00:03:39,519 --> 00:03:46,680
+megmondani utána mikor szerencsére lee
+
+86
+00:03:42,959 --> 00:03:49,280
+felépült akkor pedig átkerültem a világ
+
+87
+00:03:46,680 --> 00:03:51,319
+legnagyobb szerencsejátékos
+
+88
+00:03:49,280 --> 00:03:53,120
+részvénytársaságához ami nem nem csak
+
+89
+00:03:51,319 --> 00:03:56,159
+szerencsejátékos hanem mindenféle
+
+90
+00:03:53,120 --> 00:03:57,159
+játékos de vannak egyéb brandek is ez a
+
+91
+00:03:56,159 --> 00:04:00,400
+flutter
+
+92
+00:03:57,159 --> 00:04:03,519
+incorporated de mondjuk a a profit
+
+93
+00:04:00,400 --> 00:04:06,599
+jelentős része a szkból származik ezért
+
+94
+00:04:03,519 --> 00:04:09,599
+mondják úgy hogy ez egy ilyen gambling
+
+95
+00:04:06,599 --> 00:04:14,000
+company ugye talán a poker stars a
+
+96
+00:04:09,599 --> 00:04:17,639
+legismertebb brand tőlük és és itt egy
+
+97
+00:04:14,000 --> 00:04:20,880
+egy business unitot vezettem a ami
+
+98
+00:04:17,639 --> 00:04:23,639
+a hát egy kicsit
+
+99
+00:04:20,880 --> 00:04:26,639
+ilyen há
+
+100
+00:04:23,639 --> 00:04:29,960
+ugye abba abb az időben úgy hozták létre
+
+101
+00:04:26,639 --> 00:04:32,039
+a a a business unitot hogy addig a
+
+102
+00:04:29,960 --> 00:04:36,000
+különböző brandeknél volt a user
+
+103
+00:04:32,039 --> 00:04:37,039
+experience ui és frontend funkció és ezt
+
+104
+00:04:36,000 --> 00:04:40,440
+egy
+
+105
+00:04:37,039 --> 00:04:44,120
+ilyen corporate szintű
+
+106
+00:04:40,440 --> 00:04:48,280
+központi funkcióba vonták össze és akkor
+
+107
+00:04:44,120 --> 00:04:51,479
+gyakorlatilag én megörököltem a uxui
+
+108
+00:04:48,280 --> 00:04:54,560
+frontend s-eket a különböző
+
+109
+00:04:51,479 --> 00:05:00,160
+brandekből és így így jött létre ez volt
+
+110
+00:04:54,560 --> 00:05:02,440
+a a kezdete ennek a az egységnek és
+
+111
+00:05:00,160 --> 00:05:03,440
+én úgy gondolom hogy nagyon sikeresek
+
+112
+00:05:02,440 --> 00:05:06,880
+voltunk
+
+113
+00:05:03,440 --> 00:05:10,320
+rengeteg játékos projektet el tudtunk
+
+114
+00:05:06,880 --> 00:05:13,120
+indítani és nem csak viszont a a másik
+
+115
+00:05:10,320 --> 00:05:16,000
+dolog és a a későbbi karrierem során
+
+116
+00:05:13,120 --> 00:05:19,280
+szerintem ez ez a két dolog meghatároz
+
+117
+00:05:16,000 --> 00:05:23,960
+hogy egyrészt közben össze tudtam
+
+118
+00:05:19,280 --> 00:05:25,800
+foglalni a a uxui kutatásaimat és és
+
+119
+00:05:23,960 --> 00:05:27,600
+akkor ezt könyv formájában pack
+
+120
+00:05:25,800 --> 00:05:30,720
+publishing kiadta
+
+121
+00:05:27,600 --> 00:05:33,560
+2017-ben másrészt pedig
+
+122
+00:05:30,720 --> 00:05:36,039
+lehetőséget biztosított arra hogy hogy
+
+123
+00:05:33,560 --> 00:05:38,360
+elkezdjek a gépi tanulásban jobban
+
+124
+00:05:36,039 --> 00:05:40,680
+elmélyülni na most azért hozzá tartozik
+
+125
+00:05:38,360 --> 00:05:44,120
+hogy ez körülbelül olyan 10 évvel
+
+126
+00:05:40,680 --> 00:05:47,600
+ezelőtt volt amikor úgy úgy elkezdtem
+
+127
+00:05:44,120 --> 00:05:50,479
+belemélyedni hogy nagyon más volt a gépi
+
+128
+00:05:47,600 --> 00:05:55,199
+tanulás nem a nem a matematikája volt
+
+129
+00:05:50,479 --> 00:05:58,000
+más ugye azt a azt jóval azelőtt ugye
+
+130
+00:05:55,199 --> 00:06:03,080
+láthattuk az idén hogy
+
+131
+00:05:58,000 --> 00:06:06,840
+82-es illetve 85 ötös kutatásokért a a
+
+132
+00:06:03,080 --> 00:06:10,039
+méneorális állok terén nobelíjat adtak
+
+133
+00:06:06,840 --> 00:06:12,680
+fizikából úgyhogy nem nem az történt
+
+134
+00:06:10,039 --> 00:06:17,000
+hogy a matematika megváltozott hanem
+
+135
+00:06:12,680 --> 00:06:19,400
+elsősorban a a hardware és a a különböző
+
+136
+00:06:17,000 --> 00:06:21,680
+fejlesztői környezetek library ugye
+
+137
+00:06:19,400 --> 00:06:25,880
+megjelent a pytorch meg hardware szinten
+
+138
+00:06:21,680 --> 00:06:29,680
+megjelent az a100-as ami áttörést hozott
+
+139
+00:06:25,880 --> 00:06:34,199
+úgyhogy ebből a szempontból a még gyerek
+
+140
+00:06:29,680 --> 00:06:37,800
+cipőben járt a a gépi tanulás a mához
+
+141
+00:06:34,199 --> 00:06:40,479
+képest viszont mivel volt volt pénz
+
+142
+00:06:37,800 --> 00:06:43,039
+voltak erőforrások így így lehetett
+
+143
+00:06:40,479 --> 00:06:44,440
+nagyon érdekes elsősorban prediktí
+
+144
+00:06:43,039 --> 00:06:47,400
+modelleket tehát ilyen jövőbeli
+
+145
+00:06:44,440 --> 00:06:50,479
+események előrejelzését
+
+146
+00:06:47,400 --> 00:06:55,039
+szolgáló modelleket fejlesztgetni
+
+147
+00:06:50,479 --> 00:06:58,879
+viszont a én úgy gondolom hogy a aztán
+
+148
+00:06:55,039 --> 00:07:01,639
+akkor sikerült igazán elmélyülni és és
+
+149
+00:06:58,879 --> 00:07:03,440
+erre fog fókuszálni mikor haza tudtam
+
+150
+00:07:01,639 --> 00:07:06,759
+jönni erdélybe
+
+151
+00:07:03,440 --> 00:07:09,560
+ugye az az mindenként én úgy terveztem
+
+152
+00:07:06,759 --> 00:07:13,919
+hogy hogy nem nem szeretném londonba
+
+153
+00:07:09,560 --> 00:07:16,280
+leérni az életemet és hát úgy is úgy is
+
+154
+00:07:13,919 --> 00:07:19,080
+mentem ki angliában nagyon sokat
+
+155
+00:07:16,280 --> 00:07:21,879
+vaciláltam azelőtt hogy hogy menjek-e
+
+156
+00:07:19,080 --> 00:07:23,919
+külföldre dolgozni sok helyre hívtak
+
+157
+00:07:21,879 --> 00:07:25,840
+google-nél voltam- hétlépéses
+
+158
+00:07:23,919 --> 00:07:29,599
+interjúsorozaton aztán a végén nem
+
+159
+00:07:25,840 --> 00:07:32,199
+fogadtam el az állást ebből 11-ben
+
+160
+00:07:29,599 --> 00:07:35,599
+aziszem még újságcikk is született
+
+161
+00:07:32,199 --> 00:07:37,280
+de hogy én nagyon nem akartam külföldön
+
+162
+00:07:35,599 --> 00:07:39,960
+élni
+
+163
+00:07:37,280 --> 00:07:43,720
+és pont azért is mentem ki mert hogy
+
+164
+00:07:39,960 --> 00:07:47,680
+ugye ez a a what users do történet ez
+
+165
+00:07:43,720 --> 00:07:49,000
+egy ez egy ilyen meghatározott idejű
+
+166
+00:07:47,680 --> 00:07:52,080
+valami volt
+
+167
+00:07:49,000 --> 00:07:53,960
+és és így így akkor az ember jobban
+
+168
+00:07:52,080 --> 00:07:58,440
+belemegy hogyha tudod hogy na akkor
+
+169
+00:07:53,960 --> 00:08:01,080
+ennek egy év múlva vége van na de utána
+
+170
+00:07:58,440 --> 00:08:02,599
+aztán átment a a flatterhez amit amúgy
+
+171
+00:08:01,080 --> 00:08:05,039
+nagyon szerettem nagyon jó emberekkel
+
+172
+00:08:02,599 --> 00:08:06,680
+dolgoztam innen csak csak nem szerettem
+
+173
+00:08:05,039 --> 00:08:08,759
+külföldön élni és akkor kerestem hogy
+
+174
+00:08:06,680 --> 00:08:12,319
+hogy tudok hazajönni na és mikor
+
+175
+00:08:08,759 --> 00:08:17,039
+hazajöttem akkor akkor nagyon jó volt
+
+176
+00:08:12,319 --> 00:08:19,240
+mert tudtam egész érdekes projekteken is
+
+177
+00:08:17,039 --> 00:08:24,720
+dolgozni
+
+178
+00:08:19,240 --> 00:08:27,479
+és és ugye akkor tudtam arra fókuszálni
+
+179
+00:08:24,720 --> 00:08:30,800
+hogy hát gyakorlatilag azt azt csináljom
+
+180
+00:08:27,479 --> 00:08:34,680
+amit nagyon szeretek ebből a a a nagyon
+
+181
+00:08:30,800 --> 00:08:37,519
+szeretek témakörből én úgy gondolom hogy
+
+182
+00:08:34,680 --> 00:08:39,880
+most már a a a gépi tanulás és a
+
+183
+00:08:37,519 --> 00:08:43,320
+felhasználó élményközpontú gépi tanulás
+
+184
+00:08:39,880 --> 00:08:45,399
+van a a az elsők között ami a szakmai
+
+185
+00:08:43,320 --> 00:08:49,320
+téet na
+
+186
+00:08:45,399 --> 00:08:52,440
+most hát
+
+187
+00:08:49,320 --> 00:08:54,720
+a ami ami szerintem az egyik
+
+188
+00:08:52,440 --> 00:08:56,320
+legérdekesebb ez most már kezd így a
+
+189
+00:08:54,720 --> 00:08:58,000
+közelmúlt lenni úgyhogy bizonyos
+
+190
+00:08:56,320 --> 00:09:00,079
+projektekről annyira nem beszéltek
+
+191
+00:08:58,000 --> 00:09:01,560
+nyilvánosan viszont
+
+192
+00:09:00,079 --> 00:09:05,839
+ami amiről
+
+193
+00:09:01,560 --> 00:09:08,839
+igen az az mindenként egy egy egy ilyen
+
+194
+00:09:05,839 --> 00:09:13,640
+predikí gépi tanulási projekt
+
+195
+00:09:08,839 --> 00:09:15,720
+ami amiről aztán cikkeket is írtam meg
+
+196
+00:09:13,640 --> 00:09:19,560
+elég sok konferencián tartottam annak
+
+197
+00:09:15,720 --> 00:09:22,560
+idején előadást ez ez még a koronavírus
+
+198
+00:09:19,560 --> 00:09:25,640
+járvány előtt volt de én úgy gondolom
+
+199
+00:09:22,560 --> 00:09:27,560
+hogy ma is érdekes tehát egy olyan egy
+
+200
+00:09:25,640 --> 00:09:29,640
+olyan modellt fejlesztettünk ami
+
+201
+00:09:27,560 --> 00:09:33,519
+előrejelzi
+
+202
+00:09:29,640 --> 00:09:37,040
+áruházakban a a a gaktári
+
+203
+00:09:33,519 --> 00:09:38,560
+nyilvántartásnak a a az igényét tehát
+
+204
+00:09:37,040 --> 00:09:40,839
+gyakorlatilag megmondja azt hogy egy
+
+205
+00:09:38,560 --> 00:09:42,959
+adott webáruház adott raktárában melyik
+
+206
+00:09:40,839 --> 00:09:45,079
+termékből mennyit kell raktározni hogy
+
+207
+00:09:42,959 --> 00:09:47,320
+az elfogyjon a következő egy két- három
+
+208
+00:09:45,079 --> 00:09:49,880
+hónapb most ez így ez így nagyon
+
+209
+00:09:47,320 --> 00:09:52,680
+száraznak hangzik az is nyilván mert egy
+
+210
+00:09:49,880 --> 00:09:54,519
+csomó számban egy másik csomó számot
+
+211
+00:09:52,680 --> 00:09:57,519
+generálunk
+
+212
+00:09:54,519 --> 00:10:02,000
+viszont ezt ezt gyakorlatba ültettük
+
+213
+00:09:57,519 --> 00:10:04,880
+például volt egy ö egy oroszországi
+
+214
+00:10:02,000 --> 00:10:06,959
+úriember bizonyos kechinov
+
+215
+00:10:04,880 --> 00:10:10,800
+akinek volt
+
+216
+00:10:06,959 --> 00:10:13,320
+akkor két webáruház az egyik 20 millió a
+
+217
+00:10:10,800 --> 00:10:16,360
+másik 8 millió felhasználóval tehát ezek
+
+218
+00:10:13,320 --> 00:10:18,760
+így európai szemmel nézve nagyon nagy
+
+219
+00:10:16,360 --> 00:10:22,120
+webáruházak és akkor meg tudtuk azt
+
+220
+00:10:18,760 --> 00:10:24,320
+jósolni hogy hogy melyik felhasználó
+
+221
+00:10:22,120 --> 00:10:26,240
+milyen valószínűséggel fog megvenni egy
+
+222
+00:10:24,320 --> 00:10:28,560
+terméket egy úgynevezett collaboraatí
+
+223
+00:10:26,240 --> 00:10:30,600
+filtering módszerre amit nyilván lehet
+
+224
+00:10:28,560 --> 00:10:32,760
+ajánlani és is a felhasználónak de ami
+
+225
+00:10:30,600 --> 00:10:36,200
+ugye oroszországban az igazán nagy
+
+226
+00:10:32,760 --> 00:10:39,320
+probléma volt akkor az az hogy óriásiak
+
+227
+00:10:36,200 --> 00:10:40,880
+a távolságok de a a vásárlók elvárják
+
+228
+00:10:39,320 --> 00:10:42,760
+hogy azért hogyha megveszi az új
+
+229
+00:10:40,880 --> 00:10:46,200
+iphone-t akkor egy-két napon belül ki is
+
+230
+00:10:42,760 --> 00:10:50,279
+hozza a futárt és hogyha mondjuk az a
+
+231
+00:10:46,200 --> 00:10:52,399
+moskva oblastban van raktárba és a
+
+232
+00:10:50,279 --> 00:10:54,800
+mondjuk vladivostockban van a
+
+233
+00:10:52,399 --> 00:10:56,880
+felhasználónk akkor az nem ideális tehát
+
+234
+00:10:54,800 --> 00:10:59,320
+ezért akkor vladivostoki raktárba kell
+
+235
+00:10:56,880 --> 00:11:01,160
+tenni de ugyanakkor a másik oldalról a
+
+236
+00:10:59,320 --> 00:11:03,160
+az pedig óriási pénzveszteség hogyha
+
+237
+00:11:01,160 --> 00:11:04,959
+beteszünk abba a raktárba egy iphone-t
+
+238
+00:11:03,160 --> 00:11:09,360
+és akkor azt nem veszi meg senki egy-két
+
+239
+00:11:04,959 --> 00:11:12,120
+három en hónapon belül most nyilván a a
+
+240
+00:11:09,360 --> 00:11:13,760
+háború miatt ezt ezt nem tudom hogy a
+
+241
+00:11:12,120 --> 00:11:17,240
+aztán a
+
+242
+00:11:13,760 --> 00:11:21,000
+a mi a mi az utó élete a projektnek de a
+
+243
+00:11:17,240 --> 00:11:23,480
+a a ameddig tudtunk dolgozni velünk meg
+
+244
+00:11:21,000 --> 00:11:26,000
+ameddig ezt tudtuk követni addig ez egy
+
+245
+00:11:23,480 --> 00:11:29,079
+ez egy nagyon sikeres történet volt de
+
+246
+00:11:26,000 --> 00:11:29,079
+de de sok más
+
+247
+00:11:29,440 --> 00:11:33,519
+érdekes gépitanáási projekt is
+
+248
+00:11:34,360 --> 00:11:43,079
+volt viszont a a én én úgy gondolom hogy
+
+249
+00:11:37,560 --> 00:11:46,839
+a a a az egyik legfontosabb dolog hogy
+
+250
+00:11:43,079 --> 00:11:46,839
+hogy egy egy nagyon szép
+
+251
+00:11:47,200 --> 00:11:52,600
+fejlesztő csapat épült fel itt
+
+252
+00:11:49,600 --> 00:11:52,600
+majosvásárhelyen
+
+253
+00:11:53,160 --> 00:11:59,519
+a amikor kaptunk egy nagyobb befektetést
+
+254
+00:11:56,600 --> 00:12:02,440
+akkor akkor szépen tudtunk
+
+255
+00:11:59,519 --> 00:12:04,560
+nőni is ugye a az az étekről van szó
+
+256
+00:12:02,440 --> 00:12:07,560
+aminek itt a kosut utcában van a
+
+257
+00:12:04,560 --> 00:12:10,079
+székhelye a
+
+258
+00:12:07,560 --> 00:12:12,240
+egy egy adott
+
+259
+00:12:10,079 --> 00:12:15,399
+pillanatban egy ilyen hat hónap
+
+260
+00:12:12,240 --> 00:12:19,079
+leforgása alatt fel tudtunk venni 30
+
+261
+00:12:15,399 --> 00:12:23,000
+nagyon jó embert és akkor eljutottunk
+
+262
+00:12:19,079 --> 00:12:24,920
+42 főre ha nem tévedek és és én úgy
+
+263
+00:12:23,000 --> 00:12:27,040
+tudom hogy ezeknek az embereknek nagy
+
+264
+00:12:24,920 --> 00:12:30,320
+része mai napig is a az zészteknél
+
+265
+00:12:27,040 --> 00:12:33,800
+dolgozik és és hatékony kollégák na most
+
+266
+00:12:30,320 --> 00:12:35,720
+nyilván egy ilyen két és fél évvel
+
+267
+00:12:33,800 --> 00:12:39,800
+ezelőtt
+
+268
+00:12:35,720 --> 00:12:42,320
+a azt a döntést hoztam a a többi
+
+269
+00:12:39,800 --> 00:12:47,160
+tulajdonossal közösen hogy akkor eladom
+
+270
+00:12:42,320 --> 00:12:50,199
+a tulajdonrészemet a az étekből és és
+
+271
+00:12:47,160 --> 00:12:53,839
+akkor egy egy másik startupot indítottam
+
+272
+00:12:50,199 --> 00:12:56,279
+ez a ez a másik startup ez viszont egy
+
+273
+00:12:53,839 --> 00:12:59,560
+egy sokkal látványosabb irányba vitte el
+
+274
+00:12:56,279 --> 00:13:01,560
+a dolgokat itt ez a ez a tengré nevű
+
+275
+00:12:59,560 --> 00:13:04,680
+startup ami most már lehet hogy
+
+276
+00:13:01,560 --> 00:13:07,440
+ismertebb is és mindenként látványosabb
+
+277
+00:13:04,680 --> 00:13:09,600
+és és nem nem egy business to business
+
+278
+00:13:07,440 --> 00:13:13,680
+valami hanem egy egy ilyen business to
+
+279
+00:13:09,600 --> 00:13:13,680
+custumer egy egy
+
+280
+00:13:14,399 --> 00:13:20,639
+egy részről nyilván van ennek
+
+281
+00:13:17,079 --> 00:13:23,760
+is b2b vagyis hogy más cégeknek
+
+282
+00:13:20,639 --> 00:13:25,800
+szolgáltató része de de alapvetően van
+
+283
+00:13:23,760 --> 00:13:28,320
+egy olyan ingyen használható webes
+
+284
+00:13:25,800 --> 00:13:30,639
+platform ahol mindenki kipróbálhatja a
+
+285
+00:13:28,320 --> 00:13:35,920
+képgeneráló a mesterséges intelligenciát
+
+286
+00:13:30,639 --> 00:13:35,920
+naá most ez a ez a történet ez
+
+287
+00:13:36,399 --> 00:13:42,279
+hát legalábbis a nyilvános része az
+
+288
+00:13:38,720 --> 00:13:44,600
+mindenként csíszeredáb
+
+289
+00:13:42,279 --> 00:13:47,240
+kezdődött
+
+290
+00:13:44,600 --> 00:13:52,199
+körülbelül két év és egy pár hónappal
+
+291
+00:13:47,240 --> 00:13:55,519
+ezelőtt a a úgy emlékszem hogy 22
+
+292
+00:13:52,199 --> 00:13:58,199
+október közepén volt a digitális
+
+293
+00:13:55,519 --> 00:14:02,279
+székelyföld konferencia az it plus
+
+294
+00:13:58,199 --> 00:14:06,680
+plaszter szervez éébe és akkor simon
+
+295
+00:14:02,279 --> 00:14:09,680
+károly aki a az it plusnak a a az
+
+296
+00:14:06,680 --> 00:14:14,920
+elnöke megkért hogy akkor próbáljunk meg
+
+297
+00:14:09,680 --> 00:14:17,680
+egy egy valami látványos kiállítást
+
+298
+00:14:14,920 --> 00:14:21,279
+összehozni mesterséges intelligenciával
+
+299
+00:14:17,680 --> 00:14:22,399
+ideális esetben a a majlát térre ami
+
+300
+00:14:21,279 --> 00:14:26,759
+ugye
+
+301
+00:14:22,399 --> 00:14:29,360
+a a a mozi adta a a a terét a
+
+302
+00:14:26,759 --> 00:14:31,600
+konferenciának és ez így pont csikszered
+
+303
+00:14:29,360 --> 00:14:35,320
+a mozi előtti tér
+
+304
+00:14:31,600 --> 00:14:38,600
+és hát ugye adta magát hogy a csíkszed a
+
+305
+00:14:35,320 --> 00:14:41,560
+lévén a csíi székely múzeummal
+
+306
+00:14:38,600 --> 00:14:44,800
+együttműködve megkaptuk nagy imre és
+
+307
+00:14:41,560 --> 00:14:49,160
+nagy istván digitalizált hagyatékát és
+
+308
+00:14:44,800 --> 00:14:52,480
+akkor ezt ezt és más nemzetközi festőket
+
+309
+00:14:49,160 --> 00:14:55,480
+is akiről jó minőségben digitalizált
+
+310
+00:14:52,480 --> 00:15:00,399
+hagyaték elérhető volt ilyen ilyen
+
+311
+00:14:55,480 --> 00:15:03,800
+ismertebb rembrant és társaira gondolok
+
+312
+00:15:00,399 --> 00:15:06,320
+hogy a hogy akkor csináljunk egy egy
+
+313
+00:15:03,800 --> 00:15:09,639
+mesterséges intelligenciával generált
+
+314
+00:15:06,320 --> 00:15:12,360
+képkiállítást én úgy tudom hogy a a
+
+315
+00:15:09,639 --> 00:15:15,199
+régióban mindenként elsőként de
+
+316
+00:15:12,360 --> 00:15:18,440
+európában talán az első vagy a második
+
+317
+00:15:15,199 --> 00:15:19,800
+ilyen kiállítás volt akkor még ug emzem
+
+318
+00:15:18,440 --> 00:15:21,320
+én is erre a kiállításra láttam
+
+319
+00:15:19,800 --> 00:15:22,800
+személyesen is meg itt
+
+320
+00:15:21,320 --> 00:15:24,680
+székelyudvarhelyen is ki volt állítva
+
+321
+00:15:22,800 --> 00:15:28,519
+azt hiszem a tavaly ugye hogyha jól
+
+322
+00:15:24,680 --> 00:15:32,720
+emlékszem a mintha a s war is 22ben volt
+
+323
+00:15:28,519 --> 00:15:36,360
+csak később mint az 22 novemberében lett
+
+324
+00:15:32,720 --> 00:15:40,560
+volna nem nem sokkal később volt mint a
+
+325
+00:15:36,360 --> 00:15:42,800
+a annak is van egy érdekes története az
+
+326
+00:15:40,560 --> 00:15:47,279
+udvarhelynek
+
+327
+00:15:42,800 --> 00:15:49,199
+hogy azért gondolom hogy most
+
+328
+00:15:47,279 --> 00:15:51,639
+szinte biztos vagyok hogy közel volt a
+
+329
+00:15:49,199 --> 00:15:54,519
+digitális székelyföldhöz mert mert ott
+
+330
+00:15:51,639 --> 00:15:55,959
+kezdtük
+
+331
+00:15:54,519 --> 00:16:00,880
+beszélni
+
+332
+00:15:55,959 --> 00:16:04,040
+a ugye ugyancsak a a az pl
+
+333
+00:16:00,880 --> 00:16:07,279
+klaszterrel dzsival és imonkóal közösen
+
+334
+00:16:04,040 --> 00:16:08,560
+ezt így néztük hogy akkor mit lehetne
+
+335
+00:16:07,279 --> 00:16:12,560
+csinálni
+
+336
+00:16:08,560 --> 00:16:14,759
+és és akkor udvarhelyen is a a
+
+337
+00:16:12,560 --> 00:16:17,279
+művelődési ház
+
+338
+00:16:14,759 --> 00:16:19,519
+előtt gondoltuk hogy jó lenne egy ilyen
+
+339
+00:16:17,279 --> 00:16:23,199
+kiállítás de most nyilván udvarhelyi
+
+340
+00:16:19,519 --> 00:16:26,279
+kiállítás révén adta magát hogy akkor
+
+341
+00:16:23,199 --> 00:16:29,399
+ezt ezt vigyük el paszteles irányba és
+
+342
+00:16:26,279 --> 00:16:31,880
+ugye maselka a híres udvarhelyi
+
+343
+00:16:29,399 --> 00:16:34,480
+pasztelművész és akkor ahhoz már
+
+344
+00:16:31,880 --> 00:16:38,600
+betanítottuk maselkánnak a
+
+345
+00:16:34,480 --> 00:16:41,600
+stílusát ezzel kapcsolatban már nem nem
+
+346
+00:16:38,600 --> 00:16:45,680
+nem aratott osztatlan sikert legalábbis
+
+347
+00:16:41,600 --> 00:16:47,519
+ez a része ugyanis hát egy nyilván nem
+
+348
+00:16:45,680 --> 00:16:51,680
+nem neked mondom hanem a aki nem nem
+
+349
+00:16:47,519 --> 00:16:55,279
+ismeri annyira a a udvarhelyt hogy
+
+350
+00:16:51,680 --> 00:16:58,519
+maselka az időben hozzánk sokkal
+
+351
+00:16:55,279 --> 00:17:01,759
+közelebbi festőművész
+
+352
+00:16:58,519 --> 00:17:04,759
+mint nagy imre vagy nagy istván és éppen
+
+353
+00:17:01,759 --> 00:17:04,759
+ezért
+
+354
+00:17:05,360 --> 00:17:11,319
+hát hálistennek él a fia viszont a a
+
+355
+00:17:08,039 --> 00:17:13,240
+kiállítás után a a a fia jelezte hogy
+
+356
+00:17:11,319 --> 00:17:16,439
+hát ő azért annyira nem örül annak hogy
+
+357
+00:17:13,240 --> 00:17:19,360
+a az édesapja stílusában a az emberek
+
+358
+00:17:16,439 --> 00:17:22,959
+millió számra generálhatják a képeket a
+
+359
+00:17:19,360 --> 00:17:25,679
+a az interneten valószínűleg te ismered
+
+360
+00:17:22,959 --> 00:17:29,480
+személyesen is
+
+361
+00:17:25,679 --> 00:17:32,240
+a a a festővénésznek a fiát
+
+362
+00:17:29,480 --> 00:17:34,360
+és akkor mondtam hogy ez ezt ezt
+
+363
+00:17:32,240 --> 00:17:38,440
+abszolút megértem és így így kegyeleti
+
+364
+00:17:34,360 --> 00:17:41,640
+okokból akkor kvázi elfelejtettük a a a
+
+365
+00:17:38,440 --> 00:17:43,679
+nagy modellel ezt a stílust és és közben
+
+366
+00:17:41,640 --> 00:17:48,120
+akkor erre ki is dolgoztunk egy olyan
+
+367
+00:17:43,679 --> 00:17:50,520
+módszert amivel tud felejteni adott
+
+368
+00:17:48,120 --> 00:17:53,480
+esetben egy stílust el tud felejteni egy
+
+369
+00:17:50,520 --> 00:17:55,320
+egy gépitonalási modell ez nagyon nagyon
+
+370
+00:17:53,480 --> 00:17:57,240
+érdekes etikai kérdéseket vesz fel és
+
+371
+00:17:55,320 --> 00:17:59,240
+ezekre mindenképpen rá akarok térni
+
+372
+00:17:57,240 --> 00:18:02,520
+viszont még előtte azért ki kíváncsi
+
+373
+00:17:59,240 --> 00:18:04,840
+vagyok hogy hogy mesélted hogy az elmúlt
+
+374
+00:18:02,520 --> 00:18:07,440
+pár hónapban folyamatosan utaztál nagyon
+
+375
+00:18:04,840 --> 00:18:09,960
+kíváncsi vagyok hogy miért utaztál is és
+
+376
+00:18:07,440 --> 00:18:12,600
+hogy hogy hogy mesélj egy kicsit erről a
+
+377
+00:18:09,960 --> 00:18:14,840
+pár pár hónapos tapasztalatodról hát
+
+378
+00:18:12,600 --> 00:18:16,799
+igen mindenként köszönöm a megértésedet
+
+379
+00:18:14,840 --> 00:18:19,520
+mertogy ezt már a nyáron elkezdtük
+
+380
+00:18:16,799 --> 00:18:21,919
+beszélni ezt a podcastet de aztán
+
+381
+00:18:19,520 --> 00:18:24,640
+most most jött
+
+382
+00:18:21,919 --> 00:18:28,880
+össze hát
+
+383
+00:18:24,640 --> 00:18:31,880
+alapvetően amit amit tapasztaltam hogy a
+
+384
+00:18:28,880 --> 00:18:34,640
+a az előző évekhez képest az idén nagyon
+
+385
+00:18:31,880 --> 00:18:37,960
+megnőtt a konferenciákon az érdeklődés a
+
+386
+00:18:34,640 --> 00:18:41,320
+mesterséges intelligencia iránt hát ugye
+
+387
+00:18:37,960 --> 00:18:44,919
+múlt héten is egy egy bécsi konferencián
+
+388
+00:18:41,320 --> 00:18:48,559
+voltam gyakorlatilag a augusztus
+
+389
+00:18:44,919 --> 00:18:52,200
+közepétől szeptember október november
+
+390
+00:18:48,559 --> 00:18:54,159
+rengeteg esemény volt 15 különböző
+
+391
+00:18:52,200 --> 00:18:55,720
+helyen tartottam
+
+392
+00:18:54,159 --> 00:19:00,200
+előadást
+
+393
+00:18:55,720 --> 00:19:01,919
+ez ez ez amúgy nagyon sok is tehát
+
+394
+00:19:00,200 --> 00:19:04,039
+egy egy picit úgy is érzem hogy
+
+395
+00:19:01,919 --> 00:19:09,480
+túlvállaltam magam
+
+396
+00:19:04,039 --> 00:19:12,720
+viszont szeretem a a ezt a
+
+397
+00:19:09,480 --> 00:19:14,640
+tudománynépszerűsítő előadás formát és a
+
+398
+00:19:12,720 --> 00:19:19,520
+kelkasztal beseszélgetéseket és minden
+
+399
+00:19:14,640 --> 00:19:19,520
+ilyesmi és hát már úgy
+
+400
+00:19:19,960 --> 00:19:24,559
+2011-12-től elég sok konferencián
+
+401
+00:19:22,760 --> 00:19:27,039
+tartottam előadást
+
+402
+00:19:24,559 --> 00:19:32,760
+viszont más
+
+403
+00:19:27,039 --> 00:19:37,240
+évekbe ilyen egész év alatt volt 510
+
+404
+00:19:32,760 --> 00:19:40,679
+maximum előadásom most meg kvázi három
+
+405
+00:19:37,240 --> 00:19:43,159
+hónap alatt volt 15 én én úgy gondolom
+
+406
+00:19:40,679 --> 00:19:47,480
+hogy ez ez
+
+407
+00:19:43,159 --> 00:19:48,440
+nem nem az én érdemem hanem hanem az a
+
+408
+00:19:47,480 --> 00:19:52,880
+az a
+
+409
+00:19:48,440 --> 00:19:56,159
+hatalmas méia buz az a az a hatalmas pr
+
+410
+00:19:52,880 --> 00:19:59,679
+tevékenység amit elsősorban az amerikai
+
+411
+00:19:56,159 --> 00:20:03,200
+startupok és gondol ak it főleg a az
+
+412
+00:19:59,679 --> 00:20:07,360
+open aial de ugyanúgy antrophic google a
+
+413
+00:20:03,200 --> 00:20:11,000
+facebook és a többi folytat és emiatt a
+
+414
+00:20:07,360 --> 00:20:13,679
+a a gépi tanulás vívmányai amit mondjuk
+
+415
+00:20:11,000 --> 00:20:17,480
+íg nyilván ainak szokás aposztrofálni
+
+416
+00:20:13,679 --> 00:20:21,440
+egy ilyen gyűjtőfogalomal a az ai az az
+
+417
+00:20:17,480 --> 00:20:24,400
+folyamatosan benne van a közbeszédbe és
+
+418
+00:20:21,440 --> 00:20:28,360
+és ugye 22 november
+
+419
+00:20:24,400 --> 00:20:33,240
+30-án publikusan elérhető lett a az open
+
+420
+00:20:28,360 --> 00:20:38,360
+a nak a gpt 3.5 turbo modellje amiből
+
+421
+00:20:33,240 --> 00:20:42,720
+aztán ugye a a a cat gpt nevű felületen
+
+422
+00:20:38,360 --> 00:20:45,159
+lehetett ezzel beszélgetni és és így ez
+
+423
+00:20:42,720 --> 00:20:47,039
+mindenkihez eljutott és most már oda
+
+424
+00:20:45,159 --> 00:20:51,520
+jutottunk hogy nagyon
+
+425
+00:20:47,039 --> 00:20:54,559
+sok ember fejében össze is mosódott a a
+
+426
+00:20:51,520 --> 00:20:58,919
+mesterséges intelligencia az open ai-al
+
+427
+00:20:54,559 --> 00:21:01,679
+és a chat gpt-vel ami érthető is ugye ez
+
+428
+00:20:58,919 --> 00:21:03,960
+mindig megtörténik úgy ahogy a a
+
+429
+00:21:01,679 --> 00:21:06,600
+fénymásolót nagyon sokan seroxnak
+
+430
+00:21:03,960 --> 00:21:08,240
+nevezik hott a a serox csak egy cég aki
+
+431
+00:21:06,600 --> 00:21:10,480
+gyárt
+
+432
+00:21:08,240 --> 00:21:13,960
+fénymásolókat ugyanúgy én úgy gondolom
+
+433
+00:21:10,480 --> 00:21:16,000
+hogy a eljutottunk oda hogy a a a
+
+434
+00:21:13,960 --> 00:21:17,600
+nagynyelvi modelleket sőt az egész
+
+435
+00:21:16,000 --> 00:21:19,559
+mesterséges
+
+436
+00:21:17,600 --> 00:21:22,039
+intelligenciát most már kezdik az
+
+437
+00:21:19,559 --> 00:21:25,080
+emberek c gpt-nek nevezni gyere rakjunk
+
+438
+00:21:22,039 --> 00:21:27,360
+akkor rendet kezdjük ezzel egyszer azzal
+
+439
+00:21:25,080 --> 00:21:30,720
+hogy valójában a hallgatóságunk azok
+
+440
+00:21:27,360 --> 00:21:34,080
+hétköznapi emberek les ne elárusítók
+
+441
+00:21:30,720 --> 00:21:36,200
+tanárok orvosok hétköznapi emberek akik
+
+442
+00:21:34,080 --> 00:21:37,600
+nem szakemberek és és talán jó lenne
+
+443
+00:21:36,200 --> 00:21:40,200
+hogyha leválasztanánk ezeket a
+
+444
+00:21:37,600 --> 00:21:43,000
+fogalmakat és és akár számomra is
+
+445
+00:21:40,200 --> 00:21:44,400
+tisztáznánk hogy mi micsoda pontosan
+
+446
+00:21:43,000 --> 00:21:47,600
+egyrészt említetted hogy a neurális
+
+447
+00:21:44,400 --> 00:21:49,039
+hálók már egy 40 éves sőt annál talán
+
+448
+00:21:47,600 --> 00:21:51,120
+azt hiszem hogy a 60-as években már
+
+449
+00:21:49,039 --> 00:21:54,799
+foglalkoztak a neurális
+
+450
+00:21:51,120 --> 00:21:57,200
+hálókkal de de mindenesetre a 80-as
+
+451
+00:21:54,799 --> 00:21:59,120
+évekbeli mondjam úgy hogy vívmányokért
+
+452
+00:21:57,200 --> 00:22:01,840
+kaptak most nobel díjat
+
+453
+00:21:59,120 --> 00:22:03,760
+mi mi egy neurális háló és és hogyan
+
+454
+00:22:01,840 --> 00:22:08,559
+fogalmaznád meg a jelentőségét ennek a
+
+455
+00:22:03,760 --> 00:22:13,240
+neurális hálónak alapvetően a a neurális
+
+456
+00:22:08,559 --> 00:22:16,760
+hálót azt úgy kell elképzelni picit
+
+457
+00:22:13,240 --> 00:22:21,559
+analóg módon egy egy
+
+458
+00:22:16,760 --> 00:22:23,320
+biológiai neurális hálónak a a a az
+
+459
+00:22:21,559 --> 00:22:26,240
+úgynevezett
+
+460
+00:22:23,320 --> 00:22:30,600
+mélytanulásban ezek a neuronok ezek
+
+461
+00:22:26,240 --> 00:22:33,600
+nagyon egyszerű nagyon a
+
+462
+00:22:30,600 --> 00:22:36,919
+szimpla dolgot megvalósító hát
+
+463
+00:22:33,600 --> 00:22:40,559
+gyakorlatilag függvények
+
+464
+00:22:36,919 --> 00:22:43,679
+viszont azáltal hogy ebből rengeteg van
+
+465
+00:22:40,559 --> 00:22:46,559
+egymás után mint egy hálózat és ezek
+
+466
+00:22:43,679 --> 00:22:49,400
+egymásnak adják át az információt
+
+467
+00:22:46,559 --> 00:22:53,000
+ezáltal nagyon bonyolult kérdések
+
+468
+00:22:49,400 --> 00:22:57,559
+megoldására ez jó tud lenni és mindennek
+
+469
+00:22:53,000 --> 00:22:59,919
+a kulcsa a a a hiba azt mondjuk a gépi
+
+470
+00:22:57,559 --> 00:23:03,360
+tanulásban mi hiba függvénynek nevezzük
+
+471
+00:22:59,919 --> 00:23:05,279
+de gyakorlatilag azért tanul a gép mert
+
+472
+00:23:03,360 --> 00:23:07,360
+egy hibát akar csökkenteni de
+
+473
+00:23:05,279 --> 00:23:09,159
+valószínűleg az ember is azért tanul úgy
+
+474
+00:23:07,360 --> 00:23:11,559
+tanuljuk meg hogy ne nyújunk a tűzbe
+
+475
+00:23:09,159 --> 00:23:13,200
+hogy vagy szól valaki vagy rosszabb
+
+476
+00:23:11,559 --> 00:23:14,960
+esetben megégetjük magunkat és akkor
+
+477
+00:23:13,200 --> 00:23:17,440
+tudjuk hogy az az hiba lenne hogyha
+
+478
+00:23:14,960 --> 00:23:19,960
+megint belenyúlnánk a tűzbe na egy
+
+479
+00:23:17,440 --> 00:23:22,919
+kicsit hasonlóan működik egy egy mély
+
+480
+00:23:19,960 --> 00:23:26,480
+neurális háló is ugye
+
+481
+00:23:22,919 --> 00:23:26,480
+kezdetben teljesen
+
+482
+00:23:27,080 --> 00:23:36,400
+véletlenszerűen mű möik de azáltal
+
+483
+00:23:31,400 --> 00:23:39,279
+hogy hogy valamilyen eredményt ad azt az
+
+484
+00:23:36,400 --> 00:23:41,720
+eredményt mindig egy egy úgynevezett
+
+485
+00:23:39,279 --> 00:23:44,480
+tanuló adathalmazba tehát egy ilyen nagy
+
+486
+00:23:41,720 --> 00:23:48,159
+adatmennyiségen amiből úgymond tanul a
+
+487
+00:23:44,480 --> 00:23:50,120
+gép azon ezt mindig ellenőrizzük és
+
+488
+00:23:48,159 --> 00:23:54,679
+gyakorlatilag ez a hibafüggvény ez azt
+
+489
+00:23:50,120 --> 00:23:57,240
+mondja meg hogy mennyire van távol a az
+
+490
+00:23:54,679 --> 00:24:00,360
+igazságtól egy adott válasz és it az
+
+491
+00:23:57,240 --> 00:24:02,000
+igazságot ne ne ne a ne az emberi
+
+492
+00:24:00,360 --> 00:24:04,120
+szempontból
+
+493
+00:24:02,000 --> 00:24:06,919
+igazságnak nevezzük talán ez nem is jó
+
+494
+00:24:04,120 --> 00:24:08,679
+kifejezés hanem hogy hogy mennyire nagy
+
+495
+00:24:06,919 --> 00:24:10,640
+hibát vétett ez főleg a nyelvi
+
+496
+00:24:08,679 --> 00:24:14,080
+modelleknél nagyon nagyon fontos ez a
+
+497
+00:24:10,640 --> 00:24:17,320
+hogy mindjárt visszatérünk oda hogy mi a
+
+498
+00:24:14,080 --> 00:24:19,279
+mi az igazság vagy mi a hibafüggvény de
+
+499
+00:24:17,320 --> 00:24:22,799
+mondok egy egy sokkal egyszerűbben
+
+500
+00:24:19,279 --> 00:24:26,240
+megérthető példát tegyük fel hogy valaki
+
+501
+00:24:22,799 --> 00:24:28,399
+szeretne egy olyan neurális hálót ami
+
+502
+00:24:26,240 --> 00:24:32,120
+ami sokkal hamarabb volt és sokkal
+
+503
+00:24:28,399 --> 00:24:34,520
+népszerűb mint a a a a nyelvi modellek
+
+504
+00:24:32,120 --> 00:24:36,880
+vagy a képgeneráló modellek azok a
+
+505
+00:24:34,520 --> 00:24:39,039
+tőzsdei kereskedő robotok és szeretne
+
+506
+00:24:36,880 --> 00:24:41,520
+valaki egy olyan neurális hálót ami
+
+507
+00:24:39,039 --> 00:24:45,159
+előre jelzi azt hogy a részvény hogy fog
+
+508
+00:24:41,520 --> 00:24:48,080
+alakulni na most ebben az esetben nagyon
+
+509
+00:24:45,159 --> 00:24:51,399
+egyszerű megmondani a hibát mertogy ugye
+
+510
+00:24:48,080 --> 00:24:53,600
+történelmi adatokon tanítjuk tudjuk hogy
+
+511
+00:24:51,399 --> 00:24:57,120
+bizonyos dolgok hatására hogy mozogtak a
+
+512
+00:24:53,600 --> 00:25:01,000
+részvények és akkor mi azt várjuk hogy
+
+513
+00:24:57,120 --> 00:25:04,440
+ha elmondj mondjuk mit tudom én
+
+514
+00:25:01,000 --> 00:25:10,200
+hogy 300 nap alatt hogy változott egy
+
+515
+00:25:04,440 --> 00:25:14,360
+részvény akkor a 31 302 303 napot
+
+516
+00:25:10,200 --> 00:25:17,880
+megpróbálja megjósolni ez a ez a háló és
+
+517
+00:25:14,360 --> 00:25:21,760
+a az elején teljesen véletlenszerűnek
+
+518
+00:25:17,880 --> 00:25:26,240
+tűnő eredményeket fog adni és és az is
+
+519
+00:25:21,760 --> 00:25:28,960
+végülis viszont azáltal hogy tegyük fel
+
+520
+00:25:26,240 --> 00:25:31,480
+hogy most van egy mit tudom én nvidia
+
+521
+00:25:28,960 --> 00:25:34,000
+részfény most az a az a legnépszerűbb
+
+522
+00:25:31,480 --> 00:25:36,880
+meg a a marketc szempontjából az az
+
+523
+00:25:34,000 --> 00:25:38,080
+egyik legértékesebb papír a világon az
+
+524
+00:25:36,880 --> 00:25:41,760
+nvidia
+
+525
+00:25:38,080 --> 00:25:44,320
+részvényt megjósolja valamilyen számra
+
+526
+00:25:41,760 --> 00:25:47,880
+és megnézzük hogy akkor a a múltban
+
+527
+00:25:44,320 --> 00:25:51,520
+ténylegesen a 301 napon
+
+528
+00:25:47,880 --> 00:25:53,880
+a az a szám mennyire tért el tehát mi
+
+529
+00:25:51,520 --> 00:25:55,799
+volt a az eltérést ezt még általában
+
+530
+00:25:53,880 --> 00:25:59,440
+négyzetre szoktuk emelni egyrészt azért
+
+531
+00:25:55,799 --> 00:26:01,919
+mert nem nem mindegy hogy
+
+532
+00:25:59,440 --> 00:26:03,520
+hogy mennyire hibázik ha kicsit hibázik
+
+533
+00:26:01,919 --> 00:26:05,240
+az nem olyan nagy baj viszont hogyha
+
+534
+00:26:03,520 --> 00:26:07,320
+nagyot hibázik az nagyon nagy baj ugye
+
+535
+00:26:05,240 --> 00:26:11,159
+pénzről van szó
+
+536
+00:26:07,320 --> 00:26:13,000
+és és akkor meg meg nyilván az viszont
+
+537
+00:26:11,159 --> 00:26:14,720
+mindegy hogy le vagy felhibázik mi azt
+
+538
+00:26:13,000 --> 00:26:16,600
+szeretnénk hogy minél pontosabb legyen
+
+539
+00:26:14,720 --> 00:26:19,760
+úgyhogy ezt is eltünteti a négyzet és
+
+540
+00:26:16,600 --> 00:26:21,679
+akkor ezeket a az összes papírnál nem
+
+541
+00:26:19,760 --> 00:26:24,480
+nem csak egy papír lesz hanem az összes
+
+542
+00:26:21,679 --> 00:26:27,039
+amit ami benne van ugye a tanuló
+
+543
+00:26:24,480 --> 00:26:30,919
+adathalmazunkb kiszámoljuk ezt a hibát
+
+544
+00:26:27,039 --> 00:26:33,240
+és a négyzeteket kiátlagoljuk és ebből
+
+545
+00:26:30,919 --> 00:26:37,240
+ebből meg tudjuk azt mondani hogy a
+
+546
+00:26:33,240 --> 00:26:39,880
+jelenlegi tudás szintjén ez a ez a gépi
+
+547
+00:26:37,240 --> 00:26:42,200
+tanulási modellünk ez a neurális háló
+
+548
+00:26:39,880 --> 00:26:47,679
+mennyit hibázott
+
+549
+00:26:42,200 --> 00:26:49,120
+és és a a dolog szépsége hogy a a ugye
+
+550
+00:26:47,679 --> 00:26:51,760
+az emberek nem mindig tanulnak a
+
+551
+00:26:49,120 --> 00:26:55,080
+hibáikból viszont a a gépek azok mindig
+
+552
+00:26:51,760 --> 00:26:57,360
+tanulnak a hibáikból és és ennek a
+
+553
+00:26:55,080 --> 00:26:59,600
+szakkifejezése ez a back propagation of
+
+554
+00:26:57,360 --> 00:27:02,720
+errors tehát a amikor a hiba az
+
+555
+00:26:59,600 --> 00:27:05,480
+visszamegy a hálón és megpróbálja úgy
+
+556
+00:27:02,720 --> 00:27:08,240
+állítani ezeket a nagyon szimpla
+
+557
+00:27:05,480 --> 00:27:10,320
+neuronokat hogy hogy kevesebb legyen a
+
+558
+00:27:08,240 --> 00:27:15,399
+hiba és még kevesebb és még kevesebb és
+
+559
+00:27:10,320 --> 00:27:18,320
+akkor azt látjuk hogy hogy a
+
+560
+00:27:15,399 --> 00:27:20,679
+tanulásán folyamatosan hát úgy mondják
+
+561
+00:27:18,320 --> 00:27:22,880
+ezt hogy pokról pokra tehát hogy minden
+
+562
+00:27:20,679 --> 00:27:24,840
+így mindig amikor átnézi a teljes
+
+563
+00:27:22,880 --> 00:27:28,840
+adathalmazt akkor mindig azt látjuk hogy
+
+564
+00:27:24,840 --> 00:27:30,679
+csökken csökken csökken a hiba és és ezt
+
+565
+00:27:28,840 --> 00:27:33,360
+gyakorlatilag ismételhetnénk a
+
+566
+00:27:30,679 --> 00:27:35,399
+végtelenségig de nyilván nincs végtelen
+
+567
+00:27:33,360 --> 00:27:37,840
+erőforrásunk úgyhogy egy adott
+
+568
+00:27:35,399 --> 00:27:40,360
+pillanatban azt mondjuk hogy na most már
+
+569
+00:27:37,840 --> 00:27:43,279
+elégedettek vagyunk elég kicsi a hiba
+
+570
+00:27:40,360 --> 00:27:45,640
+ahhoz hogy ezt egy verziónak el tudjuk
+
+571
+00:27:43,279 --> 00:27:49,279
+könyvelni és akkor leállítjuk a tanulást
+
+572
+00:27:45,640 --> 00:27:52,399
+annál is inkább mert ezután a pont után
+
+573
+00:27:49,279 --> 00:27:56,000
+már már nagyon kis eredményt kapunk
+
+574
+00:27:52,399 --> 00:27:58,880
+nagyon picit javul ez a hiba viszont
+
+575
+00:27:56,000 --> 00:28:01,799
+óriási mennyiségű erőforrásba
+
+576
+00:27:58,880 --> 00:28:03,440
+kerül és ezt ezt nyilván mindig el kell
+
+577
+00:28:01,799 --> 00:28:05,559
+dönteni hogy mi az amit még itt
+
+578
+00:28:03,440 --> 00:28:08,039
+bevállalunk de hogy az elején mindig az
+
+579
+00:28:05,559 --> 00:28:10,480
+van hogy nagyon nagyon nagyon meredeken
+
+580
+00:28:08,039 --> 00:28:12,679
+esik a hiba és utána a végén beáll egy
+
+581
+00:28:10,480 --> 00:28:15,919
+ilyen egy ilyen platóba amikor már alig
+
+582
+00:28:12,679 --> 00:28:18,720
+csökken a hiba de mindig ez a
+
+583
+00:28:15,919 --> 00:28:23,480
+hibacsökkenés az
+
+584
+00:28:18,720 --> 00:28:23,480
+amitől amitől tanul a gép
+
+585
+00:28:23,960 --> 00:28:30,720
+és hogyha egy egy
+
+586
+00:28:27,120 --> 00:28:33,120
+komplexebb esetet nézünk akkor még
+
+587
+00:28:30,720 --> 00:28:36,600
+inkább nyilvánvaló egy egy csomó olyan
+
+588
+00:28:33,120 --> 00:28:40,519
+dolog ami a a köznyelvbe és a
+
+589
+00:28:36,600 --> 00:28:44,279
+médiában egy kicsit összezavarhatja az
+
+590
+00:28:40,519 --> 00:28:47,159
+embereket a a az egyik ilyen dolog az a
+
+591
+00:28:44,279 --> 00:28:48,960
+az az úgynevezett hallucináció jelensége
+
+592
+00:28:47,159 --> 00:28:51,760
+amit a média így
+
+593
+00:28:48,960 --> 00:28:55,120
+aposztrofált amikor ugye azt
+
+594
+00:28:51,760 --> 00:28:58,679
+tapasztaljuk hogy megkérdezzük a a c
+
+595
+00:28:55,120 --> 00:29:03,000
+gpt-t valamiről és akár a legújabb
+
+596
+00:28:58,679 --> 00:29:07,440
+négyó vagy omicron vagy
+
+597
+00:29:03,000 --> 00:29:10,320
+bármilyen változata is a a a az open a
+
+598
+00:29:07,440 --> 00:29:13,200
+gpt modelljének de ugyanez igaz a google
+
+599
+00:29:10,320 --> 00:29:15,000
+geminira vagy az untrophic 3.5 sonetre
+
+600
+00:29:13,200 --> 00:29:18,799
+vagy bármelyik nagy népszerű nyelvi
+
+601
+00:29:15,000 --> 00:29:22,799
+modellre azt tapasztaljuk hogy hogy nem
+
+602
+00:29:18,799 --> 00:29:26,360
+a valóságot adja vissza hanem hanem
+
+603
+00:29:22,799 --> 00:29:29,760
+kitalál valamit és ezen nagyon sokan úgy
+
+604
+00:29:26,360 --> 00:29:31,960
+meglepődtek főleg az elején ugye
+
+605
+00:29:29,760 --> 00:29:34,519
+hagyományosan az volt az emberek
+
+606
+00:29:31,960 --> 00:29:37,120
+elképzelése hogy a gép nem téved és ez
+
+607
+00:29:34,519 --> 00:29:42,240
+így így ilyen paradigmaszerűen így így
+
+608
+00:29:37,120 --> 00:29:47,640
+elterjedt a az emberek körébe ugye a
+
+609
+00:29:42,240 --> 00:29:49,799
+a ha ha más nem akkor a a bankoknál a
+
+610
+00:29:47,640 --> 00:29:52,120
+hitelelbírállásnál szokták azt hallani
+
+611
+00:29:49,799 --> 00:29:54,679
+külföldön is meg nálunk is az emberek
+
+612
+00:29:52,120 --> 00:29:58,200
+hogy hát a a gép azt mondta hogy és
+
+613
+00:29:54,679 --> 00:29:59,120
+akkor az úgy van nyilván ennek van van
+
+614
+00:29:58,200 --> 00:30:01,640
+egy
+
+615
+00:29:59,120 --> 00:30:04,200
+ilyen pszichológiai vonzata is hogy
+
+616
+00:30:01,640 --> 00:30:06,200
+azért szeretünk a gépekben megbízni
+
+617
+00:30:04,200 --> 00:30:07,760
+ezzel szemben meg azt láttuk hogy
+
+618
+00:30:06,200 --> 00:30:09,840
+kérdezzünk valamit mondjuk a chat
+
+619
+00:30:07,760 --> 00:30:11,519
+gpt-től a péld kedveér és például egy
+
+620
+00:30:09,840 --> 00:30:14,080
+könyvészetet kérünk és akkor egy
+
+621
+00:30:11,519 --> 00:30:17,000
+tökéletesnek kinéző könyvészetet
+
+622
+00:30:14,080 --> 00:30:19,480
+kigenerál linkekkel meg hivatkozásokkal
+
+623
+00:30:17,000 --> 00:30:22,440
+ami nem létezik igen vagy hogy mondjak
+
+624
+00:30:19,480 --> 00:30:25,880
+egy még konkrétabb példát ugye tegnap
+
+625
+00:30:22,440 --> 00:30:29,519
+voltak a parlamenti választások a chat
+
+626
+00:30:25,880 --> 00:30:32,200
+gpt a ezt posztol is a facebookra úgy
+
+627
+00:30:29,519 --> 00:30:34,159
+gondolta hogy tegnap a parlamenti
+
+628
+00:30:32,200 --> 00:30:37,440
+választások második fordulója van
+
+629
+00:30:34,159 --> 00:30:39,159
+romániában nyilvánvalóan ez ez nem igaz
+
+630
+00:30:37,440 --> 00:30:41,320
+de de
+
+631
+00:30:39,159 --> 00:30:44,720
+hogy
+
+632
+00:30:41,320 --> 00:30:46,600
+annyira nem volt nem volt tisztáb
+
+633
+00:30:44,720 --> 00:30:49,559
+nyilván a modell nincs annan tudja hogy
+
+634
+00:30:46,600 --> 00:30:53,480
+most hány fordulóba szervezik meg meg
+
+635
+00:30:49,559 --> 00:30:55,399
+meg rengeteg ilyen példa van és és ez
+
+636
+00:30:53,480 --> 00:30:57,639
+egyrészt felhívja a figyelmet arra hogy
+
+637
+00:30:55,399 --> 00:31:00,679
+mindig fontos elolvasni a a kimenetet
+
+638
+00:30:57,639 --> 00:31:04,840
+fontos minőség biztosítani a modellt
+
+639
+00:31:00,679 --> 00:31:06,880
+nem nem hisszük el csak úgy főleg akkor
+
+640
+00:31:04,840 --> 00:31:10,679
+hogyha egy tisztán nyelvi modellről van
+
+641
+00:31:06,880 --> 00:31:13,360
+szó mint a chatgpt és ugyanakkor pedig
+
+642
+00:31:10,679 --> 00:31:15,559
+ennek az oka ez ez nagyon egyszerű
+
+643
+00:31:13,360 --> 00:31:18,320
+hogyha valamire nem tudja a pontos
+
+644
+00:31:15,559 --> 00:31:20,559
+választ egy nagynyelvű modell akkor egy
+
+645
+00:31:18,320 --> 00:31:22,880
+olyan választ próbál generálni ami
+
+646
+00:31:20,559 --> 00:31:24,880
+legalábbis hihető mert ő ő mindig a
+
+647
+00:31:22,880 --> 00:31:29,320
+hibát próbálja minimalizálni mindig
+
+648
+00:31:24,880 --> 00:31:32,120
+próbálja elkerülni a hibát és a valami
+
+649
+00:31:29,320 --> 00:31:35,399
+az mindig kevesebb hiba mint a semmi
+
+650
+00:31:32,120 --> 00:31:38,559
+tehát hogyha semmit nem vál valamire az
+
+651
+00:31:35,399 --> 00:31:41,720
+az mindig maximális hiba lesz tehát az a
+
+652
+00:31:38,559 --> 00:31:44,080
+az az hogy ne válaszoljon semmit az az
+
+653
+00:31:41,720 --> 00:31:45,960
+software bug egy egy nagynyelmi
+
+654
+00:31:44,080 --> 00:31:47,480
+modellnél az összeomlik a modell de
+
+655
+00:31:45,960 --> 00:31:49,600
+érdekes hogy ez az embereknél is pont
+
+656
+00:31:47,480 --> 00:31:51,639
+így van tehát a tétlenség az nagyobb
+
+657
+00:31:49,600 --> 00:31:53,600
+hiba mint hogyha hibásan elkezdünk és
+
+658
+00:31:51,639 --> 00:31:56,279
+valamit valamit elkezdünk cselekedni
+
+659
+00:31:53,600 --> 00:31:59,039
+mert utólag aztán tudjuk korrigálni az
+
+660
+00:31:56,279 --> 00:32:02,399
+utunkat de hogyha el se indulunk akkor
+
+661
+00:31:59,039 --> 00:32:04,880
+valójában valójában ez a legnagyobb hiba
+
+662
+00:32:02,399 --> 00:32:07,880
+ez ez abszolút így van
+
+663
+00:32:04,880 --> 00:32:10,919
+viszont ugye a a a hagyományos
+
+664
+00:32:07,880 --> 00:32:14,679
+informatikai rendszereknél
+
+665
+00:32:10,919 --> 00:32:19,080
+hogyha a az ember gondol egy egy
+
+666
+00:32:14,679 --> 00:32:23,159
+keresőre a ott hogyha elnézést ha nem
+
+667
+00:32:19,080 --> 00:32:25,559
+talál meg valamit a kereső akár még egy
+
+668
+00:32:23,159 --> 00:32:27,960
+komplex mit tudom én egy ilyen elastic
+
+669
+00:32:25,559 --> 00:32:31,720
+search alapú kereső vagy vagy bármilyen
+
+670
+00:32:27,960 --> 00:32:34,559
+egy modern keresési megoldás akkor nem
+
+671
+00:32:31,720 --> 00:32:36,799
+fog kitalálni egy egy más dolgot
+
+672
+00:32:34,559 --> 00:32:38,360
+helyette hanem csak simán visszaadja azt
+
+673
+00:32:36,799 --> 00:32:40,799
+az informatikai rendszert hogy erre
+
+674
+00:32:38,360 --> 00:32:44,080
+nincs talállat
+
+675
+00:32:40,799 --> 00:32:46,799
+de a a a gépitanulásnál nem így van
+
+676
+00:32:44,080 --> 00:32:51,480
+illetve ennek van egy másik folyománya
+
+677
+00:32:46,799 --> 00:32:53,840
+is hogy még a a a
+
+678
+00:32:51,480 --> 00:32:55,919
+különböző hát úgymond numerikus
+
+679
+00:32:53,840 --> 00:32:57,840
+módszerek tehát ahol egy ilyen exakt
+
+680
+00:32:55,919 --> 00:33:01,039
+matematikával végig tudjuk vinni a
+
+681
+00:32:57,840 --> 00:33:05,120
+módszert a tehát az ilyen alapú
+
+682
+00:33:01,039 --> 00:33:07,720
+programok azok azok mindig pontos
+
+683
+00:33:05,120 --> 00:33:10,919
+eredményt fognak adni ami ami nagyon jó
+
+684
+00:33:07,720 --> 00:33:13,000
+is most gondoljuk el hogy a a vannak
+
+685
+00:33:10,919 --> 00:33:15,399
+könyvelési programok például azt nem
+
+686
+00:33:13,000 --> 00:33:18,440
+szeretnénk hogyha a
+
+687
+00:33:15,399 --> 00:33:19,960
+a ha az eredmény amit a könyvelési
+
+688
+00:33:18,440 --> 00:33:20,880
+program nekünk kiszámol az csak az
+
+689
+00:33:19,960 --> 00:33:25,720
+esetek
+
+690
+00:33:20,880 --> 00:33:29,080
+99%-ából lenne jó de 1%-ában tévedne na
+
+691
+00:33:25,720 --> 00:33:33,159
+most ezzel szemben a a mélyneurális
+
+692
+00:33:29,080 --> 00:33:36,120
+hálók kimenete az soha nem lesz 1.0
+
+693
+00:33:33,159 --> 00:33:38,320
+pontosságú tehát ez a jóslási pontosság
+
+694
+00:33:36,120 --> 00:33:41,679
+ez ez soha nem lesz
+
+695
+00:33:38,320 --> 00:33:44,720
+100%-os viszont
+
+696
+00:33:41,679 --> 00:33:48,799
+ugye nem is ez a cél hanem
+
+697
+00:33:44,720 --> 00:33:51,159
+a hanem pont pont az a az a célja
+
+698
+00:33:48,799 --> 00:33:55,279
+eredetileg a nagy nyelvi modelleknek
+
+699
+00:33:51,159 --> 00:33:57,799
+hogy hogy egy szép gördülékeny
+
+700
+00:33:55,279 --> 00:34:00,279
+szövegszerű jól megfogalmazott
+
+701
+00:33:57,799 --> 00:34:03,039
+mondatokból
+
+702
+00:34:00,279 --> 00:34:05,039
+álló gyakorlatilag szöveget adjanak
+
+703
+00:34:03,039 --> 00:34:08,800
+vissza
+
+704
+00:34:05,039 --> 00:34:10,839
+és és ebből a szempontból én úgy
+
+705
+00:34:08,800 --> 00:34:14,879
+gondolom hogy ezt a problémát sikerült
+
+706
+00:34:10,839 --> 00:34:17,159
+megoldani azt már az emberek elvárása
+
+707
+00:34:14,879 --> 00:34:20,000
+volt hogy akkor ez ez tárgyilag is
+
+708
+00:34:17,159 --> 00:34:21,000
+pontos legyen tehát hogyha most azt
+
+709
+00:34:20,000 --> 00:34:24,879
+mondja
+
+710
+00:34:21,000 --> 00:34:29,000
+a a gpt modell hogy
+
+711
+00:34:24,879 --> 00:34:32,480
+akkor mit tudom én valami így van akkor
+
+712
+00:34:29,000 --> 00:34:35,240
+az úgy is legyen na most a a másik dolog
+
+713
+00:34:32,480 --> 00:34:39,359
+ezzel hogy ezek mind előre tanított
+
+714
+00:34:35,240 --> 00:34:41,480
+modellek ugye ez a azt is rövidíti a gpt
+
+715
+00:34:39,359 --> 00:34:48,359
+hogy generative pretrained
+
+716
+00:34:41,480 --> 00:34:50,520
+transformer és a a a a p miatt ezek mind
+
+717
+00:34:48,359 --> 00:34:52,720
+mind mind előre tanított modellek ami
+
+718
+00:34:50,520 --> 00:34:55,440
+azt jelenti hogy abból hogy mi
+
+719
+00:34:52,720 --> 00:34:58,359
+beszélgetünk a modellel meg abból ami
+
+720
+00:34:55,440 --> 00:35:00,599
+most pillanatnyilag történik a világ
+
+721
+00:34:58,359 --> 00:35:02,760
+abból nem tanul a modellnek ez a
+
+722
+00:35:00,599 --> 00:35:05,200
+verziója a következő verzió az nyilván
+
+723
+00:35:02,760 --> 00:35:09,079
+tanulhat viszont az az majd a jövőben
+
+724
+00:35:05,200 --> 00:35:12,880
+fog kijönni ezért mondta azt a a chat
+
+725
+00:35:09,079 --> 00:35:15,680
+gpt amikor megjelent hogy neki csak 21
+
+726
+00:35:12,880 --> 00:35:18,359
+szeptemberéig van információja a
+
+727
+00:35:15,680 --> 00:35:20,400
+világról nyilván azóta sok frissítésen
+
+728
+00:35:18,359 --> 00:35:24,280
+átment de hogy az első megjelent
+
+729
+00:35:20,400 --> 00:35:27,040
+verziója ez ezt tta hogy mertogy ugye 21
+
+730
+00:35:24,280 --> 00:35:30,119
+nyagán jelent meg az a100-as videókártya
+
+731
+00:35:27,040 --> 00:35:33,680
+az nvidia ától ez a 80 gb véramos verzió
+
+732
+00:35:30,119 --> 00:35:38,400
+amit amit használtak a a tanításra és
+
+733
+00:35:33,680 --> 00:35:41,520
+akkor az történt hogy a a lezárták a
+
+734
+00:35:38,400 --> 00:35:43,720
+tanuló adatharmas szeptemberben és ami
+
+735
+00:35:41,520 --> 00:35:46,960
+azelőtt történt a világban azt tudtam
+
+736
+00:35:43,720 --> 00:35:50,440
+modell ami azután azt nem nyilván a ma
+
+737
+00:35:46,960 --> 00:35:55,319
+már vannak olyan megoldások amik tudnak
+
+738
+00:35:50,440 --> 00:35:59,720
+keresni a neten viszont az a az a netes
+
+739
+00:35:55,319 --> 00:36:01,160
+keresés az a az az nem a modellnek a a
+
+740
+00:35:59,720 --> 00:36:04,119
+tudása nem a
+
+741
+00:36:01,160 --> 00:36:06,480
+tanulóadathalmaz hanem az egy kisegítő
+
+742
+00:36:04,119 --> 00:36:10,920
+információforrás azt hiszem hogy a
+
+743
+00:36:06,480 --> 00:36:15,480
+perplexity a leg leghíresebb erről hogy
+
+744
+00:36:10,920 --> 00:36:19,040
+próbál forrásokat keresni és ezekből a
+
+745
+00:36:15,480 --> 00:36:22,160
+forrásokból próbálja kiegészíteni a a
+
+746
+00:36:19,040 --> 00:36:25,400
+tudásbázisát és így próbál legalábbis az
+
+747
+00:36:22,160 --> 00:36:27,800
+elérhető források alapján a
+
+748
+00:36:25,400 --> 00:36:31,400
+lehetőlepontosabb válaszokat adni és
+
+749
+00:36:27,800 --> 00:36:34,200
+ugyanúgy ezért van az hogy a perplexity
+
+750
+00:36:31,400 --> 00:36:37,240
+sokkal naprakészebb információkat tudott
+
+751
+00:36:34,200 --> 00:36:40,359
+például a a romániai parlamenti
+
+752
+00:36:37,240 --> 00:36:42,920
+választásokról akár aznap meg tudtad
+
+753
+00:36:40,359 --> 00:36:44,440
+kérdezni hogy jelenleg hány százaléknál
+
+754
+00:36:42,920 --> 00:36:46,880
+van a jelenlét meg mit mondanak a
+
+755
+00:36:44,440 --> 00:36:49,280
+közvéelmény kutatások meg bármi ilyesmi
+
+756
+00:36:46,880 --> 00:36:51,680
+attól nyilván a perplexity se tudta
+
+757
+00:36:49,280 --> 00:36:54,680
+megjósolni az eredményt
+
+758
+00:36:51,680 --> 00:36:57,119
+de de legalább viszonylag naprakész
+
+759
+00:36:54,680 --> 00:36:59,359
+információval rendelkezett itt egy
+
+760
+00:36:57,119 --> 00:37:01,240
+pillanat megállnék és összefoglalnám azt
+
+761
+00:36:59,359 --> 00:37:04,119
+a sok mindent amit eddig beszéltünk
+
+762
+00:37:01,240 --> 00:37:05,960
+azért hogy hogy utána aztán a tehát f
+
+763
+00:37:04,119 --> 00:37:09,240
+főként a hallgatók számára ne
+
+764
+00:37:05,960 --> 00:37:12,960
+kavarodjanak össze a dolgok a beszéltünk
+
+765
+00:37:09,240 --> 00:37:16,920
+a neurális hálókról és a gépi tanulásról
+
+766
+00:37:12,960 --> 00:37:20,240
+és arról is beszéltünk hogy részben a
+
+767
+00:37:16,920 --> 00:37:24,160
+hardw minősége miatt és a teljesítménye
+
+768
+00:37:20,240 --> 00:37:27,839
+miatt képesek lettünk
+
+769
+00:37:24,160 --> 00:37:31,040
+2021 és 2022 novemberében jelen meg ugye
+
+770
+00:37:27,839 --> 00:37:33,040
+a chat gpt mint mainstream a a bárki
+
+771
+00:37:31,040 --> 00:37:35,319
+által elérhető chat
+
+772
+00:37:33,040 --> 00:37:38,240
+applikáció gyakorlatilag képesek lettünk
+
+773
+00:37:35,319 --> 00:37:38,240
+arra hogy egy olyan
+
+774
+00:37:38,520 --> 00:37:43,480
+nyelvi modellt állítsunk elő amelyik
+
+775
+00:37:40,359 --> 00:37:47,640
+gyakorlatilag a turing tesen átmegy a
+
+776
+00:37:43,480 --> 00:37:51,040
+turing test az amikor amikor valaki egy
+
+777
+00:37:47,640 --> 00:37:53,480
+fallal egy fallal elzárva kommunikál egy
+
+778
+00:37:51,040 --> 00:37:55,079
+egy entitással és abban a pillanatban
+
+779
+00:37:53,480 --> 00:37:57,040
+mihelyt már nem tudja eldönteni hogy
+
+780
+00:37:55,079 --> 00:37:59,640
+emberrel vagy géppel kommunikál abban a
+
+781
+00:37:57,040 --> 00:38:02,560
+pillanatb azt a gépet azt a azt a
+
+782
+00:37:59,640 --> 00:38:05,880
+modellt úgy nevezzük hogy átment a ting
+
+783
+00:38:02,560 --> 00:38:08,720
+teszten én úgy hallottam hogy voltak még
+
+784
+00:38:05,880 --> 00:38:11,400
+próbálkozások amelyek úgymond sikeresnek
+
+785
+00:38:08,720 --> 00:38:13,319
+voltak titulálva előtte de gyakorlatilag
+
+786
+00:38:11,400 --> 00:38:15,400
+ez azért egy teljesen más dimenziót
+
+787
+00:38:13,319 --> 00:38:19,000
+hozott be az emberek
+
+788
+00:38:15,400 --> 00:38:22,079
+életébe a nagynyelvi modellek bár
+
+789
+00:38:19,000 --> 00:38:24,200
+mainstreamen 2022 novemberében jelentek
+
+790
+00:38:22,079 --> 00:38:25,839
+meg én azért már előtte is hallottam és
+
+791
+00:38:24,200 --> 00:38:28,000
+kíváncsi vagyok hogy te mennyivel előtte
+
+792
+00:38:25,839 --> 00:38:30,359
+tudtad már hogy hogy ez valami lesz ez
+
+793
+00:38:28,000 --> 00:38:32,839
+valami nagy dolog készülődik biztos
+
+794
+00:38:30,359 --> 00:38:35,280
+vagyok benne hogy már előtte láttad a a
+
+795
+00:38:32,839 --> 00:38:38,000
+a hog hogy hogy valami fog jönni csak
+
+796
+00:38:35,280 --> 00:38:42,079
+éppen nem lehet tudni mikor robban ki
+
+797
+00:38:38,000 --> 00:38:46,960
+igen azt azt lehetett sejteni hogy hogy
+
+798
+00:38:42,079 --> 00:38:50,960
+nyilván utólag mindenki nagyon okos de a
+
+799
+00:38:46,960 --> 00:38:56,839
+ugye a mindenki azt várta hogy hardver
+
+800
+00:38:50,960 --> 00:38:59,960
+szintjén jöjjön egy olyan áttörés amivel
+
+801
+00:38:56,839 --> 00:39:04,160
+pénzügyi ileg legalábbis elképzelhető
+
+802
+00:38:59,960 --> 00:39:08,960
+hogy nagyon nagy modelleket tanítsunk és
+
+803
+00:39:04,160 --> 00:39:12,280
+ugye maga a a tudományos része az jóval
+
+804
+00:39:08,960 --> 00:39:16,000
+hamarabb megvolt ugye a a természetes
+
+805
+00:39:12,280 --> 00:39:18,720
+nyelvek feldolgozásával már nagyon rég
+
+806
+00:39:16,000 --> 00:39:21,319
+kísérleteznek a a kutatók még az én
+
+807
+00:39:18,720 --> 00:39:25,440
+születésem előtt is kísérleteztek az már
+
+808
+00:39:21,319 --> 00:39:29,480
+több mint 40 éve volt de a a
+
+809
+00:39:25,440 --> 00:39:31,359
+ami ebből a szem pontból egy egy kiemelt
+
+810
+00:39:29,480 --> 00:39:34,359
+áttörés volt
+
+811
+00:39:31,359 --> 00:39:34,359
+az
+
+812
+00:39:35,119 --> 00:39:40,640
+2017-ben pontosan a google-nél egy
+
+813
+00:39:38,200 --> 00:39:43,400
+kutatócsoport kiadott egy
+
+814
+00:39:40,640 --> 00:39:45,680
+olyan cikket aminek az a címe hogy
+
+815
+00:39:43,400 --> 00:39:47,280
+attention is all you need tehát hogy a
+
+816
+00:39:45,680 --> 00:39:50,319
+figyelem az egyetlen dolog amire
+
+817
+00:39:47,280 --> 00:39:53,560
+szükséged van és ők azt mondták hogy egy
+
+818
+00:39:50,319 --> 00:39:56,880
+ilyen úgynevezett figyelem
+
+819
+00:39:53,560 --> 00:40:00,400
+mechanizmussal sokkal jobb eredményeket
+
+820
+00:39:56,880 --> 00:40:02,079
+tudunk elérni a természetes nyelv
+
+821
+00:40:00,400 --> 00:40:05,760
+feldolgozásában
+
+822
+00:40:02,079 --> 00:40:07,319
+mint mint az addigi megoldásokkal és
+
+823
+00:40:05,760 --> 00:40:10,440
+ugye az addigi
+
+824
+00:40:07,319 --> 00:40:13,680
+megoldásoknak az volt a nagy nagy
+
+825
+00:40:10,440 --> 00:40:18,480
+problémája hogy a a modellek nem nem
+
+826
+00:40:13,680 --> 00:40:18,480
+tudták hogy hogy miről is szól ez
+
+827
+00:40:18,520 --> 00:40:25,400
+a ez a szöveg amit te írtál neki és amit
+
+828
+00:40:23,000 --> 00:40:27,720
+meg kellett próbáljon értelmezni és erre
+
+829
+00:40:25,400 --> 00:40:30,920
+erre válaszolni ugyancsak úgy úgyhogy az
+
+830
+00:40:27,720 --> 00:40:30,920
+szóljon valamiről
+
+831
+00:40:32,800 --> 00:40:42,760
+és és
+
+832
+00:40:35,079 --> 00:40:45,920
+erre a talán a legjobb példa az hogy ha
+
+833
+00:40:42,760 --> 00:40:49,480
+egy angolul jobban működik mivel hogy
+
+834
+00:40:45,920 --> 00:40:51,960
+nem egy egy ragozó nyelv
+
+835
+00:40:49,480 --> 00:40:56,440
+hogyha azt mondjuk
+
+836
+00:40:51,960 --> 00:40:57,839
+a a a modellnek hogy magyarul úgy jönn
+
+837
+00:40:56,440 --> 00:41:00,720
+ki hogy ha a tenger
+
+838
+00:40:57,839 --> 00:41:02,920
+hatalmak legyőzték a szövetségeseket
+
+839
+00:41:00,720 --> 00:41:06,520
+vagy a szövetségesek legyőzték a
+
+840
+00:41:02,920 --> 00:41:08,839
+tengelyhatalmakat ez a az addigi nyelvi
+
+841
+00:41:06,520 --> 00:41:10,880
+modelleknek a két kijelentés az teljesen
+
+842
+00:41:08,839 --> 00:41:13,839
+egyedértékű volt nyilván nekünk
+
+843
+00:41:10,880 --> 00:41:15,920
+embereknek nem az de angolul axis
+
+844
+00:41:13,839 --> 00:41:18,800
+defeated the allies vagy allies defeated
+
+845
+00:41:15,920 --> 00:41:20,880
+the ais az az addigi modelleknél ahol
+
+846
+00:41:18,800 --> 00:41:23,240
+nem volt meg ez a figyelem mechanizmus
+
+847
+00:41:20,880 --> 00:41:26,000
+ez nagyon sok modell ezt ezt ugyanúgy
+
+848
+00:41:23,240 --> 00:41:29,119
+kezelte mivel hogy ugyanaz a három szó
+
+849
+00:41:26,000 --> 00:41:30,599
+van benne csak más sorrendbe más más
+
+850
+00:41:29,119 --> 00:41:33,160
+sorrendbe
+
+851
+00:41:30,599 --> 00:41:35,119
+és és itt ez a sorrend nagyon nem
+
+852
+00:41:33,160 --> 00:41:37,920
+mindegy de nyilván ez ez komplexebb
+
+853
+00:41:35,119 --> 00:41:41,359
+esetekben még még jobban
+
+854
+00:41:37,920 --> 00:41:44,240
+kijön ugye azt arra már sokkal hamarabb
+
+855
+00:41:41,359 --> 00:41:47,160
+rájöttek hogy hogy
+
+856
+00:41:44,240 --> 00:41:48,960
+lehet szavak közötti összefüggéseket
+
+857
+00:41:47,160 --> 00:41:52,160
+találni már jóval a transformer
+
+858
+00:41:48,960 --> 00:41:54,520
+architektúra előtt tudták azt a nagyon
+
+859
+00:41:52,160 --> 00:41:58,520
+klasszikus példát hogy a nagynyelvi
+
+860
+00:41:54,520 --> 00:42:01,800
+modell meg tudta mondani hogy ha azt
+
+861
+00:41:58,520 --> 00:42:07,800
+mondjuk hogy a a
+
+862
+00:42:01,800 --> 00:42:12,359
+egy ilyen hasonlításba hogy a a a férfi
+
+863
+00:42:07,800 --> 00:42:16,480
+és nő és utána hozzunk erre a modellre
+
+864
+00:42:12,359 --> 00:42:18,560
+egy egy olyan verziót amiben benne van a
+
+865
+00:42:16,480 --> 00:42:20,079
+király akkor azt a nyelvi modell mondta
+
+866
+00:42:18,560 --> 00:42:22,880
+hogy akkor a királynő lesz ide a
+
+867
+00:42:20,079 --> 00:42:27,480
+megfelelő szó tehát ilyen ilyen
+
+868
+00:42:22,880 --> 00:42:30,079
+szempontból ezek ezek működtek ami a ami
+
+869
+00:42:27,480 --> 00:42:32,920
+viszont nem működött ez a ez a figyelem
+
+870
+00:42:30,079 --> 00:42:35,280
+de de nagyon sok minden tehát a a
+
+871
+00:42:32,920 --> 00:42:38,839
+tokenizáció működött hogy a a
+
+872
+00:42:35,280 --> 00:42:41,599
+természetes nyelv szavait át tudjuk
+
+873
+00:42:38,839 --> 00:42:43,520
+alakítani számokká úgyhogy ilyen
+
+874
+00:42:41,599 --> 00:42:45,680
+darabokra vágjuk
+
+875
+00:42:43,520 --> 00:42:47,559
+szótöredékekre és a többi és a többi
+
+876
+00:42:45,680 --> 00:42:50,000
+tehát hogy hogy nagyon sok alapja már
+
+877
+00:42:47,559 --> 00:42:53,440
+megvolt viszont
+
+878
+00:42:50,000 --> 00:42:56,839
+ezzel azóta úgy hívjuk az attention is
+
+879
+00:42:53,440 --> 00:43:00,359
+all unit paperre alapuló modelleket hogy
+
+880
+00:42:56,839 --> 00:43:03,920
+a transformer architektúrájú modellek na
+
+881
+00:43:00,359 --> 00:43:06,400
+most ezek a ugye a a chat gptbe is a t
+
+882
+00:43:03,920 --> 00:43:10,079
+betű ez a transformert
+
+883
+00:43:06,400 --> 00:43:11,240
+jelenti ezekkel eljutottunk oda hogy
+
+884
+00:43:10,079 --> 00:43:13,440
+kvázi
+
+885
+00:43:11,240 --> 00:43:17,040
+élőbeszédszerű beszélgetést tudunk
+
+886
+00:43:13,440 --> 00:43:18,800
+folytatni egy nagy modellel és és én úgy
+
+887
+00:43:17,040 --> 00:43:22,480
+gondolom hogy
+
+888
+00:43:18,800 --> 00:43:24,079
+ezzel noha folyamatosan jelennek meg
+
+889
+00:43:22,480 --> 00:43:26,880
+cikkek arról
+
+890
+00:43:24,079 --> 00:43:29,119
+hogy hogy ez vagy az lesz a következő
+
+891
+00:43:26,880 --> 00:43:31,960
+nagy nagy áttörés a
+
+892
+00:43:29,119 --> 00:43:36,240
+nyelvfelismerésben viszont a az
+
+893
+00:43:31,960 --> 00:43:38,480
+átlagfelhasználó számára magából a
+
+894
+00:43:36,240 --> 00:43:41,319
+nyelvfelismerésből kihoztunk egy olyan
+
+895
+00:43:38,480 --> 00:43:45,000
+szintet amivel már azt mondjuk hogy ez
+
+896
+00:43:41,319 --> 00:43:47,920
+így rendben van és azzal hogy
+
+897
+00:43:45,000 --> 00:43:50,440
+a megjelent az úgynevezett retrieval
+
+898
+00:43:47,920 --> 00:43:52,880
+augmented generation ezek a rang
+
+899
+00:43:50,440 --> 00:43:55,640
+megoldások amivel a
+
+900
+00:43:52,880 --> 00:43:57,720
+valóságból általunk igaznak vett
+
+901
+00:43:55,640 --> 00:44:00,079
+információkat
+
+902
+00:43:57,720 --> 00:44:04,400
+be tudunk tenni
+
+903
+00:44:00,079 --> 00:44:06,640
+a a kimenetbe és akkor akkor a valóságot
+
+904
+00:44:04,400 --> 00:44:09,559
+fogja mondani és ez például jó arra
+
+905
+00:44:06,640 --> 00:44:12,559
+hogyha ha van egy cégnek egy
+
+906
+00:44:09,559 --> 00:44:17,079
+tudásbázisa mit tudom én van
+
+907
+00:44:12,559 --> 00:44:19,559
+egy egy ingatlan közvetítő iroda és és
+
+908
+00:44:17,079 --> 00:44:21,760
+szeretnénk egy olyan chatbotot csinálni
+
+909
+00:44:19,559 --> 00:44:24,319
+ami a jelenleg mondjuk
+
+910
+00:44:21,760 --> 00:44:26,800
+székelyudvarhelyen eladó
+
+911
+00:44:24,319 --> 00:44:29,720
+ingatlanokról visszaad információt ha
+
+912
+00:44:26,800 --> 00:44:31,559
+meg kérdezzük mit tudom én k kérünk egy
+
+913
+00:44:29,720 --> 00:44:34,720
+olyant hogy szeretnénk-e három szobás
+
+914
+00:44:31,559 --> 00:44:37,200
+lakást venni azt hol és mennyiért tudunk
+
+915
+00:44:34,720 --> 00:44:40,240
+találni udvarhelyen akkor el tudja
+
+916
+00:44:37,200 --> 00:44:42,319
+mondani ebbe az utcába ennyiért és a
+
+917
+00:44:40,240 --> 00:44:44,440
+többi na ahogy ezt meg tudja mondani
+
+918
+00:44:42,319 --> 00:44:46,880
+nyilván ezt a chgpt abszolút nincs hnan
+
+919
+00:44:44,440 --> 00:44:50,240
+tudja viszont hogyha van egy úgynevezett
+
+920
+00:44:46,880 --> 00:44:52,559
+tudásgráfunk ami amiben benne vannak
+
+921
+00:44:50,240 --> 00:44:54,680
+ezek az információk ami valószínűleg
+
+922
+00:44:52,559 --> 00:44:57,040
+hogy egy ingatlan közvetítőnél ezek az
+
+923
+00:44:54,680 --> 00:44:58,319
+információk megvannak valamilyen
+
+924
+00:44:57,040 --> 00:45:00,599
+relcionális vagy nem relacionális
+
+925
+00:44:58,319 --> 00:45:03,079
+adatbázisba már most onnan egy lépés az
+
+926
+00:45:00,599 --> 00:45:07,160
+hogy hogy átkerüljenek egy vektor
+
+927
+00:45:03,079 --> 00:45:09,839
+adatbázisba és gyakorlatilag ettől
+
+928
+00:45:07,160 --> 00:45:12,040
+tovább mi úgy mint egy ingatlan
+
+929
+00:45:09,839 --> 00:45:14,920
+ügynökkel tudunk csevegni ezzel a
+
+930
+00:45:12,040 --> 00:45:17,400
+modellel az még egy kicsit messzébb van
+
+931
+00:45:14,920 --> 00:45:20,400
+hogy el is vigyen az illető ingatlambas
+
+932
+00:45:17,400 --> 00:45:22,160
+ot bejárja velünk de de nem annyira
+
+933
+00:45:20,400 --> 00:45:25,400
+messze ugye látjuk a különböző
+
+934
+00:45:22,160 --> 00:45:27,800
+humanomanoid robotokat a amiket most
+
+935
+00:45:25,400 --> 00:45:30,839
+például a kínaiak nagyon
+
+936
+00:45:27,800 --> 00:45:34,599
+népszerűsítenek de már már
+
+937
+00:45:30,839 --> 00:45:37,559
+magyarországon is van olyan kávézó ahol
+
+938
+00:45:34,599 --> 00:45:40,200
+ilyen hát nem annyira humanoid de de
+
+939
+00:45:37,559 --> 00:45:43,880
+robotocskák viszik ki tárcán az italokat
+
+940
+00:45:40,200 --> 00:45:46,000
+és lehet náluk rendelni és satöbbi és és
+
+941
+00:45:43,880 --> 00:45:49,160
+igazából az hogy természetes nyelven
+
+942
+00:45:46,000 --> 00:45:52,640
+rendeljünk az ahhoz már robot se kell
+
+943
+00:45:49,160 --> 00:45:54,760
+ugye a az egyesült államokban is meg
+
+944
+00:45:52,640 --> 00:45:58,200
+arabországokban is egyre népszerűbbek
+
+945
+00:45:54,760 --> 00:46:00,160
+ezek a az ilyen drá ilyen áthajtós
+
+946
+00:45:58,200 --> 00:46:02,839
+gyorsét termek ahol van egy ilyen
+
+947
+00:46:00,160 --> 00:46:04,760
+mikrofon és a mikrofonba elmondod hogy
+
+948
+00:46:02,839 --> 00:46:08,599
+mit szeretnél enni
+
+949
+00:46:04,760 --> 00:46:11,119
+és és ezt ha csak nincsen nagyon erős
+
+950
+00:46:08,599 --> 00:46:14,280
+angol akcentusod akkor ezt megérti
+
+951
+00:46:11,119 --> 00:46:16,359
+felveszi a rendelésedet és utána mikor
+
+952
+00:46:14,280 --> 00:46:19,200
+tovább értél akkor megkapod a az
+
+953
+00:46:16,359 --> 00:46:21,559
+elkészült kaját úgyhogy nyilván nálunk
+
+954
+00:46:19,200 --> 00:46:25,920
+annyira nem népszerűek a driveet
+
+955
+00:46:21,559 --> 00:46:28,800
+gyorsértelmek de de itt itt például egy
+
+956
+00:46:25,920 --> 00:46:31,079
+abszolút előny tud ez lenni ha tetszik
+
+957
+00:46:28,800 --> 00:46:33,319
+ez az epizód akkor kérlek ne felejtsetek
+
+958
+00:46:31,079 --> 00:46:35,319
+el feliratkozni a csatornánkra osszátok
+
+959
+00:46:33,319 --> 00:46:38,319
+meg valamint hagyjatok egy kommentet
+
+960
+00:46:35,319 --> 00:46:41,839
+ezzel nagyban segítitek a munkánkat
+
+961
+00:46:38,319 --> 00:46:44,040
+2022 szeptemberét bocsánat novemberétől
+
+962
+00:46:41,839 --> 00:46:47,480
+kezdve bizonyos szempontból a világ
+
+963
+00:46:44,040 --> 00:46:50,000
+felbojdult és megjelent a chat gpt
+
+964
+00:46:47,480 --> 00:46:52,559
+3.5-ös modell ami
+
+965
+00:46:50,000 --> 00:46:54,680
+gyakorlatilag ez volt az első mainstream
+
+966
+00:46:52,559 --> 00:46:57,160
+modell amit bárki el tudott érni és már
+
+967
+00:46:54,680 --> 00:46:58,839
+tudta használni és utána pedig
+
+968
+00:46:57,160 --> 00:47:00,880
+folyamatosan jelennek meg az újabb és
+
+969
+00:46:58,839 --> 00:47:03,559
+újabb hírek például most az egyik az
+
+970
+00:47:00,880 --> 00:47:06,520
+hogy már nem csak szöveget hanem képet
+
+971
+00:47:03,559 --> 00:47:08,440
+is tud generálni ez a dolly most már
+
+972
+00:47:06,520 --> 00:47:09,480
+kettes modell és azt hiszem hogy már
+
+973
+00:47:08,440 --> 00:47:13,079
+hármas is
+
+974
+00:47:09,480 --> 00:47:15,599
+van és utána pedig megjelent a a
+
+975
+00:47:13,079 --> 00:47:17,520
+videogenerálási lehetőség és persze
+
+976
+00:47:15,599 --> 00:47:19,960
+mindenféle híresztelések hogy ilyen
+
+977
+00:47:17,520 --> 00:47:23,000
+deepfakeeket lehet készíteni most már
+
+978
+00:47:19,960 --> 00:47:26,559
+hangokat lehet utánozni
+
+979
+00:47:23,000 --> 00:47:29,000
+és tehát a az átlagember csak kapkodja a
+
+980
+00:47:26,559 --> 00:47:32,319
+fejét hogy szintre szinte hónapról
+
+981
+00:47:29,000 --> 00:47:35,599
+hónapra sőt már hétről hétre olyan hírek
+
+982
+00:47:32,319 --> 00:47:38,280
+érik el a a az átlagfelhasználót hogy
+
+983
+00:47:35,599 --> 00:47:40,680
+hogy egyrészt egy félelem is van benne
+
+984
+00:47:38,280 --> 00:47:43,800
+hogy mi lesz a jövő és hogy neki hol a
+
+985
+00:47:40,680 --> 00:47:46,280
+helye és hogy hogyan kell erre
+
+986
+00:47:43,800 --> 00:47:47,720
+felkészülni kezdetben mit szólnál hogyha
+
+987
+00:47:46,280 --> 00:47:50,119
+végigmennénk azokon a nagyobb
+
+988
+00:47:47,720 --> 00:47:53,319
+eseményeken ami az elmúlt két évben
+
+989
+00:47:50,119 --> 00:47:56,520
+történt azért hogy hogy most kábé hogy
+
+990
+00:47:53,319 --> 00:47:58,280
+tudja a a a hétköznapi ember is most még
+
+991
+00:47:56,520 --> 00:48:01,880
+egys egyszer mondom a hétköznapi ember a
+
+992
+00:47:58,280 --> 00:48:04,119
+tanár és a a a egy egy egy felszolgáló
+
+993
+00:48:01,880 --> 00:48:06,680
+egy étteremben aki
+
+994
+00:48:04,119 --> 00:48:08,559
+aki ha szeretned szeretnéd tudni hogy
+
+995
+00:48:06,680 --> 00:48:10,440
+hogy h hol áll most éppen a mesterséges
+
+996
+00:48:08,559 --> 00:48:12,480
+intelligencia hol állnak a fejlesztések
+
+997
+00:48:10,440 --> 00:48:14,359
+melyek a legnagyobb hírek most mi lenne
+
+998
+00:48:12,480 --> 00:48:16,599
+a top öt legnagyobb hír amit úgy
+
+999
+00:48:14,359 --> 00:48:19,880
+megemlítenél abba vagy top 10 akár így
+
+1000
+00:48:16,599 --> 00:48:21,520
+fejből és és utána pedig rátérhetünk
+
+1001
+00:48:19,880 --> 00:48:22,319
+arra hogy milyen is lesz a jövő mire
+
+1002
+00:48:21,520 --> 00:48:25,599
+kell
+
+1003
+00:48:22,319 --> 00:48:28,760
+felkészüljünk ez ez egy nagyon jó kérdés
+
+1004
+00:48:25,599 --> 00:48:28,760
+igen tehát a
+
+1005
+00:48:28,880 --> 00:48:35,000
+hogyha hogyha egy
+
+1006
+00:48:31,400 --> 00:48:37,319
+picit visszább megyünk akkor én úgy
+
+1007
+00:48:35,000 --> 00:48:41,240
+gondolom hogy az első nagy nagy
+
+1008
+00:48:37,319 --> 00:48:44,440
+mérföldkő az az pont 10 évvel ezelőtt
+
+1009
+00:48:41,240 --> 00:48:47,400
+volt amikor megjelentek a a genek a
+
+1010
+00:48:44,440 --> 00:48:50,119
+generative adversarial networkok ami
+
+1011
+00:48:47,400 --> 00:48:53,760
+gyakorlatilag azt jelenti hogy van két
+
+1012
+00:48:50,119 --> 00:48:56,760
+neurális háló és a
+
+1013
+00:48:53,760 --> 00:48:59,440
+egymással szemben van a hibájuk
+
+1014
+00:48:56,760 --> 00:49:01,319
+a az egyik generálja a válaszokat és a
+
+1015
+00:48:59,440 --> 00:49:03,319
+másik egy úgynevezett diszkriminátor
+
+1016
+00:49:01,319 --> 00:49:05,920
+amelyik megpróbálja eldönteni hogy
+
+1017
+00:49:03,319 --> 00:49:08,520
+melyik a melyik a jó válasz és melyik a
+
+1018
+00:49:05,920 --> 00:49:11,240
+nem melyik az ami mondjuk a valóságból
+
+1019
+00:49:08,520 --> 00:49:14,040
+származik és melyik az ami a kitaláció
+
+1020
+00:49:11,240 --> 00:49:17,240
+és itt itt gondoljunk arra
+
+1021
+00:49:14,040 --> 00:49:20,480
+hogy ez például hogyha a képeknél talán
+
+1022
+00:49:17,240 --> 00:49:22,520
+a leg legegyértelműbb ugye
+
+1023
+00:49:20,480 --> 00:49:25,960
+elképzelhetjük a generátort mint egy
+
+1024
+00:49:22,520 --> 00:49:28,000
+festő ami festi a képeket millió számra
+
+1025
+00:49:25,960 --> 00:49:31,200
+és a disk inátor pedig az egy ilyen
+
+1026
+00:49:28,000 --> 00:49:33,280
+műkritikus ami nem tudja azt hogy a
+
+1027
+00:49:31,200 --> 00:49:36,119
+melyik képet festette az ai és melyik
+
+1028
+00:49:33,280 --> 00:49:39,160
+képet festette egy ismert nagy művész
+
+1029
+00:49:36,119 --> 00:49:41,200
+véletlenszerűen kap mind a kettőből és
+
+1030
+00:49:39,160 --> 00:49:45,079
+neki az a feladata hogy el kell
+
+1031
+00:49:41,200 --> 00:49:48,440
+határozza hogy ezt most ai festette ezt
+
+1032
+00:49:45,079 --> 00:49:51,760
+most nem és akkor így egyrész lesz egy
+
+1033
+00:49:48,440 --> 00:49:55,119
+olyan modellünk ami ami sokkal jobban
+
+1034
+00:49:51,760 --> 00:49:57,520
+tud képeket alkotni ja meg a generátor
+
+1035
+00:49:55,119 --> 00:49:59,359
+is ebből tanul hogy próbál kijátszani a
+
+1036
+00:49:57,520 --> 00:50:01,200
+diszkriminátort próbál valósághűnek
+
+1037
+00:49:59,359 --> 00:50:04,359
+tűnni és ugyanakkor lesz egy olyan
+
+1038
+00:50:01,200 --> 00:50:06,160
+modellünk ami azt meg tudja mondani hogy
+
+1039
+00:50:04,359 --> 00:50:09,400
+az adott
+
+1040
+00:50:06,160 --> 00:50:11,760
+modell festette azt a képet vagy ez
+
+1041
+00:50:09,400 --> 00:50:13,079
+pedig egy valódi kép na most itt nagyon
+
+1042
+00:50:11,760 --> 00:50:16,920
+fontos az hogy
+
+1043
+00:50:13,079 --> 00:50:20,119
+a csak az adott modell ugye a nagyon
+
+1044
+00:50:16,920 --> 00:50:23,119
+gyakran feltevődik a te általad is
+
+1045
+00:50:20,119 --> 00:50:24,799
+említett depfékek meg minden egyéb tél
+
+1046
+00:50:23,119 --> 00:50:27,440
+nagyon nagyon gyakran feltelődik az a
+
+1047
+00:50:24,799 --> 00:50:29,920
+kérdés hogy meg tudjuk-e mondani azt azt
+
+1048
+00:50:27,440 --> 00:50:31,079
+valamiről és hosszú távon meg fogjuk
+
+1049
+00:50:29,920 --> 00:50:34,319
+tudni
+
+1050
+00:50:31,079 --> 00:50:37,079
+mondani hogy hogy azt ember vagy gép
+
+1051
+00:50:34,319 --> 00:50:39,079
+készítette hogy az deep fake vagy nem és
+
+1052
+00:50:37,079 --> 00:50:40,839
+jelen pillanatban úgy néz ki hogy ezt
+
+1053
+00:50:39,079 --> 00:50:44,520
+csak akkor tudjuk
+
+1054
+00:50:40,839 --> 00:50:47,440
+megmondani egész biztosan hogyha
+
+1055
+00:50:44,520 --> 00:50:50,799
+ismerjük azt a modellt ami generálja
+
+1056
+00:50:47,440 --> 00:50:53,319
+mert azzal be lehet tanítani egy olyan
+
+1057
+00:50:50,799 --> 00:50:56,200
+másik modellt ami megmondja hogy ezt
+
+1058
+00:50:53,319 --> 00:50:58,520
+most a a tengerály generálta vagy ezt
+
+1059
+00:50:56,200 --> 00:51:00,520
+most a a m journey generálta vagy ezt
+
+1060
+00:50:58,520 --> 00:51:02,599
+most a dali generálta mert mert hogy
+
+1061
+00:51:00,520 --> 00:51:06,680
+ezek ismert modellek viszont hogyha
+
+1062
+00:51:02,599 --> 00:51:10,599
+valaki betanít egy olyan modellt amire a
+
+1063
+00:51:06,680 --> 00:51:13,839
+mi mondjuk úgy hogy ai detektorunkat nem
+
+1064
+00:51:10,599 --> 00:51:15,960
+nem készítettük fel arró az ai detektor
+
+1065
+00:51:13,839 --> 00:51:19,599
+nem fogja tudni megmondani ha az jól be
+
+1066
+00:51:15,960 --> 00:51:25,040
+van tanítva hogy az az egy
+
+1067
+00:51:19,599 --> 00:51:25,040
+létező modell vagy pedig egy
+
+1068
+00:51:26,000 --> 00:51:30,680
+egy ember alkotást mondjuk mer aki
+
+1069
+00:51:28,119 --> 00:51:34,359
+megcsinálta photoshopba vagy vagy simán
+
+1070
+00:51:30,680 --> 00:51:40,240
+lefényképezte és
+
+1071
+00:51:34,359 --> 00:51:44,920
+a ezen kívül a a másik dolog hogy ugye
+
+1072
+00:51:40,240 --> 00:51:50,280
+2017-et szokták a a a deep
+
+1073
+00:51:44,920 --> 00:51:52,400
+fakeek nek a az ai videóknak a hát az
+
+1074
+00:51:50,280 --> 00:51:56,000
+első mérföld
+
+1075
+00:51:52,400 --> 00:51:57,400
+kövének tekinteni
+
+1076
+00:51:56,000 --> 00:52:00,720
+egyrészt
+
+1077
+00:51:57,400 --> 00:52:02,040
+azért mert ekkor jelentek meg hát mai
+
+1078
+00:52:00,720 --> 00:52:03,599
+mai
+
+1079
+00:52:02,040 --> 00:52:06,799
+szemmel
+
+1080
+00:52:03,599 --> 00:52:10,079
+még még nagyon primitív deepfékek
+
+1081
+00:52:06,799 --> 00:52:13,839
+viszont a 2017-ben a világ abszolút nem
+
+1082
+00:52:10,079 --> 00:52:17,720
+volt erre felkészülve hogy ai generáljon
+
+1083
+00:52:13,839 --> 00:52:20,920
+bármit is éppen ezért ekkor jött először
+
+1084
+00:52:17,720 --> 00:52:24,280
+a köztudatba de nyilván az folyamatosan
+
+1085
+00:52:20,920 --> 00:52:26,960
+fejlődik és a
+
+1086
+00:52:24,280 --> 00:52:31,880
+ugye a 22-ben amint min azt már
+
+1087
+00:52:26,960 --> 00:52:31,880
+említetted akkor kijött a 3.5 turbó
+
+1088
+00:52:32,160 --> 00:52:37,200
+és
+
+1089
+00:52:34,040 --> 00:52:40,680
+érdekes módon
+
+1090
+00:52:37,200 --> 00:52:44,799
+23-ban kijött a hogy nyelvi modelleknél
+
+1091
+00:52:40,680 --> 00:52:50,040
+maradjunk kijött egy egész
+
+1092
+00:52:44,799 --> 00:52:50,040
+só hát én úy úgy mondanám hogy
+
+1093
+00:52:50,880 --> 00:52:57,760
+ugrásszerű javulás ezen a téren egyrészt
+
+1094
+00:52:55,079 --> 00:53:01,720
+kijött a gpt 4
+
+1095
+00:52:57,760 --> 00:53:04,839
+modell is másrészt pedig kijöttek a a
+
+1096
+00:53:01,720 --> 00:53:09,599
+sokkal jobb képgenerálók ugye a a a
+
+1097
+00:53:04,839 --> 00:53:12,000
+tengriáis nyílv betába 23-ba került hogy
+
+1098
+00:53:09,599 --> 00:53:18,799
+hazabeszéljek
+
+1099
+00:53:12,000 --> 00:53:18,799
+és és ugyanakkor pedig ami ami szintén
+
+1100
+00:53:19,559 --> 00:53:27,680
+szerintem nagyon fontos hogy hogy
+
+1101
+00:53:24,119 --> 00:53:32,400
+23-ba legalábbis amiről én tudok volt az
+
+1102
+00:53:27,680 --> 00:53:35,040
+első olyan eset amikor a deepfakeek
+
+1103
+00:53:32,400 --> 00:53:38,200
+eldöntötték egy ország sorsát most ez
+
+1104
+00:53:35,040 --> 00:53:42,079
+egy kicsit drámaian
+
+1105
+00:53:38,200 --> 00:53:46,119
+hangzik de de a de a helyzet is az volt
+
+1106
+00:53:42,079 --> 00:53:48,480
+és a a leg legdurvább ebben az egészben
+
+1107
+00:53:46,119 --> 00:53:52,599
+az hogy nem is kellett
+
+1108
+00:53:48,480 --> 00:53:56,799
+ehhez valójában ét használni az történt
+
+1109
+00:53:52,599 --> 00:53:58,319
+hogy gabonban volt egy alibongo nevű
+
+1110
+00:53:56,799 --> 00:54:00,480
+elnök
+
+1111
+00:53:58,319 --> 00:54:03,720
+és ez egy
+
+1112
+00:54:00,480 --> 00:54:05,599
+ht ilyen életfolytig elnök volt már az
+
+1113
+00:54:03,720 --> 00:54:07,280
+apja is elnök volt és a
+
+1114
+00:54:05,599 --> 00:54:10,280
+többi
+
+1115
+00:54:07,280 --> 00:54:16,520
+és ami ami
+
+1116
+00:54:10,280 --> 00:54:20,720
+történt hogy a bizonyos alib bongó
+
+1117
+00:54:16,520 --> 00:54:25,640
+súlyosan megbetegedett ezért külföldön
+
+1118
+00:54:20,720 --> 00:54:28,440
+kezelték na most az ellenzéke ott és és
+
+1119
+00:54:25,640 --> 00:54:29,880
+a külföldiz elés alatt videóüzenetekbe
+
+1120
+00:54:28,440 --> 00:54:33,960
+jelentkezett be a
+
+1121
+00:54:29,880 --> 00:54:37,200
+népéhez na most a az ellenzéke azt
+
+1122
+00:54:33,960 --> 00:54:40,119
+kezdte terjeszteni hogy alibongo meg van
+
+1123
+00:54:37,200 --> 00:54:43,480
+halva és ezek csak deep fake videók
+
+1124
+00:54:40,119 --> 00:54:47,440
+ezeket aial generálta háttérhatalom így
+
+1125
+00:54:43,480 --> 00:54:49,839
+akarják a a gaboni népet félrevezetni
+
+1126
+00:54:47,440 --> 00:54:53,359
+megvezetni külföldről
+
+1127
+00:54:49,839 --> 00:54:55,520
+irányítani bármi ilyesmi és és képzeld
+
+1128
+00:54:53,359 --> 00:54:58,079
+el azt a helyzetet amikor neked mint
+
+1129
+00:54:55,520 --> 00:55:00,799
+politikus az ellen kell kampányol hogy
+
+1130
+00:54:58,079 --> 00:55:04,280
+valaki azt mondja hogy te halott vagy és
+
+1131
+00:55:00,799 --> 00:55:08,079
+és szó szerint ez történt
+
+1132
+00:55:04,280 --> 00:55:10,040
+és és végül mindez
+
+1133
+00:55:08,079 --> 00:55:14,359
+odavezetett
+
+1134
+00:55:10,040 --> 00:55:17,040
+hogy hogy ugye a a az emberek az utcára
+
+1135
+00:55:14,359 --> 00:55:22,280
+vonultak nem túl békés hangulatban
+
+1136
+00:55:17,040 --> 00:55:24,400
+nyilvánvalóan a a a a a a a
+
+1137
+00:55:22,280 --> 00:55:26,599
+rendszerváltások azok láthattuk hogy
+
+1138
+00:55:24,400 --> 00:55:28,440
+romániában se túl békés dolgok de de
+
+1139
+00:55:26,599 --> 00:55:32,640
+hogy
+
+1140
+00:55:28,440 --> 00:55:34,520
+gabonban hát ugye afrikai ország révén
+
+1141
+00:55:32,640 --> 00:55:36,559
+azért e ennek mindig van egy ilyen egy
+
+1142
+00:55:34,520 --> 00:55:37,599
+ilyen felfokozott hangulata de a a vége
+
+1143
+00:55:36,559 --> 00:55:40,920
+az lesz
+
+1144
+00:55:37,599 --> 00:55:45,240
+hogy hogy akkor egy egy sikeres puccsot
+
+1145
+00:55:40,920 --> 00:55:50,079
+hajtottak végre alibongo ellen
+
+1146
+00:55:45,240 --> 00:55:55,599
+a és és én én én úgy gondolom hogy
+
+1147
+00:55:50,079 --> 00:55:55,599
+ez ez azokat is érdekelheti akik
+
+1148
+00:55:55,680 --> 00:55:59,160
+lehet hogy hogy sa életükben nem
+
+1149
+00:55:58,119 --> 00:56:01,039
+hallottak
+
+1150
+00:55:59,160 --> 00:56:03,640
+gabonról
+
+1151
+00:56:01,039 --> 00:56:06,920
+viszont viszont abból a szempontból
+
+1152
+00:56:03,640 --> 00:56:09,640
+nagyon nagyon fontos üzenete van hogy az
+
+1153
+00:56:06,920 --> 00:56:12,319
+ai generált tartalmaknak és a deep
+
+1154
+00:56:09,640 --> 00:56:14,720
+fakeeknek
+
+1155
+00:56:12,319 --> 00:56:17,280
+óriási hatása van a társadalomra és nem
+
+1156
+00:56:14,720 --> 00:56:20,000
+csak az egyesült államokban ugye most a
+
+1157
+00:56:17,280 --> 00:56:24,000
+az elnökválasztási kampány kapcsán
+
+1158
+00:56:20,000 --> 00:56:25,520
+lehetett hallani mindenféle híreket az
+
+1159
+00:56:24,000 --> 00:56:28,240
+egyesült államokban szerencsére
+
+1160
+00:56:25,520 --> 00:56:28,240
+romániában
+
+1161
+00:56:28,359 --> 00:56:32,839
+én úgy gondolom hogy a politikai pártok
+
+1162
+00:56:30,240 --> 00:56:34,559
+is még egy picit le vannak maradva és
+
+1163
+00:56:32,839 --> 00:56:36,440
+majd a következő
+
+1164
+00:56:34,559 --> 00:56:38,680
+elnökválasztási mondjuk nem tudom neked
+
+1165
+00:56:36,440 --> 00:56:40,559
+mi volt a véleményed de én így figyelve
+
+1166
+00:56:38,680 --> 00:56:44,119
+az amerikai választásokat én azt hittem
+
+1167
+00:56:40,559 --> 00:56:46,920
+hogy sokkal több ai által történő
+
+1168
+00:56:44,119 --> 00:56:50,079
+interferálást fogok majd észrevenni de
+
+1169
+00:56:46,920 --> 00:56:53,480
+talán most még nem volt annyi mindenki
+
+1170
+00:56:50,079 --> 00:56:56,920
+azt jósolta az ai-ok háborúja lesz ez a
+
+1171
+00:56:53,480 --> 00:56:59,440
+a a ez a választás valójában itt fog itt
+
+1172
+00:56:56,920 --> 00:57:02,400
+fog eldőlni az hogy most mennyire
+
+1173
+00:56:59,440 --> 00:57:04,480
+interferál majd be a választásokba a a a
+
+1174
+00:57:02,400 --> 00:57:07,160
+a mesterséges intelligencia neked mi
+
+1175
+00:57:04,480 --> 00:57:08,760
+volt a tapasztalatod az amerikai
+
+1176
+00:57:07,160 --> 00:57:10,240
+választásokkal kapcsolatban hogy hogy
+
+1177
+00:57:08,760 --> 00:57:12,440
+voltak nagyobb botrányok ezzel
+
+1178
+00:57:10,240 --> 00:57:15,000
+kapcsolatban
+
+1179
+00:57:12,440 --> 00:57:18,000
+én úgy gondolom hogy hogy ezt ezt
+
+1180
+00:57:15,000 --> 00:57:18,000
+szerencsésen
+
+1181
+00:57:18,680 --> 00:57:24,119
+átvészeltük mert mert nem ettől volt
+
+1182
+00:57:22,280 --> 00:57:28,240
+hangos és én úgy gondolom hogy ez
+
+1183
+00:57:24,119 --> 00:57:31,319
+mindenként jó a a gépitan ás jövőjének
+
+1184
+00:57:28,240 --> 00:57:34,760
+nem nem szeretné azt senki hogy a gépi
+
+1185
+00:57:31,319 --> 00:57:38,119
+tanulás összekapcsolódjon a botrányokkal
+
+1186
+00:57:34,760 --> 00:57:41,799
+a csalásokkal a deepféekkel satöbbi
+
+1187
+00:57:38,119 --> 00:57:44,359
+nyilván a az azt gondolom hogy nagyon
+
+1188
+00:57:41,799 --> 00:57:46,480
+sok emberhez eljutott egy egy
+
+1189
+00:57:44,359 --> 00:57:48,000
+mesterséges intelligenciával generált
+
+1190
+00:57:46,480 --> 00:57:51,480
+kép
+
+1191
+00:57:48,000 --> 00:57:53,319
+ahol trumpot letartóztatják és látszik
+
+1192
+00:57:51,480 --> 00:57:56,599
+hogy a a rendőrök bilincselik meg
+
+1193
+00:57:53,319 --> 00:58:00,720
+satöbbi nyilván ez ez nem történt meg a
+
+1194
+00:57:56,599 --> 00:58:03,760
+a a valóságba ugyanúgy ahogy a a a a
+
+1195
+00:58:00,720 --> 00:58:06,640
+pápáról készült kép balenciagá de hogy
+
+1196
+00:58:03,760 --> 00:58:10,119
+hogy ez a kép az a mshot kép ez ez egy
+
+1197
+00:58:06,640 --> 00:58:11,960
+generált kép nem egy eredeti amikor
+
+1198
+00:58:10,119 --> 00:58:15,200
+letartóztatták
+
+1199
+00:58:11,960 --> 00:58:19,760
+trumpot én én úgy tudom hogy
+
+1200
+00:58:15,200 --> 00:58:25,559
+ez ez egy generált kép és és ez egy elég
+
+1201
+00:58:19,760 --> 00:58:27,319
+híes elég híres esete a a a a az ai
+
+1202
+00:58:25,559 --> 00:58:31,000
+general
+
+1203
+00:58:27,319 --> 00:58:34,480
+képeknek viszont van egy
+
+1204
+00:58:31,000 --> 00:58:40,079
+a az érdekes az hogy a a a
+
+1205
+00:58:34,480 --> 00:58:43,960
+maxsat ami a a georgia sheriff
+
+1206
+00:58:40,079 --> 00:58:47,079
+hivatalától került ki az az az viszont
+
+1207
+00:58:43,960 --> 00:58:50,119
+valódi lehet annál is inkább
+
+1208
+00:58:47,079 --> 00:58:52,559
+mert mert ezt ezt trump maga is
+
+1209
+00:58:50,119 --> 00:58:55,079
+posztolta a twitteren vagyis akkor már x
+
+1210
+00:58:52,559 --> 00:58:58,440
+volt igen erre gondoltam igen sóval hogy
+
+1211
+00:58:55,079 --> 00:59:02,200
+hogy soha nem adom fel de de volt
+
+1212
+00:58:58,440 --> 00:59:05,839
+hamarabb egy egy olyan ahol ahol nem nem
+
+1213
+00:59:02,200 --> 00:59:09,359
+egy ilyen makshot volt itt itt ugye
+
+1214
+00:59:05,839 --> 00:59:12,799
+nemr most már nagyon nehéz eldönteni de
+
+1215
+00:59:09,359 --> 00:59:13,960
+van egy van egy olyan van egy olyan kép
+
+1216
+00:59:12,799 --> 00:59:19,079
+ahol
+
+1217
+00:59:13,960 --> 00:59:22,720
+a és erről van egy bbc-s cikk is
+
+1218
+00:59:19,079 --> 00:59:24,440
+ahol egy ai-jal generált deepfake van
+
+1219
+00:59:22,720 --> 00:59:29,880
+ahol három
+
+1220
+00:59:24,440 --> 00:59:29,880
+rendőr bilincs próbálja vinni trumpot
+
+1221
+00:59:29,960 --> 00:59:36,599
+ezt be is teszem ide a chatbe de a a
+
+1222
+00:59:33,400 --> 00:59:39,359
+bbcs cikket az az viszont aial generált
+
+1223
+00:59:36,599 --> 00:59:43,440
+egész biztosan és és t ez egy nagyon
+
+1224
+00:59:39,359 --> 00:59:47,640
+érdekes dolog hogy a ez ugye hamagabb is
+
+1225
+00:59:43,440 --> 00:59:51,359
+volt és aztán vannak vannak itt még
+
+1226
+00:59:47,640 --> 00:59:54,520
+durvább képek is milyen nagyobb hírek
+
+1227
+00:59:51,359 --> 00:59:56,400
+vannak még most ami ami 2024
+
+1228
+00:59:54,520 --> 00:59:58,319
+decemberében
+
+1229
+00:59:56,400 --> 01:00:00,960
+releváns lehet
+
+1230
+00:59:58,319 --> 01:00:03,000
+és érdemes megemlíteni a hallgatók
+
+1231
+01:00:00,960 --> 01:00:06,319
+számára milyen nagyobb
+
+1232
+01:00:03,000 --> 01:00:13,119
+fejlesztések hát én én úgy gondolom hogy
+
+1233
+01:00:06,319 --> 01:00:15,880
+a a amit nagyon sok ember várt az a az
+
+1234
+01:00:13,119 --> 01:00:19,680
+hogy ai-al
+
+1235
+01:00:15,880 --> 01:00:23,039
+lehessen hollywoodi minőségben filmeket
+
+1236
+01:00:19,680 --> 01:00:27,240
+videókat satöbbi generálni ugye ezt a a
+
+1237
+01:00:23,039 --> 01:00:30,400
+az open ai sora néven nagy elan be is
+
+1238
+01:00:27,240 --> 01:00:33,559
+harangozta viszont
+
+1239
+01:00:30,400 --> 01:00:37,520
+se ők se mondjuk a a kínai csinka
+
+1240
+01:00:33,559 --> 01:00:40,920
+egyetem nem nem nem engedte ki a
+
+1241
+01:00:37,520 --> 01:00:43,240
+nyilvánosság számára ezeket a modelleket
+
+1242
+01:00:40,920 --> 01:00:46,240
+és én úgy gondolom hogy ennek elsősorban
+
+1243
+01:00:43,240 --> 01:00:49,000
+hardver oka van ugyanis a képgenerálés
+
+1244
+01:00:46,240 --> 01:00:52,079
+is elég hardver igényes viszont sokkal
+
+1245
+01:00:49,000 --> 01:00:54,920
+inkább hardverigényes a vide generálás
+
+1246
+01:00:52,079 --> 01:00:57,200
+jelen pillanatban nem elég olcsó főleg
+
+1247
+01:00:54,920 --> 01:01:00,000
+hogy az nvidiának kvázi monopol helyzete
+
+1248
+01:00:57,200 --> 01:01:02,760
+van és és nem is tudja szállítani és és
+
+1249
+01:01:00,000 --> 01:01:05,680
+mondjuk egy dgx szerver 400000 dollár
+
+1250
+01:01:02,760 --> 01:01:09,119
+nem elég olcsó a hardver ahhoz
+
+1251
+01:01:05,680 --> 01:01:11,480
+hogy hogy videókat generáljunk szabadon
+
+1252
+01:01:09,119 --> 01:01:14,280
+az interneten jó
+
+1253
+01:01:11,480 --> 01:01:17,720
+minőségbe megkötések nélkül nyilván
+
+1254
+01:01:14,280 --> 01:01:20,599
+olyan megoldások vannak amik képeket
+
+1255
+01:01:17,720 --> 01:01:23,079
+megmozgatnak satöbbi de ezek én úgy
+
+1256
+01:01:20,599 --> 01:01:25,119
+gondolom hogy még nagyon a gyerekcipőben
+
+1257
+01:01:23,079 --> 01:01:28,640
+vannak és itt megint egy hardveres
+
+1258
+01:01:25,119 --> 01:01:33,039
+ugrásra vár mert a a technika az
+
+1259
+01:01:28,640 --> 01:01:35,920
+létezik használható a paperek megvannak
+
+1260
+01:01:33,039 --> 01:01:38,359
+viszont ezt a következő nagy hardveres
+
+1261
+01:01:35,920 --> 01:01:41,319
+ugrás akár lesznek cél hardverek
+
+1262
+01:01:38,359 --> 01:01:44,839
+inferenciára akár az nvidiának az árai
+
+1263
+01:01:41,319 --> 01:01:47,920
+lenne mennek bármi is történjen hard ezt
+
+1264
+01:01:44,839 --> 01:01:54,039
+fogja elhozni hogy akkor videókat tudunk
+
+1265
+01:01:47,920 --> 01:01:56,720
+generálni és a másik dolog ami ami
+
+1266
+01:01:54,039 --> 01:02:00,680
+szintén nagyon új
+
+1267
+01:01:56,720 --> 01:02:03,119
+az az hogy megjelent az első olyan
+
+1268
+01:02:00,680 --> 01:02:06,359
+próbálkozás ahol
+
+1269
+01:02:03,119 --> 01:02:10,240
+számítógépes játékot próbál képkockáról
+
+1270
+01:02:06,359 --> 01:02:12,680
+képkockára generálni a az ai tehát itt
+
+1271
+01:02:10,240 --> 01:02:14,720
+egy egy ilyen
+
+1272
+01:02:12,680 --> 01:02:17,720
+minecraft
+
+1273
+01:02:14,720 --> 01:02:22,839
+szerű játékról van szó egy bizonyos
+
+1274
+01:02:17,720 --> 01:02:26,640
+oázis ai nevű projekt ami gyakorlatilag
+
+1275
+01:02:22,839 --> 01:02:29,599
+azt csinálja hogy hogyha megnyomod a
+
+1276
+01:02:26,640 --> 01:02:32,480
+jobbra gombot akkor kigenerálja azt a
+
+1277
+01:02:29,599 --> 01:02:34,680
+képet amit a modell szerint te a
+
+1278
+01:02:32,480 --> 01:02:37,319
+minecraftban látnál hogyha megnyomnád a
+
+1279
+01:02:34,680 --> 01:02:39,920
+jobbra gombot ez ez én úgy gondolom hogy
+
+1280
+01:02:37,319 --> 01:02:43,680
+mindenként inkább technikai demó én nem
+
+1281
+01:02:39,920 --> 01:02:46,640
+ebbe látom a videó játékoknak az ai
+
+1282
+01:02:43,680 --> 01:02:50,520
+generálta jövőjét én sokkal inkább abban
+
+1283
+01:02:46,640 --> 01:02:52,559
+hiszek hogy hogy nem képkockánként
+
+1284
+01:02:50,520 --> 01:02:55,039
+fogunk inferenciát kérni
+
+1285
+01:02:52,559 --> 01:02:58,000
+nemképkockánként fogunk ai-al generálni
+
+1286
+01:02:55,039 --> 01:03:01,240
+videjátékot hanem magát a videjátékot
+
+1287
+01:02:58,000 --> 01:03:02,920
+fogjuk legenerálni ai-jal egybe és ez
+
+1288
+01:03:01,240 --> 01:03:05,279
+így sokkal
+
+1289
+01:03:02,920 --> 01:03:10,000
+költséghatékonyabb és utána lesznek
+
+1290
+01:03:05,279 --> 01:03:13,760
+ai-al generált játékok és amúgy ez nekem
+
+1291
+01:03:10,000 --> 01:03:16,319
+most az egyik kedvenc kutatási
+
+1292
+01:03:13,760 --> 01:03:19,640
+területen hogy hogy hogy
+
+1293
+01:03:16,319 --> 01:03:23,160
+lehet ai-al
+
+1294
+01:03:19,640 --> 01:03:24,760
+játékokat generálni hogy lehet ezt ezt
+
+1295
+01:03:23,160 --> 01:03:28,359
+úgy megoldani hogy akkor egy angal
+
+1296
+01:03:24,760 --> 01:03:28,359
+enginebe futó mindennel
+
+1297
+01:03:29,079 --> 01:03:34,200
+rendelkező játék jöjjön létre amit utána
+
+1298
+01:03:32,200 --> 01:03:36,720
+lehet szerkeszteni mert nyilván nem
+
+1299
+01:03:34,200 --> 01:03:39,319
+tökéletes soha az ai-nak a kimenete és
+
+1300
+01:03:36,720 --> 01:03:41,559
+végül akkor egy akár steamen futó játék
+
+1301
+01:03:39,319 --> 01:03:44,920
+legyen ez az egyik ami nagyon érdekes a
+
+1302
+01:03:41,559 --> 01:03:47,799
+másik szerintem a a ami kimondottan
+
+1303
+01:03:44,920 --> 01:03:51,319
+érdekes az erdélyi magyarság számára meg
+
+1304
+01:03:47,799 --> 01:03:54,039
+meg főleg az egy olyan probléma amit
+
+1305
+01:03:51,319 --> 01:03:57,000
+most már nem az egyesült államokba hanem
+
+1306
+01:03:54,039 --> 01:04:01,440
+indiába oldottak meg nagy nagyon szépen
+
+1307
+01:03:57,000 --> 01:04:03,480
+ugye indiának az a nagy problémája hogy
+
+1308
+01:04:01,440 --> 01:04:07,640
+vagy nem probléma hanem ez a ez a
+
+1309
+01:04:03,480 --> 01:04:10,799
+helyzet kihívása kihívása igen hogy 22
+
+1310
+01:04:07,640 --> 01:04:14,799
+plus hivatalos nyelv van indiában
+
+1311
+01:04:10,799 --> 01:04:17,039
+és és ugye az ugye azt azt láthatjuk
+
+1312
+01:04:14,799 --> 01:04:18,880
+hogy romániában egy közalkalmazotttól
+
+1313
+01:04:17,039 --> 01:04:21,319
+már az is nehezen várható el hogy két
+
+1314
+01:04:18,880 --> 01:04:25,240
+nyelvet beszéljen nem hogy
+
+1315
+01:04:21,319 --> 01:04:30,680
+22-t éppen ezért ez egy ez egy óriási
+
+1316
+01:04:25,240 --> 01:04:33,760
+kihív á és ezt ai-al egy ai for barat
+
+1317
+01:04:30,680 --> 01:04:36,160
+nevű projekt keretében úgy oldották meg
+
+1318
+01:04:33,760 --> 01:04:40,039
+hogy az önkormányzati űrlap
+
+1319
+01:04:36,160 --> 01:04:43,960
+kitöltéseket mindenki anyanyelvén
+
+1320
+01:04:40,039 --> 01:04:48,200
+tudja megoldani és ráadásul nem egy
+
+1321
+01:04:43,960 --> 01:04:49,920
+ilyen jogi szöveges ai-os
+
+1322
+01:04:48,200 --> 01:04:54,160
+formában
+
+1323
+01:04:49,920 --> 01:04:56,760
+hanem úgy hogy azt mondja hogy mit tudom
+
+1324
+01:04:54,160 --> 01:04:59,000
+én mi a neved és akkor az illető
+
+1325
+01:04:56,760 --> 01:05:01,520
+megmondja a nevét utána megkérdezi hogy
+
+1326
+01:04:59,000 --> 01:05:03,680
+hol hol laksz akkor megmondja a lakcímét
+
+1327
+01:05:01,520 --> 01:05:06,039
+hogyha nem egy teljes vagy nem egy jó
+
+1328
+01:05:03,680 --> 01:05:08,799
+lakcímet ad akkor akkor segít kijavítani
+
+1329
+01:05:06,039 --> 01:05:11,559
+a hibát és a többi tehát úgy érezheti az
+
+1330
+01:05:08,799 --> 01:05:14,559
+illető polgár minthogyha egy hivatali
+
+1331
+01:05:11,559 --> 01:05:17,160
+ügyintéző az anya nyelvén beszélne vele
+
+1332
+01:05:14,559 --> 01:05:21,000
+ráadásul ennek van egy másik
+
+1333
+01:05:17,160 --> 01:05:24,240
+óriási előnye hogy ugye nagyon nagyon
+
+1334
+01:05:21,000 --> 01:05:27,960
+sokan sajnos funkcionálisan alfabéták
+
+1335
+01:05:24,240 --> 01:05:29,960
+nem csak indiában állunk is is és és
+
+1336
+01:05:27,960 --> 01:05:32,160
+ugye ezeknek az embereknek pedig megint
+
+1337
+01:05:29,960 --> 01:05:36,279
+csak óriási segítség hogy nem egy ilyen
+
+1338
+01:05:32,160 --> 01:05:36,279
+jogi bükfanyelven megfogalmazott
+
+1339
+01:05:36,480 --> 01:05:40,680
+űrlapot kell kitölteni hanem elbeszélget
+
+1340
+01:05:39,640 --> 01:05:43,760
+egy ilyen
+
+1341
+01:05:40,680 --> 01:05:45,559
+chatbottal azért ugye a ha facebook
+
+1342
+01:05:43,760 --> 01:05:47,760
+messengeren tud valaki beszélgetni akkor
+
+1343
+01:05:45,559 --> 01:05:51,039
+valószínűleg a chatbottal is fog tudni
+
+1344
+01:05:47,760 --> 01:05:53,319
+beszélgetni és akkor így így eljutunk
+
+1345
+01:05:51,039 --> 01:05:56,960
+oda hogy
+
+1346
+01:05:53,319 --> 01:05:59,880
+akkor azon a nyelv ben kigenerálódik a
+
+1347
+01:05:56,960 --> 01:06:05,000
+kitöltött űrlap amin az adott hivatalnak
+
+1348
+01:05:59,880 --> 01:06:07,799
+az kell de a az az illető az anyanyelvén
+
+1349
+01:06:05,000 --> 01:06:09,520
+kommunikálhatott a a a chatbottal és én
+
+1350
+01:06:07,799 --> 01:06:12,039
+úgy gondolom hogy ez óriási segítség
+
+1351
+01:06:09,520 --> 01:06:15,200
+lenne nekünk erdélyi magyaroknak
+
+1352
+01:06:12,039 --> 01:06:18,559
+is és és nem csak az egész unió
+
+1353
+01:06:15,200 --> 01:06:21,599
+területén ez egy ez egy hihetetlenül
+
+1354
+01:06:18,559 --> 01:06:21,599
+fontos dolog lenne
+
+1355
+01:06:21,880 --> 01:06:26,279
+részben ugye a a a nemzeti kisebbségek
+
+1356
+01:06:24,920 --> 01:06:28,960
+számára
+
+1357
+01:06:26,279 --> 01:06:30,920
+de de akkor is hogyha valakinek az
+
+1358
+01:06:28,960 --> 01:06:33,400
+anyanyelve az államnyelve akkor is
+
+1359
+01:06:30,920 --> 01:06:35,440
+segíthet ugye senki nem szeret űlapokat
+
+1360
+01:06:33,400 --> 01:06:38,720
+kitölteni én úgy gondolom vagy szinte
+
+1361
+01:06:35,440 --> 01:06:41,640
+senki de de gondoljunk arra hogy vannak
+
+1362
+01:06:38,720 --> 01:06:44,480
+fogyatékkal élők
+
+1363
+01:06:41,640 --> 01:06:46,200
+például vakok és gyengén látók akiknek
+
+1364
+01:06:44,480 --> 01:06:48,440
+ez nagyon sokat segít vagy az előbb
+
+1365
+01:06:46,200 --> 01:06:50,799
+említett funkcionális analfabetizmus és
+
+1366
+01:06:48,440 --> 01:06:52,440
+én úgy gondolom hogy az ilyen és ehhez
+
+1367
+01:06:50,799 --> 01:06:55,599
+hasonló
+
+1368
+01:06:52,440 --> 01:06:57,279
+megoldások amik az emberek életét jobbá
+
+1369
+01:06:55,599 --> 01:07:00,160
+veszik
+
+1370
+01:06:57,279 --> 01:07:04,319
+ezek lesznek a következő egy két három
+
+1371
+01:07:00,160 --> 01:07:06,279
+öt év legfontosabb mérföldkövei a amik a
+
+1372
+01:07:04,319 --> 01:07:10,559
+a gépi tanulást
+
+1373
+01:07:06,279 --> 01:07:12,880
+illetik ezek ezek nagyon érdekes új
+
+1374
+01:07:10,559 --> 01:07:15,240
+lehetőségek amiket említettél és nagyon
+
+1375
+01:07:12,880 --> 01:07:18,640
+izgalmasak egy kicsit beszélgetnék arról
+
+1376
+01:07:15,240 --> 01:07:21,319
+hogy az a személy aki eddig hallott róla
+
+1377
+01:07:18,640 --> 01:07:25,520
+és úy kicsit óckodott hogy neki fogjon
+
+1378
+01:07:21,319 --> 01:07:29,119
+interakcióba lépni egy gpt-vel vagy akár
+
+1379
+01:07:25,520 --> 01:07:31,599
+clouddal vagy vagy mostanában grockot
+
+1380
+01:07:29,119 --> 01:07:34,079
+kezdtem tesztelni
+
+1381
+01:07:31,599 --> 01:07:35,960
+hogy mit tanácsolsz hogy hogy fogjon
+
+1382
+01:07:34,079 --> 01:07:37,920
+neki az átlagember mit mit érdemes
+
+1383
+01:07:35,960 --> 01:07:40,640
+megtanulni mi az amit érdemes gyakorolni
+
+1384
+01:07:37,920 --> 01:07:43,400
+mire tudná használni az átlagember a a
+
+1385
+01:07:40,640 --> 01:07:45,720
+hétköznapjaiban ezt a nagynyelvi modellt
+
+1386
+01:07:43,400 --> 01:07:47,520
+vagy ezeket a nagynyelvi modelleket én
+
+1387
+01:07:45,720 --> 01:07:51,039
+én úgy gondolom hogy egy egy nagynyelvi
+
+1388
+01:07:47,520 --> 01:07:53,960
+modellt leginkább arra érdemes használni
+
+1389
+01:07:51,039 --> 01:07:57,400
+hogy hogy szebben és jobban
+
+1390
+01:07:53,960 --> 01:07:59,839
+megfogalmazzon szövegek ugye a nagyon
+
+1391
+01:07:57,400 --> 01:07:59,839
+sok ember
+
+1392
+01:08:00,160 --> 01:08:04,920
+nem nem szeret hosszú szövegeket
+
+1393
+01:08:02,319 --> 01:08:06,960
+fogalmazni főleg nem olyan nyelven ami
+
+1394
+01:08:04,920 --> 01:08:09,359
+nem az anyanyelve most mindegy hogy
+
+1395
+01:08:06,960 --> 01:08:13,440
+angolra vagy románra vagy szerbre
+
+1396
+01:08:09,359 --> 01:08:16,719
+gondolunk ez ez abszolút benne van és
+
+1397
+01:08:13,440 --> 01:08:18,880
+akkor hogyha leírjuk vonalkákba hogy mit
+
+1398
+01:08:16,719 --> 01:08:21,319
+szeretnénk de legyen benne az hogy
+
+1399
+01:08:18,880 --> 01:08:24,920
+pontosan mi az amit el szeretnénk
+
+1400
+01:08:21,319 --> 01:08:28,400
+mondani akkor arra szerintem már most
+
+1401
+01:08:24,920 --> 01:08:30,719
+tökélet esek a nagynyelvi modellek hogy
+
+1402
+01:08:28,400 --> 01:08:36,319
+hogy ezt szép
+
+1403
+01:08:30,719 --> 01:08:39,279
+szavatos mondatokban jó helyes írással
+
+1404
+01:08:36,319 --> 01:08:42,799
+megfogalmazzák adott
+
+1405
+01:08:39,279 --> 01:08:47,480
+terjedelembe és és ehhez
+
+1406
+01:08:42,799 --> 01:08:50,239
+nagyon minimális extra dolgot
+
+1407
+01:08:47,480 --> 01:08:53,159
+kell elsajátítani igazából el kell menni
+
+1408
+01:08:50,239 --> 01:08:56,279
+a weboldalra és ki kell ezt próbálni van
+
+1409
+01:08:53,159 --> 01:08:59,400
+van egy olyan iránymutatás
+
+1410
+01:08:56,279 --> 01:09:02,040
+egy ilyen hát úgy hívják ezeket hogy
+
+1411
+01:08:59,400 --> 01:09:03,520
+frameworkok ahogy érdemes promtolni
+
+1412
+01:09:02,040 --> 01:09:08,239
+ezeket a nyelvi
+
+1413
+01:09:03,520 --> 01:09:12,120
+modelleket és ebből ebből van több is de
+
+1414
+01:09:08,239 --> 01:09:14,319
+alapvetően nem nem muszáj azzal kezdeni
+
+1415
+01:09:12,120 --> 01:09:17,400
+hogy most megtanulunk egy ilyen coyle
+
+1416
+01:09:14,319 --> 01:09:19,600
+vagy más promtolási frameworkot hanem
+
+1417
+01:09:17,400 --> 01:09:22,159
+sokkal egyszerűbb azzal kezdeni hogy
+
+1418
+01:09:19,600 --> 01:09:24,080
+kipróbáljuk hogy a mi szavad szavas
+
+1419
+01:09:22,159 --> 01:09:26,560
+leírásunkra mit ad vissza a nyelvi
+
+1420
+01:09:24,080 --> 01:09:28,960
+modell nyilván szem előtt tartva azt
+
+1421
+01:09:26,560 --> 01:09:31,400
+hogy a a nyelvi modell az egész nem jó
+
+1422
+01:09:28,960 --> 01:09:36,239
+matekből tehát
+
+1423
+01:09:31,400 --> 01:09:40,799
+hogyha vannak ez irányba is haladást ez
+
+1424
+01:09:36,239 --> 01:09:43,799
+az o1 preview ami megjelent igen a ass
+
+1425
+01:09:40,799 --> 01:09:46,080
+sonet 3.5 is egész jó tud lenni az
+
+1426
+01:09:43,799 --> 01:09:47,920
+antrophictól de de alapvetően nem erre
+
+1427
+01:09:46,080 --> 01:09:50,759
+voltak kitalálva a nagynyelvi modellek
+
+1428
+01:09:47,920 --> 01:09:52,159
+hogy most komplexebb matematikai
+
+1429
+01:09:50,759 --> 01:09:54,520
+problémákat vagy akár szimplább
+
+1430
+01:09:52,159 --> 01:09:58,440
+matematikai problémákat megoldjanak ugye
+
+1431
+01:09:54,520 --> 01:09:58,440
+nagyon soká igazzal
+
+1432
+01:09:59,719 --> 01:10:04,560
+úgymond tesztelgették a modelleket hogy
+
+1433
+01:10:02,239 --> 01:10:07,480
+egy egy szóba számolja meg hogy melyik
+
+1434
+01:10:04,560 --> 01:10:09,520
+betűből hány van például és bizonyos
+
+1435
+01:10:07,480 --> 01:10:12,280
+esetekben ezt
+
+1436
+01:10:09,520 --> 01:10:14,840
+is elgond nehezére esett ezeket a
+
+1437
+01:10:12,280 --> 01:10:17,440
+szótagszerű tokenek miatt gondolom így
+
+1438
+01:10:14,840 --> 01:10:18,679
+van így van egyrészt azért mert mert
+
+1439
+01:10:17,440 --> 01:10:21,520
+hogy nem nem
+
+1440
+01:10:18,679 --> 01:10:22,480
+betűnként vannak a tokenek magyar
+
+1441
+01:10:21,520 --> 01:10:25,320
+nyelven
+
+1442
+01:10:22,480 --> 01:10:28,000
+amúgy sok esetben betűnként vannak de
+
+1443
+01:10:25,320 --> 01:10:29,840
+angolul inkább ilyen ilyen szótakszerűen
+
+1444
+01:10:28,000 --> 01:10:32,800
+vagy odot esetben egy egész szó is lehet
+
+1445
+01:10:29,840 --> 01:10:34,760
+egy toket igen tehát hogyha most a
+
+1446
+01:10:32,800 --> 01:10:36,679
+hallgató kedvéért praktikusan amit amit
+
+1447
+01:10:34,760 --> 01:10:39,040
+megfogalmaztál ezt ezt úgy lehet hogy
+
+1448
+01:10:36,679 --> 01:10:41,320
+hogy például a chat gpt-ben írunk egy
+
+1449
+01:10:39,040 --> 01:10:44,800
+olyan szöveget hogy szeretnék egy emailt
+
+1450
+01:10:41,320 --> 01:10:47,800
+írni ennek a személynek vonalkákban az
+
+1451
+01:10:44,800 --> 01:10:49,400
+alábbi szövegben felsorolom hogy milyen
+
+1452
+01:10:47,800 --> 01:10:51,280
+főbb gondolatok legyenek benne
+
+1453
+01:10:49,400 --> 01:10:53,080
+felsoroljuk a gondolatokat és megkérjük
+
+1454
+01:10:51,280 --> 01:10:55,360
+hogy generálj ki nekünk egy olyan
+
+1455
+01:10:53,080 --> 01:10:58,280
+változatot erre az emailre amelyik
+
+1456
+01:10:55,360 --> 01:10:59,840
+illedelmes és tömör és akkor kigenerál
+
+1457
+01:10:58,280 --> 01:11:03,960
+nekünk egy első változatot amit akár
+
+1458
+01:10:59,840 --> 01:11:06,159
+finomíthatunk és használhatjuk ezt akkor
+
+1459
+01:11:03,960 --> 01:11:07,760
+helyes írás ellenőrzésre is tehát hogyha
+
+1460
+01:11:06,159 --> 01:11:09,600
+már konkrétan van egy emailünk és azt
+
+1461
+01:11:07,760 --> 01:11:12,040
+szeretnénk hogy ez az email egy picit
+
+1462
+01:11:09,600 --> 01:11:14,280
+formálisabb legyen ne vagy vagy akár
+
+1463
+01:11:12,040 --> 01:11:16,199
+angolul legyen formálisabb vagy
+
+1464
+01:11:14,280 --> 01:11:18,239
+szeretnénk lefordítani angolra tehát
+
+1465
+01:11:16,199 --> 01:11:19,840
+ezek már egyből ilyen alacsonyan függő
+
+1466
+01:11:18,239 --> 01:11:22,760
+gyümölcsök amiket le
+
+1467
+01:11:19,840 --> 01:11:24,600
+lehet szedni a fáról én még amire
+
+1468
+01:11:22,760 --> 01:11:27,520
+személyesen használom nagyon sokat az
+
+1469
+01:11:24,600 --> 01:11:30,800
+maga a gondol ás tehát a a az ember az
+
+1470
+01:11:27,520 --> 01:11:32,760
+egy egy nagyon szociális lény és és a
+
+1471
+01:11:30,800 --> 01:11:34,400
+gondolkodási folyamata nagyon verbális
+
+1472
+01:11:32,760 --> 01:11:36,040
+tehát a legtöbb ember beszélve
+
+1473
+01:11:34,400 --> 01:11:38,880
+gondolkodik miközben kimond egy
+
+1474
+01:11:36,040 --> 01:11:40,679
+gondolatot ő közben is számára tisztul
+
+1475
+01:11:38,880 --> 01:11:42,840
+és a másik személy ahogy reflektál a
+
+1476
+01:11:40,679 --> 01:11:44,960
+gondolatunkra az is tisztítja a saját
+
+1477
+01:11:42,840 --> 01:11:47,760
+magunk számára ezt a gondolatot úgyhogy
+
+1478
+01:11:44,960 --> 01:11:48,920
+én azt láttam hogy sok esetben nem nem
+
+1479
+01:11:47,760 --> 01:11:50,920
+vagyok olyan helyzetben hogy valami
+
+1480
+01:11:48,920 --> 01:11:53,639
+komplex témáról vagy specifikus témáról
+
+1481
+01:11:50,920 --> 01:11:56,840
+valakivel beszélhessek úgyhogy ilyenkor
+
+1482
+01:11:53,639 --> 01:11:59,159
+rengeteget használom a a chat gpt-t és
+
+1483
+01:11:56,840 --> 01:12:01,159
+elmondom a gondolataimat és a megkérem
+
+1484
+01:11:59,159 --> 01:12:03,360
+hogy most ne szólj közbe most csak
+
+1485
+01:12:01,159 --> 01:12:06,159
+okéval válaszolj minden egyes gondolatra
+
+1486
+01:12:03,360 --> 01:12:08,440
+és akkor 10 percen keresztül magyarázok
+
+1487
+01:12:06,159 --> 01:12:10,159
+neki amúgy a a a hangfelismerő
+
+1488
+01:12:08,440 --> 01:12:12,719
+funkcióját nagyon ajánlom mindenkinek
+
+1489
+01:12:10,159 --> 01:12:15,960
+nagyon jó még a magyar nyelven is nagyon
+
+1490
+01:12:12,719 --> 01:12:19,639
+jó hangfelismerű funkciója van vagy ez a
+
+1491
+01:12:15,960 --> 01:12:22,440
+a text to speech bocsos speech to text
+
+1492
+01:12:19,639 --> 01:12:25,199
+vagyis hogy a szöveget a az a beszélt
+
+1493
+01:12:22,440 --> 01:12:27,520
+szöveget írott szöveggé alakítja át ezek
+
+1494
+01:12:25,199 --> 01:12:29,520
+hihetetlenül hatékonnyá teszik a az én
+
+1495
+01:12:27,520 --> 01:12:31,360
+munkámat is vagyis hog rengeteg dolgot
+
+1496
+01:12:29,520 --> 01:12:33,280
+diktálok le neki miközben sétálgatok a
+
+1497
+01:12:31,360 --> 01:12:35,679
+parkba és a végén aztán azt kérem hogy
+
+1498
+01:12:33,280 --> 01:12:37,639
+foglald össze azt amit mondtam és ez már
+
+1499
+01:12:35,679 --> 01:12:38,920
+ez a desztillációs folyamat rengeteget
+
+1500
+01:12:37,639 --> 01:12:41,679
+segít abban hogy megértsem hogy
+
+1501
+01:12:38,920 --> 01:12:43,760
+valójában mit is mondtam mert ha ha a
+
+1502
+01:12:41,679 --> 01:12:45,400
+kreatív elmémet szabadjára engedem akkor
+
+1503
+01:12:43,760 --> 01:12:47,000
+nem egy annyira strukturált dolog az
+
+1504
+01:12:45,400 --> 01:12:49,120
+amit mondok hanem egy picit úgy
+
+1505
+01:12:47,000 --> 01:12:53,320
+össze-evissza van és akkor utána azzal
+
+1506
+01:12:49,120 --> 01:12:56,400
+az a a a tudás kontextussal amit már a a
+
+1507
+01:12:53,320 --> 01:12:58,320
+a felépítettem a a beszélgetés során egy
+
+1508
+01:12:56,400 --> 01:12:59,560
+csomó mindent lehet kezdeni ez már egy
+
+1509
+01:12:58,320 --> 01:13:01,400
+egy mondjam úgy egy haladóbb
+
+1510
+01:12:59,560 --> 01:13:04,040
+felhasználása a chat
+
+1511
+01:13:01,400 --> 01:13:05,639
+gpt-nek tehát ezt tudom ajánlanin a
+
+1512
+01:13:04,040 --> 01:13:07,120
+hétköznapi embereknek van-e még valami
+
+1513
+01:13:05,639 --> 01:13:10,440
+ami úgy így a fejedben nap min naap
+
+1514
+01:13:07,120 --> 01:13:13,120
+esetleg amit használsz így
+
+1515
+01:13:10,440 --> 01:13:16,239
+technikaként én én egy picit
+
+1516
+01:13:13,120 --> 01:13:21,080
+strukturáltabban szoktam tehát amikor a
+
+1517
+01:13:16,239 --> 01:13:23,800
+ugye nekem ez ez nagyon sokat segített
+
+1518
+01:13:21,080 --> 01:13:26,360
+hogy van egy
+
+1519
+01:13:23,800 --> 01:13:29,880
+ugye ahogy a program zásb is fontosak a
+
+1520
+01:13:26,360 --> 01:13:31,760
+struktúrák hogy amikor a a a nagynyelvi
+
+1521
+01:13:29,880 --> 01:13:34,080
+modellekkel is mindegy hogy melyikkel
+
+1522
+01:13:31,760 --> 01:13:37,199
+vagy bármilyen gépitanolási
+
+1523
+01:13:34,080 --> 01:13:38,760
+modell de most konkretizáljuk akkor
+
+1524
+01:13:37,199 --> 01:13:40,480
+nagynyelvi modellre hogyha már ezt
+
+1525
+01:13:38,760 --> 01:13:43,120
+hoztad fel most mindegy hogy melyik én
+
+1526
+01:13:40,480 --> 01:13:45,360
+általában az ztrophic 3.5 sonettet
+
+1527
+01:13:43,120 --> 01:13:47,760
+sokkal gyakrabban használom mint a a
+
+1528
+01:13:45,360 --> 01:13:49,679
+nyós vagy yós
+
+1529
+01:13:47,760 --> 01:13:53,520
+gpt
+
+1530
+01:13:49,679 --> 01:13:56,639
+viszont mindenként ami amivel mindig
+
+1531
+01:13:53,520 --> 01:13:58,040
+szoktam kezdeni az eg tehát hogy hogy
+
+1532
+01:13:56,639 --> 01:14:02,080
+hogy mi az
+
+1533
+01:13:58,040 --> 01:14:05,400
+a az a környezet például
+
+1534
+01:14:02,080 --> 01:14:08,080
+hogyha tegyük fel valaki ezt ahogy
+
+1535
+01:14:05,400 --> 01:14:11,480
+nagyon sokan használják marketing
+
+1536
+01:14:08,080 --> 01:14:14,239
+szövegírásra akkor akkor kontextus az az
+
+1537
+01:14:11,480 --> 01:14:17,360
+lenne hogy szeretném reklámozni a cégem
+
+1538
+01:14:14,239 --> 01:14:20,280
+új termékét ez a cégemnek a neve ez az
+
+1539
+01:14:17,360 --> 01:14:22,480
+új terméknek a neve és ezt csinálja ez
+
+1540
+01:14:20,280 --> 01:14:25,320
+az új termék tehát hogy hogy meglegyen a
+
+1541
+01:14:22,480 --> 01:14:27,520
+kontextus és utána minden további dolgot
+
+1542
+01:14:25,320 --> 01:14:30,040
+ebbe a kontextusba tárgyalok és akkor
+
+1543
+01:14:27,520 --> 01:14:32,040
+nem kell sokat ismételjem magam illetve
+
+1544
+01:14:30,040 --> 01:14:34,159
+a nagynyelvi modell is sokkal
+
+1545
+01:14:32,040 --> 01:14:35,920
+pontosabban tudja azt hogy itt mire kell
+
+1546
+01:14:34,159 --> 01:14:40,480
+fókuszálni a másik pedig hogy mindig
+
+1547
+01:14:35,920 --> 01:14:42,600
+kell egy egy cél például ebbe az esetben
+
+1548
+01:14:40,480 --> 01:14:45,880
+azt mondom hogy akkor szeretnék-
+
+1549
+01:14:42,600 --> 01:14:49,040
+facebook posztot és ugye az a célom hogy
+
+1550
+01:14:45,880 --> 01:14:51,239
+minél több ember mit tudom én kattintson
+
+1551
+01:14:49,040 --> 01:14:53,000
+a a linkre a facebook potról hogy
+
+1552
+01:14:51,239 --> 01:14:57,000
+eljussön az én új
+
+1553
+01:14:53,000 --> 01:14:59,400
+termékemhez utána pedig
+
+1554
+01:14:57,000 --> 01:15:01,639
+amit amit
+
+1555
+01:14:59,400 --> 01:15:04,560
+szintén segíthet főleg ilyen
+
+1556
+01:15:01,639 --> 01:15:06,719
+marketingben hogy hogy egy pár szóval
+
+1557
+01:15:04,560 --> 01:15:09,360
+vagy egy max mondattal leírom hogy
+
+1558
+01:15:06,719 --> 01:15:10,920
+milyen stílusba szeretném tehát
+
+1559
+01:15:09,360 --> 01:15:13,600
+hogy
+
+1560
+01:15:10,920 --> 01:15:16,639
+kezdve azzal hogy most tegezem vagy
+
+1561
+01:15:13,600 --> 01:15:20,199
+magázom a klienseimet hogy most nagyon
+
+1562
+01:15:16,639 --> 01:15:22,320
+meggyőző mit tudom én akarok lenni és ez
+
+1563
+01:15:20,199 --> 01:15:25,480
+ez a stílus és tónus ugy egyben van
+
+1564
+01:15:22,320 --> 01:15:28,239
+tehát hogy hogy mit tudom én a akár azt
+
+1565
+01:15:25,480 --> 01:15:30,199
+is mondhatom hogy olyan stílusba mint
+
+1566
+01:15:28,239 --> 01:15:32,960
+ahogy valami mit tudom én ahogy a
+
+1567
+01:15:30,199 --> 01:15:34,639
+coca-cola szokott kommunikálni hogyha az
+
+1568
+01:15:32,960 --> 01:15:36,719
+nekem tetszik vagy lehet hogy olyan
+
+1569
+01:15:34,639 --> 01:15:39,199
+stílusban szeretném mint ahogy az nvidia
+
+1570
+01:15:36,719 --> 01:15:41,400
+vagy az ibm szokott kommunikálni úhogy
+
+1571
+01:15:39,199 --> 01:15:45,000
+valamilyen valamilyen stílust igyekszek
+
+1572
+01:15:41,400 --> 01:15:48,040
+megragadni ami talál ehhez vagy a másik
+
+1573
+01:15:45,000 --> 01:15:50,400
+oldalról de ez akár lehet és is meg
+
+1574
+01:15:48,040 --> 01:15:53,679
+szoktam fogalmazni azt hogy ki a
+
+1575
+01:15:50,400 --> 01:15:55,960
+célcsoport ami mit tudom én ha olyan
+
+1576
+01:15:53,679 --> 01:15:57,679
+termékeim vannak akkor a azt mondom hogy
+
+1577
+01:15:55,960 --> 01:15:59,360
+az én csoportom olyan facebook
+
+1578
+01:15:57,679 --> 01:16:02,199
+felhasználók akik az idősebb
+
+1579
+01:15:59,360 --> 01:16:05,480
+generációból vannak
+
+1580
+01:16:02,199 --> 01:16:07,880
+és vagy mit tudom én lehet hogy a fiatal
+
+1581
+01:16:05,480 --> 01:16:10,560
+hölgyeket céloztam meg mondjuk mit tudom
+
+1582
+01:16:07,880 --> 01:16:12,360
+én egy hajápolási termékkel vagy bármi
+
+1583
+01:16:10,560 --> 01:16:16,960
+ilyesmi a a
+
+1584
+01:16:12,360 --> 01:16:19,800
+végén pedig akkor ebből egy egy jól
+
+1585
+01:16:16,960 --> 01:16:22,480
+összefoglalt rövid választ fogok kapni
+
+1586
+01:16:19,800 --> 01:16:24,679
+ami pont megoldja ezt a problémát és
+
+1587
+01:16:22,480 --> 01:16:26,840
+ugye nem felejtettem ki semmit ezzel
+
+1588
+01:16:24,679 --> 01:16:30,040
+hogy hogy ezt ezt úgy hívják ezt amúgy
+
+1589
+01:16:26,840 --> 01:16:30,760
+hogy a costar framework a ami úgy néz ki
+
+1590
+01:16:30,040 --> 01:16:33,840
+hogy
+
+1591
+01:16:30,760 --> 01:16:37,280
+kontextus cél mint objective s mint
+
+1592
+01:16:33,840 --> 01:16:40,360
+stílus t mint tónus audience mint
+
+1593
+01:16:37,280 --> 01:16:42,520
+hallgatóság és r mint response tehát
+
+1594
+01:16:40,360 --> 01:16:44,760
+ezzel a callstar frameworkkal nem kell
+
+1595
+01:16:42,520 --> 01:16:46,520
+az egészet kitölteni de hogyha a
+
+1596
+01:16:44,760 --> 01:16:48,920
+kontextus megvan az már egy nagyon jó
+
+1597
+01:16:46,520 --> 01:16:52,639
+kiindulási alap és így akkor tudom
+
+1598
+01:16:48,920 --> 01:16:55,679
+garantálni azt hogy ha ezt megtartom és
+
+1599
+01:16:52,639 --> 01:16:57,159
+a következő posztot és a rákövetkező
+
+1600
+01:16:55,679 --> 01:16:59,480
+és így generálom akkor nagyon
+
+1601
+01:16:57,159 --> 01:17:01,199
+minimálisat kell módosítsak nem kell
+
+1602
+01:16:59,480 --> 01:17:03,360
+újra írjam ezt az egészet hanem azt
+
+1603
+01:17:01,199 --> 01:17:06,520
+mondom hogy jó akkor generálj még egy
+
+1604
+01:17:03,360 --> 01:17:09,199
+másik posztot és és ezért ezért jók a
+
+1605
+01:17:06,520 --> 01:17:13,719
+modern nagy nyelvi modellek hogy hogy
+
+1606
+01:17:09,199 --> 01:17:16,600
+megtartják a beszélgetésnek a a a
+
+1607
+01:17:13,719 --> 01:17:19,480
+történetéalát bár a kontextus azt én
+
+1608
+01:17:16,600 --> 01:17:23,080
+adom meg de hogy igen ezt például a
+
+1609
+01:17:19,480 --> 01:17:24,880
+perplexity ezt tradek néven nevezi hogy
+
+1610
+01:17:23,080 --> 01:17:26,320
+ilyen ilyen tredekbe tö és akkor vissza
+
+1611
+01:17:24,880 --> 01:17:28,120
+fok menni légi tradbe és akkor azt
+
+1612
+01:17:26,320 --> 01:17:32,000
+mondom h jó hát ebből a reklámból kérek
+
+1613
+01:17:28,120 --> 01:17:35,000
+még egyet hogy rendben van
+
+1614
+01:17:32,000 --> 01:17:37,800
+akkor akkor most erre kérnék egy
+
+1615
+01:17:35,000 --> 01:17:40,080
+linkedines reklámot ami mondjuk ugyanez
+
+1616
+01:17:37,800 --> 01:17:41,920
+csak mit tudom én a professzionális
+
+1617
+01:17:40,080 --> 01:17:45,080
+közönségnek szól most már én mondtam egy
+
+1618
+01:17:41,920 --> 01:17:46,719
+példát igen hogyha most a a hallgatók
+
+1619
+01:17:45,080 --> 01:17:49,560
+azt mondják hogy ez már túl komplex
+
+1620
+01:17:46,719 --> 01:17:51,719
+nekem így az jutott eszembe hogy
+
+1621
+01:17:49,560 --> 01:17:53,560
+pontosan erre is jó a nagynyelvi modell
+
+1622
+01:17:51,719 --> 01:17:56,679
+én például most nekifogtam cloud
+
+1623
+01:17:53,560 --> 01:17:58,520
+technológiákat tanulni nem rég most a
+
+1624
+01:17:56,679 --> 01:18:00,280
+lehet hogy az átlag hallgató nem tudja
+
+1625
+01:17:58,520 --> 01:18:03,360
+mi az hogy cloud technológia de pontosan
+
+1626
+01:18:00,280 --> 01:18:06,040
+erről van szó hogy ami ahogy elkezdtem a
+
+1627
+01:18:03,360 --> 01:18:07,760
+az a a nyelvi modellel interakcióba
+
+1628
+01:18:06,040 --> 01:18:09,639
+lépni leírtam hogy ki vagyok egy
+
+1629
+01:18:07,760 --> 01:18:11,920
+kontextust adtam neki hogy mi mi is a
+
+1630
+01:18:09,639 --> 01:18:14,239
+célom pontosan ahogy mondtad és
+
+1631
+01:18:11,920 --> 01:18:15,880
+részleteztem hogy mi a a milyen
+
+1632
+01:18:14,239 --> 01:18:17,920
+lépéseket szeretnék hogy milyen
+
+1633
+01:18:15,880 --> 01:18:19,639
+technológiát szeretnék megtanulni és
+
+1634
+01:18:17,920 --> 01:18:23,080
+segítsen nekem egy olyan tananyagot
+
+1635
+01:18:19,639 --> 01:18:25,159
+létrehozni amivel ilyen mikrotanulásokba
+
+1636
+01:18:23,080 --> 01:18:27,800
+tehát hogyha két-három percet van időm
+
+1637
+01:18:25,159 --> 01:18:30,920
+tanulni egy egy adott életszakas
+
+1638
+01:18:27,800 --> 01:18:33,400
+élethelyzetbe tegyük fel hogy most kell
+
+1639
+01:18:30,920 --> 01:18:35,159
+várjak a fiamra az óvodából két-három
+
+1640
+01:18:33,400 --> 01:18:37,880
+percet és szeretném valami produktívval
+
+1641
+01:18:35,159 --> 01:18:40,280
+eltölteni akkor megtanítottam vagyis
+
+1642
+01:18:37,880 --> 01:18:44,040
+megkértem hogy generáljon nekem egy
+
+1643
+01:18:40,280 --> 01:18:45,480
+olyan tananyagot ahol ha azt mondom hogy
+
+1644
+01:18:44,040 --> 01:18:46,600
+jöhet a következő rész akkor egy két
+
+1645
+01:18:45,480 --> 01:18:49,480
+perc alatt
+
+1646
+01:18:46,600 --> 01:18:51,880
+elolvasható rövid részt fog nekem adni
+
+1647
+01:18:49,480 --> 01:18:53,560
+és strukturáltan végigvezet engem a
+
+1648
+01:18:51,880 --> 01:18:55,719
+cloud technológiákon úgyhogy egy
+
+1649
+01:18:53,560 --> 01:18:57,960
+nagyon-nagyon rövid
+
+1650
+01:18:55,719 --> 01:18:59,960
+bevezetőt olvasok el valójában és hogyha
+
+1651
+01:18:57,960 --> 01:19:01,480
+valamelyik része érdekel akkor azt
+
+1652
+01:18:59,960 --> 01:19:03,360
+mondom hogy akkor szeretnék mélyebbre
+
+1653
+01:19:01,480 --> 01:19:05,480
+menni jobban megérteni hogy akkor ez a
+
+1654
+01:19:03,360 --> 01:19:07,480
+tárolási módszer például hogyan működik
+
+1655
+01:19:05,480 --> 01:19:09,560
+és ez a szép benne hogy egyszerre tudunk
+
+1656
+01:19:07,480 --> 01:19:11,320
+horizontálisan egy egy felületet egy egy
+
+1657
+01:19:09,560 --> 01:19:13,880
+adott tudásanyagot átlátni és
+
+1658
+01:19:11,320 --> 01:19:16,000
+mélységeibe hogyha szükségesnek látjuk m
+
+1659
+01:19:13,880 --> 01:19:17,840
+mélyíteni tudjuk és ugyanúz érvényes
+
+1660
+01:19:16,000 --> 01:19:19,639
+magára a promtolási technikákra ahogy
+
+1661
+01:19:17,840 --> 01:19:23,800
+mondtuk tehát maga az hogy hogyan lépünk
+
+1662
+01:19:19,639 --> 01:19:25,320
+interakcióba a chat gpt-vel hogy a a az
+
+1663
+01:19:23,800 --> 01:19:27,639
+átlagfelhasznál
+
+1664
+01:19:25,320 --> 01:19:29,360
+aki nem tudja ezt meg tudja kérni a chat
+
+1665
+01:19:27,639 --> 01:19:31,280
+gpt-t hogy taníts meg engem hogy hogyan
+
+1666
+01:19:29,360 --> 01:19:33,199
+használjalak téged készíts egy
+
+1667
+01:19:31,280 --> 01:19:35,679
+tananyagot hogy hogyan tanuljak meg jól
+
+1668
+01:19:33,199 --> 01:19:37,880
+veled interakcióba lépni és segíts nekem
+
+1669
+01:19:35,679 --> 01:19:40,159
+kitalálni azt hogy hol tudom használni
+
+1670
+01:19:37,880 --> 01:19:41,560
+az én életemben az adott kontextusomba
+
+1671
+01:19:40,159 --> 01:19:43,760
+tegyük fel én egy könyvelő vagyok
+
+1672
+01:19:41,560 --> 01:19:45,679
+romániában erdélyi magyar környezetben
+
+1673
+01:19:43,760 --> 01:19:49,080
+segíts nekem megtalálni azt azokat a
+
+1674
+01:19:45,679 --> 01:19:50,800
+módszereket hogy a a hatékonyságom
+
+1675
+01:19:49,080 --> 01:19:52,520
+növekedjen a következő időszakban
+
+1676
+01:19:50,800 --> 01:19:54,440
+azáltal hogy téged használak és erről
+
+1677
+01:19:52,520 --> 01:19:55,320
+készíts egy tananyagot nekem amit két
+
+1678
+01:19:54,440 --> 01:19:58,679
+per
+
+1679
+01:19:55,320 --> 01:20:01,400
+rövid tartalmakban el tudok olvasni
+
+1680
+01:19:58,679 --> 01:20:03,920
+úgyhogy ez például az egyik javaslatom a
+
+1681
+01:20:01,400 --> 01:20:06,880
+a hallgatók számára engem nagyon érdekel
+
+1682
+01:20:03,920 --> 01:20:09,159
+hogy tehát azt látom hogy itt a hatalmas
+
+1683
+01:20:06,880 --> 01:20:12,280
+cégek mint a microsoft vagy a google
+
+1684
+01:20:09,159 --> 01:20:15,360
+vagy most már az xai és az
+
+1685
+01:20:12,280 --> 01:20:16,760
+antropic ezek rúgnak labdába akik saját
+
+1686
+01:20:15,360 --> 01:20:18,679
+nyelvi modelleket tudnak gondolom az
+
+1687
+01:20:16,760 --> 01:20:21,480
+nvidia is egy saját modellt a háttérben
+
+1688
+01:20:18,679 --> 01:20:23,199
+elkezdett már trainelni gyanítom hogy
+
+1689
+01:20:21,480 --> 01:20:24,920
+hogy azok akik megengedhetik de itt most
+
+1690
+01:20:23,199 --> 01:20:26,800
+már milliárd dollárokról van szó és a
+
+1691
+01:20:24,920 --> 01:20:28,600
+hétköznapi kis cégek nem tudom hogy
+
+1692
+01:20:26,800 --> 01:20:30,639
+mennyire rúghhatnak itt labdába ez lenne
+
+1693
+01:20:28,600 --> 01:20:33,400
+az első kérdésem hogy ebből a ebből a
+
+1694
+01:20:30,639 --> 01:20:35,760
+szempontból ez nem így van mert az
+
+1695
+01:20:33,400 --> 01:20:38,880
+európai unióban ezért vannak a
+
+1696
+01:20:35,760 --> 01:20:40,800
+szuperszámítógépek amiket akár de
+
+1697
+01:20:38,880 --> 01:20:42,520
+minimis támogatás formájában igénybe
+
+1698
+01:20:40,800 --> 01:20:45,159
+lehet venni mint magyarországon a
+
+1699
+01:20:42,520 --> 01:20:47,840
+kifinek a commandor szuperszámítógépe és
+
+1700
+01:20:45,159 --> 01:20:51,040
+az ugyanazokból az a100-as
+
+1701
+01:20:47,840 --> 01:20:55,920
+videokártyákból áll mint amit az open ai
+
+1702
+01:20:51,040 --> 01:20:59,560
+használt a a gpt 3.5 turbó tanítására
+
+1703
+01:20:55,920 --> 01:21:04,600
+és és il ilyen szempontból szerintem ez
+
+1704
+01:20:59,560 --> 01:21:04,600
+ez ez kimondottan a nagy amerikai
+
+1705
+01:21:05,800 --> 01:21:11,120
+nagyon gazdag multiknak a propaganda
+
+1706
+01:21:08,360 --> 01:21:13,800
+tevékenysége hogy azt mondják hogy hogy
+
+1707
+01:21:11,120 --> 01:21:16,880
+itt más nem lú labdába csak aki a
+
+1708
+01:21:13,800 --> 01:21:17,719
+silicon worldben van és mindenki másnak
+
+1709
+01:21:16,880 --> 01:21:21,800
+az az
+
+1710
+01:21:17,719 --> 01:21:24,560
+egyetlen opciója hogy api hívásokból
+
+1711
+01:21:21,800 --> 01:21:26,400
+kvázi használja az ő modelljeiket de
+
+1712
+01:21:24,560 --> 01:21:30,120
+senki nehogy véletlenül tanítson modellt
+
+1713
+01:21:26,400 --> 01:21:32,639
+mert az az túl drága nem lesz hardver
+
+1714
+01:21:30,120 --> 01:21:35,120
+nem lesz semmi ez ez abszolút nem igaz
+
+1715
+01:21:32,639 --> 01:21:37,320
+de sajnos ez annyira jól működik hogy
+
+1716
+01:21:35,120 --> 01:21:39,760
+nagyon sok startup ezt elhiszi nagyon
+
+1717
+01:21:37,320 --> 01:21:43,320
+sok befektető elhiszi
+
+1718
+01:21:39,760 --> 01:21:46,239
+és és emiatt óriási versenyhátrányban
+
+1719
+01:21:43,320 --> 01:21:48,639
+van az egész európa holott vannak a nagy
+
+1720
+01:21:46,239 --> 01:21:51,520
+szuperszámítógépek sőt európában van
+
+1721
+01:21:48,639 --> 01:21:54,840
+gépi tanulás szempontjából a legnagyobb
+
+1722
+01:21:51,520 --> 01:21:57,040
+szuperszámítógép a marinostrum 5 a ami
+
+1723
+01:21:54,840 --> 01:21:59,760
+ami világszinten is a top egy
+
+1724
+01:21:57,040 --> 01:22:01,480
+gépianulásra való szuperszámítógép
+
+1725
+01:21:59,760 --> 01:22:03,639
+úgyhogy én ebzel abszolút nem tudok
+
+1726
+01:22:01,480 --> 01:22:06,840
+egyetérteni és ez egy nagyon káros
+
+1727
+01:22:03,639 --> 01:22:09,800
+valami pontosan a startup ökoszisztémára
+
+1728
+01:22:06,840 --> 01:22:12,639
+mert amúgy nagyon sokan ezt vallják hogy
+
+1729
+01:22:09,800 --> 01:22:15,080
+ez akkor milliárd dollárok tanítani egy
+
+1730
+01:22:12,639 --> 01:22:18,440
+modellt ez abszolút nincs így azok a
+
+1731
+01:22:15,080 --> 01:22:21,679
+számok amiket amiket kiszámol mondjuk
+
+1732
+01:22:18,440 --> 01:22:24,920
+egy open ai azok rettentően fel vannak
+
+1733
+01:22:21,679 --> 01:22:27,600
+duzzastztva és benne van az hogy a a
+
+1734
+01:22:24,920 --> 01:22:30,400
+gépi tanulás kutatóik több 100000
+
+1735
+01:22:27,600 --> 01:22:33,400
+dollárt keresnek évente mint fizetés és
+
+1736
+01:22:30,400 --> 01:22:36,800
+egy kutató és nagyon sok van és ugye a
+
+1737
+01:22:33,400 --> 01:22:39,000
+google-nél is a a deep mine csapatba
+
+1738
+01:22:36,800 --> 01:22:41,639
+több mint 1000 ember van mind óriási
+
+1739
+01:22:39,000 --> 01:22:44,600
+fizetésekkel és hogyha ezeket az óriási
+
+1740
+01:22:41,639 --> 01:22:49,600
+fizetéseket hozzáadjuk a
+
+1741
+01:22:44,600 --> 01:22:52,199
+a a ahhoz hogy hogy mennyibe kerülnek
+
+1742
+01:22:49,600 --> 01:22:54,480
+bizonyos operacionális költségek az
+
+1743
+01:22:52,199 --> 01:22:57,199
+egyesült államokba és hozzáadjuk az
+
+1744
+01:22:54,480 --> 01:22:59,440
+nvidiának a hardver költségeit akkor
+
+1745
+01:22:57,199 --> 01:23:01,440
+tényleg milliárdos számok jönnek ki
+
+1746
+01:22:59,440 --> 01:23:04,000
+viszont ezt sokkal okosabban meg lehet
+
+1747
+01:23:01,440 --> 01:23:06,080
+csinálni az európai unióba és támogatja
+
+1748
+01:23:04,000 --> 01:23:08,199
+is az európai unió az ilyen kutatásokat
+
+1749
+01:23:06,080 --> 01:23:09,760
+és fejlesztéseket és a tagállamok is
+
+1750
+01:23:08,199 --> 01:23:13,520
+például magyarország ezt nagyon
+
+1751
+01:23:09,760 --> 01:23:15,239
+támogatja csak csak sajnos a én úgy kell
+
+1752
+01:23:13,520 --> 01:23:19,159
+mondjam hogy ez ez propaganda mert ez
+
+1753
+01:23:15,239 --> 01:23:21,760
+végül is az úgy állítja be hogy ez kvázi
+
+1754
+01:23:19,159 --> 01:23:24,040
+európában lehetetlen vagy amerikán kívül
+
+1755
+01:23:21,760 --> 01:23:26,960
+lehetetlen és a propagandának ilyen
+
+1756
+01:23:24,040 --> 01:23:29,120
+szempont ó a második üzenete az hogy ha
+
+1757
+01:23:26,960 --> 01:23:32,120
+meg is van a hardvered az információ
+
+1758
+01:23:29,120 --> 01:23:34,560
+amiből tanítani tudod ezt a modellt ez
+
+1759
+01:23:32,120 --> 01:23:37,000
+ez inkább azoknak áll a rendelkezésére
+
+1760
+01:23:34,560 --> 01:23:39,960
+akik akik ilyen big tech company tehát
+
+1761
+01:23:37,000 --> 01:23:42,719
+hozzáf például a google vagy vagy a
+
+1762
+01:23:39,960 --> 01:23:44,840
+microsoft erre mit mondanál hogy az
+
+1763
+01:23:42,719 --> 01:23:47,000
+információ az ami a a mondjuk a zseton a
+
+1764
+01:23:44,840 --> 01:23:49,120
+játékban és ez viszont nem áll már
+
+1765
+01:23:47,000 --> 01:23:51,760
+mindenkinek a rendelkezésére egy egy kis
+
+1766
+01:23:49,120 --> 01:23:53,440
+kisebb startupnak ez se
+
+1767
+01:23:51,760 --> 01:23:57,600
+igaz
+
+1768
+01:23:53,440 --> 01:24:00,280
+mert ugye a a nagy modelleket nagy
+
+1769
+01:23:57,600 --> 01:24:02,840
+publikus adathalmazokból tanítják és
+
+1770
+01:24:00,280 --> 01:24:05,199
+ezek a nagy publikus adathalmazok
+
+1771
+01:24:02,840 --> 01:24:07,560
+léteznek hogy mást ne mondjak ugye
+
+1772
+01:24:05,199 --> 01:24:08,800
+mostanában nem publikálja az open ai
+
+1773
+01:24:07,560 --> 01:24:13,239
+hogy miken
+
+1774
+01:24:08,800 --> 01:24:15,800
+tanít de azt például tudjuk hogy a 3.5
+
+1775
+01:24:13,239 --> 01:24:18,920
+turbót is tehát amivel a c gpt kijött és
+
+1776
+01:24:15,800 --> 01:24:20,760
+a ugyanúgy a google geminit és minden
+
+1777
+01:24:18,920 --> 01:24:22,880
+minden nagy nyelvi modellt az
+
+1778
+01:24:20,760 --> 01:24:26,159
+úgynevezett file adathalmazzal
+
+1779
+01:24:22,880 --> 01:24:28,880
+tanították és ez a pile adathalmaz ez
+
+1780
+01:24:26,159 --> 01:24:31,320
+egy publikus mindenki számára elérhető
+
+1781
+01:24:28,880 --> 01:24:33,679
+adathalmaz képgeneráló mesterséges
+
+1782
+01:24:31,320 --> 01:24:35,639
+intelligenciát a lion adathalmazzal
+
+1783
+01:24:33,679 --> 01:24:38,560
+tanított mindenki legalábbis az volt a
+
+1784
+01:24:35,639 --> 01:24:41,600
+kezdeti nagy adathalmaz és ahhoz aztán
+
+1785
+01:24:38,560 --> 01:24:43,920
+mindenki tesz hozzá képeket de a az
+
+1786
+01:24:41,600 --> 01:24:46,440
+alapötlet és a nagyja az ott van és ezek
+
+1787
+01:24:43,920 --> 01:24:49,480
+publikusan elérhető adathalmazok és a
+
+1788
+01:24:46,440 --> 01:24:52,560
+big data korának pont az volt a lényege
+
+1789
+01:24:49,480 --> 01:24:55,360
+hogy hogy megtanultunk nagy mennyiségű
+
+1790
+01:24:52,560 --> 01:24:59,119
+adatot összegyűjteni és kezdeni valamit
+
+1791
+01:24:55,360 --> 01:25:02,360
+és létrejöttek az adattavak léformation
+
+1792
+01:24:59,119 --> 01:25:03,960
+satöbbi amiből aztán olyan struktúráv
+
+1793
+01:25:02,360 --> 01:25:06,239
+tudjuk kinyerni ezeket az adatokat
+
+1794
+01:25:03,960 --> 01:25:09,360
+amilyen pont kell tehát én én úgy
+
+1795
+01:25:06,239 --> 01:25:12,920
+gondolom hogy az az abszolút nincs úgy
+
+1796
+01:25:09,360 --> 01:25:14,239
+hogy hogy a a az amerikai startupoknál
+
+1797
+01:25:12,920 --> 01:25:17,480
+vannak az
+
+1798
+01:25:14,239 --> 01:25:20,239
+adatok sőt én úgy gondolom hogy ez
+
+1799
+01:25:17,480 --> 01:25:22,520
+megint egy egy óriási előny lehet egy
+
+1800
+01:25:20,239 --> 01:25:26,280
+európai startupnak
+
+1801
+01:25:22,520 --> 01:25:29,320
+hogy törvénysz szerint ugye a gdpr óta
+
+1802
+01:25:26,280 --> 01:25:30,639
+az európai polgárok adatait nem lehet
+
+1803
+01:25:29,320 --> 01:25:35,360
+kivinni
+
+1804
+01:25:30,639 --> 01:25:38,360
+európából és és éppen ezért hogyha ha
+
+1805
+01:25:35,360 --> 01:25:41,719
+valaki olyan startupbaan gondolkozik ami
+
+1806
+01:25:38,360 --> 01:25:44,000
+valamilyen szinten is európai polgárok
+
+1807
+01:25:41,719 --> 01:25:46,000
+adataival bármit kezd még akkor is ha
+
+1808
+01:25:44,000 --> 01:25:47,840
+nem is gépitanalásról van szó azt
+
+1809
+01:25:46,000 --> 01:25:49,960
+mindenként csak európában lehet
+
+1810
+01:25:47,840 --> 01:25:51,880
+megoldani legalábbis az adattárolást azt
+
+1811
+01:25:49,960 --> 01:25:55,159
+mindenkén csak it lehet megoldani
+
+1812
+01:25:51,880 --> 01:25:57,960
+úgyhogy én én nem nem nem gondolom azt
+
+1813
+01:25:55,159 --> 01:26:01,960
+hogy hogy az adatok
+
+1814
+01:25:57,960 --> 01:26:06,119
+oldalából különösebben nagy előnye lenne
+
+1815
+01:26:01,960 --> 01:26:08,239
+és és az is biztos hogy önmagában az
+
+1816
+01:26:06,119 --> 01:26:12,239
+hogy hatalmas
+
+1817
+01:26:08,239 --> 01:26:14,560
+mennyiségű úgynevezett dirty d tát ilyen
+
+1818
+01:26:12,239 --> 01:26:17,000
+nem tisztított adatot rádobunk egy
+
+1819
+01:26:14,560 --> 01:26:20,800
+modellre az önmagában nem segít nagyok
+
+1820
+01:26:17,000 --> 01:26:23,480
+lesznek a számok de nem lesz jobb a
+
+1821
+01:26:20,800 --> 01:26:26,600
+modell pont ezért nagyon fontos az
+
+1822
+01:26:23,480 --> 01:26:29,400
+adattisztti ás és adatfelfedezés része a
+
+1823
+01:26:26,600 --> 01:26:31,199
+gépitanulásnak arra viszont európában
+
+1824
+01:26:29,400 --> 01:26:33,400
+nagyon jó szakemberek vannak és
+
+1825
+01:26:31,199 --> 01:26:35,960
+sokkalsokkal olcsóbbabb mint az egyesült
+
+1826
+01:26:33,400 --> 01:26:38,960
+államokban úgyhogy én én ebből a
+
+1827
+01:26:35,960 --> 01:26:41,880
+szempontból megint nem látom nekem nekem
+
+1828
+01:26:38,960 --> 01:26:45,080
+az a az a benyomásom de mondom ez
+
+1829
+01:26:41,880 --> 01:26:48,440
+személyes benyomás hogy az európai unió
+
+1830
+01:26:45,080 --> 01:26:51,520
+elhitte azt hogy ő ő neekki itt nem
+
+1831
+01:26:48,440 --> 01:26:54,199
+osztottak kártyát nincs esély ebbe a
+
+1832
+01:26:51,520 --> 01:26:57,400
+versenybe és
+
+1833
+01:26:54,199 --> 01:27:00,080
+és akkor le is mondott a mesterséges
+
+1834
+01:26:57,400 --> 01:27:01,760
+intelligencia versenyfutásról
+
+1835
+01:27:00,080 --> 01:27:03,639
+úgy unió szinten is de nagyon sok
+
+1836
+01:27:01,760 --> 01:27:06,440
+startup szinten is és akkor nagyon sok
+
+1837
+01:27:03,639 --> 01:27:10,199
+ai startup annyit csinál hogy akkor
+
+1838
+01:27:06,440 --> 01:27:13,600
+meghív egy egy open ai vagy untrophic
+
+1839
+01:27:10,199 --> 01:27:16,080
+vagy valamelyik más modellt api-ból és
+
+1840
+01:27:13,600 --> 01:27:19,119
+akkor azt a modellt használja és arra
+
+1841
+01:27:16,080 --> 01:27:22,040
+próbál valamit ráépíteni
+
+1842
+01:27:19,119 --> 01:27:24,920
+merthogy nagyon jól működik ez hogy
+
+1843
+01:27:22,040 --> 01:27:27,480
+hogyha ha valakivel el tudom hitetni azt
+
+1844
+01:27:24,920 --> 01:27:29,520
+hogy ő esélytelen a versenybe akkor
+
+1845
+01:27:27,480 --> 01:27:30,800
+kvázi megnyertem a versenyt még mielőtt
+
+1846
+01:27:29,520 --> 01:27:33,360
+elkezdtünk volna
+
+1847
+01:27:30,800 --> 01:27:35,159
+versenyezni ez nagyon érdekes amúgy
+
+1848
+01:27:33,360 --> 01:27:38,320
+nagyon tetszik ez az az optimizmusod
+
+1849
+01:27:35,159 --> 01:27:41,840
+úgyhogy utolsó kérdésként így kicsit az
+
+1850
+01:27:38,320 --> 01:27:44,560
+ördög ügyvédjét játszom és én képviselem
+
+1851
+01:27:41,840 --> 01:27:48,360
+a negatív a félelmetes
+
+1852
+01:27:44,560 --> 01:27:50,960
+jövőt azt látom hogy ez az ai rengeteg
+
+1853
+01:27:48,360 --> 01:27:53,360
+veszélyt rejteget magába például most
+
+1854
+01:27:50,960 --> 01:27:56,400
+jelen pillanatban is az internet
+
+1855
+01:27:53,360 --> 01:27:59,440
+forgalom 30%-a körülbelül pornográf
+
+1856
+01:27:56,400 --> 01:28:02,159
+tartalmakat tartalmaz szóval és a a
+
+1857
+01:27:59,440 --> 01:28:05,320
+mesterséges intelligencia gyakorlatilag
+
+1858
+01:28:02,159 --> 01:28:08,600
+itt lesz elsőként használva úgy hogy
+
+1859
+01:28:05,320 --> 01:28:11,480
+hogy még inkább valósághű modelleket még
+
+1860
+01:28:08,600 --> 01:28:13,600
+inkább valósághű interaktív személyeket
+
+1861
+01:28:11,480 --> 01:28:16,920
+fognak például
+
+1862
+01:28:13,600 --> 01:28:19,119
+generálni és persze a a digitális
+
+1863
+01:28:16,920 --> 01:28:20,560
+biztonság terén egy csomó csalás és egy
+
+1864
+01:28:19,119 --> 01:28:23,400
+csomó
+
+1865
+01:28:20,560 --> 01:28:25,239
+átverésnek a a a a helyét fogja majd
+
+1866
+01:28:23,400 --> 01:28:27,480
+jelenteni így gyakorlatilag a a
+
+1867
+01:28:25,239 --> 01:28:31,080
+mesterséges intelligencia teret enged
+
+1868
+01:28:27,480 --> 01:28:33,040
+legalábbis ezeknek ezenkívül pedig
+
+1869
+01:28:31,080 --> 01:28:34,520
+veszélyt látok a munkaerőpiacon hogy
+
+1870
+01:28:33,040 --> 01:28:36,800
+rengeteg ember el fogja veszíteni a
+
+1871
+01:28:34,520 --> 01:28:39,119
+munkáját emiatt ezekről tudom hogy
+
+1872
+01:28:36,800 --> 01:28:41,040
+beszélgettünk zárásként milyen pozitív
+
+1873
+01:28:39,119 --> 01:28:43,560
+jövőképet tudsz mondani a következő egy
+
+1874
+01:28:41,040 --> 01:28:47,400
+évre és az öt évre
+
+1875
+01:28:43,560 --> 01:28:50,080
+vonatkozóan igen én én úgy gondolom
+
+1876
+01:28:47,400 --> 01:28:52,760
+hogy kezdetben minden technológiának
+
+1877
+01:28:50,080 --> 01:28:57,119
+megvannak a veszélyei úgy úgy ennek is
+
+1878
+01:28:52,760 --> 01:29:00,159
+és és a az emberek nagyon jók a abban
+
+1879
+01:28:57,119 --> 01:29:03,400
+hogy hogy egy új technológiát mindenféle
+
+1880
+01:29:00,159 --> 01:29:06,800
+rossz célra használjanak kezdve a
+
+1881
+01:29:03,400 --> 01:29:08,960
+hadipartól a biológiai fegyverekig
+
+1882
+01:29:06,800 --> 01:29:11,280
+bármire lehet használni a gépi tanulást
+
+1883
+01:29:08,960 --> 01:29:15,239
+és vannak is példák
+
+1884
+01:29:11,280 --> 01:29:15,239
+de ugyanúgy valószínűleg a
+
+1885
+01:29:15,639 --> 01:29:21,280
+a belsőégési motorral sőt egész biztosan
+
+1886
+01:29:18,440 --> 01:29:24,960
+ez volt ugye be tudom tenni autóba
+
+1887
+01:29:21,280 --> 01:29:27,000
+buszba de ugyanakkor tankba is de
+
+1888
+01:29:24,960 --> 01:29:28,600
+de ha még visszább megyünk valószínűleg
+
+1889
+01:29:27,000 --> 01:29:31,320
+már az első
+
+1890
+01:29:28,600 --> 01:29:33,760
+kőbaltánál megfordult az ősember fejében
+
+1891
+01:29:31,320 --> 01:29:35,840
+hogy ezzel meg lehetne ölni valakit és
+
+1892
+01:29:33,760 --> 01:29:38,040
+meg is tette úgyhogy ilyen szempontból
+
+1893
+01:29:35,840 --> 01:29:40,760
+ebben nincs semmi újdonság ilyen az
+
+1894
+01:29:38,040 --> 01:29:43,320
+emberi természet viszont azt láthatjuk a
+
+1895
+01:29:40,760 --> 01:29:45,679
+technológia fejlődése során hogy mindig
+
+1896
+01:29:43,320 --> 01:29:47,280
+egy kicsit jobb lesz az emberiségnek
+
+1897
+01:29:45,679 --> 01:29:50,440
+mindig egy kicsit könnyebb lesz az
+
+1898
+01:29:47,280 --> 01:29:52,520
+életünk és én úgy gondolom hogy egy
+
+1899
+01:29:50,440 --> 01:29:55,560
+ilyen
+
+1900
+01:29:52,520 --> 01:29:57,800
+ugrásszerű fejlő ődésnél mint a a
+
+1901
+01:29:55,560 --> 01:29:59,880
+mesterséges intelligencia és itt nem a
+
+1902
+01:29:57,800 --> 01:30:02,639
+nyelvi modellekre gondolok hanem hanem
+
+1903
+01:29:59,880 --> 01:30:05,320
+mindenféle gépi tanulás alapú megoldásra
+
+1904
+01:30:02,639 --> 01:30:08,560
+az az el tudja hozni az emberiség új
+
+1905
+01:30:05,320 --> 01:30:11,639
+aranykorát ugye a az
+
+1906
+01:30:08,560 --> 01:30:15,119
+iparosodással teljes társadalmi
+
+1907
+01:30:11,639 --> 01:30:16,760
+átalakulások mentek végbe de végül is az
+
+1908
+01:30:15,119 --> 01:30:20,760
+szerintem most már mindenki számára
+
+1909
+01:30:16,760 --> 01:30:24,440
+egyértelmű hogy sokkal jobban élünk mi
+
+1910
+01:30:20,760 --> 01:30:26,800
+most az iparosodás után mint az előtt
+
+1911
+01:30:24,440 --> 01:30:29,840
+mondjuk a későközépkorban ahogy éltek a
+
+1912
+01:30:26,800 --> 01:30:32,920
+a az elődeink és én úgy gondolom hogy ez
+
+1913
+01:30:29,840 --> 01:30:34,960
+ezt fogja elhozni az új aranykort ez
+
+1914
+01:30:32,920 --> 01:30:37,159
+fogja elhozni azt hogy sokkal kevesebbet
+
+1915
+01:30:34,960 --> 01:30:40,360
+fogunk dolgozni ahogy például az
+
+1916
+01:30:37,159 --> 01:30:44,440
+autógyártás elterjedése hozta el azt
+
+1917
+01:30:40,360 --> 01:30:46,600
+hogy hogy nem hat nap 12 órát per nap
+
+1918
+01:30:44,440 --> 01:30:51,000
+kellett dolgozzanak az emberek hanem
+
+1919
+01:30:46,600 --> 01:30:54,280
+németország déli részén először ugye
+
+1920
+01:30:51,000 --> 01:30:58,639
+badenwürberg állam területén a mondjuk a
+
+1921
+01:30:54,280 --> 01:31:02,000
+mercedes gyárban bevezették a 8-9 órás
+
+1922
+01:30:58,639 --> 01:31:04,600
+műszakot és a a heti öt napos
+
+1923
+01:31:02,000 --> 01:31:06,320
+munkaprogramot ami aztán elterjedt
+
+1924
+01:31:04,600 --> 01:31:07,880
+mindenhol pont azért mert az
+
+1925
+01:31:06,320 --> 01:31:10,440
+autógyártásnak volt egy óriási
+
+1926
+01:31:07,880 --> 01:31:12,840
+hozzáadott értéke és leghamarabb
+
+1927
+01:31:10,440 --> 01:31:16,119
+szerintem a négynapos
+
+1928
+01:31:12,840 --> 01:31:18,520
+munkahét elterjedését azt azt szerintem
+
+1929
+01:31:16,119 --> 01:31:19,880
+mindenként a a a mesterséges
+
+1930
+01:31:18,520 --> 01:31:23,159
+intelligencia
+
+1931
+01:31:19,880 --> 01:31:25,360
+terjedésének köszönhetjük majd főleg az
+
+1932
+01:31:23,159 --> 01:31:28,239
+irodai munká nál rengeteg munkaidőt
+
+1933
+01:31:25,360 --> 01:31:32,239
+megspórol nekünk és ez egyre többet fog
+
+1934
+01:31:28,239 --> 01:31:37,040
+ahogy haladunk előre az időben viszont a
+
+1935
+01:31:32,239 --> 01:31:39,520
+a az emberi munka az sokkal inkább
+
+1936
+01:31:37,040 --> 01:31:42,320
+döntéshozatali
+
+1937
+01:31:39,520 --> 01:31:45,520
+innovációs és és olyan munka amit amit
+
+1938
+01:31:42,320 --> 01:31:48,119
+szeretnek csinálni az emberek az ilyen
+
+1939
+01:31:45,520 --> 01:31:52,159
+repetitív és nem szeretem munkákat
+
+1940
+01:31:48,119 --> 01:31:54,960
+viszont kevésbé köszönöm nagyon szépen a
+
+1941
+01:31:52,159 --> 01:31:57,520
+az idődet és n szeretném majd folytatni
+
+1942
+01:31:54,960 --> 01:32:00,239
+más témákkal köszönöm még egyszer és
+
+1943
+01:31:57,520 --> 01:32:02,239
+beszélünk majd még szia ha tetszett ez a
+
+1944
+01:32:00,239 --> 01:32:04,119
+műsor akkor iratkozz fel kérlek a
+
+1945
+01:32:02,239 --> 01:32:05,639
+csatornánkra ezzel tudsz támogatni
+
+1946
+01:32:04,119 --> 01:32:08,000
+minket köszönjük a vckker
+
+1947
+01:32:05,639 --> 01:32:10,119
+kávéközösségnek a jó kávéért az
+
+1948
+01:32:08,000 --> 01:32:12,880
+ötvösudvarnak a helyért valamit a
+
+1949
+01:32:10,119 --> 01:32:16,800
+bizalomtőkének a támogatásért nékületek
+
+1950
+01:32:12,880 --> 01:32:16,800
+nem jöhetett volna ez létre
+

@@ -1,5 +1,8 @@
 ---
 title: Piackutatás — Microsite Factory
+description: "Perplexity-vel végzett piackutatás a Microsite Factory fogászati vertikumáról, amelyben 30 forrást felhasznált és validálta az ajánlatpozícionálást, ármodelljét és a hazai AI-adopciós gapot mint lehetőséget."
+description_source: auto
+description_hash: 0add4bc2291078f8
 source: Perplexity (Researcher role)
 url: https://www.perplexity.ai/search/0d9fb6f7-26ba-43c9-9ad5-cfd8242fba05
 imported: 2026-05-16
@@ -7,7 +10,6 @@ status: v1 — első kör
 id: 3f4b08d9-a80c-4367-b2cd-79cbb5059194
 index_schema_version: 1
 ---
-
 # Piackutatás — Microsite Factory
 
 > Perplexity-vel végzett első kutatási kör. 30 forrást használt. A részletes kérdés-listára adott válasz tematikusan, nem pontról-pontra — alább a kiemelt insightok és a saját értelmezés.

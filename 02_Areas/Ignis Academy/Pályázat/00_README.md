@@ -1,4 +1,7 @@
 ---
+description: "Ignis Academy AI-Enhanced Learning Platform pályázata az ADRC Regio Centru támogatásból 275k EUR-val; jelenleg contestare fázisban van 67/100 ponttal nyerve. Tartalmaz status-t, dokumentumokat, meeting notes-okat és kapcsolódik a kutatási, üzletfejlesztési és startup tanulási munkálatokhoz."
+description_source: auto
+description_hash: 402a64ed9dbbe601
 project: Ignis-Academy-EU-275k
 project_status: won-contestare
 funder: ADRC Regio Centru 2021-2027
@@ -13,7 +16,6 @@ tags: [pályázat, eu, adrc, regio-centru, ai-learning-platform]
 id: 9493a82b-ad79-4bcb-88d0-a58c9862ae0d
 index_schema_version: 1
 ---
-
 # Ignis Academy — Pályázat (ADRC Regio Centru, 275k EUR)
 
 **Projekt cím:** AI-Enhanced Learning Platform — Platformă digitală de învățare bazată pe inteligență artificială

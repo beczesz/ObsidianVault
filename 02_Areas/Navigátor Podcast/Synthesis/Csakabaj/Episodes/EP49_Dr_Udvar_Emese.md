@@ -1,11 +1,13 @@
 ---
+description: "Csakabaj Podcast Season 3 Episode 49: In-depth interview with Dr. Udvar Emese on medical expertise, patient-doctor relationships, and healthcare decision-making. Analysis of how to balance medical authority with accessibility for general audiences while building listener trust."
+description_source: auto
+description_hash: a6f97762966c1952
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
 id: b31fa8c2-9d44-470b-a626-d19ad80bbbe1
 index_schema_version: 1
 ---
-
 # Csakabaj Podcast — Season 3
 
 ## Episode EP49 | S03E05: Dr. Udvar Emese

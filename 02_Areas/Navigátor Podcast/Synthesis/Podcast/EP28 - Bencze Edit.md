@@ -1,4 +1,7 @@
 ---
+description: "Pasztorálpszichológus Bencze Edit második interjúja a nárcisztikus kapcsolatokról; gyakorlati túlélési stratégiákat és megerősödési módszereket tárgyalja, főleg nőknek (88,7%) 45–54 éveseknek szóló tartalommal."
+description_source: auto
+description_hash: 97ad6524564be98d
 version: "2.0"
 date: 2026-04-06
 type: episode-synthesis
@@ -19,7 +22,6 @@ rerun: true
 id: 4d7567fc-d247-4e66-a060-cc338a55d998
 index_schema_version: 1
 ---
-
 # EP28 — Bencze Edit: Hogyan erősödjünk meg nárcisztikus kapcsolatokban
 
 ## Alapadatok

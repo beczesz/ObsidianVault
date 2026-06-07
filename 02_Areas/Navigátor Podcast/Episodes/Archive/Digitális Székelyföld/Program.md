@@ -1,3 +1,15 @@
+---
+title: "Program"
+date: 2025-12-08
+author: Becze Szabolcs
+status: active
+description: "A Digitális Székelyföld Konferencia teljes programja, amely mesterséges intelligenciáról, mérnöki innovációról, zdravségügyi technológiáról, oktatásról és iparról szóló előadásokat, workshopokat és panelbeszélgetéseket tartalmaz, szervezeteknek és szakembereknek szánt eseménytervhez."
+description_source: auto
+description_hash: 83340391568d7483
+id: 26ac9444-9477-4e74-8b8f-f436fcfb716c
+index_schema_version: 1
+bdos_index: true
+---
 [Program - Digitális Székelyföld Konferencia](https://digitalisszekelyfold.ro/program/?fbclid=IwY2xjawNii_tleHRuA2FlbQIxMABicmlkETFtVG5SRVNvRkVySnBuemZhAR4xR8Tof8J2QESKMw_qkBlP8f7x3vkB0YCrhS_sTbhR-tQThTThAQgfS-k3rg_aem_v__iz5tupZUkdGTuLd0k8w)
 
 

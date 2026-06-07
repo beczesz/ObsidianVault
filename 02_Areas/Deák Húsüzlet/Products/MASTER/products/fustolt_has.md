@@ -1,3 +1,15 @@
+---
+title: "Füstölt Has"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Füstölt sertéshasrész termék: 47 €/kg, elérhető, vékony-vastag közötti vastagság és pácolási opciókkal (hagyományos vagy barbecue). Bükkfa fűrészporral füstölt, leves és sütéshez ajánlott."
+description_source: auto
+description_hash: b69ad78f5a644ad1
+id: f43b939a-09e7-40d0-96ea-8fa230072145
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Has
 
 ```yaml

@@ -1,3 +1,15 @@
+---
+title: "DH — Deák Húsmíves Online Platform"
+date: 2026-04-16
+author: Becze Szabolcs
+status: active
+description: "Online ordering and delivery system for Deák Húsmíves craft butcher shop in Székelyudvarhelyon, built with Vue 3 PWA frontend and Frappe backend, currently in Sprint 3 development with 145 total tickets and 11.7x AI velocity multiplier achieved."
+description_source: auto
+description_hash: b35bc19afff7cc28
+id: 75283eb3-519c-4eed-ae8e-8c5c14742bdd
+index_schema_version: 1
+bdos_index: true
+---
 # DH — Deák Húsmíves Online Platform
 
 ## Összefoglaló

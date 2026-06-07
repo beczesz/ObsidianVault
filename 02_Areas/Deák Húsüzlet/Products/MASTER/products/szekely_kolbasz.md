@@ -1,3 +1,15 @@
+---
+title: "Székely Kolbász"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Székely Kolbász is a heavily spiced, paprika-based sausage from the region, priced at 45.0 HU per kg and currently available. Product database entry for inventory and sales tracking with bilingual Hungarian-Romanian descriptions and producer notes on drying methods."
+description_source: auto
+description_hash: 13ce857b7f3612e9
+id: 82092f46-15ba-4653-925a-9ea78f8e818f
+index_schema_version: 1
+bdos_index: true
+---
 # Székely Kolbász
 
 ```yaml

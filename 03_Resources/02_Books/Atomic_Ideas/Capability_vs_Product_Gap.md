@@ -1,5 +1,8 @@
 ---
 title: "Capability vs. Product Gap"
+description: "Amodei's framework distinguishing benchmark-measurable AI improvements from real-world workflow usefulness, arguing the gap is a training distribution problem rather than architectural ceiling. Relevant for understanding AI timeline estimates and product development priorities."
+description_source: auto
+description_hash: 4bf93db77a7cfe90
 type: atomic
 tags: ["atomic", "AI", "AGI", "product", "deployment", "diffusion"]
 status: "triaged"
@@ -9,7 +12,6 @@ processed_by: "AI Speed-Reading Agent"
 id: 976744b7-e165-4ed6-bcf3-a9659cdad67f
 index_schema_version: 1
 ---
-
 # Capability vs. Product Gap
 
 ## Definition

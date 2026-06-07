@@ -1,3 +1,15 @@
+---
+title: "_build — dashboard pipeline"
+date: 2026-05-22
+author: Becze Szabolcs
+status: active
+description: "Reprodukálható adatfeldolgozási folyamat a Dashboard_2025.html-hez: Python-scripteken keresztül év-kulcsolt adatrétegből, Excel-problémalistából és önálló offline HTML-dashboardból. Fejlesztők és adatkezelők számára az adat-pipeline és verziókezelés dokumentációja."
+description_source: auto
+description_hash: e5e59eee2d3254b9
+id: 00192110-b7d4-47b6-a302-0c34528828bb
+index_schema_version: 1
+bdos_index: true
+---
 # _build — dashboard pipeline
 
 Reprodukálható adat-pipeline a `Dashboard_2025.html`-hez. **A v2 az aktuális.**

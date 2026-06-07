@@ -6,6 +6,9 @@
 # ===========================================================================
 type: partner-board
 title: CPS Technology Partnerships
+description: "Tracks technology partnerships with AWS, Oracle, and Microsoft including certification status, requirements tracking, and renewal dates. Data stored in frontmatter automatically syncs to a partner health dashboard within eight seconds of editing."
+description_source: auto
+description_hash: a520336a8a534772
 updated: 2026-05-20
 partners:
   - vendor: AWS
@@ -45,6 +48,8 @@ partners:
     contacts:
       - name: "Ingram Micro"
         role: "Channel Partner, Premier. 8% discount, 60-day terms, shared opportunities"
+      - name: "Orszaghova, Eva"
+        role: "AWS contact (orszagho@amazon.co.uk). First outreach 2026-05-29: Bedrock resell + partner pricing for managed inference."
     next_actions:
       - "Torok Balint, AWS Security Specialty (planned, fills the Technical Certified gap and adds first Specialty)"
     source_files:
@@ -112,7 +117,6 @@ partners:
       - "Decide whether to formalize the Microsoft partnership and assign cert owners"
     source_files: []
 ---
-
 # CPS Technology Partnerships
 
 Live data for the partner-health board lives in the frontmatter above. Edit it in Obsidian and `Partnership/dashboard.html` reflects the change within 8 seconds.

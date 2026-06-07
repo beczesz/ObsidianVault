@@ -1,3 +1,15 @@
+---
+title: "DH Feature Spec: Timeslot kapacitás-limit"
+date: 2026-05-01
+author: Becze Szabolcs
+status: active
+description: "Timeslot kapacitás-limit funkció specifikációja: adminek korlátozhatják az egyes szállítási időpontokra érkezető rendelések számát, a vásárlók pedig csak szabad slotokat választhatnak ki. Race condition védelemmel és Firebase event-ekkel."
+description_source: auto
+description_hash: 6013f2fa3a6bed57
+id: d656710b-a563-4220-8644-6f4724a81de5
+index_schema_version: 1
+bdos_index: true
+---
 # DH Feature Spec: Timeslot kapacitás-limit
 **Verzió:** v1.0 | **Dátum:** 2026-04-26 | **Sprint:** 4 | **Prioritás:** P1
 

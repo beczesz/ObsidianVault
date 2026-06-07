@@ -1,4 +1,7 @@
 ---
+description: "EP44 epizódban Böszörményi-Nagy Gergely történelemből, mesterséges intelligenciáról és társadalmi paradigmákról beszél, feltárva, hogyan előrejelezhetik a történelmi mintázatok az AI-vel való szembenézésünket és az emberség identitásának átdefiniálódását."
+description_source: auto
+description_hash: 084e72bad1c39265
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
@@ -13,7 +16,6 @@ synthesis_status: Complete
 id: cd0b6370-560c-4dd7-90d8-c8c5b489023c
 index_schema_version: 1
 ---
-
 ## Alapadatok
 
 | Attribútum | Érték |

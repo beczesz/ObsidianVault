@@ -17,8 +17,7 @@ index_schema_version: 1
 
 - [ ] **Deé Ágnes vendég felkérés** #vendeg @{2026-05-20} Az őszinteség luxus vagy erő?
 - [ ] **Következő epizód témaötletek** #tervezes Témaötletek összegyűjtése
-- [ ] **EP43 — AI képzés** #epizod Soron következő epizód feldolgozása
-- [ ] **EP45 — Agrárdigitalizáció** #epizod Tervezett epizód
+- [ ] **EP45 — AI képzés** #epizod Tervezett epizód
 
 
 ## 🎧 Spotify — dátumjavítás
@@ -59,7 +58,7 @@ index_schema_version: 1
 
 ## 🔄 Folyamatban
 
-- [ ] **EP44 (Gyász) — Farkas Kinga** #epizod #ep44 @{2026-05-26} Forgatás kész, intro kész — megjelenés jövő hét kedd
+- [ ] **EP43 (Gyász) — Farkas Kinga** #epizod #ep43 @{2026-05-26} Forgatás kész, intro kész — megjelenés jövő hét kedd
 - [ ] **Miklós Ervin — forgatás kész** #epizod Forgatás megvolt; feldolgozás + megjelenési dátum TBD
 - [ ] **Csatorna audit (Fázis 4a)** #audit Cards befejezése van hátra
 

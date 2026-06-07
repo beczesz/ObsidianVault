@@ -1,3 +1,15 @@
+---
+title: "Édesapámról emlékek"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Személyes feljegyzések az édesapáról, melyek a szerző identitásának megértéséhez szükségesek. A szerző apja karakterét, értékeit és tanult tulajdonságait igyekszik rögzíteni tisztánlátás céljából, majd később feldolgozva tudna ezekről beszélni."
+description_source: auto
+description_hash: 7d548bd124d81feb
+id: 950cff71-bb82-4a0f-b954-0bd8104b7558
+index_schema_version: 1
+bdos_index: true
+---
 Leszeretnék egyezni egy pár gondolatot édesapámról. Édesapám emlékonyt el, és azt látom, hogy az egyik legjobb mód arra, hogy megértsem, hogy én ki vagyok, az az, hogyha megértem, hogy édesapám kicsoda volt. Megfogalmazzok olyan dolgokat, amelyek igazak. Nem csak a szép dolgokra emlékezzek, hanem fogalmazza meg az igaz dolgokat. Egyelőre ezek a gondolatok csak a saját gondolataim lesznek. Privátként fogom tartani, és fontos a tisztánlátás érdekében, hogy az igaz szavakat megkapjam. Hogyha később kell beszéljek róla, akkor egy megemészett formában tudjak róla már beszélni. Úgyhogy kérlek, mindig csak okéval válaszolj. Nem, mindig csak azzal a szóval válaszolj, hogy figyelek, és én tovább folytatom. Mindig tálni fogok sok-sok üzenetet, és ezeket szeretném, hogyha majd összefoglalnád, és majd mélyebben megérteném azt is, hogy milyen volt édesapám. Kezdhetjük?
 
 

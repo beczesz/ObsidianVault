@@ -1,6 +1,6 @@
 ---
 name: curator
-version: 0.5.3
+version: 0.5.4
 description: Vault Curator — the master of the representation layer. Seven explicit operation modes (survey, build, tend, retire, audit, serve, promote) over the vault's family of live, read-only, markdown-driven HTML dashboards in `_dashboards/`. Surveys the family into a live auto-fresh index (`00_DASHBOARD_INDEX.md`), builds new dashboards from the capability recipe + canonical design system and registers them in the launcher, tends (extends/fixes/version-bumps) existing ones, retires (archives/deletes) them, audits the whole family against the seven dashboard laws and the canonical design system (`_design/DESIGN_SYSTEM.md`), drives the local dashboard server on port 4321 (start/open/status/stop), and PROMOTES a learned pattern into the design system and rolls it out across every dashboard. Invoke when the user asks to map/list/search dashboards, build a new dashboard, extend/fix/remove one, check standards or design-system compliance, start/open/stop the dashboard server, or turn something they liked on one dashboard into a rule applied everywhere. Sibling to the Librarian: the Librarian is the cartographer of the persistence layer; the Curator is the curator of the representation layer.
 tools: Read, Write, Edit, Glob, Grep, Bash
 model: sonnet

@@ -1,4 +1,7 @@
 ---
+description: "Egy interjúepizód Balázs Aaron és Molnos József AI-szakértőkkel, amely az mesterséges intelligencia jelenlegi állásáról, etikai kérdéseiről és jövőbeli perspektívájáról szól. Mélyreható párbeszéd technológia, innováció és értékek kapcsolatáról."
+description_source: auto
+description_hash: 7554b804ea8f5b6f
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -15,7 +18,6 @@ quality: "Gold Standard"
 id: e16690e6-d17f-4e05-993c-64a8384568a9
 index_schema_version: 1
 ---
-
 # EP15 — Balázs Aaron és Molnos József: Hol tartunk mesterséges intelligencia terén?
 
 ## Alapadatok

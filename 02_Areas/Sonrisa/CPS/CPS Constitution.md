@@ -1,3 +1,15 @@
+---
+title: "CPS Constitution"
+date: 2026-02-05
+author: Becze Szabolcs
+status: active
+description: "A Cloud Platform Services csapat konstitúciója, amely a láthatatlan infrastruktúra-támogatás vízióját, a stabilitás-innováció-fejlődés missziót és hat érték-alapelvet (proaktivitás, tervezés, személyes kapcsolatok, win-win mentalitás, folyamatos fejlődés, alázat) definiálja a szervezeti tagok számára."
+description_source: auto
+description_hash: 1ce5c67ed6d516bf
+id: 3576bff1-b969-4291-935e-e3dfb51edc92
+index_schema_version: 1
+bdos_index: true
+---
 ## Vision 
 
 “We are the Backstage Crew who runs the show..” 

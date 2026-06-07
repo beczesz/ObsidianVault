@@ -1,5 +1,8 @@
 ---
 title: Outreach Batch #1 - HOT Leads (revised post Perplexity validation)
+description: "Outreach batch template tracking top 5 hot leads for cloud operations sales, with personalized LinkedIn messaging drafts for decision makers at CIG Pannonia, Chemaxon, SEON, KBOSS, and Colossyan. Includes send schedule, discovery notes, target packages, and critical messaging guardrails."
+description_source: auto
+description_hash: ae9a2929c8ced8dd
 date: 2026-04-27
 last-reviewed: 2026-05-11
 status: DRAFT v2 - Icebreakers sharpened with Perplexity-verified signals 2026-05-11. Order reshuffled.
@@ -10,7 +13,6 @@ revision-note: Original draft from 2026-04-27 used generic "Lattam, hogy a [comp
 id: 0d054bfc-0c73-4c20-9b0a-484fd88ab22e
 index_schema_version: 1
 ---
-
 # Outreach Batch #1 -- Top 5 HOT Leads
 
 **Instructions:**

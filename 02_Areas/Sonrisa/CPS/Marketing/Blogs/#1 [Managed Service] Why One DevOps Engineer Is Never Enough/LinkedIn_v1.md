@@ -1,3 +1,15 @@
+---
+title: "LinkedIn v1"
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "Analysis of organizational risks when relying on a single DevOps engineer, explaining why modern cloud infrastructure requires multiple specialized roles and how to build resilient engineering functions."
+description_source: auto
+description_hash: 9cf9b97f04bbbc05
+id: f621ff3e-cf31-4c2e-968e-90c8abfa07cb
+index_schema_version: 1
+bdos_index: true
+---
 Something I see way too often:
 
 A company hires their first DevOps engineer, things stabilise, everyone relaxes. Then that person goes on holiday. Or hands in their notice.

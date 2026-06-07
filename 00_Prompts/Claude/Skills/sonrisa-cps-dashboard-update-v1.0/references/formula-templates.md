@@ -1,3 +1,15 @@
+---
+title: "Formula Templates for T&M Raw"
+date: 2026-05-05
+author: Becze Szabolcs
+status: active
+description: "Reference guide for T&M Raw spreadsheet formulas used in cost and revenue calculations. Contains templates for date ID, hourly rates, invoiced amounts, transfer prices, cost share, profit margin and related metrics across columns C through X."
+description_source: auto
+description_hash: 17cb0c8c42b1a0e6
+id: 25858bbd-c16f-4150-bd0b-ae4bb63cca1b
+index_schema_version: 1
+bdos_index: true
+---
 # Formula Templates for T&M Raw
 
 When adding a new row at row R, use these formulas. Replace `{R}` with the actual row number.

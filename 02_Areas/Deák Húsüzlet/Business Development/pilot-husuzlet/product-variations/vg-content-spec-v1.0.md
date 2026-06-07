@@ -1,5 +1,8 @@
 ---
 title: "VG (Variation Group) tartalom specifikáció — 15 termék × 5 opció-típus"
+description: "Specifikáció a backend-szintű tartalmához és adatmodelljéhez 15 termék 5 opció-típusára; tartalmazza a másolat, modális képi leírások és séma-definíciókat magyar és román nyelveken, valamint az opció-érték árazási szabályait és UI-megjelenítési logikáját."
+description_source: auto
+description_hash: 5f0f77c7e81dad6f
 version: 1.1 DRAFT
 date: 2026-05-09
 author: Szabolcs (Exar Labs) + Cowork
@@ -14,7 +17,6 @@ changelog:
 id: 9f424e44-e550-43c5-b88e-49b3577f4cdc
 index_schema_version: 1
 ---
-
 # VG tartalom specifikáció v1.1
 
 > **Cél:** Minden VG (Variation Group) és opció-érték backend-szintű tartalma, beleértve a copy-t (HU + RO) és az info modal tartalmát (kép-leírás + szöveg).

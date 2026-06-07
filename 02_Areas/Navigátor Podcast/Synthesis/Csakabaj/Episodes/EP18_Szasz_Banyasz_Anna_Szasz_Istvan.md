@@ -1,5 +1,8 @@
 ---
 title: "A természetközeliség a kulcs | Szász-Bányász Anna és Szász István | EP18"
+description: "Podcast epizód, amelyben Szász-Bányász Anna és Szász István természetvédelmi szakértők a tradicionális vidéki ökológiai tudás és skanzen-munka helyzetéről diskurálnak. Hallgatóinak fontos, akik a város-természet szakadék megoldásáról és közösség-alapú tanulásról akarnak megtudni."
+description_source: auto
+description_hash: 3031d9d09f8f8a47
 broadcast_date: 2024-08-07
 duration: "66 perc"
 guest_names: "Szász-Bányász Anna és Szász István"
@@ -13,7 +16,6 @@ topic_cluster: "Természet, közösség, hagyomány, vidéki élet, ökológia"
 id: 9439406b-d67a-42af-a82a-3057b6da8c00
 index_schema_version: 1
 ---
-
 # EP18 - Szász-Bányász Anna és Szász István: A természet visszahívása
 
 ## Alapadatok

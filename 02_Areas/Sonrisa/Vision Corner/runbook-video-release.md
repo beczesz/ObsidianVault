@@ -1,3 +1,15 @@
+---
+title: "Video Release Runbook — Vision Corner"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Checklist and reference guide for publishing Vision Corner video episodes, covering file preparation, Stream upload with metadata, playlist distribution, SharePoint page updates, and announcement email procedures with specific naming conventions and link-sharing protocols."
+description_source: auto
+description_hash: e401b00fd0745092
+id: fc36a851-6bea-42e6-8c76-bb826363288b
+index_schema_version: 1
+bdos_index: true
+---
 # Video Release Runbook — Vision Corner
 
 Source: `Video Release Manual.docx` (uploaded 2026-05-07)

@@ -1,3 +1,15 @@
+---
+title: "SRT fájlnév → EP szám mapping"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast epizódszámozásának és SRT fájlneveknek az összevetése: korai epizódok (EP01-EP13) sorszám alapú, EP14-től explicit EP szám a fájlnévben. Tartalmazza a vendégeket, sorozatok mappázását és YouTube videó azonosítókat."
+description_source: auto
+description_hash: 8cc00bf3f6a3df41
+id: ed23c5df-3834-46bb-8813-1bde49b7ac7e
+index_schema_version: 1
+bdos_index: true
+---
 # SRT fájlnév → EP szám mapping
 
 ## Korai epizódok (EP01-EP13) — nincs EP szám a fájlnévben

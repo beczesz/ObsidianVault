@@ -1,4 +1,15 @@
-
+---
+title: "Gondolatok"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Személyes gondolatok és lelki megfigyelések, melyek a bibliai tanítások gyakorlati alkalmazásáról, spirituális kihívásokról és egy helyi élelmiszer-platform gazdasági szerepéről reflexálnak. Keresztény meggyőződéssel bíró jegyzetíró számára."
+description_source: auto
+description_hash: 3eb5a1814738c859
+id: fe7becc1-f53c-4a12-ab14-178f61e9ea1b
+index_schema_version: 1
+bdos_index: true
+---
 ## 2026.04.17 A kő amit az építől elvetettek...
 
 Akire ráesik az szétzúzza, és aki ráesik az is szét zúzódik

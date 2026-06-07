@@ -1,3 +1,15 @@
+---
+title: "Technology Partnerships & Certifications"
+date: 2026-04-27
+author: Becze Szabolcs
+status: active
+description: "Tracks active AWS and Microsoft technology partnerships, certification tiers, and individual team member certifications. Documents current gaps: need one additional AWS technical certified individual to meet partner portal requirements."
+description_source: auto
+description_hash: 95c4f420c564b849
+id: 4dbb584e-1196-463e-9e13-ea8be7b9a800
+index_schema_version: 1
+bdos_index: true
+---
 # Technology Partnerships & Certifications
 
 ## Partnership Agreements, Tier Levels, Certification Count

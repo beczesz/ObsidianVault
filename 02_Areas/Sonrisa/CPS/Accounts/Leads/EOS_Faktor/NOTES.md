@@ -1,4 +1,7 @@
 ---
+description: "Financial receivables management company and Hungarian EOS Group leader with 226 employees; job posting demoted but retains potential as gateway to larger Otto Group contracts through DevOps/infrastructure skills."
+description_source: auto
+description_hash: 11677498a4271d6f
 type: lead
 id: eosfaktor
 company: "EOS Faktor"
@@ -36,7 +39,6 @@ created: 2026-03-31
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # EOS Faktor
 
 ## Signal

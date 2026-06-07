@@ -1,12 +1,14 @@
 ---
 title: CPS Daily Lead Scanner - Daily Brief
+description: "Daily prospecting report from automated lead scanner identifying 1 warm prospect (SafeFleet Telematics, Romanian IoT/telematics company with 52 employees and AWS usage) among 6 newly screened companies, plus pipeline status and market observations for sales development team."
+description_source: auto
+description_hash: 09f816771160466c
 date: 2026-03-27
 profile: "Profile #1: The Replacement Hire"
 scanner_run: automated
 id: 5410f924-e3f3-4800-a0d3-19b3cffa803e
 index_schema_version: 1
 ---
-
 # CPS Lead Scanner Daily Brief - 2026-03-27 (Friday)
 
 ## Summary

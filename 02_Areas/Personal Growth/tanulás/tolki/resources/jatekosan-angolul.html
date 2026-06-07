@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Játékosan Angolul – Tolki Szókártyák</title>
+
+  <!-- OpenDyslexic font – diszlexiás olvasóbarát betűtípus -->
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap');
+
+    :root {
+      --bg: #FFFDF4;
+      --card-bg: #FFFFFF;
+      --accent: #F4A832;
+      --accent2: #4ABFA3;
+      --accent3: #E05C5C;
+      --text: #2B2B2B;
+      --muted: #777;
+      --radius: 18px;
+      --shadow: 0 4px 16px rgba(0,0,0,0.10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Lexend', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 0 0 60px 0;
+    }
+
+    header {
+      background: var(--accent);
+      padding: 28px 24px 20px;
+      text-align: center;
+      border-bottom: 4px solid #e09220;
+    }
+
+    header h1 {
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    header p {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-top: 6px;
+      opacity: 0.92;
+    }
+
+    .font-toggle {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 24px 0;
+      flex-wrap: wrap;
+    }
+
+    .font-toggle button {
+      padding: 8px 20px;
+      border: 2px solid var(--accent);
+      border-radius: 40px;
+      background: white;
+      font-family: 'Lexend', sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: all 0.2s;
+    }
+
+    .font-toggle button.active,
+    .font-toggle button:hover {
+      background: var(--accent);
+      color: white;
+    }
+
+    .size-control {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 24px 0;
+    }
+
+    .size-control span {
+      font-size: 0.95rem;
+      color: var(--muted);
+    }
+
+    .size-control button {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 2px solid var(--accent2);
+      background: white;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--accent2);
+      line-height: 1;
+      transition: all 0.2s;
+    }
+
+    .size-control button:hover {
+      background: var(--accent2);
+      color: white;
+    }
+
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 20px 24px 8px;
+      justify-content: center;
+    }
+
+    nav button {
+      padding: 10px 18px;
+      border-radius: 40px;
+      border: 2px solid #ddd;
+      background: white;
+      font-family: 'Lexend', sans-serif;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text);
+    }
+
+    nav button.active,
+    nav button:hover {
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: white;
+    }
+
+    .chapter-title {
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: 700;
+      padding: 24px 24px 8px;
+      color: var(--text);
+    }
+
+    .chapter-subtitle {
+      text-align: center;
+      font-size: 1.1rem;
+      color: var(--muted);
+      padding-bottom: 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 18px;
+      padding: 0 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 22px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: transform 0.15s, border-color 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent);
+      box-shadow: 0 8px 24px rgba(244,168,50,0.2);
+    }
+
+    .card.flipped {
+      border-color: var(--accent2);
+      background: #f0faf7;
+    }
+
+    .card-emoji {
+      font-size: 2.8rem;
+      margin-bottom: 10px;
+      line-height: 1;
+    }
+
+    .card-hu {
+      font-size: var(--word-size, 1.35rem);
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .card-en {
+      font-size: var(--word-size, 1.35rem);
+      font-weight: 700;
+      color: var(--accent2);
+      background: #e8f8f4;
+      border-radius: 10px;
+      padding: 4px 12px;
+      margin-top: 4px;
+      line-height: 1.3;
+    }
+
+    .card-phonetic {
+      font-size: 0.88rem;
+      color: var(--muted);
+      margin-top: 6px;
+      font-style: italic;
+    }
+
+    .play-btn {
+      margin-top: 12px;
+      background: var(--accent);
+      border: none;
+      border-radius: 40px;
+      color: white;
+      padding: 7px 18px;
+      font-family: 'Lexend', sans-serif;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .play-btn:hover {
+      background: #e09220;
+    }
+
+    .chapter-btn-row {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      padding: 28px 24px 0;
+    }
+
+    .chapter-btn-row button {
+      padding: 12px 28px;
+      border-radius: 40px;
+      border: none;
+      font-family: 'Lexend', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-prev {
+      background: #eee;
+      color: var(--text);
+    }
+
+    .btn-next {
+      background: var(--accent);
+      color: white;
+    }
+
+    .btn-prev:hover { background: #ddd; }
+    .btn-next:hover { background: #e09220; }
+
+    .chapter-indicator {
+      text-align: center;
+      font-size: 0.95rem;
+      color: var(--muted);
+      padding-top: 8px;
+    }
+
+    @media (max-width: 500px) {
+      header h1 { font-size: 1.5rem; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; padding: 0 12px; }
+      .card { padding: 16px 10px 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>🎯 Játékosan Angolul</h1>
+  <p>Tolki szókártyák – kattints a kártyára a hang meghallgatásához</p>
+</header>
+
+<div class="font-toggle">
+  <button class="active" onclick="setFont('lexend')">Lexend (ajánlott)</button>
+  <button onclick="setFont('arial')">Arial</button>
+  <button onclick="setFont('comic')">Comic Sans</button>
+</div>
+
+<div class="size-control">
+  <button onclick="changeSize(-2)">A−</button>
+  <span id="sizeLabel">Betűméret: közepes</span>
+  <button onclick="changeSize(2)">A+</button>
+</div>
+
+<nav id="chapNav"></nav>
+
+<div class="chapter-title" id="chapTitle"></div>
+<div class="chapter-subtitle" id="chapSubtitle"></div>
+<div class="grid" id="wordGrid"></div>
+
+<div class="chapter-btn-row">
+  <button class="btn-prev" onclick="prevChapter()">◀ Előző</button>
+  <button class="btn-next" onclick="nextChapter()">Következő ▶</button>
+</div>
+<div class="chapter-indicator" id="chapIndicator"></div>
+
+<script>
+const chapters = [
+  {
+    id: 0,
+    hu: "Otthon és Család",
+    en: "Home & Family",
+    emoji: "🏠",
+    words: [
+      { hu: "anya",      en: "mother / mum",    ph: "ˈmʌðə",    emoji: "👩" },
+      { hu: "apa",       en: "father / dad",    ph: "ˈfɑːðə",   emoji: "👨" },
+      { hu: "nagymama",  en: "grandmother",     ph: "ˈɡrænmʌðə",emoji: "👵" },
+      { hu: "nagypapa",  en: "grandfather",     ph: "ˈɡrænfɑːðə",emoji:"👴" },
+      { hu: "fiú",       en: "boy",             ph: "bɔɪ",      emoji: "👦" },
+      { hu: "lány",      en: "girl",            ph: "ɡɜːl",     emoji: "👧" },
+      { hu: "baba",      en: "baby",            ph: "ˈbeɪbi",   emoji: "👶" },
+      { hu: "ház",       en: "house",           ph: "haʊs",     emoji: "🏡" },
+      { hu: "konyha",    en: "kitchen",         ph: "ˈkɪtʃɪn",  emoji: "🍳" },
+      { hu: "hálószoba", en: "bedroom",         ph: "ˈbedruːm", emoji: "🛏️" },
+      { hu: "nappali",   en: "living room",     ph: "ˈlɪvɪŋ ruːm",emoji:"🛋️"},
+      { hu: "fürdőszoba",en: "bathroom",        ph: "ˈbɑːθruːm",emoji: "🚿" },
+      { hu: "ajtó",      en: "door",            ph: "dɔː",      emoji: "🚪" },
+      { hu: "ablak",     en: "window",          ph: "ˈwɪndəʊ",  emoji: "🪟" },
+      { hu: "asztal",    en: "table",           ph: "ˈteɪbəl",  emoji: "🪑" },
+      { hu: "ágy",       en: "bed",             ph: "bed",      emoji: "🛌" },
+    ]
+  },
+  {
+    id: 1,
+    hu: "Vidéki Élet",
+    en: "Rural Life",
+    emoji: "🌾",
+    words: [
+      { hu: "farm",      en: "farm",            ph: "fɑːm",     emoji: "🌾" },
+      { hu: "tehén",     en: "cow",             ph: "kaʊ",      emoji: "🐄" },
+      { hu: "ló",        en: "horse",           ph: "hɔːs",     emoji: "🐎" },
+      { hu: "disznó",    en: "pig",             ph: "pɪɡ",      emoji: "🐷" },
+      { hu: "birka",     en: "sheep",           ph: "ʃiːp",     emoji: "🐑" },
+      { hu: "csirke",    en: "chicken",         ph: "ˈtʃɪkɪn",  emoji: "🐔" },
+      { hu: "kakas",     en: "rooster",         ph: "ˈruːstə",  emoji: "🐓" },
+      { hu: "kacsa",     en: "duck",            ph: "dʌk",      emoji: "🦆" },
+      { hu: "kutya",     en: "dog",             ph: "dɒɡ",      emoji: "🐕" },
+      { hu: "macska",    en: "cat",             ph: "kæt",      emoji: "🐈" },
+      { hu: "traktor",   en: "tractor",         ph: "ˈtræktə",  emoji: "🚜" },
+      { hu: "mező",      en: "field",           ph: "fiːld",    emoji: "🌿" },
+      { hu: "széna",     en: "hay",             ph: "heɪ",      emoji: "🌾" },
+      { hu: "kerítés",   en: "fence",           ph: "fens",     emoji: "🪵" },
+    ]
+  },
+  {
+    id: 2,
+    hu: "Az Állatkertben",
+    en: "At the Zoo",
+    emoji: "🦁",
+    words: [
+      { hu: "oroszlán",  en: "lion",            ph: "ˈlaɪən",   emoji: "🦁" },
+      { hu: "elefánt",   en: "elephant",        ph: "ˈelɪfənt", emoji: "🐘" },
+      { hu: "zsiráf",    en: "giraffe",         ph: "dʒɪˈrɑːf", emoji: "🦒" },
+      { hu: "majom",     en: "monkey",          ph: "ˈmʌŋki",   emoji: "🐒" },
+      { hu: "medve",     en: "bear",            ph: "beə",      emoji: "🐻" },
+      { hu: "tigris",    en: "tiger",           ph: "ˈtaɪɡə",   emoji: "🐯" },
+      { hu: "zebra",     en: "zebra",           ph: "ˈziːbrə",  emoji: "🦓" },
+      { hu: "kígyó",     en: "snake",           ph: "sneɪk",    emoji: "🐍" },
+      { hu: "pingvin",   en: "penguin",         ph: "ˈpeŋɡwɪn", emoji: "🐧" },
+      { hu: "krokodil",  en: "crocodile",       ph: "ˈkrɒkədaɪl",emoji:"🐊"},
+      { hu: "papagáj",   en: "parrot",          ph: "ˈpærət",   emoji: "🦜" },
+      { hu: "flamingó",  en: "flamingo",        ph: "fləˈmɪŋɡəʊ",emoji:"🦩"},
+      { hu: "gepárd",    en: "cheetah",         ph: "ˈtʃiːtə",  emoji: "🐆" },
+      { hu: "gorilla",   en: "gorilla",         ph: "ɡəˈrɪlə",  emoji: "🦍" },
+    ]
+  },
+  {
+    id: 3,
+    hu: "Bevásárlás és Közlekedés",
+    en: "Shopping & Transport",
+    emoji: "🛒",
+    words: [
+      { hu: "bolt",      en: "shop / store",    ph: "ʃɒp",      emoji: "🏪" },
+      { hu: "pénz",      en: "money",           ph: "ˈmʌni",    emoji: "💰" },
+      { hu: "kosár",     en: "basket",          ph: "ˈbɑːskɪt", emoji: "🧺" },
+      { hu: "alma",      en: "apple",           ph: "ˈæpəl",    emoji: "🍎" },
+      { hu: "kenyér",    en: "bread",           ph: "bred",     emoji: "🍞" },
+      { hu: "tej",       en: "milk",            ph: "mɪlk",     emoji: "🥛" },
+      { hu: "autó",      en: "car",             ph: "kɑː",      emoji: "🚗" },
+      { hu: "busz",      en: "bus",             ph: "bʌs",      emoji: "🚌" },
+      { hu: "vonat",     en: "train",           ph: "treɪn",    emoji: "🚂" },
+      { hu: "repülő",    en: "airplane",        ph: "ˈeəpleɪn", emoji: "✈️" },
+      { hu: "kerékpár",  en: "bicycle / bike",  ph: "ˈbaɪsɪkəl",emoji: "🚲" },
+      { hu: "hajó",      en: "ship / boat",     ph: "ʃɪp",      emoji: "⛵" },
+      { hu: "piros lámpa",en:"red light",       ph: "red laɪt", emoji: "🚦" },
+      { hu: "zebra átkelő",en:"zebra crossing", ph: "ˈziːbrə",  emoji: "🦓" },
+    ]
+  },
+  {
+    id: 4,
+    hu: "Az Iskolában",
+    en: "At School",
+    emoji: "🏫",
+    words: [
+      { hu: "iskola",    en: "school",          ph: "skuːl",    emoji: "🏫" },
+      { hu: "tanár",     en: "teacher",         ph: "ˈtiːtʃə",  emoji: "👩‍🏫" },
+      { hu: "ceruza",    en: "pencil",          ph: "ˈpensəl",  emoji: "✏️" },
+      { hu: "toll",      en: "pen",             ph: "pen",      emoji: "🖊️" },
+      { hu: "könyv",     en: "book",            ph: "bʊk",      emoji: "📚" },
+      { hu: "táska",     en: "school bag",      ph: "skuːl bæɡ",emoji: "🎒" },
+      { hu: "vonalzó",   en: "ruler",           ph: "ˈruːlə",   emoji: "📏" },
+      { hu: "radír",     en: "eraser",          ph: "ɪˈreɪzə",  emoji: "🧽" },
+      { hu: "szék",      en: "chair",           ph: "tʃeə",     emoji: "🪑" },
+      { hu: "tábla",     en: "blackboard",      ph: "ˈblækbɔːd",emoji: "🖥️" },
+      { hu: "piros",     en: "red",             ph: "red",      emoji: "🔴" },
+      { hu: "kék",       en: "blue",            ph: "bluː",     emoji: "🔵" },
+      { hu: "sárga",     en: "yellow",          ph: "ˈjeləʊ",   emoji: "🟡" },
+      { hu: "zöld",      en: "green",           ph: "ɡriːn",    emoji: "🟢" },
+      { hu: "fekete",    en: "black",           ph: "blæk",     emoji: "⚫" },
+      { hu: "fehér",     en: "white",           ph: "waɪt",     emoji: "⚪" },
+      { hu: "egy",       en: "one",             ph: "wʌn",      emoji: "1️⃣" },
+      { hu: "kettő",     en: "two",             ph: "tuː",      emoji: "2️⃣" },
+      { hu: "három",     en: "three",           ph: "θriː",     emoji: "3️⃣" },
+      { hu: "négy",      en: "four",            ph: "fɔː",      emoji: "4️⃣" },
+      { hu: "öt",        en: "five",            ph: "faɪv",     emoji: "5️⃣" },
+    ]
+  },
+  {
+    id: 5,
+    hu: "Szabadidő a Parkban",
+    en: "Leisure in the Park",
+    emoji: "🌳",
+    words: [
+      { hu: "park",      en: "park",            ph: "pɑːk",     emoji: "🌳" },
+      { hu: "hinta",     en: "swing",           ph: "swɪŋ",     emoji: "🪀" },
+      { hu: "csúszda",   en: "slide",           ph: "slaɪd",    emoji: "🛝" },
+      { hu: "labda",     en: "ball",            ph: "bɔːl",     emoji: "⚽" },
+      { hu: "virág",     en: "flower",          ph: "ˈflaʊə",   emoji: "🌸" },
+      { hu: "fa",        en: "tree",            ph: "triː",     emoji: "🌲" },
+      { hu: "fű",        en: "grass",           ph: "ɡrɑːs",    emoji: "🌿" },
+      { hu: "madár",     en: "bird",            ph: "bɜːd",     emoji: "🐦" },
+      { hu: "pillangó",  en: "butterfly",       ph: "ˈbʌtəflaɪ",emoji: "🦋" },
+      { hu: "méh",       en: "bee",             ph: "biː",      emoji: "🐝" },
+      { hu: "futás",     en: "running",         ph: "ˈrʌnɪŋ",   emoji: "🏃" },
+      { hu: "ugrálás",   en: "jumping",         ph: "ˈdʒʌmpɪŋ", emoji: "⬆️" },
+      { hu: "kerékpározás",en:"cycling",        ph: "ˈsaɪklɪŋ", emoji: "🚴" },
+      { hu: "piknik",    en: "picnic",          ph: "ˈpɪknɪk",  emoji: "🧺" },
+    ]
+  },
+  {
+    id: 6,
+    hu: "Tavasz és Nyár",
+    en: "Spring & Summer",
+    emoji: "☀️",
+    words: [
+      { hu: "tavasz",    en: "spring",          ph: "sprɪŋ",    emoji: "🌱" },
+      { hu: "nyár",      en: "summer",          ph: "ˈsʌmə",    emoji: "☀️" },
+      { hu: "nap",       en: "sun",             ph: "sʌn",      emoji: "🌞" },
+      { hu: "meleg",     en: "warm / hot",      ph: "wɔːm",     emoji: "🌡️" },
+      { hu: "eső",       en: "rain",            ph: "reɪn",     emoji: "🌧️" },
+      { hu: "szivárvány",en: "rainbow",         ph: "ˈreɪnbəʊ", emoji: "🌈" },
+      { hu: "strand",    en: "beach",           ph: "biːtʃ",    emoji: "🏖️" },
+      { hu: "úszás",     en: "swimming",        ph: "ˈswɪmɪŋ",  emoji: "🏊" },
+      { hu: "fagylalt",  en: "ice cream",       ph: "ˈaɪs kriːm",emoji:"🍦" },
+      { hu: "napraforgó",en: "sunflower",       ph: "ˈsʌnflaʊə",emoji: "🌻" },
+      { hu: "lepke",     en: "butterfly",       ph: "ˈbʌtəflaɪ",emoji: "🦋" },
+      { hu: "nyuszi",    en: "rabbit",          ph: "ˈræbɪt",   emoji: "🐇" },
+      { hu: "piknik",    en: "picnic",          ph: "ˈpɪknɪk",  emoji: "🧺" },
+    ]
+  },
+  {
+    id: 7,
+    hu: "Ősz és Tél",
+    en: "Autumn & Winter",
+    emoji: "❄️",
+    words: [
+      { hu: "ősz",       en: "autumn / fall",   ph: "ˈɔːtəm",   emoji: "🍂" },
+      { hu: "tél",       en: "winter",          ph: "ˈwɪntə",   emoji: "⛄" },
+      { hu: "hó",        en: "snow",            ph: "snəʊ",     emoji: "❄️" },
+      { hu: "hideg",     en: "cold",            ph: "kəʊld",    emoji: "🥶" },
+      { hu: "falevél",   en: "leaf",            ph: "liːf",     emoji: "🍁" },
+      { hu: "gesztenye", en: "chestnut",        ph: "ˈtʃesnʌt", emoji: "🌰" },
+      { hu: "esernyő",   en: "umbrella",        ph: "ʌmˈbrelə", emoji: "☂️" },
+      { hu: "sál",       en: "scarf",           ph: "skɑːf",    emoji: "🧣" },
+      { hu: "kesztyű",   en: "gloves",          ph: "ɡlʌvz",    emoji: "🧤" },
+      { hu: "síelés",    en: "skiing",          ph: "ˈskiːɪŋ",  emoji: "⛷️" },
+      { hu: "hóember",   en: "snowman",         ph: "ˈsnəʊmæn", emoji: "⛄" },
+      { hu: "karácsony", en: "Christmas",       ph: "ˈkrɪsməs",  emoji: "🎄" },
+      { hu: "ajándék",   en: "gift / present",  ph: "ɡɪft",     emoji: "🎁" },
+      { hu: "halloween", en: "Halloween",       ph: "ˌhæləˈwiːn",emoji:"🎃" },
+    ]
+  }
+];
+
+let currentChapter = 0;
+let wordSizeLevel = 1; // 0=small, 1=med, 2=large, 3=xlarge
+const wordSizes = ["1.1rem","1.35rem","1.65rem","2rem"];
+const wordSizeLabels = ["Kicsi","Közepes","Nagy","Nagyon nagy"];
+
+function init() {
+  buildNav();
+  renderChapter(0);
+}
+
+function buildNav() {
+  const nav = document.getElementById('chapNav');
+  nav.innerHTML = '';
+  chapters.forEach((ch, i) => {
+    const btn = document.createElement('button');
+    btn.textContent = ch.emoji + ' ' + ch.hu;
+    btn.onclick = () => renderChapter(i);
+    btn.id = 'navbtn-' + i;
+    nav.appendChild(btn);
+  });
+}
+
+function renderChapter(idx) {
+  currentChapter = idx;
+  const ch = chapters[idx];
+
+  // Update nav
+  document.querySelectorAll('#chapNav button').forEach((b, i) => {
+    b.classList.toggle('active', i === idx);
+  });
+
+  document.getElementById('chapTitle').textContent = ch.emoji + ' ' + ch.hu;
+  document.getElementById('chapSubtitle').textContent = ch.en;
+  document.getElementById('chapIndicator').textContent = (idx + 1) + ' / ' + chapters.length + ' fejezet';
+
+  const grid = document.getElementById('wordGrid');
+  grid.innerHTML = '';
+
+  ch.words.forEach(w => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="card-emoji">${w.emoji}</div>
+      <div class="card-hu">${w.hu}</div>
+      <div class="card-en">${w.en}</div>
+      <div class="card-phonetic">${w.ph}</div>
+      <button class="play-btn" onclick="speakWord(event, '${w.en.split('/')[0].trim()}', '${w.hu}')">🔊 Kiejtés</button>
+    `;
+    grid.appendChild(card);
+  });
+
+  applyWordSize();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function speakWord(event, enWord, huWord) {
+  event.stopPropagation();
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(enWord);
+    utt.lang = 'en-GB';
+    utt.rate = 0.85;
+    window.speechSynthesis.speak(utt);
+  }
+}
+
+function nextChapter() {
+  if (currentChapter < chapters.length - 1) renderChapter(currentChapter + 1);
+}
+
+function prevChapter() {
+  if (currentChapter > 0) renderChapter(currentChapter - 1);
+}
+
+function changeSize(delta) {
+  const sizes = [0,1,2,3];
+  wordSizeLevel = Math.max(0, Math.min(3, wordSizeLevel + (delta > 0 ? 1 : -1)));
+  applyWordSize();
+  document.getElementById('sizeLabel').textContent = 'Betűméret: ' + wordSizeLabels[wordSizeLevel];
+}
+
+function applyWordSize() {
+  const size = wordSizes[wordSizeLevel];
+  document.querySelectorAll('.card-hu, .card-en').forEach(el => {
+    el.style.fontSize = size;
+  });
+}
+
+function setFont(font) {
+  document.querySelectorAll('.font-toggle button').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  if (font === 'lexend') {
+    document.body.style.fontFamily = "'Lexend', sans-serif";
+  } else if (font === 'arial') {
+    document.body.style.fontFamily = "Arial, sans-serif";
+  } else if (font === 'comic') {
+    document.body.style.fontFamily = "'Comic Sans MS', cursive";
+  }
+  document.querySelectorAll('.card-hu, .card-en, .card-phonetic, nav button, .font-toggle button, .play-btn').forEach(el => {
+    el.style.fontFamily = document.body.style.fontFamily;
+  });
+}
+
+init();
+</script>
+</body>
+</html>

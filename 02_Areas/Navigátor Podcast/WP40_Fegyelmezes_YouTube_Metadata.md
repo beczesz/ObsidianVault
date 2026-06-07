@@ -1,3 +1,15 @@
+---
+title: "WP40 – Fegyelmezés | Gál Ildikó | YouTube Metaadat"
+date: 2026-04-07
+author: Becze Szabolcs
+status: active
+description: "Gál Ildikó gyermekpszichológusnak a fegyelmezésről szóló podcastepisszódájának metaadatai és tartalmak szülők számára, beleértve virálos horogpontokat, időkódokat és YouTube-optimalizálási javaslatokat."
+description_source: auto
+description_hash: 07cbffa09d527c7e
+id: 7e4d59b7-e10a-4513-b7b2-9036edf1ce7f
+index_schema_version: 1
+bdos_index: true
+---
 # WP40 – Fegyelmezés | Gál Ildikó | YouTube Metaadat
 
 ---

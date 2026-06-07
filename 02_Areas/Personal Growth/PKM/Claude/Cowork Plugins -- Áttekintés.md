@@ -1,3 +1,15 @@
+---
+title: "Cowork Plugins -- Áttekintés"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Áttekintés az Anthropic 21 Cowork pluginjáról, amely 2026 januárja óta elérhető. Tartalmazza az eredeti 11 és új 10 plugin listáját, leírását, illetve javaslat mely pluginok kipróbálása lenne praktikus."
+description_source: auto
+description_hash: 62cacf4ced831f89
+id: ba1253c4-974d-411b-b55c-2cabca656c85
+index_schema_version: 1
+bdos_index: true
+---
 # Cowork Plugins -- Áttekintés
 
 > Utolsó frissítés: 2026-03-23

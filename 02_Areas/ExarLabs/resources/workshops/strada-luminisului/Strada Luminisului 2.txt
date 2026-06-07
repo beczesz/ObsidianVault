@@ -1,0 +1,316 @@
+Tehát fölüljön is egy nagy izék.
+Igen.
+Nagyon sokszor.
+Ugyanazt használjuk újra meg újra.
+De mi többet?
+Van egy megbeszélés, akkor az úgy létrejön egy csepp.
+Csepp.
+Csepp.
+Nem csak, hogy a kezdőnk el bedobálni dolgokat, hanem a vége van a meetingnek, akkor folytatjuk a beszélgetést.
+És akkor minden egyes meetingnek, miután ezek hívünk beszélgetések, minden egyes meetingnek.
+És a channelnek van egy olyan pozitív hozadéka is, hogy egy csomó minden add-on hozzátartozik.
+Tehát egyrészt van egy shared dokument része.
+És ezt is ki lehet mondani, hogy minden egyes dokumentum a projekten kapcsolatból kerüljön.
+Amúgy a belső sharepointunkon belül az egy külön mappát jelent.
+És mindenféle ilyen appot hozzá lehet szúrni, mint például a whiteboard, meg egy csomó mindent.
+Kezdjük ezeket egyre inkább használni.
+A meeting cset, hogy az hogy néz ki? Van egy két fort, és mellette ott van a meeting, mint a nevet.
+És akkor ebből kell kitalálnod azt, hogy ez a cset, ez egy idején információt.
+Meg hogyha a topikra létrehozunk egy háromemberes kis megbeszélés, amikor véget ér a topik, akkor mondjuk ki, hogy van még itt valami.
+Ha nincs, akkor zárjuk be az egész topikot, és töröljük a csetet hozzá.
+Hát, vagy ha nem is töröljük, ignoráljuk.
+Mert ha visszakereshető, az nem árt.
+Tehát, hogy többet nem szabadod kommunikálni.
+Tehát akkor gyakorlatilag mit szólnátok a kimondanák szabálynak, hogy ha valaki nem tartja ezt be, akkor beír egy cset üzenetbe, egy ilyen meeting csetbe,
+akkor az első üzenet az legyen rá, hogy ne ideírt, hanem ugyanaz copy-paste-tbe, és akkor lassan megtanulják az emberek, megtanuljuk, hogy a channel-eket hogyan használjuk.
+Jó. Na, még milyen, ilyen, valamit, ezt pont te dobtad fel, nem? Nem.
+Lenekne még, amit Alex-el kezdett csinálni, hogy egy időintervallum, amikor nem zavarjuk egymást, amikor tényleg fókuszidő van.
+Azt a Alex kitalálta, szerintem nagyon jó ötletlennek, mert megmondom őszintén, nekem is hiányzik az, hogy egy rakász szólva.
+Ez jó, csak nem mindenkinek működik egyfondan.
+Nem, ez lehetetlen, viszont az, hogyha a kétórás reakcióidőt mondunk ki, az azt jelenti, hogy valaki a fókuszidején kívül, tehát akármikor lehet két órá a fókuszideje, de a fókuszidőből, hogyha kijön, akkor nézze meg a csetét, hogy mire kell válaszoljanak.
+És akkor kávében tudjuk tartani azt, hogy két-három óra múl válaszolva.
+De van ilyen autófókusz, nem tudom, tudtátok-e, hogy a Microsoft Viva Engage-nek van egy ilyen funkciója bekapcsoló, és automatikusan keres a naptól,
+automatikusan keres a naptáradba egy kétórás szlatot, amikor egy ilyen autófókusz time-ot berak neked.
+És megkeresi dinamikusan, hogy hol van az a kétórás szlatta, és berakja.
+Ezt hogy csinál?
+Hát én inkább azt mondanám, hogy ezt nagyjából úgy tudjuk, hogy ez az nagyjából kénekezzen, hogy ha kap egy üzenetet, akkor igyekezzen minél hamarabb válaszolni rá.
+Igen.
+Igen.
+Igen.
+Tehát én teljesen, teljesen osztom azt, amit azon van.
+Tehát, hogy tényleg, különösen akkor, mikor, akkor dolgozol valamit, szükséged van egy válaszol, egy prompt válaszol, azt párszorban van.
+Elkezdesz valami máson dolgozni, akkor ez már izé.
+Igen, hogy fókuszban vagytok, akkor lehet mondani, hogy oké, később válaszolod áttal.
+Tehát létsz, létsz, mondjuk maguk.
+Én nem tudom, hogy létszi létszi válaszolni.
+Ha kimászok a fókuszból, akkor nekem azzal, hogy írok mást.
+Na, kizapként.
+Igen.
+Jó, csak én értem a fókuszt is, nem tudok értsétek vére.
+Csak nem tudunk így hatékonyan, mint csapat, működni ott.
+Ha mindenkinek vannak ilyen fókuszig, hogy ha hozzászolsz valaki ezekről utána van,
+és egy szoft deal, kéne ez legyen, hogy kicsit ezen javítsunk amúgy.
+Szerintem.
+Nem egyformában működünk az a helyzet.
+Tehát, hogy valakinek nem dobja ki az egész dolgút, tehát valakinek könnyűjözt megcsinálja.
+Ezért nem csak, hogy nem tudunk hatékonyan dolgozni, mint csapat,
+hogyha így csinálj tudom szerintem.
+Igen.
+Tehát, hogy itt azt javasolnám például Sanyi neked, hogyha te tudod magadról, hogy kiződkensz a fókuszba,
+akkor legyenek rövidebb fókusz idejének két óra, hanem legyen egy...
+Most már jó. Minúlum két-három óra kell.
+Jobb lenne három-négy.
+Két-három óra.
+De az a baj, akkor nem tudsz tam lenni.
+Mert egy tam az, aki képes arra, hogy gyorsan reagáljon.
+Például, hogyha most lehal az egész ABS inference farm, akkor körbe kell vegyen téged egy pár olyan ember,
+aki képes arra, hogy reagáljon.
+Például ezt meg tudjuk, hogy körbeépítünk téged.
+De bizonyos kritikus helyzetekben szükséges az, hogy akkor ne te legyél az egyetlen személy, aki válaszolsz,
+ha neked ez az igényed.
+Mert viszont a csapat kollektív igénye az, hogy gyorsan tudjunk reagálni.
+És hogyha azt csinálnánk, hogy például az ilyen kevésbé fontos dolgokkal küldünk üzenetet,
+és azt akkor mondjuk addig kikapcsolja a notifikációt, amit valaki fókuszál,
+de hogyha valami vagy nagyon fontos, akkor felhívjuk.
+Háááá.
+És ha az épp holba vagyunk, akkor kéne hívjad a kit.
+Hát igen.
+Nem szabadon dolgok legyenek, tényleg csak a kritikus, hogy megszakítsanak.
+Tehát az, hogy gyorsan reagálni, nem kéne elválást legyen.
+Igen, de van egyet érdek egyébként, hogyha tényleg 3-4 órás fókuszok vannak,
+akkor ott azt nehezen lehet fenntartani, hogy egyébként meg egy olyan valaki az,
+akinek prompt válaszolta a kérdéséseket.
+Tehát a kettő az nem mörgyölhető.
+Igen, szóval ha van például a csapaldan melletted még négy másik ember,
+és mindenki 3-4 órás idők vannak, akkor amíg várnak, te vagy a technikai marketing menedzser,
+várnak rád 3-4 órát, amíg valami döntést tudnak hozni,
+az szerintem van egy reális és érhető dolog.
+És hogyha az lenne, hogy lenne egy al-t-e, tam.
+Nem kell komplikálni.
+Csak az egy kérdezem el.
+Látszik, hogy dömba, dömba...
+Valami dolgozni is ki nem lenne.
+Szóval...
+Különböző sapkákhoz különböző elvárások elartozanak.
+Tehát, hogyha valaki tam, akkor egyébként válaszolni kell.
+Oké.
+És hogy abban a pillanatban fogja a sapkáját levesz és ő nem tan, hanem ő munkás ember, dolgozó,
+akkor ott meg tehet jönni a válaszol, csak akkor ő nem tan.
+Igen.
+És hogy most éppen melyik sapka van rajta, meg tehetjük el azt, hogy mi rakos rögykö sapkát.
+Igen, tehát ezzel az a baj, hogy ha egy ember van például Sanyi, azt mondod, hogy te így működsz,
+az még talán körbeépíthető és működhet, mert ha lejár a 3 órádat, akkor tudsz válaszolni és az még működik.
+De hogyha most képzeled el, mindenkinek így működne, gyakorlatilag egymásra tevődnének a fókuszidők,
+és reggel küldene valaki egy üzenetet, 3-4 emberig, ameddig visszamegy az üzenet,
+egész nap vagy két nap eltelik.
+És néha pedig az van, hogy írsz úrni Miki, hogy mi a helyzet ezzel a projektel.
+És akkor ő prompt választ vár.
+Akkor én indulok a prompt válaszol, de ritkán van az, hogy megkeresek valaki,
+de néha például akár WhatsAppon is felhívok a telefonon, hogy ezzel mi a helyzet.
+És hogyha 5 percen belül tudok Miki nekem egy választ adni,
+ő egyrészt azért az érzete, hogy flottul működik ez a CTS csapat,
+de a másik pedig az, hogy tényleg az van, hogy amikor a CEO szinten kérdez valamit,
+ritkán hív fel telefonon, de amikor felhív, akkor választ akar.
+Úgyhogy én nem bánám, ha lenne egy olyan szűk közösség,
+akivel promptan tudok beszélgetni.
+Ezért is alakítottuk ki ezt a squad csapatot így.
+Ilyen squad csapatot így, mert promptúl tudnak válaszolni.
+Akkor keressünk egy másik tamot az inference farmon,
+hogyha úgy érzed, hogy ez nem fog működni.
+Nem fog működni.
+Nem kell most gondold végig, beszélgessünk még a mai napdél után.
+Tudom, hogy a határa igazsúruljuk ezzel, de ez van.
+Ezt láttam, hogy ez az igénye a kollektívan a csapatnak,
+hogy egy olyan világot írunk, ahol gyorsan kell tudjunk reagálni.
+Nem a csapatnak Riko Ementje, hanem sajnos a klienseknek.
+A klienseknek.
+Igen.
+Meg hogy amilyen szakmát csinálunk most szóval,
+hogy a DevOps-ban szerintem lehal a klienesnek az akármilyen,
+a klienseknek az akármilyen, a munkaidőben,
+és ír, hogy Hello Ango, hogy vizély összetosta magát az egész inkron,
+akkor nem tudjuk azt csinálni,
+mert három-négy óras, akkor már két fókuszban vagyunk.
+Értem, de akkor még van két másik ember is ott, aki szokás.
+Hát igen, de te vagy a technical account manager,
+te vagy a first responder, ahogy mondják ezt a dolgot.
+Hát meg ugye akkor neked kell döntéshoz ír, hogyha valami íva van.
+Igen, mert milyen irányban most kórdítsuk,
+vagy Isten mencs, hogy ugyanítsuk be, ez meg ez van.
+Amúgy simán lehet, hogy még magad mellé egy-két emberbe tanítasz,
+és akkor így közösen visszük ezt az egészet,
+tehát hogy nyilván egy emberen múljon minden,
+tehát hogy ha éppen a technical account manager nem tud döntést hozni,
+vagy szabadnapos, vagy valamilyen oknál fogva.
+Ennek teljesen rendben van, hogyha a végén egy akármilyen jól itt,
+mert azt mondjam, hogy inkább hibázott, inkább kéreti elnézés, mint hogy engedi.
+A lakon hoz egy döntés, baksz, nem lesz jó, kész, megyünk tovább.
+Én el tudom fogadni ezt a döntést is, hogy akkor a tanker reagáljon azonnal,
+de akkor másfajtát a... máskor kell fókuszindulni.
+Tehát ennek az a hátránya, hogy lehet eltelenek...
+Ha egyfajtában válaszolok mindenre, akkor elteli két-ház nap, hogy alig van effektív, konkrét...
+Eredmény munkádnak?
+Eredmény a munkádnak.
+Eredmény a munkádnak.
+Adni szákszom kívül?
+Én ezt vettem észre, akkor vagyok hatékonyabb, ha reagálva azt a...
+Ha nem is minden nap, mert lehet éppen van meeting, azt a két és fél órát...
+Vagy akkor, vagy akkor, ha nem, akkor este, utána lefekszik az egész család, tudok még egy-két órát.
+Igen, megint a sapkát keverednek, tehát hogy nem tankként vagy hatékony a fókuszidőnkben,
+hanem munkás, jó munkás emberként, tehát dolgozóként vagy hatékony, és akkor nem tanul.
+Melyik hatékony tan, az válaszol.
+Igen, tehát ha kérdésekkel válaszolod, akkor tanulj.
+Ha nem kérdésekkel, ha kérdésekkel válszolod és fókuszidőd kell, akkor nem tanulj, akkor fejlőd vagy.
+Kód, kód, módló ember vagy.
+És ezt is ki kell mondani.
+De egyben vagy mind a kettő.
+Hát igen, de ugye egyszerre...
+Nem lehet.
+Konkrétan nem tudod a kettőt megcsinálni, akkor vagy ez vagy egy pillanatban, vagy a másik vagy.
+És nem értéktelen idő az, amikor tanul vagy.
+Tehát szerintem ezt vegyül össze, hogy annyira megszoktuk, hogy ilyen engineer-ek vagyunk és megoldásokat hozunk,
+hogy amikor egy problémát oldunk meg, aminek a végeleménye az, hogy minden visszaáll a helyére, azt érezzük, nem csináltunk semmit.
+De ez nem igaz, mert valójában egy magashozzáadott értékű munkát végeztünk el, amikor a kokta nem robbant fel.
+Már kb. inképzelmel a kliensről, hogy elindul mőanyomás, mőanyomás és aztán exponenciális lesz.
+Tehát amikor két óra eltelik és még mindig nem is reakció, felrobban a kliens.
+És most nem két óra lehető, két nap, de abszolút, hogyha két napig nem reagál a csapatunk, ez egy amatőr valamilyen, amikor...
+És az onriván robbant is a kliensről, tehát a végén már ő panaszkodott annak előre, hogy tartoznak egy millió euróval, egy millió dollárról.
+Már ők panaszkodtak nekünk is jobbgal, mert kirobbant belőlük az, amit már így kellett volna robbannya.
+Szóval, technical account managernek lenni egy más típusú munka, mint mérnöknek lenni.
+De magas a hozzáadott értéke, sőt néha magasabb, mint mérnöknek lenni.
+Nehogy néha, amikor szükség van rá, magasabb, mint mérnöknek lenni.
+Tehát, hogyha nem mutatsz fel eredményeket, azzal tudod két óra alatt, amedig technical account manager voltál,
+az teljesen belefér, nem hogy belefér, ez az alap.
+Tehát, hogy nem várjuk el a mérnököktől, hogy egyszerre csináljanak valamit, és egyszerre holjanak meg egy komplex problémát a kliessen.
+Ezt nem csak neked mondom, majd mindentamnak, hogy ez ezzel jár.
+És ezt most mondjuk nem az van, hogy ezt én mindig tudtam, nem az van, hogy egy héttel ezelőtt én így kimondtam magamnak,
+és most meghozom a tutit, hanem ez egy kollektív gondolkodás, amiben részt veszünk.
+Együtt beszélgetünk, álmondjuk meg, hozzuk a szabályukat, és vesztük fel a hangjegyzetet,
+ebből lesz majd egy dokumentáció, és ezután ez így lesz.
+Tehát ez most egy döntés, amit hozunk.
+Na jó, valami a reakcióidővel kapcsolatban még van-e valami? Ez nagyon jó, hogy felhoztat Zoli.
+Hogy érzitek ezt? Tartható-e az a reakcióidő elvárás mindenki irányába most, és csak társaink kívül is?
+Jó.
+Próbáljuk meg, nézzük meg, tanuljunk ebből.
+Nézzük meg, azt nem látjuk.
+Szerintem, aki nem tam, szerintem kéne magának fokuszt.
+Tehát, aki dolgozik effektív, kéne magának fokuszt, ötleváltson.
+Mert azzal szerintem rosszabb, hogyha te zökkensz ki, és 15 perc, vagy visszazökkennél a...
+Igen. Amúgy erről lesz szó a délután.
+A kénekedő meredményes emberek hét szokásának olyan priorizáljuk az időnket,
+hogy mik a sürgős és fontos, és a nem sürgős és fontos, és a fontos és nem sürgős.
+Tehát ezeket a dolgokat át tudjuk beszélni, ha gondoljátok.
+Ez egy létező modell már.
+Hogy is átbeszélni, hogy mi az, ami...
+Mert például az ITIL process kiépítés, az egy nem sürgős, de fontos feladat.
+És hogyha egyfolytában sürgős dolgokkal foglalkozunk, akkor a nem sürgős, de fontos dolgokkal nehezen haladunk.
+És az igazi profi csapat az, aki folyamatosan tud haladni a nem sürgős, de fontos dolgokkal.
+Mert az van, hogy ami fontos most, de nem sürgős, a körünkre ég a gyerke egy idő után sürgős lesz.
+És az amatőr csapat, amely egyfolytában tüzet old, és a nem amatőr csapat az, amelyik tervez és kilintenez még akkor is, hogyha nem sürgős, de fontos.
+És valójában így lehet fenntartani az, hogy nagy teljesítmény lehet egy csapatnak, de sose égen a ház.
+Néha mindig ég, tehát valami történik mindig, de ha rosszul csináljuk, akkor folyamatosan így minden.
+Ha jól csináljuk, akkor kicsit ég mindig, és lesz egy csomó időnk arra, hogy olyan dolgokra figyeljük.
+És gyakorlatilag, amit te mondasz, az az, hogy a fókuszidő az egy olyan belső fegyelemből kivált idő, amikor fókuszálunk arra, ami most éppen nem sürgős.
+De fontos.
+De fontos.
+De foglalkozunk meg fontos dolgokat.
+Mondom, hogy kinek, kikor van a fókusz ide, vagy hogy tudja be, azt szerintem ez már egy emberfüggő.
+És emberfüggő.
+Van, aki hajnalba tud figyelni, van, aki éjjel tud figyelni.
+Nekem van olyan egy rök, amúgy ilyen, bocsánas, amúgy leszembe jut valami, és akkor...
+Spike pine horse.
+Hát igen, amúgy volt ez.
+Fél a pénzem.
+Azt is majd is rég csináltam, de...
+De amit van olyan, hogy itt olyan random leszembe jut vannak,
+amit húpa, azt kétsz ki kéne próbálni, és...
+...óban öröks megcsinálni.
+De...
+Például én meg nem tudok úgy, hogy na most aztán megkoncentrálok.
+Ööö...
+Ez nekem nem megy.
+De...
+Nektek ne igaz, vagy nem, szerintem ezt nem kell elhúzni.
+Nem kell.
+Hanem mindenki, ahogy érzés...
+Csak tervre kell elhúzni.
+A pillanat térjek vissza, hogy elmerjük azt mondani,
+hogy a világ olyan irányban, hogy mindig sürgős és fontos dolgok kezdenek jönni,
+vagy nevelhetjük a...
+Aki kéri az igényt, jönni ki, azt mondja, hogy kell a Coder Next.
+És akkor lehet azt mondja higgadtan,
+de ha ilyen ez egy fontos dolog, akkor kiépítünk erre egy infrát, ami...
+majd gyorsan...
+Tehát az a helyzet, hogyha mikinek fontos, akkor nekünk is fontos kell legyen.
+Értem, de attól, hogy azt érzel, hogy sürgős, ez még nem is sürgős.
+Tehát, hogy...
+Szerintem ez itt azért egy ilyen, ez a mi kis dolog azért az ilyen legszebb semmi.
+Ez azért nem...
+Ez sürgős és fontos.
+Az, hogyha ilyen van...
+Az azért van...
+Mert azt gondolja, amikéig, hogy...
+Valamit korábban nem csináltunk meg.
+Amit...
+Hogyha megcsináltunk volna, akkor ez nem lenne semmi probléma, hogy most azonnal felrakjunk egy vezét egy Coder Next-et.
+Tehát azt úgy érti, hogyha meg tudod mondani, hogy na, akkor mi a fasz van.
+Ha ez egy teljesen új dolog, és csak úgy egyszer csak jön a berültékből, akkor azt el fogja fogadni, hogy azt mondjuk már, hogy neki, vagy így, oké, három hét.
+És azt szökjük.
+De ebben az esetben ez azért volt egy kicsit gáz, mert neki az volt a megérise, meg megértése, hogy pillantok alatt össze kellene tudni hozni egy ilyet.
+Most csak a leköltést télt két óra mondjuk.
+Ilyenkor lehet managing expectation, de ahogy az Isten van is mondja, ez többnyire egy ilyen szélsőséges eset volt.
+Most ebből leszültük a tanulságot, hogy mi kell még bele az inference fundba, hogy ez legközelebb ne legyen egy szélsőséges,
+hanem egy teljesen baseline kérés lehessen, amire azt lehet mondani, hogy oké, pár óra is megvan.
+De ne erre építsük fel a működést, hogy időnként, ami ki odaszól.
+Én vagyok az első buffer.
+Én a lehető legtöbb esetben, ha vissza tudok kussolni, hogy azt mondom, hogy lófasznál és minden más is van,
+akkor én azt megteszem abba, bízzatok.
+És utána, ha van olyan dolog, amit én nem tudok megbecsülni, hogy mennyi ideig tart, akkor fogok nálatok jönni a TAM-nál,
+és megkérdezni, hogy na akkor ez mennyi idő, milyen prioritásaitok vannak belül.
+És az viszont már onnantól a ti felelősségetek, hogy milyen kapacitás alapján mondtok nekem egy becsést arra, hogy mikor le lehet meg.
+De az már a tietek, tehát onnantól kezdve én nem fogom azt vitatni, hogy ha te azt mondtad, hogy egy hétig tart,
+de közben bejött egy másik ágona, nándi mondjuk egy másik szalra, akkor ott azt, hogy oldjátok meg az onnantól a ti felelősségetek.
+Jó, akkor azt kell meg felmérjük még, hogy ebbe a unitba kinek mennyit kapacitása van.
+Szerintem, mint TAM, ki jött össze a unitot, nem most ebből.
+Ja, persze, persze.
+És akkor megbeszéljétek.
+Meg a feladatról nem az, hogy megbolda dolgokat, nem az, hogy meglegyének oldva a dolgokat.
+Tehát delegálj, és megkapna megfelelő kompetenciát, eszkalálj, hozzám leszhez.
+Szóval a TAM az egy összefoglalja az erőforrásokat, és megboldja az erőforrások segítségére.
+Nem tudom, hogy volt-e valamilyen?
+A reakcióidő szerintem elég jól körben bombáztuk a TAM-nak a felelősségét.
+Mi történik? Igen, az edukációval.
+Ha egy klienes jön az ő prioritásai szerint, és mi azt mondjuk, hogy a te prioritásod, nem a mi prioritásunk.
+Például az onrivánát akasztaltam, hogy minden nagyon-nagyon sürgős volt, és most kellett, és nem tudom, és Irina éjjel, és nem tudom micsoda.
+Ez az a pont, ahol egyszerűen azt mondhatjátok, hogy ha látjátok, hogy valójában igazán nem fontos,
+hanem ez csak az agyfröccsenése volt Irinának, akkor egyszerűen nemet mondtok, és vállaljuk a következményeit. Kész.
+Kész.
+És akkor jöhet Irina aholja, de micsoda, és akkor megmondjuk, hogy figyelj, ennyi SLL-ban, munkaidőn kívül volt, stb.
+Ezt nem vállaltuk.
+Ha nem tetszik, akkor vehetsz egy nagyobb csomagot, amikor 24 hétes szuport benne van, és akkor szuportcsapat válaszol,
+de akkor az nem kétezer euró, vagy négyezer euró, hanem tizenkettő.
+Amúgy képzeljétek, olyan vicces, hogy ez is történt. Irina panaszkodott nekem januárban, hogy nem reagáltunk elég gyorsan,
+és hogy ő elvárná, hogy egy óra alatt reagáljunk, ilyet mondott Irina.
+És akkor megnyitottam a honlapot, oda görgettem az SLL-táblázathoz, ahol az egy órát vállaljuk,
+és kiderült, hogy azért pont nem azt kéne fizessék, amit most fizetnek, hanem valamennyire többen.
+És olyan szék sírítse edlet utána egyből, mint hogyha nem is tette volna fel a szépkérdést, egyből ment a következő.
+Tovább, igen.
+És mutattam 24 hétes szuportot is, de nem görgettem, és amikor rálátott arra, akkor egyből megfutattam a teket a fejébe, hogy ez nagyon jól jött ki,
+vagy le volt dokumentálva, ez egy konkrét győzelme volt a honlapot.
+Jó, én azt hiszem, hogy most már végére írtunk, nagyon szuper volt ez a beszélget.
+Én ezt vártam őszintén, szóval ezt nem lehet online megbeszélni, az az igazság.
+Tehát most hogy beszéltük volna ezeket minden online, úgyhogy ez egy nagyon sikeres workshop volt, ezt fel is vettem hangüzenetbe.
+És a CTO-nak majd be fogok nyújtani egy riportot, amit AI-gen, amit megnyírom.
+És a kemény munkával.
+Kemény munkával.
+És a kemény munkával.
+Egy hétemben fog kerülni.
+Kokrétan lefoglak baszni, ha ezt kézzel akarod csinálni.
+Ahogy itt a fejébe.
+Igen.
+Volt a...
+Jó, megállítom a vizet.
+Ez legyen meg.
+Ez legyen meg.
+Ez legyen meg.
+Ez legyen meg.

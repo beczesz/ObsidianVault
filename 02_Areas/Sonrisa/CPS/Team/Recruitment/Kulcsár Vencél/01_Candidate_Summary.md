@@ -1,3 +1,15 @@
+---
+title: "Kulcsár Vencél - Candidate Assessment"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "Feltételesen ajánlott junior-medior Azure szakember, aki erős adatmérnöki háttérrel, kiváló alázattal és csapatmunkára motiváltsággal rendelkezik, de jelentős technikai gap-ek vannak DevOps területeken (IaC, CI/CD, HA rendszerek). Proaktivitásáról és empátiájáról nincs még elegendő adat."
+description_source: auto
+description_hash: 2b1737979215393c
+id: dc481419-6e45-4fca-9185-dd5caa89be6e
+index_schema_version: 1
+bdos_index: true
+---
 # Kulcsár Vencél - Candidate Assessment
 
 **Pozíció:** Azure Cloud Engineer (E3-E4 szint)

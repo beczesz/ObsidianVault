@@ -1,4 +1,7 @@
 ---
+description: "SEON is a fraud detection and AML SaaS company with 300+ employees, SOC 2 and ISO 27001 certified, that recently raised $80M Series C."
+description_source: auto
+description_hash: 309ac685e028704f
 type: lead
 id: seon
 company: "SEON"
@@ -44,7 +47,6 @@ created: 2026-05-11
 validated: 2026-05-18
 last_signal_check: 2026-05-18
 ---
-
 # SEON
 
 ## Signal

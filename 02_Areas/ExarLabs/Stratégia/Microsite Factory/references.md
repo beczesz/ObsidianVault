@@ -1,11 +1,13 @@
 ---
 title: References — Microsite Factory
+description: "Collection of internal capability documentation, infrastructure decisions, and strategic references for the Microsite Factory project, including Brand Spine framework, live precedent from Sonrisa CPS, deployment skeleton, and positioning within ExarLabs' 2026 strategy targeting SMBs in healthcare and other industries."
+description_source: auto
+description_hash: d53628e83bd62043
 type: references
 created: 2026-05-16
 id: cfbe582a-01a5-4574-9e53-5f8bff922f48
 index_schema_version: 1
 ---
-
 # References — kapcsolódó vault anyagok
 
 ## Belső capability (BDOS — eszköz oldal)

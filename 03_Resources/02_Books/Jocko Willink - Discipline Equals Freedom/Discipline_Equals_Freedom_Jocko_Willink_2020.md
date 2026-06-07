@@ -1,5 +1,8 @@
 ---
 title: "Discipline Equals Freedom: Field Manual"
+description: "Jocko Willink's manual argues that discipline, not shortcuts, is the foundation of freedom and success. For readers seeking uncompromising guidance on self-discipline, physical training, nutrition and stoic philosophy, drawn from the author's Navy SEAL experience."
+description_source: auto
+description_hash: 73ea3f8ddc669c8e
 type: book
 author: "Jocko Willink"
 year: 2020
@@ -13,7 +16,6 @@ processed_by: "AI Speed-Reading Agent"
 id: a1e752d2-7b90-4e9d-8ca0-5b38001ab68a
 index_schema_version: 1
 ---
-
 # Discipline Equals Freedom: Field Manual — Jocko Willink (2020)
 **Thesis (1‑line):** Self‑discipline is the foundation of personal freedom and success—there is no hack or shortcut, only the relentless choice to control your actions, mind and body.
 

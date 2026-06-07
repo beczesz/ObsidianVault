@@ -1,5 +1,8 @@
 ---
 title: "Contract-Cadru de Colaborare și Prestări Servicii Digitale"
+description: "Framework contract between SC EXAR LABS SRL and SC DEÁK HÚSMÍVES SRL for digital platform services for online meat product sales, specifying roles, obligations, payment terms, intellectual property, data protection and dispute resolution for an indefinite duration."
+description_source: auto
+description_hash: 108b6024610e0816
 version: "1.0"
 status: DRAFT
 created: 2026-04-16
@@ -15,7 +18,6 @@ changelog:
 id: d4ac99e4-ad19-43e6-8a5b-9b7128235257
 index_schema_version: 1
 ---
-
 # CONTRACT-CADRU DE COLABORARE ȘI PRESTĂRI SERVICII DIGITALE
 
 **(pe durată nedeterminată)**

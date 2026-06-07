@@ -1,3 +1,15 @@
+---
+title: "Webinar — Haladó szint"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Haladó szintű webinar koncepciója az AI-asszisztált gondolkodásról: Claude Cowork és Obsidian mélységi használata tudásmunkások, alkotók, vállalkozók számára, akik rendszeres AI-munkafolyamatot szeretnének építeni."
+description_source: auto
+description_hash: 7370bd635553c174
+id: 73f5e18b-11b5-4e53-9729-8a53cc5add98
+index_schema_version: 1
+bdos_index: true
+---
 # Webinar — Haladó szint
 ## Claude Cowork + Obsidian: Az AI-asszisztált gondolkodás műhelye
 

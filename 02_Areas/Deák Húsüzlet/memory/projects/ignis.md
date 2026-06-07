@@ -1,3 +1,15 @@
+---
+title: "Ignis Learning Platform"
+date: 2026-04-03
+author: Becze Szabolcs
+status: active
+description: "Exar Labs oktatási SaaS platformja, amely pályázati finanszírozásból működik és LangChain AI-t integrál az adaptív tanuláshoz. A projekt 50 Jira tickettel halad, hangsúlyosan a mesterséges intelligencia alapú leckejavaslatok és agentic workflows fejlesztésén."
+description_source: auto
+description_hash: 5fc19dda42268eef
+id: cf1058f2-9427-4577-9355-e8a96eb38af1
+index_schema_version: 1
+bdos_index: true
+---
 # Ignis Learning Platform
 
 _Last updated: 2026-03-30_

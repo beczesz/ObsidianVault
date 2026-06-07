@@ -1,3 +1,15 @@
+---
+title: "Onriva"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Active AWS operations account managing Onriva's myRiva travel SaaS platform across 80 EC2 instances with 72% profit margin; awaits TAM assignment decision and requires proactive communication to prevent missed issues despite client silence."
+description_source: auto
+description_hash: 6c573fae6bc79b18
+id: 84aa9556-f98a-412c-8e5b-5114f66810eb
+index_schema_version: 1
+bdos_index: true
+---
 # Onriva
 
 ## Quick Info

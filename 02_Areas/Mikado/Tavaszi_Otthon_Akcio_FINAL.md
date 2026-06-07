@@ -1,3 +1,15 @@
+---
+title: "Tavaszi Otthon Akció - Facebook Posztok (VÉGLEGES)"
+date: 2026-02-15
+author: Becze Szabolcs
+status: active
+description: "Teaser és bejelentő Facebook posztok a Mikado Építészirodánál, amely március 30-ig 30% kedvezményt kínál az első 5 kliensnek családi házak tervezéséhez. Marketing anyagot tartalmaz infografika javaslatokkal, válasz sablonokkal és hash tagekkel."
+description_source: auto
+description_hash: 25e78a605681d11d
+id: 32182799-021e-4431-8f68-57d02288f501
+index_schema_version: 1
+bdos_index: true
+---
 # Tavaszi Otthon Akció - Facebook Posztok (VÉGLEGES)
 
 ---

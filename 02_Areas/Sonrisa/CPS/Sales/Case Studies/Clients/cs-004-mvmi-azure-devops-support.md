@@ -1,5 +1,8 @@
 ---
 title: "Case Study: MVMI - Azure DevOps Platform Support (SLA)"
+description: "MVMI energiaszolgáltató Azure DevOps platform üzemeltetésének SLA-alapú esettanulmánya: L3 szintű hibakezelés 8 munkaórás garantált reakcióidővel, konténerizációs tanácsadás és fejlesztői support 5x11 rendelkezésre állással."
+description_source: auto
+description_hash: db804cfd004357a1
 id: cs-004
 industry: energy
 size: "Large enterprise, 3M+ end customers"
@@ -12,7 +15,6 @@ status: active
 author: Sonrisa CPS
 index_schema_version: 1
 ---
-
 # Case Study: MVMI - Azure DevOps Platform Support (SLA)
 
 > **One-liner for outreach:** "Az MVMI Azure DevOps platformját SLA-alapon üzemeltetjük -- L3 szintű hibaelhárítás 8 munkaórán belül, konténerizációs tanácsadás, fejlesztői és rendszermérnöki support 5x11-ben."

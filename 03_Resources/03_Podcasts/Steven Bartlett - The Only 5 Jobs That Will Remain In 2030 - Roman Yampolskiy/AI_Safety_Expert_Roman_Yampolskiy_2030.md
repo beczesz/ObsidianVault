@@ -1,3 +1,15 @@
+---
+title: "The AI Safety Expert: These Are The Only 5 Jobs That Will Remain In 2030! — Steven Bartlett with Roman Yampolskiy (2025)"
+date: 2025-09-30
+author: Becze Szabolcs
+status: active
+description: "Steven Bartlett interviews AI safety researcher Roman Yampolskiy, who predicts AGI by 2027 and 99% unemployment within five years, arguing only human-preference jobs like therapy and artisanal work will survive. The episode covers AI alignment challenges, profit-driven development incentives, and existential risks of uncontrolled superintelligence."
+description_source: auto
+description_hash: 37a135b95799fddf
+id: 706d2ca9-2042-4942-bc9e-6f5eecf06bd4
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /03_Podcasts/Steven Bartlett - The Only 5 Jobs That Will Remain In 2030 - Roman Yampolskiy/
 FILES:
   - The AI Safety Expert These Are The Only 5 Jobs That Will Remain In 2030! - Dr. Roman Yampolskiy [English (auto-generated)] [DownloadYoutubeSubtitles.com].srt (if provided)

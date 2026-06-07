@@ -1,4 +1,7 @@
 ---
+description: "Csakabaj S02E09 epizód, amelyben Dr. Szöllösi Attila urológus főorvos 97 percig beszél Józsa Levi-vel a férfi egészség tabuiról, szexuális diszfunkcióról, prosztáta rákról és a magyar férfiakra nehezedő társadalmi nyomásokról."
+description_source: auto
+description_hash: c711e1961a0dd987
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
@@ -13,7 +16,6 @@ synthesis_status: Complete
 id: f1c5b8c7-607e-4950-a916-67df081726a2
 index_schema_version: 1
 ---
-
 ## Alapadatok
 
 | Attribútum | Érték |

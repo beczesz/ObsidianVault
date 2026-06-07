@@ -1,3 +1,15 @@
+---
+title: "General Utils Plugin"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Claude Cowork általános segédeszköz csomag három skill-lel: multi-AI orkesztrációs motor (ChatGPT, Perplexity, Claude koordinációval), YAML header kezelés és projekt állapot nyomkövetés. Fejlesztésre és projektmenedzselésre használják."
+description_source: auto
+description_hash: 0ff328ee6352eb94
+id: 3b1d3993-e065-439a-b1f0-74b1d4d3c860
+index_schema_version: 1
+bdos_index: true
+---
 # General Utils Plugin
 
 Altalanos segedeszközök Claude Cowork-hoz. Harom skill-t tartalmaz: semi-autonom multi-AI orkesztracio (ChatGPT + Perplexity + Claude), fajl YAML header kezeles, es projekt allapot motor.

@@ -1,4 +1,7 @@
 ---
+description: "Egy 30 másodperces spirituális portré: három kérdés boncolgatja a modern figyelem szétszóródottságát, majd a monstrancia-képsor egy negyedik kérdéssel átfordítja a tekintet Jézusra; pap offscreen hangja helyett a végzetes brand-line képileg érkezik meg."
+description_source: auto
+description_hash: 99bab901d996ab7c
 type: forgatókönyv-draft
 reel: "#1 — Vertikális"
 version: v1A (Opus 4.7, local)
@@ -9,7 +12,6 @@ created: 2026-05-19
 id: d9bdde1b-ecca-4b2a-9821-debd21470d73
 index_schema_version: 1
 ---
-
 # Reel #1 — Vertikális (Isten ↔ ember) — v1A Opus
 
 ## Koncepció egy mondatban

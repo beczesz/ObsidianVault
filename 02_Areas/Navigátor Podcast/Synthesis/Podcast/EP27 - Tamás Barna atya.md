@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP27
 title: "Fókuszpont, Ferenc pápa, XIV Leo Pápa, és Carlo Acutis szentté avatása | Tamás Barna atya | EP 27"
+description: "Tamás Barna székelyudvarhelyi pap EP27 epizódja Ferenc pápa halála, az új pápa kiválasztása és Carlo Acutis szentté avatása körüli vatikáni eseményekről szól. Az elemzés részletezi a videó niche vallási közönségét, amely elsősorban román és magyar plébániai csoportokon keresztül terjedt közösségi médiában."
+description_source: auto
+description_hash: c6fa1bbe4164b3ac
 guest: "Tamás Barna atya"
 guest_title: "Római katolikus pap, volt ifjúsági lelkész"
 topic: "Ferenc pápa hagyatéka, XIV. Leó pápa, Carlo Acutis szentté avatása, Fókuszpont imaest, eukarisztia"
@@ -15,7 +18,6 @@ quality: deep
 id: 1685806e-4e4a-4013-a278-57193dd24d02
 index_schema_version: 1
 ---
-
 # EP27 — Tamás Barna atya: „Mindenki különlegesnek születik, mégis fénymásolatként hal meg"
 
 ## YouTube Studio Analytics

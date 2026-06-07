@@ -2,6 +2,9 @@
 series: "7 Szokás"
 episode: "EP8"
 title: "Élezd meg a fűrészt – A folyamatos megújulás négy dimenziója"
+description: "A 7. szokás záró epizódja a négy dimenzió (test, lélek, intellektus, kapcsolatok) szinergikus megújulásáról szól, amely exponenciális személyes fejlődéshez vezet, ha összhangban gyakoroljuk őket. Vallomásokkal és metaforákkal mutatja be, hogyan visz a folyamatos karbantartás felfele vagy lefele a spirálon."
+description_source: auto
+description_hash: 42a64f28f6ba82e6
 host: "Beczesz Szabolcs"
 source_book: "Stephen Covey – A kiemelkedően eredményes emberek 7 szokása"
 youtube_id: "UvStqT1WP18"
@@ -31,7 +34,6 @@ created: "2026-04-06"
 id: 0ab978c1-12a6-4835-974a-0657085d4e50
 index_schema_version: 1
 ---
-
 # 7 Szokás EP8 – Élezd meg a fűrészt: A folyamatos megújulás négy dimenziója
 
 ## Sorozat kontextus

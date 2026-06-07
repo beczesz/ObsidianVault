@@ -1,3 +1,15 @@
+---
+title: "Changelog"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Verziókövetési dokumentum a Navigator Podcast Plugin fejlesztéséről, amely a 0.1.0-tól 0.2.0-ig terjedő változásokat, új funkciókat és módosításokat részletezi semantic versioning és Keep a Changelog formátum alapján."
+description_source: auto
+description_hash: f8c620d0daf0b527
+id: 374b3676-62b4-4152-bb74-5eb787dfa001
+index_schema_version: 1
+bdos_index: true
+---
 # Changelog
 
 A Navigator Podcast Plugin változásainak naplója.

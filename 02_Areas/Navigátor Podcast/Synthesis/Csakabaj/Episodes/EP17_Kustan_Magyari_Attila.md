@@ -1,5 +1,8 @@
 ---
 title: "Vannak gyíkemberek a laposföldön? | Kustán Magyari Attila | EP17"
+description: "Újságíró Kustán Magyari Attilával folytatott interjú a konspirációelméletek pszichológiai és szociológiai gyökereiről, a médiabizalom válságáról, valamint az algoritmikus valóságkonstrukció hatásáról. Mélyreható elemzés azoknak, akik a konteó-jelenség mögötti okok iránt érdeklődnek."
+description_source: auto
+description_hash: 17bad85470e9c869
 broadcast_date: 2024-07-24
 duration: "82 perc"
 guest_name: "Kustán Magyari Attila"
@@ -13,7 +16,6 @@ topic_cluster: "Média, faktum-ellenőrzés, társadalomkritika, konspirációel
 id: bfbefd34-07c4-43fc-934a-ab55d98bcfe5
 index_schema_version: 1
 ---
-
 # EP17 - Kustán Magyari Attila: Konteók, tények és a megosztott valóság
 
 ## Alapadatok

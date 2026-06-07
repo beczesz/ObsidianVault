@@ -1,3 +1,15 @@
+---
+title: "02 – A jövő: miben marad ember az ember az AI korában?"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "Reflexió az AI-kor emberi értékeiről: felelősségvállalás, értelmezés, empátia és küldetés azok a domíniumok, amelyekben az ember verhetetlen marad az AI előtt. Szervezeti vezetőknek és csapattagoknak útmutató a relevanciamegőrzéshez."
+description_source: auto
+description_hash: 1b04f3d155e63132
+id: 4994cdac-2c3e-4dbf-b220-bd1cb61bcaf6
+index_schema_version: 1
+bdos_index: true
+---
 # 02 – A jövő: miben marad ember az ember az AI korában?
 
 ---

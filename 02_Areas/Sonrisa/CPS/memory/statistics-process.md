@@ -1,3 +1,15 @@
+---
+title: "CPS Monthly Statistics Process"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Monthly process run by Szabolcs that extracts Sontime activity data, builds pivot tables, verifies contractor hours, and produces two Excel outputs: one with full statistics for internal use and one filtered for Technical Account Managers."
+description_source: auto
+description_hash: 7f87a7728b4107bf
+id: 1cc0147d-306e-4171-b504-e81ad74ed4ad
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Monthly Statistics Process
 
 **Owner:** Szabolcs

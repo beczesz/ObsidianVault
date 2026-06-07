@@ -1,4 +1,7 @@
 ---
+description: "Hungarian banking IT vendor with 30+ years history, Microsoft/.NET stack, serving corporate electronic banking and document management. Warm prospect pending active DevOps hiring signal or cloud-migration announcement."
+description_source: auto
+description_hash: d764caa0a1437558
 type: lead
 id: cardinal-software
 company: "Cardinal Software (Cardinal Számítástechnikai Kft.)"
@@ -43,7 +46,6 @@ created: 2026-05-18
 validated: 2026-05-18
 last_signal_check: 2026-05-18
 ---
-
 # Cardinal Software (Cardinal Számítástechnikai Kft.)
 
 ## Signal

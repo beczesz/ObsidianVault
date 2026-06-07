@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vox Humana - Erdélyi Hangok | Orgonaépítés és Restaurálás</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2D4F3E;
+            --secondary: #B85C3A;
+            --accent: #B8934A;
+            --bg-parchment: #F8F4EC;
+            --dark: #231F1A;
+            --text-dark: #2A2520;
+            --text-light: #F8F4EC;
+            --text-muted: #6B5E52;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-parchment);
+            line-height: 1.7;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Libre Baskerville', serif;
+        }
+
+        /* Parchment texture via CSS */
+        .parchment-bg {
+            background-color: var(--bg-parchment);
+            background-image:
+                radial-gradient(ellipse at 20% 50%, rgba(184, 147, 74, 0.03) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 20%, rgba(184, 92, 58, 0.02) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 80%, rgba(45, 79, 62, 0.02) 0%, transparent 50%);
+        }
+
+        /* ============ NAVBAR ============ */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            background: rgba(248, 244, 236, 0.95);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .navbar.scrolled {
+            padding: 0.7rem 2rem;
+            box-shadow: 0 2px 20px rgba(35, 31, 26, 0.1);
+        }
+
+        .navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .navbar-logo img {
+            height: 45px;
+            transition: height 0.3s ease;
+        }
+
+        .navbar.scrolled .navbar-logo img {
+            height: 36px;
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .navbar-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.02em;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+
+        .navbar-links a:hover {
+            color: var(--primary);
+        }
+
+        .navbar-links a:hover::after {
+            width: 100%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--text-dark);
+            margin: 6px 0;
+            transition: all 0.3s ease;
+        }
+
+        /* ============ HERO ============ */
+        .hero {
+            height: 100vh;
+            min-height: 600px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 12vh;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background-image: url('../original-site/voxhumana.ro/sites/default/files/2019-10/voxhumana-werk-20151103-03.jpg');
+            background-size: cover;
+            background-position: center;
+            filter: brightness(0.7);
+        }
+
+        .hero-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                to bottom,
+                rgba(35, 31, 26, 0.2) 0%,
+                rgba(35, 31, 26, 0.4) 50%,
+                rgba(35, 31, 26, 0.85) 100%
+            );
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            padding: 0 2rem;
+        }
+
+        .hero-content h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            color: var(--text-light);
+            line-height: 1.3;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+
+        .hero-content p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: rgba(248, 244, 236, 0.85);
+            font-weight: 300;
+            letter-spacing: 0.03em;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-indicator svg {
+            width: 30px;
+            height: 30px;
+            stroke: rgba(248, 244, 236, 0.6);
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        /* ============ STORY INTRO ============ */
+        .story-intro {
+            padding: 8rem 2rem;
+            max-width: 750px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .story-intro p {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1.15rem;
+            line-height: 2;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .separator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .separator-line {
+            width: 80px;
+            height: 1px;
+            background: var(--accent);
+        }
+
+        .separator-icon {
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        /* ============ TIMELINE ============ */
+        .timeline-section {
+            padding: 6rem 2rem;
+            background: var(--bg-parchment);
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-heading h2 {
+            font-size: clamp(1.8rem, 3vw, 2.5rem);
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-heading .subtitle {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 300;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--accent), var(--secondary));
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .timeline-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 42%;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(35, 31, 26, 0.06);
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            text-align: right;
+            margin-right: auto;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            text-align: left;
+            margin-left: auto;
+        }
+
+        .timeline-year {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-content p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        .timeline-dot {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            border: 3px solid var(--bg-parchment);
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px var(--accent);
+        }
+
+        /* ============ WHAT WE DO ============ */
+        .services-section {
+            padding: 6rem 2rem;
+            background: white;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: var(--bg-parchment);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .service-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(35, 31, 26, 0.1);
+        }
+
+        .service-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .service-card-body {
+            padding: 1.5rem;
+        }
+
+        .service-card-body h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .service-card-body p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ============ PROJECTS / MAP ============ */
+        .projects-section {
+            padding: 6rem 2rem;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid rgba(184, 147, 74, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(30px);
+        }
+
+        .project-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+            transition: all 0.6s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(35, 31, 26, 0.1);
+        }
+
+        .project-card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .project-card-body {
+            padding: 1.25rem;
+        }
+
+        .project-card-body h4 {
+            font-size: 1.1rem;
+            color: var(--text-dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .project-card-body .denomination {
+            font-size: 0.85rem;
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 0.2rem;
+        }
+
+        .project-card-body .location {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* ============ NUMBERS ============ */
+        .numbers-section {
+            padding: 6rem 2rem;
+            background: var(--dark);
+        }
+
+        .numbers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 3rem;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .number-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
+        }
+
+        .number-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .number-value {
+            font-family: 'Libre Baskerville', serif;
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            color: var(--accent);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .number-label {
+            font-size: 1rem;
+            color: rgba(248, 244, 236, 0.8);
+            font-weight: 300;
+        }
+
+        /* ============ TEAM ============ */
+        .team-section {
+            padding: 6rem 2rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .team-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(35, 31, 26, 0.06);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .team-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .team-card img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .team-card-body {
+            padding: 1.5rem;
+        }
+
+        .team-card-body h3 {
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            margin-bottom: 0.25rem;
+        }
+
+        .team-card-body .role {
+            font-size: 0.9rem;
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .team-card-body p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+        /* ============ QUOTE / CTA ============ */
+        .cta-section {
+            padding: 6rem 2rem;
+            background: var(--primary);
+            text-align: center;
+        }
+
+        .cta-section blockquote {
+            font-family: 'Libre Baskerville', serif;
+            font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+            color: var(--text-light);
+            font-style: italic;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.8;
+        }
+
+        .cta-section .cta-heading {
+            font-size: 1.1rem;
+            color: rgba(248, 244, 236, 0.85);
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--secondary);
+            color: white;
+            padding: 1rem 2.5rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+        }
+
+        .cta-button:hover {
+            background: #9F4E30;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(184, 92, 58, 0.3);
+        }
+
+        .cta-contact {
+            color: var(--accent);
+            font-size: 1rem;
+        }
+
+        .cta-contact a {
+            color: var(--accent);
+            text-decoration: none;
+            margin: 0 0.75rem;
+            transition: opacity 0.3s ease;
+        }
+
+        .cta-contact a:hover {
+            opacity: 0.8;
+        }
+
+        /* ============ FOOTER ============ */
+        .footer {
+            background: var(--dark);
+            padding: 4rem 2rem 1.5rem;
+            color: rgba(248, 244, 236, 0.7);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid rgba(248, 244, 236, 0.1);
+        }
+
+        .footer-col h4 {
+            font-family: 'Libre Baskerville', serif;
+            font-size: 1rem;
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .footer-col p,
+        .footer-col a {
+            font-size: 0.9rem;
+            color: rgba(248, 244, 236, 0.6);
+            line-height: 1.8;
+            text-decoration: none;
+            display: block;
+            transition: color 0.3s ease;
+        }
+
+        .footer-col a:hover {
+            color: var(--accent);
+        }
+
+        .footer-social a {
+            display: inline-block;
+        }
+
+        .footer-social img {
+            height: 24px;
+            opacity: 0.6;
+            transition: opacity 0.3s ease;
+        }
+
+        .footer-social img:hover {
+            opacity: 1;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: rgba(248, 244, 236, 0.4);
+        }
+
+        /* ============ ANIMATIONS ============ */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 768px) {
+            .navbar-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(248, 244, 236, 0.98);
+                flex-direction: column;
+                padding: 1.5rem 2rem;
+                gap: 1.2rem;
+                box-shadow: 0 4px 20px rgba(35, 31, 26, 0.1);
+            }
+
+            .navbar-links.open {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                flex-direction: column;
+                align-items: flex-start;
+                padding-left: 50px;
+            }
+
+            .timeline-content,
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                width: 100%;
+                text-align: left;
+                margin: 0;
+            }
+
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .story-intro {
+                padding: 5rem 1.5rem;
+            }
+
+            .story-intro p {
+                font-size: 1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-content h1 {
+                font-size: 1.7rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .numbers-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <div class="navbar-inner">
+            <a href="#" class="navbar-logo">
+                <img src="../original-site/voxhumana.ro/sites/default/files/vox-humana-logo-text_1.png" alt="Vox Humana">
+            </a>
+            <ul class="navbar-links" id="navLinks">
+                <li><a href="#tortenettunk">Történetünk</a></li>
+                <li><a href="#mestersegunk">Mesterségünk</a></li>
+                <li><a href="#munkaink">Munkáink</a></li>
+                <li><a href="#kapcsolat">Kapcsolat</a></li>
+            </ul>
+            <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menü">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-overlay"></div>
+        <div class="hero-content">
+            <h1>Minden orgona egy közösség hangja</h1>
+            <p>Orgonaépítés és restaurálás Székelyföldön, 2007 óta</p>
+        </div>
+        <div class="scroll-indicator">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="7 13 12 18 17 13"></polyline>
+                <polyline points="7 6 12 11 17 6"></polyline>
+            </svg>
+        </div>
+    </section>
+
+    <!-- STORY INTRO -->
+    <section class="story-intro parchment-bg fade-in">
+        <p>A Gyergyói-medence szívében, ahol a Maros forrásvidéke erdőkkel borított hegyoldalakba simul, egy műhelyben nap mint nap megelevenedik egy több évszázados mesterség. A Vox Humana — az „emberi hang" — nem csupán egy orgonaépítő vállalkozás neve. Ez egy ígéret: hogy az orgonák hangja, amely generációkon át kísérte Erdély közösségeit, soha nem fog elnémulni.</p>
+        <div class="separator">
+            <div class="separator-line"></div>
+            <span class="separator-icon">&#9835;</span>
+            <div class="separator-line"></div>
+        </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="timeline-section parchment-bg" id="tortenettunk">
+        <div class="section-heading fade-in">
+            <h2>Történetünk</h2>
+            <p class="subtitle">Egy mesterség újjászületése a Gyergyói-medencében</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-year">2000</span>
+                    <p>Bartis Szabolcs inaskodik Hermann Binder mesternél Nagyszebenben — itt ismerkedik meg az orgonaépítés alapjaival</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-year">2003</span>
+                    <p>Tanulmányok a Liszt Ferenc Zeneakadémián, Budapest — az elméleti tudás elmélyítése</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-year">2005</span>
+                    <p>Első megbízás egy német orgonaépítőtől — a családi hátsó udvarban, kölcsönzött szerszámokkal indul a műhely csírája</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-year">2007</span>
+                    <p>A Vox Humana Kft. megalapítása — megszületik Románia egyetlen teljeskörű orgonaműhelye</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-year">2012</span>
+                    <p>Saját, vadonatúj műhelyépület elkészül Gyergyószentmiklóson — véget ér a szűkös kezdeti időszak</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-year">2018</span>
+                    <p>Gépparkfejlesztés EU-s pályázatból — a precíziós munka új szintre emelkedik</p>
+                </div>
+            </div>
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <span class="timeline-year">Ma</span>
+                    <p>Románia egyetlen teljes körű orgonaműhelye — 25+ restaurált orgona, ~130 orgonához készített alkatrészek</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WHAT WE DO -->
+    <section class="services-section" id="mestersegunk">
+        <div class="section-heading fade-in">
+            <h2>Mesterségünk</h2>
+            <p class="subtitle">Három pillér, egy küldetés</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <img src="../original-site/voxhumana.ro/themes/pegazus/images/page-top-orgona.jpg" alt="Orgonaépítés">
+                <div class="service-card-body">
+                    <h3>Építés</h3>
+                    <p>Új orgonák tervezése és megépítése a megrendelő igényei és a templom akusztikája alapján. Minden hangszer egyedi alkotás — a tervezéstől az utolsó síp behangolásáig.</p>
+                </div>
+            </div>
+            <div class="service-card">
+                <img src="../original-site/voxhumana.ro/themes/pegazus/images/orgonaepites-kategoria.jpg" alt="Restaurálás">
+                <div class="service-card-body">
+                    <h3>Restaurálás</h3>
+                    <p>Műemlék orgonák gondos, szakszerű restaurálása. A történelmi hangszerek eredeti karakterének megőrzése mellett visszaadjuk működőképességüket — hogy újra megszólaljanak.</p>
+                </div>
+            </div>
+            <div class="service-card">
+                <img src="../original-site/voxhumana.ro/themes/pegazus/images/orgona-alkatreszek-kategoria.jpg" alt="Alkatrészgyártás">
+                <div class="service-card-body">
+                    <h3>Alkatrészgyártás</h3>
+                    <p>Fémsípok, fasípok, fuvók, szélládák és szekrények gyártása — saját műhelyünkben és más orgonaépítők számára is. Precíziós munka, hagyományos módszerekkel.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="projects-section parchment-bg" id="munkaink">
+        <div class="section-heading fade-in">
+            <h2>Munkáink Erdélyben és azon túl</h2>
+            <p class="subtitle">Válogatás restaurált és épített orgonáinkból</p>
+        </div>
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="../original-site/voxhumana.ro/sites/default/files/styles/portofolio_block/public/2019-10/Szarhegyi Orgona.jpg@itok=KWIoTECY" alt="Gyergyószárhegy">
+                <div class="project-card-body">
+                    <h4>Gyergyószárhegy</h4>
+                    <div class="denomination">Római Katolikus templom</div>
+                    <div class="location">Hargita megye, Székelyföld</div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="../original-site/voxhumana.ro/sites/default/files/styles/portofolio_block/public/2019-10/Ilyen lett_0.JPG@itok=vFS_l5ct" alt="Zenta">
+                <div class="project-card-body">
+                    <h4>Zenta</h4>
+                    <div class="denomination">Jézus Szíve Katolikus templom</div>
+                    <div class="location">Vajdaság, Szerbia</div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="../original-site/voxhumana.ro/sites/default/files/styles/portofolio_block/public/2019-10/Nyaradandrasfalva a.JPG@itok=SFkHL4At" alt="Nyárádandrásfalva">
+                <div class="project-card-body">
+                    <h4>Nyárádandrásfalva</h4>
+                    <div class="denomination">Református templom</div>
+                    <div class="location">Maros megye, Székelyföld</div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="../original-site/voxhumana.ro/sites/default/files/styles/portofolio_block/public/2019-10/Ilyen lett.JPG@itok=5X9B1Ncr" alt="Kiskapus">
+                <div class="project-card-body">
+                    <h4>Kiskapus</h4>
+                    <div class="denomination">Evangélikus templom</div>
+                    <div class="location">Szeben megye, Erdély</div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="../original-site/voxhumana.ro/sites/default/files/styles/portofolio_block/public/2019-10/Karcfalvi orgona3.jpg@itok=-h8LzdAN" alt="Csíkkarcfalva">
+                <div class="project-card-body">
+                    <h4>Csíkkarcfalva</h4>
+                    <div class="denomination">Római Katolikus templom</div>
+                    <div class="location">Hargita megye, Székelyföld</div>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="../original-site/voxhumana.ro/sites/default/files/styles/portofolio_block/public/2019-10/Tekeropataki orgona.jpg@itok=wjsu9-ng" alt="Gyergyótekerőpatak">
+                <div class="project-card-body">
+                    <h4>Gyergyótekerőpatak</h4>
+                    <div class="denomination">Római Katolikus templom</div>
+                    <div class="location">Hargita megye, Székelyföld</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NUMBERS -->
+    <section class="numbers-section">
+        <div class="numbers-grid">
+            <div class="number-item">
+                <div class="number-value" data-target="25">0</div>
+                <div class="number-label">restaurált orgona</div>
+            </div>
+            <div class="number-item">
+                <div class="number-value" data-target="130">0</div>
+                <div class="number-label">orgonához készített sípok</div>
+            </div>
+            <div class="number-item">
+                <div class="number-value" data-target="15">0</div>
+                <div class="number-label">év szakmai tapasztalat</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM -->
+    <section class="team-section parchment-bg">
+        <div class="section-heading fade-in">
+            <h2>A mesterek</h2>
+            <p class="subtitle">Akik nap mint nap életet lehelnek a hangszerekbe</p>
+        </div>
+        <div class="team-grid">
+            <div class="team-card">
+                <img src="../original-site/voxhumana.ro/sites/default/files/styles/large/public/2019-07/_AD_9053-min.JPG@itok=CPtqUGHK" alt="Bartis Szabolcs">
+                <div class="team-card-body">
+                    <h3>Bartis Szabolcs</h3>
+                    <div class="role">Alapító, orgonaépítő mester</div>
+                    <p>Nagyszebeni inaskodás, budapesti tanulmányok, svájci tapasztalat — Szabolcs végigjárta a mesterség minden lépcsőfokát, mielőtt hazatért Székelyföldre megvalósítani az álmát.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- QUOTE / CTA -->
+    <section class="cta-section" id="kapcsolat">
+        <blockquote>„Számos Erdélyben és határon túl található orgona hangja dicséri csapatunk munkáját."</blockquote>
+        <p class="cta-heading">Beszéljünk az Ön orgonájáról</p>
+        <a href="mailto:office@voxhumana.ro" class="cta-button">Kapcsolatfelvétel</a>
+        <div class="cta-contact">
+            <a href="tel:+40742968203">0742-968203</a>
+            <span>|</span>
+            <a href="tel:+40740108837">0740-108837</a>
+            <span>|</span>
+            <a href="mailto:office@voxhumana.ro">office@voxhumana.ro</a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-col">
+                <h4>Elérhetőség</h4>
+                <p>Ady Endre utca 91/A<br>Gyergyószentmiklós 535500<br>Hargita megye, Románia</p>
+                <p style="margin-top: 0.75rem;">
+                    Tel: 0742-968203<br>
+                    Tel: 0740-108837<br>
+                    office@voxhumana.ro
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Rólunk</h4>
+                <p>A Vox Humana Kft. 2007 óta Románia egyetlen teljeskörű orgonaépítő és -restauráló műhelye. Gyergyószentmiklósi műhelyünkben a hagyomány és a modern technika találkozik.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Navigáció</h4>
+                <a href="#tortenettunk">Történetünk</a>
+                <a href="#mestersegunk">Mesterségünk</a>
+                <a href="#munkaink">Munkáink</a>
+                <a href="#kapcsolat">Kapcsolat</a>
+            </div>
+            <div class="footer-col">
+                <h4>Közösségi</h4>
+                <div class="footer-social">
+                    <a href="https://facebook.com/voxhumana" target="_blank" rel="noopener">
+                        <img src="../original-site/voxhumana.ro/themes/pegazus/images/facebook.png" alt="Facebook">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Vox Humana Kft. Minden jog fenntartva.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        mobileMenuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+
+        // Close mobile menu on link click
+        navLinks.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                navLinks.classList.remove('open');
+            });
+        });
+
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.15,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    // Don't unobserve — keep it visible once animated
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animatable elements
+        document.querySelectorAll('.fade-in, .timeline-item, .service-card, .project-card, .number-item, .team-card').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Stagger project cards
+        const projectCards = document.querySelectorAll('.project-card');
+        const projectObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.classList.add('visible');
+                    }, index * 100);
+                    projectObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.1 });
+
+        projectCards.forEach(card => projectObserver.observe(card));
+
+        // Animated counters
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    const duration = 2000;
+                    const step = target / (duration / 16);
+                    let current = 0;
+
+                    const updateCounter = () => {
+                        current += step;
+                        if (current >= target) {
+                            el.textContent = target + '+';
+                        } else {
+                            el.textContent = Math.floor(current) + '+';
+                            requestAnimationFrame(updateCounter);
+                        }
+                    };
+
+                    requestAnimationFrame(updateCounter);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        document.querySelectorAll('.number-value').forEach(el => {
+            counterObserver.observe(el);
+        });
+    </script>
+</body>
+</html>

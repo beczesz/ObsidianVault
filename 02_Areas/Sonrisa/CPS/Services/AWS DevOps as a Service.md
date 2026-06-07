@@ -1,3 +1,15 @@
+---
+title: "Key Capabilities"
+date: 2025-11-25
+author: Becze Szabolcs
+status: active
+description: "AWS DevOps service offering covering CI/CD pipeline design, infrastructure automation, and deployment optimization using AWS-native tools. Details engagement model phases, key capabilities including IaC and DevSecOps, and pricing options for organizations seeking to improve delivery speed and reduce operational risk."
+description_source: auto
+description_hash: f9063a21c7d65c7a
+id: 887d92ea-2617-4a6a-92e5-f99c2aa82ec9
+index_schema_version: 1
+bdos_index: true
+---
 AWS DevOps as a Service delivers a fully automated, reliable, and scalable software delivery framework on AWS. We design, implement, and operate CI/CD pipelines and platform automation using services such as AWS CodePipeline, CodeBuild, CodeDeploy, CodeCommit, CodeArtifact, Amazon ECR, AWS CloudFormation or CDK, and deployment targets including Amazon EKS, Amazon ECS/Fargate, AWS Lambda, and Amazon EC2.
 
 Many organizations encounter manual and error-prone releases, long feedback cycles, inconsistent environments, limited deployment visibility, and the absence of automated testing and rollback mechanisms. These issues reduce delivery speed and introduce operational risks. CPS addresses these challenges with certified DevOps engineers, AWS best practices, and a structured automation framework.

@@ -1,3 +1,15 @@
+---
+title: "Exar Labs – Stratégiai helyzet és irányok"
+date: 2026-03-05
+author: Becze Szabolcs
+status: active
+description: "Exar Labs 12 fős csapatának 3 stratégiai opciója: AI-alapú üzleti rendszerek, saját digitális termékek, vagy venture studio modell. A 24 hónapos terv az outsourcing függőségből való kilépésre, közvetlen ügyfélprojektekre és AI-hatékonyságra fókuszál."
+description_source: auto
+description_hash: ebec3f9c0fc11a93
+id: 80a70e6d-ca8d-42de-b77d-fe0c18d2a863
+index_schema_version: 1
+bdos_index: true
+---
 # Exar Labs – Stratégiai helyzet és irányok
 
 ## Kiindulási pont (2026 március)

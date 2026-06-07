@@ -1,3 +1,15 @@
+---
+title: "Memory"
+date: 2026-02-26
+author: Becze Szabolcs
+status: active
+description: "Szabolcs's professional context at Sonrisa: CPS business unit within a 300+ engineer Central European tech firm; currently developing AWS Cost Health Check service as mid-funnel sales tool with tight 3-4 hour scope, using Minimax 2.1 inference and MCP for analysis validation, targeting CPS Growth package upsells."
+description_source: auto
+description_hash: 39168d66e1cbd9a0
+id: e3faba41-41d9-4fa0-909f-8b814922c437
+index_schema_version: 1
+bdos_index: true
+---
 # Memory
 
 ## Me

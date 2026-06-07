@@ -1,9 +1,21 @@
 <!DOCTYPE html>
 <!--
   =============================================================================
-  CPS Sales Pipeline Dashboard, live HTML view.   Version: 0.7.4
+  CPS Sales Pipeline Dashboard, live HTML view.   Version: 0.8.1
   =============================================================================
   Audit trail:
+    0.8.1 (2026-05-29) tend: version-pill normalized family-wide. CSS: font-size 10.5px, padding 2px 8px, font-weight 500 (was 10px, 1px 7px, no weight). Markup: mono class added.
+    0.8.0 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app -> .app-main + .app-shell layout. alfred-tasks.js added. Scrim+drawer remain outside .app-shell.
+    0.7.9 (2026-05-28) Curator tend — wide-screen kanban full-bleed. Above the
+          .app 1480px cap, #board.is-kanban now breaks out to full viewport width
+          (margin: calc(50% - 50vw); width: 100vw; 36px gutters) and uses
+          repeat(auto-fit, minmax(280px,1fr)) so as many pipeline stages as fit
+          spread across wide monitors instead of wrapping at 1480px. List/grid
+          view + text panels stay centered. Pure CSS @media (min-width:1481px).
+    0.7.8 (2026-05-25) — promote: panel-anchor system (DS 0.8.0) partial. scroll-margin-top: 42px.
+          widgets → panel-1-header-strip; todayPanel → panel-2-today. JS ref updated.
+    0.7.7 (2026-05-25) refactor: extract canonical :root + dark + @media tokens → /_design/tokens.css (DS 0.7.0 engine extraction, Sprint 2a)
+    0.7.6 (2026-05-25) refactor: extract setTheme/copyText/wireCopyRef → /_design/{theme,clipboard}.js (DS 0.7.0 engine extraction, Sprint 1)
     0.1.0  initial kanban + drawer
     0.2.0  today panel from TODAY.md
     0.3.0  live read-only multi-file sync (Pipeline.md + leads.md + TODAY.md)
@@ -18,6 +30,8 @@
     0.7.3  (2026-05-22) — added day/night theme toggle + dark tokens (DESIGN_SYSTEM
            0.3.0). Shared localStorage key "dash-theme". FOUC-init. Dark variants
            for pipeline-stage tokens + industry tag overrides.
+    0.7.5  (2026-05-25) — promote: admin-bar.js (DS 0.6.0) replaces ops-header.js.
+           #bdos-ops-header → #bdos-admin-bar. Fixed dark WP-style top bar, 34px.
     0.7.4  (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
            ops-header.js + #bdos-ops-header mount. Five system pills above masthead.
   Conventions: see Sales/DASHBOARD_CONTRACT.md "Shared dashboard conventions".
@@ -64,26 +78,12 @@
   document.documentElement.dataset.theme = t;
 })();
 </script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-page: #faf9f5;
-  --bg-elev: #ffffff;
-  --bg-sunken: #f3f1ea;
-  --bg-tint: #f5f4ef;
-  --ink-1: #141413;
-  --ink-2: #3a3a37;
-  --ink-3: #6d6d6a;
-  --ink-4: #9c9c98;
-  --ink-5: #c8c8c2;
-  --line: #e5e4df;
-  --line-soft: #efede7;
-  --accent: #D97757;
-  --accent-deep: #b35a3f;
-  --accent-tint: #fbeee6;
-
-  --hot:        #c0392b;
+--hot:        #c0392b;
   --hot-tint:   #fbeae6;
   --warm:       #b07a18;
   --warm-tint:  #fbf2dc;
@@ -100,37 +100,14 @@
   --lost:       #7a7a76;
   --lost-tint:  #efeeeb;
 
-  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
-  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
   --shadow-3: 0 12px 32px rgba(20,20,19,.10), 0 4px 12px rgba(20,20,19,.06);
 
-  --radius-s: 4px;
-  --radius-m: 6px;
-  --radius-l: 10px;
-  --radius-xl: 14px;
-
-  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
-  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
   --t-slow: 320ms cubic-bezier(.16,.84,.32,1);
 }
 
 /* ===== Dark theme override (DS 0.3.0) ===== */
 :root[data-theme="dark"] {
-  --bg-page:   #1a1916;
-  --bg-elev:   #232220;
-  --bg-sunken: #2c2a26;
-  --bg-tint:   #262420;
-  --ink-1: #f5f4ef;
-  --ink-2: #d6d4ce;
-  --ink-3: #a8a6a0;
-  --ink-4: #7c7a74;
-  --ink-5: #54524d;
-  --line:      #36342f;
-  --line-soft: #2c2a26;
-  --accent:      #e08a6a;
-  --accent-deep: #f0a085;
-  --accent-tint: #3a2a22;
-  /* Pipeline stage tokens — dark variants */
+/* Pipeline stage tokens — dark variants */
   --hot:        #e57c6e;  --hot-tint:   #3a221e;
   --warm:       #d6a94a;  --warm-tint:  #352c18;
   --cold:       #8a9ab5;  --cold-tint:  #1e2530;
@@ -139,27 +116,11 @@
   --proposal:   #8890d0;  --proposal-tint:#1e2038;
   --won:        #5cc08a;  --won-tint:   #1e3329;
   --lost:       #9a9892;  --lost-tint:  #2a2925;
-  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
   --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg-page:   #1a1916;
-    --bg-elev:   #232220;
-    --bg-sunken: #2c2a26;
-    --bg-tint:   #262420;
-    --ink-1: #f5f4ef;
-    --ink-2: #d6d4ce;
-    --ink-3: #a8a6a0;
-    --ink-4: #7c7a74;
-    --ink-5: #54524d;
-    --line:      #36342f;
-    --line-soft: #2c2a26;
-    --accent:      #e08a6a;
-    --accent-deep: #f0a085;
-    --accent-tint: #3a2a22;
-    --hot:        #e57c6e;  --hot-tint:   #3a221e;
+--hot:        #e57c6e;  --hot-tint:   #3a221e;
     --warm:       #d6a94a;  --warm-tint:  #352c18;
     --cold:       #8a9ab5;  --cold-tint:  #1e2530;
     --contact:    #6aa3e0;  --contact-tint:#1e2a3a;
@@ -167,10 +128,8 @@
     --proposal:   #8890d0;  --proposal-tint:#1e2038;
     --won:        #5cc08a;  --won-tint:   #1e3329;
     --lost:       #9a9892;  --lost-tint:  #2a2925;
-    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
     --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
-  }
+}
 }
 
 html { font-size: 15px; }
@@ -190,9 +149,8 @@ body {
 
 /* ===== App shell ===== */
 
-.app {
+.app-main {
   max-width: 1480px;
-  margin: 0 auto;
   padding: 28px 36px 96px;
 }
 
@@ -250,11 +208,7 @@ body {
   align-items: center;
   gap: 10px;
 }
-.version-pill {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
-  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
-  border-radius: 999px; letter-spacing: 0; text-transform: none;
-}
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; letter-spacing: 0; font-weight: 500; }
 .masthead h1 {
   font-size: clamp(28px, 3.2vw, 40px);
   font-weight: 700;
@@ -1734,13 +1688,32 @@ body {
 .card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
 .card-copy-ref.copied { background: var(--ok-tint, #e6f3ec); border-color: rgba(31,122,77,.3); color: var(--won); opacity: 1; }
 
+/* ===== Panel Anchor System (DS 0.8.0) ===== */
+[id^="panel-"] { scroll-margin-top: 42px; }
+
 /* ===== Responsive ===== */
 
+/* Wide screens (above the .app 1480px cap): the kanban board breaks out to the
+   full viewport width and lays as many pipeline stage columns across it as fit,
+   instead of being capped at 1480px and wrapping early. List/grid view and the
+   text panels (masthead / today / filters) stay centered & readable.
+   Curator tend 2026-05-28 (DS 0.8.15). */
+@media (min-width: 1481px) {
+  #board.is-kanban {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    padding-left: 36px;
+    padding-right: 36px;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
 @media (max-width: 1100px) {
   .widgets { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 720px) {
-  .app { padding: 18px 16px 80px; }
+  .app-main { padding: 18px 16px 80px; }
   .widgets { grid-template-columns: 1fr; }
   .masthead { grid-template-columns: 1fr; }
   .actions { justify-content: flex-end; }
@@ -1763,8 +1736,9 @@ body {
 </style>
 </head>
 <body>
-<div id="bdos-ops-header"></div>
-<div class="app">
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<div class="app-main">
 
   <header class="masthead">
     <div class="masthead-toprow">
@@ -1780,7 +1754,7 @@ body {
       </button>
     </div>
     <div>
-      <div class="eyebrow">CPS Sales Engine, Sprint 1 <span class="version-pill">v0.7.3</span></div>
+      <div class="eyebrow">CPS Sales Engine, Sprint 1 <span class="version-pill mono">v0.8.1</span></div>
       <h1>Sales Pipeline <span class="accent">.</span></h1>
       <div class="submeta">
         <span><strong id="leadCount">15</strong> active leads</span>
@@ -1794,7 +1768,7 @@ body {
     </div>
   </header>
 
-  <section class="widgets" aria-label="Pipeline overview">
+  <section class="widgets" id="panel-1-header-strip" aria-label="Pipeline overview">
     <div class="widget w-pipeline">
       <h2>Pipeline value</h2>
       <div class="figure">
@@ -1841,7 +1815,7 @@ body {
     </div>
   </section>
 
-  <section class="today" id="todayPanel" aria-label="Today's action queue"></section>
+  <section class="today" id="panel-2-today" aria-label="Today's action queue"></section>
 
   <section class="filterbar">
     <div class="chips" id="chips">
@@ -1868,7 +1842,9 @@ body {
   </section>
 
   <main class="board" id="board"></main>
-</div>
+</div><!-- end .app-main -->
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
 
 <div class="scrim" id="scrim"></div>
 <aside class="drawer" id="drawer" aria-hidden="true" role="dialog" aria-label="Lead detail"></aside>
@@ -2932,7 +2908,7 @@ function renderWidgets() {
    ============================================================ */
 
 function renderTodayPanel() {
-  const panel = $('#todayPanel');
+  const panel = $('#panel-2-today');
   if (!panel) return;
 
   const view = currentTodayView;
@@ -3079,19 +3055,8 @@ function renderTask(t, id) {
 }
 
 const DASH_STEM = 'sales';
+/* Clipboard helpers (copyText, wireCopyRef): /_dashboards/_design/clipboard.js (DS 0.7.0, Sprint 1) */
 const COPY_REF_SVG = '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-function copyText(text, el) {
-  navigator.clipboard.writeText(text).then(() => {
-    el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
-  }).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); } catch(e) {}
-    document.body.removeChild(ta);
-    el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
-  });
-}
 
 function escapeHtml(s) {
   return String(s == null ? '' : s)
@@ -4742,32 +4707,15 @@ function connectEventStream() {
 }
 connectEventStream();
 
-/* ===== Theme toggle (DS 0.3.0) ===== */
-function setTheme(t) {
-  document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('dash-theme', t); } catch(e) {}
-  const btn = document.getElementById('themeToggle');
-  if (btn) {
-    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
-    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
-    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-  }
-}
-document.getElementById('themeToggle').addEventListener('click', function() {
-  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-});
-window.addEventListener('storage', function(e) {
-  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
-});
-(function initTheme() {
-  var t;
-  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
-  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
-  setTheme(t);
-})();
+/* Theme toggle: moved to /_dashboards/_design/theme.js (DS 0.7.0, Sprint 1) */
 
 </script>
-<!-- ops-header.js (DS 0.5.0) -->
-<script src="/_dashboards/_design/ops-header.js"></script>
+<!-- theme.js + clipboard.js (DS 0.7.0, Sprint 1 engine) -->
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<!-- admin-bar.js (DS 0.6.0) -->
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
 </body>
 </html>

@@ -1,5 +1,8 @@
 ---
 title: "KAW 4 – Spirituális alapok: A munka teológiája"
+description: "A munka teológiai történetét tárgyalja az ókori görögöktől a reformátorokig, bemutatva, hogyan nyerheti vissza az egyház a mindennapi munka spirituális méltóságát. Betenbough olyan olvasóknak szól, akik a keresztény hitre és üzleti etikára kíváncsiak, valamint akik a munka és vallás integrációjában érdekeltek."
+description_source: auto
+description_hash: 45e3d632a7a0f86b
 series: "Kingdom at Work (Betenbough)"
 episode: 4
 youtube_id: "wMvWsTyOyRc"
@@ -14,7 +17,6 @@ date_created: "2026-04-06"
 id: 035f7c15-d455-4605-9706-419ca940dce6
 index_schema_version: 1
 ---
-
 # KAW 4 – Spirituális alapok: A munka teológiája
 
 ## Epizód-ív

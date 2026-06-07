@@ -1,4 +1,15 @@
-
+---
+title: "Prompt to generate title and description"
+date: 2026-02-03
+author: Becze Szabolcs
+status: active
+description: "# Navigátor Podcast: YouTube Optimalizációs Brief **Célközönség:** Vállalkozók, cégvezetők és technológia iránt érdeklődők keresik az autentikus, mély üzleti beszélgetéseket; ezt az anyagot podcastmenedzserek és tartalomstratégák használják a csatorna növeléséhez."
+description_source: auto
+description_hash: c6cab11b43e8c0b8
+id: d6ca0a60-4656-4a5e-b274-3cafbd4070ee
+index_schema_version: 1
+bdos_index: true
+---
 Helyezkedj egy profi YouTube csatorna menedzser és marketing stratéga szerepébe. A feladatod a mellékelt SRT (.srt) fájl és a tartalom mély elemzése alapján a lehető legjobb teljesítményt nyújtó metaadatok elkészítése a Navigátor podcasthoz.
 
 A célközönség: Vállalkozók, cégvezetők, technológia iránt érdeklődők, akik a minőségi, mély beszélgetéseket keresik.

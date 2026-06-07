@@ -1,3 +1,15 @@
+---
+title: "Sertés Bélszín"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Sertés bélszín termék specifikációja: 40 Ft/kg-os prémium hús, 0,5 kg-os darabonként, steakhez vagy sütéshez ideális, magas népszerűséggel. Készletezési és termelői információkkal kiegészítve."
+description_source: auto
+description_hash: 987e023a1e6dd017
+id: 2f1a42d1-c756-4d75-82b8-79fd169ea220
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Bélszín
 
 ```yaml

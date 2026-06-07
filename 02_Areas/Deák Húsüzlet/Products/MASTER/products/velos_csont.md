@@ -1,3 +1,15 @@
+---
+title: "Növendék Velős Csont"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Crescător velős csont termék: gazdag csontvelővel rendelkező hús, melyet leves alapnak vagy pirítóson tálalva használnak, kilogramm szerint árulva."
+description_source: auto
+description_hash: 7a4e93af371ff913
+id: 64a429aa-08d7-4814-9551-0645aa334aa9
+index_schema_version: 1
+bdos_index: true
+---
 # Növendék Velős Csont
 
 ```yaml

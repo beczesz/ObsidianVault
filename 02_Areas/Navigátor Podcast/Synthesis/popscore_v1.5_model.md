@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast — Minőség vs Népszerűség: Mintázatok és Előrejelzések"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Navigátor podcastról szóló feldolgozás, amely 39 epizód szintézisét és 24 epizód transzkriptjét elemezve azonosítja a nézettséget előrejelző tényezőket: gyakorlatias hasznosság, univerzális témarelevancia és tartalommélység. Podcastkészítőknek és szerkesztőknek szól."
+description_source: auto
+description_hash: 83235f0b9d5940d3
+id: 861c9f5a-131e-4d1c-8ce0-4393484c1c0b
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast — Minőség vs Népszerűség: Mintázatok és Előrejelzések
 
 **Verzió:** 1.5

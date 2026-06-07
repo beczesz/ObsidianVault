@@ -1,5 +1,8 @@
 ---
 title: "Case Study: Observer - Media Platform AWS Migration"
+description: "Detailed case study of a media monitoring platform migration from hostile vendor to AWS EKS, covering discovery, 4TB data migration, and team assembly for a 3-month deadline with no initial documentation."
+description_source: auto
+description_hash: 5c56a13210276657
 id: cs-002
 industry: media
 size: "Small-medium team, ~4TB production data"
@@ -12,7 +15,6 @@ status: active
 author: Sonrisa CPS
 index_schema_version: 1
 ---
-
 # Case Study: Observer - Media Platform AWS Migration
 
 > **One-liner for outreach:** "We took over a 10-year-old media platform from a hostile vendor with zero documentation, migrated 4TB of production data to AWS EKS, and hit the go-live deadline -- all in under 3 months."

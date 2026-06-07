@@ -1,3 +1,15 @@
+---
+title: "Sonrisa General Description"
+date: 2025-11-30
+author: Becze Szabolcs
+status: active
+description: "Hungarian software development and consultancy firm founded in 2006 with 300+ engineers across Central Europe and the USA, specializing in AI, cloud solutions, and legacy modernization for enterprise clients in healthcare, finance, and travel sectors."
+description_source: auto
+description_hash: 5e054eb00189c05f
+id: 6143211c-5332-454a-ae3d-375639c7ba1f
+index_schema_version: 1
+bdos_index: true
+---
 ### **Company Overview**
 
 **Sonrisa Technologies** is an international software development and consultancy firm founded in **2006** by three IT professionals in Budapest, Hungary. The company specializes in building innovative, enterprise-grade software solutions with a heavy emphasis on **AI (Artificial Intelligence)** and **Cloud capabilities**.

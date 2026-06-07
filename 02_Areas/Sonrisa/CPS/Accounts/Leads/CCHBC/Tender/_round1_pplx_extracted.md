@@ -1,3 +1,15 @@
+---
+title: "Perplexity Sonar Pro (Researcher) — Round 1 raw findings"
+date: 2026-05-20
+author: Becze Szabolcs
+status: active
+description: "First-round research findings on EU/CEE expert day rates, enterprise AI project pricing, observability tool capabilities, SOC 2 compliance costs, and sparse public data on Hungarian telecom and fintech vendor relationships. Useful for consultants, solution architects, and procurement teams benchmarking European talent and transformation project budgets."
+description_source: auto
+description_hash: 9bd1334d96dd7db8
+id: c0d9465c-dc9e-401e-83c5-a1b5c5e25748
+index_schema_version: 1
+bdos_index: true
+---
 # Perplexity Sonar Pro (Researcher) — Round 1 raw findings
 
 **Usage:** {'prompt_tokens': 1122, 'completion_tokens': 7446, 'total_tokens': 8568, 'search_context_size': 'low', 'cost': {'input_tokens_cost': 0.00337, 'output_tokens_cost': 0.11169, 'request_cost': 0.006, 'total_cost': 0.12106}}

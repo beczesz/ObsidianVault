@@ -1,3 +1,15 @@
+---
+title: "A Navigátor Podcast Alkotmánya"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast alapdokumentuma, amely a magyar vállalkozói közösséghez szóló podcast küldetését, öt fő értékét (hitelesség, mélység, nyitottság, gyakorlatiasság, közösségépítés) és professzionális, emberi hangnemét definiálja a podcast szerkesztőit és alkotóit irányítva."
+description_source: auto
+description_hash: 069b7f3bc92d9df1
+id: c9f05b6a-c4d1-4194-994c-b6f898d40f87
+index_schema_version: 1
+bdos_index: true
+---
 # A Navigátor Podcast Alkotmánya
 
 ## Küldetés

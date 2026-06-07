@@ -1,4 +1,7 @@
 ---
+description: "Jogilag szükséges dokumentumok és feladatok listája a Deák Húsmíves online rendelési platformhoz, amely élelmiszer rendelést és házhozszállítást végez Székelyudvarhelyen. Részletezi a hiányzó dokumentumokat, Jira ticketeket és verzió szerinti teendőket."
+description_source: auto
+description_hash: 8675ab041456527b
 file: legal.md
 version: v1.2
 date: 2026-04-20
@@ -7,7 +10,6 @@ owner: Szabolcs
 id: fc858c38-8891-4a02-88dc-dd41b2672f77
 index_schema_version: 1
 ---
-
 # DH Pilot — Jogi követelmények és teendők
 
 ## Összefoglaló

@@ -1,3 +1,15 @@
+---
+title: "Impeccable Prompt — Falusi Route Képernyők Tervezése"
+date: 2026-05-02
+author: Becze Szabolcs
+status: active
+description: "Falusi szállítás képernyőinek tervezési promptja a Deák Húsmíves PWA-hoz, amely hat mobilképernyőt definiál: település-választó, route info banner, checkout, kosár, rendelés-visszaigazolás és futári lista. Fejlesztőknek és designereknek hasznos referencia a specifikációk és design szabályok összefoglalásával."
+description_source: auto
+description_hash: ecd99dad93f18210
+id: 859b4d7a-8475-4efe-98e3-025e061868f4
+index_schema_version: 1
+bdos_index: true
+---
 # Impeccable Prompt — Falusi Route Képernyők Tervezése
 
 > **Másold be ezt a promptot egy friss Claude Code session-be.**

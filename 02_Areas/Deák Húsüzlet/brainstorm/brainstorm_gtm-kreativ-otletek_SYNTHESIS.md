@@ -1,3 +1,15 @@
+---
+title: "DH Pilot — Kreatív GTM Ötletek Szintézis"
+date: 2026-04-26
+author: Becze Szabolcs
+status: active
+description: "Multi-AI szintézis az online húsműves pilot GTM stratégiájához: 55 ötletből 15 narratíva kategorizálása, amelyek közösségi indítást, helyi identitást, szűkösség-designt és szóbeszéd-motort ötvöznek a Székelyudvarhelyi Deák Húsmíveshez."
+description_source: auto
+description_hash: b095274ed9babaf5
+id: 7f855034-abe5-414e-8640-0accb5565416
+index_schema_version: 1
+bdos_index: true
+---
 # DH Pilot — Kreatív GTM Ötletek Szintézis
 ## Multi-AI Brainstorm (ChatGPT + Gemini + Claude Chat + Perplexity)
 **Dátum:** 2026-04-26 | **Kontextus:** Deák Húsmíves online pilot, Székelyudvarhely, hétfői launch

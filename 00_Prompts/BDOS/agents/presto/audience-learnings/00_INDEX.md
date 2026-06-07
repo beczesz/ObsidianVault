@@ -1,8 +1,8 @@
 ---
 schema: presto.audience-learnings.index.v1
-generated_at: null
+generated_at: 2026-05-28
 counts:
-  active: 0
+  active: 1
   proposed: 0
   retired: 0
 description: Presto audience-learnings élő indexe — marketing-specifikus cross-project tanulságok (platform patterns, content performance, audience signals). Sage learnings/ mintára adaptálva. Presto `audience` és `learn` módjai frissítik.
@@ -14,8 +14,11 @@ index_schema_version: 1
 
 Marketing-specifikus audience-learnings. Sage `learnings/` mintára adaptálva.
 
-## Active (0)
-*Üres — Presto még nem futott audience-mintákkal.*
+## Active (1)
+
+| ID | Típus | Tanulság | Confidence | Applied |
+|----|-------|----------|------------|---------|
+| [`meta-reel-not-feedpost`](active/meta-reel-not-feedpost.md) | format-fit | Meta vertikális videót Reel-ként kell feltölteni (nem feed-poszt) + borítókocka + safe-zone — különben 4:5-re vág. Cross-project (FB+IG). | high | 2026-05-28 |
 
 ## Proposed (0)
 *Üres — nincs pending javaslat.*

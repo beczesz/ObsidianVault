@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Comprehensive synthesis of Csakabaj Podcast's Season 2 premiere featuring host Józsa Levi interviewing Szabó Sámuel about empathy, listening, and authenticity in Hungarian media culture; includes episode metadata, thematic analysis, and transcribed quotes documenting the conversation's core arguments on professional growth through genuine human connection."
+description_source: auto
+description_hash: 4d68fcb744d1a871
+id: 236fcd7a-8a1d-47df-b2c3-43f7f85c34c3
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP34 | S02E01 — Hallgatás és Jelenlét

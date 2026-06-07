@@ -1,3 +1,15 @@
+---
+title: "Facebook Post — Founding 50 Kampány"
+date: 2026-04-26
+author: Becze Szabolcs
+status: active
+description: "Az első Facebook poszt a Deák Húsmíves online indításához a Founding 50 programban: három ajánlott verzió közösségi hangvételű szöveggel, képi sablonnal, és stratégiai iránymutatással az első 50 udvarhelyi megkeresésére 3 hónapig ingyenes kiszállítás ígéretével."
+description_source: auto
+description_hash: 9668d2a892e4afd3
+id: 5766e6a6-7916-44a7-99e5-95897a585d6b
+index_schema_version: 1
+bdos_index: true
+---
 # Facebook Post — Founding 50 Kampány
 ## Deák Húsmíves Online Launch | 2026-04-27 (vasárnap)
 

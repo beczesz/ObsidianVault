@@ -144,7 +144,7 @@ Say "run the lead scanner" to trigger a multi-AI scan session. Say "review the p
 - `Strategy/BMC v1.3.md` -- Business Model Canvas
 - `CPS Constitution.md` -- Founding principles and values
 - `Strategy/AWS/` -- AWS partnership strategy docs
-- `Services/Inference Farm/` -- LLMaaS service descriptions and ACE opportunity summaries
+- `Practices/Inference-Farm/` -- LLMaaS practice area (Forge-managed): descriptions, ACE opportunity summary, model research
 - `Partnership/Ingram Micro.md` -- Partnership notes
 - `memory/` -- AI persistent knowledge base (team, values, packages, recruitment)
 - `memory/` -- AI persistent knowledge base (team, values, packages, recruitment)

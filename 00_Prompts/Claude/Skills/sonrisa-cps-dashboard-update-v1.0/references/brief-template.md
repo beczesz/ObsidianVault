@@ -1,3 +1,15 @@
+---
+title: "Monthly Update Brief (MUB) Template"
+date: 2026-05-05
+author: Becze Szabolcs
+status: active
+description: "A structured template for monthly activity reports that captures current-month hours by project and person, designed for Claude to process into dashboard updates using the sonrisa-cps-dashboard-update skill."
+description_source: auto
+description_hash: 35de11a6b0e85ed0
+id: 7aeac6bd-a2dc-45a3-94f6-e3a08c370007
+index_schema_version: 1
+bdos_index: true
+---
 # Monthly Update Brief (MUB) Template
 
 **Version:** 0.3

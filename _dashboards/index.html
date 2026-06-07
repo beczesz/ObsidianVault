@@ -4,13 +4,25 @@
   Ideas Vault, dashboard launcher. Lives in _dashboards/ (served at / by
   _dashboards/_tools/dash-server.mjs).
   =============================================================================
-  Version: 0.8.0
+  Version: 0.8.14
   Bump rules:
     - 0.x.0  new top-level Area or major layout change
     - 0.0.x  new sub-Area, new leaf, copy change, small visual tweak
     - 1.0.0  reserved for when this index is the canonical "vault launcher"
              across multiple devices / users
   Audit trail:
+    0.8.14 (2026-05-29) tend: graph node avatars swapped from emoji text to real Pixar portrait img, emoji kept as 404 fallback. buildAvatarMap extended to all 7 agents (was 5, missing Forge and Alfred). CSS for img inside .node-avatar added.
+    0.8.13 (2026-05-28) retire: Sage dashboard deregistered. Sage merged into Alfred v0.3 (2026-05-28). AGENT_DESCRIPTIONS/AGENT_DASHBOARD_URLS sage entries removed. STATIC_EDGES: 4 sage-source/target edges removed (maestro→sage, sage→librarian, sage→presto, sage→broker, curator→sage, alfred→sage). buildAvatarMap agent list pruned. Modal hint updated. dashboard_count 22 -> 21.
+    0.8.12 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app -> .app-main + .app-shell layout. alfred-tasks.js added. Coming-soon modal remains outside .app-shell.
+    0.8.11 (2026-05-27) tend: CPS Practices + ExarLabs Practices leaves registered (cps/practices + exar/practices, is-tbd). CPS sub-tree 6→7 branches (new .leaves-7 grid class added). ExarLabs sub-tree 3→4 branches (cols-3 grid retained — 4th leaf wraps to second row). New Forge agent (🔨) owns both Practice areas. Dashboard HTML builds for Practices kanbans TBD (future /dash-build).
+    0.8.10 (2026-05-27) build: CPS Account Management leaf registered (cps/account-management). CPS sub-tree now 6 branches (was 5: +Account Management). New .leaves-6 grid class added. account-management.html v0.1.0 live — sibling of sales.html, owns Backlog→Closed/Lost project lifecycle.
+    0.8.9 (2026-05-25) BUGFIX: deferred restoreTab() call to end of inline script (after all agents graph const/let/function declarations). Previously restoreTab() was an IIFE that ran mid-script — activateTab('tab-agents') → initAgentsGraph() → fetchAndDraw() all hit temporal dead zone ReferenceErrors on AGENTS_INDEX_FILE, POLL_INTERVAL, AGENT_PROFILES_FILE etc. Crashed the entire inline script when URL fragment was #agents, breaking agent graph + tabs + theme re-render.
+    0.8.8 (2026-05-25) Agents tab full refactor (DS 0.7.4): (1) FULL-WIDTH GRAPH — removed right-side .agent-detail-panel + all associated CSS (.agent-detail-card/.detail-cap-*/.detail-open-btn/etc, ~145 LOC). (2) CLICK-TO-OPEN — onNodeClick now navigates directly: window.location.href = AGENT_DASHBOARD_URLS[id] for LIVE agents, showComingSoon() modal for placeholders. Simpler UX, less duplication with per-agent dashboards. (3) DS §4a fix — every .agent-node-card now has data-card-id=agent/<id> + .card-copy-ref button (wired via shared wireCopyRef after render). Previously violated mandatory copy-ref rule. (4) Inline styles → CSS classes: .legend-dot.ok/.accent/.warn, .agents-graph-wrap, .agents-tab-note. (5) escHtml → window.escapeHtml from /_design/dom-utils.js (Sprint 5 lib now loaded). Local escHtml kept as alias to avoid 30+ call-site renames. (6) Removed window.showComingSoon global + inline onclick (was XSS-risky pattern). Graph min-height 500 → 640px (more vertical room without sidebar).
+    0.8.8 (2026-05-25) — Presence Graph dashboard registered (standalone/presences). Cross-org social media matrix with clickable channel detail cards.
+    0.8.7 (2026-05-25) — Vezetők Imája dashboard registered (standalone/vezetok). TBD pill → live link. Card description updated.
+    0.8.6 (2026-05-25) BUGFIX: (1) restored "// ============= Agents Graph =============" comment prefix that was eaten during Sprint 1 migration (syntax error caused entire inline script to fail to parse → tabs, theme toggle, date headline all broken). (2) Moved shared scripts (live-updates.js, theme.js, clipboard.js) BEFORE the inline <script> block so LiveUpdates is defined when the boot code calls it (pre-existing ordering bug, predates Sprint 1, but masked by the parse error). Admin-bar.js stays after (mounts on DOMContentLoaded).
+    0.8.5 (2026-05-25) refactor: extract canonical :root + dark + @media tokens → /_design/tokens.css (DS 0.7.0 engine extraction, Sprint 2a)
+    0.8.4 (2026-05-25) refactor: extract setTheme/copyText/wireCopyRef → /_design/{theme,clipboard}.js (DS 0.7.0 engine extraction, Sprint 1)
     - 0.1.0 (2026-05-19) initial tree layout, Sonrisa + ExarLabs + 3 standalones,
             CPS expanded as 4-branch sub-tree (Partnerships, AI Ops, Sales,
             Marketing).
@@ -70,6 +82,18 @@
     - 0.8.0 (2026-05-24) — promote: ops-header strip injected above all mastheads
             (DS 0.5.0). ops-header.js + #bdos-ops-header mount. Scheduler dashboard
             registered (standalone/scheduler).
+    - 0.8.3 (2026-05-25) — build: Personal Growth dashboard registered
+            (standalone/personal-growth). Weight line+delta charts, weekly matrix
+            with 8-week linear regression forecast, 7 habit heatmaps (120 days).
+            Source: /05_DailyNotes (Weight:: inline field) + Habits/#*.md entries.
+    - 0.8.2 (2026-05-25) — promote: admin-bar.js (DS 0.6.0). Task-1 fix: added
+            #bdos-admin-bar div (first body child) + admin-bar.js script tag
+            (both were missing in 0.8.0/0.8.1). ops-header reference → admin-bar.
+    - 0.8.1 (2026-05-25) — tend: removed 7 agent/BDOS cards from standalone-row
+            (standalone/agents, /sage, /maestro, /presto, /librarian, /curator, /broker).
+            These are now discoverable via the Agents tab graph. standalone-row grid
+            changed from repeat(3,1fr) to repeat(auto-fill,minmax(260px,1fr)) for
+            responsive layout with remaining cards.
   ============================================================================= -->
 <html lang="en">
 <head>
@@ -89,25 +113,12 @@
   document.documentElement.dataset.theme = t;
 })();
 </script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  --bg-page:     #faf9f5;
-  --bg-elev:     #ffffff;
-  --bg-sunken:   #f3f1ea;
-  --bg-tint:     #f5f4ef;
-  --ink-1:       #141413;
-  --ink-2:       #3a3a37;
-  --ink-3:       #6d6d6a;
-  --ink-4:       #9c9c98;
-  --ink-5:       #c8c8c2;
-  --line:        #e5e4df;
-  --line-soft:   #efede7;
-  --branch:      #d4d2cc;
-  --accent:      #D97757;
-  --accent-deep: #b35a3f;
-  --accent-tint: #fbeee6;
+--branch:      #d4d2cc;
 
   --sonrisa:     #b35a3f;
   --sonrisa-tint:#fbeee6;
@@ -121,41 +132,11 @@
   --ignis-tint:  #fbf2dc;
   --nav:         #0e7490;
   --nav-tint:    #e0f2f7;
-
-  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
-  --warn:      #b07a18;  --warn-tint: #fbf2dc;
-  --gap:       #c0392b;  --gap-tint:  #fbeae6;
-  --idle:      #7a7a76;  --idle-tint: #efeeeb;
-
-  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
-  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
-
-  --radius-s: 4px;
-  --radius-m: 6px;
-  --radius-l: 10px;
-  --radius-xl: 14px;
-
-  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
-  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
 }
 
 /* ===== Dark theme override (DS 0.3.0) ===== */
 :root[data-theme="dark"] {
-  --bg-page:   #1a1916;
-  --bg-elev:   #232220;
-  --bg-sunken: #2c2a26;
-  --bg-tint:   #262420;
-  --ink-1: #f5f4ef;
-  --ink-2: #d6d4ce;
-  --ink-3: #a8a6a0;
-  --ink-4: #7c7a74;
-  --ink-5: #54524d;
-  --line:      #36342f;
-  --line-soft: #2c2a26;
-  --branch:    #4a4844;
-  --accent:      #e08a6a;
-  --accent-deep: #f0a085;
-  --accent-tint: #3a2a22;
+--branch:    #4a4844;
   /* Area-brand tokens — lightened for dark bg */
   --sonrisa:     #f0a085;  --sonrisa-tint: #3a2a22;
   --exar:        #6aa3e0;  --exar-tint:    #1e2a3a;
@@ -163,43 +144,17 @@
   --vez:         #5cc08a;  --vez-tint:     #1e3329;
   --ignis:       #d6a94a;  --ignis-tint:   #352c18;
   --nav:         #38bcd4;  --nav-tint:     #0e2a30;
-  --ok:        #5cc08a;  --ok-tint:   #1e3329;
-  --warn:      #d6a94a;  --warn-tint: #352c18;
-  --gap:       #e57c6e;  --gap-tint:  #3a221e;
-  --idle:      #9a9892;  --idle-tint: #2a2925;
-  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg-page:   #1a1916;
-    --bg-elev:   #232220;
-    --bg-sunken: #2c2a26;
-    --bg-tint:   #262420;
-    --ink-1: #f5f4ef;
-    --ink-2: #d6d4ce;
-    --ink-3: #a8a6a0;
-    --ink-4: #7c7a74;
-    --ink-5: #54524d;
-    --line:      #36342f;
-    --line-soft: #2c2a26;
-    --branch:    #4a4844;
-    --accent:      #e08a6a;
-    --accent-deep: #f0a085;
-    --accent-tint: #3a2a22;
+--branch:    #4a4844;
     --sonrisa:     #f0a085;  --sonrisa-tint: #3a2a22;
     --exar:        #6aa3e0;  --exar-tint:    #1e2a3a;
     --media:       #a585e0;  --media-tint:   #2a1e3a;
     --vez:         #5cc08a;  --vez-tint:     #1e3329;
     --ignis:       #d6a94a;  --ignis-tint:   #352c18;
     --nav:         #38bcd4;  --nav-tint:     #0e2a30;
-    --ok:        #5cc08a;  --ok-tint:   #1e3329;
-    --warn:      #d6a94a;  --warn-tint: #352c18;
-    --gap:       #e57c6e;  --gap-tint:  #3a221e;
-    --idle:      #9a9892;  --idle-tint: #2a2925;
-    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-  }
+}
 }
 
 html { font-size: 15px; }
@@ -227,9 +182,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 
 /* ============= App shell ============= */
 
-.app {
+.app-main {
   max-width: 1280px;
-  margin: 0 auto;
   padding: clamp(24px, 4vw, 48px) clamp(20px, 4vw, 40px) 96px;
 }
 
@@ -523,6 +477,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .leaves-3 { grid-template-columns: repeat(3, 1fr); }
 .leaves-4 { grid-template-columns: repeat(4, 1fr); }
 .leaves-5 { grid-template-columns: repeat(5, 1fr); }
+.leaves-6 { grid-template-columns: repeat(6, 1fr); }
+.leaves-7 { grid-template-columns: repeat(7, 1fr); }
 
 /* Vertical stub coming down from the sub-tree header to the horizontal line */
 .leaves::before {
@@ -548,6 +504,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .leaves-3::after { left: 16.67%;  right: 16.67%; }
 .leaves-4::after { left: 12.5%;   right: 12.5%; }
 .leaves-5::after { left: 10%;     right: 10%; }
+.leaves-6::after { left: 8.33%;   right: 8.33%; }
+.leaves-7::after { left: 7.14%;   right: 7.14%; }
 
 /* Per-leaf vertical stub from horizontal line down to the leaf */
 .leaves .leaf {
@@ -664,7 +622,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 /* Standalone Areas compact strip at the bottom */
 .standalone-row {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 16px;
   margin-top: 24px;
 }
@@ -715,20 +673,40 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 /* ============= Agents Tab ============= */
 
 .agents-tab-layout {
-  display: grid;
-  grid-template-columns: 1fr 340px;
-  gap: 24px;
-  min-height: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 640px;
 }
+
+/* Full-width graph wrapper (replaces inline-styled wrapper) */
+.agents-graph-wrap {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  background: var(--bg-elev);
+}
+
+/* Footer note under the graph (replaces sidebar description) */
+.agents-tab-note {
+  font-size: 11.5px;
+  color: var(--ink-4);
+  line-height: 1.6;
+  padding: 0 4px;
+}
+.agents-tab-note strong { color: var(--ink-3); font-weight: 600; }
 
 /* Graph container */
 .graph-container {
   background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-xl);
+  border: none;
+  border-radius: 0;
   position: relative;
   overflow: hidden;
-  min-height: 500px;
+  min-height: 640px;
+  flex: 1;
 }
 .graph-container svg {
   width: 100%;
@@ -830,153 +808,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   color: var(--ink-4);
 }
 
-/* Right-side agent detail panel */
-.agent-detail-panel {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.agent-detail-card {
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-}
-
-.agent-detail-empty {
-  padding: 40px 24px;
-  text-align: center;
-  color: var(--ink-4);
-  font-size: 13px;
-  line-height: 1.6;
-}
-.agent-detail-empty .empty-icon {
-  font-size: 28px;
-  margin-bottom: 12px;
-  opacity: 0.4;
-}
-
-.agent-detail-header {
-  padding: 20px 22px 16px;
-  border-bottom: 1px solid var(--line);
-}
-.agent-detail-header .detail-name {
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: -0.01em;
-  color: var(--ink-1);
-  margin-bottom: 6px;
-}
-.agent-detail-header .detail-desc {
-  font-size: 13px;
-  color: var(--ink-3);
-  line-height: 1.55;
-  margin-bottom: 10px;
-}
-.agent-detail-header .detail-meta {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-.detail-version-pill {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
-  font-weight: 500;
-  color: var(--ink-2);
-  background: var(--bg-tint);
-  border: 1px solid var(--line);
-  padding: 2px 8px;
-  border-radius: 999px;
-}
-.detail-status-chip {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  padding: 2px 8px;
-  border-radius: 999px;
-  border: 1px solid;
-}
-.detail-status-chip.live {
-  color: var(--ok);
-  background: var(--ok-tint);
-  border-color: rgba(31,122,77,.2);
-}
-.detail-status-chip.placeholder {
-  color: var(--warn);
-  background: var(--warn-tint);
-  border-color: rgba(176,122,24,.2);
-}
-.detail-status-chip.scheduling {
-  color: var(--accent-deep);
-  background: var(--accent-tint);
-  border-color: rgba(217,119,87,.2);
-}
-
-.agent-detail-body {
-  padding: 16px 22px 20px;
-}
-
-.detail-connections {
-  margin-bottom: 14px;
-}
-.detail-connections h5 {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: .1em;
-  text-transform: uppercase;
-  color: var(--ink-4);
-  margin-bottom: 8px;
-}
-.connection-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  font-size: 11.5px;
-  color: var(--ink-2);
-  background: var(--bg-tint);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-m);
-  padding: 3px 9px;
-  margin: 2px 3px 2px 0;
-}
-.connection-chip .conn-arrow { color: var(--ink-4); font-size: 10px; }
-
-.detail-open-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  padding: 8px 16px;
-  background: var(--accent);
-  color: white;
-  border: 1px solid var(--accent);
-  border-radius: var(--radius-m);
-  font-size: 12.5px;
-  font-weight: 600;
-  transition: background var(--t-fast), border-color var(--t-fast);
-  width: 100%;
-  margin-top: 14px;
-  text-align: center;
-  cursor: pointer;
-}
-.detail-open-btn:hover {
-  background: var(--accent-deep);
-  border-color: var(--accent-deep);
-}
-.detail-open-btn.coming-soon {
-  background: var(--bg-tint);
-  color: var(--ink-4);
-  border-color: var(--line);
-  border-style: dashed;
-  cursor: default;
-}
-.detail-open-btn.coming-soon:hover {
-  background: var(--bg-tint);
-  border-color: var(--ink-5);
-}
+/* (Detail panel CSS removed — DS 0.7.4: click-to-open replaces sidebar detail.
+   Coming-soon modal still uses .modal-* classes defined further down.) */
 
 /* Legend strip */
 .graph-legend {
@@ -1000,6 +833,9 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   border-radius: 50%;
   flex-shrink: 0;
 }
+.legend-dot.ok     { background: var(--ok); }
+.legend-dot.accent { background: var(--accent); }
+.legend-dot.warn   { background: var(--warn); }
 .legend-line {
   width: 20px; height: 1.5px;
   background: var(--ink-4);
@@ -1080,28 +916,32 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 }
 
 @media (max-width: 980px) {
-  .leaves-4, .leaves-5 { grid-template-columns: repeat(2, 1fr); }
-  .leaves-4::after, .leaves-5::after { left: 25%; right: 25%; }
+  .leaves-4, .leaves-5, .leaves-6, .leaves-7 { grid-template-columns: repeat(2, 1fr); }
+  .leaves-4::after, .leaves-5::after, .leaves-6::after, .leaves-7::after { left: 25%; right: 25%; }
   .branch-row.cols-2, .branch-row.cols-3 { grid-template-columns: 1fr; }
   .standalone-row { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 640px) {
-  .leaves-2, .leaves-3, .leaves-4, .leaves-5 { grid-template-columns: 1fr; padding-top: 16px; }
+  .leaves-2, .leaves-3, .leaves-4, .leaves-5, .leaves-6, .leaves-7 { grid-template-columns: 1fr; padding-top: 16px; }
   .leaves::before, .leaves::after { display: none; }
   .leaves .leaf::before { display: none; }
   .masthead h1 { font-size: 30px; }
   .tab-btn { font-size: 13px; padding: 8px 12px 9px; }
 }
-/* ===== Node avatar chip (0.7.4) ===== */
-.node-avatar { display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; border:1.5px solid; font-size:17px; line-height:1; flex-shrink:0; margin:0 auto 4px; transition:background .3s,border-color .3s; }
+/* ===== Node avatar chip (0.7.4, img swap 0.8.14) ===== */
+.node-avatar { display:flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; border:1.5px solid var(--agent-color-border, var(--line)); background: var(--agent-color-tint, var(--bg-tint)); color: var(--agent-color, var(--ink-3)); font-size:17px; line-height:1; flex-shrink:0; margin:0 auto 4px; transition:background .3s,border-color .3s; overflow:hidden; position:relative; }
+.node-avatar img { width:100%; height:100%; object-fit:cover; display:block; border-radius:50%; }
+.node-avatar-emoji { display:none; width:100%; height:100%; align-items:center; justify-content:center; font-size:17px; position:absolute; inset:0; }
 /* Detail panel cap summary */
 .detail-cap-summary { display:flex; flex-wrap:wrap; gap:6px; margin-top:10px; }
 .detail-cap-chip { font-family:'JetBrains Mono',monospace; font-size:10px; padding:2px 7px; border-radius:4px; border:1px solid var(--line); background:var(--bg-tint); color:var(--ink-3); }
 </style>
 </head>
 <body>
-<div class="app">
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<div class="app-main">
 
   <!-- ============= Masthead ============= -->
 
@@ -1110,7 +950,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
       <div class="eyebrow" style="margin-bottom:0;">
         <span class="dot"></span>
         <span>Ideas Vault</span>
-        <span class="version-pill" id="versionPill">v0.7.5</span>
+        <span class="version-pill" id="versionPill">v0.8.14</span>
       </div>
       <div style="display:flex;align-items:center;gap:8px;">
         <span id="liveStatusMount"></span>
@@ -1186,10 +1026,10 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
               <h3 id="cps-head">CPS, Cloud Platform Services</h3>
               <p class="role">The operating unit. Four parallel strategic directions to keep an eye on.</p>
             </div>
-            <span class="branch-count">5 branches</span>
+            <span class="branch-count">7 branches</span>
           </header>
 
-          <div class="leaves leaves-5">
+          <div class="leaves leaves-7">
             <article class="leaf" data-card-id="cps/partnerships">
               <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
               <h4>Partnerships</h4>
@@ -1223,6 +1063,17 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
               </div>
             </article>
 
+            <article class="leaf" data-card-id="cps/account-management">
+              <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+              <h4>Account Management</h4>
+              <p class="role">Active project lifecycle. 10-stage kanban (Backlog → Closed/Lost), today's AM queue, per-project drawer.</p>
+              <div class="actions">
+                <a class="btn-primary" href="/_dashboards/account-management.html">
+                  Open <span class="arrow" aria-hidden="true">→</span>
+                </a>
+              </div>
+            </article>
+
             <article class="leaf" data-card-id="cps/team">
               <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
               <h4>Team</h4>
@@ -1238,6 +1089,13 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
               <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
               <h4>Marketing</h4>
               <p class="role">Channel mix, content cadence, lead-magnet performance, microsite factory output.</p>
+              <span class="tbd-pill">Dashboard TBD</span>
+            </article>
+
+            <article class="leaf is-tbd" data-card-id="cps/practices">
+              <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+              <h4>Practices</h4>
+              <p class="role">Cross-client capability and research areas. Currently 1 area: Inference Farm (Merkantil-triggered, research stage). Owned by Forge agent.</p>
               <span class="tbd-pill">Dashboard TBD</span>
             </article>
           </div>
@@ -1271,7 +1129,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
           <h2 id="exar-head">ExarLabs</h2>
           <p class="role">Another universe. Operating client work, services, and funding tracks.</p>
         </div>
-        <span class="branch-count">3 branches</span>
+        <span class="branch-count">4 branches</span>
       </header>
       <div class="branches">
         <div class="branch-row cols-3">
@@ -1302,6 +1160,13 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
             <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
             <h3>Pályázat</h3>
             <p class="role">Grant and funding application tracking. Deadlines, requirements, status.</p>
+            <span class="tbd-pill">Dashboard TBD</span>
+          </article>
+
+          <article class="leaf is-tbd" data-card-id="exar/practices">
+            <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+            <h3>Practices</h3>
+            <p class="role">Cross-client capability and research areas. Currently 1 area: Microsites (AI-assisted microsite delivery, patterns-emerging stage). Owned by Forge agent.</p>
             <span class="tbd-pill">Dashboard TBD</span>
           </article>
 
@@ -1342,6 +1207,17 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 
     <div class="standalone-row">
 
+      <article class="leaf" data-card-id="standalone/personal-growth">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Personal Growth</h3>
+        <p class="role">Weight tracking (line + EMA-14 + delta charts), weekly matrix with forecast, 7 habit heatmaps (120 days). Live from daily notes + Habits/#*.md.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/personal-growth/index.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </article>
+
       <article class="leaf is-tbd" data-card-id="standalone/media-muhely">
         <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <h3>Média Műhely</h3>
@@ -1349,11 +1225,15 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
         <span class="tbd-pill">Dashboard TBD</span>
       </article>
 
-      <article class="leaf is-tbd" data-card-id="standalone/vezetok">
+      <article class="leaf" data-card-id="standalone/vezetok">
         <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <h3>Vezetők Imája</h3>
-        <p class="role">Leadership formation programme. Cohort cadence, content surface.</p>
-        <span class="tbd-pill">Dashboard TBD</span>
+        <p class="role">Monthly Christian leaders' prayer community since Feb 2021. 48+ alkalom archive: speakers, topics, scriptures, hosts, Drive links. Search + filter by year/speaker. Live from <span class="mono">alkalmak.md</span>.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/vezetok-imaja.html">
+            Open <span class="arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
       </article>
 
       <article class="leaf is-tbd" data-card-id="standalone/ignis">
@@ -1363,89 +1243,23 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
         <span class="tbd-pill">Dashboard TBD</span>
       </article>
 
+      <article class="leaf" data-card-id="standalone/presences">
+        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+        <h3>Presence Graph</h3>
+        <p class="role">8 organizations, 18 channels across 7 platforms. Clickable matrix with inline detail cards. Live from <span class="mono">presence.md</span> files.</p>
+        <div class="actions">
+          <a class="btn-primary" href="/_dashboards/presences.html">
+            Open <span class="arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+      </article>
+
       <article class="leaf" data-card-id="standalone/plugins">
         <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
         <h3>Claude Code Plugins</h3>
         <p class="role">16 plugins mapped to the vault. Longevity scores, vault-fit tags, setup notes. Hardcoded snapshot; live-fetch deferred.</p>
         <div class="actions">
           <a class="btn-primary" href="/_dashboards/plugins.html">
-            Open <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="leaf" data-card-id="standalone/agents">
-        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
-        <h3>Agent Team</h3>
-        <p class="role">BDOS cheat sheet. Librarian, Maestro, Curator — modes, slash commands, and copyable example invocations. Live from 00_AGENTS_INDEX.md.</p>
-        <div class="actions">
-          <a class="btn-primary" href="/_dashboards/agents.html">
-            Open <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="leaf" data-card-id="standalone/sage">
-        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
-        <h3>Sage</h3>
-        <p class="role">Cognition Curator — last harvest, thoughts feed, atomic notes, inbox, learnings, journal timeline. Live from state/last_run.md + Ideas/.</p>
-        <div class="actions">
-          <a class="btn-primary" href="/_dashboards/sage/index.html">
-            Open <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="leaf" data-card-id="standalone/maestro">
-        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
-        <h3>Maestro Observatory</h3>
-        <p class="role">BDOS Organizational Observatory — Phase 2 Reflective Nervous System. Agent overview, time navigation, token intelligence (Phase 2.C), org intelligence, evolution tracking, reflection layer. Live from agents/*/logs/ + AGENTS_INDEX.</p>
-        <div class="actions">
-          <a class="btn-primary" href="/_dashboards/maestro/index.html">
-            Open <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="leaf" data-card-id="standalone/presto">
-        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
-        <h3>Presto — Marketing Observatory</h3>
-        <p class="role">Distribution Cognition Layer — campaign command center, analytics + audience intelligence, content lineage (Sage→adapt→publish→signal), audience learnings (8 types), discovery panel (4-filter), Sage-signal flow. Live from 00_MARKETING_INDEX.md + agents/presto/.</p>
-        <div class="actions">
-          <a class="btn-primary" href="/_dashboards/presto/index.html">
-            Open <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="leaf" data-card-id="standalone/librarian">
-        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
-        <h3>Librarian — Knowledge Manager</h3>
-        <p class="role">Knowledge Manager Observatory — tier-1 global index (PARA distribution), tier-2 scoped units (11 active), knowledge map, open questions, gaps, 6 operation modes reference. Live from 00_INDEX.md + 00_AGENTS_INDEX.md.</p>
-        <div class="actions">
-          <a class="btn-primary" href="/_dashboards/librarian/index.html">
-            Open <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="leaf" data-card-id="standalone/curator">
-        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
-        <h3>Curator — Dashboard Family</h3>
-        <p class="role">Self-referential dashboard about dashboards. Family grid (all 12), design system overview + promote history (DS 0.3.0), 7 modes reference, audit backlog, recent builds from index audit log. Live from 00_DASHBOARD_INDEX.md.</p>
-        <div class="actions">
-          <a class="btn-primary" href="/_dashboards/curator/index.html">
-            Open <span class="arrow" aria-hidden="true">→</span>
-          </a>
-        </div>
-      </article>
-
-      <article class="leaf" data-card-id="standalone/broker">
-        <button class="card-copy-ref" aria-label="Kártya-azonosító másolása"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
-        <h3>Broker — Sales Observatory</h3>
-        <p class="role">Sales Engine Observatory — cross-project pipeline (6 stages), cohort grid (area-identity colors), conversion funnel, sales learnings (8 types), outreach drafts, Presto sister cross-link. Phase 2.B: graceful empty-state until first /brk-plan.</p>
-        <div class="actions">
-          <a class="btn-primary" href="/_dashboards/broker/index.html">
             Open <span class="arrow" aria-hidden="true">→</span>
           </a>
         </div>
@@ -1461,26 +1275,26 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 
     <div class="agents-tab-layout">
 
-      <!-- Graph + sync strip -->
-      <div style="display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--radius-xl);overflow:hidden;background:var(--bg-elev);">
+      <!-- Full-width graph -->
+      <div class="agents-graph-wrap">
         <div class="agents-sync-strip">
           <span class="sync-dot" id="agentSyncDot"></span>
           <span id="agentSyncLabel">Loading agent family…</span>
         </div>
-        <div class="graph-container" id="graphContainer" style="flex:1;border:none;border-radius:0;">
+        <div class="graph-container" id="graphContainer">
           <svg id="agentGraphSvg"></svg>
         </div>
         <div class="graph-legend">
           <span class="legend-item">
-            <span class="legend-dot" style="background:var(--ok);"></span>
-            LIVE agent
+            <span class="legend-dot ok"></span>
+            LIVE agent — click to open dashboard
           </span>
           <span class="legend-item">
-            <span class="legend-dot" style="background:var(--accent);"></span>
+            <span class="legend-dot accent"></span>
             Scheduling pending
           </span>
           <span class="legend-item">
-            <span class="legend-dot" style="background:var(--warn);"></span>
+            <span class="legend-dot warn"></span>
             Placeholder
           </span>
           <span class="legend-item">
@@ -1494,17 +1308,9 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
         </div>
       </div>
 
-      <!-- Detail panel -->
-      <div class="agent-detail-panel">
-        <div class="agent-detail-card" id="agentDetailCard">
-          <div class="agent-detail-empty">
-            <div class="empty-icon">&#9671;</div>
-            <div>Click an agent node<br>to see details.</div>
-          </div>
-        </div>
-        <div style="font-size:11.5px;color:var(--ink-4);line-height:1.6;padding:0 2px;">
-          The Agents view is the <strong style="color:var(--ink-3);">dynamic view</strong> of the vault — who does what, how agents relate. The Areas tab is the <strong style="color:var(--ink-3);">static view</strong> — what content lives where. Two aspects of the same library.
-        </div>
+      <!-- Footer note (replaces sidebar description) -->
+      <div class="agents-tab-note">
+        The Agents view is the <strong>dynamic view</strong> of the vault — who does what, how agents relate. The Areas tab is the <strong>static view</strong> — what content lives where. Two aspects of the same library. <strong>Click an agent</strong> to jump to its dashboard.
       </div>
 
     </div>
@@ -1518,20 +1324,27 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     <span>All edits happen in Obsidian. The dashboard is read-only.</span>
   </footer>
 
-</div>
+</div><!-- end .app-main -->
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
 
 <!-- Coming-soon modal -->
 <div class="coming-soon-overlay" id="comingSoonOverlay" role="dialog" aria-modal="true" aria-labelledby="comingSoonTitle">
   <div class="coming-soon-modal">
     <h3 id="comingSoonTitle"></h3>
     <p id="comingSoonBody"></p>
-    <p class="modal-hint">Sage already has a dashboard — <a href="/_dashboards/sage/index.html">open it as a reference</a>.</p>
+    <p class="modal-hint">Check back after the next build session.</p>
     <button class="modal-close-btn" id="comingSoonClose">Close</button>
   </div>
 </div>
 
 <!-- D3.js v7 for force-directed layout -->
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
+<!-- Shared engine — must load BEFORE the inline script below (uses LiveUpdates) -->
+<script src="/_dashboards/_design/live-updates.js"></script>
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<script src="/_dashboards/_design/dom-utils.js"></script>
 
 <script>
   // ============= Date headline =============
@@ -1586,12 +1399,12 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     });
   });
 
-  // Restore tab from URL fragment
-  (function restoreTab() {
+  // Restore tab from URL fragment — deferred to end of script (see bottom)
+  function restoreTab() {
     const hash = location.hash.replace('#', '');
     if (hash === 'agents') activateTab('tab-agents');
     else activateTab('tab-areas');
-  })();
+  }
 
   // ============= Expand / collapse (Areas tree) =============
   function bindToggle(headerSelector, parentSelector) {
@@ -1615,19 +1428,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 
   // ============= Card copy-ref (DS 0.2.0) =============
   const DASH_STEM = 'index';
-  function copyText(text, el) {
-    navigator.clipboard.writeText(text).then(() => {
-      el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
-    }).catch(() => {
-      const ta = document.createElement('textarea');
-      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-      document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); } catch(e) {}
-      document.body.removeChild(ta);
-      el.classList.add('copied'); setTimeout(() => el.classList.remove('copied'), 1600);
-    });
-  }
-  document.querySelectorAll('.card-copy-ref').forEach(btn => {
+/* Clipboard helpers (copyText, wireCopyRef): /_dashboards/_design/clipboard.js (DS 0.7.0, Sprint 1) */
+document.querySelectorAll('.card-copy-ref').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.stopPropagation();
       const card = btn.closest('[data-card-id]');
@@ -1637,28 +1439,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   });
 
   // ============= Theme toggle (DS 0.3.0) =============
-  function setTheme(t) {
-    document.documentElement.dataset.theme = t;
-    try { localStorage.setItem('dash-theme', t); } catch(e) {}
-    const btn = document.getElementById('themeToggle');
-    if (btn) {
-      btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
-      btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
-      btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-    }
-  }
-  document.getElementById('themeToggle').addEventListener('click', function() {
-    setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-  });
-  window.addEventListener('storage', function(e) {
-    if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
-  });
-  (function initTheme() {
-    var t;
-    try { t = localStorage.getItem('dash-theme'); } catch(e) {}
-    if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
-    setTheme(t);
-  })();
+/* Theme toggle: moved to /_dashboards/_design/theme.js (DS 0.7.0, Sprint 1) */
 
   // ============= Agents Graph =============
 
@@ -1670,19 +1451,19 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     'librarian':  'Knowledge manager, vault retrieval',
     'maestro':    'Conductor — projects and team',
     'curator':    'Representation layer dashboards',
-    'sage':       'Cognition curator, thought harvest',
     'presto':     'Marketing executor, distribution',
     'broker':     'Sales executor, one-to-one'
   };
 
   // All 6 agent dashboards now live (0.7.4).
   const AGENT_DASHBOARD_URLS = {
-    'sage':      '/_dashboards/sage/index.html',
     'maestro':   '/_dashboards/maestro/index.html',
     'presto':    '/_dashboards/presto/index.html',
     'librarian': '/_dashboards/librarian/index.html',
     'curator':   '/_dashboards/curator/index.html',
-    'broker':    '/_dashboards/broker/index.html'
+    'broker':    '/_dashboards/broker/index.html',
+    'forge':     '/_dashboards/forge/index.html',
+    'alfred':    '/_dashboards/alfred/index.html'
   };
 
   // Agent profiles — avatars fetched live (0.7.4)
@@ -1725,7 +1506,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 
   function buildAvatarMap(md) {
     if (!md) return;
-    ['Librarian','Maestro','Curator','Sage','Presto','Broker'].forEach(name => {
+    ['Librarian','Maestro','Curator','Presto','Broker','Forge','Alfred'].forEach(name => {
       const p = parseAgentProfile(md, name);
       if (p) gAvatarMap[name.toLowerCase()] = p;
     });
@@ -1736,18 +1517,16 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   const STATIC_EDGES = [
     { source: 'maestro', target: 'librarian',  type: 'orchestrates',    label: 'team-*' },
     { source: 'maestro', target: 'curator',    type: 'orchestrates',    label: 'team-*' },
-    { source: 'maestro', target: 'sage',        type: 'orchestrates',    label: 'team-*' },
     { source: 'maestro', target: 'presto',      type: 'orchestrates',    label: 'team-*' },
     { source: 'maestro', target: 'broker',      type: 'orchestrates',    label: 'team-*' },
-    { source: 'sage',    target: 'librarian',   type: 'orchestrates',    label: 'curate→' },
-    { source: 'sage',    target: 'presto',      type: 'permitted-flow',  label: 'cognition→dist' },
-    { source: 'sage',    target: 'broker',      type: 'permitted-flow',  label: 'cognition→dist' },
     { source: 'presto',  target: 'broker',      type: 'sibling',         label: 'sibling' },
     { source: 'curator', target: 'librarian',   type: 'representation',  label: 'renders' },
     { source: 'curator', target: 'maestro',     type: 'representation',  label: 'static↔dynamic' },
-    { source: 'curator', target: 'sage',        type: 'representation',  label: 'renders' },
     { source: 'curator', target: 'presto',      type: 'representation',  label: 'renders' },
-    { source: 'curator', target: 'broker',      type: 'representation',  label: 'renders' }
+    { source: 'curator', target: 'broker',      type: 'representation',  label: 'renders' },
+    { source: 'alfred',  target: 'presto',      type: 'permitted-flow',  label: 'route→' },
+    { source: 'alfred',  target: 'broker',      type: 'permitted-flow',  label: 'route→' },
+    { source: 'alfred',  target: 'forge',       type: 'permitted-flow',  label: 'route→' }
   ];
 
   let graphInitialised = false;
@@ -1983,24 +1762,44 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
       card.className = 'agent-node-card' +
         (hasDash ? ' has-dashboard' : '') +
         (isPlaceholder ? ' placeholder' : '');
+      // DS §4a: every bounded card-like element needs a stable card-id
+      card.setAttribute('data-card-id', 'agent/' + d.id);
 
       const av = gAvatarMap[d.id];
+      // Per-agent color is passed as CSS custom properties; .node-avatar reads them.
+      // 0.8.14: real Pixar portrait img primary, emoji as 404 fallback (never set textContent — wipes the img).
       const avatarHtml = av
-        ? '<div class="node-avatar" style="background:' + hexToRgba(av.color, 0.12) + ';border-color:' + hexToRgba(av.color, 0.3) + ';color:' + av.color + ';">' + av.emoji + '</div>'
+        ? '<div class="node-avatar" style="--agent-color:' + av.color +
+          ';--agent-color-tint:' + hexToRgba(av.color, 0.12) +
+          ';--agent-color-border:' + hexToRgba(av.color, 0.3) + ';">' +
+          '<img src="/00_Prompts/BDOS/agents/' + d.id + '/avatar.png" alt="' + escapeHtml(d.displayName) + '" loading="lazy"' +
+          ' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\';">' +
+          '<span class="node-avatar-emoji" aria-hidden="true">' + escapeHtml(av.emoji) + '</span>' +
+          '</div>'
         : '';
       card.innerHTML =
         avatarHtml +
-        '<div class="node-name">' + escHtml(d.displayName) + '</div>' +
-        '<div class="node-desc">' + escHtml(d.description) + '</div>' +
+        '<div class="node-name">' + escapeHtml(d.displayName) + '</div>' +
+        '<div class="node-desc">' + escapeHtml(d.description) + '</div>' +
         '<div class="node-meta">' +
           '<span class="node-status-dot ' + statusClass(d.status) + '"></span>' +
-          '<span class="node-version">v' + escHtml(d.version) + '</span>' +
+          '<span class="node-version">v' + escapeHtml(d.version) + '</span>' +
           '<span class="node-status-label">' + statusLabel(d.status) + '</span>' +
-        '</div>';
+        '</div>' +
+        // DS §4a: hover copy-ref button
+        '<button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>' +
+          '<svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
+          ' copy ref' +
+        '</button>';
 
+      // Click → open dashboard (LIVE) OR coming-soon (placeholder).
+      // copy-ref button stops propagation in wireCopyRef so it never triggers nav.
       card.addEventListener('click', () => onNodeClick(d));
       fo.node().appendChild(card);
     });
+
+    // Wire copy-refs across the whole graph container after all nodes rendered
+    wireCopyRef(document.getElementById('graphContainer'));
 
     // Tick
     simulation.on('tick', () => {
@@ -2018,13 +1817,9 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
-  function escHtml(s) {
-    return String(s)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
+  // escHtml/escapeHtml: now loaded via /_design/dom-utils.js (DS 0.7.3)
+  // Local alias keeps existing call-sites working without 30+ rename edits.
+  const escHtml = escapeHtml;
 
   function statusClass(s) {
     if (s === 'scheduling') return 'scheduling';
@@ -2038,71 +1833,19 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     return 'live';
   }
 
-  // ---------- Node click → detail panel ----------
+  // ---------- Node click → open dashboard (or coming-soon for placeholders) ----------
+  // DS 0.7.4: removed sidebar detail-panel. Click navigates directly.
   function onNodeClick(agent) {
     selectedAgent = agent;
-    const panel = document.getElementById('agentDetailCard');
-    if (!panel) return;
-
-    const hasDash = !!AGENT_DASHBOARD_URLS[agent.id];
-    const url = AGENT_DASHBOARD_URLS[agent.id] || null;
-
-    // Connections from STATIC_EDGES
-    const outgoing = STATIC_EDGES.filter(e => e.source === agent.id && parsedAgents.some(a => a.id === e.target));
-    const incoming = STATIC_EDGES.filter(e => e.target === agent.id && parsedAgents.some(a => a.id === e.source));
-
-    const connHtml = (outgoing.length + incoming.length > 0) ? `
-      <div class="detail-connections">
-        <h5>Connections</h5>
-        ${incoming.map(e => `
-          <span class="connection-chip">
-            <span class="conn-arrow">←</span>
-            ${escHtml(capitalize(e.source))}
-            <span style="font-size:9.5px;color:var(--ink-4);">(${escHtml(e.label)})</span>
-          </span>`).join('')}
-        ${outgoing.map(e => `
-          <span class="connection-chip">
-            <span class="conn-arrow">→</span>
-            ${escHtml(capitalize(e.target))}
-            <span style="font-size:9.5px;color:var(--ink-4);">(${escHtml(e.label)})</span>
-          </span>`).join('')}
-      </div>` : '';
-
-    const btnHtml = hasDash
-      ? `<a class="detail-open-btn" href="${url}">Open dashboard <span>→</span></a>`
-      : `<button class="detail-open-btn coming-soon" onclick="showComingSoon('${escHtml(agent.displayName)}')">Detail page coming soon</button>`;
-
-    const av = gAvatarMap[agent.id];
-    const avatarHeaderHtml = av
-      ? `<span style="display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:1.5px solid ${hexToRgba(av.color,0.3)};background:${hexToRgba(av.color,0.12)};color:${av.color};font-size:22px;margin-bottom:6px;">${av.emoji}</span>`
-      : '';
-    const capSummaryHtml = av ? `
-      <div class="detail-cap-summary">
-        ${av.tools.length ? `<span class="detail-cap-chip">${av.tools.length} tools</span>` : ''}
-        ${av.connectors_mcp.length ? `<span class="detail-cap-chip">${av.connectors_mcp.length} MCP${av.connectors_mcp.length > 1 ? 's' : ''}</span>` : ''}
-        ${av.apis.length ? `<span class="detail-cap-chip">${av.apis.length} API${av.apis.length > 1 ? 's' : ''}</span>` : ''}
-        ${av.plugins.length ? `<span class="detail-cap-chip">${av.plugins.length} plugin${av.plugins.length > 1 ? 's' : ''}</span>` : ''}
-        <span class="detail-cap-chip" style="opacity:.6;font-size:9px;">live from AGENT_PROFILES.md</span>
-      </div>` : '';
-
-    panel.innerHTML = `
-      <div class="agent-detail-header">
-        ${avatarHeaderHtml}
-        <div class="detail-name">${escHtml(agent.displayName)}</div>
-        <div class="detail-desc">${escHtml(agent.description)}</div>
-        <div class="detail-meta">
-          <span class="detail-version-pill">v${escHtml(agent.version)}</span>
-          <span class="detail-status-chip ${statusClass(agent.status)}">${statusLabel(agent.status)}</span>
-        </div>
-        ${capSummaryHtml}
-      </div>
-      <div class="agent-detail-body">
-        ${connHtml}
-        ${btnHtml}
-      </div>`;
+    const url = AGENT_DASHBOARD_URLS[agent.id];
+    if (url) {
+      // LIVE — navigate to the agent's dashboard
+      window.location.href = url;
+    } else {
+      // Placeholder / scheduling-pending — show coming-soon modal
+      showComingSoon(agent.displayName);
+    }
   }
-
-  function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
   // ---------- Coming-soon modal ----------
   function showComingSoon(name) {
@@ -2110,7 +1853,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     document.getElementById('comingSoonTitle').textContent = name + ' — detail page';
     document.getElementById('comingSoonBody').textContent =
       'The ' + name + ' agent dashboard has not been built yet. ' +
-      'Sage is the reference implementation. Check back after the next build session.';
+      'Check back after the next build session.';
     overlay.classList.add('visible');
   }
 
@@ -2126,8 +1869,8 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     }
   });
 
-  // Expose showComingSoon globally (called from inline onclick)
-  window.showComingSoon = showComingSoon;
+  // showComingSoon is called directly from onNodeClick — no inline onclick
+  // attribute needed anymore (DS 0.7.4: removed detail-panel pattern).
 
   // ---------- Re-render graph on theme change (colors update) ----------
   window.addEventListener('storage', function(e) {
@@ -2145,7 +1888,13 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   LiveUpdates.subscribe(fetchAndDraw);
   LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
 
+  // Boot: restore tab AFTER all agents graph declarations are in scope
+  restoreTab();
+
 </script>
-<script src="/_dashboards/_design/live-updates.js"></script>
+<!-- admin-bar.js (DS 0.6.0) — loads after inline script (mounts via DOMContentLoaded) -->
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
 </body>
 </html>

@@ -1,3 +1,15 @@
+---
+title: "SharePoint/OneDrive Sync Issue -- Dashboard Editing from Cowork"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Troubleshooting OneDrive sync conflicts when programmatically editing Excel files via openpyxl while the file is open in Excel Online; explores Microsoft Graph API and SharePoint REST API alternatives to avoid full-file-replacement locking issues in a monthly dashboard workflow."
+description_source: auto
+description_hash: e5d822ea60b488e9
+id: f92e4e27-cbaf-4cfb-8de0-8cda018bcef9
+index_schema_version: 1
+bdos_index: true
+---
 # SharePoint/OneDrive Sync Issue -- Dashboard Editing from Cowork
 
 ## The Setup

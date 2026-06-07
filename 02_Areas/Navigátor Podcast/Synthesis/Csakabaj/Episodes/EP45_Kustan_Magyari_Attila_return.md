@@ -1,4 +1,7 @@
 ---
+description: "Kustán Magyari conspiracy expert visszatér az EP45-ben, hogy megvitassa az Odaát könyvet, az egészséges gyanakvást és kritikai gondolkodást. Az epizód a konteó-kultúra és intellektuális kutatás közötti különbségeket feltárja, gyakorlati útmutatást adva a paranoia nélküli kritikai szemlélethez."
+description_source: auto
+description_hash: 511fc755c3fe0eb2
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
@@ -13,7 +16,6 @@ synthesis_status: Complete
 id: 0afe3703-9c17-478d-b3eb-0af6111387a4
 index_schema_version: 1
 ---
-
 ## Alapadatok
 
 | Attribútum | Érték |

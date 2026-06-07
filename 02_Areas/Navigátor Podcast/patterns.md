@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast — Minőség vs Népszerűség: Mintázatok és Előrejelzések"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Navigátor Podcast epizódainak elemzése alapján a népszerűséget előrejelző képlet és témamintázatok. Praktikus alkalmazhatóság, univerzális relevancia, és tartalom mélysége a legfontosabb tényezők; pszichológia, egészség, és AI-témák az S-tier kategóriában, míg a vendég tekintélye önmagában nem garancia a sikerre."
+description_source: auto
+description_hash: 83235f0b9d5940d3
+id: 4931049a-7bb0-4748-8e85-35d001125e97
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast — Minőség vs Népszerűség: Mintázatok és Előrejelzések
 
 **Verzió:** 1.5

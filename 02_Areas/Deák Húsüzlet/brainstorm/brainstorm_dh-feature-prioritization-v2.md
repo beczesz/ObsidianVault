@@ -1,4 +1,7 @@
 ---
+description: "Feature prioritization framework for a meat delivery platform focused on repeat orders: weighted scoring methodology with 17 ranked features prioritizing the reorder quick panel, admin price corrections, and product type modeling to drive second order rate above 40% within 14 days."
+description_source: auto
+description_hash: 7911be4d25af3b26
 topic: DH Feature Prioritization v2 — Weighted Scoring
 created: 2026-05-02
 last_updated: 2026-05-02
@@ -7,7 +10,6 @@ parent: brainstorm_dh-feature-prioritization.md
 id: 8daf3992-688e-4750-a0a3-e9c8e2a4d75d
 index_schema_version: 1
 ---
-
 # DH Feature Prioritization v2 — Súlyozott Rangsor
 
 ## Alapelv

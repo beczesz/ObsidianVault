@@ -1,0 +1,452 @@
+1
+00:00:00,000 --> 00:00:31,380
+Speaker 1: Sziasztok, üdvözlök minden kedves nézőt! Nagyon régóta foglalkoztat a startup világ, és egyszerre izgalmas és egyszerre rémítő az, hogy mennyire nehéz egy startupot elindítani, és hogy mennyire kevés startup éli túl a kezdeti befektetési köröket. Lehetőségem nyílt a mai nap beszélgetni egy nagyon különleges emberrel, Süket Csabával, aki rengeteg tapasztalattal rendelkezik, 25 éve már itt van az IT piacon, de a startupok világában is most már tekintélyes tapasztalatra tetszert,
+
+2
+00:00:31,440 --> 00:01:04,271
+Speaker 1: a legújabb startupjáról mesél az emotiról, és hogy hogyan indította ezt el, gyakorlatilag, hogy hogyan működik egy startup, melyek azok a legfontosabb tényezők, ami miatt esetleg egy startup csődbe mehet. És az egyik meglepetésem nekem az volt, hogy nem a technológia és nem a pénz az oka, ami miatt a legtöbb startup csődbe megy. 75%-ában az eseteknek a sales, marketing, az ötletvalidálás, vagy a csapatban rejlő surródások azok, amelyek miatt egy startup csődbe megy. Egy nagyon izgalmas beszélgetésem volt Csabával, gyertek, tartsatok velünk!
+
+3
+00:01:04,952 --> 00:01:34,852
+Speaker 1: Üdvözöllek Csaba a műsorban! Én nagyon izgatottan vártam ezt a beszélgetést, mert az az igazság, hogy ennyire tapasztalt szemét, mint te, akinek már 25 év tapasztalata van az IT világban, és nem mellesleg a startup világban, nagyon nehéz kapni. Rengeteg kérdésem van nekem is ezzel kapcsolatban, és az előadásod során rengeteg kérdésre adtál már választ, de kicsit belemennék ezekből a kérdésekbe. Mielőtt nekifognánk ezeknek a kérdéseknek, röviden először is üdvözlődök a műsorba.
+
+4
+00:01:35,012 --> 00:01:45,512
+Speaker 1: Köszönöm szépen a meghívást, én is üdvözlök mindenkit. És kérlek, röviden meséld el az elmúlt 25 évet, ha lesz lehet röviden, tehát egy pár mondatban. Dióhéjban. Dióhéjban, igen.
+
+5
+00:01:46,051 --> 00:02:17,500
+Speaker 2: Hú, megpróbálom. Tehát kezdjük onnan, hogy innen a környékről származom, túl a hegyen, Csík-Madarasról. Kolozsváron végeztem az egyetemet. És hát akkor meg lehetőségek úgy adódtak, hogy ott is maradtam. És hát azóta vagyok az IT világában. Mint informatikus kezdtem, akkor egy informatikus mindent kellett csinálni, ami számítóképez kapcsolódott.
+
+6
+00:02:18,200 --> 00:02:52,220
+Speaker 2: Úgyhogy, hogyha kellett programot írtunk, ha kellett hálózati kábelt, hát fúrtunk, faragtunk, felfogadtuk a falra, tehát mindennel foglalkoztunk. Hát röviden, ugye nagy léptekbe fogok akkor egy kicsit haladni. A programozói évek után foglalkoztam tanácsadással is, projektmenedzsmentel is, architektúrával is.
+
+7
+00:02:53,056 --> 00:03:23,536
+Speaker 2: 2007-ben a Betfair nevű céghez kerültem, akkor építették, vagy szerették volna kiépíteni Romániába a fejlesztő központjukat, és ennek a felépítésébe vettem részt aktívan egészen 2015-ig. Amikor eljöttem, akkor a Kolozsvári részlegnek voltam a vezérigazgatója, vagy ügyvezetőigazgatója.
+
+8
+00:03:25,126 --> 00:04:03,020
+Speaker 2: Amikor is úgy döntöttünk két volt kollégával, hogy alapítunk egy céget közösen, IT Services céget, alapítottunk, ennek a neve Zenitec. 2015-ben indultunk, és nagyon szépen fejlődtünk. 2022-ben 600 fős volt a csapat, volt egy romániai részlegünk, egy magyarországi Budapesten és Miskolcon, illetve Lituániába és egy kisebb csapat Angliába.
+
+9
+00:04:03,020 --> 00:04:35,610
+Speaker 2: Ekkor úgy döntöttem, hogy még más dolgokat is szeretnék mellette csinálni, úgyhogy visszaléptem a hétköznapi munkától, maradtam, mint igazgatói tanács tag, és más cégeknek az építésébe kezdtem. Most jelenleg egy AI kommunikációs platformnak az építésén dolgozom.
+
+10
+00:04:35,910 --> 00:04:54,592
+Speaker 2: Ugyancsak egy közös vállalkozás, mint co-founder és a cégnek a CTO-ja. És ezzel az új termékkel próbálunk segítséget nyújtani az embereknek világszerte, hogy jobban megérthessék egymást.
+
+11
+00:04:55,072 --> 00:05:11,592
+Speaker 1: Az előadásodat, amikor elkezdted, akkor mutattál egy nagyon fontos diagramot. Egy oszlopdiagram volt, mégpedig az innováció tekintetében kik a vezetők, és hogy hol tart most Európa. Egy kicsit tudnál beszélni erről nekünk, hogy ez hol is tart? Mi a realitás. 
+
+12
+00:05:12,662 --> 00:05:39,552
+Speaker 2: Hát nagyon nehéz a számokkal, mert különböző kutatások, különböző számokat mutatnak. Ami viszont általánosan jellenző, hogy a startupok világában a vezető az az Amerikai Egyesült Államok. Hát itt több szám van, de legalább 1700, ha jól emlékszem, 1.700.000 startup.
+
+13
+00:05:42,784 --> 00:06:16,164
+Speaker 2: Van csak az Egyesült Államokban. Más országok, amik nagyon az élen járnak, India és Kína. Egyértelműen ezek az országok a lakosság számában is számottevőek, úgyhogy talán nem véletlen, hogy a startupok száma is igen magas. Európából mindenképpen kiemelkedik az Egyesült Királyság, Nagy-Británia.
+
+14
+00:06:17,154 --> 00:06:55,292
+Speaker 2: Talán vezetik is az európai országok között a versenyt. De talán nagyon szorosan mögöttük ott van Németország, Franciaország és még Olaszországot is lehetne említeni. A számok nagyságát tekintem, ott viszont nagyon nagy az eltérés, tehát ott messze menőleg a startupok világába az Egyesült Államok vezet. Ebből is a nagy része ezeknek az úgynevezett Silicon Valley-ből származik.
+
+15
+00:06:56,000 --> 00:07:05,400
+Speaker 2: Úgyhogy egyértelmű, hogy az innovációnak, legalábbis a digitális innovációnak nagyon nagy része ott történik jelenleg.
+
+16
+00:07:05,440 --> 00:07:26,620
+Speaker 1: Bizonyos szempontból engem nem lep meg, hogy Amerika vezet, meg talán Anglia is ott van a negyedik helyen, ha jól emlékszem a diagramra, de Kína meglepett olyan szempontból, hogy Kínát mindig egy kommunista államra gondoljuk, és azt gondolnám, hogy egy diktatúra alatt az innováció az nem jellemző. Ezt nem ének tudod be, hogy Kína azért mégis ott van az elején, csak pusztán a méretének. 
+
+17
+00:07:27,960 --> 00:08:02,716
+Speaker 2: Semmiképp sem a méretének. Kína nagyon sokat fektetett be a közoktatásba, a tanintézményekbe, az egyetemekbe, nagyon erős egyetemeik vannak ma már. Nagyon sok kínai kapott ösztöndíjat, hogy neves külföldi egyetemeken végezhesse el a tanulmányait ezekből az emberekből. Nagyon sok visszament. Azájában. És ma már egy nagyon nagy réteg, nagyon jól képzett szakember van Kínában,
+
+18
+00:08:03,156 --> 00:08:36,276
+Speaker 2: és ezt Kína tudatosan építette, tehát nagy hangsúlyt vektetett az oktatásra a mai napig. És folytatja, tehát elképesztő, hogy már nagyon kicsi korban kezdik ezeket a tehetségeket nevelni, és hát ennek megvan ebből kifejlően a látszatja. Ma már Kína nem csak a világ termelő országa, hanem nagyon sok innováció is történik Kínában.
+
+19
+00:08:36,736 --> 00:09:02,016
+Speaker 2: Úgyhogy ezzel számolni kell, és érdekes mondani, hogy India is, tehát ezt az Indiára is el lehet mondani, hogy ez a két ország a múltban is nagyon nagy. Nagyon nagy ország volt, és hozzajárultak az akkori világnak a kulturális örökségéhez. Úgy néz ki, hogy ez a jövőben is így fog történni.
+
+20
+00:09:02,256 --> 00:09:34,256
+Speaker 1: Az innováció tekintetében és egy startup életében nagyon megfogott az egyik diagramod, ahol gyakorlatilag azt mondtad, hogy 8%-a csak a sikernek a technológia is része. És az összes többi, az a csapat, az a vízió, az egyáltalán, hogy képesek-e vagyunk a sales marketing eladni, egyáltalán meghallani a piacnak a visszajelzését. Engem meglepett, hogy ennyire kevés maga a technológia egy technológiai startup esetében.
+
+21
+00:09:35,156 --> 00:09:44,856
+Speaker 1: Kicsit ki tudnád bontani ezt a részét, hogy mi az oka ennek, és hogy mik azok a nagyobb szeletek, amik fölött elsiklottam. 
+
+22
+00:09:45,276 --> 00:10:16,102
+Speaker 2: Igen, tehát a diagram, amiről beszélünk, az a startupoknak a, Tehát, hogy hol buknak el a startupok, és mi a fő oka ennek, tehát ez a diagram, amiről beszélünk, és ténylegesen a technológia, mint fő ok, hogy egy startup sikeres legyene, vagy nem, nem feltétlenül az első helyen van, de ugyanakkor ki kell emelni, hogy viszont kulcsfontosságú.
+
+23
+00:10:16,602 --> 00:10:52,296
+Speaker 2: Tehát annak ellenére, hogy az elbukásokban nem a legfontosabb helyet foglaljál, teljesen egyértelmű, hogyha a termék nem létezik, akkor nincs is, ahogy sikerről beszéljünk. Most vizsgáljuk meg egy kicsit, hogy mik azok az egyéb tényezők, amik viszont nagyon erősen tudják befolyásolni egy terméknek, pláne egy digitális terméknek a sikerességét vagy sem. És hát az egyik legfontosabb az az volt, hogy egyáltalán szükség van-e arra termékre vagy sem.
+
+24
+00:10:53,366 --> 00:11:24,436
+Speaker 2: Tehát nagyon sok startup felköveti azt a hibát, hogy van egy jó ötlete, és hát ez talán még validálja is így baráti körökbe, megkérdezi, hogy szerintetek ez mennyire jó. Általában nagyon pozitív a visszajelzés, pláne ha jó a baráti kör, igaz, nem fognak nagyon sok rosszat mondani, és elindulnak az úton, annélkül, hogy konkrétan megvizsgálnák, hogy ténylegesen erre a termékre vonik.
+
+25
+00:11:24,456 --> 00:11:50,376
+Speaker 2: Szükség vagy nincs. És akkor, amikor ahhoz a szakaszhoz érnek, hogy most már akkor el is kellene adni a terméken, a piac nagyon hamar beszél hozzánk, nagyon hamar válaszol, és hogyha nincs vevő rá, ha nincs érdeklődés, akkor az egész hiába volt, és már neveltük is a statisztikán azoknak a startupoknak a számát, amik ki belebukkott, ebből a problémából kifolyala.
+
+26
+00:11:50,576 --> 00:12:03,016
+Speaker 1: Itt az a kérdésem, hogyha a piac egyből nem validálja, két dolgot lehetne lekövetkeztetni. Az egyik az, hogy a piacnak nincs szüksége rá. Vagy az, hogy én nem megfelelő embereket értem el, és nem megfelelően prezentáltam magát a terméket.
+
+27
+00:12:03,616 --> 00:12:44,416
+Speaker 2: Igen, igen, ez sokkal komplexebb ennél a dolognál. Tehát ahhoz, hogy a piac tudjon hozzám beszélni, az egyszer el kell jutassam a terméket a piacra, vagyis a piachoz. Tehát a termékem el kell jusson elsősorban a célközönséghez. És hogyha a célközönségemnek a reakciója az, hogy ez minket nem érdekel, vagy itt megint több probléma lehet, és a grafikonon voltak más gondok is, tehát lehet például az, hogy túl drága a termék, és akkor azért nem éri meg a felhasználaimnak az adott befektetést.
+
+28
+00:12:44,736 --> 00:13:15,016
+Speaker 2: De akár az is megtörtént, hogy egyáltalán a terméket nem sikerült eljuttatni a célközönséghez, és akkor ezt a marketing problémák alatt kezeltük, ez a második helyen volt. Azután, hogy a termék nem érdekes a felhasználóknak, az az, hogy egyáltalán eljut-e a termék hozzájuk, vagy sem. Itt nagyon sokan reménykednek abban, hogy hát ha az én termékem majd virális lesz, ugye láttunk erre egy pár példát, de hát ez nagyon kevés.
+
+29
+00:13:15,396 --> 00:13:34,082
+Speaker 2: Hogy egy-egy terméket a social media segítségével úgymond... viralizálódott, és akkor nagyon sok emberhez eljutott nagyon rövid időn belül. Ez nem egy tudatos tervezés, nem egy tudatos stratégia része, tehát erre nem lehet alapozni.
+
+30
+00:13:34,122 --> 00:13:38,562
+Speaker 1: De amúgy fenn is maradhat hosszú távon egy termék, hogyha virálisan tegyük fel, volt-e egy nagy robbanás után. 
+
+31
+00:13:38,682 --> 00:14:15,020
+Speaker 2: Általában nem képesek ezek a termékek tartani ezt a szinten. Ugye erről is beszéltünk, hogy a sikernek milyen pró és kontra előnyei és hátrányai vannak, és hogy a siker az nem egy cél, hanem a siker az egy újabb kihívásnak a kezdete. És nagyon sok esetben ez a könnyen jött nyeremény, ez ugyanolyan könnyen is megy. Tehát egy tudatos cégépítésben nem érdemes erre hagyatkozni, hanem nagyon jól kidolgozott stratégiamentén, nagyon jól kidolgozott marketingtermentén kell meghatározni,
+
+32
+00:14:15,040 --> 00:14:31,280
+Speaker 2: hogy hogyan akarok eljutni a célközönségemhez. És ugye, ahogy az előadásban is elmondtam, de mindezek előtt már előre meg kell határozzom, tudnom kell, hogy ki egyáltalán a célközönség, mert hogy akarok eljutni hozzájuk, ha nem is tudom, hogy ki a célközönségem.
+
+33
+00:14:31,280 --> 00:14:42,360
+Speaker 1: Használjuk-e kicsit állatorvosi lónak ezt a startupot, amin éppen most jelenleg dolgozol, az Emoti-n, hogy kicsit bemutatnád, hogy ez hogyan történt a te jelenlegi startupod esetében. 
+
+34
+00:14:43,100 --> 00:15:28,268
+Speaker 2: Igen, az Emoti esetében mi beazonosítottuk, hogy elsősorban azok az emberek, akik sokat utaznak külföldre, kommunikációs nehézségekbe ütköznek. De ugyanakkor azt is felmértük, hogy ahogy kezdtük ezt egyre jobban voncolgatni, azt is felmértük, hogy de hát kommunikációs nehézségében nem csak azok ütköznek, akik elutaznak külföldre és esetleg nem beszélik a nyelvet, hanem azok is, akik multinacionális cégekben dolgoznak, azok is, akik el szeretnének adni az ők piacoktól eltérő piacokra, mondjuk más nyelvi piacokra, és a többi, és a többi.
+
+35
+00:15:28,348 --> 00:16:02,280
+Speaker 2: És akkor itt egyből felvetődik a probléma, hogy hogy tudok jól kommunikálni mondjuk az ügyfelekkel, viszonteladókkal, netán beszállítóink vannak, akik akár más nyelvet beszélnek, vagy egyáltalán lehet, hogy nem vagyok én felkészült, hogy nem vagyok én felkészült, hogy nem vagyok én felkészült. Hogy egy nagyon jó, mondjuk úgy egy biznisz nyelvezetet tudjak közvetíteni az esetleges partnereim. Így ezzel a mi applikációnk segítségével és az AI segítségével tudunk segíteni az emberekkel,
+
+36
+00:16:02,300 --> 00:16:53,824
+Speaker 2: hogy sokkal hatékonyabban kommunikálnak, és azt, amit el akarnak mondani, azt az AI, hát hogy úgy mondjam, egy kicsit megszépítse és adaptálja, talán ez lenne az helyes idegen szó, rá ahhoz, akivel ezt közölni szeretném. A jelen esetben írottan több mint 124-125 nyelvet... Nyelven tudunk segíteni, illetve beszélt formában több mint 70 nyelvet beszél az alkalmazás, és ezt valós időbe tudja hozni, illetve azt a segítséget is, hogy ha kell átfogalmazza, amit mondani akarok, hogy az úgy landoljon a partnereknél, ahogy annak hangzania kell.
+
+37
+00:16:53,824 --> 00:17:26,248
+Speaker 2: Úgyhogy ebben az esetben itt a célközönség, tehát az első számú célközönségünk az az utazóközönség volt, utána beazonosítottuk ezt a célközönséget. Nagyon sokat kommunikál, akár a saját nyelvén, vagy idegen nyelveken. És beazonosítottunk még egy harmadik célközönséget, ami nagyon közel állt a szívünkhöz. Ez pedig generációkon átívelő kommunikáció.
+
+38
+00:17:26,488 --> 00:17:28,428
+Speaker 1: Tehát ugyanarról a nyelvről, ugyanarról a verrel.
+
+39
+00:17:28,488 --> 00:18:00,308
+Speaker 2: Akár. Vagy ugye olyan esetekről is van tudomásunk ma már, hogy nagyon sok olyan ország, ahol a fiatalok elmentek otthonról, az unokák, sok esetben már nem beszélik úgy a szülőknek, vagy a nagyszülőknek az anyanyelvét, és problémák vannak a kommunikációban a nagyszülők és az unokák között. Úgyhogy ezekben az esetekben is próbálunk a családoknak segíteni, hogy közelebb hozzuk őket, újra összehozzuk őket,
+
+40
+00:18:00,388 --> 00:18:30,964
+Speaker 2: és az unokák tudjanak-e jót beszélgetnie a nagyszülőkkel, akár ugyanazon a nyelven. akár két különböző nyelven. És van még egy szektor, hogy ha az ember elkezdi őszintén és analizálgatni tényleg, hogy mik a lehetőségek, akkor csak így jönnek felé a lehetőségek. A másik, mondjuk, hogy az orvosommal beszélek egy egészségügyi problémáról,
+
+41
+00:18:31,044 --> 00:18:58,104
+Speaker 2: aki, valljuk be, egy szaknyelvet használ, amiből lehet, hogy 20%-ot értünk, lehet, hogy 50, 60, 80%-ot értünk. Úgyhogy az emoti segítségével ezt is meg lehet oldani, hogy amit az orvosom kommunikál felém, azt ékes magyar nyelven, az egyszerű népnyelvén úgymondva tudja mind megérteni, hogy akkor most itt miről is van szó.
+
+42
+00:18:59,328 --> 00:19:37,048
+Speaker 1: Ami nagyon tetszett, így alapelv szerűen, amit megemlítettél a prezentációdban, hogy valójában egy alapgondolat, egy alapötlet, mi igazából rengeteg ötletet generálunk nap, mindnap, de onnan lehet felismerni, hogy ez egy ötlet több, mint egy egyszerű ötlet, hogy valami valós problémára ad megoldást, tehát egy fájdalomra ad, egy igazi vágyra, mert az, ami egy fájdalomra ad megoldást, az értéket teremt, és valójában ez az, ami pénzt ér. Tehát az emberek az értékes dolgokra a pénzükkel szavaznak. Úgyhogy, ha valami startup ötletünk van, akkor ez egy jó kiinduló pont, hogyha a fájdalmat keressük, hogy milyen problémát oltják.
+
+43
+00:19:37,048 --> 00:20:12,710
+Speaker 2: Így van. Tehát ugye a pain-gain-proof modellt mutattam be, ahol ennek az első eleme a pain, vagyis magyarul a fájdalom. Tehát hogyha olyan dologra tudok megoldást találni, ami az embereknek már eléggé fáj, tehát itt a fáj alatt ne főtétlenül fizikai fájdalmat értsünk, de akár azt is, ha eléggé megizzasz, ha elég sok fejfájást okoz valamit. Ez az első, amiért az emberek a leghajlandóbbak fizetni, hogy ettől a idézőjelben fájdalomtól szabaduljanak.
+
+44
+00:20:12,810 --> 00:20:51,616
+Speaker 2: És ugye a második lépés, hogyha meg olyan valamit tudok előállítani, ami számára sokkal több hasznot tud generálni, akkor azért is igencsak hajlandóak az emberek kiadni pénzt. Most, hogy visszatérjünk az első ponthoz, ami nagyon jól láthat, hogy ez egy nagyon lényeges pont, hogy azok a startupok, amelyek igazán nagyok lettek, azok általában egy ilyen problémát oldottak meg. Itt példaként fel lehetne hozni például a Revolutot, igaz, aki látván, hogy például, hogyha külföldre utazom,
+
+45
+00:20:51,896 --> 00:21:22,276
+Speaker 2: milyen nagy komissziókat kell fizessek azért, hogy esetleg beváltsam a saját pénzemet az adott államnak a valutájára, vagy abban az államban képes legyek kivenni készpénzt egy bankautomatából, vagy akár vásárolni tudjak a saját bankkártyámmal. Látván ezeket a nehézségeket, jöttek egy megoldással, ami gyors, olcsó és könnyen kezelhető.
+
+46
+00:21:22,456 --> 00:21:34,018
+Speaker 2: És láthatjuk, hogy ezt a piac milyen gyorsan... elfogadta és hajlandó volt alkalmazkodni hozzá, és ezért a szolgáltatásért fizetni.
+
+47
+00:21:34,418 --> 00:21:40,678
+Speaker 1: Tegyük fel, hogy megvan az ötlet, és most már valamennyire érezzük, hogy ez egy jó ötlet. Mi a következő lépés ilyenkor. 
+
+48
+00:21:42,358 --> 00:22:15,158
+Speaker 2: Hát ahogy megvan az ötletünk, és mondjuk, hogy most már körbejártuk a saját ötletünket, és analizáltuk, és ténylegesen úgy érezzük, hogy megfelel ezeknek a kritériumnak. A következő lépésünk az, hogy kell legyen egy világos cél, kell legyen egy világos terv, hogy akkor most mit is akarok ezzel én elérni, és kit akarok megszólítani,
+
+49
+00:22:16,538 --> 00:22:48,516
+Speaker 2: hogyan akarom megszólítani. Időszerű ez a probléma, megint nagyon fontos. Mondjuk, hogyha a két évvel ezelőtti fotbal világbajnokságra akarok most készíteni egy applikációt, egyértelmű, hogy ezt el lehet már most felejteni. Tehát nagyon fontos az időzítés, hogy még mindig aktuális lesz-e, amikor ez a termék elkészül. És én mindenkinek nagyon ajánlom, hogy készítsen egy komoly üzleti tervet,
+
+50
+00:22:48,516 --> 00:23:17,426
+Speaker 2: tehát hogy legyen nagyon jó elképzelése arról, hogy körülbelül mi a piac, kik a versenytársak, mennyibe tudom eladni ezt a terméket, mennyi az előállítási költsége. Megint csak, hogyha a termékemnek az ára az kevesebb, mint az előállítási költség, hát az nem egy jó ötlet. Tehát jó ezeket a dolgokat már előre papíron elvégezni.
+
+51
+00:23:18,912 --> 00:23:50,552
+Speaker 2: és előre egy tervet készíteni, hogy egyáltalán ez az egész hogy fog kinézni, hogy fog működni. És erre szoktam mondani, ugye a Kevin O'Leary, hogy know your numbers, tehát, hogy mindig ismerjed a számjaidat, és legyél nagyon tisztában azzal, hogy egyáltalán akarok egy terméket, van egy ötletem, és ez így fog kinézni a piacon, ez így fog működni, ennyiért fogjuk eladni, ennyi vásárlóra számítunk, ennyi pénzt fogunk tudni befektetni, ennyi lesz a marketingköltség, stb. stb.
+
+52
+00:23:50,572 --> 00:24:24,146
+Speaker 2: Tehát mindig a második lépés az ötlet után legyen a tervezés. Megvan a tervünk, mi a következő lépés? Hát akkor ennyi kell fogni dolgozni, és a tervet azt meg kell valósítani. A tervet ajánlott úgynevezett iteratív módon, ugye megint idegen nyelv, tehát egy ilyen ciklusokba előállítani. Ezzel azt értjük, hogy nem nekifogni egy óriási, nagyon komplikált, nagyon komplex terméknek,
+
+53
+00:24:24,206 --> 00:24:54,996
+Speaker 2: ami nagyon sok pénzbe kerül és nagyon sok időbe lefejleszteni, hanem elkészíteni egy úgynevezett MVP-t, ez minimum viable product-nak a rövidítése alapul. Ez magyarul azt jelenteni, hogy az a minimum a termékünkkel kapcsolatosan, amit már egész nyugodt lelkismerettel a piac elé lehet vinni, és erre már tudunk visszajelzéseket kapni a piacról, hogy egyáltalán ez egy jó ötlet, vagy nem jó ötlet.
+
+54
+00:24:55,596 --> 00:25:26,792
+Speaker 2: Ebből tudunk tanulni, és ezeket a visszajelzéseket, tanulásokat... ezeket be tudjuk építeni a következő iterációba. És hogyha képesek vagyunk nagyon gyorsan végezni ezeket az iterációkat, és nagyon gyorsan tanulni, hallgatni a visszajelzésekre, tanulni belőle, akkor nagyon rövid idő alatt a piac segít nekünk abba, hogy validálni tudjuk, hogy egyáltalán ez a termék ténylegesen olyan jó-e,
+
+55
+00:25:26,832 --> 00:25:29,252
+Speaker 2: mint ahogy mi azt elképzeltük, vagy pedig nem.
+
+56
+00:25:30,240 --> 00:25:58,060
+Speaker 1: Tehát iterálni minél többször. Az egyik oka, és egyik legnagyobb oka, ami miatt csődbe megy egy ilyen startup ötletünk, az az, hogy elfogy a tőkénk, amit be tudunk vonni. A 18 százalék volt, ha jól emlékszem, valami ilyesmi. Igen, egy elég nagy szelék volt belőle. Tehát gyakorlatilag addig iterálunk, ameddig vagy túliteráljuk, és kijutunk, és elírjuk azt a pontot, amikor már valamennyi tőkét be tudunk még vonni, vagy elfogy a pénzünk.
+
+57
+00:25:58,060 --> 00:26:43,224
+Speaker 2: Hát itt azt látni kell, hogy ez az iteráció, ez több szempontból nagyon-nagyon előnyös. Az egyik, amit az előbb említettem, hogy azokat a feltevéseket tudjuk vele igazolni, amiket a tervezési szakaszban megfogalmaztunk. Ez nagyon-nagyon fontos, mert megtörténhet, hogy ezek a feltevések igazak, vagy hamisak. Ezt csak akkor tudjuk, hogyha kipróbáljuk. A puding próbálja az evéshez több helyen, elmondtam. A másik nagyon érdekes dolog egy iteratív megközelítéssel, hogyha nagyon ügyesen tervezem az iterációimat, nevezzük őket verzióknak, akkor már az MVP lehet, hogy hozhat valamennyi bejövetelt.
+
+58
+00:26:43,704 --> 00:27:13,714
+Speaker 2: Tehát azt jelenti, hogy egy iteratív szoftverfejlesztési megközelítéssel előre tudom hozni, hogy mikor kezd egyáltalán az én termékem jövedelmet termelni. Nem három év múlva fog hozni, hanem lehet, hogy már az első, vagy a második iterációnál ezt mindenki el kell döntse. Lehet, hogy az első MVP-re nem akarok annyit befektetni, hogy már monetizálni is lehessen és pénzt lehessen érte kenni, de már a második, harmadiknál igen.
+
+59
+00:27:14,194 --> 00:27:45,672
+Speaker 2: És ez megint egy olyan védelmi mechanizmus a befektetés szempontjából is, hogy ahelyett, hogy elköltenék három évnyi fejlesztésnek az árát, három hónap alatt, és esetleg rájövök, hogy ez nem volt a legjobb ötlet, és leállítom a befektetést, és azt, amit elégettem volna a maradék 1,6 évben, azt az összeget ezzel megmentettem. Tehát rengeteg segítséget tud nyújtani egy ilyen hozzáállás.
+
+60
+00:27:46,092 --> 00:28:01,432
+Speaker 1: Igen, amit még talán itt érzek ebben, kicsit olyan, mint amikor vannak azok a hosszú lufik, amikből lehet hajtogatni egy elefántot, és hogyha nagyon gyorsan tudunk egy elefántot hajtogatni, és rájövünk arra, hogy három hónap alatt, hogy nem pont erre van szükség, akkor át tudom egy egérre alakítani nagyon gyorsan.
+
+61
+00:28:01,512 --> 00:28:07,332
+Speaker 2: Így van, így van. Hogyha nem az elefánt kell, hanem esetleg kutyát vennének a gyerekek, akkor...
+
+62
+00:28:07,612 --> 00:28:09,032
+Speaker 1: Akkor gyorsan hajtogatni egy elefántot.
+
+63
+00:28:09,032 --> 00:28:16,172
+Speaker 2: És hogyha nem gyártottam le már nem tudom hány millió elefántot, csak egyet, akkor még könnyebb ugye ez az átalakítás.
+
+64
+00:28:16,882 --> 00:28:52,396
+Speaker 1: Tegyük fel, hogy most iteráltunk és nem buktunk el, mert nyilván a... Volt egy másik nagyon érdekes szlájd, mindegyiket lefényképeztem, és így ahogy mi közben beszélgetünk, arra is rájöttem, hogy nem fog idő jutni mindenre, hogy beszéljünk arról, ami fontos. Úgyhogy ez egy jó teszt is lesz, tehát a hallgatók közül kérlek írjátok meg kommentbe, hogyha szeretnétek, hogy Csabával leüljünk, és két órát rászálljunk, és belemennjünk a részleteibe, akkor kommenteljetek, adjatok egy lájkot, hozzátok meg a videót, mert ez is egy visszajelzés nekünk, egy gyors visszajelzés, hogy elég értékes-e az, amiről kezdtünk beszélgetni.
+
+65
+00:28:53,120 --> 00:29:41,850
+Speaker 1: Szóval visszatérve magáról a startupról, ez engem nagyon megérintett, hogy egy teljesen más mentalitásra van szükség ebbe a startup világban, mint amit például az egyetemen tanultam, vagy ezben a posztkomunista világban, ahol én nőttem fel, tanultam, ahol megtanultunk egy szakmát, és valamivé váltunk, és ki kellett tartani a mellett, és arra számítottunk, hogy a szakmánk az lesz. Ehelyette ebbe a startup világban nagyon-nagyon gyorsan kell tudjuk az alakunkat változtatni, gyorsan kell tudjunk reagálni a piacra, és ami nagyon fontos, és erről mindenképpen kell beszéljünk, hogy volt egy slide-od, amikor valaki ásott, és egy gémánt fele az utolsó ütéssel éppen elérte volna a kincset, de nem ért el, mert szomorúan visszafordult.
+
+66
+00:29:42,656 --> 00:30:06,456
+Speaker 1: És az jött fel bennem, hogy a makadság és a kitartás között gyakran nem tudjuk, mi a különbség, összetévesszük. Ugyanis amiről te beszéltél, az egy éber, alázatos figyelem folyamatosan a piacon, és egyszerre párosul egy kitartással. Tehát egyszerre lehetünk alázatosak, és egyszerre lehetünk kitartóak. És kitartóak, igen. És ez egy fontos dolog, hogy ne keverjük össze a kettőt. 
+
+67
+00:30:06,596 --> 00:30:41,928
+Speaker 2: Ez egy nagyon fontos dolog. Nagyon fontos dolog, mondhatnám, hogy pláne nekünk székelyeknek, hogy nem makacsú ragaszkodni kell az előző ötlethez, hanem kitartani ez az iteratív üzemmód mellett, amit az előbb elmagyaráztam. Illetve amellett, hogy elkészítem, igenis, kitartok az ötletemet, elkészítem az ötletemet, implementálom az ötletemet, de utána, ahogy te fogalmaztál és nagyon tetszik, alázatosan meghallgatom a visszajelzéseket, mert a piac mindig beszél hozzám, a piac mindig jelez.
+
+68
+00:30:42,208 --> 00:30:57,198
+Speaker 2: Nagyon nehéz a piacot megváltoztatni, a piacsal haladni lehet, rá lehet hangolódni a piacra, de hát a piacot megváltoztatni óriási pénzekbe kerülne, és nem is biztos, nem is garantált, hogy sikerül.
+
+69
+00:30:57,318 --> 00:31:10,672
+Speaker 1: Ez annál is inkább nehezebb, hogy... Amikor van egy jó ötletünk, beleszerettünk sokszor az ötletünkben. Hát ez emberi dolog, igen. Ez amúgy nálad hogy van? Gyanítom, hogy rengeteg ötletet generáltál már eddig az évek során. Nehezen válsz meg tőlük. 
+
+70
+00:31:10,972 --> 00:31:43,692
+Speaker 2: Ezt ma már megtanultam, hogy minden ötlet addig jó, amíg be nem igazolódik, hogy nem. És akkor azt el kell fogadni, és ide kell a kitartás, akkor nem el kell csüggedni, hanem meg kell hallgatni a visszajelzéseket, a visszajelzéseket be kell építeni az eredeti ötletünkbe, és elő kell állni egy sokkal jobb verzióval. Az is a mi ötletünk, csak már beépítettük a piaci visszajelzéseket. A következő verziónk lehet, hogy már sokkal jobb, de még mindig fognak jönni a visszajelzések.
+
+71
+00:31:43,831 --> 00:32:20,408
+Speaker 2: És hát ennek sosincs vége. Itt ugye példának tudnám hozni az első verziós iPhone-okat, amik... Valójukban nem voltak tökéletesek, de egy pár iteráció után egyre inkább tökéletesek lettek, de még ma sem vagyunk százszázalékban megelégedve ezekkel az eszközökkel, tehát ez a folyamatot ezt a végtelenségig lehet fejleszteni. És hogyha ezt nagyon jól csinálom, akkor ahogy például az Apple csinálja, ezekkel az iterációkkal együtt növekszik a bevétele is, és a céget is sikeresen tudják ezzel párhuzamosan növelni.
+
+72
+00:32:20,408 --> 00:32:31,548
+Speaker 2: Úgyhogy ennek a kitartásnak, ennek a kitartó munkának, mondjuk úgy alázatos kitartó munkának biza-biza nagyon szép megtérülése lehet.
+
+73
+00:32:31,768 --> 00:33:02,679
+Speaker 1: Itt az merült felvennem most így kérdésként, hogy ahogy az évek telnek, úgy az ember, én legalábbis ezt figyeltem meg, és ezt a visszajelzést kaptam másoktól, így akik elmondták, hogy sokkal konzervatívabbá és zártabbakká válnak az új gondolatok fele, hogy ez a fajta alázatos proaktív nyitottsága... ...amiről beszélgetünk. vajon szembe megy az idősödéssel, a korosodással? Tehát ezt hogyan tapasztaltad az évek során benned? Megmaradt ez a nyitottság, és most is annyira nyitott vagy, mint tíz évvel ezelőtt?
+
+74
+00:33:02,860 --> 00:33:04,919
+Speaker 1: Vagy pedig kell harcolj magaddal. 
+
+75
+00:33:05,840 --> 00:33:38,990
+Speaker 2: Hát most azért lehet, nem ülnék fel a ringlis piare. Tehát ilyen szempontból azt kell, hogy mondjam, hogy ahogy az idő telik, hogy ez, amit meséltél, ez ténylegesen megtörténik velünk. Na de gondolkodásunkban ez nem szabad megtörténjen, mert akkor már elfásulunk, igaz? Hogyha nem tudjuk ezt a flexibilitást, ezt a rugalmasságot megőrizni. És én azt gondolom, hogy ez már igen fiatal kortól kell az ember saját magába fejleszze, és ezt tudatosan fenn is kell tartani.
+
+76
+00:33:39,470 --> 00:34:13,708
+Speaker 2: Nem szabad ezt elengedni, mert a mai világ annyira változó, hogy... Nem öt évre, nem tíz évre, hanem sokszor még a jövő évet is nagyon nehéz előre tervezni, hogy vajon mi fog történni. Én az utolsó periódusban, az utóbbi években nagyon erősen az AI-nak a fejlődését követtem, és ott ez egy óriási lecke, hogy hétről hétele sokszor, akár másnapra is megjelennek új dolgok, egyre jobbak lesznek ezek a rendszerek, egyre erősebbek, egyre okosabbak, egyre több mindent tudnak.
+
+77
+00:34:14,400 --> 00:34:54,960
+Speaker 2: És ezt mi is megtapasztaltuk a termékünkben, hogy azt a technológiát, amit az MVP-be beletettük, azt mára már harmadjára cseréltük ki, mert ez a rövid időszak alatt már olyan sokat fejlődött a körülötte lévő AI világ és ökoszisztéma. Úgyhogy én azt gondolom, hogy aki ilyen startupokba, vállalkozásokba gondolkodik, annak nagyon fontos, hogy ezt a gondolkodás belirugalmasságát fenntartsa, és ez a tudászon benne megmaradjon, hogy folytonosan kövesse, hogy mi történik, mik a legújabb.
+
+78
+00:34:56,376 --> 00:34:59,256
+Speaker 2: felfedezések, és ezekhez alkalmazkodni tudjon.
+
+79
+00:34:59,416 --> 00:35:31,236
+Speaker 1: Ezt a fajta rugalmasságot magadban szinten tudod tartani, vagy akár még fejleszteni is tudod? Tehát, hogy értem ezt az alatt, hogy ahogy telnek az évek, akkor úgy gondolsz erre, hogy amilyen rugalmas voltam tíz vagy húsz évvel ezelőtt, azt megpróbálom fenntartani, vagy még azt is el tudom képzelni, hogy egyre nyitottabb és egyre nyitottabb vagy. Igen, ezt fejleszteni is lehet, de ez tudatosan kell. Te magadban egy fejlődést észrevettél, hogy ahogy telnek az évek, és egyre több projektre látsz rá, és egyre több helyzetet láttál, úgy egyre nyitottabbá válsz, és egyre flexibilisebbé. 
+
+80
+00:35:31,376 --> 00:36:03,720
+Speaker 2: Hát sokat tanultam az évek során, és ebből kifolyólag egyre nyitottabb vagyok, mert belátom, és amennyivel többet tanul az ember, belátja, hogy mennyivel kevesebbet tud. És ide megint kell az a bizonyos alázat, amiről az imént beszéltél, hogy minél többet tudunk, valójában arra jövünk rá, hogy milyen keveset tudunk még. Úgyhogy azt hiszem, hogy ez az idő ebbe segített, hogy az ember ezeket a dolgokat megértse,
+
+81
+00:36:04,320 --> 00:36:17,540
+Speaker 2: és ugyanakkor az idővel jön egy kégyensúlyozottság is, hogy nem baj az, hogyha nem tudunk mindent, de ha nyitottak vagyunk és készek tanulni, ez bármikor lehet bótolni, nincs erre időkorlát.
+
+82
+00:36:17,540 --> 00:36:39,248
+Speaker 1: Tehát amikor mondtad, hogy az elmúlt években folyamatosan követted nagyon intenzíven az AI-t, és amikor hetente vagy két hetente jöttek ki az újabb breaking changes, azok a változások, amik teljesen akár az emotit is újra kellett, hogy gondoljátok ezáltal. Hogy képzeljem, ez szorongás volt ilyenkor benned, vagy izgalom. 
+
+83
+00:36:39,248 --> 00:37:12,158
+Speaker 2: Nem, igen, hát izgalom a jó értelemben, és mindegy pozitív kihívásnak éltem meg, hogy wow, már ez is van, és ilyen is van, és ezt is tudnánk, és azt is tudnánk. És ez az, amit megint csak tudunk magunkba fejleszteni, a pozitív gondolkodást úgy értem, és mit értek ez alatt, hogy a változásba megtalálni azt a pozitívumot, ami akár az én termékem számára is pluszot tud adni, és az én felhasználóim számára is sokkal többet fogok tudni adni.
+
+84
+00:37:12,538 --> 00:37:31,098
+Speaker 2: Tehát mindig keresni a lehetőséget, és minden új dologba megtalálni azt, hogy hogyan tudnám én ezt még jobban hasznosítani, ezzel még jobbá tenni a termékemet, akár saját magamat, és még könnyebben tanuljak, még több mindent el tudjak olvasni, még több mindenhez hozzá tudjak élni.
+
+85
+00:37:31,118 --> 00:37:52,832
+Speaker 1: Ebben van egy nagyon fontos alapját. Kíváncsi vagyok a véleményedre. A termékünk sosem egy technológiai termék. Tehát sosem lehet az a cél, hogy valamilyen technológiát vigyünk ki a piacra, hanem mindig egy problémát akarunk megoldani, erről beszélgetünk. És ehhez a technológia az egy eszköz. Tehát, hogy ha változik a technológia, akkor bizonyos szempontból még őrvendhetünk is, hogy kaptam egy jobb eszközt.
+
+86
+00:37:53,012 --> 00:38:23,842
+Speaker 2: Mindenképp, hogyha visszamegyünk az iPhone-os példánkhoz, hát ég és földig az az egyes iPhone és a, mostani iPhone-ok. És ez hogy történt, hogy minden, technológiai fejlődést újra és újra beépíthettek az eszközbe. Egyre jobb kamerák, egyre jobb csippek, egyre jobb képernyők, egyre jobb hangszórók, egyre jobb mikrofonok, stb. Hogyha valaki ellenáll ennek, és azt mondja, ha az enyém a legjobb, akkor lesz más,
+
+87
+00:38:24,082 --> 00:38:49,560
+Speaker 2: és valószínűleg a versenytársaim közül, aki meg azt mondja, én meg hajlandó vagyok ezt beépíteni, és hajlandó vagyok elfogadni, hogy nézd, körülöttünk a világ fejlődik. És azon veszem észre magamat, hogy már nem az én termékemet veszik, hanem azért, akiben megvolt a megkellő alázat és a rugalmasság és az alkalmazkodó képesség, hogy kövesse a piacnak a hangját.
+
+88
+00:38:49,560 --> 00:39:16,270
+Speaker 1: Tehát tegyük fel, most van egy fiatal, aki méltán felteszi magába ezt a kérdést, hogy annyira gyorsan változik a világ, és annyira komplexé vált a világunk, én amire már egy értéket teremtő valamit tudnék létrehozni, addig egyrészt már változott a világ, másrészt pedig annyi versenytársam van, én sosem fogok tudni versenyezni ezekkel a cégekkel. És akkor méltán azt gondolja, hogy ez egy lehetetlen küldetés, én inkább akkor neki sem fogok. Mit tudnál ennek a fiatalnak tanácsolni. 
+
+89
+00:39:16,370 --> 00:39:53,218
+Speaker 2: Hát, hogy ez a lehető legrosszabb következtetés. És hát ezt gyorsan el kell felejteni, és valahol azt is el kell felejteni szerintem, hogy összehasonlítjuk magunkat az Egyesült Államokkal, vagy Angliával, vagy akár Németországgal. És azt is fel kell magunkba tegyük a kérdés, hogy most én tényleg a következő Google-t vagy a következő Apple-t akarom megalapítani? Jó nagyot álmodni, és senki nem akarok róla lebeszélni, de hát emellett még ezer más lehetőség van, nem ezer, millió más lehetőség van.
+
+90
+00:39:53,738 --> 00:40:35,568
+Speaker 2: És itt jön a bátorítás ezeknek a fiataloknak, hogy a Google is úgy kezdte, hogy két emberrel, és volt egy ötletük, és most ott vannak ahol vannak, az Apple is így kezdte, a Microsoft is így kezdte, tehát bátran bele kell állni, vállalni kell a kockázaton, és fejleszteni kell magunkba ezeket a képességeket. Hogy rugalmasak legyünk, tudjunk gondolkodni, figyeljünk a piacra, figyeljünk a környezetünkre, azt meghallgatva élesen meghozni a döntéseinket, beépíteni a folyamatainkba, és mindig egy-egy kicsit javítani saját magunkon.
+
+91
+00:40:35,848 --> 00:41:06,858
+Speaker 2: Én szerintem ez a legjobb tanács, amit tudunk adni nekik, mert nagyon nehéz ma azt mondani, hogy tanuld ezt, vagy tanuld azt, teljesen mindegy, csak tanuljatok. Tanuljatok, fektessetek be saját magatokba, vegyetek részt a lehető legtöbb lehetőségen, nézzétek, hogy mások hogy csinálják, próbáljátok szakmákat ellopni, megtanulni, teljesen mindegy, hogy mit. A lényeg az, hogy minél többet fejleszitek magatokat, mert sose tudjátok, hogy ezekre legyenek.
+
+92
+00:41:06,878 --> 00:41:11,338
+Speaker 2: Mikor lesz szükség, és mikor válhat a saját hasznotokra.
+
+93
+00:41:11,936 --> 00:41:47,556
+Speaker 1: Kicsit most az ördögügyvégje legyek még, nem minthogyha el akarnám bizonytalanítani a fiatalokat, de van okuk félni bizonyos szempontból, mert felteszik magukba a kérdést, hogy van-e értelme bármit még tanulni, amikor az AI hamarosan, ha beköszönt a szuperintelligencia és az AGI, már mindent jobban fog tudni, mint a legokosabb ember a világon, vagy az összes ember a világon kollektívan, és érdemesebb még küzdeni, érdemesebb még tanulni bármit is. Most vagyok itt az érettségi környékén, egyáltalán érdemes egyetemet válaszszak magamnak? Mit mondanál ennek a fiatalnak. 
+
+94
+00:41:47,776 --> 00:42:20,384
+Speaker 2: Hát először is azt mondanám, hogy megnyugtatásképpen, hogy bennünk is volt félelem, és sose volt könnyű, sőt azt mondhatnám, hogy amikor mi indultunk, sokkal nehezebb volt, és úgy is lehetett, úgyhogy én azt mondom, hogy így is lehet. Nem kell az újtól megijedni. Az új dolgokat meg kell érteni, és meg kell tanulni velük együtt élni. És igen, érdemes egyetemre menni.
+
+95
+00:42:21,064 --> 00:42:54,084
+Speaker 2: Én azt javaslom mindenkinek, hogy ne olyan egyetemre menjetek, amiben azt látjátok, hogy az lesz a jövő menő szakmája, hanem olyan egyetemre menjetek, ahol olyat tanulhattok, ami számatokra kedves, ami nektek kedves. Már nincs annál boldogabb ember, aki egész életében azt csinálhatja, ami neki tetszik. Én így választottam, még hatodikos koromban döntöttem, hogy informatikus szeretnék lenni. Azóta ezen a pályán vagyok, én soha meg nem bántam, hogy ebbe az irányba indultam el.
+
+96
+00:42:54,204 --> 00:43:08,264
+Speaker 2: Én mindenkinek ezt kívánom, hogy ő saját maga döntse el, mi az, ami neki tetszik. Abba az irányba induljon el, abba a dologba legyen jó, és hogyha abba a dologba jó vagy, biztos, hogy a sikerek is fognak jönni.
+
+97
+00:43:09,184 --> 00:43:18,544
+Speaker 1: Tehát üljön le egy fiatal, és figyelje meg magát, hogy mi az, ami izgalommal tölti el, és kezdjen bele mindenféle éve, mindenféle lehetőséget próbáljon.
+
+98
+00:43:18,724 --> 00:43:57,444
+Speaker 2: És ha még nem tudja, akkor ki kell próbálnia magát különböző helyzetekben, bele kell menni olyan helyzetekben, ahol meg tudom próbálni, mire gondolok. Nem tudom, hogy tetszenek-e a számítógépek, akkor el kell kezdeni számítógépekkel foglalkozni. Nem tudom, hogy tetszik-e a médiavilága, akkor lehet, hogy kell csinálni egy kis YouTube csatornát. Nem tudom, hogy tetszik-e a rádiózás, valahogy meg kell próbálni egy kis rádióadást összehozni. Tehát a lényeg az, hogy ne üljünk tétlenül, minél több dolgot próbáljunk ki addig, amíg az egyik előbb-utóbb csak bejön, és csak fog tetszeni, és akkor azon kell tovább menni.
+
+99
+00:43:57,824 --> 00:44:28,444
+Speaker 1: Igen, itt a bolond arhetipusát látom, hogy mindig a bolondból lesz a megváltó, ez egy ilyen jogi arhetipus, de minden megváltó, bocsánat, minden bolond nem lesz megváltó, de néhány megváltó előtte kell, hogy rizikóztassa azt, hogy bolond előtte. Hogy nekik kell fogjunk olyan dolgoknak, amiben rosszul fogjuk csinálni, bolondnak fogunk tűnni, és lehet, hogy néha azok is leszünk, tehát, hogy rosszul csináljuk, és kikacagnak, vagy mi kacagjuk ki magunkat, ha kellő önkritikánk van.
+
+100
+00:44:28,974 --> 00:45:00,696
+Speaker 2: Nem szabad, én úgy mondanám ezt szebben, hogy, elnézést kérek, nem szebben, akkor másképp, úgy mondanám, hogy ne féljünk a kudarctól, és merjünk kockáztatni. És azt gondolom, hogy ez is a fejlődésnek egy része, ez is egy folyamat, hogy megtanuljuk, hogy a kudarc az nem szégyen, hanem a kudarc az a legeslegűbb, a legerősebb tanítómester. Bennünk lehet, hogy van egy olyan, hogy ha valami nem sikerül, akkor ezt kudarcként éljük meg.
+
+101
+00:45:01,316 --> 00:45:33,706
+Speaker 2: De vannak olyan kultúrák, ahol a kudarcokat felhalmozzák a fiatalok éppen azért, hogy ebből tanulni tudjanak. Tehát az, hogy én megpróbáltam valamit, és nekem nem jön össze, ez a lehető legjobb tanulás, amit tehettem, mintsem, hogy ez idő alatt mi más csináltam volna. Na igaz, lehetett volna pihenni, lustálkodni természetesen, de abból se lehet többet tanulni. Maradjunk ebben. Úgyhogy meg kell próbálni minél több dolgot, nem kell félni a kudarcoktól, be kell azokat is vállalni,
+
+102
+00:45:34,066 --> 00:45:42,926
+Speaker 2: és a siker előbb-utóbb jönni fog. Ugye beszéltünk a kitartástól, az alázatos kitartástól. Aki próbálkozik, annak előbb-utóbb sikere is lesz.
+
+103
+00:45:43,386 --> 00:46:16,812
+Speaker 1: Hát Csaba, köszönöm szépen ezt a beszélgetést. Én azt hiszem, hogy ennél jobb pont, hogy megálljunk, és... és leponjuk a konklúziókat, most nem is lehetne. Köszönöm, hogy elvállaltad ezt a beszélgetést, és tényleg a... Felét vettük át, vagy a negyedét annak, amiről szerettem volna beszélgetni. Ez egy nagyon izgalmas kérdés, mert nem nagyon vannak mentorok itt Székelyföldön, akikhez lehet fordulni. Nem nagyon vannak emberek, akiket meg tudok kérdezni, és konkrét tapasztalata van arról, hogyha elindítanak egy startupot, akkor hogyan menjenek tovább.
+
+104
+00:46:16,812 --> 00:46:52,252
+Speaker 1: És nem is csoda, hogy ekkora a kudarc utána, mert ameddig egy szilícióvölgyben nagyon-nagyon koncentráltan ott vannak nagyon-nagyon tapasztalt emberek, akik nagyon-nagyon sok kudarc után, de nagyon látványos sikerekkel, rengeteg tapasztalattal rendelkeznek. És lehet, hogy elmegyek kávézni ezzel a személlyel, vagy akár egy hónapon belül találkozhatok 5-10 olyan emberrel, akinek rengeteg kapcsolata van. Ez azért nem jellemző Székelyföldre is. Az az igazság, hogy tényleg ez a Máté jelve, ez akinek sok van, annak még több adatik, és akinek kevés van, attól elvétetik az is.
+
+105
+00:46:52,512 --> 00:47:35,256
+Speaker 1: Picit így ezt érzem itt Székelyföldön is, hogy... Neki kell fogjunk, és kell bátorítsuk magunkat, és egymást, hogy merjünk kudarcot vallani, és az én tapasztalatom, plusz a te tapasztalatod, az nem egy plusz egyből lesz kettő, hanem ahogy említetted te is, ebből lehet öt is, vagy tíz is. Ez a szinergikus kapcsolat, amikor a te tapasztalatodat fel tudom használni, a kapcsolatrendszeredet fel tudom használni, és fordítva, valójában itt akkor azt jelenti, hogy a bizalom, a kapcsolati tőke, az alázat, a kitartás valójában sokkal fontosabb, mint a pénz, sokkal fontosabb, mint a nyers erőforrás egy ország számára.
+
+106
+00:47:35,416 --> 00:48:09,806
+Speaker 2: Így van, és ezek azok a dolgok, amit mindenki tud építeni, és elkezdhet akármilyen fiatal korban már építeni. Köszönöm. Nagyon szépen lehet látni a nagy cégeknél, hogy ezeket a nagy cégeket nagyon sokszor gyerekkori barátok alapítják, vagy olyan egyetemistatársak, vagy iskolatársak, kollégák, stb. Tehát ez nagyon így van, hogy nem a pénz a legnagyobb akadály, és lehet, hogy ez nagyon sokanak furcsán fog hangzani,
+
+107
+00:48:09,806 --> 00:48:43,308
+Speaker 2: de én remélem, hogy ugyanakkor bátorítóként is fog hangzani, hogy nem a pénz az, ami a legnagyobb akadály, és hogyha kicsit visszacsatolhatok a bemutatomhoz, ugye ott nagyon jól láttuk a grafikonokon, hogy a fő ok a startupoknak a problémáik között egyáltalán nem a pénz volt, sőt, ugye azt is elmondtuk, hogy a... a tőkebefektetések esetében is 75%-os a startupoknak az elbukása.
+
+108
+00:48:43,328 --> 00:49:17,598
+Speaker 2: Tehát egyértelmű, hogy a sikernek a kulcsa nem egyedül a pénz. Segít, ha van, természetesen, az nagyon jó, de egy, hogy nem elég, kettő, hogy még nagyon sok olyan fontos dolog van, amit nagyon szépen összefoglaltál az imént, ami hozzatud minket segíteni a sikerhez még akkor is, hogyha netán nincs olyan nagy befektetősítőkünk. Ma már egy olyan világban élünk, ahol a befektetési alapok keresik az olyan embereket,
+
+109
+00:49:17,658 --> 00:49:47,616
+Speaker 2: az olyan startupokat, az olyan csapatokat, akikben minden egyéb, amit leírtál, megvan, és ezeknek a csapatoknak az lehet volna, hogy aránylag könnyen... adnak, vagy tesznek elérhetővé különböző befettetési programokat, lehetőségeket, stb. Úgyhogy majd tényleg egy olyan világot élünk, ahol a pénz nem a legnagyobb akadály. És én azt hiszem, hogy akkor itt most már elmondhatjuk azt is,
+
+110
+00:49:48,416 --> 00:50:29,180
+Speaker 2: hogy most már ez nem egy jó kifogás, még itt Székelyföldön se, hogy nincs elég pénzem, hogy vállalkozzak, vagy hogy próbálkozzak valamivel, mert ma már nagyon sok lehetőség van. Hát ma már akár otthonról, egy számítógépről lehet egy ötletet elindítani, interneten különböző lehetőségek vannak, a kis közösségen be tudok valamit indítani. Nem tudom, akár régebb volt az ilyen oktatókönyvekben, hogy már a gyerek a nyári szünetbe kiment és limonádét árulta az utcán sétáló szomszédoknak.
+
+111
+00:50:29,299 --> 00:50:41,935
+Speaker 2: Tehát én azt gondolom, hogy ez csak mentalitás kérdése. Akadályt mindig lehet keresni, a hibát mindig át lehet másra hárítani. De ugyaninek is lehet fogni.
+
+112
+00:50:42,056 --> 00:51:15,096
+Speaker 1: Csaba, lejárt az időnk. Nagyon köszönöm szépen az idődet, és remélem, hogy még lesz alkalmunk leüljünk egy hosszabb podcast esetében, egy kicsit kivesézni még jobban ezt a témát. Én is nagyon szépen köszönöm, és állok rá neked is ennél. Az utóbbi időben nagyon sokat foglalkoztat a startupok világa, nagyon sokat foglalkoztat az oktatástéma, és a következő pár epizódomat erre szeretném szentelni, meghívni a legjobb vendégeket, akik meg tudnak szólalni ezekben a témákban. Témákat minél inkább ki tudjam bontani, és a mögöttük rejlő alapelveket meg tudjam érteni,
+
+113
+00:51:15,096 --> 00:51:35,935
+Speaker 1: és ezt podcast formájába veletek is megosszam. Azzal tudtok támogatni, ha feliratkoztok erre a csatornára. Azt vettem észre, hogy körülbelül 80%-a a nézőknek nincs feliratkozva a csatornára. Gyertek és iratkozzatok fel! Ez nagyban segít és motivál engem is, hogy tovább folytassam ezt a kutatást, és ezeket az érdekes témákat hozzátok is elhozzam.
+

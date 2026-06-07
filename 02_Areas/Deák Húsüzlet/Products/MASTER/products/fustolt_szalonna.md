@@ -1,3 +1,15 @@
+---
+title: "Füstölt Szalonna"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Füstölt szalonna termékoldal súlyegység szerinti árusításhoz, 42 forint/kg áron, 100-as népszerűségi pontszámmal és házi jellegű klasszikus leírással."
+description_source: auto
+description_hash: 53dc77a1a05387e1
+id: a8a28b2c-d0ed-43b7-92ef-f408e0e1724d
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Szalonna
 
 ```yaml

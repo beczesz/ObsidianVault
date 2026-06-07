@@ -1,4 +1,15 @@
-
+---
+title: "Vízió"
+date: 2026-01-26
+author: Becze Szabolcs
+status: active
+description: "A Média Műhely szervezeti manifesztuma, amely meghatározza az intézmény vízióját, misszióját és értékrendjét: párbeszéd, tanulás, közösség, valamint erkölcsi jellem és keresztény értékek elsőbbsége a szervezeti működésben."
+description_source: auto
+description_hash: d6f8e49e01ab4977
+id: 6aabde93-1b97-475a-b461-6cbde65a103b
+index_schema_version: 1
+bdos_index: true
+---
 # Vízió
 
 A Média Műhely az a hely ahol az igazság felhangosodik.

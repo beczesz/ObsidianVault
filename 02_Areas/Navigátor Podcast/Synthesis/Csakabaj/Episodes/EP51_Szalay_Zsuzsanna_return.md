@@ -1,11 +1,13 @@
 ---
+description: "A return episode with psychologist Szalay Zsuzsanna examining how digital technology functions as psychological substitute across human lifespan; Levi's measurably improved interviewing skills become visible through nuanced follow-ups and deepened contextual awareness compared to their Season 1 episode."
+description_source: auto
+description_hash: f9dabd49844311ff
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
 id: 3e3fd770-69c8-4f75-bc7d-dc3cd5629c6f
 index_schema_version: 1
 ---
-
 # Csakabaj Podcast — Season 3
 
 ## Episode EP51 | S03E07: Szalay Zsuzsanna (return)

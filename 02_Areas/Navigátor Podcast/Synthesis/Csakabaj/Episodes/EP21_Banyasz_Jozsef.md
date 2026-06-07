@@ -1,4 +1,7 @@
 ---
+description: "Mélyterjú Bányász Józseffel a parasztgazdaság generációs felelőssége, a közösségi örökség megőrzése és a valódi fenntarthatóság filozófiájáról. Filozófiai párbeszéd az iskola és valóság közötti szakadékról, valamint az idő múlásával veszélybe kerülő falusi tudásokról."
+description_source: auto
+description_hash: 1956e9c2da25d93e
 version: 1.0
 type: csakabaj-synthesis
 episode: 21
@@ -11,7 +14,6 @@ synthesis_status: gold_standard
 id: 3e82c412-7ca6-421b-bbdd-1863c05fca6e
 index_schema_version: 1
 ---
-
 # Csakabaj S01E21 — Parasztromantika vagy parasztgazdaság?
 **Guest:** Bányász József | **Host:** Józsa Levi  
 **Date:** 2024-10-02 | **Duration:** 108 minutes | **SRT Entries:** 2,481

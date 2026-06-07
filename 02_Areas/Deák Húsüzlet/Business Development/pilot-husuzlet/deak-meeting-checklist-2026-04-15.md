@@ -1,5 +1,8 @@
 ---
 title: Deák Húsmíves tulajdonos meeting — Checklist v2
+description: "Deák húsüzlet online platform partnerségi tárgyalások checklist-je, amely az értékmegosztási modell, adatgyűjtési célok és szerződési feltételek szisztematikus lebonyolítása mellett a döntéshozók azonosítását és kockázati jelzéseket tartalmazza."
+description_source: auto
+description_hash: 9b7538aa25860875
 version: 2.0
 date: 2026-04-15
 meeting_agenda: Savings pool modell + Partnership agreement
@@ -9,7 +12,6 @@ note: v2 — ChatGPT "savings pool" frame beépítve (Deak GPT, 2026-04-15)
 id: 03da7ec5-ee9d-49c7-bc52-007e6230b647
 index_schema_version: 1
 ---
-
 # Deák találkozó — Checklist v2.1 (2026-04-15)
 ## 🔄 FRISSÍTVE (2026-04-15, meeting előtt 1.5 óra) — ChatGPT v2 + Perplexity
 

@@ -1,3 +1,15 @@
+---
+title: "Sertés Egész Bordacsont"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Sertés egész bordacsont termékadat, friss hús kategóriában, 15 Ft/kg áron. Ünnepi sütésre és grillezésre alkalmas, román név és leírással kiegészítve."
+description_source: auto
+description_hash: 128ed03126d85cf8
+id: 3663b95d-6302-4601-ad5c-8ebdf6e6ef9b
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Egész Bordacsont
 
 ```yaml

@@ -1,3 +1,15 @@
+---
+title: "In-House or Managed DevOps: Five Questions That Decide It"
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "Framework for DevOps leaders and CTOs to decide between in-house and managed services based on company stage, expertise breadth, hiring timeline, staff availability, and whether infrastructure is core to the product. Includes decision matrices and honest cost comparisons."
+description_source: auto
+description_hash: e1a684fe72be9cc8
+id: 914dfd89-8e72-416a-94f6-96df8b86ddc5
+index_schema_version: 1
+bdos_index: true
+---
 # In-House or Managed DevOps: Five Questions That Decide It
 
 **Series:** Managed Service Series - Article 2 of 3

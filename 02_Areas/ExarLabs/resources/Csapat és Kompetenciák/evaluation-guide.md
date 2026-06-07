@@ -1,3 +1,15 @@
+---
+title: "Evaluation Guide — 10 Questions"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "A 10-question evaluation framework based on Stephen Covey's habits for assessing trust, performance capacity, proactivity, and other professional qualities; includes scoring scales from 1-10 with detailed guidelines for managers or team leaders conducting personnel evaluations."
+description_source: auto
+description_hash: ac4f27b9b2fc35be
+id: fec9f90a-7401-4681-b166-87a9a13001b4
+index_schema_version: 1
+bdos_index: true
+---
 # Evaluation Guide — 10 Questions
 ## Based on "The 8th Habit" by Stephen Covey
 

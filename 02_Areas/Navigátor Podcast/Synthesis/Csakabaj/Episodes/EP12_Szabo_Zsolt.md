@@ -1,4 +1,7 @@
 ---
+description: "Interjú kutyaedukátor Szabó Zsolttal, aki arról beszél, hogyan tanítanak meg a kutyák a jelenben élésre, emocionális intelligenciára és autentikus kapcsolatokra. Podcast epizód, amely gyakorlati tanácsokat és filozófiai reflexiókat köt össze."
+description_source: auto
+description_hash: c81a3889c1cd2f72
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -15,7 +18,6 @@ quality: "Gold Standard"
 id: 55bd6eaa-8009-47aa-bad7-c03a7d784a05
 index_schema_version: 1
 ---
-
 # EP12 — Szabó Zsolt: A kutyák megtanítanak a jelenben élni
 
 ## Alapadatok

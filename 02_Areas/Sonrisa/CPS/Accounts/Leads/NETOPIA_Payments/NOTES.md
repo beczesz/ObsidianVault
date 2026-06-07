@@ -1,4 +1,7 @@
 ---
+description: "NETOPIA is Romania's largest payment processor serving 25K+ businesses. Their junior DevOps hiring signals missing senior infrastructure capacity, creating an opportunity to offer managed AWS operations with 24/7 coverage for PSD2 and PCI-DSS compliance."
+description_source: auto
+description_hash: 97bc1e6a2a12b7e2
 type: lead
 id: netopia
 company: "NETOPIA Payments"
@@ -37,7 +40,6 @@ created: 2026-03-20
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # NETOPIA Payments
 
 ## Signal

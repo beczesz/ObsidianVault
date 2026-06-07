@@ -1,11 +1,71 @@
 {
   "version": 1,
   "skills": {
+    "brand-review": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/brand-review/SKILL.md",
+      "computedHash": "64baf86025d29402b6b0fe6211227c569d010c1efee04593fc9a33b7213a9e26"
+    },
+    "brand-voice-enforcement": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "partner-built/brand-voice/skills/brand-voice-enforcement/SKILL.md",
+      "computedHash": "b3f2de87bbd2e0fe97792cc45ee33c9fa38b161980ccf05d7f6d7ee8952c2382"
+    },
+    "campaign-plan": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/campaign-plan/SKILL.md",
+      "computedHash": "3588f54504e639c3c78dd0e115482ea7ff0914e52542997743371c386ad3c174"
+    },
+    "competitive-brief": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/competitive-brief/SKILL.md",
+      "computedHash": "d48a5e206e45a353ca88c525ee8042798a3c177d7f1383abf91d4ba08b557c69"
+    },
+    "content-creation": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/content-creation/SKILL.md",
+      "computedHash": "79400b9649ad697419fcad9ed2ee0b9987eef32f8df5689c50f208a6f74682d7"
+    },
+    "draft-content": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/draft-content/SKILL.md",
+      "computedHash": "d1c86e66ff2f24731ace694537506797c4673e0e10e8ff558781de9cb1bd4cd8"
+    },
+    "email-sequence": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/email-sequence/SKILL.md",
+      "computedHash": "afad0c94aff6275f9c326cd0158638d404c359f70fa9c8bbae6774a218385749"
+    },
     "impeccable": {
       "source": "pbakaus/impeccable",
       "sourceType": "github",
       "skillPath": "skill/SKILL.md",
       "computedHash": "343c75b0a7e65e97b3aba430ae9fcb387f91397b4852129e43a53d3ca45fb945"
+    },
+    "performance-report": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/performance-report/SKILL.md",
+      "computedHash": "f7c3f5289038c7608307120c9493b50f404594168ccccb183e6a24153d653f73"
+    },
+    "run-campaign": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "small-business/skills/run-campaign/SKILL.md",
+      "computedHash": "f545962ba61ae4b7c3afab4ab6a994f0c005de040b0e6bbad2851cd6480f0028"
+    },
+    "seo-audit": {
+      "source": "anthropics/knowledge-work-plugins",
+      "sourceType": "github",
+      "skillPath": "marketing/skills/seo-audit/SKILL.md",
+      "computedHash": "fc681c9ebb5a6e4bdaca74a1746c04eac7cd82e4b8a67298a3b1faf77a394e2e"
     }
   }
 }

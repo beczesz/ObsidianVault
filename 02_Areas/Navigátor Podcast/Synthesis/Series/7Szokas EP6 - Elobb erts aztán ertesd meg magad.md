@@ -2,6 +2,9 @@
 series: "7 Szokás"
 episode: "EP6"
 title: "Előbb érts, aztán értesd meg magad – Az empatikus hallgatás ereje"
+description: "Az empatikus hallgatás négy szintjét és gyakorlati alkalmazásait ismerteti, konkrét üzleti és személyes példákkal (tanácsadó cég, kiértékelés-beszélgetés) szemléltetve, hogyan mélyíti meg az étosz-pátosz-lógosz hierarchián keresztül az emberi kapcsolatokat és konfliktusfeloldást."
+description_source: auto
+description_hash: 4353ea97d275dd29
 host: "Beczesz Szabolcs"
 source_book: "Stephen Covey – A kiemelkedően eredményes emberek 7 szokása"
 youtube_id: "UsHNW69w_3s"
@@ -30,7 +33,6 @@ created: "2026-04-06"
 id: 7da6efb6-a0ad-4ff1-9e54-82df38955656
 index_schema_version: 1
 ---
-
 # 7 Szokás EP6 – Előbb érts, aztán értesd meg magad: Az empatikus hallgatás ereje
 
 ## Sorozat kontextus

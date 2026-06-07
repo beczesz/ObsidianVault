@@ -1,3 +1,15 @@
+---
+title: "Abált Szalonna"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Abált szalonna termékoldal: főtt, fokhagymás szalonna leves, hidegen szeletelve. Feldolgozottságot és árazást tartalmazó termékadat magyar és román nyelvű leírásokkal."
+description_source: auto
+description_hash: d4b3f936196a8ae0
+id: 6d8e2946-ef7a-4dc8-9ddf-da02efa42795
+index_schema_version: 1
+bdos_index: true
+---
 # Abált Szalonna
 
 ```yaml

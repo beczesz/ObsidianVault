@@ -1,3 +1,15 @@
+---
+title: "Kingdom At Work -- Design System"
+date: 2026-04-27
+author: Becze Szabolcs
+status: active
+description: "Design specifications for Kingdom At Work workbook, including teal and gold color palette, Oswald and Proxima Nova typography, A5 page layout with full-bleed dark backgrounds on covers, and consistent callout bar patterns for reading sections and module labels."
+description_source: auto
+description_hash: 381c1f810be91769
+id: 2f67fe04-1028-49e1-8ae9-cd2f61e9ba3d
+index_schema_version: 1
+bdos_index: true
+---
 # Kingdom At Work -- Design System
 
 Extracted from: KAWActionGroupsWorkbook-compressed.pdf

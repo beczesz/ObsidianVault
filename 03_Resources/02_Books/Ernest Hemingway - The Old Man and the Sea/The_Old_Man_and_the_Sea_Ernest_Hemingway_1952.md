@@ -1,3 +1,15 @@
+---
+title: "Az öreg halász és a tenger — Ernest Hemingway (1952)"
+date: 2025-09-21
+author: Becze Szabolcs
+status: active
+description: "Hemingway 1952-es klasszikus novelláját feldolgozó jegyzet, amely a könyv szövegét, a jéghegy-elmélet alkalmazásait és más irodalmi művekkel való összehasonlítást tartalmazza. Irodalomelmélet és interpretáció iránt érdeklődőknek, valamint a minimalizmus és szimbolizmus tanulmányozóinak ajánlott."
+description_source: auto
+description_hash: 2e8b0c7335df947a
+id: 4abdce46-f649-4763-886a-be11c269e599
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /02_Books/Ernest Hemingway - The Old Man and the Sea/
 
 FILES:

@@ -1,3 +1,15 @@
+---
+title: "Company Context"
+date: 2026-04-16
+author: Becze Szabolcs
+status: active
+description: "Overview of Ignis Academy startup structure, ownership, tools, team members, financial position from EU grant, location in Transylvania, and major milestones. Useful for anyone onboarding to the company or reviewing organizational context."
+description_source: auto
+description_hash: 4c44159eb1795322
+id: e816eaab-ca34-4429-8745-6c0d41c2daa5
+index_schema_version: 1
+bdos_index: true
+---
 # Company Context
 
 ## Structure

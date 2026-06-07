@@ -1,3 +1,15 @@
+---
+title: "Pistyur Veronika — Megjelenések: Teljes jegyzetek"
+date: 2026-03-06
+author: Becze Szabolcs
+status: active
+description: "Teljes jegyzetgyűjtemény Pistyur Veronika közéleti megjelenéseiről 39 forrásból, key citátumokkal és részletes összefoglalóval útmutatást nyújtva podcast-felkészüléshez vagy médiamunkahoz az ő üzleti filozófiájáról és vezetési megközelítéséről."
+description_source: auto
+description_hash: 64a49ac1506d4d66
+id: bbd2c4a7-0b81-4354-af03-ebcd72464855
+index_schema_version: 1
+bdos_index: true
+---
 # Pistyur Veronika — Megjelenések: Teljes jegyzetek
 *Összeállítva: 2026-03-06 | Navigator Podcast felkészülés*
 *39 forrás feldolgozva | v2 — teljes*

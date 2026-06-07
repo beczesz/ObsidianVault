@@ -1,4 +1,7 @@
 ---
+description: "Pál Edit Éva, uhron.ro szerkesztő és újságíró interjúja a Csakabaj Podcastban az újságírás, média és igazság közvetítésének etikai és gyakorlati dimenzióiról. Hallgatók számára, akiket az információszerzés és médialandschaft foglalkoztatnak."
+description_source: auto
+description_hash: d29218d13b3da147
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -13,7 +16,6 @@ quality: "Gold Standard"
 id: 371b4bf7-566a-4b86-8e05-d48771ea8571
 index_schema_version: 1
 ---
-
 # EP03 — Pál Edit Éva: Újságírás, média, igazság közvetítése
 
 ## Alapadatok

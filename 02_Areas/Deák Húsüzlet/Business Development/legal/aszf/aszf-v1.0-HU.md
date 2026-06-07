@@ -1,5 +1,8 @@
 ---
 title: "Általános Szerződési Feltételek"
+description: "A Deák Húsmíves online platform (deakhus.ro) általános szerződési feltételei, melyek az EXARGROUPS S.R.L. által üzemeltetett platform használatára és megrendelésekre vonatkoznak; tartalmazza a szállítási, fizetési, szavatossági és panaszkezelési szabályokat."
+description_source: auto
+description_hash: 9c6fcc7d10956838
 version: "1.0"
 status: DRAFT
 created: 2026-04-17
@@ -15,7 +18,6 @@ changelog:
 id: f2a58eba-c0a0-4b60-adea-d854ee0314e5
 index_schema_version: 1
 ---
-
 # ÁLTALÁNOS SZERZŐDÉSI FELTÉTELEK
 
 **Deák Húsmíves Online Platform — deakhus.ro**

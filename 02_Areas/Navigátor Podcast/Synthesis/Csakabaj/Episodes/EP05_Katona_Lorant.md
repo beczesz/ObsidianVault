@@ -1,4 +1,7 @@
 ---
+description: "Rendőr és közigazgatás szakértő Katona Lóránt beszélgetése gyermeknevelés, szülőség és közigazgatás etikai dimenziójáról, személyes tapasztalatok és praktikus alkalmazások összekapcsolásával. A Csakabaj Podcast első sorozatának epizódja, amely reflektív mélységgel vizsgálja a társadalmi szerepeket."
+description_source: auto
+description_hash: 2929116390efb4c6
 version: "1.0"
 date: "2026-04-09"
 type: csakabaj-synthesis
@@ -13,7 +16,6 @@ quality: "Gold Standard"
 id: 21958ade-1267-4687-b734-852f97ea825c
 index_schema_version: 1
 ---
-
 # EP05 — Katona Lóránt: Közigazgatás, gyermeknevelés, szülőség
 
 ## Alapadatok

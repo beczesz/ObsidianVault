@@ -1,11 +1,13 @@
 ---
+description: "Crossover episode between Csakabaj and Mikozod podcasts exploring taboo topics through dual-host collaboration, measuring whether shared authority and chemistry create more permission for difficult conversation than solo hosting allows."
+description_source: auto
+description_hash: 32d8f69a61ecd35c
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
 id: 84db3c32-f845-4e55-addc-e53244572eee
 index_schema_version: 1
 ---
-
 # Csakabaj Podcast — Season 3
 
 ## Episode EP47 | S03E02: Mikozod Podcast Crossover

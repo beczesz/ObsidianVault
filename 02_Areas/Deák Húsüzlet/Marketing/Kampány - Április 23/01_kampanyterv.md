@@ -1,5 +1,8 @@
 ---
 title: "Deák Húsmíves — Founding 50 Launch Kampány"
+description: "A Deák Húsmíves online rendelési rendszerének indítási kampánya, amely az első 50 regisztrált felhasználót 3 hónapos ingyenes szállítással vonzza. A terv részletezi a SMART célokat, célközönséget, üzeneteket, csatornákat, időtervet és mérési metrikákat a szórólapok, Facebook, és in-store aktiváció koordinálásával."
+description_source: auto
+description_hash: 275ef874dbc23aa1
 version: v1.0
 date: 2026-04-22
 author: Szabolcs + Claude
@@ -8,7 +11,6 @@ target_launch: ~2026-05-15 (v0.3 beta release után)
 id: 53bdc1ed-f021-4f42-9599-287bc8630bac
 index_schema_version: 1
 ---
-
 # Founding 50 Launch Kampány — Kampányterv
 
 ## 1. Kampány összefoglaló

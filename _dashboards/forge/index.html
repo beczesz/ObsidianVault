@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Forge — Practice Steward dashboard.                              Version: 0.2.3
+  =============================================================================
+  Data-driven practice-area observatory. Reads NOTES.md frontmatter from each
+  practice area, groups by unit, renders at-a-glance status cards.
+
+  Sibling of: broker/index.html (sales engine observatory)
+  Position:   capability layer — cross-client practice area stewardship
+
+  Renders from: per-practice NOTES.md frontmatter at-a-glance fields:
+    - strategic_directions  (1-3 bullets)
+    - next_step             (1 sentence)
+    - deadline              (YYYY-MM-DD or null)
+    - blocker               (string or null)
+    - top_todos             (1-3 items)
+    - counts                (open_questions, related_engagements, learnings_*)
+    - status, maturity_stage, owner, last_signal
+
+  Read-only. Edit per-practice NOTES.md in Obsidian. Forge keeps the at-a-glance
+  fields in sync as he manages each practice area.
+
+  Audit trail:
+    0.2.3 (2026-05-29) tend: version-pill normalized family-wide. CSS: font-size 10.5px, padding 2px 8px, font-weight 500 (was 10px, 1px 7px, no weight). Markup: mono class added.
+    0.2.2 (2026-05-28) tend: masthead avatar now shows the real Pixar portrait
+      (/00_Prompts/BDOS/agents/forge/avatar.png, object-fit cover in the 52px box);
+      hammer emoji kept as 404 fallback.
+    0.2.1 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app -> .app-main + .app-shell layout. alfred-tasks.js added.
+    0.2.0 (2026-05-27) major rewrite: data-driven, unit containers + practice cards,
+                       launcher-style grouping. Reads at-a-glance frontmatter from
+                       2 practice NOTES files. Live-updates 8s. Modes/howto moved
+                       to collapsible <details> footer.
+    0.1.0 (2026-05-27) initial intro page — basic placeholder, static content.
+  =============================================================================
+-->
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Forge — Practice Steward</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%239B4F3A' stroke-width='2.2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS §1b) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<!-- Canonical tokens (DS §1 + §1a) -->
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
+<style>
+/* Forge-specific accent + stage tokens */
+:root {
+  --forge: #9B4F3A;
+  --forge-deep: #7C3D2E;
+  --forge-tint: rgba(155,79,58,.08);
+
+  --stage-forming: #d4884a;
+  --stage-forming-tint: rgba(212,136,74,.12);
+  --stage-patterns: #4a8db5;
+  --stage-patterns-tint: rgba(74,141,181,.12);
+  --stage-maturing: #5a9f7d;
+  --stage-maturing-tint: rgba(90,159,125,.12);
+  --stage-ready: #4a9b59;
+  --stage-ready-tint: rgba(74,155,89,.12);
+  --stage-stable: #2d7a3f;
+  --stage-stable-tint: rgba(45,122,63,.12);
+  --stage-retired: #8c8c8c;
+  --stage-retired-tint: rgba(140,140,140,.12);
+
+  --due-overdue: #c0392b;
+  --due-overdue-tint: rgba(192,57,43,.12);
+  --due-today: #d4884a;
+  --due-today-tint: rgba(212,136,74,.14);
+  --due-soon: #4a8db5;
+  --due-soon-tint: rgba(74,141,181,.12);
+  --due-planned: #6e6e6e;
+  --due-planned-tint: rgba(110,110,110,.08);
+}
+:root[data-theme="dark"] {
+  --forge: #C76A52;
+  --forge-deep: #E08770;
+  --forge-tint: rgba(199,106,82,.14);
+
+  --stage-forming: #e8a16b;
+  --stage-forming-tint: rgba(232,161,107,.18);
+  --stage-patterns: #6ba8cf;
+  --stage-patterns-tint: rgba(107,168,207,.18);
+  --stage-maturing: #7cb89a;
+  --stage-maturing-tint: rgba(124,184,154,.18);
+  --stage-ready: #6cb87a;
+  --stage-ready-tint: rgba(108,184,122,.18);
+  --stage-stable: #4a9b5d;
+  --stage-stable-tint: rgba(74,155,93,.18);
+  --stage-retired: #a8a8a8;
+  --stage-retired-tint: rgba(168,168,168,.16);
+
+  --due-overdue: #e85f4f;
+  --due-overdue-tint: rgba(232,95,79,.2);
+  --due-today: #e8a16b;
+  --due-today-tint: rgba(232,161,107,.2);
+  --due-soon: #6ba8cf;
+  --due-soon-tint: rgba(107,168,207,.18);
+  --due-planned: #a8a8a8;
+  --due-planned-tint: rgba(168,168,168,.12);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.app-main { max-width: 1180px; padding: 28px 36px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { margin-bottom: 28px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 16px;
+}
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  text-decoration: none; padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--forge-deep); border-color: var(--forge); background: var(--forge-tint); transform: translateX(-2px); }
+.home-link svg { flex-shrink: 0; }
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  cursor: pointer; user-select: none;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.theme-toggle:hover { color: var(--forge-deep); border-color: var(--forge); }
+.theme-toggle:focus-visible { outline: 2px solid var(--forge); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; letter-spacing: 0; font-weight: 500; }
+.title-row { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
+.avatar {
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  width: 52px; height: 52px; font-size: 30px;
+  background: var(--forge-tint);
+  border: 1px solid rgba(155,79,58,.25);
+  border-radius: var(--radius-l);
+  flex-shrink: 0;
+}
+.avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.avatar .avatar-emoji { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; }
+.masthead h1 {
+  font-size: clamp(24px, 2.8vw, 32px); font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.1; color: var(--ink-1);
+}
+.masthead h1 .accent { color: var(--forge); }
+.masthead .submeta {
+  color: var(--ink-3); max-width: 780px; font-size: 13.5px;
+  margin-top: 4px; line-height: 1.55;
+}
+
+/* ===== Section headers ===== */
+.section { margin-top: 32px; }
+.section-head {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 600; margin-bottom: 14px;
+  padding-bottom: 8px; border-bottom: 1px solid var(--line-soft);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.section-head .count {
+  font-family: 'JetBrains Mono', monospace; color: var(--ink-3);
+  background: var(--bg-elev); border: 1px solid var(--line);
+  padding: 1px 8px; border-radius: 999px; font-size: 10px;
+  text-transform: none; letter-spacing: 0;
+}
+
+/* ===== Unit container ===== */
+.unit-container {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--bg-elev);
+  padding: 22px 24px 24px;
+  margin-bottom: 22px;
+  box-shadow: var(--shadow-1);
+}
+.unit-header {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 16px; margin-bottom: 18px; padding-bottom: 14px;
+  border-bottom: 1px solid var(--line-soft);
+  flex-wrap: wrap;
+}
+.unit-header .titlebar { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.unit-header h2 {
+  font-size: 18px; font-weight: 600; color: var(--ink-1);
+  letter-spacing: -0.01em;
+}
+.unit-header .unit-short {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  color: var(--forge); background: var(--forge-tint);
+  padding: 1px 7px; border-radius: var(--radius-s); font-weight: 500;
+}
+.unit-header .unit-meta {
+  font-size: 12px; color: var(--ink-4);
+  display: inline-flex; align-items: center; gap: 12px;
+}
+
+/* ===== Practice card grid ===== */
+.practice-grid {
+  display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+}
+.practice-card {
+  position: relative;
+  background: var(--bg-page);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--forge);
+  border-radius: var(--radius-m);
+  padding: 16px 18px 14px;
+  display: flex; flex-direction: column; gap: 12px;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.practice-card:hover { box-shadow: var(--shadow-1); }
+
+.pc-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: 10px;
+}
+.pc-name {
+  font-size: 15px; font-weight: 600; color: var(--ink-1);
+  letter-spacing: -0.01em; line-height: 1.25;
+}
+.pc-stage {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 2px 9px; border-radius: 999px;
+  font-size: 10px; font-weight: 500; letter-spacing: .04em;
+  text-transform: uppercase; white-space: nowrap;
+  font-family: 'JetBrains Mono', monospace;
+  flex-shrink: 0;
+}
+.pc-stage::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor;
+}
+.pc-stage[data-stage="forming"]            { color: var(--stage-forming);  background: var(--stage-forming-tint); }
+.pc-stage[data-stage="patterns-emerging"]  { color: var(--stage-patterns); background: var(--stage-patterns-tint); }
+.pc-stage[data-stage="maturing"]           { color: var(--stage-maturing); background: var(--stage-maturing-tint); }
+.pc-stage[data-stage="service-ready"]      { color: var(--stage-ready);    background: var(--stage-ready-tint); }
+.pc-stage[data-stage="stable"]             { color: var(--stage-stable);   background: var(--stage-stable-tint); }
+.pc-stage[data-stage="retired"]            { color: var(--stage-retired);  background: var(--stage-retired-tint); }
+
+.pc-owner {
+  font-size: 11.5px; color: var(--ink-4); font-style: italic;
+  line-height: 1.35;
+}
+
+.pc-block {
+  display: flex; flex-direction: column; gap: 4px;
+}
+.pc-block-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-4); font-weight: 600;
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.pc-block-label .ico { font-size: 11px; line-height: 1; }
+
+.pc-strategic {
+  list-style: none; padding: 0;
+  display: flex; flex-direction: column; gap: 3px;
+}
+.pc-strategic li {
+  font-size: 12.5px; color: var(--ink-2); line-height: 1.4;
+  padding-left: 12px; position: relative;
+}
+.pc-strategic li::before {
+  content: '→'; position: absolute; left: 0; top: 0;
+  color: var(--forge); font-weight: 500;
+}
+
+.pc-next-step {
+  background: var(--forge-tint);
+  border-left: 2px solid var(--forge);
+  padding: 8px 12px; border-radius: var(--radius-s);
+  font-size: 12.5px; color: var(--ink-1); line-height: 1.5;
+  font-weight: 500;
+}
+
+.pc-todos {
+  list-style: none; padding: 0;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.pc-todos li {
+  font-size: 12px; color: var(--ink-2); line-height: 1.4;
+  padding-left: 16px; position: relative;
+}
+.pc-todos li::before {
+  content: '☐'; position: absolute; left: 0; top: 0;
+  color: var(--ink-4); font-size: 11px;
+}
+
+.pc-chips {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.pc-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 9px; border-radius: 999px;
+  font-size: 11px; font-weight: 500; line-height: 1.2;
+  white-space: nowrap;
+}
+.pc-chip[data-kind="deadline"][data-state="overdue"] { color: var(--due-overdue); background: var(--due-overdue-tint); border: 1px solid rgba(192,57,43,.25); }
+.pc-chip[data-kind="deadline"][data-state="today"]   { color: var(--due-today);   background: var(--due-today-tint);   border: 1px solid rgba(212,136,74,.3); }
+.pc-chip[data-kind="deadline"][data-state="soon"]    { color: var(--due-soon);    background: var(--due-soon-tint);    border: 1px solid rgba(74,141,181,.25); }
+.pc-chip[data-kind="deadline"][data-state="planned"] { color: var(--due-planned); background: var(--due-planned-tint); border: 1px solid var(--line); }
+.pc-chip[data-kind="deadline"][data-state="none"]    { color: var(--ink-4);       background: var(--bg-elev);          border: 1px solid var(--line-soft); }
+.pc-chip[data-kind="blocker"] {
+  color: var(--due-overdue); background: var(--due-overdue-tint);
+  border: 1px solid rgba(192,57,43,.25);
+  max-width: 100%; white-space: normal; line-height: 1.35;
+}
+
+.pc-counts {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  font-size: 11px; color: var(--ink-4);
+  padding-top: 8px; border-top: 1px solid var(--line-soft);
+}
+.pc-counts .item {
+  display: inline-flex; align-items: center; gap: 5px;
+}
+.pc-counts .item .n {
+  font-family: 'JetBrains Mono', monospace; font-weight: 600; color: var(--ink-2);
+}
+
+.pc-actions { display: flex; gap: 10px; align-items: center; }
+.pc-link {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 500; color: var(--forge);
+  text-decoration: none; transition: color var(--t-fast);
+}
+.pc-link:hover { color: var(--forge-deep); text-decoration: underline; text-underline-offset: 3px; }
+.pc-link.muted { color: var(--ink-4); }
+.pc-link.muted:hover { color: var(--ink-2); }
+
+/* ===== Card copy-ref (DS §4a) ===== */
+.card-copy-ref {
+  position: absolute; top: 10px; right: 10px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 500; color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.practice-card:hover .card-copy-ref,
+.practice-card:focus-within .card-copy-ref,
+.unit-container:hover > .card-copy-ref,
+.unit-container:focus-within > .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--forge); color: var(--forge-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* Empty / error / loading state */
+.state {
+  text-align: center; padding: 50px 20px; color: var(--ink-4);
+  border: 1px dashed var(--line-soft); border-radius: var(--radius-l);
+  font-size: 13px;
+}
+.state.error { color: var(--gap); border-color: rgba(192,57,43,.25); background: var(--gap-tint); }
+
+/* Intro quote — kept small */
+.intro-quote {
+  background: var(--forge-tint);
+  border-left: 3px solid var(--forge);
+  border-radius: var(--radius-m);
+  padding: 13px 18px;
+  font-size: 12.5px;
+  color: var(--ink-2);
+  line-height: 1.55;
+  margin-bottom: 24px;
+}
+.intro-quote strong { color: var(--forge-deep); font-weight: 600; }
+
+/* Collapsible "About this agent" */
+details.about {
+  margin-top: 40px; border: 1px solid var(--line-soft);
+  border-radius: var(--radius-l); background: var(--bg-elev);
+}
+details.about > summary {
+  cursor: pointer; padding: 14px 20px; font-size: 12px; font-weight: 500;
+  color: var(--ink-3); user-select: none;
+  display: flex; align-items: center; gap: 8px;
+  list-style: none;
+}
+details.about > summary::-webkit-details-marker { display: none; }
+details.about > summary::before {
+  content: '▸'; color: var(--ink-4); font-size: 10px;
+  transition: transform var(--t-fast);
+  display: inline-block;
+}
+details.about[open] > summary::before { transform: rotate(90deg); }
+details.about > summary:hover { color: var(--forge-deep); }
+details.about .about-inner {
+  padding: 6px 20px 22px;
+  border-top: 1px solid var(--line-soft);
+}
+.about-grid {
+  display: grid; gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  margin-top: 12px;
+}
+.about-card {
+  background: var(--bg-page); border: 1px solid var(--line-soft);
+  border-radius: var(--radius-s); padding: 12px 14px;
+  font-size: 12px; line-height: 1.5; color: var(--ink-3);
+}
+.about-card h4 {
+  font-size: 12px; font-weight: 600; color: var(--ink-2);
+  margin-bottom: 4px;
+  display: flex; align-items: center; gap: 6px;
+}
+.about-card .num {
+  font-family: 'JetBrains Mono', monospace; font-size: 9.5px;
+  color: var(--forge); background: var(--forge-tint);
+  padding: 1px 5px; border-radius: var(--radius-s);
+}
+.about-card .ex {
+  display: inline-block; margin-top: 4px;
+  font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+  background: var(--bg-sunken); padding: 3px 7px;
+  border-radius: var(--radius-s); color: var(--ink-2);
+  border: 1px solid var(--line-soft);
+}
+.modes-strip {
+  display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px;
+}
+.modes-strip .mode {
+  font-family: 'JetBrains Mono', monospace; font-size: 10.5px;
+  color: var(--ink-2); background: var(--bg-page);
+  border: 1px solid var(--line-soft); padding: 3px 9px;
+  border-radius: var(--radius-s); font-weight: 500;
+}
+.modes-strip .mode em {
+  color: var(--ink-4); font-size: 9.5px; font-style: normal;
+  margin-left: 4px;
+}
+
+/* Footer link list */
+.footer-links {
+  margin-top: 36px; padding-top: 18px;
+  border-top: 1px solid var(--line-soft);
+  display: flex; gap: 18px; flex-wrap: wrap;
+  font-size: 12px;
+}
+.footer-links a {
+  color: var(--ink-3); text-decoration: none;
+  display: inline-flex; align-items: center; gap: 5px;
+  transition: color var(--t-fast);
+}
+.footer-links a:hover { color: var(--forge-deep); text-decoration: underline; text-underline-offset: 3px; }
+.footer-links a code {
+  font-family: 'JetBrains Mono', monospace; font-size: 11px;
+  background: var(--bg-sunken); padding: 1px 6px; border-radius: var(--radius-s);
+  border: 1px solid var(--line-soft); color: var(--ink-2);
+}
+</style>
+</head>
+<body>
+<!-- Admin bar mount-point -->
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<main class="app-main">
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Back to Ideas Vault launcher">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      BDOS Agent
+      <span class="version-pill mono">v0.2.2</span>
+    </div>
+    <div class="title-row">
+      <div class="avatar"><img src="/00_Prompts/BDOS/agents/forge/avatar.png" alt="Forge" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="avatar-emoji" aria-hidden="true">&#x1F528;</span></div>
+      <h1><span class="accent">Forge</span> — Practice Steward</h1>
+    </div>
+    <div class="submeta">
+      A BDOS kapacitás-rétegének gondnoka. Broker testvére: ahol Broker az ügyfeleket mozgatja (1-1, deal-szintű), Forge a <strong>kapacitásokat kovácsolja</strong> — cross-client practice area-k, kutatási területek, reusable patternek karbantartása.
+    </div>
+  </header>
+
+  <!-- ============ Brief mental model ============ -->
+  <div class="intro-quote">
+    Minden practice area külön <strong>műhely</strong>: külön tudás-réteg, külön evolúciós tempó. A kártyák alatt pillantásra megjeleníthető az aktuális állapot — <strong>mi a következő lépés, mi a deadline, mi a blocker</strong>. Ahogy beszélgetünk, Forge a megfelelő practice mappába filezi és frissíti a státuszt.
+  </div>
+
+  <!-- ============ Practice Areas (main content) ============ -->
+  <section class="section">
+    <div class="section-head">
+      Practice Areas
+      <span class="count" id="practice-count">…</span>
+    </div>
+    <div id="content">
+      <div class="state" id="loading">Loading practice areas…</div>
+    </div>
+  </section>
+
+  <!-- ============ About this agent (collapsible) ============ -->
+  <details class="about">
+    <summary>Hogyan használj engem — workflow, módok, slash commandok</summary>
+    <div class="about-inner">
+      <div class="about-grid">
+        <div class="about-card" data-card-id="howto/when-to-call">
+          <h4><span class="num">01</span> Mikor szólj nekem</h4>
+          <p>Amikor a megfigyelésed/log-od/research <strong>nem ügyfél-specifikus</strong>, hanem keresztmetszeti tudás. Ha ügyfél-szintű → Broker.</p>
+          <span class="ex">"Forge, itt a Merkantil Inference Farm tervezési mintái"</span>
+        </div>
+        <div class="about-card" data-card-id="howto/capture">
+          <h4><span class="num">02</span> Capture</h4>
+          <p>Raw anyag bedobás → Forge confirmation után filezi a megfelelő area <code>_inbox/</code>-ba.</p>
+          <span class="ex">/forge-capture cps-inference-farm</span>
+        </div>
+        <div class="about-card" data-card-id="howto/refine">
+          <h4><span class="num">03</span> Refine</h4>
+          <p>3+ független evidence után szintetizál patternné. Küszöb alatt csak "olvasott anyag".</p>
+          <span class="ex">/forge-refine &lt;area&gt;/_inbox/&lt;file&gt;</span>
+        </div>
+        <div class="about-card" data-card-id="howto/handoff">
+          <h4><span class="num">04</span> Handoff</h4>
+          <p>Érett patternt át lehet adni Brokernek (proposal) vagy Presto-nak (marketing). Forward-link megmarad.</p>
+          <span class="ex">/forge-handoff broker | presto</span>
+        </div>
+      </div>
+      <div class="modes-strip">
+        <span class="mode">/forge-status <em>cross-area</em></span>
+        <span class="mode">/forge-today <em>napi queue</em></span>
+        <span class="mode">/forge-capture <em>filing</em></span>
+        <span class="mode">/forge-refine <em>pattern szintézis</em></span>
+        <span class="mode">/forge-index <em>index regen</em></span>
+        <span class="mode">/forge-measure <em>metrics</em></span>
+        <span class="mode">/forge-handoff <em>broker/presto</em></span>
+        <span class="mode">/forge-learn <em>lifecycle</em></span>
+        <span class="mode">/forge-reflect <em>heti/havi</em></span>
+      </div>
+    </div>
+  </details>
+
+  <!-- ============ Footer ============ -->
+  <div class="footer-links">
+    <a href="/00_Prompts/BDOS/agents/forge.md">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      Agent canonical <code>forge.md</code>
+    </a>
+    <a href="/02_Areas/Sonrisa/CPS/Practices/00_INDEX.md">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      CPS Practices index
+    </a>
+    <a href="/02_Areas/ExarLabs/Practices/00_INDEX.md">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      ExarLabs Practices index
+    </a>
+    <a href="/_dashboards/broker/index.html">
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 11l-5-5-5 5M12 6v12"/></svg>
+      Sibling: Broker dashboard
+    </a>
+  </div>
+</main><!-- end .app-main -->
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
+
+<!-- Shared engine -->
+<script src="/_dashboards/_design/live-updates.js"></script>
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<script src="/_dashboards/_design/markdown-parser.js"></script>
+<script src="/_dashboards/_design/dom-utils.js"></script>
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
+
+<script>
+// ============================================================
+// PER-DASHBOARD CONFIG
+// ============================================================
+const DASH_STEM = 'forge';
+
+// Hardcoded list of practice areas. Future v0.3 may discover from
+// per-unit 00_INDEX.md, but with only 2 areas right now this is fine.
+const PRACTICE_NOTES_PATHS = [
+  '/02_Areas/Sonrisa/CPS/Practices/Inference-Farm/NOTES.md',
+  '/02_Areas/ExarLabs/Practices/Microsites/NOTES.md',
+];
+
+// Stage label remap (frontmatter slug → display text)
+const STAGE_LABELS = {
+  'forming':            'Forming',
+  'patterns-emerging':  'Patterns emerging',
+  'maturing':           'Maturing',
+  'service-ready':      'Service ready',
+  'stable':             'Stable',
+  'retired':            'Retired',
+};
+
+// ============================================================
+// Helpers
+// ============================================================
+function classifyDeadline(dateStr) {
+  if (!dateStr) return 'none';
+  const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return 'none';
+  const today = new Date(); today.setHours(0,0,0,0);
+  d.setHours(0,0,0,0);
+  const days = Math.floor((d - today) / 86400000);
+  if (days < 0) return 'overdue';
+  if (days === 0) return 'today';
+  if (days <= 7) return 'soon';
+  return 'planned';
+}
+
+function formatDeadline(dateStr) {
+  const state = classifyDeadline(dateStr);
+  if (state === 'none') return { state, label: 'No deadline' };
+  const d = new Date(dateStr);
+  const today = new Date(); today.setHours(0,0,0,0); d.setHours(0,0,0,0);
+  const days = Math.floor((d - today) / 86400000);
+  const dateLabel = dateStr;
+  let suffix;
+  if      (state === 'overdue') suffix = `${Math.abs(days)} day${Math.abs(days)===1?'':'s'} overdue`;
+  else if (state === 'today')   suffix = 'today';
+  else if (state === 'soon')    suffix = `${days} day${days===1?'':'s'} left`;
+  else                          suffix = `${days} days`;
+  return { state, label: `${dateLabel} · ${suffix}` };
+}
+
+function pathToNotesObsidian(notesPath) {
+  // For obsidian:// links we don't have a base for this dashboard,
+  // so we use raw path which works in the dash-server context (filesystem-served).
+  return notesPath;
+}
+
+// ============================================================
+// Render
+// ============================================================
+function renderError(msg) {
+  document.getElementById('content').innerHTML =
+    `<div class="state error">Could not load: ${escapeHtml(msg)}</div>`;
+  document.getElementById('practice-count').textContent = '?';
+}
+
+function renderEmpty() {
+  document.getElementById('content').innerHTML =
+    `<div class="state">No practice areas registered yet. Add one in <code>02_Areas/&lt;unit&gt;/Practices/&lt;area&gt;/NOTES.md</code> then update PRACTICE_NOTES_PATHS in this dashboard.</div>`;
+  document.getElementById('practice-count').textContent = '0';
+}
+
+function renderUnitContainer(unitDisplay, unitShort, practices) {
+  const unitSlug = toSlug(unitDisplay || 'unit');
+  const cards = practices.map((p) => renderPracticeCard(p)).join('');
+  return `
+    <div class="unit-container" data-card-id="unit/${escapeHtml(unitSlug)}">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy ref
+      </button>
+      <div class="unit-header">
+        <div class="titlebar">
+          <h2>${escapeHtml(unitDisplay)}</h2>
+          ${unitShort ? `<span class="unit-short">${escapeHtml(unitShort)}</span>` : ''}
+        </div>
+        <div class="unit-meta">
+          <span><strong>${practices.length}</strong> practice area${practices.length===1?'':'s'}</span>
+        </div>
+      </div>
+      <div class="practice-grid">${cards}</div>
+    </div>
+  `;
+}
+
+function renderPracticeCard(p) {
+  const fm = p.frontmatter || {};
+  const name      = fm.practice || '(unnamed)';
+  const slug      = fm.slug || toSlug(name);
+  const stage     = fm.maturity_stage || 'forming';
+  const stageLabel= STAGE_LABELS[stage] || stage;
+  const owner     = fm.owner || '(no owner)';
+  const strategic = Array.isArray(fm.strategic_directions) ? fm.strategic_directions : [];
+  const nextStep  = fm.next_step || '';
+  const blocker   = fm.blocker || null;
+  const todos     = Array.isArray(fm.top_todos) ? fm.top_todos.slice(0, 3) : [];
+  const counts    = fm.counts || {};
+  const deadline  = formatDeadline(fm.deadline);
+  const notesUrl  = pathToNotesObsidian(p.notesPath);
+
+  return `
+    <article class="practice-card" data-card-id="practice/${escapeHtml(slug)}">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card>
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy ref
+      </button>
+
+      <div class="pc-head">
+        <div class="pc-name">${escapeHtml(name)}</div>
+        <span class="pc-stage" data-stage="${escapeHtml(stage)}">${escapeHtml(stageLabel)}</span>
+      </div>
+      <div class="pc-owner">${escapeHtml(owner)}</div>
+
+      ${strategic.length ? `
+        <div class="pc-block">
+          <span class="pc-block-label"><span class="ico">&#x1F3AF;</span> Strategic direction</span>
+          <ul class="pc-strategic">${strategic.slice(0,3).map(s => `<li>${escapeHtml(s)}</li>`).join('')}</ul>
+        </div>
+      ` : ''}
+
+      ${nextStep ? `
+        <div class="pc-block">
+          <span class="pc-block-label"><span class="ico">&#x1F4CC;</span> Next step</span>
+          <div class="pc-next-step">${escapeHtml(nextStep)}</div>
+        </div>
+      ` : ''}
+
+      <div class="pc-chips">
+        <span class="pc-chip" data-kind="deadline" data-state="${deadline.state}">
+          &#x23F0; ${escapeHtml(deadline.label)}
+        </span>
+        ${blocker ? `<span class="pc-chip" data-kind="blocker">&#x26A0;&#xFE0F; ${escapeHtml(blocker)}</span>` : ''}
+      </div>
+
+      ${todos.length ? `
+        <div class="pc-block">
+          <span class="pc-block-label"><span class="ico">&#x2611;</span> Top TODOs</span>
+          <ul class="pc-todos">${todos.map(t => `<li>${escapeHtml(t)}</li>`).join('')}</ul>
+        </div>
+      ` : ''}
+
+      <div class="pc-counts">
+        <span class="item"><span class="n">${counts.open_questions ?? 0}</span>open questions</span>
+        <span class="item"><span class="n">${counts.related_engagements ?? 0}</span>engagement${(counts.related_engagements ?? 0)===1?'':'s'}</span>
+        <span class="item"><span class="n">${counts.learnings_active ?? 0}</span>active learnings</span>
+      </div>
+
+      <div class="pc-actions">
+        <a class="pc-link" href="${escapeHtml(notesUrl)}">
+          Open NOTES
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </article>
+  `;
+}
+
+function groupByUnit(parsed) {
+  const groups = new Map();
+  for (const p of parsed) {
+    if (!p) continue;
+    const fm = p.frontmatter || {};
+    const display = fm.unit_display || fm.unit || 'Other';
+    const short   = fm.unit_short || '';
+    const key = display;
+    if (!groups.has(key)) {
+      groups.set(key, { unitDisplay: display, unitShort: short, practices: [] });
+    }
+    groups.get(key).practices.push(p);
+  }
+  return Array.from(groups.values());
+}
+
+async function fetchPractice(notesPath) {
+  try {
+    const res = await fetch(notesPath, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`${res.status} ${notesPath}`);
+    const md = await res.text();
+    const parsed = parseYamlFrontmatter(md);
+    if (!parsed) return null;
+    return { frontmatter: parsed.frontmatter, notesPath };
+  } catch (e) {
+    console.warn('[forge] practice fetch failed:', e.message);
+    return null;
+  }
+}
+
+async function refetchAndRender() {
+  try {
+    const results = await Promise.all(PRACTICE_NOTES_PATHS.map(fetchPractice));
+    const valid = results.filter(Boolean);
+    if (valid.length === 0) { renderEmpty(); return; }
+    const groups = groupByUnit(valid);
+    const container = document.getElementById('content');
+    container.innerHTML = groups.map(g =>
+      renderUnitContainer(g.unitDisplay, g.unitShort, g.practices)
+    ).join('');
+    document.getElementById('practice-count').textContent = `${valid.length} active`;
+    // Wire copy-ref buttons after dynamic render
+    if (typeof wireCopyRef === 'function') wireCopyRef(container);
+  } catch (e) {
+    renderError(e.message);
+  }
+}
+
+// ============================================================
+// Wire copy-ref for the static "About" cards too
+// ============================================================
+document.addEventListener('DOMContentLoaded', () => {
+  if (typeof wireCopyRef === 'function') {
+    wireCopyRef(document.querySelector('.about-grid'));
+  }
+});
+
+// ============================================================
+// Boot — live updates + initial fetch
+// ============================================================
+LiveUpdates.subscribe(refetchAndRender);
+LiveUpdates.mountStatusIndicator(document.querySelector('.masthead-toprow'));
+refetchAndRender();
+</script>
+</body>
+</html>

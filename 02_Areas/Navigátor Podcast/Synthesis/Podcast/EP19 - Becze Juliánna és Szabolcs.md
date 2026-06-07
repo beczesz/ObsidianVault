@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP19
 title: ""A szeretet nem érzelem, hanem szolgálat" – A házasság szentsége | Becze Juliánna és Szabolcs | EP19"
+description: "Intim podcast-epizód a házasság szentsége, szeretet mint szolgálat, és a férfi-női dinamika tudatos kezeléséről egy 10+ éves párottagok, Becze Juliánna és Szabolcs tapasztalatain keresztül, analitikus és teológiai megközelítéssel."
+description_source: auto
+description_hash: d33f259769b67d47
 guest: "Becze Juliánna és Becze Szabolcs"
 guest_title: "Házaspár — lakberendező/építész + podcast-készítő/vállalkozó, 10+ éve házasok, 3 gyermek"
 topic: "Házasság szentsége, szeretet mint szolgálat, férfi-nő dinamika, Big Five személyiségvonások, konfliktuskezelés, anyaság"
@@ -15,7 +18,6 @@ quality: deep
 id: 4b65ac8d-faee-4ad5-9ba2-03aa201fccf0
 index_schema_version: 1
 ---
-
 # EP19 — Becze Juliánna és Szabolcs: „A szeretet nem érzelem, hanem szolgálat"
 
 ## Vendég háttér

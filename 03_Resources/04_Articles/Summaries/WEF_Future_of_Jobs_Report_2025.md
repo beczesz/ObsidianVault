@@ -1,5 +1,8 @@
 ---
 title: "Future of Jobs Report 2025"
+description: "WEF's 2025 labour-market forecast based on 1,000+ employers across 55 economies, projecting 78 million net new jobs by 2030 but requiring massive reskilling as AI and green tech reshape skills demand."
+description_source: auto
+description_hash: 326cf240d5eedad8
 type: article
 author: "World Economic Forum"
 year: 2025
@@ -13,7 +16,6 @@ confidence: "medium"
 id: 680edf9c-7b99-4487-a44c-6310c26fb8f1
 index_schema_version: 1
 ---
-
 # Future of Jobs Report 2025 (World Economic Forum, 2025)
 
 ## Abstract (<300 words)

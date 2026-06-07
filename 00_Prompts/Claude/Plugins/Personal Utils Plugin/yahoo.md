@@ -1,3 +1,15 @@
+---
+title: "yahoo"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Procedure for daily Yahoo Mail inbox cleanup by deleting promotional emails from identified senders while preserving legitimate service and personal messages; includes tracking deletion counts and providing a summary briefing of results."
+description_source: auto
+description_hash: 76891f0551327407
+id: dd04a1dd-da5c-431c-9cda-bf26d61a3261
+index_schema_version: 1
+bdos_index: true
+---
 Clean up Yahoo Mail inbox and provide a briefing of the cleanup results.
 
 **Objective:** Remove promotional and marketing emails from the Yahoo Mail inbox, keeping only legitimate personal and service emails. After completing the daily cleanup pass, proactively review older emails to clean up backlogged spam.

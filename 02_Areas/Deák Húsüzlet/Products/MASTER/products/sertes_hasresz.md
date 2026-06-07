@@ -1,3 +1,15 @@
+---
+title: "Sertés Hasrész"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Friss sertéshús termék: zsíros, ízgazdag hasrész kilogrammonként 24,5 Ft-ért, pörkölthez, daráláshoz vagy sütéshez ajánlott. Termelőtől kilóra értékesített, nem szeletelt formában."
+description_source: auto
+description_hash: f4657c49ad332796
+id: 24c9e6a2-dfe4-4099-b31c-00261f610d10
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Hasrész
 
 ```yaml

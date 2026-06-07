@@ -1,11 +1,13 @@
 ---
+description: "Prompter szövegek és timingok a Fókuszpont 2026 esemény videó kampányához, tartalmaz három különböző stílusú reel forgatókönyvét (film feeling, tanúságtétel, peer-to-peer) Barni atya és fiatal szereplők felszólalásaival, valamint jelölésrendszert szünetekhez és jelenetváltásokhoz."
+description_source: auto
+description_hash: 5c395e329642f737
 type: prompter / teleprompter szövegek
 purpose: Csak az elhangzó szöveg — bemásolásra promter alkalmazásba
 event_date: 2026. június 3.
 id: 4b37f2dc-7e77-41be-9515-b49adcb609a7
 index_schema_version: 1
 ---
-
 # Fókuszpont 2026 — Prompter szövegek
 
 > **Jelölések:**

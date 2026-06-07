@@ -1,3 +1,15 @@
+---
+title: "Sonrisa Article Patterns Reference"
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "Reference guide documenting structural patterns, component layouts, and CTA implementations for Sonrisa articles in Sellvio, covering CPS service pages, case studies, and blog articles with code templates and common formatting issues to avoid."
+description_source: auto
+description_hash: 7b5a551710752f50
+id: bee6d6b3-56d1-4616-a0b4-752532d588de
+index_schema_version: 1
+bdos_index: true
+---
 # Sonrisa Article Patterns Reference
 ## Compiled from admin panel review (2026-03-25)
 

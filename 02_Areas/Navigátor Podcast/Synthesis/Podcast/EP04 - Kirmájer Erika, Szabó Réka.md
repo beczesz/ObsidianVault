@@ -1,6 +1,9 @@
 ---
 episode: EP05
 title: "„Képezzük a jövő vezetőit!" – Z generáció, közösség és fejlődés | Kirmájer Erika, Szabó Réka | EP05"
+description: "Erika és Réka, a Leaders for All alapítói, egy 4-5 hónapos mentorprogramot mutatnak be, amely a Z generáció fejlődésére, önismeretére és közösségi gondolkodására összpontosít, szembehelyezkedve a kényelemkultúra és az izolációs trendekkel."
+description_source: auto
+description_hash: f121ce542ba419ce
 guest: "Kirmájer Erika, Szabó Réka"
 guest_title: "Leaders for All egyesület alapítói; Erika: ex-corporate menedzser; Réka: pszichológus, gyógypedagógus"
 youtube_id: J9175griS7c
@@ -31,7 +34,6 @@ created: 2026-04-06
 id: 9a1e4054-7dda-46d5-9ccb-bf3a74b1b67b
 index_schema_version: 1
 ---
-
 # EP05 – „Képezzük a jövő vezetőit!" – Z generáció, közösség és fejlődés | Kirmájer Erika, Szabó Réka
 
 ## Bevezető kontextus

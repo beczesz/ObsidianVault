@@ -1,4 +1,7 @@
 ---
+description: "Szabolcs vertikális reel-koncepiója a fiatalok figyelmi szétszóródásáról és spirituális újraorientációjáról; kérdésekből (miért aggódsz, mire figyelsz) felismerésen keresztül a tekints fel meghívásáig, majd Barni atya által promótált Fókuszpont eseményre (június 18, Márton Áron tér)."
+description_source: auto
+description_hash: 4b4266fb284ab26d
 type: visszajelzés / kézi vázlat
 author: Becze Szabolcs
 reel: "#1 — Vertikális"
@@ -7,7 +10,6 @@ status: formázva, vélemény-pass után
 id: 657bbd16-73b9-4709-9aed-ef0e10ca89e4
 index_schema_version: 1
 ---
-
 # Szabolcs visszajelzései — Reel #1 vertikális
 
 > **Formázási konvenció:**

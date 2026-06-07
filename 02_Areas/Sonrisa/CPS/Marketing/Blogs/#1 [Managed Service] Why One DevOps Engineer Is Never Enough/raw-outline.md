@@ -1,3 +1,15 @@
+---
+title: "Managed DevOps vs. Hiring In-House: How to Decide"
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "Decision framework for CTOs and engineering leaders choosing between managed DevOps and in-house teams based on company stage, technical scope, hiring timeline, and risk tolerance. Includes honest comparison table and hybrid model guidance."
+description_source: auto
+description_hash: 3917b25232a1f18a
+id: 409ac9bd-6677-4f63-9fcf-e377b69842fc
+index_schema_version: 1
+bdos_index: true
+---
 # Managed DevOps vs. Hiring In-House: How to Decide
 
 > **Series:** Managed Service Blog Series — Main Article (Hub)

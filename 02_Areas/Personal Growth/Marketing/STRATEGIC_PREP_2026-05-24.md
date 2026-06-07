@@ -1,4 +1,7 @@
 ---
+description: "Strategic audit of the personal brand: substance (BDOS system, principles-driven thinking) exists but is unfused from CPS positioning and locked away."
+description_source: auto
+description_hash: f4bcc9f6f45cf525
 schema: presto.strategic-prep.v1
 date: 2026-05-24
 presence: Personal Builder Presence — Becze Szabolcs
@@ -8,7 +11,6 @@ smoke_test_readiness: not-ready
 id: 32a2b627-b08a-473b-8986-d9621f0eb5a8
 index_schema_version: 1
 ---
-
 # Personal Builder Presence — Strategic Prep Assessment
 
 > **Scope:** Becze Szabolcs personal brand — technology, AI-native operations, cognition systems, BDOS experimentation, builder-oriented thought leadership.

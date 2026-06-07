@@ -1,3 +1,15 @@
+---
+title: "Communication Rulebook – CPS"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "Szervezetének (CPS) kommunikációs kézikönyve, amely a kliens-szervezet interakció, eszkalációkezelés, szerepek és időloggolás szabályait rögzíti. Vezetők és csapattagok számára nyújtott, még kidolgozás alatt álló útmutató."
+description_source: auto
+description_hash: 861482e8e93d12bf
+id: 40284bae-ec08-4c43-bcb4-e0f4d604cc15
+index_schema_version: 1
+bdos_index: true
+---
 # Communication Rulebook – CPS
 
 **Verzió:** 1.0 (import + rendezés: 2026-03-21)

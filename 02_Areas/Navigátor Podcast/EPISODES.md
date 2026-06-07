@@ -599,6 +599,51 @@ episodes:
     synthesis: ""
     priority: true
     top: false
+  - ep: 43
+    guest: "Farkas Kinga"
+    topic: "Gyász — hogyan éljük meg a veszteséget"
+    duration: ""
+    youtube_id: ""
+    youtube_date: "2026-05-26"
+    spotify: missing
+    spotify_current: ""
+    spotify_correct: ""
+    views: 0
+    cluster: "Pszichológia & Önismeret"
+    synthesis: ""
+    priority: false
+    top: false
+    status: planned
+  - ep: 44
+    guest: "Miklós Ervin"
+    topic: ""
+    duration: ""
+    youtube_id: ""
+    youtube_date: ""
+    spotify: missing
+    spotify_current: ""
+    spotify_correct: ""
+    views: 0
+    cluster: ""
+    synthesis: ""
+    priority: false
+    top: false
+    status: planned
+  - ep: 45
+    guest: "AI képzés"
+    topic: "AI képzés — felvétel kész, publikálás előtt"
+    duration: ""
+    youtube_id: ""
+    youtube_date: ""
+    spotify: missing
+    spotify_current: ""
+    spotify_correct: ""
+    views: 0
+    cluster: "Technológia & Innováció"
+    synthesis: ""
+    priority: false
+    top: false
+    status: planned
 ---
 
 # Navigátor Podcast — Epizód Roster

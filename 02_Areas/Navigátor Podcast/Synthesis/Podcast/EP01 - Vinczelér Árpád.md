@@ -1,6 +1,9 @@
 ---
 episode: EP02
 title: "1. Vinczellér Árpád: A kávé összeköt"
+description: "Az EP02 epizódban Vinczellér Árpád 20+ év vendéglátási tapasztalatából indulva elmagyarázza, miért alapított specialty kávézót a szűkös otthonában, és hogyan válik egy közösség-építő vállalkozás modellé a bőségmentalitás alapján. Szabolcsnak szól, aki a Navigátor Podcast filozófiai alapjaira kíváncsi."
+description_source: auto
+description_hash: d6b107a62ed8f836
 guest: "Vinczellér Árpád"
 role: "Wecker Kávéközösség alapítója és tulajdonosa"
 guest_background: "Székelyudvarhelyi vállalkozó, 20+ éve a vendéglátásban. 14 évesen kezdett pincérként, Ciprus és Oxford után hazatért, 2020-ban alapította a Wecker Kávéközösséget specialty kávé koncepcióval. CSR-témájú államvizsgája a közösségi felelősségről szólt."
@@ -27,7 +30,6 @@ cluster_episodes: [EP02, EP06, EP21, EP35]
 id: bb29f505-d380-4472-a233-4204febe4378
 index_schema_version: 1
 ---
-
 # EP02 — Vinczellér Árpád: A kávé összeköt
 
 ## Bevezető kontextus

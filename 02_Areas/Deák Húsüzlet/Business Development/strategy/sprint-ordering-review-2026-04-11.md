@@ -1,5 +1,8 @@
 ---
 title: Sprint Ordering Review — Stratégiai értékelés
+description: "Stratégiai értékelés a sprint sorrendzésről: javasolja a Sprint 2.5 beiktatását blocker feloldásra, a v0.3 leszűkítését 4 kulcsfunkcióra, a szünet törlését és a v0.4 Mobile korábbi indítását az erősebb kombinált hatás érdekében. Termékmenedzserek és fejlesztői vezetők döntéshozatal céljára."
+description_source: auto
+description_hash: 46d73cc205df7865
 version: 1.0
 date: 2026-04-11
 author: Claude (Anthropic) + Szabolcs
@@ -7,7 +10,6 @@ status: REVIEW — Szabolcs döntésre vár
 id: 244bb104-c247-4ccd-a1cb-d5d645189e7f
 index_schema_version: 1
 ---
-
 # Sprint Ordering Review — v0.2 → v0.3 → v0.4 értékelés
 
 ## Összefoglaló

@@ -39,9 +39,9 @@ Rationale:
 - Dashboard-resident scheduling is observable and controllable from one UI.
 - Phase B initial prototype used launchd; Phase B-redux supersedes it.
 
-**Scope note:** this deprecation applies ONLY to BDOS agent jobs (Sage harvest/curate, Maestro observe, Librarian re-index, etc.). System maintenance jobs, backups, and anything outside BDOS scope are unaffected — use launchd or cron freely for those.
+**Scope note:** this deprecation applies ONLY to BDOS agent jobs (Alfred harvest/curate, Maestro observe, Librarian re-index, etc.). System maintenance jobs, backups, and anything outside BDOS scope are unaffected; use launchd or cron freely for those.
 
-**Migration:** any existing launchd `.plist` for Sage jobs should be unloaded and replaced with a `scheduled_jobs` INSERT. The `seed_sage_jobs()` function in `scheduler.py` handles the Sage seed rows idempotently.
+**Migration:** any existing launchd `.plist` for Sage jobs should be unloaded and replaced with a `scheduled_jobs` INSERT. The `seed_alfred_cognition_jobs()` function in `scheduler.py` handles the Alfred seed rows idempotently (migrated from `seed_sage_jobs()` as part of the Sage-Alfred merge, 2026-05-28).
 
 ## 4. Multi-Device Safety via SQLite Locks on `job_runs`
 
@@ -66,8 +66,8 @@ Each machine has a stable device ID stored at `~/.bdos/device_id` (UUID4, auto-c
 This is the `DEFAULT_LOCK_DURATION_S` in `scheduler.py`. Every job inherits this unless overridden by the `lock_duration_s` column in `scheduled_jobs`.
 
 Per-job overrides currently seeded:
-- `sage-daily-harvest`: 600s (10 min) — fast Chrome MCP scan
-- `sage-weekly-curate`: 1800s (30 min) — expensive multi-file analysis
+- `alfred-daily-harvest`: 600s (10 min) — fast Chrome MCP scan
+- `alfred-weekly-curate`: 1800s (30 min) — expensive multi-file analysis
 
 Override guideline: set `lock_duration_s` to roughly 2× the expected wall-clock duration of the job. This leaves margin for slow runs without prematurely expiring and allowing double-dispatch.
 
@@ -93,8 +93,8 @@ The scheduler only writes `running`, `completed`, `failed`, `skipped`. The dashb
 
 The `requires_approval` column in `scheduled_jobs` is an integer flag (0 or 1):
 
-- **`requires_approval=0`** — the scheduler may auto-dispatch without human intervention. The job is safe to run autonomously because its side-effects are additive-only (writing new files) or read-only (generating reports). Examples: Sage harvest, Maestro daily observe, Librarian weekly index, Presto daily today.
-- **`requires_approval=1`** — the scheduler MUST NOT auto-dispatch. The job is blocked until a human explicitly triggers it from the dashboard Jobs tab. Examples: Sage learning-ops, Presto run, Broker run, Curator promote, Maestro team-promote.
+- **`requires_approval=0`** — the scheduler may auto-dispatch without human intervention. The job is safe to run autonomously because its side-effects are additive-only (writing new files) or read-only (generating reports). Examples: Alfred harvest, Maestro daily observe, Librarian weekly index, Presto daily today.
+- **`requires_approval=1`** — the scheduler MUST NOT auto-dispatch. The job is blocked until a human explicitly triggers it from the dashboard Jobs tab. Examples: Alfred learn (learning-ops), Presto run, Broker run, Curator promote, Maestro team-promote.
 
 The dashboard Jobs tab surfaces `requires_approval=1` jobs as "Awaiting approval" with a manual trigger button. The scheduler daemon skips them silently during its scan cycle.
 
@@ -115,9 +115,9 @@ The `agent_name` is `'maestro'` for scheduler infrastructure events (the schedul
 | Tag | When used |
 |---|---|
 | `scheduler` | All scheduler events — always present |
-| `job:<job_id>` | Per-job events (e.g. `job:sage-daily-harvest`) |
-| `job:sage-daily-harvest` | Sage daily harvest dispatch/completion |
-| `job:sage-weekly-curate` | Sage weekly curate dispatch/completion |
+| `job:<job_id>` | Per-job events (e.g. `job:alfred-daily-harvest`) |
+| `job:alfred-daily-harvest` | Alfred daily harvest dispatch/completion |
+| `job:alfred-weekly-curate` | Alfred weekly curate dispatch/completion |
 | `job:maestro-daily-observe` | Maestro daily observe (example — not yet seeded) |
 | `job:librarian-weekly-index` | Librarian weekly index (example — not yet seeded) |
 | `job:presto-daily-today` | Presto daily campaign check (example — not yet seeded) |

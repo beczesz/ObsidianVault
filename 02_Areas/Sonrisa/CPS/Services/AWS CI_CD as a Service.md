@@ -1,3 +1,15 @@
+---
+title: "**Key Capabilities**"
+date: 2025-11-26
+author: Becze Szabolcs
+status: active
+description: "AWS CI/CD service capabilities and engagement model for organizations implementing automated software delivery pipelines. Details discovery, design, implementation phases and pricing for teams addressing deployment challenges through DevOps best practices."
+description_source: auto
+description_hash: 68854cfc784a95a9
+id: e65a5185-9286-4833-aa14-14f4e432f484
+index_schema_version: 1
+bdos_index: true
+---
 AWS CI/CD as a Service delivers a standardized, automated, and reliable software delivery pipeline on AWS. We design, implement, and operate CI/CD workflows using AWS CodePipeline, CodeBuild, CodeDeploy, CodeCommit, CodeArtifact, AWS CloudFormation or CDK, and integrate with deployment targets such as Amazon EKS, Amazon ECS, AWS Lambda, and Amazon EC2.
 
 Development teams often face challenges including manual deployments, inconsistent environments, limited deployment visibility, long feedback cycles, and the absence of automated testing or rollback procedures. These issues slow delivery and increase operational risk. CPS addresses these challenges using certified DevOps engineers, AWS best practices, and mature automation frameworks.

@@ -1,3 +1,15 @@
+---
+title: "Impeccable demók — 4 honlap-variáns"
+date: 2026-05-21
+author: Becze Szabolcs
+status: active
+description: "Négy statikus HTML/CSS/JS weboldal-demó különböző iparágakban (ügyvédi iroda, építészstúdió, AI tanulóközpont, elektromobilitás), bemutatva az impeccable design-filozófiát: elkerülni az iparág-klisét, valódi tartalommal és bátor Design-döntésekkel."
+description_source: auto
+description_hash: a31fd63c8a93b292
+id: c41dced5-3218-49b0-90e4-838d301beda9
+index_schema_version: 1
+bdos_index: true
+---
 # Impeccable demók — 4 honlap-variáns
 
 Négy fiktív weboldal, az `/ui-ux-pro-max` + `/impeccable` (és az egyiknél a Librarian)

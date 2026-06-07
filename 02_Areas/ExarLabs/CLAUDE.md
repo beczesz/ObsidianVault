@@ -1,3 +1,15 @@
+---
+title: "Memory"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Personal knowledge reference for Szabolcs Becze documenting ExarLabs IT company structure, including 10 team members across experience levels, revenue entirely from Sonrisa (36k EUR/month), three development projects (Ignis LMS, Deák pilot, CPS), and critical dependency risks on single client and founder availability."
+description_source: auto
+description_hash: 0bf8e717ee88ce42
+id: 349a4d11-bea6-4782-9a86-dac10f59b52b
+index_schema_version: 1
+bdos_index: true
+---
 # Memory
 
 ## Me

@@ -1,6 +1,9 @@
 ---
 schema: sage.thought.v1
 title: A middle management réteg eltűnése — és a BDOS mint strukturális válasz
+description: "Az AI átveszi a klasszikus közép-menedzsment funkciókat (adatgyűjtés, strukturálás, javasoltétel, elemzés), míg az ember a meaning-making és végső döntésben marad. A BDOS pontosan ezt a felosztást implementálja szervezeti szinten."
+description_source: auto
+description_hash: 797435d091994aa8
 date: 2026-05-24
 note_revision: 1
 source_chat_title: "BDOS bemutatása és elemzése"
@@ -19,7 +22,6 @@ tags: [ai-native, org-structure, middle-management, BDOS, founder-cognition]
 id: bd016525-e22e-47a9-b03c-38e4ac40508d
 index_schema_version: 1
 ---
-
 ## Egy mondatban
 A klasszikus middle management funkciók (gyűjt, rendszerez, kapcsol, javasol, előkészít, elemez, időzít, visszamér) **átkerülnek az AI-réteghez** — az ember pedig a meaning layer-ben marad (jelentés, prioritás, irány, ízlés, végső döntés). A BDOS pont ennek a felosztásnak a strukturális megfelelője.
 

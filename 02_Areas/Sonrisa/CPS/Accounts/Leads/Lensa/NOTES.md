@@ -1,4 +1,7 @@
 ---
+description: "Job search SaaS recruiting Data Engineer for AWS pipelines; likely pain point is engineers covering infrastructure work instead of focusing on pipeline development. Prospect for CPS outsourcing to free data team from ops burden."
+description_source: auto
+description_hash: 6344ee4ca065198e
 type: lead
 id: lensa
 company: "Lensa"
@@ -36,7 +39,6 @@ created: 2026-05-11
 last_signal_check: 2026-05-11
 index_schema_version: 1
 ---
-
 # Lensa
 
 ## Signal

@@ -1,3 +1,15 @@
+---
+title: "CPS Website Working Folder"
+date: 2026-04-27
+author: Becze Szabolcs
+status: active
+description: "Working directory for Sonrisa CPS website HTML fragments managed in Sellvio CMS, including versioned landing page components, detail pages, and reference documentation for developers maintaining the site."
+description_source: auto
+description_hash: 023451cdb5df070a
+id: 35739b83-b4fd-4b22-9e29-ecbc729df893
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Website Working Folder
 
 This folder contains Sellvio CMS HTML files for the Sonrisa CPS website (sonrisa.hu/en/cps-services).

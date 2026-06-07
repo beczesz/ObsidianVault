@@ -1,0 +1,4552 @@
+1
+00:00:00,040 --> 00:00:03,600
+Te is szeretnél egy olyan AI
+
+2
+00:00:01,760 --> 00:00:05,600
+asszisztenst, mint amilyen Marvin, de
+
+3
+00:00:03,600 --> 00:00:07,759
+eddig nem mertél belevágni, mert
+
+4
+00:00:05,600 --> 00:00:09,760
+tartottál picit tőle, hogy milyen lehet
+
+5
+00:00:07,759 --> 00:00:13,360
+ez az Open Crow világ, meg mennyire
+
+6
+00:00:09,760 --> 00:00:15,599
+veszélyes, vagy open closezol, de nagyon
+
+7
+00:00:13,360 --> 00:00:17,560
+megdágult a hétvégi Antropic döntés
+
+8
+00:00:15,599 --> 00:00:19,560
+miatt az OpenCl használatod, és
+
+9
+00:00:17,560 --> 00:00:21,920
+ragaszkodnál a legjobb modellekhez, amik
+
+10
+00:00:19,560 --> 00:00:23,720
+jelenleg a piacon elérhetők. Tarts
+
+11
+00:00:21,920 --> 00:00:26,119
+velem, ebben a videóban megmutatom, hogy
+
+12
+00:00:23,720 --> 00:00:28,279
+mit tud az Antropic és a Cloud gyári
+
+13
+00:00:26,119 --> 00:00:30,320
+megoldásaival. Hogyan tudnak ezek már
+
+14
+00:00:28,279 --> 00:00:33,520
+nagyon-nagyon közeli élményt nyújtani az
+
+15
+00:00:30,320 --> 00:00:36,399
+Open Clubotokhoz. És egy csavarral a
+
+16
+00:00:33,520 --> 00:00:38,559
+végén azt is megmutatom, hogy 99%-ban
+
+17
+00:00:36,399 --> 00:00:41,079
+Open Crow szintű botot hogyan tudsz
+
+18
+00:00:38,559 --> 00:00:45,760
+összerakni a jelenlegi cló alapokon.
+
+19
+00:00:41,079 --> 00:00:45,760
+Tarts velem, ígérem, hasznos lesz.
+
+20
+00:00:52,760 --> 00:00:56,719
+ipon.hu, ahol a vásárlás közösséget
+
+21
+00:00:55,239 --> 00:00:59,199
+épít.
+
+22
+00:00:56,719 --> 00:01:00,840
+>> Sziasztok! Eltelt egy hét, és már megint
+
+23
+00:00:59,199 --> 00:01:03,399
+annyi változás volt, meg annyi minden
+
+24
+00:01:00,840 --> 00:01:05,840
+történt, hogy hát kénytelen voltam egy
+
+25
+00:01:03,399 --> 00:01:08,400
+picit halasztani a beígért obszidián
+
+26
+00:01:05,840 --> 00:01:11,200
+memóriás videót, de ne aggódjatok, azzal
+
+27
+00:01:08,400 --> 00:01:12,960
+is érkezni fogok jövő héten, de ott
+
+28
+00:01:11,200 --> 00:01:15,360
+történt egy olyan dolog a hétvégén,
+
+29
+00:01:12,960 --> 00:01:18,880
+konkrétan szombaton a videó megjelenését
+
+30
+00:01:15,360 --> 00:01:20,759
+követő napon, hogy az Antropic hozott
+
+31
+00:01:18,880 --> 00:01:24,479
+egy nagyon-nagyon drasztikus döntést.
+
+32
+00:01:20,759 --> 00:01:26,880
+Ugye nagyon sokáig, bár már egy ideje
+
+33
+00:01:24,479 --> 00:01:29,759
+azért az Antropic ajánlása alapján nem
+
+34
+00:01:26,880 --> 00:01:33,280
+túl hivatalosan, de az Open Clowban,
+
+35
+00:01:29,759 --> 00:01:36,159
+azaz ilyen nagyon szuper AI ügynökökben
+
+36
+00:01:33,280 --> 00:01:39,240
+lehetett használni az előfizetést, az
+
+37
+00:01:36,159 --> 00:01:41,640
+antropikus előfizetést. És igazából 200
+
+38
+00:01:39,240 --> 00:01:43,759
+dollár, ami nem kevés, tudom, de a
+
+39
+00:01:41,640 --> 00:01:46,360
+legmagasabb antropikus csomaggal
+
+40
+00:01:43,759 --> 00:01:49,280
+korlátlanul lehetett használni ezeket a
+
+41
+00:01:46,360 --> 00:01:51,200
+bizonyos open clow botokat itt a Havidi
+
+42
+00:01:49,280 --> 00:01:52,799
+ért,
+
+43
+00:01:51,200 --> 00:01:55,399
+hogy az Antropic már korábban jelezte,
+
+44
+00:01:52,799 --> 00:01:59,240
+hogy ez neki nagyon fáj, mert több 1000
+
+45
+00:01:55,399 --> 00:02:01,039
+dollárt égetnek el így havonta tokenként
+
+46
+00:01:59,240 --> 00:02:03,479
+a felhasználók. Az az, hogyha ők api
+
+47
+00:02:01,039 --> 00:02:05,119
+alapon használnák az ő ellen
+
+48
+00:02:03,479 --> 00:02:07,560
+modelljüket, az ő nagy nyelvű
+
+49
+00:02:05,119 --> 00:02:10,160
+modelljüket, akkor hát igen, tehát akkor
+
+50
+00:02:07,560 --> 00:02:12,520
+több 1000 dollárt fizetnének havonta. És
+
+51
+00:02:10,160 --> 00:02:15,319
+ez annyira nem volt jó, hogy hát ezért a
+
+52
+00:02:12,520 --> 00:02:17,280
+fixé ez így ez így használható. Nem
+
+53
+00:02:15,319 --> 00:02:19,800
+annyira tett jót, mert nagyon-nagyon
+
+54
+00:02:17,280 --> 00:02:21,800
+leterhelték cserébe a szervereiket ezek
+
+55
+00:02:19,800 --> 00:02:24,360
+az open clubotok. Úgyhogy az a döntés
+
+56
+00:02:21,800 --> 00:02:26,239
+született, hogy eleinte csak egy ajánlás
+
+57
+00:02:24,360 --> 00:02:28,440
+volt, meg bárkit letilthattak és
+
+58
+00:02:26,239 --> 00:02:30,440
+ijesztgetett az Antropic már igazából
+
+59
+00:02:28,440 --> 00:02:32,599
+január februártól.
+
+60
+00:02:30,440 --> 00:02:34,800
+Most meglépték az igazán nagyot, és
+
+61
+00:02:32,599 --> 00:02:38,400
+minden ilyen sör party, azaz külsős
+
+62
+00:02:34,800 --> 00:02:40,040
+rendszert használó AI megoldásnál, ami
+
+63
+00:02:38,400 --> 00:02:43,159
+igazából csak a nyelvi modellt
+
+64
+00:02:40,040 --> 00:02:46,040
+használja, és nem magát a clód clódot,
+
+65
+00:02:43,159 --> 00:02:48,360
+ott letiltották ez előfizetésnek a
+
+66
+00:02:46,040 --> 00:02:52,400
+használatát. Hogy ez mit jelentett? Az
+
+67
+00:02:48,360 --> 00:02:55,360
+eddigi 200 dolláros szint az simán lehet
+
+68
+00:02:52,400 --> 00:02:58,120
+itt ezt így csak így, hogy látványos is
+
+69
+00:02:55,360 --> 00:03:02,200
+legyen, simán 1200. Sőt, azt tudom
+
+70
+00:02:58,120 --> 00:03:04,640
+mondani, hogy akár 1200 plusz dollár, ha
+
+71
+00:03:02,200 --> 00:03:06,519
+valaki tényleg nagyon megszokta azt,
+
+72
+00:03:04,640 --> 00:03:08,120
+hogy helyette dolgozik, vagy van egy
+
+73
+00:03:06,519 --> 00:03:09,760
+ilyen asszisztense, aki mindent
+
+74
+00:03:08,120 --> 00:03:12,480
+megcsinál,
+
+75
+00:03:09,760 --> 00:03:14,120
+akkor igen, az hát hamar rákattanhat, és
+
+76
+00:03:12,480 --> 00:03:15,480
+hogyha mindent nekiszervez ki, és ő már
+
+77
+00:03:14,120 --> 00:03:17,120
+kevésbé dolgozik, hanem csak az
+
+78
+00:03:15,480 --> 00:03:19,040
+asszisztensét dolgozhatja, akkor tényleg
+
+79
+00:03:17,120 --> 00:03:21,640
+itt akár tényleg 1000 dolláros
+
+80
+00:03:19,040 --> 00:03:23,200
+nagyságrendben lehet költeni, ami ami
+
+81
+00:03:21,640 --> 00:03:24,640
+meg már tényleg sok. Tehát, hogy az az
+
+82
+00:03:23,200 --> 00:03:27,840
+már tényleg az a kategória, ami azért
+
+83
+00:03:24,640 --> 00:03:30,400
+sok. kiraktam egy videót a héten a
+
+84
+00:03:27,840 --> 00:03:32,720
+csatornámra, hogyha valaki Open Clow
+
+85
+00:03:30,400 --> 00:03:34,040
+botokhoz ragaszkodik, akkor megmutattam,
+
+86
+00:03:32,720 --> 00:03:36,360
+hogy hogyan lehet költséget
+
+87
+00:03:34,040 --> 00:03:39,080
+optimalizálni. Ebben a videóban
+
+88
+00:03:36,360 --> 00:03:41,200
+megmutattam azt, hogy én mit csinálok,
+
+89
+00:03:39,080 --> 00:03:43,959
+egyrészt, hogy milyen modelleket ajánlok
+
+90
+00:03:41,200 --> 00:03:47,879
+alternatívaként, illetve hogyan próbálom
+
+91
+00:03:43,959 --> 00:03:49,120
+leszorítani az antropikos api költséget,
+
+92
+00:03:47,879 --> 00:03:50,640
+illetve, hogy ugye ott van egy ilyen
+
+93
+00:03:49,120 --> 00:03:53,000
+keret, amit még most le lehet hívni
+
+94
+00:03:50,640 --> 00:03:55,200
+április 17-éig, azt érdemes lehívni.
+
+95
+00:03:53,000 --> 00:03:56,840
+ilyen plusz ajándékot adott az antropik
+
+96
+00:03:55,200 --> 00:03:58,680
+gyakorlatilag egy előfizetés árát
+
+97
+00:03:56,840 --> 00:04:01,720
+odaadták ilyen túlhasználati
+
+98
+00:03:58,680 --> 00:04:03,519
+lehetőségként, de aki jóvá is hagyta
+
+99
+00:04:01,720 --> 00:04:05,439
+észrevehette, hogy ez nagyon gyorsan el
+
+100
+00:04:03,519 --> 00:04:07,200
+fog fogyni, merthogy igen, tehát hogy
+
+101
+00:04:05,439 --> 00:04:10,239
+azt ki lehet jelenteni, hogy sajnos ezek
+
+102
+00:04:07,200 --> 00:04:12,000
+a botok, ezek eszik ezt az összeget és
+
+103
+00:04:10,239 --> 00:04:14,840
+igen,
+
+104
+00:04:12,000 --> 00:04:18,199
+nem a legjobb lett az élmény ennek
+
+105
+00:04:14,840 --> 00:04:22,040
+tudatában sokkal jobban meggondolom én
+
+106
+00:04:18,199 --> 00:04:23,960
+is, hogy mit kérek a bocomtól, illetve
+
+107
+00:04:22,040 --> 00:04:26,000
+ugye vannak az alternatív modellek, de
+
+108
+00:04:23,960 --> 00:04:27,840
+azok nem mozognak azon a szinten, mint
+
+109
+00:04:26,000 --> 00:04:30,280
+az Antropic modellejei, kifejezetten
+
+110
+00:04:27,840 --> 00:04:32,000
+például szövegírási feladatokba. Szóval
+
+111
+00:04:30,280 --> 00:04:35,080
+én egy teljesen más utat kezdtem el
+
+112
+00:04:32,000 --> 00:04:36,680
+járni, és mégpedig ez az út az, amit én
+
+113
+00:04:35,080 --> 00:04:38,479
+korábban már publikáltam amúgy a
+
+114
+00:04:36,680 --> 00:04:40,400
+Classroomban,
+
+115
+00:04:38,479 --> 00:04:42,479
+hiszen én korábban belefutottam ebbe a
+
+116
+00:04:40,400 --> 00:04:44,880
+koncepcióba. Szerintem meséltem is már
+
+117
+00:04:42,479 --> 00:04:49,400
+róla a videóban, hogy lehet csinálni egy
+
+118
+00:04:44,880 --> 00:04:51,240
+ilyen open clowhoz hasonló clow botot.
+
+119
+00:04:49,400 --> 00:04:52,840
+Lehet ilyet csinálni. És én ebbe az
+
+120
+00:04:51,240 --> 00:04:55,360
+irányba mentem, de ne szaladjunk ennyire
+
+121
+00:04:52,840 --> 00:04:57,880
+előre, merthogy ebben is történt annyi
+
+122
+00:04:55,360 --> 00:04:59,960
+változás, merthogy az Antropic eleve egy
+
+123
+00:04:57,880 --> 00:05:01,680
+csomó mindent meghozott már eszközként,
+
+124
+00:04:59,960 --> 00:05:04,160
+hogy már nem is jó ez a koncepció, amit
+
+125
+00:05:01,680 --> 00:05:05,880
+ott felvázoltam, mármint, hogy jó, de
+
+126
+00:05:04,160 --> 00:05:07,160
+sokkal egyszerűbben kivitelezhető.
+
+127
+00:05:05,880 --> 00:05:09,840
+Úgyhogy de még mielőtt akkor ennyire
+
+128
+00:05:07,160 --> 00:05:12,280
+előre szaladnék, mutatok nektek pár
+
+129
+00:05:09,840 --> 00:05:14,919
+dolgot, hogy mik azok a szolgáltatások,
+
+130
+00:05:12,280 --> 00:05:17,160
+amik megérkeztek, és lehetővé teszik
+
+131
+00:05:14,919 --> 00:05:19,000
+azt, hogyha valaki nem akar botot
+
+132
+00:05:17,160 --> 00:05:21,800
+építeni, nem akar egy külön dedikált
+
+133
+00:05:19,000 --> 00:05:23,360
+gépet vásárolni erre a célra, igazából
+
+134
+00:05:21,800 --> 00:05:25,800
+mivel tud élni és hogyan tudja
+
+135
+00:05:23,360 --> 00:05:27,400
+használni, akár távolról a
+
+136
+00:05:25,800 --> 00:05:30,720
+legkényelmesebben
+
+137
+00:05:27,400 --> 00:05:33,120
+az ő clódos ökoszisztémáját. Az első,
+
+138
+00:05:30,720 --> 00:05:35,840
+ami mindenképp a legfontosabb, ugye több
+
+139
+00:05:33,120 --> 00:05:38,880
+videóm is szól már a Cloud Coworkről,
+
+140
+00:05:35,840 --> 00:05:41,000
+ugye ami a desktop alkalmazásban, azaz a
+
+141
+00:05:38,880 --> 00:05:43,039
+letöltött asztali alkalmazásokban érhető
+
+142
+00:05:41,000 --> 00:05:45,520
+el. Ugye most már megjelent Windowsra
+
+143
+00:05:43,039 --> 00:05:48,400
+is, megjelent ugye természetesen
+
+144
+00:05:45,520 --> 00:05:50,919
+elsőként macOS-re, szóval igazából
+
+145
+00:05:48,400 --> 00:05:52,720
+elérhető már egy mindenhol, amit az
+
+146
+00:05:50,919 --> 00:05:55,160
+emberek többsége használ. Ugye Linuxon
+
+147
+00:05:52,720 --> 00:05:58,639
+sajnos még nem, de egyelőre meg tudom
+
+148
+00:05:55,160 --> 00:06:01,080
+bocsátani nekik. Szóval itt van a cowork
+
+149
+00:05:58,639 --> 00:06:03,240
+és a cowork ugye az a amiben olyan
+
+150
+00:06:01,080 --> 00:06:06,680
+tevékenységeket lehet végeztetni, amik
+
+151
+00:06:03,240 --> 00:06:08,919
+igazából teljesen ilyen irodai típusú
+
+152
+00:06:06,680 --> 00:06:11,560
+feladatvégzést tesznek lehetővé,
+
+153
+00:06:08,919 --> 00:06:14,199
+merthogy ez úgy is promózták ugye, hogy
+
+154
+00:06:11,560 --> 00:06:16,199
+nem kódolóknak, nem fejlesztőknek szóló
+
+155
+00:06:14,199 --> 00:06:18,919
+rész, minden más feladatra a cowwork
+
+156
+00:06:16,199 --> 00:06:21,319
+való. Nem akarok most cowork oktatást
+
+157
+00:06:18,919 --> 00:06:23,400
+tartani, csak egy funkciót hadd mutassak
+
+158
+00:06:21,319 --> 00:06:25,479
+nektek, ez pedig nem más, mint a
+
+159
+00:06:23,400 --> 00:06:28,919
+dispatch. Itt oldalt éritek el a
+
+160
+00:06:25,479 --> 00:06:32,080
+menüben. Ez arról szól ugyanis, hogy
+
+161
+00:06:28,919 --> 00:06:34,759
+távvezérelni tudjátok a cowwork
+
+162
+00:06:32,080 --> 00:06:37,919
+funkciókat, gyakorlatilag az asztali
+
+163
+00:06:34,759 --> 00:06:41,639
+gépeteket ennek a segítségével. és hogy
+
+164
+00:06:37,919 --> 00:06:44,479
+miért fontos ez, miért kell kiemelni,
+
+165
+00:06:41,639 --> 00:06:46,960
+merthogy ez lehetővé teszi, hogy tényleg
+
+166
+00:06:44,479 --> 00:06:49,360
+elmenjetek kutyát sétáltatni, edzeni,
+
+167
+00:06:46,960 --> 00:06:51,960
+golfozni, valamit csinálni, távol lenni
+
+168
+00:06:49,360 --> 00:06:54,880
+a gépetektől, és mégis tudjatok dolgozni
+
+169
+00:06:51,960 --> 00:06:56,440
+a gépen. A dispatch funkció lényege,
+
+170
+00:06:54,880 --> 00:07:00,400
+hogy ezt a részt ugye a Cloud
+
+171
+00:06:56,440 --> 00:07:03,479
+alkalmazásban dispatch résznél így elő
+
+172
+00:07:00,400 --> 00:07:06,080
+tudjátok hívni. A itt a menüben
+
+173
+00:07:03,479 --> 00:07:08,919
+láthatjátok
+
+174
+00:07:06,080 --> 00:07:12,479
+dispatch gomb. És ha megnyitjátok, akkor
+
+175
+00:07:08,919 --> 00:07:14,759
+ott pedig ott van a az a session, amit
+
+176
+00:07:12,479 --> 00:07:17,080
+itt a kijelzőn is én éppen megnyitottam
+
+177
+00:07:14,759 --> 00:07:20,080
+és látok. És azért jó, mert ha itt én
+
+178
+00:07:17,080 --> 00:07:21,720
+bármit kérek itt a a telefonomon, akkor
+
+179
+00:07:20,080 --> 00:07:24,680
+itt itt megjelenik a gépemen, és a
+
+180
+00:07:21,720 --> 00:07:27,599
+gépemet vezérelve működik. Ki tudjátok
+
+181
+00:07:24,680 --> 00:07:29,520
+adni neki az utasítást, például azt,
+
+182
+00:07:27,599 --> 00:07:31,960
+hogy nyisd meg a böngészőben az a
+
+183
+00:07:29,520 --> 00:07:33,840
+mindennapokban.hu oldalt, menj a
+
+184
+00:07:31,960 --> 00:07:36,160
+blogrészre és nyisd meg az utolsó
+
+185
+00:07:33,840 --> 00:07:39,919
+bejegyzést. Ugye ez látszik, hogy én ezt
+
+186
+00:07:36,160 --> 00:07:39,919
+kértem most tőle,
+
+187
+00:07:40,039 --> 00:07:44,120
+és hogyha itt legörgetek legalulra,
+
+188
+00:07:42,400 --> 00:07:46,479
+akkor itt is ez látszik. Itt van ez a
+
+189
+00:07:44,120 --> 00:07:48,840
+kis firkálmány. Látszik az, hogy mit
+
+190
+00:07:46,479 --> 00:07:51,120
+írtam itt a böngészőben neki, és már
+
+191
+00:07:48,840 --> 00:07:53,599
+neki is állt, és dolgozik. mindjárt
+
+192
+00:07:51,120 --> 00:07:57,360
+nyitni fog egy Chrome böngészőt, és meg
+
+193
+00:07:53,599 --> 00:07:59,599
+fogja nyitni ezt a blogbezzést, merthogy
+
+194
+00:07:57,360 --> 00:08:01,800
+és itt az, ami nagyon nagyon fontos,
+
+195
+00:07:59,599 --> 00:08:04,400
+hogy a dispatch alatt be lehet kapcsolni
+
+196
+00:08:01,800 --> 00:08:06,840
+pár olyan kapcsolót, ami folyamatossá
+
+197
+00:08:04,400 --> 00:08:09,759
+tudja tenni neki a munkavégzését. Az
+
+198
+00:08:06,840 --> 00:08:11,280
+egyik, és ez talán a az egyik
+
+199
+00:08:09,759 --> 00:08:13,000
+legfontosabb, hogyha mondjuk éjszaka is
+
+200
+00:08:11,280 --> 00:08:14,680
+akarjátok dolgoztatni magatok helyett a
+
+201
+00:08:13,000 --> 00:08:16,800
+coworköt, vagy hogyha tényleg nem
+
+202
+00:08:14,680 --> 00:08:19,400
+vagytok otthon, hogy be lehet kapcsolni
+
+203
+00:08:16,800 --> 00:08:21,479
+neki, hogy ne hagyja elaludni a gépet.
+
+204
+00:08:19,400 --> 00:08:23,159
+Ugye ezt akkor célszerű, ha mondjuk egy
+
+205
+00:08:21,479 --> 00:08:24,919
+megbukotok van, és ez föl van rakva a
+
+206
+00:08:23,159 --> 00:08:27,440
+töltőre, vagy olyan asztalépet
+
+207
+00:08:24,919 --> 00:08:29,240
+használtok, ami bekapcsolva tud lenni.
+
+208
+00:08:27,440 --> 00:08:30,879
+Na hát ő meg is nyitotta a háttérbe,
+
+209
+00:08:29,240 --> 00:08:32,959
+csak mi nem látjuk, merthogy ő a
+
+210
+00:08:30,879 --> 00:08:36,519
+böngészőt itt vezérelte. Mindjárt nézem
+
+211
+00:08:32,959 --> 00:08:40,599
+is. És igen, itt van megnyitva a Cloud
+
+212
+00:08:36,519 --> 00:08:42,440
+Mos böngészőben, és már látszik is.
+
+213
+00:08:40,599 --> 00:08:45,640
+Zseniális. Tehát, hogy itt van ez a
+
+214
+00:08:42,440 --> 00:08:47,560
+bizonyos blokbejzés. Ugye ő ehhez a
+
+215
+00:08:45,640 --> 00:08:50,399
+browser use, a browser actions
+
+216
+00:08:47,560 --> 00:08:52,680
+használta, tehát a böngészővezérlést
+
+217
+00:08:50,399 --> 00:08:54,800
+használta. Ezt itt be tudjátok
+
+218
+00:08:52,680 --> 00:08:58,079
+kapcsolni. Ami még nagyon jó, hogy be
+
+219
+00:08:54,800 --> 00:09:01,320
+tudjátok kapcsolni a computer use- is.
+
+220
+00:08:58,079 --> 00:09:03,399
+Ez az igazán durva szolgáltatási szint,
+
+221
+00:09:01,320 --> 00:09:05,160
+mármint, hogy itt konkrétan azt tudjátok
+
+222
+00:09:03,399 --> 00:09:07,600
+neki engedélyezni, hogy vezérelni tudja
+
+223
+00:09:05,160 --> 00:09:09,560
+a computereteket, fájlokat tud keresni,
+
+224
+00:09:07,600 --> 00:09:12,560
+fájlokkal tud dolgozni, meg tudja nyitni
+
+225
+00:09:09,560 --> 00:09:14,480
+őket, sőt akár alkalmazásokat is meg tud
+
+226
+00:09:12,560 --> 00:09:18,880
+nyitni. Tehát mondjuk tudom azt mondani
+
+227
+00:09:14,480 --> 00:09:23,320
+neki, hogy nyisd meg az emlékeztetőimet,
+
+228
+00:09:18,880 --> 00:09:23,320
+és vegyél föl bele egy próbabejegyzést.
+
+229
+00:09:23,440 --> 00:09:28,519
+Itt mondtam neki, hogy
+
+230
+00:09:26,519 --> 00:09:31,160
+nyissa meg az emlékeztetőket, és vegyem
+
+231
+00:09:28,519 --> 00:09:33,279
+föl bele egy próbabejegyzést. Nagyon
+
+232
+00:09:31,160 --> 00:09:35,760
+kíváncsi leszek, hogy ezt megcsinálja-e.
+
+233
+00:09:33,279 --> 00:09:37,880
+Nem mindig sikerült neki eddig, de ebben
+
+234
+00:09:35,760 --> 00:09:40,839
+is óriási fejlődés van. Az előzőhöz
+
+235
+00:09:37,880 --> 00:09:43,120
+browser use- használt, most pedig a
+
+236
+00:09:40,839 --> 00:09:45,640
+computer use- fogja, de nem a
+
+237
+00:09:43,120 --> 00:09:47,560
+jegyzeteket szeretném, hanem az
+
+238
+00:09:45,640 --> 00:09:50,560
+emlékeztetőimet. Ezt lehet, hogy
+
+239
+00:09:47,560 --> 00:09:50,560
+félreértette.
+
+240
+00:09:50,600 --> 00:09:56,320
+Itt van. Igen. Látjátok? Emlékezhetők.
+
+241
+00:09:54,399 --> 00:09:58,360
+Ugye az a jó ebben, hogy nem csak a
+
+242
+00:09:56,320 --> 00:10:01,560
+gépen tudom jóvá hagyni, hanem itt is
+
+243
+00:09:58,360 --> 00:10:04,040
+megjelenik nekem, hogy engedélyezem-e.
+
+244
+00:10:01,560 --> 00:10:07,000
+Ezt külön kizerném emelni, merthogy
+
+245
+00:10:04,040 --> 00:10:11,440
+alapvetően a cló használat ettől
+
+246
+00:10:07,000 --> 00:10:14,720
+biztonságosabbnak érződik néha, mint a
+
+247
+00:10:11,440 --> 00:10:16,240
+Hoppá, itt látjátok. Oké, használja a
+
+248
+00:10:14,720 --> 00:10:19,640
+gépemet,
+
+249
+00:10:16,240 --> 00:10:21,360
+odépítette ott a programot, és látjátok,
+
+250
+00:10:19,640 --> 00:10:23,279
+most a computer use van, tehát nem csak
+
+251
+00:10:21,360 --> 00:10:25,680
+egyszerűen böngészőt vezérrel, hanem
+
+252
+00:10:23,279 --> 00:10:29,600
+konkrétan megnyitotta itt az
+
+253
+00:10:25,680 --> 00:10:32,880
+emlékezhetőket, és már veszi is föl
+
+254
+00:10:29,600 --> 00:10:35,720
+benne a az emlékeztetőnk. Na,
+
+255
+00:10:32,880 --> 00:10:37,600
+visszatérve ide, tehát az alkalmazásban
+
+256
+00:10:35,720 --> 00:10:39,880
+ugyanúgy megjönnek jóváhagyásra ezek az
+
+257
+00:10:37,600 --> 00:10:42,959
+engedélykkérések, mint ahogy láttátok
+
+258
+00:10:39,880 --> 00:10:47,880
+akár a desktop alkalmazásba is. És én
+
+259
+00:10:42,959 --> 00:10:50,920
+tudom használni neki a különböző
+
+260
+00:10:47,880 --> 00:10:53,200
+engedélyeket tudok itt adni. Ühüm. Ezt
+
+261
+00:10:50,920 --> 00:10:55,000
+nem engedem neki, merthogy bele akart
+
+262
+00:10:53,200 --> 00:10:56,560
+avatkozni itt a képernyő rögzítésembe,
+
+263
+00:10:55,000 --> 00:10:58,519
+úgyhogy ezt annyira nem szeretném, hogy
+
+264
+00:10:56,560 --> 00:11:00,320
+ezt megtegye. Lehet, hogy ez bezavarja
+
+265
+00:10:58,519 --> 00:11:02,560
+őt, tehát a computer use ezáltal nem
+
+266
+00:11:00,320 --> 00:11:04,800
+fogja tudni megcsinálni, merthogy én
+
+267
+00:11:02,560 --> 00:11:06,839
+ugye rögzítem most itt a kijelzőmet is,
+
+268
+00:11:04,800 --> 00:11:09,959
+és lehet, hogy ő ettől nem látja, hogy
+
+269
+00:11:06,839 --> 00:11:12,160
+mi történik a screenen, de meglátjuk.
+
+270
+00:11:09,959 --> 00:11:15,399
+Viszont látjátok, alapvetően ez a durva
+
+271
+00:11:12,160 --> 00:11:17,920
+benne, hogy ő képes alkalmazást nyitni,
+
+272
+00:11:15,399 --> 00:11:19,639
+képes feladatokat fölvenni, listákat
+
+273
+00:11:17,920 --> 00:11:21,399
+fölvenni.
+
+274
+00:11:19,639 --> 00:11:23,360
+Oké.
+
+275
+00:11:21,399 --> 00:11:26,120
+Ugye itt az volt a baja, hogy szerinte
+
+276
+00:11:23,360 --> 00:11:28,880
+fedi a Screen Studio azt az alkalmazás
+
+277
+00:11:26,120 --> 00:11:32,519
+ablakot. Pedig nem azt fedi, hanem ugye
+
+278
+00:11:28,880 --> 00:11:34,680
+ő fedte a saját verziójával.
+
+279
+00:11:32,519 --> 00:11:37,360
+Úgyhogy ezt meg is mondom neki. Nem a
+
+280
+00:11:34,680 --> 00:11:39,120
+Screen Studio Fedte, hanem a te ablakod.
+
+281
+00:11:37,360 --> 00:11:42,760
+húzd azt odébb, és akkor hozzá fogsz
+
+282
+00:11:39,120 --> 00:11:42,760
+tudni adni emlékeztetőt.
+
+283
+00:11:45,040 --> 00:11:51,200
+Azért a whisper flow tehát néha félreír,
+
+284
+00:11:47,880 --> 00:11:55,399
+de így is fogja érteni. A fedte az fette
+
+285
+00:11:51,200 --> 00:11:58,399
+lett két t-vel, ami
+
+286
+00:11:55,399 --> 00:11:58,399
+hopp.
+
+287
+00:11:59,200 --> 00:12:03,880
+Oké,
+
+288
+00:12:00,800 --> 00:12:07,920
+engedélyeztem neki, és már csinálja is.
+
+289
+00:12:03,880 --> 00:12:09,720
+Jó, és akkor látható, hogy itt ő ő az,
+
+290
+00:12:07,920 --> 00:12:11,600
+aki elfedi.
+
+291
+00:12:09,720 --> 00:12:14,279
+Kicsit ide odébb húztam, és akkor látni
+
+292
+00:12:11,600 --> 00:12:16,279
+is fogja, hogy most már ott van neki a
+
+293
+00:12:14,279 --> 00:12:18,480
+lehetőség a plusz gombra. Kíváncsi
+
+294
+00:12:16,279 --> 00:12:20,160
+vagyok, hogy észreveszi-e. Na és
+
+295
+00:12:18,480 --> 00:12:22,839
+megtalálta a plusz gombot. Új
+
+296
+00:12:20,160 --> 00:12:26,199
+emlékezhető hozzáadása.
+
+297
+00:12:22,839 --> 00:12:28,360
+Eh, jó.
+
+298
+00:12:26,199 --> 00:12:30,519
+Ahhoz továbbra sem engedem hozzáférni,
+
+299
+00:12:28,360 --> 00:12:33,360
+merthogy most is azt mondja, hogy a
+
+300
+00:12:30,519 --> 00:12:35,399
+Screen Studio fedi. H lehet, hogy úgy
+
+301
+00:12:33,360 --> 00:12:39,320
+fedi, hogy nem tud tőle kattintani,
+
+302
+00:12:35,399 --> 00:12:41,519
+mármint hogy Igen, láthatóan megtalálta
+
+303
+00:12:39,320 --> 00:12:43,480
+egyébként, hogy hova kell kattintani, és
+
+304
+00:12:41,519 --> 00:12:46,040
+fölvette volna az emlékezetőt. Sajnos
+
+305
+00:12:43,480 --> 00:12:47,800
+igen, a Screen Stúdio, amivel rögzítem,
+
+306
+00:12:46,040 --> 00:12:49,639
+úgy tűnik, hogy összezavarja őt működés
+
+307
+00:12:47,800 --> 00:12:51,399
+közben.
+
+308
+00:12:49,639 --> 00:12:53,440
+Ez nem meglepő. Ugye Screen Studio is
+
+309
+00:12:51,399 --> 00:12:55,680
+veszi a teljes screenemet, és ezek
+
+310
+00:12:53,440 --> 00:12:59,560
+szerint látjátok a kattintást nem tudta
+
+311
+00:12:55,680 --> 00:13:01,839
+végrehajtani tőle. Úgyhogy ja, menjünk
+
+312
+00:12:59,560 --> 00:13:04,600
+is tovább. Szóval dispatch, láttátok,
+
+313
+00:13:01,839 --> 00:13:06,199
+alapvetően tud működni a dolog. Ne
+
+314
+00:13:04,600 --> 00:13:08,920
+használjatok közben Screen Stúdiót, ne
+
+315
+00:13:06,199 --> 00:13:10,959
+rögzítsétek. Ez a ez a tanulság ebből.
+
+316
+00:13:08,920 --> 00:13:12,800
+Na, úgyhogy én ezt nagyon tudom
+
+317
+00:13:10,959 --> 00:13:13,959
+ajánlani. Én is nagyon sokszor van
+
+318
+00:13:12,800 --> 00:13:15,880
+olyan, hogy most már itt vagyom a
+
+319
+00:13:13,959 --> 00:13:19,160
+MacBookot is így kinyitva, és tudom,
+
+320
+00:13:15,880 --> 00:13:21,040
+hogy ezen a gépen a én fő fájaimmal kell
+
+321
+00:13:19,160 --> 00:13:24,000
+dolgozni, és nem a Marvin gépet kell
+
+322
+00:13:21,040 --> 00:13:26,199
+vezérelni, akkor én most már van, hogy
+
+323
+00:13:24,000 --> 00:13:28,480
+itt hagyom, és így a Cloud Coworköt így
+
+324
+00:13:26,199 --> 00:13:30,199
+a dispatchen keresztül szólítom meg.
+
+325
+00:13:28,480 --> 00:13:32,760
+egyébként nem csak a coworköt, hanem a
+
+326
+00:13:30,199 --> 00:13:35,959
+cloud kódot is, az a desktop apposat is
+
+327
+00:13:32,760 --> 00:13:37,680
+meg lehet így szólítani. Ugyanez a
+
+328
+00:13:35,959 --> 00:13:40,320
+screen van egyébként. Látjátok, ez
+
+329
+00:13:37,680 --> 00:13:43,160
+gyakorlatilag egy nagy session, tehát
+
+330
+00:13:40,320 --> 00:13:45,360
+egy nagy beszélgetés száll. Ott tudjátok
+
+331
+00:13:43,160 --> 00:13:47,880
+így vezérelni, de tényleg meg tudott
+
+332
+00:13:45,360 --> 00:13:49,720
+mindenfélét csinálni, tényleg kódolni
+
+333
+00:13:47,880 --> 00:13:54,880
+akár, tényleg mindenfélét itt
+
+334
+00:13:49,720 --> 00:13:57,519
+működtetni. Tehát ez a dispatch, ez márm
+
+335
+00:13:54,880 --> 00:13:59,639
+elérhetővé teszi azt a szintet, hogy
+
+336
+00:13:57,519 --> 00:14:03,279
+bárhonnan elérjétek a gépeteket, a
+
+337
+00:13:59,639 --> 00:14:05,639
+coworköt és a cloud kódot is. És ez
+
+338
+00:14:03,279 --> 00:14:07,519
+egyébként szerintem egy részét lefedi
+
+339
+00:14:05,639 --> 00:14:09,199
+annak, amit én Marvinnál szeretek, hogy
+
+340
+00:14:07,519 --> 00:14:11,160
+tényleg bárhol, bármikor tudok neki
+
+341
+00:14:09,199 --> 00:14:13,519
+szólni, és ő tud képes dolgozni
+
+342
+00:14:11,160 --> 00:14:15,040
+helyettem bizonyos feladatokat. Ugye
+
+343
+00:14:13,519 --> 00:14:17,680
+korábban beszéltünk már róla, hogy van
+
+344
+00:14:15,040 --> 00:14:20,240
+időzített futtatás is, ez meg lefedi a
+
+345
+00:14:17,680 --> 00:14:23,079
+másik felét a dolgoknak. Na de mutatok
+
+346
+00:14:20,240 --> 00:14:26,279
+még valamit. Hogyha valaki kódol, akkor
+
+347
+00:14:23,079 --> 00:14:30,000
+a kódolás során is van lehetősége arra,
+
+348
+00:14:26,279 --> 00:14:32,399
+hogy távolról elérje a terminál
+
+349
+00:14:30,000 --> 00:14:34,360
+ablakját, azon belül is a cloud kódot.
+
+350
+00:14:32,399 --> 00:14:37,519
+Elindítom a cloud kódot. Ezzel a gyors
+
+351
+00:14:34,360 --> 00:14:39,759
+megoldással szoktam. Ugye ez a az ilyen
+
+352
+00:14:37,519 --> 00:14:41,639
+veszélyes módon, ez a dangerous skip
+
+353
+00:14:39,759 --> 00:14:44,079
+permissions móddal indítom. Ilyenkor
+
+354
+00:14:41,639 --> 00:14:46,120
+ugye nem kér engedélyeket, cserébe
+
+355
+00:14:44,079 --> 00:14:47,800
+folyamatosan dolgozik. És ugye itt
+
+356
+00:14:46,120 --> 00:14:49,399
+egyszerűen csak annyit kell bemondani
+
+357
+00:14:47,800 --> 00:14:52,600
+neki,
+
+358
+00:14:49,399 --> 00:14:55,959
+hogy remote control.
+
+359
+00:14:52,600 --> 00:14:59,600
+És a remote control elindításával
+
+360
+00:14:55,959 --> 00:15:03,800
+megjelenik az cloud applikációban egy
+
+361
+00:14:59,600 --> 00:15:06,600
+másik részen a cloud kódra kell rámenni.
+
+362
+00:15:03,800 --> 00:15:10,720
+Én ezt megmutatom ugye, hogy itt
+
+363
+00:15:06,600 --> 00:15:13,800
+a cló kódra kell rámenni, és a kód alatt
+
+364
+00:15:10,720 --> 00:15:15,920
+a legfölső
+
+365
+00:15:13,800 --> 00:15:19,560
+legfölsőbb menüpontban láttok ott egy
+
+366
+00:15:15,920 --> 00:15:22,639
+kis computer ikont. Ez egy remote
+
+367
+00:15:19,560 --> 00:15:25,480
+control computer ikon, és ott megjelent,
+
+368
+00:15:22,639 --> 00:15:27,600
+láthatjátok a távoli vezérlését.
+
+369
+00:15:25,480 --> 00:15:29,480
+Én itt a screenen, a gépemen
+
+370
+00:15:27,600 --> 00:15:31,680
+beillesztettem neki az előbb
+
+371
+00:15:29,480 --> 00:15:33,480
+megfogalmazott feladatot. Nyomok egy
+
+372
+00:15:31,680 --> 00:15:36,160
+entert, és ha minden jól megy, már itt
+
+373
+00:15:33,480 --> 00:15:38,839
+látjátok is, hogy így adtam ki a
+
+374
+00:15:36,160 --> 00:15:41,480
+feladatot a gépemen, és most el tudnék
+
+375
+00:15:38,839 --> 00:15:43,920
+menni sétálni, és látnám végig, hogy mi
+
+376
+00:15:41,480 --> 00:15:46,959
+történik. Ugyanúgy látszik, hogy épp mit
+
+377
+00:15:43,920 --> 00:15:49,519
+csinál. Ott látszik a web search,
+
+378
+00:15:46,959 --> 00:15:52,399
+látszanak a túlhasználatok. Tehát
+
+379
+00:15:49,519 --> 00:15:53,880
+gyakorlatilag az alkalmazásban én végig
+
+380
+00:15:52,399 --> 00:15:56,319
+tudom követni a teljes kódolási
+
+381
+00:15:53,880 --> 00:15:59,240
+feladatot minden részletével, milyen
+
+382
+00:15:56,319 --> 00:16:01,920
+eszközöket használ meg mindennel. Ugye
+
+383
+00:15:59,240 --> 00:16:03,360
+ez azért lehet fontos, hogyha valakinek
+
+384
+00:16:01,920 --> 00:16:06,040
+nem elég az, hogy elindít egy feladatot
+
+385
+00:16:03,360 --> 00:16:12,079
+és csak a végeredményt várja, akkor
+
+386
+00:16:06,040 --> 00:16:14,560
+igazából szüksége lehet erre. Na hát már
+
+387
+00:16:12,079 --> 00:16:17,440
+nyitjuk is. Ugye megint az történik,
+
+388
+00:16:14,560 --> 00:16:19,839
+hogy ő vezérli a gépemet. Ugye ez a
+
+389
+00:16:17,440 --> 00:16:21,920
+durég, hogy innen is működik ez a
+
+390
+00:16:19,839 --> 00:16:24,759
+bizonyos böngészővezérlés. És ez
+
+391
+00:16:21,920 --> 00:16:28,440
+zseniálisan jól beépült így a clódnak a
+
+392
+00:16:24,759 --> 00:16:29,800
+a használatába, hogy ő képes pillanatok
+
+393
+00:16:28,440 --> 00:16:33,600
+alatt nyitni egy böngészőt, a
+
+394
+00:16:29,800 --> 00:16:38,319
+böngészőben pedig nekiállni és gyártani
+
+395
+00:16:33,600 --> 00:16:40,959
+itt bármit. Például itt infókat leszedni
+
+396
+00:16:38,319 --> 00:16:44,399
+az én csatornámról, leszedi az infókat,
+
+397
+00:16:40,959 --> 00:16:47,720
+és utána pedig meg fogja csinálni belőle
+
+398
+00:16:44,399 --> 00:16:50,839
+azt az kért interaktív dashboardot.
+
+399
+00:16:47,720 --> 00:16:53,079
+Jó, pillanatok alatt ment. És egyébként
+
+400
+00:16:50,839 --> 00:16:56,480
+ez ami még nagy változás, hogy nekem az
+
+401
+00:16:53,079 --> 00:16:59,720
+tűnt fel, hogy így a böngészőben való
+
+402
+00:16:56,480 --> 00:17:01,880
+szrolllozgatásnál és adatmentésnél
+
+403
+00:16:59,720 --> 00:17:04,720
+nagyon gyorsan menti ki az adatokat.
+
+404
+00:17:01,880 --> 00:17:06,799
+Tehát pillanatok alatt lehúzta a most az
+
+405
+00:17:04,720 --> 00:17:10,319
+aljára úgymond az összes tartalomat
+
+406
+00:17:06,799 --> 00:17:12,720
+végignézte és már ebből van egy csomó
+
+407
+00:17:10,319 --> 00:17:15,360
+információja adata, közben itt tudom
+
+408
+00:17:12,720 --> 00:17:18,079
+nézni, hogy hogy mi történik. Ugye
+
+409
+00:17:15,360 --> 00:17:21,120
+egyébként írta is, hogy jó adag
+
+410
+00:17:18,079 --> 00:17:25,000
+információja van már,
+
+411
+00:17:21,120 --> 00:17:26,600
+és hát meglátjuk, hogy mi történik.
+
+412
+00:17:25,000 --> 00:17:29,280
+Ebből össze fog rakni magának egy
+
+413
+00:17:26,600 --> 00:17:32,320
+prezentációt. Ugye ilyenkor amúgy nem
+
+414
+00:17:29,280 --> 00:17:34,799
+muszáj néznünk is a kijelzőt, tehát
+
+415
+00:17:32,320 --> 00:17:38,360
+bárhova átmehetünk, a nézhetem azt is,
+
+416
+00:17:34,799 --> 00:17:40,520
+hogy éppen mi történik. Akár a ezt a
+
+417
+00:17:38,360 --> 00:17:43,120
+terminálos ablakot is figyelhetem. Ugye
+
+418
+00:17:40,520 --> 00:17:46,039
+itt jól látszik, hogy megvan mind a 69
+
+419
+00:17:43,120 --> 00:17:49,360
+videó adata. elkészíti az interaktív
+
+420
+00:17:46,039 --> 00:17:50,840
+htmelt dashboardot, és most már ez
+
+421
+00:17:49,360 --> 00:17:53,160
+zajlik, és akkor mindjárt el fog
+
+422
+00:17:50,840 --> 00:17:55,840
+készülni, és meg fogja velem osztani, és
+
+423
+00:17:53,160 --> 00:17:59,320
+amit akár itt a telefonomon meg tudnék
+
+424
+00:17:55,840 --> 00:18:01,760
+majd nézni. Szóval ez a remote controlos
+
+425
+00:17:59,320 --> 00:18:04,400
+megközelítés, tehát még egy eszköz arra,
+
+426
+00:18:01,760 --> 00:18:05,600
+hogy távolról vezéreljétek a gépeteket.
+
+427
+00:18:04,400 --> 00:18:07,679
+Egyébként én azt gyanítom, hogy a
+
+428
+00:18:05,600 --> 00:18:09,640
+dispatch mögött technológiailag valami
+
+429
+00:18:07,679 --> 00:18:11,679
+nagyon hasonló, valószínű ugyanez van,
+
+430
+00:18:09,640 --> 00:18:14,880
+mint itt a Cloud Code terminálus
+
+431
+00:18:11,679 --> 00:18:16,919
+nézetnél a remote controlban. A lényeg,
+
+432
+00:18:14,880 --> 00:18:19,960
+hogy működik. Tehát az alkalmazásban ez
+
+433
+00:18:16,919 --> 00:18:22,440
+a második út, hogy tudtok végrehajtatni
+
+434
+00:18:19,960 --> 00:18:26,640
+feladatokat.
+
+435
+00:18:22,440 --> 00:18:29,440
+És itt jött el a szerintem múlt hét,
+
+436
+00:18:26,640 --> 00:18:31,960
+vagy múlt hét előtti hét, amikor egyszer
+
+437
+00:18:29,440 --> 00:18:34,360
+csak megjelent, hogy hát hogyha arra az
+
+438
+00:18:31,960 --> 00:18:37,480
+élményre vágytok, amit egyébként egy
+
+439
+00:18:34,360 --> 00:18:41,200
+open club bottól kaptok és szerettek,
+
+440
+00:18:37,480 --> 00:18:43,480
+hogy szeretnétek elérni kívülről
+
+441
+00:18:41,200 --> 00:18:45,200
+bármilyen csevegő alkalmazásból, nem
+
+442
+00:18:43,480 --> 00:18:49,080
+csak a cloud appból, de hogy van
+
+443
+00:18:45,200 --> 00:18:51,679
+bármilyen csevegő alkalmazásból a clóot,
+
+444
+00:18:49,080 --> 00:18:53,520
+akkor most már erre is van lehetőség.
+
+445
+00:18:51,679 --> 00:18:56,159
+Szóval alapvetően néhány lépést kell
+
+446
+00:18:53,520 --> 00:18:58,880
+megtenni ahhoz, hogy a terminálban
+
+447
+00:18:56,159 --> 00:19:01,799
+működjön a cloud kód alatt nektek ez a
+
+448
+00:18:58,880 --> 00:19:03,600
+bizonyos telegramos bot. Például a
+
+449
+00:19:01,799 --> 00:19:06,200
+Telegramot szoktam én használni, mert
+
+450
+00:19:03,600 --> 00:19:08,000
+azt a legeslegkönnyebb ugye a szerintem
+
+451
+00:19:06,200 --> 00:19:10,039
+bekötni az összes eszköz körül, de a
+
+452
+00:19:08,000 --> 00:19:11,919
+többi is nagyon hasonló. Mindössze annyi
+
+453
+00:19:10,039 --> 00:19:14,520
+a feladatotok. Először telepíteni kell
+
+454
+00:19:11,919 --> 00:19:16,840
+egy ilyen bant. Ezt simán a terminálban,
+
+455
+00:19:14,520 --> 00:19:19,880
+ezt így kimásoljátok.
+
+456
+00:19:16,840 --> 00:19:21,400
+Még mielőtt itt beléptetek volna a
+
+457
+00:19:19,880 --> 00:19:23,880
+clótba,
+
+458
+00:19:21,400 --> 00:19:25,760
+ezt simán lefuttatjátok, és akkor
+
+459
+00:19:23,880 --> 00:19:28,600
+telepítitek. Nekem telepítve van, de
+
+460
+00:19:25,760 --> 00:19:30,799
+ilyenkor még azért megcsinálja.
+
+461
+00:19:28,600 --> 00:19:33,600
+Futtatni kell a Telegramon egy ilyen
+
+462
+00:19:30,799 --> 00:19:37,120
+botfathert. Akinek van Telegramja, csak
+
+463
+00:19:33,600 --> 00:19:39,000
+be kell írni ezt a kukac botfa. És ott
+
+464
+00:19:37,120 --> 00:19:41,520
+kell írni egy ilyen per new bot, azaz
+
+465
+00:19:39,000 --> 00:19:43,400
+egy új bot létrehozását. Adni neki egy
+
+466
+00:19:41,520 --> 00:19:47,760
+nevet, meg utána egy botnevet, aminek a
+
+467
+00:19:43,400 --> 00:19:50,520
+vége bot. és adni fog egy kódot. Ezt
+
+468
+00:19:47,760 --> 00:19:53,919
+követően le kell futtatni ezt a két
+
+469
+00:19:50,520 --> 00:19:57,520
+parancsot, ami először telepíti ezt a
+
+470
+00:19:53,919 --> 00:20:01,200
+plugin könyvtárat, meg plugint magát. Ez
+
+471
+00:19:57,520 --> 00:20:05,039
+a telegramos plugin. És utána pedig be
+
+472
+00:20:01,200 --> 00:20:07,559
+kell állítani a tokent. Ez úgy néz ki,
+
+473
+00:20:05,039 --> 00:20:09,600
+hogy ezt kell lefuttatni, belemásolva a
+
+474
+00:20:07,559 --> 00:20:11,280
+ti saját botfathertől kapott
+
+475
+00:20:09,600 --> 00:20:15,880
+tokeneteket.
+
+476
+00:20:11,280 --> 00:20:18,280
+majd ki kell lépni a clóból. És nagyon
+
+477
+00:20:15,880 --> 00:20:20,480
+fontos, hogy ezzel a paranccsal kell
+
+478
+00:20:18,280 --> 00:20:22,200
+elindítani. Azaz, hogyha használni
+
+479
+00:20:20,480 --> 00:20:24,480
+akarjátok a Telegramon keresztüli
+
+480
+00:20:22,200 --> 00:20:26,679
+elérhetőséget, akkor ezt a parancsot
+
+481
+00:20:24,480 --> 00:20:29,720
+kell futtatni, hogy cloud, szóköz,
+
+482
+00:20:26,679 --> 00:20:32,480
+kötőjelkötőjel, channels, szóköz, plugin
+
+483
+00:20:29,720 --> 00:20:35,280
+kettős. Telegram kukacőjel,
+
+484
+00:20:32,480 --> 00:20:38,320
+plugins, kötőjel official.
+
+485
+00:20:35,280 --> 00:20:41,039
+Ha ez megvan, akkor már működik is. És a
+
+486
+00:20:38,320 --> 00:20:43,679
+belépést követően láthatjátok, hogy ő
+
+487
+00:20:41,039 --> 00:20:47,880
+itt most figyeli ezt a csatornát, a
+
+488
+00:20:43,679 --> 00:20:51,159
+Telegramos Cloud Plugint figyeli.
+
+489
+00:20:47,880 --> 00:20:53,679
+Innentől kezdve a Telegram ez a bot, ez
+
+490
+00:20:51,159 --> 00:20:57,520
+él, és ott ugyanúgy tudtok írogatni
+
+491
+00:20:53,679 --> 00:20:59,799
+neki, mint bármelyik másiknak. Bocs, még
+
+492
+00:20:57,520 --> 00:21:02,120
+annyi, hogy az első párosításnál van még
+
+493
+00:20:59,799 --> 00:21:04,240
+egy ilyen hat karakteres párosító kód
+
+494
+00:21:02,120 --> 00:21:05,799
+is. Ezt is kiírja, de igazából ott
+
+495
+00:21:04,240 --> 00:21:10,159
+megkapjátok az utasítást, hogy azt
+
+496
+00:21:05,799 --> 00:21:12,880
+hogyan adjátok meg. És a végén van egy
+
+497
+00:21:10,159 --> 00:21:14,960
+fontos húzás, és ezt én is így föltettem
+
+498
+00:21:12,880 --> 00:21:17,640
+kérdésként, merthogy ezt le ezt le kell
+
+499
+00:21:14,960 --> 00:21:21,520
+zárni. Tehát ugye alapvetően párosítás
+
+500
+00:21:17,640 --> 00:21:25,279
+módban van ilyenkor a botunk, és érdemes
+
+501
+00:21:21,520 --> 00:21:26,760
+lerak lezárni őt egy ilyen alo listre.
+
+502
+00:21:25,279 --> 00:21:28,360
+Ez azt jelenti, hogy csak az
+
+503
+00:21:26,760 --> 00:21:30,559
+engedélyezett chatekkel tud
+
+504
+00:21:28,360 --> 00:21:32,559
+kommunikálni, azaz nem tudnak még
+
+505
+00:21:30,559 --> 00:21:35,760
+véletlenül se ráakadni a ti
+
+506
+00:21:32,559 --> 00:21:39,000
+channeletekre, de a lényeg az, hogy így
+
+507
+00:21:35,760 --> 00:21:41,840
+lehet lezárni, hogy nem Ó vow el is
+
+508
+00:21:39,000 --> 00:21:44,240
+készült. Szóval, hogy ne legyen
+
+509
+00:21:41,840 --> 00:21:46,279
+párosítás módban, ne tudjon bárki írni a
+
+510
+00:21:44,240 --> 00:21:48,559
+ti clódotoknak, akkor le kell zárni, és
+
+511
+00:21:46,279 --> 00:21:50,760
+akkor csak az engedélyezett chat id-val
+
+512
+00:21:48,559 --> 00:21:56,200
+lehet kommunikálni vele. Na és akkor
+
+513
+00:21:50,760 --> 00:21:59,000
+elkészült a mi kis dashboardunk. Vow,
+
+514
+00:21:56,200 --> 00:22:02,679
+nagyon szép lett. Itt ott nem nem lóg
+
+515
+00:21:59,000 --> 00:22:05,120
+ki. Rosszul mondtam. Átlagos megtekintés
+
+516
+00:22:02,679 --> 00:22:07,600
+időben. Ott nem szerzett infókat
+
+517
+00:22:05,120 --> 00:22:10,400
+valószínű a korábbiakról, de elkészült
+
+518
+00:22:07,600 --> 00:22:12,400
+vele. És ugye ezt én itt adtam ki a
+
+519
+00:22:10,400 --> 00:22:16,520
+telefonomon. Meg is nézzük, hogy itt mit
+
+520
+00:22:12,400 --> 00:22:18,559
+ír. Gyakorlatilag elkészült és itt van.
+
+521
+00:22:16,520 --> 00:22:20,480
+A ugye annyi, hogy a telegy a
+
+522
+00:22:18,559 --> 00:22:22,760
+telefonomon nem látom ezt a HTML fát,
+
+523
+00:22:20,480 --> 00:22:24,799
+mert ez a gépemen van az én desktopomon,
+
+524
+00:22:22,760 --> 00:22:27,960
+de ahogy utána visszaülök a géphez, ez
+
+525
+00:22:24,799 --> 00:22:29,960
+már itt elérhető.
+
+526
+00:22:27,960 --> 00:22:32,200
+Ennyi.
+
+527
+00:22:29,960 --> 00:22:35,159
+Ez is működött. Tehát ez volt a remote
+
+528
+00:22:32,200 --> 00:22:39,520
+controlos feladat kiadás.
+
+529
+00:22:35,159 --> 00:22:42,480
+Jó. És ilyen böngésző use használ. Oké.
+
+530
+00:22:39,520 --> 00:22:45,159
+A hoztam viszont egy prezentációt
+
+531
+00:22:42,480 --> 00:22:48,400
+nektek, és hoztam ezzel kapcsolatban egy
+
+532
+00:22:45,159 --> 00:22:50,600
+kis plusz elgondolkodni alót, mertogy én
+
+533
+00:22:48,400 --> 00:22:54,320
+még mielőtt kijött volna ez a channels
+
+534
+00:22:50,600 --> 00:22:57,440
+rész, építettem már egy olyan clót clót,
+
+535
+00:22:54,320 --> 00:23:00,120
+ahol a cloud az alapja, ezek a már
+
+536
+00:22:57,440 --> 00:23:02,200
+meglévő szolgáltatások, mint például
+
+537
+00:23:00,120 --> 00:23:05,200
+most már a channels, de hogy előtte az
+
+538
+00:23:02,200 --> 00:23:05,200
+MCP-killek,
+
+539
+00:23:05,279 --> 00:23:08,960
+és amögé húzol föl, vagy az elé egy
+
+540
+00:23:07,799 --> 00:23:11,440
+rendszert,
+
+541
+00:23:08,960 --> 00:23:13,400
+akkor igazából lehet egy olyasmi botod,
+
+542
+00:23:11,440 --> 00:23:15,919
+mint amit az OpenClow tud. És ahogy
+
+543
+00:23:13,400 --> 00:23:18,360
+ígértem a videó elején, erről hoztam
+
+544
+00:23:15,919 --> 00:23:20,400
+nektek egy pár gondolatot, és
+
+545
+00:23:18,360 --> 00:23:22,520
+megmutatom, hogy én ezt közben már
+
+546
+00:23:20,400 --> 00:23:25,840
+elkészítettem.
+
+547
+00:23:22,520 --> 00:23:28,520
+A személyes asszisztens egyik legnagyobb
+
+548
+00:23:25,840 --> 00:23:30,720
+különlegessége az OpenChrownak is, de
+
+549
+00:23:28,520 --> 00:23:32,880
+amit én építek, annak is, hogy
+
+550
+00:23:30,720 --> 00:23:34,520
+valamilyen fajta memória épül föl
+
+551
+00:23:32,880 --> 00:23:37,000
+mögötte.
+
+552
+00:23:34,520 --> 00:23:39,120
+Persze ami itt van, hogy minden chatet
+
+553
+00:23:37,000 --> 00:23:41,360
+újra kell kezdeni és új infókat átadni
+
+554
+00:23:39,120 --> 00:23:43,559
+neki. Nem feltétlen igaz már, mert van
+
+555
+00:23:41,360 --> 00:23:45,960
+egy saját memóriakezelése is már a
+
+556
+00:23:43,559 --> 00:23:48,200
+Cloud-nak. Képes arra, hogy megjegyezzem
+
+557
+00:23:45,960 --> 00:23:50,600
+bizonyos fontos dolgokat. Nagyjából
+
+558
+00:23:48,200 --> 00:23:53,440
+képbe van veletek. És most ugy abban is
+
+559
+00:23:50,600 --> 00:23:55,080
+volt egy frissítés memória 2.0-ként
+
+560
+00:23:53,440 --> 00:23:57,400
+szoktak rá hivatkozni. Nagyjából egy
+
+561
+00:23:55,080 --> 00:23:59,640
+hónapja jött ki, de azért az nem
+
+562
+00:23:57,400 --> 00:24:01,520
+ugyanaz, mint amit egy Open Clubot tud,
+
+563
+00:23:59,640 --> 00:24:04,039
+vagy pedig majd meg fogom mutatni az én
+
+564
+00:24:01,520 --> 00:24:06,320
+botom. tud, de nem rossz. Tehát, hogy
+
+565
+00:24:04,039 --> 00:24:09,080
+amúgy van egy memória, de itt lehetne
+
+566
+00:24:06,320 --> 00:24:11,279
+jobban csinálni. Szóval ez az egyik
+
+567
+00:24:09,080 --> 00:24:12,840
+legfontosabb. A másik, hogy mi lenne,
+
+568
+00:24:11,279 --> 00:24:14,799
+hogyha nem csak emlékezne dolgokra,
+
+569
+00:24:12,840 --> 00:24:17,279
+hanem akár proaktívan cselekedne,
+
+570
+00:24:14,799 --> 00:24:19,240
+bizonyos időpontokban szólna, bizonyos
+
+571
+00:24:17,279 --> 00:24:22,600
+dolgokat magára venne feladatként és
+
+572
+00:24:19,240 --> 00:24:24,080
+elvégezni őket. És a a legfontosabb,
+
+573
+00:24:22,600 --> 00:24:26,080
+hogy természetesen ezt úgy lenne jó, ha
+
+574
+00:24:24,080 --> 00:24:28,279
+úgy csinálná, hogy telefonról is
+
+575
+00:24:26,080 --> 00:24:30,559
+elérhetnénk. Ez most már ugye nem
+
+576
+00:24:28,279 --> 00:24:34,559
+science fiction, open clow óta sem, de
+
+577
+00:24:30,559 --> 00:24:36,960
+így meg aztán pláne a cloud kód az az
+
+578
+00:24:34,559 --> 00:24:39,440
+eszköz, ami így, hogy már el lehet érni
+
+579
+00:24:36,960 --> 00:24:42,080
+különböző csatornákon, az alapot tudja
+
+580
+00:24:39,440 --> 00:24:44,480
+adni, hiszen láttátok, képes böngészőt
+
+581
+00:24:42,080 --> 00:24:48,080
+vezérelni, képes gépet vezérelni, és
+
+582
+00:24:44,480 --> 00:24:50,159
+elérhető ugyanúgy Telegramról, mint
+
+583
+00:24:48,080 --> 00:24:52,880
+bármelyik mondjuk Open Clubot, vagy
+
+584
+00:24:50,159 --> 00:24:56,840
+annak bármelyik klónja.
+
+585
+00:24:52,880 --> 00:24:58,799
+Ami viszont fontos, hogy ezt teljesen
+
+586
+00:24:56,840 --> 00:25:01,320
+ilyen gyári megoldásokkal tudjátok
+
+587
+00:24:58,799 --> 00:25:03,039
+megtenni. Azaz nem egy ilyen open source
+
+588
+00:25:01,320 --> 00:25:05,120
+közösség által fejlesztett projektről
+
+589
+00:25:03,039 --> 00:25:07,039
+van szó, aminek van rengeteg előnye,
+
+590
+00:25:05,120 --> 00:25:09,200
+mert brutálisan gyorsan fejlődik a
+
+591
+00:25:07,039 --> 00:25:12,520
+projekt, és tényleg nagyon sok minden
+
+592
+00:25:09,200 --> 00:25:15,120
+kerül be az OpenCrowba. cserébe
+
+593
+00:25:12,520 --> 00:25:16,720
+itt a az antropiknál picit minden
+
+594
+00:25:15,120 --> 00:25:19,000
+lassabban történik, de sokkal
+
+595
+00:25:16,720 --> 00:25:21,399
+ellenőrzöttebb és ezáltal sokkal
+
+596
+00:25:19,000 --> 00:25:24,159
+biztonságosabb is. Szóval én ezért
+
+597
+00:25:21,399 --> 00:25:26,640
+szeretem jobban egy picit, hogy
+
+598
+00:25:24,159 --> 00:25:30,039
+megjelent ez és ennyi mindent ad
+
+599
+00:25:26,640 --> 00:25:32,120
+alapként az Antropic, merthogy igen, ezt
+
+600
+00:25:30,039 --> 00:25:33,720
+ez így tényleg biztonságosabbnak érződik
+
+601
+00:25:32,120 --> 00:25:36,559
+a használata, és a legjobb modelleket
+
+602
+00:25:33,720 --> 00:25:39,159
+lehet elérni. Ez az alapja, amit itt
+
+603
+00:25:36,559 --> 00:25:40,880
+ezen a sledon láttok, ez nem más ugye a
+
+604
+00:25:39,159 --> 00:25:43,559
+kommunikációnál, mint ez a bizonyos
+
+605
+00:25:40,880 --> 00:25:45,559
+Telegram bridge, ami most már az a
+
+606
+00:25:43,559 --> 00:25:47,840
+Channels pluginon keresztül egy gyári
+
+607
+00:25:45,559 --> 00:25:49,480
+megoldásként meg tud jelenni. Egyébként
+
+608
+00:25:47,840 --> 00:25:53,320
+nem csak Telegramra, hanem Telegram
+
+609
+00:25:49,480 --> 00:25:54,679
+mellett IMS és a Discord is elérhető
+
+610
+00:25:53,320 --> 00:25:56,080
+vivát. Szóval ezeket is tudjátok
+
+611
+00:25:54,679 --> 00:25:58,360
+használni.
+
+612
+00:25:56,080 --> 00:26:03,000
+viszont az, hogy ki van nyitva így a
+
+613
+00:25:58,360 --> 00:26:07,039
+távoli elérése a clódnak, cló kódnak, ez
+
+614
+00:26:03,000 --> 00:26:09,679
+nem rossz, de ez még csak a felszín, ez
+
+615
+00:26:07,039 --> 00:26:11,399
+a teteje, ez a ez lehet kapargatni, meg
+
+616
+00:26:09,679 --> 00:26:14,000
+lehet használni egy csomó alapdologra,
+
+617
+00:26:11,399 --> 00:26:15,960
+de pont azokra a dolgokra, amikre én a
+
+618
+00:26:14,000 --> 00:26:19,240
+mondjuk a Marvint használom, arra így
+
+619
+00:26:15,960 --> 00:26:22,039
+még önmagában nem elég, de ki lehet
+
+620
+00:26:19,240 --> 00:26:24,799
+alakítani mögé. És ez a bizonyos Cloud
+
+621
+00:26:22,039 --> 00:26:27,159
+Clow Light. Most már ezt Light-nak írtam
+
+622
+00:26:24,799 --> 00:26:29,440
+itt a prezentációban is. Így kértem,
+
+623
+00:26:27,159 --> 00:26:31,399
+hogy így szerepeljen. Hiszen itt ez már
+
+624
+00:26:29,440 --> 00:26:34,360
+tényleg csak arról szól az csak ott
+
+625
+00:26:31,399 --> 00:26:37,919
+idézőjelbe, hogy van egy valamilyen
+
+626
+00:26:34,360 --> 00:26:40,720
+fajta platform mögé építve az alap cloud
+
+627
+00:26:37,919 --> 00:26:42,720
+működésnek és onnantól kezdve ezek
+
+628
+00:26:40,720 --> 00:26:45,240
+egészítik ki az ezt a bizonyos
+
+629
+00:26:42,720 --> 00:26:48,320
+alapműködést. Tehát csatornán ugyanúgy
+
+630
+00:26:45,240 --> 00:26:50,640
+el tudom érni és képes gépet vezérelni,
+
+631
+00:26:48,320 --> 00:26:52,159
+tehát ezek adottak. Képes vagyok elérni
+
+632
+00:26:50,640 --> 00:26:55,000
+ugye a rajta keresztül különböző
+
+633
+00:26:52,159 --> 00:26:57,200
+MCP-ket, amik be vannak neki kötve, meg
+
+634
+00:26:55,000 --> 00:26:59,559
+képes egyébként skilleket használni. Ez
+
+635
+00:26:57,200 --> 00:27:02,440
+ez ott van benne alapból. Emellett, amit
+
+636
+00:26:59,559 --> 00:27:05,039
+én felépítettem Cloud Clow Lightként van
+
+637
+00:27:02,440 --> 00:27:07,240
+saját memóriája, van egy kambant tábla,
+
+638
+00:27:05,039 --> 00:27:09,480
+egy ilyen központi felület, azt mindjárt
+
+639
+00:27:07,240 --> 00:27:10,640
+megmutatom. Vannak hardbeek, itt is
+
+640
+00:27:09,480 --> 00:27:12,320
+ugyanúgy, mint az open client, tehát
+
+641
+00:27:10,640 --> 00:27:15,000
+bizonyos időnként bizonyos feladatokat
+
+642
+00:27:12,320 --> 00:27:17,760
+el tud végezni. Van egy dashboardunk,
+
+643
+00:27:15,000 --> 00:27:19,720
+ahol mindenfélét lehet csinálni. Van egy
+
+644
+00:27:17,760 --> 00:27:21,279
+napi naplózás, hogy mi történt ma. Ez
+
+645
+00:27:19,720 --> 00:27:23,440
+ugye a későbbi ilyen visszakereshető
+
+646
+00:27:21,279 --> 00:27:24,960
+memória szempontjából érdekes, és hát
+
+647
+00:27:23,440 --> 00:27:28,399
+ugye a Telegrammal tök jól együtt tud
+
+648
+00:27:24,960 --> 00:27:31,720
+működni. Az egyik és legfontosabb a
+
+649
+00:27:28,399 --> 00:27:34,159
+memóriánál, hogy van egy ilyen kétrétegű
+
+650
+00:27:31,720 --> 00:27:37,559
+memória rendszere, van egy Cloud Code
+
+651
+00:27:34,159 --> 00:27:39,399
+autó memory, egy fáalapú munkamenetek
+
+652
+00:27:37,559 --> 00:27:42,760
+során történő folyamatos memóriak
+
+653
+00:27:39,399 --> 00:27:45,320
+képzés. És van egy memory API, ahol
+
+654
+00:27:42,760 --> 00:27:47,480
+pedig egy SQLite adatbázis van használva
+
+655
+00:27:45,320 --> 00:27:49,760
+teljes szöveges kereséssel, tehát hogy
+
+656
+00:27:47,480 --> 00:27:52,600
+van egy ilyen komplexebb memóriakelés is
+
+657
+00:27:49,760 --> 00:27:54,440
+mögé építve. Elárulok egy titkot, és itt
+
+658
+00:27:52,600 --> 00:27:56,600
+már a screenshot is árulkodhat róla,
+
+659
+00:27:54,440 --> 00:27:59,720
+hogy ráadásul kialakítottam, hogy ez ne
+
+660
+00:27:56,600 --> 00:28:01,559
+csak egy chatbot legyen, hanem több
+
+661
+00:27:59,720 --> 00:28:03,039
+ügynököt,
+
+662
+00:28:01,559 --> 00:28:04,600
+hát amúgy ez nagyon hülyén hangzik így
+
+663
+00:28:03,039 --> 00:28:06,399
+magyarul, de egyre többen használják, és
+
+664
+00:28:04,600 --> 00:28:07,720
+egyébként nekem is nagyon bosszant.
+
+665
+00:28:06,399 --> 00:28:09,960
+Szóval több ilyen ügynököt lehet
+
+666
+00:28:07,720 --> 00:28:12,000
+létrehozni. Maradjunk inkább ennél. egy
+
+667
+00:28:09,960 --> 00:28:15,679
+egész csapatot fel lehet építeni
+
+668
+00:28:12,000 --> 00:28:18,880
+bármennyi ilyen ügynökből, és igen, ők
+
+669
+00:28:15,679 --> 00:28:21,200
+képesek külön memóriát építeni maguknak,
+
+670
+00:28:18,880 --> 00:28:23,440
+sőt lehet nekik ilyen közös tudatuk,
+
+671
+00:28:21,200 --> 00:28:25,519
+közös memória szeletük is. Ezt is úgy
+
+672
+00:28:23,440 --> 00:28:28,039
+alakítottam ki, merthogy nagyon fontos,
+
+673
+00:28:25,519 --> 00:28:30,240
+hogy bizonyos dolgokat mindannyian
+
+674
+00:28:28,039 --> 00:28:32,240
+tudjanak. És ami még durva, amit
+
+675
+00:28:30,240 --> 00:28:34,279
+kialakítottam, és egyébként picit az
+
+676
+00:28:32,240 --> 00:28:36,000
+Open Clubban ezzel küzdöttem a
+
+677
+00:28:34,279 --> 00:28:39,000
+legtöbbet, itt meg nagyon hamar meg
+
+678
+00:28:36,000 --> 00:28:41,320
+tudtam oldani, hogy van egy közös üzenő
+
+679
+00:28:39,000 --> 00:28:43,480
+csatornájuk a háttérben. Egyébként az
+
+680
+00:28:41,320 --> 00:28:46,559
+adatbázisban van kialakítva nekik egy
+
+681
+00:28:43,480 --> 00:28:48,360
+ilyen SQL-os üzenetsor, ahol ők meg
+
+682
+00:28:46,559 --> 00:28:50,840
+tudják szórítani egymást és feladatokat
+
+683
+00:28:48,360 --> 00:28:54,120
+tudnak egymásnak kiadni. Mindjárt erre
+
+684
+00:28:50,840 --> 00:28:56,600
+mutatok példát.
+
+685
+00:28:54,120 --> 00:28:59,320
+Ami nagyon tetszik az Open Chromeba, azt
+
+686
+00:28:56,600 --> 00:29:01,480
+ide is beemeltem. Ilyen például az, hogy
+
+687
+00:28:59,320 --> 00:29:03,519
+proaktívan bizonyos időközönként szól
+
+688
+00:29:01,480 --> 00:29:06,399
+hozzám, és végez el feladatokat. Ezt be
+
+689
+00:29:03,519 --> 00:29:08,960
+lehet állítani, és ő szépen dolgozik. A
+
+690
+00:29:06,399 --> 00:29:11,679
+felépítés ilyen tök egyszerű. Van a
+
+691
+00:29:08,960 --> 00:29:14,720
+Telegram, amin írok nekik akár
+
+692
+00:29:11,679 --> 00:29:16,600
+külön-külön is, van egy csatorna, én a
+
+693
+00:29:14,720 --> 00:29:20,679
+Telegramot használom, de ahogy mondtam,
+
+694
+00:29:16,600 --> 00:29:22,760
+lehet mást is. Van egy Tx session, és ez
+
+695
+00:29:20,679 --> 00:29:24,399
+még fontos, hogy ahhoz, hogy ez
+
+696
+00:29:22,760 --> 00:29:26,399
+működjön, úgynevezett ilyen Timaxba kell
+
+697
+00:29:24,399 --> 00:29:29,559
+őket elindítani. Ez technikai részlet.
+
+698
+00:29:26,399 --> 00:29:30,919
+Akit érdekel, az úgyis erre rákérdez,
+
+699
+00:29:29,559 --> 00:29:32,279
+hogy mit is jelent ez. fel kell
+
+700
+00:29:30,919 --> 00:29:35,480
+telepíteni ehhez hozzá egy ilyen
+
+701
+00:29:32,279 --> 00:29:37,399
+keretet, merthogy itt ők gyakorlatilag,
+
+702
+00:29:35,480 --> 00:29:40,919
+ha több ügynököt futtatok, ők
+
+703
+00:29:37,399 --> 00:29:43,559
+külön-külön cló kód példányok, és
+
+704
+00:29:40,919 --> 00:29:45,720
+külön-külön futnak, ezért tudnak nagyon
+
+705
+00:29:43,559 --> 00:29:47,159
+szuperult teljesíteni.
+
+706
+00:29:45,720 --> 00:29:49,399
+És akkor itt vannak ezek a bizonyos
+
+707
+00:29:47,159 --> 00:29:51,799
+összerakott hátterek még. Memória,
+
+708
+00:29:49,399 --> 00:29:55,960
+kambantábla, Herbe, dashboard, mi
+
+709
+00:29:51,799 --> 00:29:58,159
+egymás. És egy nagy admázis az egész
+
+710
+00:29:55,960 --> 00:30:01,000
+rendszer mögött.
+
+711
+00:29:58,159 --> 00:30:03,559
+Mi a különbség az Open Clow és egy ilyen
+
+712
+00:30:01,000 --> 00:30:06,200
+megoldás között? Az egyik az, hogy ez
+
+713
+00:30:03,559 --> 00:30:09,120
+itt gyári alapokon nyugszik, ezért
+
+714
+00:30:06,200 --> 00:30:11,559
+vannak korlátai. Például az, hogy csak a
+
+715
+00:30:09,120 --> 00:30:14,559
+cloud modelleket tudod használni, nem
+
+716
+00:30:11,559 --> 00:30:17,559
+pedig a bármilyet, mint az OpenClónál.
+
+717
+00:30:14,559 --> 00:30:20,600
+Ez valahol előny, valahol hátrány, mert
+
+718
+00:30:17,559 --> 00:30:24,440
+szerintem ma a legjobb modellek azok még
+
+719
+00:30:20,600 --> 00:30:26,840
+mindig a cló modellek, akár az ettől az
+
+720
+00:30:24,440 --> 00:30:29,080
+Opus az egyértelműen, de akár a Sonet
+
+721
+00:30:26,840 --> 00:30:30,760
+is. Én nagyon szeretem őket használni,
+
+722
+00:30:29,080 --> 00:30:33,120
+és nagyon szerettem az Open Clubba is
+
+723
+00:30:30,760 --> 00:30:35,840
+használni őket. Van olyan blokbejegzés,
+
+724
+00:30:33,120 --> 00:30:37,799
+amit ma az Open Clow botommal, Marvinnal
+
+725
+00:30:35,840 --> 00:30:39,679
+irrattam.
+
+726
+00:30:37,799 --> 00:30:41,440
+Ott egy Quent Modell használatával.
+
+727
+00:30:39,679 --> 00:30:43,919
+Szerintem rájöttök, hogy melyik volt a
+
+728
+00:30:41,440 --> 00:30:46,519
+mai blogbejzések közül az, amit ő írt.
+
+729
+00:30:43,919 --> 00:30:50,919
+Nem annyira jó, maradjunk ennyiben.
+
+730
+00:30:46,519 --> 00:30:52,840
+Aztán ami az OpenCrownál szerintem picit
+
+731
+00:30:50,919 --> 00:30:54,840
+hátrány, hogy azért bármennyire is
+
+732
+00:30:52,840 --> 00:30:57,639
+egyszerűnek tűnik a telepítése, azért az
+
+733
+00:30:54,840 --> 00:30:59,120
+mégis bonyolult tud lenni. Mindenfélét
+
+734
+00:30:57,639 --> 00:31:02,000
+be kell állítani. Nagyon sokszor a
+
+735
+00:30:59,120 --> 00:31:04,519
+frissítés megöl dolgokat és kell vele
+
+736
+00:31:02,000 --> 00:31:05,679
+küzdeni. Tehát, hogy igényel egy ilyen
+
+737
+00:31:04,519 --> 00:31:08,480
+hát azt mondom, hogy folyamatos
+
+738
+00:31:05,679 --> 00:31:10,919
+karbantartást. Nem olyan könnyű
+
+739
+00:31:08,480 --> 00:31:12,919
+folyamatosan használni.
+
+740
+00:31:10,919 --> 00:31:15,440
+Ezzel azért lehetnek gondok. És ami a
+
+741
+00:31:12,919 --> 00:31:17,080
+legnagyobb baj, hogy ahhoz, hogy most
+
+742
+00:31:15,440 --> 00:31:18,760
+már antropic modelleket használjatok,
+
+743
+00:31:17,080 --> 00:31:20,320
+cloud modelleket használjatok az Open
+
+744
+00:31:18,760 --> 00:31:22,600
+Clowba,
+
+745
+00:31:20,320 --> 00:31:24,600
+ahhoz most már mindenképp AI alapokra
+
+746
+00:31:22,600 --> 00:31:26,200
+kell áttérnetek. Én oda tudtam
+
+747
+00:31:24,600 --> 00:31:28,159
+leszorítani az api használatomat a
+
+748
+00:31:26,200 --> 00:31:31,919
+Clódnál, úgyhogy csak Sonet használtam.
+
+749
+00:31:28,159 --> 00:31:35,519
+Az opuszt meg se mertem hívni, hogy napi
+
+750
+00:31:31,919 --> 00:31:38,600
+3 kötő 8 dollár az Open Clowba, hogyha
+
+751
+00:31:35,519 --> 00:31:41,039
+ilyen fő ügynöknek a Sonetet használom.
+
+752
+00:31:38,600 --> 00:31:43,799
+Ha azt kiszámoljátok, az is már fölötte
+
+753
+00:31:41,039 --> 00:31:45,919
+van a 200 dollárnak. Én jobban szeretem
+
+754
+00:31:43,799 --> 00:31:47,679
+azt, hogy van egy fix 200 dolláros
+
+755
+00:31:45,919 --> 00:31:49,960
+előfizetésem, és akkor abba én
+
+756
+00:31:47,679 --> 00:31:51,960
+bármennyit használhatom az eszközt. Ezt
+
+757
+00:31:49,960 --> 00:31:55,320
+jelenleg már az Open Clownál nem tudom
+
+758
+00:31:51,960 --> 00:31:58,760
+megtenni. cserébe a Cloud Clóban viszont
+
+759
+00:31:55,320 --> 00:32:00,399
+igen. Úgyhogy nincs külön napi költség,
+
+760
+00:31:58,760 --> 00:32:02,960
+bátran lehet használni. Én nekem
+
+761
+00:32:00,399 --> 00:32:06,080
+elsősorban ezért van most a Cloud Clow
+
+762
+00:32:02,960 --> 00:32:07,960
+párhuzamosan felépítve.
+
+763
+00:32:06,080 --> 00:32:09,799
+És ami az igazán jó benne, hogy
+
+764
+00:32:07,960 --> 00:32:12,080
+gyakorlatilag 10 perc alatt kész, hiszen
+
+765
+00:32:09,799 --> 00:32:14,519
+ha telepítitek azt a pár függőséget, ami
+
+766
+00:32:12,080 --> 00:32:17,679
+kell, a cloud kódot terminálban,
+
+767
+00:32:14,519 --> 00:32:22,159
+telepítitek ezt a Tmaxot, Node GS kell
+
+768
+00:32:17,679 --> 00:32:24,840
+hozzá, ilyen pár alap dolog, az települ.
+
+769
+00:32:22,159 --> 00:32:26,240
+Nagyon egyszerű leírás van ehhez. Van
+
+770
+00:32:24,840 --> 00:32:28,600
+két kérdés, amit még meg kell
+
+771
+00:32:26,240 --> 00:32:30,559
+válaszolni. Api kulcsokat megadni és már
+
+772
+00:32:28,600 --> 00:32:32,919
+él is. Tehát tényleg egy 10 percnél nem
+
+773
+00:32:30,559 --> 00:32:35,039
+több egy Open Crow telepítés. Az elmúlt
+
+774
+00:32:32,919 --> 00:32:37,080
+időszakban csináltam párat így ismerősi
+
+775
+00:32:35,039 --> 00:32:39,039
+körbe, azért az inkább el tud nyúlni
+
+776
+00:32:37,080 --> 00:32:41,559
+ilyen egy- másfél órára, hogy minden
+
+777
+00:32:39,039 --> 00:32:44,320
+helyén legyen, minden jól működjön.
+
+778
+00:32:41,559 --> 00:32:45,559
+Persze komplexitás függő, de a
+
+779
+00:32:44,320 --> 00:32:47,320
+tapasztalatom az, hogy ez egy kicsit
+
+780
+00:32:45,559 --> 00:32:49,399
+hosszabb.
+
+781
+00:32:47,320 --> 00:32:52,799
+Ugye ebben a rendszerben, tehát amit
+
+782
+00:32:49,399 --> 00:32:54,880
+kapsz, az egy AI assistenst, egy komplex
+
+783
+00:32:52,799 --> 00:32:57,760
+memóriarendszerrel, több agent egy
+
+784
+00:32:54,880 --> 00:32:59,919
+csapatként interagent kommunikációval
+
+785
+00:32:57,760 --> 00:33:01,480
+satöbbi, satöbbi. De hogy ne csak
+
+786
+00:32:59,919 --> 00:33:04,600
+beszéljek róla, hanem hogy lássátok is,
+
+787
+00:33:01,480 --> 00:33:07,679
+hogy ez hogyan működik. Így néz ki ennek
+
+788
+00:33:04,600 --> 00:33:10,039
+a bizonyos Cloud Clown-nak a hát ilyen
+
+789
+00:33:07,679 --> 00:33:12,159
+felülete. Itt még ugye nem vettem föl a
+
+790
+00:33:10,039 --> 00:33:14,240
+kambantáblára feladatokat, erre még nem
+
+791
+00:33:12,159 --> 00:33:16,519
+költöztem át, de hogy alapvetően most a
+
+792
+00:33:14,240 --> 00:33:19,159
+chatben már működik vele az
+
+793
+00:33:16,519 --> 00:33:20,519
+együttműködés. Csapattagok. Létre lehet
+
+794
+00:33:19,159 --> 00:33:22,600
+hozni, ahogy mondtam, különböző
+
+795
+00:33:20,519 --> 00:33:24,720
+csapattagokat. Nagyon egyszerűen. Tehát
+
+796
+00:33:22,600 --> 00:33:28,600
+itt most kiválasztom őt, és akkor legyen
+
+797
+00:33:24,720 --> 00:33:32,519
+ő Samu, mert olyan szamurájos, és akkor
+
+798
+00:33:28,600 --> 00:33:35,000
+neki az legyen a feladata, hogy
+
+799
+00:33:32,519 --> 00:33:36,840
+ő egy backend
+
+800
+00:33:35,000 --> 00:33:40,200
+fejlesztő,
+
+801
+00:33:36,840 --> 00:33:43,159
+aki opuszt használ természetesen.
+
+802
+00:33:40,200 --> 00:33:46,039
+És ilyenkor a rendszer képes ebből a
+
+803
+00:33:43,159 --> 00:33:49,120
+rövid leírásomból legyártani a cloud.
+
+804
+00:33:46,039 --> 00:33:50,559
+MD-t meg a Soldat MDjét. Itt látni
+
+805
+00:33:49,120 --> 00:33:52,440
+fogjátok, ez meghatározza a
+
+806
+00:33:50,559 --> 00:33:55,200
+személyiségét és meghatározza az ő
+
+807
+00:33:52,440 --> 00:33:57,200
+tudását. Ebből a rövid félmondatból is
+
+808
+00:33:55,200 --> 00:34:00,240
+ezt tudja. Ezt így alakítottam ki, hogy
+
+809
+00:33:57,200 --> 00:34:02,080
+ez így működjön. Ami a jó lesz benne,
+
+810
+00:34:00,240 --> 00:34:04,840
+hogy ugye ahogy mondtam, ő mindig ilyen
+
+811
+00:34:02,080 --> 00:34:08,159
+önállóan fog majd szépen futni, meg
+
+812
+00:34:04,840 --> 00:34:10,679
+elindulni, meg minden.
+
+813
+00:34:08,159 --> 00:34:12,760
+Szóval el is készült. Látjátok? Itt
+
+814
+00:34:10,679 --> 00:34:15,720
+látszik az, hogy Samu, ő egy backend
+
+815
+00:34:12,760 --> 00:34:17,520
+fejlesztő. A itt igen, rövid oval írom a
+
+816
+00:34:15,720 --> 00:34:19,839
+nevemet, de mindegy. Ebbe így be lehet
+
+817
+00:34:17,520 --> 00:34:22,720
+javítani, mik a feladatai satöbbi. Itt
+
+818
+00:34:19,839 --> 00:34:26,440
+van neki a soulmben, hogy milyen a
+
+819
+00:34:22,720 --> 00:34:29,440
+kommunikáció stílusa és hogyan szólítsa
+
+820
+00:34:26,440 --> 00:34:31,720
+meg. Engem szabiz és akkor ilyenek
+
+821
+00:34:29,440 --> 00:34:34,320
+vannak benne, létre lehet hozni. És ugye
+
+822
+00:34:31,720 --> 00:34:36,000
+Samunál ami még fontos ilyenkor, hogy be
+
+823
+00:34:34,320 --> 00:34:41,159
+kell állítani, ugye ki van válaszolva az
+
+824
+00:34:36,000 --> 00:34:43,760
+ő képe. Beállítás ugye az opusz volt, és
+
+825
+00:34:41,159 --> 00:34:46,079
+Telegram csatornát kell neki csinálni.
+
+826
+00:34:43,760 --> 00:34:48,000
+Ugye itt jön az, amit meséltem, sőt ezt
+
+827
+00:34:46,079 --> 00:34:50,119
+megcsinálom nektek élesben, aztán majd
+
+828
+00:34:48,000 --> 00:34:54,679
+somut úgy is dobom, és akkor nem éritek
+
+829
+00:34:50,119 --> 00:34:59,200
+el. De legyen akkor az, hogy kérek egy
+
+830
+00:34:54,679 --> 00:34:59,200
+Telegram bot father
+
+831
+00:34:59,280 --> 00:35:03,960
+work and bot.
+
+832
+00:35:01,760 --> 00:35:05,880
+Ugye itt adni kell neki egy nevet, és
+
+833
+00:35:03,960 --> 00:35:08,040
+adni kell egy olyan nevet, ahol ott van
+
+834
+00:35:05,880 --> 00:35:10,000
+neki ez a bizonyos tokenje. Ezt
+
+835
+00:35:08,040 --> 00:35:13,400
+összekapcsoljuk,
+
+836
+00:35:10,000 --> 00:35:17,400
+megadjuk. Bot token megvolt.
+
+837
+00:35:13,400 --> 00:35:17,400
+És akkor nyomunk egy startot.
+
+838
+00:35:18,000 --> 00:35:24,839
+Hopp, itt elfelejtettem elindítani.
+
+839
+00:35:21,800 --> 00:35:28,040
+Hopp, meg is jött.
+
+840
+00:35:24,839 --> 00:35:33,720
+Írok neki egy üzenetet.
+
+841
+00:35:28,040 --> 00:35:35,760
+És már itt is van. Samu ki vagy te?
+
+842
+00:35:33,720 --> 00:35:37,760
+És ott is van. Samu vagyok. Beckend
+
+843
+00:35:35,760 --> 00:35:39,839
+fejlesztő agensed. Szóval már lehet is
+
+844
+00:35:37,760 --> 00:35:43,240
+vele dumálgatni. Lehet például azt
+
+845
+00:35:39,839 --> 00:35:45,480
+megkérni tőle, hogy küld meg a
+
+846
+00:35:43,240 --> 00:35:49,079
+profilképed,
+
+847
+00:35:45,480 --> 00:35:49,079
+hogy itt is beállítsam.
+
+848
+00:35:51,240 --> 00:35:55,599
+Meg is van.
+
+849
+00:35:53,160 --> 00:35:58,800
+Jó. Séve,
+
+850
+00:35:55,599 --> 00:35:58,800
+ez megvolt.
+
+851
+00:35:59,240 --> 00:36:07,800
+Ezeket jó. És ugye beállítás az ilyen
+
+852
+00:36:02,920 --> 00:36:10,880
+egyszerű, hogy rámegyünk ide, edit. Így.
+
+853
+00:36:07,800 --> 00:36:12,560
+És Samu már be is van állítva. Ennyi
+
+854
+00:36:10,880 --> 00:36:14,920
+volt egy bot létrehozása. És hogyha
+
+855
+00:36:12,560 --> 00:36:18,079
+visszamegyek ide, akkor látni fogjátok,
+
+856
+00:36:14,920 --> 00:36:20,599
+hogy Samu megjelent a csapatban.
+
+857
+00:36:18,079 --> 00:36:23,359
+Mostantól ő is itt van. És a legszebb
+
+858
+00:36:20,599 --> 00:36:25,760
+egyébként, hogy tudjuk azt mondani itt
+
+859
+00:36:23,359 --> 00:36:30,240
+megszólítva Marvint
+
+860
+00:36:25,760 --> 00:36:32,079
+a hogy kérlek szólj. Várjatok, tudjátok
+
+861
+00:36:30,240 --> 00:36:35,160
+mit? Ezt így fogom megmutatni nektek,
+
+862
+00:36:32,079 --> 00:36:36,720
+hogy itt megnyitom Zarát is.
+
+863
+00:36:35,160 --> 00:36:38,440
+Na és akkor arra gondoltam, hogy
+
+864
+00:36:36,720 --> 00:36:41,000
+megmutatom nektek, hogy ők hogyan tudnak
+
+865
+00:36:38,440 --> 00:36:42,640
+egymással kommunikálni. Itt egyébként a
+
+866
+00:36:41,000 --> 00:36:44,520
+kis szemfüles az láthatja, hogy pár
+
+867
+00:36:42,640 --> 00:36:46,280
+dolog itt történt, hogy mit csinált
+
+868
+00:36:44,520 --> 00:36:48,520
+Marvin, és ugye látszik, hogy Zarával
+
+869
+00:36:46,280 --> 00:36:52,200
+dolgoztam a mai prezentáción, és ezt ő
+
+870
+00:36:48,520 --> 00:36:53,440
+készített el. Ja, ez így tök jó volt.
+
+871
+00:36:52,200 --> 00:36:57,280
+Na, és akkor most figyeljétek a
+
+872
+00:36:53,440 --> 00:36:59,079
+kommunikációjat. Szólj Zarának,
+
+873
+00:36:57,280 --> 00:37:04,520
+hogy
+
+874
+00:36:59,079 --> 00:37:08,160
+mutatkozzon be, és utána írjon neked,
+
+875
+00:37:04,520 --> 00:37:08,160
+hogy be.
+
+876
+00:37:09,119 --> 00:37:12,119
+Figyeljétek,
+
+877
+00:37:13,680 --> 00:37:17,480
+most megkértem ugye Marvint, hogy
+
+878
+00:37:15,800 --> 00:37:20,480
+szóljon Zarának, hogy mutatkozzon be.
+
+879
+00:37:17,480 --> 00:37:22,200
+Ugye Zara a marketinges bot, és úy és
+
+880
+00:37:20,480 --> 00:37:24,560
+utána pedig szóljon neki vissza, hogy
+
+881
+00:37:22,200 --> 00:37:26,079
+bemutatkozott. És megkértem, mármint
+
+882
+00:37:24,560 --> 00:37:28,920
+ugyanúgy, hogy Samunál is kérje
+
+883
+00:37:26,079 --> 00:37:31,920
+ugyanezt.
+
+884
+00:37:28,920 --> 00:37:31,920
+Hm.
+
+885
+00:37:34,800 --> 00:37:39,720
+Jó. És közben egyébként látjátok, Zara
+
+886
+00:37:37,960 --> 00:37:42,599
+bemutatkozott,
+
+887
+00:37:39,720 --> 00:37:44,839
+és ott ott leírja, hogy ő kicsoda. Az új
+
+888
+00:37:42,599 --> 00:37:46,560
+agentet valamiért nem látja még Marvin.
+
+889
+00:37:44,839 --> 00:37:48,839
+Lehet, hogy az a baj, hogy ilyenkor újra
+
+890
+00:37:46,560 --> 00:37:52,960
+kell induljon, hogy betöltse a többi
+
+891
+00:37:48,839 --> 00:37:55,680
+botot is, de ez most az első ilyen, hogy
+
+892
+00:37:52,960 --> 00:37:59,160
+friss ú teljesen új agentet hoztam létre
+
+893
+00:37:55,680 --> 00:38:02,040
+itt élesbe, de ennek is megvan a varázsa
+
+894
+00:37:59,160 --> 00:38:04,359
+és meg fogjuk mindjárt nézni. Amúgy
+
+895
+00:38:02,040 --> 00:38:07,359
+látjátok, Zara tök jó, jól van
+
+896
+00:38:04,359 --> 00:38:09,960
+felépítve. Ilyen data driven, tehát hogy
+
+897
+00:38:07,359 --> 00:38:12,839
+ilyen adatalapú marketinges. Oké. És
+
+898
+00:38:09,960 --> 00:38:15,480
+látjátok, Zara írt neki.
+
+899
+00:38:12,839 --> 00:38:18,680
+Ja, közben megtalálta a Samut,
+
+900
+00:38:15,480 --> 00:38:20,319
+hogy megvan. Szuper. És akkor Samu is
+
+901
+00:38:18,680 --> 00:38:23,400
+bemutatkozott,
+
+902
+00:38:20,319 --> 00:38:26,000
+és mindjárt meglátjuk, hogy Marvinnak
+
+903
+00:38:23,400 --> 00:38:29,920
+visszaválaszolnak-e
+
+904
+00:38:26,000 --> 00:38:29,920
+Samu is, hogy ő is bemutatkozott.
+
+905
+00:38:30,359 --> 00:38:34,839
+Nagyon szuper. Na, szóval és hogy mire
+
+906
+00:38:32,640 --> 00:38:36,079
+jó ez azon túl, hogy most nagyon vicces,
+
+907
+00:38:34,839 --> 00:38:38,200
+hogy így látni, hogy így tényleg
+
+908
+00:38:36,079 --> 00:38:40,359
+kommunikálnak egymással és bemutatkozást
+
+909
+00:38:38,200 --> 00:38:42,400
+kér tőle, meg ilyenek. Ugye azért jó,
+
+910
+00:38:40,359 --> 00:38:45,079
+mert egyrészt meg lehet őket külön-külön
+
+911
+00:38:42,400 --> 00:38:47,599
+szólítani így a Telegram csatornájukon
+
+912
+00:38:45,079 --> 00:38:50,800
+keresztül. Ezt is alkalmaztam már
+
+913
+00:38:47,599 --> 00:38:52,640
+korábban, de ami az igazán jó, hogy
+
+914
+00:38:50,800 --> 00:38:55,040
+ezáltal egyébként hozzá lehet őket
+
+915
+00:38:52,640 --> 00:38:57,200
+rendelni csoportokhoz. Tehát például
+
+916
+00:38:55,040 --> 00:38:58,839
+cégnél használtok Telegramot, akkor
+
+917
+00:38:57,200 --> 00:39:00,240
+mondjuk nem tudom, marketingest tudják
+
+918
+00:38:58,839 --> 00:39:01,720
+használni a marketingesek saját
+
+919
+00:39:00,240 --> 00:39:04,160
+skilleket lehet hozzárendelni, hogy
+
+920
+00:39:01,720 --> 00:39:06,000
+mindjárt ezt is megmutatom. És ami még
+
+921
+00:39:04,160 --> 00:39:07,599
+durva benne, hogy ugye ők képesek
+
+922
+00:39:06,000 --> 00:39:10,359
+tényleg egymással kommunikálni,
+
+923
+00:39:07,599 --> 00:39:12,040
+egymásnak információt átadni. Azaz
+
+924
+00:39:10,359 --> 00:39:13,640
+például én meg tudom kérni márt egy
+
+925
+00:39:12,040 --> 00:39:15,839
+összetett feladatra és tudom neki azt
+
+926
+00:39:13,640 --> 00:39:18,599
+mondani, hogy ehhez készítse Zara el a
+
+927
+00:39:15,839 --> 00:39:20,319
+dolgokat, gyűjts majd be tőle, mondd
+
+928
+00:39:18,599 --> 00:39:22,720
+neki, hogy Zara egyébként küldj el ezt
+
+929
+00:39:20,319 --> 00:39:24,680
+nekem. Marvin szokta nekem szállítani
+
+930
+00:39:22,720 --> 00:39:26,160
+például a reggeli híreket, és például
+
+931
+00:39:24,680 --> 00:39:28,640
+elég csak annyit mondani neki a hírek
+
+932
+00:39:26,160 --> 00:39:31,000
+alapján, hogy jó, akkor ebből a hírből
+
+933
+00:39:28,640 --> 00:39:32,480
+Zara készítsen egy blogbezést, és ő
+
+934
+00:39:31,000 --> 00:39:34,160
+onnantól kezdve meg fogja tudni
+
+935
+00:39:32,480 --> 00:39:35,920
+csinálni, merthogy kiosztja neki majd
+
+936
+00:39:34,160 --> 00:39:37,560
+Marvin. Szóval van egy csomó ilyen
+
+937
+00:39:35,920 --> 00:39:39,160
+átjárhatóság benne. Nekem ez a része
+
+938
+00:39:37,560 --> 00:39:40,839
+tetszett, és igazából ez volt az, ami
+
+939
+00:39:39,160 --> 00:39:43,280
+kevésbé működött nekem jól az Open
+
+940
+00:39:40,839 --> 00:39:45,960
+Clownál, amikor agenteket csináltam. Ott
+
+941
+00:39:43,280 --> 00:39:48,079
+több probléma volt ezzel. Itt egy csomó
+
+942
+00:39:45,960 --> 00:39:50,319
+tudatos döntést hoztam, hogy hogyan
+
+943
+00:39:48,079 --> 00:39:52,280
+oldom ezt meg. Ugye ami még nagyon
+
+944
+00:39:50,319 --> 00:39:54,480
+király, ahogy mondtam, hogy lehet
+
+945
+00:39:52,280 --> 00:39:56,680
+hozzáadni nekik skilleket. Itt lehet
+
+946
+00:39:54,480 --> 00:40:00,720
+simán ugyanúgy skillt hozzáadni, mint
+
+947
+00:39:56,680 --> 00:40:02,480
+ahogy hát bárhol. Most már például hozzá
+
+948
+00:40:00,720 --> 00:40:04,480
+van adva a Szabolcs Brand skillem
+
+949
+00:40:02,480 --> 00:40:06,480
+Zarához. Az az ő tud úgy dolgozni, hogy
+
+950
+00:40:04,480 --> 00:40:09,400
+az én brendem szerint készíti el az
+
+951
+00:40:06,480 --> 00:40:11,560
+infókat, ha én ezt kérem tőle. Samunál
+
+952
+00:40:09,400 --> 00:40:13,160
+is oda tudok adni ilyen skilleket, és
+
+953
+00:40:11,560 --> 00:40:15,400
+hát vannak olyan általános skillek, amik
+
+954
+00:40:13,160 --> 00:40:16,920
+a többieknél is megjelennek. Aztán ami
+
+955
+00:40:15,400 --> 00:40:19,160
+még jó, hogy ezen a felületen
+
+956
+00:40:16,920 --> 00:40:21,240
+kialakítottam az ütemezett feladatokat.
+
+957
+00:40:19,160 --> 00:40:23,000
+Ugye itt lehet fölvenni ezeket ilyen
+
+958
+00:40:21,240 --> 00:40:24,960
+többféle nézetbe lehet látni.
+
+959
+00:40:23,000 --> 00:40:26,560
+Beállítottam szándékosan délre mind a
+
+960
+00:40:24,960 --> 00:40:28,200
+kettőt, hogy lássam, hogy hogy jelenik
+
+961
+00:40:26,560 --> 00:40:31,240
+meg a megjelenítésbe. De látszik, hogy
+
+962
+00:40:28,200 --> 00:40:32,640
+megnézi a híreket, megnézi a leveleimet,
+
+963
+00:40:31,240 --> 00:40:34,760
+délben is csinál egy összefogót,
+
+964
+00:40:32,640 --> 00:40:36,920
+ugyanazt ilyen heti nézetbe is látható.
+
+965
+00:40:34,760 --> 00:40:38,560
+Szóval ezzel is így kicsit játszottam.
+
+966
+00:40:36,920 --> 00:40:41,359
+Ezt mind-mind úgy alakítottam ki, hogy
+
+967
+00:40:38,560 --> 00:40:44,119
+beszélgettem Marveen, ő nem a Marvin,
+
+968
+00:40:41,359 --> 00:40:46,599
+hanem ő egy Marvin nevű botom. Ne
+
+969
+00:40:44,119 --> 00:40:48,880
+kérdezzétek, nem volt kedvem ötletelni
+
+970
+00:40:46,599 --> 00:40:51,000
+új néven. Meg a karaktert is áthoztam.
+
+971
+00:40:48,880 --> 00:40:53,319
+Szóval ja, merthogy tényleg megpróbáltam
+
+972
+00:40:51,000 --> 00:40:55,520
+ilyen open clow klónt csinálni, hogy
+
+973
+00:40:53,319 --> 00:40:57,760
+hogy mennyire tud hasonló élményt
+
+974
+00:40:55,520 --> 00:40:59,880
+nyújteni nekem. Aztán itt van a memória
+
+975
+00:40:57,760 --> 00:41:01,640
+rendszer, amiben van ugyanúgy a három
+
+976
+00:40:59,880 --> 00:41:04,200
+szintű, mint az Open Clubon is, amit
+
+977
+00:41:01,640 --> 00:41:06,119
+felépítettem. egy ilyen forró, egy
+
+978
+00:41:04,200 --> 00:41:07,720
+meleg, meg egy hideg memória, tehát
+
+979
+00:41:06,119 --> 00:41:09,520
+minél régebbi, ugye, annál inkább kerül
+
+980
+00:41:07,720 --> 00:41:11,880
+oda. Ugye látszik, hogy a legutolsó
+
+981
+00:41:09,520 --> 00:41:13,640
+olyan nagyon forró memóriába ez a
+
+982
+00:41:11,880 --> 00:41:15,720
+mission control dashboard fejlesztés
+
+983
+00:41:13,640 --> 00:41:18,000
+volt folyamatban. Memória rendszert
+
+984
+00:41:15,720 --> 00:41:20,520
+építettem így át vele. Vannak megosztott
+
+985
+00:41:18,000 --> 00:41:22,440
+memóriák, meg egyébként van agent szintű
+
+986
+00:41:20,520 --> 00:41:25,640
+memóriát. Samunak még semmi nem lesz a
+
+987
+00:41:22,440 --> 00:41:27,599
+fejében, többieknek azért már akad. És
+
+988
+00:41:25,640 --> 00:41:29,760
+van egy ilyen gráfos megjelenítés, ezt
+
+989
+00:41:27,599 --> 00:41:31,400
+is kialakítottam, ezt láttam máshol is.
+
+990
+00:41:29,760 --> 00:41:33,560
+Ez nagyon bejött nekem. Tehát ilyen
+
+991
+00:41:31,400 --> 00:41:35,920
+szépen lehet itt húzkodni ezeket a
+
+992
+00:41:33,560 --> 00:41:37,839
+memóriaszálakat, meg be lehet
+
+993
+00:41:35,920 --> 00:41:40,079
+kattintani, hogy én ezt preferálom,
+
+994
+00:41:37,839 --> 00:41:42,079
+például ezt a MD formátumot satöbbi,
+
+995
+00:41:40,079 --> 00:41:44,200
+satöbbi. Van napló is, szóval memóri
+
+996
+00:41:42,079 --> 00:41:46,160
+rendszer is kialakítva. És amit még most
+
+997
+00:41:44,200 --> 00:41:48,359
+gyorsan beletettem, azok nem mások, mint
+
+998
+00:41:46,160 --> 00:41:50,359
+a konnektorok, merthogy egyébként és
+
+999
+00:41:48,359 --> 00:41:53,160
+ebbe ez a jó, hogy itt minden olyan
+
+1000
+00:41:50,359 --> 00:41:55,440
+dolog működik, ami a cloud kódeba be van
+
+1001
+00:41:53,160 --> 00:41:57,960
+kötve. Ugye ott pillanatok alatt föl
+
+1002
+00:41:55,440 --> 00:42:01,079
+lehet építeni a cloud kódebban ezt az
+
+1003
+00:41:57,960 --> 00:42:03,359
+MCP részt. Ö, szépen lehet ott MCP-ket
+
+1004
+00:42:01,079 --> 00:42:05,520
+létrehozni, meg csinálni, de ugye azt
+
+1005
+00:42:03,359 --> 00:42:07,920
+ott ilyen terminálos nézetben biztos
+
+1006
+00:42:05,520 --> 00:42:09,839
+emlékeztek, ugye elindítom és akkor
+
+1007
+00:42:07,920 --> 00:42:12,440
+mindjárt megmutatom. Biztos tudjátok,
+
+1008
+00:42:09,839 --> 00:42:15,560
+van ez az MCP rész, ugye itt így néz ki
+
+1009
+00:42:12,440 --> 00:42:18,800
+ilyen rondán. Na most ugyanezek az MCP-k
+
+1010
+00:42:15,560 --> 00:42:21,160
+szebben néz kinézve, így néznek ki ide
+
+1011
+00:42:18,800 --> 00:42:22,880
+berakva. Itt látszanak az aktívok,
+
+1012
+00:42:21,160 --> 00:42:25,880
+látszik az összes. Van öt, aminél
+
+1013
+00:42:22,880 --> 00:42:28,800
+autentikáció szükséges, és van egy hibás
+
+1014
+00:42:25,880 --> 00:42:30,920
+problémás MCP, azt majd törlöm, merthogy
+
+1015
+00:42:28,800 --> 00:42:33,240
+egyébként ilyen könnyű innen, hogy itt
+
+1016
+00:42:30,920 --> 00:42:35,760
+tudom azt mondani, hogy törlöm. És amúgy
+
+1017
+00:42:33,240 --> 00:42:37,880
+hozzá tudom rendelni őket különböző al
+
+1018
+00:42:35,760 --> 00:42:40,119
+ügynökökhöz. Meg lehet azt csinálni,
+
+1019
+00:42:37,880 --> 00:42:42,240
+hogy bizonyos MCP-ket csak bizonyos
+
+1020
+00:42:40,119 --> 00:42:43,319
+ügynökök lássanak. Tehát biztos, hogy
+
+1021
+00:42:42,240 --> 00:42:44,920
+fogok csinálni egy pénzügyes
+
+1022
+00:42:43,319 --> 00:42:47,599
+csapattagot, aki intézi innentől a
+
+1023
+00:42:44,920 --> 00:42:50,240
+számlázással kapcsolatos dolgaimat.
+
+1024
+00:42:47,599 --> 00:42:51,880
+És amit most amúgy a Cloud Coworkben is
+
+1025
+00:42:50,240 --> 00:42:53,920
+tök jól ki tudtam alakítani, és ott
+
+1026
+00:42:51,880 --> 00:42:55,599
+nagyon jól működik a akár ez, hogy nem
+
+1027
+00:42:53,920 --> 00:42:57,640
+tudom, az által kiállított számlákat
+
+1028
+00:42:55,599 --> 00:42:59,119
+leenőrzi a Wisebba, hogy bejött-e az
+
+1029
+00:42:57,640 --> 00:43:00,800
+utalás és fizetettre rállítja a
+
+1030
+00:42:59,119 --> 00:43:02,960
+billingó. Tehát ezt így nagyon szuperul
+
+1031
+00:43:00,800 --> 00:43:07,680
+megcsináltam, de ezt a folyamatot át
+
+1032
+00:43:02,960 --> 00:43:10,599
+fogom ültetni ide ebbe az új hát új Clot
+
+1033
+00:43:07,680 --> 00:43:12,640
+Clű megoldásba, amit ilyen szerénye most
+
+1034
+00:43:10,599 --> 00:43:15,240
+már Marvinnak neveztem el, ez a projekt
+
+1035
+00:43:12,640 --> 00:43:17,119
+neve. És hogy miért mutattam be ilyen
+
+1036
+00:43:15,240 --> 00:43:18,559
+hosszan? Mert hogyha szeretnétek ilyet,
+
+1037
+00:43:17,119 --> 00:43:20,119
+akkor csatlakozzatok a School
+
+1038
+00:43:18,559 --> 00:43:21,839
+közösségben, mert oda egyrészt fölteszem
+
+1039
+00:43:20,119 --> 00:43:24,240
+majd a leírását, hogy hogy tudtok ilyet
+
+1040
+00:43:21,839 --> 00:43:26,319
+magatoknak akár létrehozni. Ott ilyen
+
+1041
+00:43:24,240 --> 00:43:28,280
+mesterpromptot raktam ki korábban is, és
+
+1042
+00:43:26,319 --> 00:43:30,680
+az szerintem alapvetően jó tud lenni
+
+1043
+00:43:28,280 --> 00:43:32,359
+hozzá, hogy kialakítsátok, de ha nem
+
+1044
+00:43:30,680 --> 00:43:34,680
+akartok vele vesződni, és nem akarjátok
+
+1045
+00:43:32,359 --> 00:43:37,200
+saját magatok kialakítani, akkor szintén
+
+1046
+00:43:34,680 --> 00:43:38,960
+ott a school-on keresztül, bár azért,
+
+1047
+00:43:37,200 --> 00:43:41,040
+mert hogy privát ripóként rakom ki a
+
+1048
+00:43:38,960 --> 00:43:42,800
+GitHubra, de elérhetővé fogom tenni,
+
+1049
+00:43:41,040 --> 00:43:45,200
+hogy le tudjátok tölteni és föl tudjátok
+
+1050
+00:43:42,800 --> 00:43:47,119
+telepíteni. első körben meg környezetre.
+
+1051
+00:43:45,200 --> 00:43:49,319
+Tehát most többet nem akartam
+
+1052
+00:43:47,119 --> 00:43:51,599
+fejleszteni ilyen más irányba, hanem
+
+1053
+00:43:49,319 --> 00:43:53,200
+alapvetően a macint tudjátok ezt is
+
+1054
+00:43:51,599 --> 00:43:55,079
+futtatni, hogyha valaki beruházott már
+
+1055
+00:43:53,200 --> 00:43:57,000
+rá, vagy a Macbukotokon. Én ezt
+
+1056
+00:43:55,079 --> 00:43:59,880
+egyébként ezt a rendszert a Marvin
+
+1057
+00:43:57,000 --> 00:44:02,160
+mellett Marvenként ugye szintén a
+
+1058
+00:43:59,880 --> 00:44:04,880
+Mcminin futtatom, tehát ott futnak most
+
+1059
+00:44:02,160 --> 00:44:07,599
+párhuzamosan. Most Marvin kapott néhány
+
+1060
+00:44:04,880 --> 00:44:09,880
+lakótársat így a a szomszédlakásban,
+
+1061
+00:44:07,599 --> 00:44:14,000
+vagy nem is tudom minek nevezzem ezt, és
+
+1062
+00:44:09,880 --> 00:44:16,280
+ott fut ez a Clut Cód alapú megoldásom,
+
+1063
+00:44:14,000 --> 00:44:18,400
+ami tehát ennek nagyon nagy előnye
+
+1064
+00:44:16,280 --> 00:44:20,640
+használható a 200 dolláros vagy 100
+
+1065
+00:44:18,400 --> 00:44:22,119
+dolláros vagy a 20 dolláros haviddíjal.
+
+1066
+00:44:20,640 --> 00:44:24,040
+A 20 dolláros nem sok mindenre lesz
+
+1067
+00:44:22,119 --> 00:44:26,079
+elég, de használható vele. Nem kell apit
+
+1068
+00:44:24,040 --> 00:44:28,880
+vásárolni, tehát ez mindenképp fontos.
+
+1069
+00:44:26,079 --> 00:44:31,760
+gyári megoldásokra épít alapvetően, és
+
+1070
+00:44:28,880 --> 00:44:33,880
+azt egészítette ki, vagy egészítettem ki
+
+1071
+00:44:31,760 --> 00:44:36,800
+a különböző egyéb megoldásokkal, mint
+
+1072
+00:44:33,880 --> 00:44:38,640
+például ez a bizonyos dashboard, meg a
+
+1073
+00:44:36,800 --> 00:44:40,240
+csapattagok létrehozása meg minden.
+
+1074
+00:44:38,640 --> 00:44:43,079
+Tehát, hogy alapvetően ez az, ami a
+
+1075
+00:44:40,240 --> 00:44:45,640
+plusz ahhoz képest, mint amit a gyári
+
+1076
+00:44:43,079 --> 00:44:48,440
+clódos megoldás tud.
+
+1077
+00:44:45,640 --> 00:44:52,079
+Úgyhogy szerintem egy jó kis alternatíva
+
+1078
+00:44:48,440 --> 00:44:55,680
+azoknak, akik tartottak tartanak az Open
+
+1079
+00:44:52,079 --> 00:44:58,800
+Clowtól, és szeretnék élvezni Fixért ezt
+
+1080
+00:44:55,680 --> 00:45:00,760
+a bizonyos clódos megoldást. És abban is
+
+1081
+00:44:58,800 --> 00:45:03,319
+biztos vagyok amúgy, hogy oké, ezt most
+
+1082
+00:45:00,760 --> 00:45:05,079
+nekem kellett így csinálni, de hogy én
+
+1083
+00:45:03,319 --> 00:45:07,119
+azt látom, hogy egyébként az Antropic
+
+1084
+00:45:05,079 --> 00:45:09,200
+csapata részben ebbe az irányba tart,
+
+1085
+00:45:07,119 --> 00:45:12,160
+azaz jönni fognak még hasonló
+
+1086
+00:45:09,200 --> 00:45:13,760
+megoldások, akár saját memóriakelésben
+
+1087
+00:45:12,160 --> 00:45:16,079
+ők is egy ilyen részletesebbet fognak
+
+1088
+00:45:13,760 --> 00:45:17,760
+hozni. hogy az agent együttműködésre már
+
+1089
+00:45:16,079 --> 00:45:19,440
+most is van megoldásuk. picit onnan
+
+1090
+00:45:17,760 --> 00:45:21,599
+loptam ezt az ötletet, hogy végül is van
+
+1091
+00:45:19,440 --> 00:45:23,400
+egy közös üzenőtáblájuk, hogy azon
+
+1092
+00:45:21,599 --> 00:45:25,599
+keresztül van a feladatkiosztás, azt
+
+1093
+00:45:23,400 --> 00:45:27,839
+kicsit onnan loptam, mint ahogy a a
+
+1094
+00:45:25,599 --> 00:45:30,480
+clódban meg van oldva, a cló kódba ez a
+
+1095
+00:45:27,839 --> 00:45:32,119
+ez a típusú ügynökcsapata együttműködés,
+
+1096
+00:45:30,480 --> 00:45:35,319
+csak kiterjesztettem minden más
+
+1097
+00:45:32,119 --> 00:45:38,040
+területre, úgyhogy próbáljatok ki,
+
+1098
+00:45:35,319 --> 00:45:40,000
+nézzétek meg, akár építsétek föl, ha
+
+1099
+00:45:38,040 --> 00:45:42,040
+megkéritek a COD-ot, szerintem simán a
+
+1100
+00:45:40,000 --> 00:45:43,200
+videó alapján is fel tud építeni nektek
+
+1101
+00:45:42,040 --> 00:45:44,599
+hasonlót, vagy hogyha nem akartok
+
+1102
+00:45:43,200 --> 00:45:47,640
+vesződni vele, akkor gyertek a school
+
+1103
+00:45:44,599 --> 00:45:50,559
+közösségbe, és ott megkapjátok készen
+
+1104
+00:45:47,640 --> 00:45:53,040
+ezt, mint egy nagy csomag, vagy pedig a
+
+1105
+00:45:50,559 --> 00:45:54,640
+a GitHubon keresztül ott. Én ennyi
+
+1106
+00:45:53,040 --> 00:45:55,760
+voltam mára. Nagyon köszönöm, hogy itt
+
+1107
+00:45:54,640 --> 00:45:57,200
+voltatok. Ha még nem vagytok
+
+1108
+00:45:55,760 --> 00:45:59,240
+feliratkozva a csatornára, akkor
+
+1109
+00:45:57,200 --> 00:46:00,720
+iratkozzatok föl. Támogatni akarjátok a
+
+1110
+00:45:59,240 --> 00:46:02,119
+munkámat, hogy minél több tartalmat
+
+1111
+00:46:00,720 --> 00:46:04,440
+szállítsak nektek, akkor váljatok
+
+1112
+00:46:02,119 --> 00:46:06,119
+csatornataggá. És hogyha még többre
+
+1113
+00:46:04,440 --> 00:46:08,800
+vágytok egy szakmai közösséghez is,
+
+1114
+00:46:06,119 --> 00:46:11,160
+szívesen csatlakoznátok AI témában,
+
+1115
+00:46:08,800 --> 00:46:12,839
+akkor pedig gyertek a SCO közösségbe. Ha
+
+1116
+00:46:11,160 --> 00:46:15,160
+pedig segítségre van szükségetek, akkor
+
+1117
+00:46:12,839 --> 00:46:17,520
+az AI mindennapokban oldalon tudtok
+
+1118
+00:46:15,160 --> 00:46:19,359
+egyrészt nálam időpontot foglalni, meg
+
+1119
+00:46:17,520 --> 00:46:21,040
+ott van blogbejegyzés, meg van
+
+1120
+00:46:19,359 --> 00:46:23,520
+hírlevélfeliratkozás, meg már minden
+
+1121
+00:46:21,040 --> 00:46:26,480
+igazából, merthogy az a célom, hogy
+
+1122
+00:46:23,520 --> 00:46:29,040
+kiszolgáljak mindenkit AI témájú
+
+1123
+00:46:26,480 --> 00:46:31,400
+hírekkel, információkkal
+
+1124
+00:46:29,040 --> 00:46:33,640
+és háttéranyagokkal, hogy fejlődni
+
+1125
+00:46:31,400 --> 00:46:35,240
+tudjatok, hogyha igényitek. Én nagyon
+
+1126
+00:46:33,640 --> 00:46:37,599
+szépen köszönöm, hogy itt vagytok velem.
+
+1127
+00:46:35,240 --> 00:46:39,160
+Brutális az a mennyiségű követőbázis
+
+1128
+00:46:37,599 --> 00:46:40,720
+már, ami van.
+
+1129
+00:46:39,160 --> 00:46:42,520
+Nagyon-nagyon köszönöm, hogy ilyen sokan
+
+1130
+00:46:40,720 --> 00:46:44,559
+kíváncsiak vagytok arra, amit csinálok,
+
+1131
+00:46:42,520 --> 00:46:47,040
+és hát tartsatok velem. Érkezek jövő
+
+1132
+00:46:44,559 --> 00:46:49,119
+héten is hasonlóan egy ilyen jó kis
+
+1133
+00:46:47,040 --> 00:46:51,040
+videóval, akkor már ígérem, hogy az
+
+1134
+00:46:49,119 --> 00:46:53,680
+Obszidián memória rendszert is be fogom
+
+1135
+00:46:51,040 --> 00:46:56,319
+nektek mutatni, és azt is, hogy ennél
+
+1136
+00:46:53,680 --> 00:46:59,319
+miért nem azt használtam. Köszi szépen,
+
+1137
+00:46:56,319 --> 00:46:59,319
+sziasztok.
+
+1138
+00:47:05,040 --> 00:47:07,079
+เ
+

@@ -1,3 +1,15 @@
+---
+title: "Diligentes"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "New client project led by Ceclan Alexandru with active status but undefined scope, team composition, and pricing details requiring immediate documentation and scoping work."
+description_source: auto
+description_hash: e27b0cdd32710ed4
+id: 7e7b7f99-b19a-4172-9b24-227f3b379c53
+index_schema_version: 1
+bdos_index: true
+---
 # Diligentes
 
 ## Quick Info

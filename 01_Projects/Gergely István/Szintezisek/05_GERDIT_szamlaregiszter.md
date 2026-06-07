@@ -1,5 +1,8 @@
 ---
 title: "TOTAL GERDIT 2025 — számla-regiszter gestiune-onként"
+description: "Tételes számlalista hat gestiune szerint csoportosítva, 3048 bizonylat, 5,6 millió lei áfa nélküli érték. Mutatja az eladási csatornákat telephelyenként, könyvelési státusszal és áfa-tartalommal."
+description_source: auto
+description_hash: be56bb6707ba537f
 type: synthesis
 project: Gergely István
 source_file: "TOTAL GERDIT 2025xlsx.xlsx"
@@ -10,7 +13,6 @@ tags: [synthesis, invoices, register]
 id: 5c50cfa4-fd7a-42c8-a6f6-b96e6f501474
 index_schema_version: 1
 ---
-
 # TOTAL GERDIT 2025 — tételes számla-regiszter
 
 ## Mit tartalmaz

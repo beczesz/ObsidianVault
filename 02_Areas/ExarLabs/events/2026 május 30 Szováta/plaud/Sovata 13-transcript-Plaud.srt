@@ -1,0 +1,2280 @@
+1
+00:00:00,830 --> 00:00:22,300
+Speaker 1: Elindult a tizenharmadik felvétel. Akkor mégis helyes, hogyha felkelsz? És mégis, és miért lefeksz meg az előtt kor, amit beszélgettél? Igen, az ablakot így lősz. Lati, miről beszélgessünk? Nem az összefoglalásról. Nézzük meg az összefoglalást. Nézzük csak meg, mit mondott az AI.
+
+2
+00:00:22,300 --> 00:00:27,570
+Speaker 2: Szerintem tudom bármit azt azt megkevered. Azért őt megbeszélgett.
+
+3
+00:00:38,830 --> 00:01:07,490
+Speaker 2: Jó étvágyat kívánunk!
+
+4
+00:01:08,250 --> 00:01:36,820
+Speaker 1: Összedobja ezt az egész infrastruktúrát, hogy legyen egy autentifikált közös dashboardunk, amit AI-jal lehet fejleszteni. Agenteket kezdünk fejleszteni, és hasonlót, mint ami nekem van, elérhető agentek, majd kitaláljuk időközben. Kezdetben két-három dolgot csinálunk, mert ez egyébként a kontaktiméleknek a követése. A másik a, mi volt, mint? Legyen egy közös kambánbordunk, egy sales dashboardunk.
+
+5
+00:01:38,290 --> 00:01:41,740
+Speaker 3: Te vagyok. Szabad Csávó és Mányszer Class-esre menni.
+
+6
+00:01:41,740 --> 00:01:53,460
+Speaker 1: Például. Tehát a Google Drive Connector. Most már abszolút lehetséges, említettek még az elején. Egy saját applikációt akartunk még csinálni. Jó, megmondjuk a repúzítóit.
+
+7
+00:01:53,460 --> 00:02:10,460
+Speaker 4: Majd a korszóra. Alapos lenne egy kicsi alkalom. Egy 40-soros Google Apps Script is. Egy Google-forma összekötte, hogy arra nem kell azért AI-hoz lenni. De most már, ha már egy helyen intézet van.
+
+8
+00:02:10,460 --> 00:02:24,460
+Speaker 3: Arra gondoltok azért már, hogy agentnek kívánod, hogy Ennyire menjek szabadra? Igen, azt, amit most beküldesz a csoportba, Azt ugyanúgy befüldöl a csoportba, csak megtegeled, hogy Asszisztens. Mindenki látja, Tudjuk, hogy szabadságon eszel, de az Asszisztens be is vezet előfelé.
+
+9
+00:02:24,460 --> 00:02:30,740
+Speaker 1: Nekem például nem ártana, mert sokszor beírom, hogy Levigy intézel, de még fogalmam sincs, hogy hány szabad napom van Hátra, és hogy...
+
+10
+00:02:30,740 --> 00:02:37,019
+Speaker 3: Lehet egy ilyen default is, hogy jön vissza, hogy Beírtam, maradt még ennyi. Ez jött le.
+
+11
+00:02:37,550 --> 00:02:52,650
+Speaker 1: Szerintem, hogyha egy ilyet beírunk, akkor vérszemet kap mindenki, és elkezdi fejleszgetni. Valahogy úgy kéne, hogy mindenki tudjon hozzányúlni az agentokhoz, Mindenki tudjon egy kicsit fejleszteni rajta, tehát közösen, úgy ahogy fejlődünk mi, úgy fejlődjenek az agentok. Hogy írtuk? Hát úgy, hogy például a...
+
+12
+00:02:52,650 --> 00:03:16,300
+Speaker 4: De a hermész erre jó, hogyha egy kicsiben másabb kérdést teszel te, vagy kérést adsz a hermészes agentodnak, Ő minden tívegetés után, szóval tíz szóvázás után... Megnézi az elmúlt tíz szó konverszációtokat, Tanul belőle és update-elít magát az agentet.
+
+13
+00:03:16,300 --> 00:03:26,299
+Speaker 1: Ilyesmilyen, tehát öntanuló, de hogy mi is tudjuk alakítani, hogy Azáltal, hogy dolgozunk vele, és azt mondjuk, hogy figyelj, nekem szükségem van arra is Mindig, amikor lefoglalom, hogy hány szabad napom maradt még.
+
+14
+00:03:26,300 --> 00:03:39,710
+Speaker 3: Meg lehet csinálni, és szerintem úgy, hogy ugye van az ID, A Discord ID-be, vagy van ilyen ID, amivel belépsz, És akkor azonosítsa, hogy most veled beszél, és írja neked ezt. Külön neked oda fogja mellé kenni, hogy amikor válaszbeszél, akkor te ezt is akarod.
+
+15
+00:03:39,710 --> 00:03:46,870
+Speaker 1: Na, és ha egy ilyen öntanuló rendszer van, azáltal, hogy használjuk és visszajelzünk neki, folyamatosan fejlődik és újra jobb lesz.
+
+16
+00:03:46,870 --> 00:03:58,999
+Speaker 3: De mivel kint volna az egész rendszernek az agyai repozitoriba, azt is csinálhatod, hogy csinálsz egy saját rendszert, ami neked testre szabód, És más dolgokat csinál, s nem halod, vagy nem kell megosztva legyen, mindenki nem kellett.
+
+17
+00:03:59,000 --> 00:04:01,560
+Speaker 1: Ezt is kitaláljuk, hogy azt megosztunk agenteket, skilleket.
+
+18
+00:04:01,560 --> 00:04:32,590
+Speaker 3: Akkor látni a saját agenteket is. Jó, köszönöm! Hát persze, egy ilyen, hát csinálhatsz érte, hogy mondani, hogy hozzáfér, nem? Hát nem, úgy értem, te hogy gondoltál? De miért, nem fél hozzához mondani? Nem, arra gondoltunk, hogy az exark belső rendszerét, És mindenféle adatát, azt feltöltelni egy repozitoriban, Marknál pálylóként, hogy mindjárt az AI-ok tudják olvasni, És akkor, az mivel ki van rakva egy kitár repozitor, Azt mondom, annak tovább, amíg kétszer lehúzhatja, ha megadod neki. Bárki lekónoszhatja, és akkor klódkód a feltételemet.
+
+19
+00:04:32,590 --> 00:04:41,080
+Speaker 3: Nem kónoszhatja, nem stressegét gondolza, hanem egy hermész kutat. Magánál adunk ebből, vagy balból, és ha helyet mész meg, odaad egy git-hack-tökeny, s például...
+
+20
+00:04:41,080 --> 00:04:47,269
+Speaker 4: Jaj, de most nem tudunk felhívni, csak ezért mindenki magánál adok el.
+
+21
+00:04:47,270 --> 00:05:01,640
+Speaker 3: És hát az istencsebb úr csinálja azt a saját... Lehetőség így is úgy sokról... Akkor találhatóságnak. Igen, tudom, bocsánat. Át nem szeretitek majd mindent. De a lényeg az, hogy a... Hát a lényeg csak az a kérdés. Ez abból nem hülyeség, igen, értem.
+
+22
+00:05:02,670 --> 00:05:06,670
+Speaker 1: Lényeg az, hogy egy közös tudásbázis kell legyen, ami kanonikus.
+
+23
+00:05:06,670 --> 00:05:12,020
+Speaker 5: Lehet vajon a Google Drive-ot, hogy csak olvassa az adott fájlokat?
+
+24
+00:05:12,020 --> 00:05:25,020
+Speaker 3: Hát lehet, jól követni. Lehet a Google Drive-ból olvastani, Csak a Google Drive szerintem nem egy jó hely lenne. Amikor mi írtuk a fájlokat, és mi olvastunk belőle. De hogyha azt akarjuk, hogy egy agent dolgozza helyettünk,
+
+25
+00:05:25,020 --> 00:05:35,599
+Speaker 5: Azért nem olvastuk. Hát például ha vezetjük mondjuk a szabadlapokat, Akkor az az információ, hogy Ilyenkor kiveszed, hova mentődik-e.
+
+26
+00:05:35,600 --> 00:05:52,170
+Speaker 3: Lesz egy dashboardunk, Hát ugyanúgy Markdown-fájlóban lesz az információ, Lesz egy dashboard applikációnk, Ami szintén az ízét fog írni, És az dinamikus lesz. A Markdown-fájlókat tudja olvasni, És fogja mutatni, hogy mennyi. Tehát ez lesz az új igazság.
+
+27
+00:05:52,170 --> 00:05:56,170
+Speaker 5: Forrás, akkor teljesen Ad ráadat el.
+
+28
+00:05:56,170 --> 00:06:26,240
+Speaker 1: Például olyan ötlet is jött, hogy A, A Rights and Responsibilities dokumentumunk, egy élő dokumentum legyen, Ami folyamatosan változik, ahogy a tanács hoz egy határozatot, Hogyha elfogadjuk, beírjuk, hogy az agent most akkor megváltoztatja, És attól kezdve bárki megnézhető legújabbat. Lesz verziókövetés, így lehet menni, hogy hogyan változott az elmúlt időszakban. Meg is kérdezhetsz valamit a dokumentumtól, hogy mostantól kezdve hány szabad napunk is van,
+
+29
+00:06:26,240 --> 00:06:27,839
+Speaker 1: Vagy mit is beszéltél el utoljára?
+
+30
+00:06:27,720 --> 00:06:35,670
+Speaker 3: És akkor még ki tudja nézni a commit history-be akárhogy, hát eddig új volt, hogy az előző commit-ba, hogy 60 nap volt, de most már nem tudom, hogy milyen.
+
+31
+00:06:35,670 --> 00:06:46,930
+Speaker 1: Igen, na oké, ez. És a commit message-ből belé tudja érni, hogy ez volt az előző. Meggyőztél a git-tel, meggyőztél a git-tel, és megoldjuk azt, hogy automatikusan mikro commit-okat csinálja az agent.
+
+32
+00:06:46,930 --> 00:06:56,849
+Speaker 3: Viszont a spreadsheet-eknél ezt a problémát? Na ezt megnézem, hogy a spreadsheet-hez hozzá tudjuk-e kötni, hogy ezért az... Nem tudom, mindent át tudunk-e migrálni. Hát a szabad napok...
+
+33
+00:06:57,610 --> 00:07:03,170
+Speaker 1: A szabadnapokat? Én kinyírdnám a spreadsheet-et, a szabadnapos spreadsheet-et.
+
+34
+00:07:03,170 --> 00:07:24,100
+Speaker 3: Arra nem muszáj. Nincs összekötve a... Olyan. Mert úgy autómatikusan számolja, hogy neked a szabadnapja alapján mennyit kell leszámlázni. Számolja miniszórát. Igen, ami? Én fogom-e tudni kezelni? Tessék? Fogom-e tudni kezelni? Igen. Te hírod a pontokat az AI...
+
+35
+00:07:24,100 --> 00:07:25,100
+Speaker 1: Okos agentek lesznek.
+
+36
+00:07:25,100 --> 00:07:57,070
+Speaker 3: Te ám mondod az asszistersnek, hogy csináld ezt, csináld azt. Csicska, csicska.
+
+37
+00:07:57,100 --> 00:08:22,200
+Speaker 3: Lipszak minden hónap végén ellenőrizte a szabadnakós tablázatot, Küldje a könyvelőnek egy e-mailt, vagy egy üzenetet WhatsAppon, vagy bárhol, Betudja, hogy hány szabadnak volt, és onnantól, milyen hónapból ő ezt csinálja. Tehát ilyen pici munkát adsz, tudsz neki, amit egy ötperc végén nézzen valamit, Órán két nézzen naponta, minden vasárnap nézzen, minden hónap végén nézzen. Ez a kontra, úgy hívják ezeket, és ilyen...
+
+38
+00:08:22,200 --> 00:08:24,200
+Speaker 1: Amit még érdemes lenne követni... Mit fogok csinálni én?
+
+39
+00:08:25,360 --> 00:08:27,860
+Speaker 6: Hát viszod a kocsit itepézni?
+
+40
+00:08:27,860 --> 00:08:29,789
+Speaker 1: Mindent, ami fizikális.
+
+41
+00:08:33,789 --> 00:08:36,789
+Speaker 1: Az nem árt, hogyha felszabadulsz egy kicsit ezekről az adminisztrációkkal.
+
+42
+00:08:36,789 --> 00:08:41,289
+Speaker 3: Nem, nem. Hogyha akarsz egy személyi asszisztant, mondom én.
+
+43
+00:08:41,289 --> 00:08:54,290
+Speaker 4: Majd teljes jogkörül adminisztrálkozunk a médium helyen is. Hát lesz egy közösségünk, lesz egy közösségünk. Amúgy onnan megint lesz egy csomó munka, hogyha tényleg elkezdnénk leeseket megfogni, akkor a leesedésre csak...
+
+44
+00:08:54,470 --> 00:08:57,200
+Speaker 3: Mi szerződésekként a csomók, amik terszállták...
+
+45
+00:08:57,200 --> 00:09:00,640
+Speaker 4: Egy csomó más mindent csinálhat, ami nem ilyen repetitív volt.
+
+46
+00:09:00,640 --> 00:09:06,079
+Speaker 1: Sok kicsi kliensünk lesz valószínűleg, ami a szerződésekhez meggyomog követni, tehát...
+
+47
+00:09:06,080 --> 00:09:08,240
+Speaker 6: Dehát másfajta promptot is fogsz írni.
+
+48
+00:09:08,240 --> 00:09:17,549
+Speaker 1: Én ezt akarom mondani, hogy tulajdonképpen az a kiadat más felelősség. És ezzel együtt folyamatosan mi is megértjük, ahogy működik.
+
+49
+00:09:17,550 --> 00:09:20,310
+Speaker 3: Egyre több dolgot tudsz úgymond csinálni, teljesen működik.
+
+50
+00:09:20,720 --> 00:09:48,910
+Speaker 1: Amit kellene kövessünk, az, hogy nyilván én most követem az egyik legintenzívebbet, ezt a Y Combinator-t, De hogy kövessük, mert ők tényleg a jövőben járnak. Már ott vannak, ahol mi leszünk. Milyen platformokra? Youtube. De szerintem minden csatornán lesz folyik belőlük. És hát ha egy-egy bölcsességet mond, pont, Vagy Kari Arnold kap el, vagy Máté, vagy nem tudom, mert egy-egy bölcsességet én elkaptam, És én nyomom előre, de jó lenne más is kövessen.
+
+51
+00:09:51,810 --> 00:09:56,590
+Speaker 4: Nem csapott van az igazságon már a channelnél. Hogy hívják őket, nem hallok helyet úgy.
+
+52
+00:09:56,590 --> 00:09:58,369
+Speaker 1: Y Combinator.
+
+53
+00:09:58,370 --> 00:10:09,230
+Speaker 4: Jaj, akkor hallottam. Például mondtad, hogy jött egy ötleted, emlékszel? Hogy csinálj egy operációs rendszert. És küldtem a videót két héttel azért már, X csávótól.
+
+54
+00:10:09,230 --> 00:10:35,950
+Speaker 1: Persze, azt láttam, hogy, Pont a Y Combinator az, amelyik, Éli ezt a bölcsességet, hogy mindenfélét csinálnak és benne van a kultúrájukban, lehet hibázni, lehet menni, kutakodni, tenni, venni és azáltal, hogy száz fényképet csinálnak, tényleg kitapogatják azt, hogy mi a jövő. A hermész már gondolom a kezdettől fogva használták.
+
+55
+00:10:41,230 --> 00:10:45,789
+Speaker 1: Nagyon magas a bizalmi szín, mindenki mindenkire rálát, mert az a durva, hogy az agentek által meg tudod kérdezni.
+
+56
+00:10:47,910 --> 00:11:02,779
+Speaker 1: Mások mit csináltak, sőt van egy Discord channel nekik, ahol minden mirror-ként ott, minden egyes, ilyen prompt, amit valaki beszélt az agent-tel, ilyen mirror-ként ott van, és mindenki látja, hogy másik mit beszélt. Tanulnak egymástól.
+
+57
+00:11:05,260 --> 00:11:08,840
+Speaker 1: A részben van ilyen. Tehát egy közös agyat dolgoznak ki.
+
+58
+00:11:09,280 --> 00:11:12,580
+Speaker 3: Hát igazság, egy bitit közül használok, sose. Akartam úgy lenni, hogy bezávó.
+
+59
+00:11:12,760 --> 00:11:16,989
+Speaker 1: Én miután visszanéztem. Én még soha. Én is volt.
+
+60
+00:11:19,620 --> 00:11:31,159
+Speaker 1: De például olyan agent queryt le lehetne futtatni, hogy nézd meg, hogy kinek volt a legötletesebb promptja. Csak vissza, hogy olyan izgalmas lehetőségeink vannak nagyon.
+
+61
+00:11:31,160 --> 00:12:00,809
+Speaker 4: Hát igen, mert most kérdezed, hogy erre rá kéne állítani egy másik adminisztrátor. Nézzed már, hogy kinek volt a legötletesebb promptja. Minden nap ennél egy órát nézed, minden nap ennél egy órát. Ilyen taszkokat kapnál tőlünk, hogy készíts egy táblázatot, hogy kinek volt a legjobb ötlete, és súlyozza, amit tenni szerint. Ezt nem kell.
+
+62
+00:12:01,150 --> 00:12:03,730
+Speaker 5: Ezt kell levínek, ez direkt az ésen.
+
+63
+00:12:04,270 --> 00:12:10,820
+Speaker 4: Ezt mondom. Megkérdezz tőlem, az az erővel, majd kérdezz tőlem tőle. Így van, de hogyha...
+
+64
+00:12:10,820 --> 00:12:14,679
+Speaker 5: Jaj, te ezt akarsz mondani, hogyha nem volna az ésen...
+
+65
+00:12:15,430 --> 00:12:19,130
+Speaker 7: Ez a 10.90-es csak, a te javadról.
+
+66
+00:12:19,130 --> 00:12:29,410
+Speaker 1: Azt mondta a Y Combinator, hogy azáltal, hogy elkezdtek agentokat használni, Olyan kérdéseket is feltettek, amiket előtte nem tettek volna fel. Mert egyszerűen túl költséges a kérdésnek a válasza.
+
+67
+00:12:29,410 --> 00:12:33,410
+Speaker 7: És annak is meg túl sokat adható az agent infoként, amit nem is gondoltunk.
+
+68
+00:12:33,410 --> 00:12:58,730
+Speaker 1: Hm, olyan jó ötletem, hogy a háttérben elindítom, Hogy most a 8 órás beszélgetés után, Indítson el egy ilyen brainstorming session-t, a ChatGPT, a Gemini és a Cloud, hogy szerintem mifelé haladunk, és hogy próbáljon meg előre mutatni, hogy mi az a mintázat, amit még nem ismertünk fel esetre. Kíváncsi vagyok!
+
+69
+00:12:58,730 --> 00:13:04,730
+Speaker 6: Kíváncsi vagyok! Köszönöm, köszönöm! AI Native Company legyünk, azt megtampolom, azért...
+
+70
+00:13:04,730 --> 00:13:11,940
+Speaker 5: De hárman fognak brainstormingolni? Az a... Wow! Szabad mindennap ezt csinálni.
+
+71
+00:13:15,500 --> 00:13:25,500
+Speaker 1: Kíváncsiak vagyok, hogy fog-e működni egyáltalán a 10-es verziójú, a 9-es verzióban mégdel Chrome mcp-t használni, és a 10-es verzióban a ProWrite-ot. Kíváncsiak ennél bőle.
+
+72
+00:13:33,350 --> 00:13:36,819
+Speaker 3: Ez a BDOSZ-nak is egy ilyen GitHub repo, csak lokálisan van.
+
+73
+00:13:36,820 --> 00:13:39,820
+Speaker 1: Lokálisan van egy GitHub repo-ba. De a VibeEngine... A Git repo-ba, bocsánat.
+
+74
+00:13:39,820 --> 00:13:45,079
+Speaker 4: A VibeEngine Git repo-jában már ott van a folder, a BDOSZ.
+
+75
+00:13:47,700 --> 00:13:54,980
+Speaker 4: Hát a boltomat nem komittelem oda fel. Azt mondtuk, hogy oda tesszük, hogy nagyjából egy helyen legyen.
+
+76
+00:13:54,980 --> 00:14:04,980
+Speaker 1: Szerintem az lesz, hogy ez marad nekem személyesen az én dashboardom, És én építgettem tovább, de lesz egy közös, amiből kiszedjük innen a lényeget, És a legjobb oda...
+
+77
+00:14:04,980 --> 00:14:06,980
+Speaker 4: Betesszük a Hermészes helyre.
+
+78
+00:14:06,980 --> 00:14:13,430
+Speaker 1: Betesszük a Hermészes helyre, és én majd követjük majd a dizájnját, Mindenféleit, vagy akár az EXAIR dizájn is maradhat.
+
+79
+00:14:13,430 --> 00:14:23,190
+Speaker 4: Úgy gondolom, most ez a BDOSZ, amit itt tettél, ez... Bédosz, de inkább egy személyes aszisztens a te igényeidre.
+
+80
+00:14:23,190 --> 00:14:34,640
+Speaker 1: Igen. Hát nincs ott a hasonló nevet neki, de hogy mi lesz belőle a... A DDoS amúgy? Business Development Operating System.
+
+81
+00:14:34,640 --> 00:14:39,090
+Speaker 2: Szenci. Thinking Ambitance, arra jöttem.
+
+82
+00:14:47,280 --> 00:14:51,280
+Speaker 1: Közben itt intézem, hogy induljon el az egész, mire beszélgettünk meg ősz meg magának.
+
+83
+00:14:51,280 --> 00:15:23,380
+Speaker 5: Amúgy Mártél a Wild Engine-et, a Nordea-jára. Be kell küldjen még a Diligent-en. Nálunk hozták be, hogy Team Lead megmutatta, hogy akkor mit is kellene, mit is használni. És egy open source valami library mutatott, ami... Superpowers? Nem hagyom ezt. Get it done. GSD? GST? Lehet, hogy az. Most már nem emlékszem, de belküldöm, hogy is. Nagyon hasonlónak látom, csak egy sok ember minkájának az eredménye.
+
+84
+00:15:23,380 --> 00:15:29,870
+Speaker 5: Mennyiségileg egy nagyobb valami több ilyen agent.
+
+85
+00:15:29,870 --> 00:15:40,609
+Speaker 3: Amúgy a szó viszont a SuperPower teszte. Van is egy ilyen összehasonlítás, egyszer mutatta nekem, hogy vissza a Wi-Fi engine-t és a SuperPower-t.
+
+86
+00:15:40,610 --> 00:16:12,130
+Speaker 4: Nem küldtem el teket? Nem küldtem el. Csak az AI-jal beszélgettem róla. És az jött ki, hogy a kettő egymást mintább kiegészíti. Jó, ezt mondta az járős. Én nem is akarok ennyit használni. Azt mondta, hogy a Super Powers nem jobb, mint a Vibe Engine, A Vibe Engine nem jobb, mint a Super Powers, Hanem bizonyos esetekkel az egyik jobb tud lenni, De más esetekben az a...
+
+87
+00:16:12,130 --> 00:16:27,649
+Speaker 4: Ez a Super Powers, ez mi van? A SuperPower úgy képzeld el, mint egy másik VibeEngine, csak mások készítették. Cloudra van, de... Igen, igen.
+
+88
+00:16:27,650 --> 00:16:34,650
+Speaker 3: Közában jól tűnöm, hogy ez egy orkestrátor konkrétan, tehát a teljes fejlesztési folyamatot végigvezeti a kontextig.
+
+89
+00:16:34,650 --> 00:16:37,650
+Speaker 4: Többek között onnan így kerültem az orkestrátor agentit.
+
+90
+00:16:39,360 --> 00:16:41,360
+Speaker 4: Mert a Get Shit Done is ugyanezt csinálja.
+
+91
+00:16:41,360 --> 00:16:57,120
+Speaker 3: És ugye orkestrátorként ő az egész lesztetteket és az agenteknek a kezelését lemenedzseli. Amit hallottam, hogy nagyon vagány benne az az, hogy különböző agenteket ütköztet, például a testvédőknek.
+
+92
+00:17:00,750 --> 00:17:12,000
+Speaker 3: Nem tudom, figyeltétek-e, de gyakran azt csinálja a Vive Engine, hogy megír előre a teszteket, utána... Megígye a kódot, nem mennek át a tesztek, és módosítja a teszteket, úgyhogy hát menjenek.
+
+93
+00:17:12,000 --> 00:18:07,430
+Speaker 4: Igen. És ez például itt a SuperPower-be ezt kifogja, és azért fogja ki, mert szuperpárdok. Igen, ezt akarsz mondani, hogy igazából én úgy tudom, hogy ez a legnagyobb erőség a SuperPower-hoz. Vannak guardok, és a guardok azok igazából Cloud Code hook-ok, amik a megfelelő eventre lefutnak, és a megfelelő output... Result number-t adják, és hogyha kettest adsz, az egy olyan exit kód, egy hubból, amit értelmez a cloud kód, és azt mondja, hogy ó, ezt nem szabad megcsináljam, és a lényeg az, ez a részletek, de nagyon jók a guardjai, és nem engedik, hogy egy jó, jól lefelejtett rész utána bele matasson, ezért nem írja fölül a...
+
+94
+00:18:08,960 --> 00:18:51,320
+Speaker 4: Nem engedjük tovább, ameddig a test nem fut. De van komparizm például arra, hogy a Getshiddán is hasonló, Csak az nem annyira megszorító, mint a Superpowers. Kicsit lazább. Olyan, mintha a Superpowers lenne az Angular, S a Getshiddán a React, mondjuk. Most ez egy borzasztóan nem megfelelő tréde, De nem annyira megszorító. Volt egy olyan összehasonlítás, hogy annyit fejlődött a Cloud-kód, hogy öltették ugyanarra a feladatra a sima Cloud-kódot, a Superpowers-t és a Getshin Land-t.
+
+95
+00:18:51,320 --> 00:19:26,469
+Speaker 4: És az eredmény az az volt, hogy mind a hárma elkezdtet az alkalmazást, a Getshin Land-nál kellett iterálni egyet, szóval ahogy elkészült, tesztelték, volt benne egy hiba, meg kellett, hogy javítsa ki, egy iteráció, szóval az első megkérésre ki is javította. Összesen 1 óra 40 percet töltött a feladat, amíg elvégezte. A Super Powers az 1 óra 20 perc alatt megcsinálta,
+
+96
+00:19:26,470 --> 00:19:33,000
+Speaker 4: És nem kellett literálni, elsőre tökéletes volt, azért mert nagyon jók a guardiai.
+
+97
+00:19:34,630 --> 00:20:22,970
+Speaker 4: És a sima Crude Code, az nem tud elsőre jól megcsinálni, kellett annál is egyet iterálni, de 40 percet elkészítette, 40 percet rávert a Super Powers-re, és 80 percet rávert a Gachindan-ra, és a több százezer tokennel kevesebbet használta Crude Code önmagába, mint a Super Powers és a Gachindan. És akkor ez volt a pillanat, amikor mondtam Szabolcsnak, vagy nem tudom, akinek, hogy... Potenciálisan a Vibe Engine-nek a létjogosultsága lassan, vagy annyira fejlődhet, vagy tud fejlődni, ahogyan irányba viszik ezeket az agenteket, vagyis ezeket az agentik túlokat, hogy lehet, hogy nem lesz szükség.
+
+98
+00:20:22,970 --> 00:20:55,970
+Speaker 4: A Super Powers és a Get Shut Down fél éve ezelőtt készültek el, amikor még nem az volt a realitás, hogy háttérbe a Cloud Code bizonyos... Hidden file-okba tudó lépéseket csinált magának, és önmaga plannelt, és nem tudom micsoda. Hanem a superpowers kérdezett tőled, nem csinálta még olyan jól a protocode a kérdezést, A superpowersnek meg volt mondva, hogy az első step, hogy kérdezzél, értsd meg jól a dolgokat. Oké, végigment az onstep-ben. Írjál teszteket? Nem tudom, stb. stb.
+
+99
+00:20:55,970 --> 00:21:31,090
+Speaker 4: Készítsél egy file-t a step-ekkel, amikkel végig kell menni? Készítsél egy log file-t, hogy... Ígérem, nem tudom, mire rájött ez, hogy az egy framework volt, egy nagyon kemény és szigorú workflow, hogy hogyan dolgozzon az AI, azért, mert ügyetlenek volt az AI, de most már odáig jutottunk el, hogy annyira ügyetlen, hogy hisz, hogy te ennyire behatárolod az AI-t, a szuperpower-et és a gecsidának, lassítja, és rossz a veredményét érsz el vele.
+
+100
+00:21:31,940 --> 00:21:47,840
+Speaker 4: És többbe került. 1,2 millió tokent használt el a Getshit-ben, 1 millió körül a Super Powers, És valami 300 ezeret használt el a Cloud Code magára. Akkor igazából nekünk se ezt kellene csinálni,
+
+101
+00:21:47,840 --> 00:21:51,190
+Speaker 3: Mert ezt kipróbálnánk, hogy... Most főleg a 8-as.
+
+102
+00:21:51,190 --> 00:22:11,790
+Speaker 5: Nézd, ez a plugin, az a neve, hogy Compound Engineering. Ez, amit nekünk a Diligentnek van egy saját, Amúgy ilyen skillset, saját teljes minden, saját a csinálókat, ez publikus, tehát van a Lillingennek saját, de ezzel szemben a team leadünk azt mondta, hogy ez, ez használó.
+
+103
+00:22:11,790 --> 00:22:14,989
+Speaker 4: A Fisher Compound Engineering, Klagin for Cold Cold, Codex Pulsor.
+
+104
+00:22:15,110 --> 00:22:17,590
+Speaker 5: Az a lényeg, hogy 80 százalék.
+
+105
+00:22:17,670 --> 00:22:18,670
+Speaker 4: Átküldöm, majd a linket legyen.
+
+106
+00:22:18,790 --> 00:22:24,710
+Speaker 5: Átbeküldöm közösben. 80 százalék tervezés, review és 20 százalék.
+
+107
+00:22:26,100 --> 00:22:56,320
+Speaker 4: De ezt mondja Boris Cserny is, aki a Cold Cold-ot megcsinálta. Ő is ezt csinálja. Építs kontextet, írják be, aztán hagyatok implementálni. Sőt, olyan plenneket készít, amiben, és lehet, hogy a Planner Agentünket kéne módosítani, Ahol nem sorról-sorra mondja meg az Agentnek, hogy mit kéne csináljál, Hanem azt mondja, hogy irányjelveket adja az Agentnek, Célt, elérendő célt, megállási feltételt.
+
+108
+00:22:56,320 --> 00:23:05,880
+Speaker 4: Ha kell, akkor koncentrálja neked, hogy mit ne csináljon azért. És hagyd, hogy ő találja meg a legjobb utat ahhoz a célhoz. Mert ő itt a plánban ugyanazt csinálja, nem?
+
+109
+00:23:05,880 --> 00:23:33,270
+Speaker 3: Nem. A plánnek kódrészleteket is tesz Beli. Oké, de maga a plán, mert ugyanaz az agent. Így van, így van. Igazából olyan szempontból... És ugyanaz a flónő végigmegy. Csak lehet, hogy ez felesleges szempont. Visz... lehet, hogy felesleges... Olyan szempontból lehet, hogy dokumentációs szempontjából Nem olyan felesleges. Azért? Hogy egyszer végjárja az utat, Azért, hogy feltérképezze, És megírja ezt a plánbe. Másodszor pedig éjjárja ezt, hogy megbiztosodja, hogy amit a plán beír, az megegyezik ki azzal, amit a kórba talál.
+
+110
+00:23:33,270 --> 00:23:59,630
+Speaker 4: Szerintem tudod, hogy mi az, ami a fölösleges része? Az, hogy ezután, és erről beszélgettem az éjjája, hogyha ilyen részletes plánt írunk, és ennyi effortot beleülünk a plán elkészítésébe, Akkor már nincs értelme az implementálást opusszal csinálni, hanem simán lehetne menni sonetre és kisebbe fordítani. Mert hogyha olyan részletes és olyan tökéletes plánt... Készített elő az opuszt.
+
+111
+00:23:59,630 --> 00:24:05,940
+Speaker 3: Amúgy ezt csinálják a szomorízások. Konkretan ezt csinálják. Csak a pillanat, amire használják az opuszt, És utána mennek a szomorízásokra.
+
+112
+00:24:05,940 --> 00:24:10,499
+Speaker 4: Na, ezt én is kéne gyakorolni, ha kipróbálom, Milyen teljesítménye van így.
+
+113
+00:24:10,500 --> 00:24:16,780
+Speaker 1: Csak mi kicsit bővebbre vagyunk keresztve, mint a szomorízások. Mi ezért nem váltunk. Nyomjuk opuszt 4.8-al extra.
+
+114
+00:24:16,780 --> 00:24:20,780
+Speaker 6: Csak például nézzük, hogy 87%-a Lesz token a hétre.
+
+115
+00:24:20,780 --> 00:24:29,310
+Speaker 4: Vajna alig lesz a péntekre. Nagyon jó! Mondjuk most az új... Egyszer nem volt, vagy kétszer nem volt elég nagy.
+
+116
+00:24:29,310 --> 00:24:38,589
+Speaker 3: Mondjuk most a Sensorizálnál is felemelték a keretet, úgyhogy külsőségben lókuszalnyomon végig, Egész héten végignyomta, és nem fogyottál a tokenet, úgyhogy három párhuzamos így...
+
+117
+00:24:38,590 --> 00:24:41,590
+Speaker 1: A 4.8-a most megemerték a token limitet is szerintem a Cloud-nál.
+
+118
+00:24:41,590 --> 00:25:13,129
+Speaker 4: Szerintem amúgy azért emelhetik, mert annyi a... Szerintem azért, mert a többiek elkezdtek sokkal többek adni, És az emberek nagyon panaszkodtak arra, hogy... Tehát semmit nem kapunk a pénzünkért. Az Anthropic az egyik legdrágább ilyen szempont. Ők az Icon a piacnak. Az Eclat. Amúgy nem tudom, tudtátok-e tényleg, tegnap vagy tegnap előtt Megelőzte az Anthropic-nak a.
+
+119
+00:25:13,130 --> 00:25:19,440
+Speaker 4: Piaci értéke az Open AI piaci értékét. Tényleg? Igen.
+
+120
+00:25:19,440 --> 00:25:50,740
+Speaker 5: Szóval most már gyilkosan is. Van egy csomó aggály azzal, hogy pumpolják bele ugye a pénzt mindenhol az AI-ban, És ugye, hogy akár az OpenAI is, hogy talán nem feltétlenül profitábilis, tudom most, hogy mi az aktuális. Sokan tartanak ettől, hogy egyszer ki fog pukkadni, mert rájönnek, hogy tehát ingyen nem adhatják, És egy csomó, és talán nem a Cloud pont, hogy...
+
+121
+00:25:51,160 --> 00:25:58,160
+Speaker 5: Rágább, de hogy ő kitermeli azt a pénzt valósan, és megmarad. De nem rég, a plotcse nem rég.
+
+122
+00:25:58,160 --> 00:26:11,160
+Speaker 8: Legalábbis a cikk, amit olvastam, úgy rémlik, hogy az van, hogy egy darabig tengődött, És aztán egyszerűen átlépte a limitet, és most vagy duplázott, triplázott. Tehát most nagyon felvitte a guardi. De amúgy szerintem az összes arra hajaznak, hogy most belegyúrnak egy csomó pénzt, hogy ingyen legyen,
+
+123
+00:26:11,160 --> 00:26:20,440
+Speaker 3: Hogy rászoktassák a népet. Itt valójában óvatosan elkezdik limitálni a free plant, És rávezetni téged arra, hogy egyre nagyobb csomókat vegyél meg. És annyira függő, kiválunk tőle, hogy...
+
+124
+00:26:21,090 --> 00:26:31,900
+Speaker 4: Pontosak legyen, ami a YouTube-nál működik, több ilyen kezdetben ingyenes. Mondok valamit, az áramért is fizetünk. Hát nem mondom, csak azt mondom, hogy így lesz szerintem profitabiliség.
+
+125
+00:26:31,900 --> 00:26:33,900
+Speaker 3: Nem fogják ezt a világ végét így...
+
+126
+00:26:33,900 --> 00:26:34,900
+Speaker 1: Igen, igen, igen.
+
+127
+00:26:34,900 --> 00:26:38,899
+Speaker 4: Azt is megszoktunk, hogy fizetünk az áramért, azért, hogy kerintesse a vizet a központi...
+
+128
+00:26:38,900 --> 00:26:44,900
+Speaker 1: A nyílt forráskorú modellek szerencsére ott vannak ilyen guardrake-en, Tehát nagyon-nagyon megdrágítanák egyből menni a nyílt forráskorú modellre. Kicsit gyengé, de...
+
+129
+00:26:44,900 --> 00:26:50,130
+Speaker 4: Nem kicsit gyengé, használhatatlan, hogyha így meg kell, akkor az fut a... Hát nem...
+
+130
+00:26:50,360 --> 00:27:15,200
+Speaker 1: Csak azt bemutatják, hogy... Nem te, nem te. Tehát vannak olyanok, akik most is egy csomó... Az Amazon például. Futtatja az ő infrastruktúráját Megfizethető áron Bármelyik modellt, amit szeretnél. Tehát nem tudja a ChatGPT megduplázni az árat, Mert egyből azt mondja, hát akkor már inkább A másikat használom. A kínaiakat. A kínaiakat például.
+
+131
+00:27:15,200 --> 00:27:42,070
+Speaker 4: Igen, amúgy... Nem. Valami K2 vagy olyan. Igen, láttam. Kimi K2. Az, Kimi, az. És a Grog az ki? Az az XC. Az is eléggé elmenik. Az a dolog, hogy a kódolásban... Európának egy van, a franciáknál a Mistral, de az nagyon... Szóba se ér. Szerintem senki nem használta közülön. Én használtam régen.
+
+132
+00:27:42,070 --> 00:27:55,949
+Speaker 8: A franciák használják. Szerintem. Hát, ilyen Csett, abba volt modellként. Voltak... Egy kicsit olyan, ahol egész jókot válaszol, de nem szálltam el tőle. És a manusz? Az a Facebook.
+
+133
+00:27:55,950 --> 00:28:03,320
+Speaker 4: Megvette a manuszot? Igen. Láttam, hogy a Facebooknál csak megérkezett. Megvette, csak egy bocvanyag volt belőle. A kínai megvette?
+
+134
+00:28:03,320 --> 00:28:19,260
+Speaker 3: Nem, azért, mert a kínai volt, és eladta a kínai egy amerikainak. Jaj! És a kínai állam megfelelte azt a csávót. Kínai volt? Igen. És te mit tettél? Felfelelte a kínai formáját, azt a csávót, hogy hogy mehet állandóan. És a kínai kínai formáját megfelelte azt a csávót, hogy hogy mehet állandóan. És a kínai kínai formáját megfelelte azt a csávót, hogy mehet állandóan. És a kínai kínai formáját megfelelte azt a csávót, hogy.
+
+135
+00:28:19,260 --> 00:28:25,760
+Speaker 5: És a kínai kínai formáját megfelelte azt a csávót, hogy hogy. Elment báborozni. Mindegy, más többen nem fogják eladni, az a lényeg, vagy?
+
+136
+00:28:25,760 --> 00:28:27,439
+Speaker 3: Ez fidasztató hát a daján.
+
+137
+00:28:27,440 --> 00:28:34,660
+Speaker 5: A Facebook amúgy nem jelentősen benne van az Open Lama...
+
+138
+00:28:34,660 --> 00:28:43,509
+Speaker 4: Hát ők, az ővék. Az ővék, igen. Tehát, hogy volt nekik. Aztból Lama nem adott. Igen, igen, rosszul mondom én. Merre haladunk? Igen, akartam szép.
+
+139
+00:28:43,510 --> 00:28:47,870
+Speaker 1: Igen, szóval menjünk tovább Mártira, mert úgy mentünk. Márti, neked a...
+
+140
+00:28:47,870 --> 00:28:49,150
+Speaker 4: A Microsoft.
+
+141
+00:28:49,170 --> 00:29:25,510
+Speaker 1: A microszájtok lesznek most ki a felelősséget, vagy egy kicsit a szélzét és a marketingét átvedsz. Egy szélsegítletet fogsz csinálni, meg segítesz az embereknek, hogy mit mondjanak, hogy hol keressék. Valójában ez mindenkinek a feladata lesz, hogy a környezetében összeírja, hogy milyen cégek vannak, akiket el lehet érni. Ehhez még hozzácsatlakozok én, hogy én pedig az a OnePager-t fogom kidolgozni, és lesz egy pályázatra. Köszönöm, hogy megtaláltad. Majd mondják nektek, hogy figyeljetek, menjetek, és kérdezzétek meg a cégeket, hogy nem akarnak pályázni, csak 10% önrész kell.
+
+142
+00:29:25,510 --> 00:29:47,350
+Speaker 1: Mi segítünk mindenben, nézzük meg, hogy mire van szükség. És akkor gyakorlatilag az, aki bizonytalan abban, hogy fel tudja-e mérni egyedül, mert azt mondja a másik, Ha jól hangzik, kellene valami, akkor legyen valaki, vagy valakik, akik gyakoroltak abba, hogy bemennek, És egy óra alatt felmérik, hogy mire van szükség, és összejövünk egy listát, jól hangzik-e, jó, próbálunk hozni akkor.
+
+143
+00:29:47,670 --> 00:30:05,700
+Speaker 3: De oda azért jó fej kell készülni, ha most például konkrétan az, hogy a FRAP-ével mit lehet összerakni, ott olyan kérdések lesznek szerintem, hogy a könyvelési rendszerünket át lehet-e hozni, tud-e a kettő egymásra szinkronizálni, stb.
+
+144
+00:30:05,700 --> 00:30:08,700
+Speaker 4: Mit tud ő tanulni, amire egy cégnek szüksége van?
+
+145
+00:30:08,700 --> 00:30:12,700
+Speaker 1: Egyszer kell megcsinálni, és utána már mindig tudjuk, mit fogjuk, úgyhogy...
+
+146
+00:30:12,700 --> 00:30:25,280
+Speaker 4: A FRAP-ét tudjuk úgy használni, mint egy bármilyen Python backend. Gondolhatsz így rá. Szóval, hogy ha nem akarod használni az ő moduljait, akkor használhatod úgy, mint egy nagyon okos Python-ben.
+
+147
+00:30:27,050 --> 00:30:37,140
+Speaker 4: Értem, de egy romániai kompatibilis könyvelési rendszert azért gondolom nem akarunk írni. Nem, csak azt akartam mondani, hogy...
+
+148
+00:30:37,140 --> 00:30:48,210
+Speaker 1: Hát nem kell megírjuk a könyvelési rendszert, hanem valahogy integrálni kell a könyvelési rendszerre, és azt már szerintem meg tudjuk írni. Nem olyan félelmetesnek van.
+
+149
+00:30:48,210 --> 00:30:52,210
+Speaker 7: Nem tudom, az a kategóriási kapcsolat, API, Az fogja kell pénbe kerülni,
+
+150
+00:30:52,210 --> 00:31:07,300
+Speaker 3: Vagy ez örökös licensz? Igen, szerintem ez jó kérdés. Mert ő már egyszerűen megvette a szoftvert, Az ő használja. Hogy összefüggse a shell-penceivel,
+
+151
+00:31:07,300 --> 00:31:13,670
+Speaker 7: Nem kellett is kérdni. Megvették a gépeket a Bayern-nél, De mégis kellett fizetni.
+
+152
+00:31:12,530 --> 00:31:16,530
+Speaker 3: Mondjuk azt tudjuk, hogy milyen plán látunk, mondjuk kell egy különböző plán, hogy ez használható.
+
+153
+00:31:16,530 --> 00:31:40,810
+Speaker 5: Lényeg, amit arról mondta Gábos leír, hogy ez azért fel kell készülni, szerintem ezt lejjebb hangolnám, Hogy oda ki megy, az fel kell mérje a szükségüket, és nem kell ott helyben egy választ adni nekik, hogy mit tudunk megcsinálni, És megérteni, hogy mi az igényük, és aztán közösen kitaláljuk, hogy tudunk-e segíteni az igényük.
+
+154
+00:31:40,780 --> 00:31:53,639
+Speaker 3: Igen, egyetértik, viszont azt nekünk kell tudni, nem feltétlenül indulnunk ki abból, hogy tudják, hogy mire van szükségük, de nekünk tudunk, hogy mit tudunk ajánlani. Igen.
+
+155
+00:31:53,640 --> 00:31:58,640
+Speaker 1: Lehet, hogy ez egy ilyen több back and forth lesz, oda megyünk, megkérdezzük, gondolkozunk, visszajövünk.
+
+156
+00:31:58,640 --> 00:32:01,640
+Speaker 4: Igen, rosszul mondtuk, nem tudjuk ezt megcsinálni.
+
+157
+00:32:01,640 --> 00:32:04,928
+Speaker 7: Nem, hanem mik az igények, és megmondjuk, hogy na ebből mi ezt fogjuk tudni valamit. Meg.
+
+158
+00:32:04,928 --> 00:32:37,170
+Speaker 1: Ott van a szomoríza mögöttünk. Tehát, hogyha valamire bizonytalanak vagyunk, egy architekttel tudunk beszélni, vagy akár a szanarizát bejegyünk, és nekiadjuk a projektet, egy feláré. Úgyhogy mindenki ismer a környezetébe egy pár céget, fel lehet keresni, mindenkinek szerintem van ötlete, hogy hogyan lehetne digitalizálni, És aztán, hogyha annyira tényleg nincs ötletük, akkor jobb is, hogyha hagyjuk őket. Úgyhogy ez a Máté és az én házi feladatom többek között. Lehet, hogy nincs ötletük, de problémájuk van. Igen. Ezen kívül pedig az oktatás, hogy lehet hívni.
+
+159
+00:32:37,530 --> 00:32:56,089
+Speaker 1: Olyan cégvezetőket, akiket érdemes oktatni. Most van három képzésünk, még azt hiszem, hogy nincsen feltelve minden, De amióta visszajövök a lokációról, akkor kézbe vesszük. És akkor lehet hívni embereket. Ha várólistára kerülnek, az se jól. Szeptemberben folytatjuk.
+
+160
+00:32:56,090 --> 00:32:59,090
+Speaker 3: Tehát akkor most még vannak ingyenesen, ahol lehet embereket meghívni?
+
+161
+00:32:59,090 --> 00:33:04,090
+Speaker 1: Ebben annyira nem vagyok biztos, de szerintem még kerül azért. 36-an voltak legutoljára azért sok ember.
+
+162
+00:33:08,590 --> 00:33:33,390
+Speaker 1: Még van a pályázati projekte, csak azokat tartogatjuk, tehát most fog menni egy ingyenes, és szeptemberben még egy, mert abban benne van egy csomó adminisztratív munka, de benne van például egy ebéd is, meg minden, és akkor ott a pályázati pénzből intézzük az egészet. Még nem tudtam elindítani, de most...
+
+163
+00:33:38,790 --> 00:34:05,980
+Speaker 1: De indul, megírtam a promptot, s most fogja szerintem mutatni, nagyon kíváncsi vagyok. Egyrészt, hogy milyen sebességgel fogja az egészet csinálni, mert ha minden igaz, akkor ez már gyorsan kerül. Várjunk, ma megvan az esemény. Igen, igen, igen. Na, akkor közben nézzük a...
+
+164
+00:34:05,980 --> 00:34:07,980
+Speaker 2: Szújj, köszi!
+
+165
+00:34:14,010 --> 00:34:20,290
+Speaker 4: Igen. És lehet, hogy befogja fújni.
+
+166
+00:34:20,290 --> 00:34:36,320
+Speaker 1: Szép. Akkor van ott egy mikor kérdés, hogy mobil applikációt hogyan lehet kapaszitorral, vagy... Vagy lehet itt a laptopban. Vagy mik voltak a... Elektronban. Elektron.
+
+167
+00:34:36,320 --> 00:34:40,980
+Speaker 3: Az elektronban az a plusz, hogy desktop applikációval is működik, tehát web, desktop.
+
+168
+00:34:42,949 --> 00:34:57,210
+Speaker 3: Van a Flutter-t még. Flutter is tud ezt applikációt? Akkor a Flutter lehet, ugye. Flutter az native? Native közelébb, igen, mert Dart-kódot, meg mindig ilyen, És aztán a binárisra fordítja.
+
+169
+00:34:57,210 --> 00:35:16,990
+Speaker 1: Meg még talán, amit lehetne fejleszteni, a legközelebb az, hogy hogyan lehet bekötni OAuth-ot, és mindenfélét az egész mobil applikáció flow-nak. Gyorsítása, de azt mondta Alfi, hogy az majd a legközelebb jön, akkor okozatosan majd légfrissítünk rajta, azért nincs értelme előre optimalizálni. Akkor, igen.
+
+170
+00:35:19,200 --> 00:35:20,899
+Speaker 4: Tehát akkor ezzel csinálunk valamit, vagy akkor nem?
+
+171
+00:35:21,640 --> 00:35:30,480
+Speaker 1: Ott van, ott lesz a listán, egy tudólistás, aztán majd az is a közös operációs rendszer, amit kitaláltunk. Lássuk csak, ez jön.
+
+172
+00:35:36,500 --> 00:35:41,907
+Speaker 3: Elindult. Visszajött. Ez.
+
+173
+00:35:41,907 --> 00:35:51,010
+Speaker 5: Szétlábat rákért.
+
+174
+00:36:10,530 --> 00:36:12,530
+Speaker 2: Nem, ez nem várta meg a választ.
+
+175
+00:36:47,460 --> 00:36:48,840
+Speaker 1: Jó, nézzük tovább akkor.
+
+176
+00:36:54,920 --> 00:37:00,739
+Speaker 1: Akkor itt vannak a feladatok, most itt a DEA-kkal, amikor visszajöjjük, akkor megpróbáljuk, hogy hogy lesz.
+
+177
+00:37:02,490 --> 00:37:18,780
+Speaker 1: Fogunk egy ilyen szórólapozni, én tervezek szórólapot arra, vagy akár Máté is most már, tehát hogy delegálhatok ilyeneket, nem muszáj pont én csináljam. A meglévő szórólapok alapján, tehát hogy egy A5-ös szórólapot kérünk. Egy A5-ös nem szűr el?
+
+178
+00:37:46,030 --> 00:37:54,030
+Speaker 3: Ő szetőkben úgy nézett ki, mint egy pénz, és lerokták a földre, és szembenik szedték fel, és mind nézték meg, és úgy terjedt a szóról a folyamat.
+
+179
+00:37:54,030 --> 00:38:01,030
+Speaker 5: Azért jó az A5-ös, mert úgy befér, és nem esik be, hanem látja az ember, hogy van valami.
+
+180
+00:38:01,030 --> 00:38:22,540
+Speaker 6: Amúgy hallottam Jánoszt, tehát egy olyan valakit ismer, mint a nyomtatók. Nyomtatókkal foglalkozik, nyomtató cégekkel, és azt mondja, hogy a nyomtatók a pénzt nem engedik szerokszónak véletlenül. Nem tudom, hogy pénzt kinyomtatni, ez nem tudod soha nyűködni. Mármint, hogy olyan, ami valamiért nem tud nyújtani a pénzt.
+
+181
+00:38:22,540 --> 00:38:31,879
+Speaker 1: Tehát, eleve már a nyomtatók úgy vannak beállítva, hogy egy nagyon pici torzítása legyen. Milliméterre pontosan nem tudsz nyomtatni. Tehát, hogyha hiába, hogy a pénzt kinyomtatnád...
+
+182
+00:38:31,880 --> 00:38:42,800
+Speaker 6: De vannak ilyen szekülti gárdok, hogy egyszerűen nem nyomjuk. Igen? Ezek az újabboknak? Kezd próbálni. Hát, mondják, ezt már 5 évvel ezelőtt hallottam. Ja, hát ezt viszont régen még fogtunk nézni.
+
+183
+00:38:42,800 --> 00:39:03,919
+Speaker 5: Amúgy, ami bennünk van, az az új nagy nyomtató, néztük, hogy olyan... Színpontosan s úgy nyomtat, például, hogy egy aláírást tali. Én kíváncsiságból beleteszek egy százre, és ha a rendőrség keres, akkor... Én is kíváncsiságból tudom próbálni. Szóljál tudod, hogy ilyen andor volt.
+
+184
+00:39:03,920 --> 00:39:07,200
+Speaker 3: Olyan nem tud nyomtatni, amilyet elvesznek az üzletbe.
+
+185
+00:39:07,200 --> 00:39:13,939
+Speaker 5: Az biztos, de szerint nekem ez nem gyavulsó. Erre én is kíváncsi vagyok.
+
+186
+00:39:17,720 --> 00:39:21,930
+Speaker 3: Szóljatok, amit is káncserítünk ezzel egyébként.
+
+187
+00:39:21,930 --> 00:39:41,959
+Speaker 1: Közben amúgy megy a valami, már vannak fél évválaszok, de aztán majd felolvasom. Egy GPT-t is felolvasom, mert egy kicsit még olyan bagos, de aztán csak köd lesz. Na, úgy nagyjából ezek voltak az ilyen action itemek, amiket beszéltünk. A többi az ezeket jössze van, vagy ennél többet nem beszéltünk?
+
+188
+00:39:41,960 --> 00:39:48,610
+Speaker 4: Még egy emberet föl fognak keresni, nevű annak indikótól. Réka.
+
+189
+00:39:48,610 --> 00:39:56,370
+Speaker 1: Réka, igen, Simó Réka is benne volt, igen. Még beszéltük azt, hogy a Navigátor Podcast-be beszerkeztünk egy ilyen...
+
+190
+00:39:56,370 --> 00:40:03,420
+Speaker 4: Igen, meg elmondani az jelképzések végén, hogy vannak ilyen megoldásaink.
+
+191
+00:40:03,420 --> 00:40:10,710
+Speaker 3: Rékát is ingyenesen Dakinex-re szervezzük egy képzésben. Közelebbről lesz?
+
+192
+00:40:10,710 --> 00:40:12,989
+Speaker 1: Igen, tehát júniusban három lesz.
+
+193
+00:40:12,990 --> 00:40:13,990
+Speaker 3: És melyik a Duck?
+
+194
+00:40:13,990 --> 00:40:19,640
+Speaker 1: Igen. Máté? Mikor vesztek a rátumot?
+
+195
+00:40:19,640 --> 00:40:26,179
+Speaker 4: Van is egy honlapunk. Tényleg? Van honlapunk.
+
+196
+00:40:28,180 --> 00:40:30,180
+Speaker 3: Még nem szoktuk meg ezt az építést.
+
+197
+00:40:34,180 --> 00:40:36,180
+Speaker 7: Itt fogottunk egy cég, de egy honlap nem volt.
+
+198
+00:40:38,180 --> 00:40:40,180
+Speaker 7: Ma novemberben az lesz, hogy arra az agentet kérdezzük, hogy akkor mi van.
+
+199
+00:40:42,180 --> 00:40:44,580
+Speaker 4: Nem, a honlap az megvolt.
+
+200
+00:40:45,000 --> 00:40:55,370
+Speaker 1: Tehát lesz június 11-én egy, akkor június 26-án, és június 18-án.
+
+201
+00:40:57,060 --> 00:41:00,320
+Speaker 4: És ott mutatja, hogy milyen szintű.
+
+202
+00:41:00,720 --> 00:41:08,079
+Speaker 1: Majd egy kicsit át fogjuk a leírás meg a képekecs mindent variálni, de most egyelőre így marad.
+
+203
+00:41:09,950 --> 00:41:14,050
+Speaker 4: Ahhoz képest, hogy... Három mondatot mondtál el nekem.
+
+204
+00:41:14,050 --> 00:41:15,050
+Speaker 1: Na nagyon ügyes voltál.
+
+205
+00:41:15,050 --> 00:41:17,050
+Speaker 4: Egész jó lett, nem? Szerintem.
+
+206
+00:41:17,050 --> 00:41:23,340
+Speaker 3: Egy baj van szerintem. Pirossal írja az árat. Azt kelti, hogy ülj nagyon magasra. Zöldek ki.
+
+207
+00:41:23,340 --> 00:41:27,630
+Speaker 1: Hát vagy írjuk oda, hogy 799 áthúzva, és akkor...
+
+208
+00:41:27,630 --> 00:41:34,630
+Speaker 3: Úgy, úgy, úgy. A piros mindig a... 3,5%-os kérdezmény. De tényleg amúgy nálunk a pirossal együtt sereg. Igen.
+
+209
+00:41:35,630 --> 00:41:37,630
+Speaker 4: A pirossal írja a fekete, és azt át van...
+
+210
+00:41:37,630 --> 00:41:39,630
+Speaker 3: Kauflandba a kék. Aha.
+
+211
+00:41:41,400 --> 00:41:43,400
+Speaker 3: A kártyás ez így.
+
+212
+00:41:43,400 --> 00:41:51,400
+Speaker 4: Merkulók ma piroshoz biztos. Szerintem azért, mert a címke is tiszta ki. Nem csak az, hanem a piros színke. Jaj, azt én nevezek.
+
+213
+00:41:51,400 --> 00:42:09,800
+Speaker 2: Meg a sárját le kérjük.
+
+214
+00:42:10,820 --> 00:42:24,300
+Speaker 1: Playwright így próbálja beírni folyamatosan a szöveget, mi karakterenként így, És néha valamiért ez Enter-t megnyomja, és akkor ilyen több üzenetet küld el egymás után. Most mondtam, hogy pésztelje be az egész szöveget egyszerre, ne szerakodjon itt a karakterekkel.
+
+215
+00:42:24,300 --> 00:42:47,250
+Speaker 3: Közben nem tudom, meg kell jutni bele olyanból, hogy Cloud volt, hogy nem tud írni a file-ba. És akkor 600 féleképpen megpróbálja, és aztán végig arra jut, hogy mondatokként kezdi beli. Nem tudom, milyen command alatt. De ez olyan koszakot tűnt el, amikor... Mert edd közben ott borostott a fájló kézzel. Megint? Lehet nálam pont megnyitva az a fájló, ilyesmikor is az új. Hát nem nyitok ilyesmikor.
+
+216
+00:42:47,250 --> 00:42:58,770
+Speaker 7: Nekem olyan volt, hogy a kód el volt indítva, ezért létrehoztam foldert, bele fájt, S hiába kerestem, de nem listázta ki. És akkor kellett úgy manuálisan azt megkeresni.
+
+217
+00:42:58,770 --> 00:43:04,579
+Speaker 8: Szerintek-e volt-e, hogy több kérése ilyen, valamilyen hibát adott vissza, vagy hibát?
+
+218
+00:43:04,580 --> 00:43:06,580
+Speaker 3: Például volt, hogy lehalt az egész kód is.
+
+219
+00:43:06,580 --> 00:43:15,640
+Speaker 8: Igen? Nekem kétszer azt hittem, hogy már elfogyott a tokens. Néztem, de ez nem az a hiba, amikor a token el... Újra futottam meg inkább a csalma...
+
+220
+00:43:15,640 --> 00:43:35,910
+Speaker 3: Néztem, hogy a down-detektor sírza is ügyved volt. Így. És hát volt, hogy ennyien reportáltak, hogy nem működik. Az autentifikáció lőttek el valami, és a tokenek, amikor jártak le, nem tudott autentifikálni. Így van. Egy ilyen délután megjárták a posztok, hogy mehetünk akkor hazat.
+
+221
+00:43:37,700 --> 00:43:42,900
+Speaker 3: Rosszabb, mintha elvennék el ilyet. Vég a munkának volt.
+
+222
+00:43:42,900 --> 00:44:13,760
+Speaker 1: Tényleg. Amúgy annyira durva például, Hogy csináltam egy ilyen sales dashboardot, Egy ilyen sales ügynököt, Amely segít abba, hogy ilyen sales tevékenységeket Csináljak. Van egy ilyen Kanban borcs, akkor megvannak A státusai a sales leadnek, hogy most Először felkeresem, akkor mindenféle Státuson végigmegy. De képzeljétek el, Olyan durván ügyesen sales-el, Hogy ilyen beszélgetés, tehát tudjátok, amikor úgy gondolkozik, És úgy loggolja, hogy miket csinál, azt mondja, hogy menjünk fel, nézzük meg.
+
+223
+00:44:13,980 --> 00:44:51,149
+Speaker 1: Tehát mondtam, hogy nézd meg ezt az állásanyállatot, Hogy még valide, ellenőrizle, és akkor felment a honlap rá. Most nézzük meg a honlapon is, hogy a saját honlapján, Nem csak ahol van egy ilyen gyűjtőhonlap, egy ilyen fejvadász cég, Hogy nem csak ott, hanem nézzük meg a rejtő oldalán. Igen, fent van, de ezelőtt négy hónappal küldték ki. Valószínűleg, nézzünk utána mekkora a cég, utána keres mindenféle helye, azt mondja, hogy ez a cég körülbelül olyan 100 fő is körül lehet, valószínűleg az történt, hogy egy DevOps-os vagy Mayox kettőjük lehet, egyikük ott hagyta, és krizis lehet. Négy hónapja keresik, valószínűleg, úgyhogy ez egy jó kandidátus lehet. Nézzük meg, hogy hogyan lehet elérni a döntéshozót.
+
+224
+00:44:51,150 --> 00:45:00,110
+Speaker 1: Fel megyek a LinkedIn oldalára, fel megyek a LinkedIn oldalára, itt van két potenciális személy, nézzük meg, melyik a döntés. Én szerintem ez lehet a döntéshozó, mert ez egy ilyen IT igazgató.
+
+225
+00:45:02,030 --> 00:45:36,040
+Speaker 1: Ne beküld ki a HR-nek, mert a HR-nek általában bekerül a postaládájába, És általában egy szemét keresnek, és nem egy ajánlatot egyből kiszűrnek, És ez nem lesz jó. Inkább a döntéshozók kell direkt megkeresni. Nézzük meg, hogy hogyan küldjük el. Mivel nincsen közös kapcsolatod vele, ezért egy alkalmakak ott közös kapcsolatot a szomorizában. Azt mondta, hogy keresd meg Komjáti Mikit, és szóljál neki, mert közös kapcsolat, És majd ő tud összekötni. Itt van az üzenet, amit Komjáti Mikinek küldhetsz. Így jól használtam, hiszem, de egy durva hely. Ilyen gondolatok, hogy írjunk egy üzenetet neki,
+
+226
+00:45:36,200 --> 00:45:51,459
+Speaker 1: Vajon connection request-et küldjünk, vagy direkt üzenetet, Mert a direkt üzenetet az 50-et tudsz küldeni per hónap, A connection request-ben van 150 karakter, amit el tudsz küldeni. Inkább most küldünk egy 150 karakteres üzenetet, És három nap múlva próbáljuk meg egy direkt üzenetet, ha nem válaszol. És ezekre mind emlékszik.
+
+227
+00:45:53,020 --> 00:46:10,400
+Speaker 1: Megkérdezem, a mai nap mik a feladataim? Tegnap előtt próbáltunk elküldeni, de volt-e arra válasz? Nem, nem volt válasz. Na, akkor most küldjünk akkor. Köszönöm.
+
+228
+00:46:10,400 --> 00:46:30,079
+Speaker 4: Szépen.
+
+229
+00:46:00,840 --> 00:46:01,840
+Speaker 1: Ennyire vezet, ennyire du...
+
+230
+00:46:01,840 --> 00:46:04,840
+Speaker 4: Várj, de ezt csináltál, ezt tilt, vagy ez magától?
+
+231
+00:46:04,840 --> 00:46:18,280
+Speaker 1: Részben magától, és részben pedig elmutom a célt. Úgy ahogy mondtad, az alapelve, mi a cél, és akkor... De simán a Cloud? Vagy ez még patacsa, GPT volt ez? Cloud, Cloud, Cloud.
+
+232
+00:46:18,280 --> 00:46:25,560
+Speaker 4: De az emlékezése az úgy történik az indexelés alapján, vagy a fájlokat olvassa, és... Vagy visszamentér Izium-ot, az új nagy session?
+
+233
+00:46:25,560 --> 00:46:59,519
+Speaker 1: Nem, minden a fájlokban, ha egy új session nyitok, akkor visszaolvassa a fájlokat, és tudja, hogy mi történt. Ez a lényeg, hogy a Persistence Layer az már downvaló, nem adatbázisban. És most bizonyos szempontból Git-be is lesz, tehát hogy vissza tud menni a múltba, mert a verziókezelés, tehát ebbe is nagyon ügyes lesz, meg ilyen öröndek igazából. Na, nézzük csak! Hát a 4.0-t hívta meg a ChatGPT 4.0-t, de azt mondta, hogy az Opus 4.7-es.
+
+234
+00:47:00,610 --> 00:47:19,000
+Speaker 2: Atommodellel áll a mód.
+
+235
+00:47:37,650 --> 00:47:40,650
+Speaker 1: Na jó, jó irányba megy, de beszélgessen már egy kicsit.
+
+236
+00:47:45,310 --> 00:48:02,389
+Speaker 1: Azaz. Jó. Most API hívásokat csinál, mert Ez a böngésző nem túl stabil. Beaggattam az API kulcsot is. Pár cendővel lekerül. Na akkor mondjuk ezek lesznek.
+
+237
+00:48:04,450 --> 00:48:06,450
+Speaker 1: Nem tudom, hogy így lesz ez a dolga.
+
+238
+00:48:06,450 --> 00:48:38,460
+Speaker 3: És kérdődő nekem az, hogy mennyire dependens lesz egy idő után mindenki a... Az AI-tól. Az AI-tól. Mert mi most oké, Technikailag is mondjuk még beváltunk meg ilyet, De a következő generáció, vagy az utána Lévő generáció minden Nem fogja érteni. De mondjuk lehet, hogy eleinte az emberek is így Voltak a számítógéppen, hogy dependensek, Lettünk a számítógéptől, de nem így... Nem is kell nézni. De mondjuk az első generációs érdelem pontukat... De jobban értettek, közelálltuk az elején. Például a lyukkártyás időszakban nagyon is értették, hogy jön körül, hogy tudja a lyukkártyát.
+
+239
+00:48:38,460 --> 00:48:42,460
+Speaker 8: Hát igen, mert akkor még voltak ilyen számítői tanítókulcsosok, ami elég egyszerű volt a számítői időnek.
+
+240
+00:48:42,460 --> 00:48:50,460
+Speaker 3: De nem tudjuk érteni a telefonnak már, hogy miként mennek. Csontját nem tudom. Csak hogy mi most a mi bőrünkön történik? A mi bőrünkön, igen.
+
+241
+00:48:50,770 --> 00:49:07,409
+Speaker 1: Azt kell megtanítsuk a gyerekeinknek és magunknak is, hogy hogyan gondolkozzunk. Tehát a gondolkodási folyamatoknak. Ez az egyik nagy felfedezésem az elmúlt fél évben. Meg kiristázni, hogy mi az, amit emberré tesz minket. Mert az, ami emberré tesz minket, azt nem tudja az éjjel soha elvenni.
+
+242
+00:49:08,910 --> 00:49:43,530
+Speaker 1: Sőt, mindent delegáljunk, ami nem emberi bennünk, És mindent felerősítsünk, ami emberi bennünk. Tehát delegálni tudjuk a számítást, a helyesírást, a dokumentumokat, A one-pager-nek a készítését, De például, amit nem tudunk delegálni, az a dolgnak az értelmének a megértése. Mert a one-pager, hogy értelmese vagy, nem azt a végén mi látjuk. És amikor elolvasod, azt mondjuk, ááá, nem pont erre gondoltam, de nagyon jól előkészítetted 98%-ban, ezt még írjuk át. De azt a 10 órát, amit belefektettünk volna, hogy előtte megcsináljuk, azt megsporoltuk, és 5 perc alatt megcsinálta, vagy 10-20 perc alatt.
+
+243
+00:49:43,530 --> 00:49:48,130
+Speaker 1: A felelősségvállalás például, amit nem lehet delegálni. Egyszerűen az ember vállal mindig felelősséget.
+
+244
+00:49:48,130 --> 00:50:22,909
+Speaker 4: Megértél, hogy ezt mondtad? Most mondtam. Igen, igen, igen. Tudjátok, hogy mit mondott? Egy mondott. Andrei Karpati azt mondta, hogy a gondolkodást tudod outsource-olni. De a megértés nem, iskolákban is ez a baj. A tanár nem tudja megspórolni a diák helyett a megértést, nem tudja megérteni helyette mindenhez az éjjel. Amit te meg tudsz érteni, azt nem tudja az éjjel megérteni helyetted. Mondod, hogy az éjjel megérti, de azzal te nem kerültél előrébb, szóval a te fejedben nem kerülhatt.
+
+245
+00:50:22,910 --> 00:50:26,460
+Speaker 4: Csak akkor, hogyha te érted meg. Igen.
+
+246
+00:50:28,480 --> 00:50:32,490
+Speaker 4: Vagy na, aztán majd Elon Musk lehet, hogy betöltje az agyunkat.
+
+247
+00:50:32,490 --> 00:50:34,220
+Speaker 1: Nem fog ez megtölteni.
+
+248
+00:50:34,220 --> 00:50:36,220
+Speaker 5: Ki volt, mi nem csak betölteli, nem hiszem.
+
+249
+00:50:36,220 --> 00:50:39,220
+Speaker 1: Nem, mert mindenkinek teljesen egyedi az agypályája.
+
+250
+00:50:39,220 --> 00:50:46,900
+Speaker 5: Lehet így a PC-re egyet ütni, egy elektrosokkot. Lehet.
+
+251
+00:50:46,900 --> 00:50:48,900
+Speaker 3: Ki volt, mi nem csak betölteli, nem hiszem.
+
+252
+00:50:48,900 --> 00:50:50,900
+Speaker 5: Precízen betenni.
+
+253
+00:50:51,220 --> 00:51:10,140
+Speaker 3: De ahhoz is, hogy ki lehessen olvasni, külön elelemet kell betalítani, tehát az agyhullalmaidat is kell tanítani, Hogy ha most a banalra gondolsz, akkor ez a flagpence, ez a volt, ez az önt, amennyi mennyiség. Lehet menni ezért dollár, felrakod, hozzá JavaScript, library, az agyhullalmaidat, realtime.
+
+254
+00:51:10,140 --> 00:51:12,640
+Speaker 1: Na, felolvassam közben, mit mondott, azt mondja.
+
+255
+00:51:12,640 --> 00:51:17,640
+Speaker 4: Jó, jó. Miért ez a betöntés, hanem hát írás megtanítani neki?
+
+256
+00:51:17,640 --> 00:51:19,769
+Speaker 3: Visszafelírás.
+
+257
+00:51:21,840 --> 00:51:25,850
+Speaker 3: Nem értjük az agyát, úgyhogy megkommunikálunk.
+
+258
+00:51:25,850 --> 00:51:29,250
+Speaker 8: De amúgy van olyan, aki tudja mozgatni a vegeket az agyából, csapkozni.
+
+259
+00:51:29,250 --> 00:51:32,789
+Speaker 3: Igen, ez az alap.
+
+260
+00:51:32,790 --> 00:51:43,790
+Speaker 1: Na, felolvasom azt, amit mond. Azt mondja, mindkét topmodell ugyanazt a magot mondja, mint a korábbi futások, igen, De három olyan dolgot is kimondtak, amit nem mondták.
+
+261
+00:51:43,790 --> 00:51:48,309
+Speaker 8: Néztem, hogy milyen csodás volt. Magot. Nem, modell.
+
+262
+00:51:48,310 --> 00:51:49,989
+Speaker 4: Topmodell.
+
+263
+00:51:49,990 --> 00:51:51,310
+Speaker 1: Mindkét top.
+
+264
+00:51:51,360 --> 00:51:56,360
+Speaker 3: Ez mi? Ez ő a NAT? Kicsi volt, amelyik mérkőző. Igen.
+
+265
+00:51:56,360 --> 00:52:25,810
+Speaker 1: Deszájn van ott? Nem ismertem. De három olyan dolgot is kimondanak, amit sem a csapat, sem a korábbi AI-ok nem mondanak ki. Na, lássuk. A Runway kérdés, amit senki sem mondott ki hangosan. Runway azt mondja, hogyan menekülünk meg a Sunriza-tól. Azt mondja az Opus 4.8. Ha holnap a Sunriza felmond, hány hónapig él a cég? Ez a szám határozza meg, hogy mennyire agresszívan kell most cselekedni. Ha három hónap, akkor a következő fáig filozófus.
+
+266
+00:52:26,650 --> 00:52:30,769
+Speaker 1: Filozófia luxus. Mondta valaki, hogy a következő fáig lehet látni?
+
+267
+00:52:31,310 --> 00:52:31,909
+Speaker 4: Én mondtam.
+
+268
+00:52:32,910 --> 00:52:35,290
+Speaker 1: Igen, hogy elő a következő fáig elég látni.
+
+269
+00:52:35,310 --> 00:52:37,369
+Speaker 3: Hogy ez luxus ennél sokkal gyorsabban kell.
+
+270
+00:52:37,390 --> 00:52:39,650
+Speaker 1: Ennél sokkal gyorsabban kell. Tovább kell lássunk.
+
+271
+00:52:40,390 --> 00:52:41,390
+Speaker 3: Tehát nem elég akkor ilyen.
+
+272
+00:52:42,230 --> 00:52:49,980
+Speaker 1: Hát azt mondja, hogy ha a hónap felmond a szomoríza, Akkor a mostani hozzáállásunk nem elegendő. Ezt szerintem is jó, ha tudjuk, hogy...
+
+273
+00:52:49,980 --> 00:52:51,980
+Speaker 6: De három hónapunk azért van.
+
+274
+00:52:51,980 --> 00:52:55,980
+Speaker 1: Három hónap... Az attit le tudod...
+
+275
+00:52:55,980 --> 00:52:59,980
+Speaker 8: Há, de három hónap úgy, Hogyha így élünk, de akkor...
+
+276
+00:52:59,980 --> 00:53:03,980
+Speaker 1: De az nem elég... Nem elég a három hónap nekünk ahhoz, hogy mi megélhetés tudjuk.
+
+277
+00:53:03,980 --> 00:53:10,260
+Speaker 8: Jó, hogy a fizetést felezünk, Vagy megjegyezünk, vagy bármi. Nagyon túl egészség.
+
+278
+00:53:10,260 --> 00:53:14,260
+Speaker 1: Viszont kicsi a valószínűség egyik napról a másikra, Szóval Riza, nem ezt mondja.
+
+279
+00:53:14,260 --> 00:53:16,260
+Speaker 3: Egyszerűen nem tudom kivinni egy projektet.
+
+280
+00:53:16,260 --> 00:53:23,920
+Speaker 1: Hát most reállítson. Ha leépítene, szerintem lenne egy olyan 9-10 hónapunk arra, hogy ezt megoldjuk. Tehát, hogyha elkezdenek a szomorúzói...
+
+281
+00:53:23,920 --> 00:53:29,570
+Speaker 4: De le van egy konkrét számunk, az valamikus idő, nem? Ah, igen. Nézd, és akkor...
+
+282
+00:53:29,570 --> 00:53:36,070
+Speaker 1: Igen. Azt mondja, van-e 3-6 havi runway, az ilyen átmenetre kérdezte.
+
+283
+00:53:36,070 --> 00:53:38,070
+Speaker 2: 3-6 havi?
+
+284
+00:53:38,070 --> 00:53:44,859
+Speaker 1: Jó, 3 vagy 6 havi, jó. Válaszoljunk akkor erre, hogy van. Van 6-9 hónapunk.
+
+285
+00:53:47,830 --> 00:53:51,830
+Speaker 1: De még van a pályázat is szerintem, az is besegítene.
+
+286
+00:53:51,830 --> 00:53:53,830
+Speaker 7: Biztos be fog jönni szeptemberben?
+
+287
+00:53:53,830 --> 00:54:13,400
+Speaker 1: Nem biztos, de 3-6 hónap múlva talán bejön. Most nem tudom, de van ott. Hirtelen halál, nem lassú halál. Mindkettő szétveri a... Mi? A hirtelen halál, nem lassú halál. Mindkettő szétveri a napi, központi narratív átadását.
+
+288
+00:54:13,400 --> 00:54:26,400
+Speaker 7: Azt én mondtam, hogy ha valaki meghal, ugye, Beszéltünk arról, hogy akkor közösen vagy egyénileg freelancerként. Csak akkor mondtam, hogy ha freelancerként valaki meghal, Akkor minden munkája az, hogy kifolytassa, És nem tudom, mi lehet, hogy ilyet ezt kell csinálni.
+
+289
+00:54:26,400 --> 00:54:44,430
+Speaker 1: Azt mondja az Opus, az ilyen kapcsolatok nem lassan halnak meg. Egy átszervezés, egy új CTO, egy költségvágás, Az egyik napról a másikra... Az nem az, hogy nem lassan mondanak ki. Azt mondja, hogy hamis biztonságot ad nekünk ez a narratíva. Valós kockázat, kirtelenés, bináris.
+
+290
+00:54:44,430 --> 00:54:49,219
+Speaker 4: Vagyis kell ezt, vagy nem. Na jó. Érdekesen érdekes.
+
+291
+00:54:49,220 --> 00:55:05,600
+Speaker 1: Egyetlen mérőszám nem a szélz... Az egyetlen mérőszám nem a szélz általában, hanem egy második ember. Opusz ezt teszi. Az egy, ti, ti... Komolyan, de ezeket írom, én nem értem.
+
+292
+00:55:05,600 --> 00:55:06,600
+Speaker 8: Én sem.
+
+293
+00:55:06,540 --> 00:55:21,100
+Speaker 1: Nem csinál a csapat sales-t, hanem épül egy második ember Szabolcson kívül, aki önállóan nyit és zár kliens-t. Andor a teljes jövőtök próba köve.
+
+294
+00:55:21,100 --> 00:55:26,279
+Speaker 3: Szerintem nem tartottuk elég tűzre.
+
+295
+00:55:26,280 --> 00:55:38,470
+Speaker 1: Az első igazi áttörés nem az, amikor Szabolcs elad, hanem amikor valaki más zár le egy fizetős ügyfelet. Akár kicsit, ez szimbolikusan óriási.
+
+296
+00:55:40,730 --> 00:55:43,909
+Speaker 5: Kicsit nem fúgtatul a kontextust az egész valami.
+
+297
+00:55:43,930 --> 00:55:54,229
+Speaker 1: Szerintem nem nagyon értette pontosan, de szerintem ez arra értette, hogy mondtuk, hogy az első kliens, amely bejön, az egy hatalmas morális boost lesz.
+
+298
+00:55:54,250 --> 00:55:56,670
+Speaker 8: Látta, hogy a topmodelt ezen is miért fúgtatni.
+
+299
+00:55:57,900 --> 00:56:15,339
+Speaker 1: Lesz-e Szabolcsom kívül? Azt mondja, három igazi tét, lesz-e Szabolcson kívül bárki, aki bevételt hoz? Nem a régiónkonszult pályázat a tét, hanem azt mondja, Andorból szélszképes ember lesz-e 90 nap alatt? Nem tudom, miért.
+
+300
+00:56:16,340 --> 00:56:20,160
+Speaker 4: Még egy olyan kereszt, mert te csomó széltek, amikor beszéltem.
+
+301
+00:56:20,240 --> 00:56:20,599
+Speaker 1: Ja, igen.
+
+302
+00:56:20,680 --> 00:56:27,340
+Speaker 3: És nem csak az ön nevét mondtuk ki egyedül, nem mondtuk, hogy akkor most mondjad Lenin vagy Csoltán Szabis.
+
+303
+00:56:27,460 --> 00:56:46,730
+Speaker 1: Termékcég vagy szolgáltató cég, ez a kérdés. A hatból a szolgáltatás, microsite, oktatás, pályázat delivery. Ide, ezek lineárisak és embert kell felvenni. A termék, az a DEAC, a HERMES, az Agrar platform, ezek termékek is exponenciális.
+
+304
+00:56:46,730 --> 00:56:51,330
+Speaker 4: A microsite is tud termékelni egy új terméket. Igen.
+
+305
+00:56:51,330 --> 00:56:57,050
+Speaker 1: Kilenc emberre nem lehet mind a kettő egyszerre. Melyik a fő?
+
+306
+00:56:57,330 --> 00:56:58,330
+Speaker 4: Megint a kettő.
+
+307
+00:56:58,330 --> 00:57:17,390
+Speaker 1: Hát a termék vagy a szolgáltatás. Na jó. Mennyi időtök, mennyi pénz az, az elég. A Runway az sosem szokott kimondott árbevételplafon lenni. Na mindegy, ez nagyon nehezen olvasható.
+
+308
+00:57:17,390 --> 00:57:18,390
+Speaker 2: Hát olvasson.
+
+309
+00:57:18,390 --> 00:57:35,649
+Speaker 5: Azért, mert a hangból, ahogy csinált... Az átiratot az valami ilyen darabos valami lehet, nem? Nem, igen, igen. És ha ilyen darabos, ő úgy kezdette válaszolni, ezt átlagolta, igen.
+
+310
+00:57:36,130 --> 00:58:07,470
+Speaker 1: A pályázati pénzt torzíthatja a termékérzetet. A pályázatból vásárló cég nem ugyanazt jelzi vissza, mint a saját pénzből vásárló. Minden leadnél kérdezt, fizetne ezért a támogatás nélkül is, ha nem a pályázati digitális... Díszletet szállítotok, ami referenciának is gyenge. Ez arra érti, hogy ha valaki 10%-ot kell csak fizessen, Akkor könnyebben pajlja a pénzt, mint hogyha rendesen fizetnie kell érte.
+
+311
+00:58:07,470 --> 00:58:29,086
+Speaker 3: És hogy vajon úgy is megalmálja a termékét, hogyha nem pajlázat segíti a terméknek a megvásárlása? Az olyan szempontból nem teljesen igaz. Ha pályázati pénzben meg is fogunk, akkor kapunk időt, hogy tanuljunk. Olyan terméki fejlesztésre, ami később konkrétabb pénzt fog írni teljeságról is. Csak.
+
+312
+00:58:29,086 --> 00:58:32,900
+Speaker 1: Lehet, hogy nem fogjuk tudni annyi pénzért eladni még egyszer.
+
+313
+00:58:32,900 --> 00:58:42,730
+Speaker 4: Van bármi kockázatunk a pályázattal kapcsolatosan? Megtörténhet, hogy nem tudom... Melyik kockázat? Hát, amit megnyert.
+
+314
+00:58:42,730 --> 00:58:45,499
+Speaker 5: Ignis-es? Akadémia?
+
+315
+00:58:45,500 --> 00:58:54,331
+Speaker 4: Van olyan, hogy nem tudom, megkapunk valamennyi pénzt, Nem sikerül teljesítjük a következő lépést. Vissza kell figyelszük. Vissza kell fizessük a pénzt, amit már megkaptunk. Akkor.
+
+316
+00:58:54,331 --> 00:59:00,740
+Speaker 3: Muszáj te esni. De mit jelentettál is itt is? Vagy megképíthettél?
+
+317
+00:59:00,740 --> 00:59:39,180
+Speaker 1: Nem, nem, nem. Vannak stációk, Amiket az egyetem kell Bizonyítson, hogy eljutott TR8-as, Szintre. Amúgy viszont nem Bokjuk el, mert az egyetem azt írja Alá, amit mi kérünk. Tehát, hogy Reális esélyt nem látok, hogy baj legyen. Elméletileg igen, tehát hogyha nem tudjuk hozni azt, amit megígértünk, hogy TRN 8-as szintre felvisszük, akkor elméletileg vissza kell fizessük. De mondjuk mivel stációk vannak, és ezért kicsit olyan, mint a hegymászon, amikor mászik és beüt egy-egy szeged, ezért csak addig esünk vissza, ameddig a legutolsó szeg be van ütve.
+
+318
+00:59:39,180 --> 00:59:41,379
+Speaker 3: Tehát addig a társadalmat is így meg kell számolni?
+
+319
+00:59:41,380 --> 00:59:45,570
+Speaker 1: Lesz majd négy stáció, és akkor úgy.
+
+320
+00:59:49,630 --> 00:59:54,910
+Speaker 4: Logikus elvárás, ha valaki ad kényet.
+
+321
+00:59:54,910 --> 00:59:59,790
+Speaker 1: Gyere, Ati, lássam, te jobban tudod elolvasni.
+
+322
+00:59:59,790 --> 01:00:07,290
+Speaker 5: Olyan, mint amikor a YouTube-nak van ez az automatikus felirat. Olyan feeling.
+
+323
+01:00:07,290 --> 01:00:28,950
+Speaker 6: Privacy egyenlő sales asset, nem technikai adóssága. Kell egy Exilabs AI Security Baseline dokumentum. Mit, hova engedünk? Mit nem küldünk public modellbe, milyen private deployment opció van, mint mástól. Mert a hova kerül az adatom kérdés hamarabb jön, mint hinnétek.
+
+324
+01:00:29,950 --> 01:00:38,080
+Speaker 1: Hát bármilyen modellel kell tudjuk használni ezt. Hogy kell csinálni, hogy agnosztikussá kell csinálni.
+
+325
+01:00:38,080 --> 01:00:50,510
+Speaker 3: Hát agnosztikus már alapból helyezik. Akármit le tudunk kötni mögé, csak mi kell megoldjuk, hogy tudjunk adni alternatív... Tehát készítsük az alternatív.
+
+326
+01:00:50,510 --> 01:01:08,700
+Speaker 6: Opus 4.8. A pályázat egy Regiakonszált függőséget Cserél a szóriza függősége. Ugyanaz a betegség Új arccal. EU pénz lassú, Projektlogikájú, egyszerű Lezáró. És egy Partnertől tesz...
+
+327
+01:01:08,700 --> 01:01:18,830
+Speaker 1: Hát nem hiszem, hogy nem a regiakonszált Fog nekünk fizetni, ez egyik. Csovási pedig Úgy kell berendezkedjünk, hogy ez a pénz Ezzel... Ettől ne legyünk befejlődők.
+
+328
+01:01:18,830 --> 01:01:21,110
+Speaker 6: Az is a tárgy?
+
+329
+01:01:21,110 --> 01:01:25,110
+Speaker 1: Hogy anélkül is megéljük. Azért anélkül is megéljük, de...
+
+330
+01:01:25,110 --> 01:01:41,430
+Speaker 3: Ez igaz, hogyha majd az idő folyamában Mindenki talál egy ilyen dolgot, Hogy például a microszájtok, Még mondjuk a hermészájtok, Még valakinek beszélhetetlen, Még egy valaki oktatja ezt a hermét, És mindenki talál egy ilyet, Akkor ahányan vagyunk,
+
+331
+01:01:41,430 --> 01:02:02,339
+Speaker 1: Annyi lábunk is tudja állni. Ráadásul ezek a pályázatok túl vannak árazva olyan szempontból, hogy sokkal gyorsabban tudunk deliverizni. Azt mondjuk, hogy ezt 58.000 euróból tudjuk megcsinálni, de valójában a valós költségünk lehet, hogy 8.000 euró. És lesz az első bejövő pénz, az ad egy akkora bárt nekünk, hogy már akkor meg tudjuk engedni a fél évet készen, vagy egy évet is akár készen a pályázat.
+
+332
+01:02:02,340 --> 01:02:10,380
+Speaker 8: És ugye ez mind az AI-nak köszönhetően? Tehát amikor ezt még pályáztatottak óta, nem is tudtuk, hogy... Az egy másik ilyen dolog.
+
+333
+01:02:10,050 --> 01:02:19,400
+Speaker 1: De most az új pályázatok, amikor bejönnek, én azt is úgy fogom beárazni, hogy egy webshopot nem 8000 euróért fogunk elvállalni, hanem 28-ért. Mind a rendes.
+
+334
+01:02:21,180 --> 01:02:31,740
+Speaker 8: Hát főleg ameddig a piac ezt nem kezd, mindegyik leverni az árat addig. Biztos lesz, hogy mindegy másfél. Hullva is, azért most főleg a bürota típus.
+
+335
+01:02:31,880 --> 01:02:34,140
+Speaker 1: De most fogunk áraajánlatot adni a következő napokban.
+
+336
+01:02:34,400 --> 01:03:02,080
+Speaker 8: Amúgy azt mondják, hogy az egyetemeken már hurrogják az AI-okat, meg a vezetőköt, tehát nagyon gyűrű. Mit csinálnak? Az egyetemeken. Hurrogják? Igen. Tehát az ilyen, vannak ugye most az évzárók, az ilyen évzáróbeszédek, nagy-nagy hírek vannak, egy-egy cikk így feldobódik, hogy ne nézzük biztonságban a diákokat magukat. Tehát tanultak egy csomó mindent, és mennek ki a piacra, és be vannak, ugye egy rakás alkalmazott elmambocsáknak be vannak zárva az ajtók az egyetemisták előtt, és van egy ilyen szorongás bennük.
+
+337
+01:03:02,990 --> 01:03:21,220
+Speaker 4: A gyakornokokkal, amikor van olyan, aztán ugyanez jött fel, hogy nem tudom, egyszer is hálásak, hogy gyakornokoskodhattak nálam. Másik az, hogy nem tudják, hogy mi lesz a jövő leszállásuk, meg ilyesmi, hogy milyen irányba induljanak el a véleményem szerint.
+
+338
+01:03:21,220 --> 01:03:37,790
+Speaker 1: Hát igen. De viszont a másik oldalról visszaemlékeztek, négy évvel ezelőtt a fennekét is kitörölték egy uniónak. És olyan fizetéseket kaptak, olyan arrogánsakká váltak. Ez a másik oldala a ringának.
+
+339
+01:03:39,710 --> 01:03:45,500
+Speaker 6: A karkizik pont azt mondja, hogy senki nem bírtakolja a recurring revenue kérdést.
+
+340
+01:03:45,500 --> 01:03:46,939
+Speaker 4: Még egy? Még egy?
+
+341
+01:03:46,940 --> 01:04:14,290
+Speaker 6: Aki nem tiszta, mi tovább is. Recurring revenue. Visszatérő. Recurring revenue. Visszatérő. Azt mondja, a hatból csak a deák és az oktatás lehet ismétlődő. Egy ilyen natív cég túlélése a recurring-en hagyjátok. Ahol a havi előfizetéses termék, amit egy ügyfél nem mond le. Hol a havi előfizetéses termék?
+
+342
+01:04:14,290 --> 01:04:18,290
+Speaker 4: Az a biztos bevétel, ami visszatérve.
+
+343
+01:04:18,290 --> 01:04:31,850
+Speaker 3: És az iáraszisztést is tudjuk úgy csinálni, hogy havi díjas legyen. Tudjuk, hogy minden hónapban adunk két support órát. És azon kívül mi már feláldozzuk azt a support órát, hogy üzemeltetés. Szerintem is érezzük volna.
+
+344
+01:04:32,320 --> 01:04:35,320
+Speaker 4: A fixáros dolog helyett a 100%-es a modell.
+
+345
+01:04:35,320 --> 01:05:07,310
+Speaker 6: Mindegyik, mindegyik. Tehát sokkal kisebb belépő a hússzak. A microsite csapja. Ha tényleg 20 perc egy weboldal, akkor bárki megtudja, és az ár nullához tart. Nem 1000 darab 50 eurós szájt kell, hanem 5,5, ahol a microsite belép egy 10.000 eurós csomaghoz. A 120 fős lista értéke a kapcsolatban van, nem a szájdban.
+
+346
+01:05:07,310 --> 01:05:10,790
+Speaker 4: Ezt ki is mondta, azt hiszem, hogy nem ebből fogunk megoldani.
+
+347
+01:05:10,790 --> 01:05:18,470
+Speaker 6: Az előző mondat az nincs értelme. Hát pont, hogy 1000 darab kicsi szájd kell, nem erős fél.
+
+348
+01:05:18,470 --> 01:05:22,470
+Speaker 1: Az volt az érve, hogy ha mindenki meg tudja csinálni, akkor az ára inflálódik.
+
+349
+01:05:22,470 --> 01:05:30,779
+Speaker 8: Ezért kérdeztem, hogy egy egy oldalas HTML paget nem sok vajon a 25 dolláros havi feliratkozás.
+
+350
+01:05:30,780 --> 01:05:35,720
+Speaker 1: De nem a paget adjuk el. Hanem a paget, a jelenlétet folyamatosan fősítjük.
+
+351
+01:05:35,720 --> 01:05:58,120
+Speaker 4: És a másik, ami szerintem még fontos, az az, hogy Ez a valóság, amit ő most olvasott, ez nekünk valóság. A környezetünknek ez, Fél év múlva, vagy egy év múlva lesz valóság. A környékbeli infós cégeknek fél év múlva, egy év múlva lesz valóság. És egy átlagembernek pedig, Két-három év múlva lesz valóság.
+
+352
+01:06:00,240 --> 01:06:07,640
+Speaker 1: És akkor már gyakorlatilag nem éri meg nekik, tehát hogyha olcsóbban akarják adni, mint mi, akkor kiszámolják, és lehet már nem fogja megérni nekik, hogy valószínűleg kényesek után.
+
+353
+01:06:07,640 --> 01:06:49,360
+Speaker 4: Így van. És egyetértek, hogy két-három év múlva be fog állni az az egyensúly, hogy tényleg egy ilyen kicsi szájtot nem fogja megérni nekünk ilyet csinálni, vagyis nekem ez a véleményem. De most, amíg igazából versenyelőnünk van, és más nem tudja ezt megcsinálni 20-30 perc alatt, Nekünk ez most. Ez tényleg zero cost, de másnak ez nem feltétlenül lenne zero cost, vagy nem lenne ennyire kevés cost, és abban viszont szerintem igaza van, hogy nem ebből fogunk megazdagogni, hanem ebből kapcsolatokat tudunk szerintem veszni, de ezt késmondtuk.
+
+354
+01:06:49,360 --> 01:06:58,360
+Speaker 3: Igazából én nem van a havi díjat, csak hallom, hogy nem csak a havi díj van, hanem még azon kívül van egy belépő fix, szóval mennyi? 200-300 euró.
+
+355
+01:06:58,360 --> 01:07:08,300
+Speaker 1: De ha van egy honlapja, akkor... Akkor már átmigráljuk. Az a pénzösszeg az arra van, hogy le tudjunk ülni és két-három órán keresztül meghallgassuk, struktúráljuk és több iterációban kifejlesztjük a struktúrát magán.
+
+356
+01:07:08,300 --> 01:07:14,419
+Speaker 3: Összeszedjük meg ezt az adatot, amit fel kell rakni a web oldalra, mert ő sem tudja, amit kell lakni.
+
+357
+01:07:14,420 --> 01:07:26,656
+Speaker 5: Egy meglévő oldal esetében is lehet, hogy le kell ülni, mert már elavult az oldal vagy nem elég jó, nem tartalmaz elég. Csak ad egy.
+
+358
+01:07:26,656 --> 01:07:34,660
+Speaker 1: Támpontot nyilván. Szerintem majd indíthatunk egy kampányt, hogy aki augusztusig jelentkezik, annak ingyen fogjuk megcsinálni.
+
+359
+01:07:34,660 --> 01:07:46,350
+Speaker 8: Ugye ezen a sokféle semmi leül, két-három éve át megjelenik. Előjönben ezer.
+
+360
+01:07:46,350 --> 01:07:52,749
+Speaker 1: Adja Isten, hogy ezer legyen. Valahogy megoldjuk, akkor van ezt az... Akkor kiveszünk a fizetésnél, köszönjük rá.
+
+361
+01:07:52,750 --> 01:08:01,060
+Speaker 6: Egész igelmű, hogy kiutaláltam a családra. Jövőben látás! Csendes katasztrófa. Mindkettő ezt tartja valószínűbbnek.
+
+362
+01:08:02,600 --> 01:08:05,600
+Speaker 6: Mindkettő? Ezt tartja valószínűbbnek.
+
+363
+01:08:05,600 --> 01:08:16,389
+Speaker 1: Tehát mind a két modell azt mondja, hogy egy csendes katasztrófa lesz. Tehát, hogy a jövőben szimulálja, mi fog történni, akkor negatívan látni. Na nézzük meg miért.
+
+364
+01:08:16,390 --> 01:08:50,179
+Speaker 6: Opus 4.8. Talán a legfontosabb módot az egész napról. Nem összeomlás, hanem hogy a szórisza túl sokáig megmarad. A kényelmes 37 ezer euró per hónap elveszi a sales kényszer élét. A hat projekt látszat aktivitást ad, ami megnyugtatja rá ki ismereted bevétel nélkül. Szabócs kék! A legjobbak elmennek és akkor, épp akkor felmond a szó a részre. Ez azért gyilkos, mert minden egyes nap racionálisnak tűnik benne.
+
+365
+01:08:50,180 --> 01:09:04,540
+Speaker 6: Na fejtsük meg! Kocka! Én annyiáról értettem szerintem. Újra kell kérdezni. Tehát, hogy ugye a szóri számban, hogyha sokáig együtt próbáljátok, azt mondja, hogy kényelmes, tehát benne kényelmes.
+
+366
+01:09:04,540 --> 01:09:10,540
+Speaker 4: Hát azt mondja, hogy a szél skillünket megöli az, hogy... A szónizálat valami, szerintem ez mindenki...
+
+367
+01:09:10,540 --> 01:09:13,540
+Speaker 6: Ezt vállalatban vagyunk rá kényszerű.
+
+368
+01:09:13,540 --> 01:09:30,670
+Speaker 3: De a szél skillt azt is elveszi, hogyha a pályázatra hajatkozunk, hogy a szélszt helyettesítjük azzal, hogy... A régió konzant hozzá nekünk. Hogy a régió konzant hozzá nekünk. Ki veszi az égét?
+
+369
+01:09:30,670 --> 01:09:34,948
+Speaker 5: Van az opció, hogy a régiót felhasználjuk, Hogy a szomoríza maradjon.
+
+370
+01:09:37,840 --> 01:09:44,368
+Speaker 4: Nem tudom, nekem az az érzésem, Hogy úgy értelmeznék, mintha Nem akarnák szélzelni.
+
+371
+01:09:44,370 --> 01:10:14,680
+Speaker 8: De most van egy őrült ötletem, Tehát tegyük fel, hogyha azt mondjuk, Hogy le vagyunk nagyon foglalva Ezeken a területeken. És a szész meg hagyja adni a kapacitásunkat, akkor még mindig rögtön egy ilyen Jolly Joker, Hogy fel lehet venni egy csak szészszer fogalmazó, tapasztalt, stb. valakit, aki tudja mindenféle trukkokat, meg piacokat, És akkor az nekiáll és bever minden ajtót, azt élvezi, feltűzíti, tehát úgy, ahogy mi szeretünk IIT-t építeni, Az úgy fog szeretni eladni, tehát ez is egy lehetőség igazából.
+
+372
+01:10:14,680 --> 01:10:27,010
+Speaker 8: Tehát, hogy nem kell csak abba gondolkoznunk, hogy ennyien vagyunk, és itt lezárt a kör, Hanem mindig van egy olyan opciónk, hogy lehet egy szakemberben hívni aki. Akit is segítünk. Szerintem az én ilyen szakember nem mindegy se alkalmaz.
+
+373
+01:10:27,010 --> 01:10:31,010
+Speaker 1: Ez biztos. Vagy kap egy utalékot? Ne fizetj és fizessünk neki egy út alig.
+
+374
+01:10:31,010 --> 01:10:58,500
+Speaker 8: Vagy kontraktorról. Én nem tudom, nem ismerem ezt a piaci állatot. Csak tudom, hogy a RebelDoc-nál voltak például sales menedzserek, Meg mindenféle salesesek, vagy a különböző projekteken, Amelyikkel megfordultam. Elég sokat láttam ilyen sokat. Csak az a munkája ezzel foglalkozik. Ül, tárgyal, megy, intézi. Az a közös ismerősünk, hogy átosztotta. Fekete Andrásnak a sóvora. Sanyi is egy ilyen szész figura, Csak ő nem tud...
+
+375
+01:10:58,500 --> 01:11:02,500
+Speaker 1: Virágokat árul. Igen.
+
+376
+01:11:02,500 --> 01:11:19,699
+Speaker 8: Én el tudom képzelni egy ilyen Sanyi figurát, Hogyha azt mondjuk ne, Ennyi pénz, menj, keresd el minden Céget, nem tudom mit, Hogyha valaki társas belelkesedik, akkor Már Udvarhelyen is vannak Valószínűleg olyan emberek, akik Házadó természetek.
+
+377
+01:11:19,700 --> 01:11:30,790
+Speaker 4: Nekem olyan ismerősöm. Nem fél be az értékrendet. Dyson porszívókat, kétezer eurós Dyson porszívókat árut kopogtak be. Ha mondtál előtt kettőt, abból bőven meg volt a fizetés.
+
+378
+01:11:30,790 --> 01:11:34,780
+Speaker 1: Mennyire adja a Dyson neki?
+
+379
+01:11:35,270 --> 01:11:43,869
+Speaker 4: Nem ezer euróért, de előtt ettől hármat, az jó volt neki.
+
+380
+01:11:43,870 --> 01:11:50,370
+Speaker 1: Ez az, amit nem tudnék csinálni. Én sem. Ez a klasszikus pószívó ügynök. A pokolban én ezt kell csináljam egész napot.
+
+381
+01:11:50,370 --> 01:12:00,370
+Speaker 8: Mondanál megbeszélek, hogy ez egy... Van egy ilyen része is ennek a szapmának, Hogy kell menni és kopogtatni. Tehát, hogy ezek a Szélészesek ezt csinálják. Múlt héten mi is kaptunk egy hívást,
+
+382
+01:12:00,370 --> 01:12:08,980
+Speaker 3: Valami pószívós, 4000 euró. De hogy azt ajánlották, hogy kijönnek, Kiteparítsák a házat, mert azzal a szőnyegeket Meg a fűtőnyekeket meg mindent ki lehet teparítani.
+
+383
+01:12:08,980 --> 01:12:35,740
+Speaker 8: És ahogy gondoltuk, utána meg lehet. És az ügyneket mi ezt... Egy ismerősök mesélte, van egy ilyen szűrő a porszívóban, Kivesz és megmutatja, hogy mennyi mocsok volt a papranokban, Vagy nem tudom mitben. Hát különböző szűrőjék vannak, azt mondja, hogy, Megmutassam, milyen mocskos a papranocs. Ó, hát az most volt ki takarítva. Rátesz, így dolgozik, így néz, új de mondj, Új megvették az 1000 eurós porszívót a vállam ismerőseim, Mind ahozat. Nem is ez 2000... De az egy kamosszűrő volt?
+
+384
+01:12:35,740 --> 01:12:38,980
+Speaker 4: Nem. Nem, rendes. Tényleg, annyit összeszedett?
+
+385
+01:12:38,900 --> 01:12:42,100
+Speaker 1: Sőt, hogy elégeti előtted, és úgy érzed a bőrnek a szagát.
+
+386
+01:12:42,100 --> 01:12:43,800
+Speaker 8: Igen, igen, ez azon úgy is volt.
+
+387
+01:12:43,800 --> 01:13:10,900
+Speaker 1: Tehát, hogy hatnak az érzékszerveidre, és az érzelmeidre, és minden. Gyuli nekem is így csinálta, két órán keresztül így hipnotizálta. Gyuli meg akarta venni, mondom, szó se lehet róla, 13 ezerre. Jöjj! És mondom, szó se lehet róla. Hát de hogy, de egy hétig, rendesen fizikailag függővé vált, egy hétig így érzelmileg érezte, hogy... Mégiscsak meg kéne, tudod a hipohondria ilyenkor, aki bekapcsol benned, hogy most visszafekügyek abba a párnába.
+
+388
+01:13:10,900 --> 01:13:16,230
+Speaker 8: Pontosan, pontosan, erről beszélek. Nagy stratégiák vannak, hogy el nem hiszed.
+
+389
+01:13:16,230 --> 01:13:35,400
+Speaker 1: És utána olyan szomorú volt, azt mondta, olyan szomorúan ment el, hogy nagyon, és akkor valahogy ajánljon valakit, ahova el lehet menni, aki megvenné ezt a porsziust. Nekem úgy volt, hogy a gyomrom így forgott, hogy így fel... Tehát jól itt most gyakorlatilag minden manipulatív eszközöt beletett.
+
+390
+01:13:35,400 --> 01:14:07,650
+Speaker 4: Igen, nem tudom, az OVB-t ismeritek? Igen. Na. Hát az egy olyan... Befektetésről. Egészségügyi biztosítások, meg ilyesmi. Igen, mert azt is kérdezem, hogy tudják, hogy ismerik. OVB. Hát, OVB. OVB. Azaz. OVB, csak hát a németül OVB, nem? Mhm. Az. És így megy, hogy az ismerősöket hívják fel. Tartanak neked egy bemutatót, hogyha el szeretnéd érni a céljaidat, milyen célod van, és akkor el kell menned a célod alatt.
+
+391
+01:14:07,650 --> 01:14:29,400
+Speaker 4: És te bízol el a nyugdíjat szedben. Mennyi pénzt tudnál félretenni, és akkor kiszámolják neked, hogy a célodat el tudnád érni, és akkor ennyit kéne. Csak 200 ezer kell befizetni havonta. És akkor fizesed, fizesed, fizesed. Végén megkérdeztem a programáit a srácokkal, hogy bebefektettem, meg ilyesmit. Megkérdeztem, mennyi a profitabilitása, peré, mennyi hoz.
+
+392
+01:14:31,420 --> 01:14:45,009
+Speaker 4: Ez úgy jó esély, hogy legyen 4%-os. A 4%-at nem is kell mondani, hogy beteszem az SMP 500-ba, Az 10-et hoz. És egy kicsit kiesek a szerepből. Mi ez a betesítési módszer, azt mondja?
+
+393
+01:14:47,410 --> 01:15:19,119
+Speaker 4: 10%-at beteszed. Az elmúlt 50 évben ez az átlaga 10%-ot hoz. 8-9-10%-ot. Ó, igen, nem tudom. Mindegy, kizökkent a csávó, de aztán visszazökkent. És... Nagyon nehezen megértette, hogy nem érdekel, és nem kell nekem ez az egész. És akkor azt mondta, hogy jó, de akkor ajánljak tíz másik embert. Tíze? Külgyek tíz másik embert, meg a nevét és a telefonszámát, akit fel tud hívni. Nem! Hogyhogy nem?
+
+394
+01:15:19,120 --> 01:15:51,169
+Speaker 4: Ő volt felveszve, hogy hogyhogy nem küldök neki... Ha már te nem vagy hajlandó, és tudjátok, hogy érzelmi is arról, hogy te nem akarsz jót a családtagjaidnak, és ilyenekkel élnek, érted? Nem, nem akarok jót. De, jót akarok megúrni magától. Hihetetlen, hihetetlen. Amikor én beszéltem, nem volt ennyi progresz. Ez, nem mondom, hogy ki, de ilyen tizen évig az egyik legjobb barátom.
+
+395
+01:15:51,170 --> 01:15:53,170
+Speaker 6: Most megszűnt.
+
+396
+01:15:54,950 --> 01:16:03,950
+Speaker 4: Nem, bocsánat, rajta keresztül, de nem ő volt, aki aztán végigvitte. Az első beszélgetésben le volt, de utána nem. Ez, aki ezeket mondta, az nem ő volt.
+
+397
+01:16:03,950 --> 01:16:05,950
+Speaker 1: Naval azt mondta, hogy ő nem szélze el.
+
+398
+01:16:05,950 --> 01:16:13,950
+Speaker 3: Az első beszélgetés ingyenes, eljössz egy kávéba, meghívlak, De cserébe előtt kell csinálni egy tíz embert. Cserébe, érted?
+
+399
+01:16:13,950 --> 01:16:17,629
+Speaker 4: Nem, én nem akarom másokat ennek kitenni.
+
+400
+01:16:17,630 --> 01:16:27,010
+Speaker 1: Naval azt mondta, hogy ő nem szélze el, hanem hisz a termékben, elmondja, s aki... Megfog, vagy aki bebő rá, úgymond.
+
+401
+01:16:27,010 --> 01:16:28,010
+Speaker 3: Szerintem ez teljes.
+
+402
+01:16:28,010 --> 01:16:32,510
+Speaker 1: Akkor kapcsolódik? Ha nem, akkor egyszerűen azt mondtam, hogy megy tovább, mert nem jó az ő kénység.
+
+403
+01:16:32,510 --> 01:16:40,510
+Speaker 3: A legnagyobb szél az lesz, szerintem, például az agent-tár, hogy megmutassuk. Mi így használjuk? Nézzük, fut egy Mac Mini-nál.
+
+404
+01:16:40,510 --> 01:16:41,510
+Speaker 4: Hát ez úgy, mint a...
+
+405
+01:16:41,510 --> 01:16:58,410
+Speaker 3: Beírom, snél hozzá, visszavon. Ez mintha keresztül épített a tanulságkéte. Mert én bevált, amikor meséltem a cégre, például Attilaiknak, Kovács Attilaiknak. Azt adtam el, hogy én mennyire hittem az őzárbost, azért akartak, ez volt az első magamitáim, de akartak csatlakoztatni.
+
+406
+01:16:58,410 --> 01:17:14,530
+Speaker 1: És ezért lesz jó az oktatás, mert valójában aki részt vesz, az lelkesen veszi, nem azzal a cinizmussal és skeptizmussal, ami azért sok helyen ott van, hogy az AI elveszi a munkánkat, hanem hiszünk benne.
+
+407
+01:17:14,530 --> 01:17:28,140
+Speaker 6: Ez is érdekes, amit ír mégis az Ephesians, hogy azt mondja, hogy látható aktivitásnak számít az AI. Sok projekt, amit csinálunk, és nem hoz pénzt. De valahol arra törekszünk, hogy hozzon pénzt, de tényleg, ha el fog pénz hozni, akkor...
+
+408
+01:17:28,140 --> 01:17:35,180
+Speaker 3: Ha kitűzünk hatalmi időt, akkor mondjuk nem jön. Hogyha annyi idő után nem hoz, akkor el kell engedni is más.
+
+409
+01:17:35,180 --> 01:17:43,180
+Speaker 1: Meg kell visszajelzéseket kérjünk. Tehát, hogyha valaki nem akarja megvenni, akkor megkérdezzük, hogy esetleg mi az, amire szüksége lenne. Hogyan tudnánk jobbá tenni a terméket?
+
+410
+01:17:43,180 --> 01:17:52,190
+Speaker 3: Igen, az megkeresztetelmény. Na de ez már egy új dolog, Checklist, amit felállt hívni. Azt kell kérdezni.
+
+411
+01:17:52,190 --> 01:18:00,470
+Speaker 8: Teljesen ölszönnyű, szíves. Mi az, hogy nem adja meg? Mi az, hogy nem mondja meg a terméket? Adjon 10 másik fogászatot. Nem akarok másik fogászatot.
+
+412
+01:18:00,470 --> 01:18:12,470
+Speaker 4: Legyenje látni magának egy oldalt, Míg azt sem mondja meg. Van egy 23 oldalos Kértékelőforma, kérdezz, hogy Hogy miért nem Vásároltam meg a terméket.
+
+413
+01:18:12,470 --> 01:18:17,319
+Speaker 1: Legalább adjon öt lejt kenyérre. Belussanak el a gyereknek.
+
+414
+01:18:19,320 --> 01:18:21,320
+Speaker 6: Nem veszek pihát benne, megígérem!
+
+415
+01:18:23,470 --> 01:18:34,150
+Speaker 6: GPT a legveszélyesebb mondatot is megnálzik. Most még ezt rakjuk rendbe, és utána megyünk ki erősebben a piacra. Ezt korlátlanul lehet ismételni.
+
+416
+01:18:34,150 --> 01:18:36,030
+Speaker 4: Így van, ezt mondtam én is.
+
+417
+01:18:36,030 --> 01:18:38,350
+Speaker 1: Ezt Márti kihangzsol, aztán aláírjuk.
+
+418
+01:18:38,350 --> 01:18:50,280
+Speaker 4: Ez az, hogy bármennyi tudod javítani az alkalmazást, mielőtt kitennél, tudod? Tudják kelleni fogat különösegnek.
+
+419
+01:19:12,280 --> 01:19:25,150
+Speaker 1: Nem, nem, nem. Viszont a mobil applikációt jövő héten letesztelve, felkészítve elő kinek készítsétek a DEAC-nál. Lehessen letölteni Google Play-ről mindent. Az nagyon jó. Ez lesz szerintem a...
+
+420
+01:19:25,150 --> 01:19:35,870
+Speaker 6: Lehet le lehet. Le lehet. A Play-ről, még stagingre mutat. De most van kész van a Probeod is, csak klikkeljön.
+
+421
+01:19:35,870 --> 01:19:40,870
+Speaker 4: Meg kell nézni, kéne-kéne. Azóta stagingre lehet valaki le töltötte, megtalálta.
+
+422
+01:19:40,870 --> 01:19:45,580
+Speaker 6: Az itt kéne. Jaj, fognak érve azt, hogy nem nézze, hogy az App Store-on megjelent ki.
+
+423
+01:19:45,880 --> 01:19:51,210
+Speaker 1: Megjelent egy update. De nem az update, hanem az App Store-on.
+
+424
+01:19:51,210 --> 01:19:53,210
+Speaker 4: Nem az App Store-on.
+
+425
+01:19:53,210 --> 01:20:10,210
+Speaker 1: Arni, még abba kéne, meg most így eszembe jutott, Hogy lokálisan mindenki dolgozhat majd, mindenféle fájlokon előkészített, Hogy ne a Hermészen keresztül dolgozzon a feltétlenül. Például egy wireframe-en, vagy valami egy szórólapon. Mert sokat kell iterálni, és lokálisan könnyebb sokat iterálni, mint...
+
+426
+01:20:10,600 --> 01:20:21,369
+Speaker 3: Persze van a Hermésznek is saját belső pályarendszere is, És te tudsz volni, hogy majd mit ment senki. Te tudsz, hogy ezt most kezeld lokálisan, nálad, és akkor ahhoz a session...
+
+427
+01:20:21,370 --> 01:20:23,370
+Speaker 1: Neki egy Hermész instance fusson?
+
+428
+01:20:23,370 --> 01:20:28,370
+Speaker 3: Nem, nem. Az az egy Hermész, ő is tudja a saját... Tehát neki is van egy saját pályarendszere, de a git...
+
+429
+01:20:28,370 --> 01:20:30,370
+Speaker 1: De a Hermész meg minél fut?
+
+430
+01:20:30,370 --> 01:20:31,370
+Speaker 3: Igen, és ott lesz egy...
+
+431
+01:20:31,370 --> 01:20:52,710
+Speaker 1: De hogy te a te gépeden futtatod, például mint én a saját gépem... Jaj, hát lehet, azt is... És akkor azt akartam ezzel mondani, hogy valamilyen olyan módszerről akár... Behúzom oda, mint ahogy most meghúzom ide a cseppbe, és feltölti a fájlókat, hogy elmentél megfelelő helyre. Tehát, hogy tudjak ilyen fájlókat csatolni, amiket majd elmentés, mint ilyen bizonyítékot meg megtart.
+
+432
+01:20:52,710 --> 01:20:55,190
+Speaker 3: Tehát felrakja oda a repúlba, ahol viszik?
+
+433
+01:20:55,190 --> 01:21:11,410
+Speaker 1: Igen, tehát csatolod a fájlókat, és majd mondom, hogy keresd meg a megfelelő helyet, és mensd el ezeket a fájlókat. Tehát ezek legyenek meg. De most lehet, hogy így olyan, hogy megtervezem a szórólapot, csak akkor én... Ha azt akarom, hogy az egész csapat elérje, vagy Máté tudjon vele tovább dolgozni, akkor fel akarom adni a sperket.
+
+434
+01:21:11,410 --> 01:21:12,410
+Speaker 3: Megfelelően állják fel a kettőt.
+
+435
+01:21:12,410 --> 01:21:34,980
+Speaker 6: Mi billent át? Opus azt mondta. Teremtsetek most mesterséges kényszert. Például Q2-ben a bevétel x százaléka nem jöhet a szalonviszátóra. Ha megvárjátok, míg a kényszer magától jön, az a felmondás napja lesz. Ezt nem értem. Ezek drasztikus mondatok.
+
+436
+01:21:36,390 --> 01:21:50,690
+Speaker 1: Szerintem arról számít, amúgy ez a chat GPT, vagy ez az AI, hogy amikor szorul a hurok, akkor mindenkit felmond, vagy a legjobbak felmondanak, s akkor nem.
+
+437
+01:21:50,690 --> 01:21:52,690
+Speaker 6: De nem arra érti, hogy mi mondunk fel a szorítvállalatot?
+
+438
+01:21:52,690 --> 01:21:57,690
+Speaker 1: Nem, arra érti, hogy ha megvárjuk, hogy szoruljon a hurok, s akkor baj lesz.
+
+439
+01:21:57,690 --> 01:22:10,220
+Speaker 4: Meg azért nem teljesen érti az Exa-nak a kultúráját. Szerintem azt hiszi, hogy egy random IT cég vagyunk, s azt az előbb mondta is, hogy, A legjobb, hogy itt fogják hagyni a céget, és pont a kontaktokon is szakadják.
+
+440
+01:22:10,220 --> 01:22:12,220
+Speaker 3: Igen, és akkor a legnagyobb szakadás.
+
+441
+01:22:12,220 --> 01:22:23,220
+Speaker 1: Na, én nem ezt látom, de viszont a többi tanácsa egész jó, hogy ne halogatunk, túlságosan akarunk. Hát ez az, hogy a szélső marketing, hogyha nem indítjuk el, akkor az a hamis képzete. Deadlinel és gólokkal.
+
+442
+01:22:23,220 --> 01:22:31,560
+Speaker 6: De az, ami tetszik, hogy mesterséges kényszerűen teremteni. Nekem is tetszik amúgy ez a gondolat. És akkor ez pluszsó, hogy akkor csináljuk, és keresünk, és megyünk.
+
+443
+01:22:31,560 --> 01:22:40,520
+Speaker 1: Például szeptember... Szeptember az egy jó határ, időszeptember egy Q2-től végre, addig, ha valamilyen forgalmat kell.
+
+444
+01:22:40,520 --> 01:22:49,400
+Speaker 3: Ha legyen az, hogy legyen forgalma mindegyiknek, mondjuk például lehet ez egy gyásítás, Hogy legyen ekkora forgalma, egyszer csak hozzon meg az első lejtőt.
+
+445
+01:22:49,400 --> 01:22:56,800
+Speaker 1: Hát mondjuk a 100 lejtőt. Havonta fog húzni ennyit, de mondjuk mi a forgalomnak a jó részét még bonyolítjuk le.
+
+446
+01:22:56,800 --> 01:23:02,960
+Speaker 3: Ne, ha nem lehet azt mondani, hogy az összes projekt együtt generáljon.
+
+447
+01:23:03,030 --> 01:23:26,890
+Speaker 4: Egy ekkora X összegű fordalmat, mert nem tudjuk, hogy mi fog bejönni. Nem tudom, hogy mekkorára merjünk lőni. Szerintem ez, amit Árni mondott, ez kicsi lépésnek talán jó időség. Szeptemberi mennyi van? Június, július, augusztus, szeptember végéig vagy megigyik? Egyik, tehát három napon. Jó, három hónap alatt mindegyik hozzon pénzt.
+
+448
+01:23:26,890 --> 01:23:28,490
+Speaker 1: Az oktatás már hoz.
+
+449
+01:23:28,490 --> 01:23:33,880
+Speaker 4: Hát igen. Microsites-et nem, a hermész... Azt fog hozni.
+
+450
+01:23:38,510 --> 01:23:44,930
+Speaker 4: Szerintetek túl kicsi cél az, hogy Mindegyik hozzon pénzt.
+
+451
+01:23:44,930 --> 01:23:46,930
+Speaker 6: Szerintem az egy egész.
+
+452
+01:23:46,930 --> 01:23:52,010
+Speaker 3: Jó kezdés. Csak ez ugye a cél, hogy ha balét is lehozzon, vagy.
+
+453
+01:23:52,010 --> 01:23:58,300
+Speaker 1: Ha valamit is hozzon. Hát például, hogyha azt mondanák, hogy összesen 1000 lei-t hozzon. Mindegyik hozzon valamennyit, és összesen 1000 lei-t hozzon.
+
+454
+01:23:58,300 --> 01:24:05,000
+Speaker 3: De azt mondjuk... Te sokkal többet fog hozni. A képzés egyedül. Azért mondtam, mikor mindegyik. Nagyobbra kell tenni az a képzés.
+
+455
+01:24:05,000 --> 01:24:10,000
+Speaker 1: A képzés aránytalan, mert ilyen nagy hullámokban jön, de egy csomó költség is van vele.
+
+456
+01:24:10,000 --> 01:24:11,000
+Speaker 3: És egy csomó ideig nem lesz.
+
+457
+01:24:11,000 --> 01:24:18,000
+Speaker 1: Egy csomó ideig nem lesz. Gyakorlatilag külön kalapba kell. Szerintem a képzés ilyen szempontból ki is pipálhatjuk, hogy már megvan.
+
+458
+01:24:18,000 --> 01:24:19,000
+Speaker 4: Igen, azt hiszem, igen.
+
+459
+01:24:19,000 --> 01:24:22,000
+Speaker 1: Az megvan. Hozzon a microszájt.
+
+460
+01:24:22,000 --> 01:24:23,000
+Speaker 4: Akkor már skálázni kéne.
+
+461
+01:24:23,000 --> 01:24:30,000
+Speaker 1: Például az, hogy pályázatnak szeptemberig legyen Párizs cég jelentkező, akivel pályázatot írunk alá.
+
+462
+01:24:30,790 --> 01:24:37,770
+Speaker 4: De akkor ez most még három? A Hermész, a Microsight és a pályázatból jövő...
+
+463
+01:24:37,770 --> 01:24:41,209
+Speaker 1: Nem pénz, hanem csak projekt. Egyszerűen azt mondjuk, hogy legyen három.
+
+464
+01:24:41,210 --> 01:24:47,130
+Speaker 4: Na akkor ezeket majd arra a nagy papírra föl kéne nyúlni, vagy arra...
+
+465
+01:24:47,130 --> 01:24:52,650
+Speaker 1: Na akkor lesz egy közös dashboardunk a Hermész általánosan.
+
+466
+01:24:52,650 --> 01:25:25,940
+Speaker 6: Az egyetlen tanács a két csúcsmodell majdnem azonos álmnyalatnyi különbséggel, ezt mondtak. Még a top modellek? Az Office és a Jiffity. Mostok modellek, igen. Most már csúcsmodellek. Aztatok egy ismétlődő bevételű terméket, Jelöljétek ki, hogy szabolcson kívül ki a felelőse, Tűzzetek ki egyetlen számot, Első fizető nem szól vissza nem saját köré, Úgy fél 9 a napon belül. A másik ötöt fagyasszátok be.
+
+467
+01:25:25,940 --> 01:25:31,060
+Speaker 6: A nyitott ajtó mögött ugyanaz az üres szoba van, Csukjatok be ötöt. Ezt nem értem.
+
+468
+01:25:31,060 --> 01:25:33,060
+Speaker 4: Még egyszer, még egyszer? A nyitott...
+
+469
+01:25:33,060 --> 01:25:42,780
+Speaker 6: Tehát hogy... Szabolcsom, küldjetek ki egy számot, első fizető, nem szóli, szóval nem saját könyvet.
+
+470
+01:25:42,780 --> 01:25:43,780
+Speaker 1: Hát angolul kellett megkírásítani.
+
+471
+01:25:43,780 --> 01:26:13,417
+Speaker 6: A másik ötöt fagyasztjátok be. Ha nyitott ajtó mögött ugyanaz az üres szoba van. Pont. Bocsánat. Ja, megvan. Ha nyitott ajtó mögött ugyanaz az üres szoba van, csukjatok be ötöt. Tehát ugyanoda érkeznénk egynál. Igen, és ha nem van semmi profit, vagy semmi cseredménye, akkor a fejhez zubáj. De a GPT ezt úgy fogalmazza meg, a következő 90 napban ne újabb lehetőségeket építsetek. Apokaliptikus.
+
+472
+01:26:13,417 --> 01:26:19,570
+Speaker 4: Ez nem egy apokos ilyen. Ezzel egyet tudok érteni.
+
+473
+01:26:19,570 --> 01:26:39,790
+Speaker 6: Tehát a következő 90 napban ne újabb lehetőséget építsetek, hanem egyetlen csomagolt ajánlatot adjatok el legalább három. Sorriszától független fizető ügyfélnek akkor is a kényelmetlen, tökéletlen és nemet kaptok. Ez választja el a valódi újjelszületést a szépen elmesélt készülődéstől.
+
+474
+01:26:39,790 --> 01:26:42,350
+Speaker 4: Szerintem a mi célunk az szerintem egész okés, nem?
+
+475
+01:26:42,350 --> 01:26:44,159
+Speaker 6: Igen.
+
+476
+01:26:44,160 --> 01:26:51,490
+Speaker 4: Vagy nem tudom, ti azt érzitek, hogy van relevanciának, hogy csak egyre menjünk rá a következő három hónapra?
+
+477
+01:26:51,490 --> 01:26:52,209
+Speaker 3: Nincs szerintem.
+
+478
+01:26:52,000 --> 01:26:56,000
+Speaker 1: Nem befejlődni akarunk. Szerintem is van kapacitások.
+
+479
+01:26:56,000 --> 01:27:26,790
+Speaker 3: Amellett, hogy ezt fogom csinálni, például van egy cég, amelyiket tudom, hogy meg fogom keresni, És el fogom mondani, hogy nem volt weboldalad, és a Facebook oldalon annyit tudtam a képeidet megnézni, És ennyiért tudna lenni egy weboldalad, és rajtam kívül még biztos lenne akár más ember, Aki lehet azért nem vásároló nálad, mert nem kaptam meg rendesen a képeidet. Ismertél? Igen. Van egy cukraozó, amelyik minden mentes sütét csinál. Pont édesapám miatt ugye kellett, akartam vinni neki ilyen sütet.
+
+480
+01:27:26,790 --> 01:28:03,180
+Speaker 3: Nem tudtuk, hogy mi a kínálata. Csak annyit tudtunk róla, hogy ilyen sütiket csinál, de nem tudtuk, hogy mit kell rendelni. És felkeltem a hívja, mert nem volt aznap nyitva, és telefonon megrendelem, de hogy rendelje meg, amikor még nem is tudom, mit akarok rendelni, mert nem láttam. És akkor kérdezem a telefonon, és akkor mondta, hogy a Facebookon fel vannak a képek, és akkor keresem a Facebook oldalt, hogy van fent. De ahelyett, hogyha lenne egy weboldal, ami be van téve a Google-os találatban a helyhez. Akkor automatikusan utánozz fel, szép képekkel összeaszedve egy helyen, akár R is alatta, Facebookon R sincsen mellettem, akkor ha megnéztem Facebookon a képet, akkor ez mennyibe kerül, akármilyen verziók vannak, már csak egy verzióról tett fel képet.
+
+481
+01:28:03,180 --> 01:28:11,370
+Speaker 1: Ha nemet mond, akkor mondd meg, hogy adjon akkor még tíz kontaktot. Ha már nemet mond, cserébe. Vagy sütik.
+
+482
+01:28:11,370 --> 01:28:19,720
+Speaker 3: Ehhez a szívétel át fog menni. Jó. Kik azok. Nagyon jó. És még vannak ilyenek, akik ezt tudnak.
+
+483
+01:28:20,250 --> 01:28:50,130
+Speaker 1: Nem tudom, amúgy mindenkinek mondtuk el, vagy mindenki előtte, de én úgy szeretném ezt a közös rendszert megoldani, Hogy amikor beírjuk, hogy voltam ennél, vagy voltam annál, automatikusan loggolja, és legyenek majd ilyen összesítések, Hogy be tudjuk kérdezni az agentet, hogy ki volt a legsikeresebb sales-es, vagy hány deal-t hozott be. Automatikusan tudjuk majd számolni sales-i utalékot, hogy mennyit érdemel arni Q3-ba. Szóval ilyen statisztikákat is tudunk csinálni.
+
+484
+01:28:50,730 --> 01:29:07,229
+Speaker 4: Amúgy nem tudom, hogy ezt a végtelenségkel-e csináljuk. Mit az ilyen sales-helver-t is megígérte? Hát a sales-helvést. Nem tudom, hogy a végtelenségkel-e csináljuk ezt a telefonálgatót. Kettőkés, hátha beindul, hogy itt ez így magától jönnek utána. Az.
+
+485
+01:29:07,229 --> 01:29:11,290
+Speaker 6: Lenne a cél. Tehát feljöttünk a négyes szétszámítóra.
+
+486
+01:29:11,290 --> 01:29:24,940
+Speaker 1: A sales-el kapcsolatban a Y Combinator is azt mondta, hogy... Nem szabad addig külső szélzést behívjunk, ameddig a belső szélzet nem tanultuk ki. Mert a legjobban az alapítók tudják eladni a terméket, nem a külső szélzés.
+
+487
+01:29:24,980 --> 01:29:26,780
+Speaker 3: Nem tudjuk megtanítani nálunk közben.
+
+488
+01:29:27,120 --> 01:29:29,920
+Speaker 1: Igen. Ha mi sem tudjuk eladni, akkor más sem fogja tudni eladni.
+
+489
+01:29:32,930 --> 01:29:39,509
+Speaker 1: És a fundraising-re is az alapító a legjobb. Van, amikor külső fundraiser-t hívnak, meg azt mondta, hogy ez nem működik.
+
+490
+01:29:41,950 --> 01:29:48,450
+Speaker 1: Mert nem hisze a termékbe az, aki megpróbál kivirulni, hogy te ismerek egy jó befektetési lehetőséget, ez nem hoz.
+
+491
+01:29:48,450 --> 01:29:52,880
+Speaker 4: A Blackberry-nél nem ez történt, a McDonald's-nél nem ez történt, és a Ladybug-t.
+
+492
+01:29:52,880 --> 01:29:59,390
+Speaker 1: Itt az a két példa, hülye. Sok hülye, mit mond a Y Combinator.
+
+493
+01:29:59,390 --> 01:30:02,390
+Speaker 4: A kivétele, erősítés szabály.
+
+494
+01:30:02,390 --> 01:30:39,210
+Speaker 6: Még egy utolsó mondat van, azt mondja, hogy a különbség árnyalat. Opus a recurring termék, plusz második felelős, plusz... Szerintem nem is igaza.
+
+495
+01:30:39,210 --> 01:30:45,880
+Speaker 1: Szerintem csináljuk azt, amit... Amit megálmodtunk, hogy hetente, naponta megyünk is beszélgessünk.
+
+496
+01:30:45,880 --> 01:30:51,078
+Speaker 3: Nincs igaza, mit akarod az egészet felvenni. Nem, azért egy-két.
+
+497
+01:30:51,078 --> 01:31:02,690
+Speaker 4: Dolog kiesettük. Két deka magyarországi ügyfelek voltak. Azok estek ki. Ja. Mit gondoltál, mi a kettő? Két deka magyarországi ügyfelek. Ja.
+
+498
+01:31:02,690 --> 01:31:10,699
+Speaker 5: Nem tudtak magyarul beszélni. Csak a taktentusodom nem palackika. Jó, jó. Szóval vigyóban.
+
+499
+01:31:11,010 --> 01:31:13,010
+Speaker 1: Akarsz-e websájtot?
+
+500
+01:31:13,010 --> 01:31:20,490
+Speaker 5: De lehet pont ez a fűszer, amit ő megjegyezik. Tehát ő fogod megfizetni.
+
+501
+01:31:20,490 --> 01:31:22,490
+Speaker 6: Pont bizalmatosságot kell volna.
+
+502
+01:31:22,490 --> 01:31:29,120
+Speaker 1: Mindenre megvan a piac. Mondjuk Magyar Péter után már lehet annyira nem kedvé ennek a...
+
+503
+01:31:29,120 --> 01:31:37,999
+Speaker 7: Aztán valahogy meg kell oldani azt, hogy a Máté valakit felhívni, ahogy Arni felhívja a még egyszerű gombot.
+
+504
+01:31:40,250 --> 01:31:45,250
+Speaker 4: Hát most nem tudom, kerestek fogászokat Magyarországon?
+
+505
+01:31:45,250 --> 01:31:51,340
+Speaker 8: Hát ezt mondom, hogy régiókra lehet hozni, aki vallom ilyen. Hogy ez a régió ki itt keressük.
+
+506
+01:31:51,340 --> 01:31:55,340
+Speaker 3: Inkább azt mondjuk, hogy beszélj közös elején, találkozzatok valamit.
+
+507
+01:31:55,340 --> 01:31:59,059
+Speaker 7: Igen, találkozzatok, igen, igen.
+
+508
+01:31:59,060 --> 01:32:07,360
+Speaker 3: Én is csináltam egy Google Sheet-et, de megosztom akkor. Hát az funkszorban is. Hát szomorban tesszük az agentot.
+
+509
+01:32:09,510 --> 01:32:16,310
+Speaker 1: Na, jó lesz ez, hogy közös pipeline, közös Kanban board, megcsináljuk, hogy lehetősen assign-olni, az profi lesz.
+
+510
+01:32:25,100 --> 01:32:29,060
+Speaker 1: Na, ne aggódj, Máté, ne aggódj, hogy meg...
+
+511
+01:32:29,060 --> 01:32:33,290
+Speaker 4: Közös Kanban board? Igen.
+
+512
+01:32:33,670 --> 01:32:35,029
+Speaker 1: Lesz egy Google autentifikáció.
+
+513
+01:32:36,110 --> 01:32:37,909
+Speaker 4: De tényleg, hogy éred el, hogyha a Mac mini...
+
+514
+01:32:38,340 --> 01:32:40,840
+Speaker 1: Nem a Mac Mini lesz, egy Vercel-re ki akarod rakni?
+
+515
+01:32:40,840 --> 01:32:45,070
+Speaker 4: Vercel-re ki rakják. És akkor mint fut a Mac Mini?
+
+516
+01:32:45,070 --> 01:32:51,800
+Speaker 3: A Mac Mini azért, hogy a Hermes-t tudjon futni, Sőt, tudja kezelni mindenbe. Ezt az applikációt is tudja frissíteni, hogyha kell.
+
+517
+01:32:51,800 --> 01:32:53,800
+Speaker 4: És a Vercel az ingyenesen biztosítja valaminkat?
+
+518
+01:32:53,800 --> 01:33:06,680
+Speaker 3: Ingyenesen. És akkor miért a Vercel? Hát azért, mert ingyenesen biztosítja, automat a GitHub pipeline-mal, Hogy amitól vagy... Sőt, ha pull requestet csinál, Akkor pull requestről csinál egy demo-publish-t, És meg tudod nézni.
+
+519
+01:33:06,800 --> 01:33:09,230
+Speaker 1: És mennyibe kerül ez nekünk?
+
+520
+01:33:09,230 --> 01:33:10,230
+Speaker 3: Ez ingyenes.
+
+521
+01:33:10,230 --> 01:33:11,229
+Speaker 1: Mi, a verszeren ingyenes?
+
+522
+01:33:11,230 --> 01:33:35,689
+Speaker 3: Ingenes. Addig, hogyha egy ember tud hozzáférni a repozitorihoz. De mivel nekünk egy akkontunk van, maga az ExaWeb szakam, Én az alá fogom létrehozni a verszert, És így mindenki, aki belé, ugyanazt az akkontot használja. Ha ilyen több szítet kéne, hogy teljesen külön akkonttal épüljön mindenki, Akkor meg kéne venni egy lehetőséget, Az elsők lenne, amivel 5 ember belé fér 5 dollár, ha mondta. És a Pro 25, amiben nem tettem. Szóval nem...
+
+523
+01:33:36,450 --> 01:33:44,510
+Speaker 4: De akkor már ez azt jelenti, hogy ahhoz, hogy a dashboardot használhassuk, ugyanez az account-a már ki van telepítve.
+
+524
+01:33:44,510 --> 01:33:49,510
+Speaker 3: Az, hogy hozzáférjük, ki telepíti a környezethez, hozzáférjük.
+
+525
+01:33:49,510 --> 01:34:04,779
+Speaker 1: Ott is valahogy ahhoz, hogy a dashboardon tudjunk majd kattogtatni, az már mindegy, hogy ki kattogtat, mert valójában nem a dashboardból fogjuk konkrétan mozgatni a dolgokat, hanem Discordból.
+
+526
+01:34:05,630 --> 01:34:08,130
+Speaker 3: Hát tudjuk a dashboardról is.
+
+527
+01:34:08,130 --> 01:34:10,130
+Speaker 1: Csak ott hogyan autentifikálunk a dashboardon?
+
+528
+01:34:10,130 --> 01:34:11,630
+Speaker 3: Google Authentification.
+
+529
+01:34:11,630 --> 01:34:18,640
+Speaker 1: De akkor állj meg, lesz a verszenen is egy autentifikáció a Gmail-lel, És lesz a dashboardon is egy másik Gmail autentifikáció?
+
+530
+01:34:18,640 --> 01:34:23,419
+Speaker 3: Nem, a verszenen nem kell Google Authentification, hogy hogy érted? Nem, nem mondom.
+
+531
+01:34:23,420 --> 01:34:30,410
+Speaker 4: Ahhoz, hogy... Ha a Github-ról kimenjen a Vercel-re a mi applikációnk, ahol egy account van.
+
+532
+01:34:30,410 --> 01:34:33,410
+Speaker 1: De maga az applikáció még egy autentifikációt tartozik.
+
+533
+01:34:33,410 --> 01:34:40,410
+Speaker 4: Az, hogy mi menjünk ki a Vercel-re és az ott mit csinál utána, az már nem érdekel a Vercelt. És akkor csinálhatunk bármilyen autót.
+
+534
+01:34:40,410 --> 01:35:11,307
+Speaker 3: Hanem maga a platformot belillítni, ahol te összekattintod, hogy ezt a Github repozitóriból húzd ki az applikációt. De most is minden csináljuk a Hexner-ről, egy Hexner accounton. Cloudflare accountunk van. Az a platform, gyakorlatilag a WPS. Ez is utolvégül egy WPS lesz a hatérben. Csak erre van optimalizálva. Ingyenes, nagyon gyors. Most azon fut a Hellmian-s, azon fut a műfartnak.
+
+535
+01:35:11,307 --> 01:35:19,150
+Speaker 1: Is a pont egyet. Mondjuk így már érthető, hogy a Cloudflare még ingyen adja, mert Gyakorlatilag a Versed is ingyen adja.
+
+536
+01:35:19,150 --> 01:35:48,880
+Speaker 3: Ez a bárhúzó termékük. Ez van azért Csinálva, hogy, És ezt akarsz megkérdezni, hogy miben jó, mint a Cloud, vagy? Hát az, hogy ide már React App-ot telepítünk, például. Akár React App-ot is ki tudunk telepíteni. Hát egy single-page applikációt is ki tudunk telepíteni, mi már tud, de... Akkor Cloud Function-eket hívunk, és van mögöttek Cloud Function, és az is. Docker? Lehet olyan, vagy nem? Nem Docker, automatán skálázza ő. Foglalkozik a skálázással. És utána akkor úgy...
+
+537
+01:35:52,540 --> 01:35:57,820
+Speaker 4: Lehúzza a kódot, és ő bíld el.
+
+538
+01:35:57,820 --> 01:36:07,100
+Speaker 3: Igen, lehúzza a kódot, és ő bíld el, ő csinálja az image-et, ő csinál mindent. Tehát, ha environment for review-eket adhatsz, bár neki esetleg, És megmondod, hogy mi a build command-od,
+
+539
+01:36:10,740 --> 01:36:21,000
+Speaker 3: Akkor egyszerű, sőt, automatikusan felismeri a repozitóriból, Milyen projekt a ReactView. És itt, ahol lesz a...
+
+540
+01:36:22,000 --> 01:36:24,290
+Speaker 5: Dashboard felület ide lesz?
+
+541
+01:36:24,290 --> 01:36:35,950
+Speaker 3: Ide lenne, ahol fel lesz minden szabadságos rendszer, mindenféle, majd időben. Persze elkezdjük egy alappal, hogy a dokumentumok majd legyenek fent, ami a rendszerek. Akkor, ha működik, akkor meg nem tudom.
+
+542
+01:36:35,950 --> 01:36:44,020
+Speaker 1: És magát, ezt az egészet akkor hogyan fogjuk tudni fejleszteni? Discordból, ugye?
+
+543
+01:36:44,020 --> 01:36:59,040
+Speaker 3: Discordból a Hermes fülgére pont fejleszteni. Beadjuk neki az input képlő skill-t, behagyjuk amit akarunk, lehet skill-eket van, skill market place-e is lehet.
+
+544
+01:36:59,040 --> 01:37:02,040
+Speaker 1: Hát ha bemásolom a git report-t, le tudja húzni magának, nem a Hermés?
+
+545
+01:37:02,040 --> 01:37:06,490
+Speaker 3: Persze, csak egy github token felügyelen. Github token ki kell generálni.
+
+546
+01:37:06,490 --> 01:37:14,490
+Speaker 4: Nekem ez a kérdés, hogy a Hermés-szel Discordon kívül, vagy Telegramon kívül én tudok kommunikálni, úgy CLI-ból?
+
+547
+01:37:14,490 --> 01:37:30,009
+Speaker 3: Igen. Lehet, csak akkor be kell eseshallzó arra a gépre, Meg is nem lehet, hogy lehessen eseshallzni, És akkor úgy lehet a command line-ból esetleg kommunikálni be. Értem. Lehet párhuzamosan több Hermes CLI-t futatni?
+
+548
+01:37:30,010 --> 01:37:42,450
+Speaker 4: Igen, több session-t lehet. Ez a kérdés, hogy hogy tesszük elérhetővé a Mac mini-nket kívülről?
+
+549
+01:37:42,450 --> 01:37:58,140
+Speaker 3: Hát ez egy... Ez egy jó kérdés. Én tudok egymire szolgálhatni. Hogyha ilyent akarunk. Tailgate, vagy valami ilyen. Igen, Tailgate. Azzal is megállt volna. Ott van egy account. Azt hiszem, hogy személyesebb account. Nem tudom, hogy végülről címek csináltam ezt. De lehet saját VPN-t is húztatni egyébként.
+
+550
+01:37:58,140 --> 01:38:01,140
+Speaker 1: Egy külső IP-t fognak nekünk csinálni, vagy hogy? Valami máshogy.
+
+551
+01:38:01,140 --> 01:38:05,140
+Speaker 5: Valami Krisztrax szakmai, vagy valami is. Igen, én használom.
+
+552
+01:38:05,140 --> 01:38:16,210
+Speaker 3: Többféle opció, meg kérdezem, hogy az opciót majd húznak. Nem tudom, de nem hónap, hanem hétfőn velé állok ábról, hogy mi a legjobb megoldás az is lehet, hogy mit kezdve van.
+
+553
+01:38:16,210 --> 01:38:24,500
+Speaker 5: Az én eszközeim, annak is egy legminimumabb. Hétfőn szabadnak tudod? Nem hétfőn, hát én... Ezzel tudok hivatkozni, azzal a...
+
+554
+01:38:24,500 --> 01:38:27,180
+Speaker 1: Tehát a 100.91.86...
+
+555
+01:38:27,180 --> 01:38:31,180
+Speaker 5: Azzal is, de ezzel az olvashatóval is tudok. De ez egy domény?
+
+556
+01:38:31,180 --> 01:38:39,070
+Speaker 4: Hát egy csúnya domény, igen. Hát hétfőszabadban megyünk. Hát olyan, mint a Netlify, az is egy csúnya domén. Babá.
+
+557
+01:38:39,070 --> 01:38:41,070
+Speaker 1: Ezt nem tudom, hogy tudja megoldani.
+
+558
+01:38:41,070 --> 01:38:45,070
+Speaker 4: Úgy, ahogy mi megoldjuk a subdomain-tól. A subdomain az exelex.com.
+
+559
+01:38:45,070 --> 01:38:49,070
+Speaker 1: De hogy hogyan regisztrálja ezt a domain-t, hogy a DNS-szerverek felismerjék?
+
+560
+01:38:49,070 --> 01:38:57,360
+Speaker 4: Hát csak a saját doménját regisztrálja. Jó, és ez subdomain. A subdomain az csak egy ilyen wildcard.
+
+561
+01:38:57,360 --> 01:39:00,360
+Speaker 1: Jó, igen, s át az IP-re átüt. Így van.
+
+562
+01:39:00,600 --> 01:39:16,979
+Speaker 3: Publikus IP címet, hogy ki csinálják. Publikus IP címünk, nekünk van a szolgáltató miatt. Az internet szolgáltatóat. És neki is van a Publikus IP címünk. Port forwardoljuk a jcb-vel. Neked vissza IP-t van? Neked ott a IP-t van?
+
+563
+01:39:16,979 --> 01:39:18,979
+Speaker 5: De nem kell az IP, tehát a TSG...
+
+564
+01:39:18,980 --> 01:39:24,980
+Speaker 3: A TLG-thez nem kell. Ha TLG-t csináljuk, akkor az magától... Feltárpít egy szoftver,
+
+565
+01:39:24,980 --> 01:39:26,980
+Speaker 5: Még van egy másik.
+
+566
+01:39:26,980 --> 01:39:38,130
+Speaker 3: Mint ha egy WPS-el, hasonló, mint a WPS. Valami olyan szoftver. De menjek egy kört a ZI-jal, és megkérdezem, mert ezt az egészet mind felválaszolok, És lassúra nézzem meg a gyengepontot, nézzem meg, hogy hol erős vagyok.
+
+567
+01:39:40,450 --> 01:39:57,390
+Speaker 3: Ilyen kérdés van? Amikor van egy videóhívás. TCP. RTC. WebRTC. Igen, igen, WebRTC. Szerintem így van megoldva az RTC-vel. Micsoda? Az, hogy ha hozzá tudsz egy regítethez.
+
+568
+01:39:57,390 --> 01:39:59,809
+Speaker 4: Ez simán.
+
+569
+01:40:00,600 --> 01:40:14,078
+Speaker 3: TTP, HTTP-n keresztül. De ki mondta? A DLG-t, az sima TTP, HTTP-t. A WebRTC az ízére van videóra, számolok. Nem hiszem, hogy.
+
+570
+01:40:14,078 --> 01:40:21,350
+Speaker 1: Ezt egyébként használnánk. Na, megállítom közben itt a hangfelvételt. Nem tudom, állítson-e meg. Most már így.
+

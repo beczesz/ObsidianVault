@@ -1,3 +1,15 @@
+---
+title: "Memory"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "Becze Juliánna építész személyes tudásbázisa a Mikado Építésziroda alapításáról, az aktív Alapító Kliensek marketingkampányáról, valamint a helyi családi házak tervezésére vonatkozó üzleti célokról és filozófiájáról."
+description_source: auto
+description_hash: d40ce65c25aaf9b8
+id: da8693d8-b7c1-4f30-a1cf-6333cf77ce6d
+index_schema_version: 1
+bdos_index: true
+---
 # Memory
 
 ## Me

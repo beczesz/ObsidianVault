@@ -1,5 +1,8 @@
 ---
 title: "P2025 SZAMLA — számlás értékesítés profitja időben"
+description: "A P2025 SZAMLA napi és heti szintű számlás B2B értékesítés elemzése 2025-ben: 3499 számla, 696 177 lei eladás, 168 851 lei profit (24,25%). Nyári szezonalitás (67–71 e lei/hó), november csökkenés, stabil ~24–25% árrés. Készletezés és cash-flow tervezéshez, valamint árr"
+description_source: auto
+description_hash: f9d9976fbd8d70fa
 type: synthesis
 project: Gergely István
 source_file: "P2025 SZAMLAxlsx.xlsx"
@@ -10,7 +13,6 @@ tags: [synthesis, profit, invoices, timeseries]
 id: 92116911-949c-4a69-be60-234ca848d170
 index_schema_version: 1
 ---
-
 # P2025 SZAMLA — számlás (factura) értékesítés profitja, heti/napi bontásban
 
 ## Mit tartalmaz

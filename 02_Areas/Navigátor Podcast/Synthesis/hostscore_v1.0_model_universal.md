@@ -1,4 +1,7 @@
 ---
+description: "Framework for evaluating podcast host performance across five dimensions: question quality, space management, personal presence, arc and pacing, and chemistry. Useful for podcasters, producers, and analysts seeking to measure conversational depth and interviewing skill objectively."
+description_source: auto
+description_hash: c7b6f4400481c501
 version: 1.0
 date: 2026-04-09
 type: hostscore-model-universal
@@ -9,7 +12,6 @@ dimensions: "Q=Question Quality, S=Space Management, P=Personal Presence, A=Arc 
 id: 1cd2ab0f-0dad-4527-b78b-2d7e77c121f5
 index_schema_version: 1
 ---
-
 # HostScore v1.0 — Universal Podcast Host Performance Model
 
 > Evaluate any podcast host's performance on a per-episode basis.

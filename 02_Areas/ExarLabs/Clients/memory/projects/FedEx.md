@@ -1,3 +1,15 @@
+---
+title: "FedEx (indirect)"
+date: 2026-04-14
+author: Becze Szabolcs
+status: active
+description: "FedEx indirect subcontracting engagement through Prototype Iteration where ExarGroups SRL is the sub-consultant; contract review phase with naming errors in ESA and MNDA needing correction, plus missing legal terms and payment protections to address."
+description_source: auto
+description_hash: 9d43cb8b68383980
+id: 623f5865-cc88-420a-a41d-bea1c135f02c
+index_schema_version: 1
+bdos_index: true
+---
 # FedEx (indirect)
 
 ## Status

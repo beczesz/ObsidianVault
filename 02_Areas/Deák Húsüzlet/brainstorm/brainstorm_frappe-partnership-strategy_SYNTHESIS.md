@@ -1,4 +1,7 @@
 ---
+description: "Strategiai döntési memo a Frappe Partnership-ről, mely Entry szintből Bronze partnerséget célja €20k budgettel és 12 hónapos horizonton. A valódi bevételmodell nem a reseller margin, hanem implementációs projektek és havi support retainer: 12 hónapban reálisan €140-250k szolgáltatási bevétel. Differenciátor a romániai lokalizációs csomag (e-Factura, SAF"
+description_source: auto
+description_hash: 4d48496113c6e196
 topic: Frappe Partnership — Stratégiai döntési memo
 type: synthesis
 created: 2026-05-10
@@ -7,7 +10,6 @@ horizon: 12 hónap
 id: d3a9e603-d6fd-4c9f-8e22-7d3656455e27
 index_schema_version: 1
 ---
-
 # Frappe Partnership — stratégiai döntési memo
 
 **Címzett:** Szabolcs / Exar Labs leadership

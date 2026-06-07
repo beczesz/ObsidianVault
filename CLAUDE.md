@@ -12,6 +12,10 @@ index_schema_version: 1
 
 Ezt a fájlt olvassa minden AI / agent először, hogy megértse a vault szervezeti elvét.
 
+## 0. Szövegezési alapszabály (MINDEN AI-generált szövegre)
+
+> **Soha ne használj gondolatjelet (em dash, `—`) AI-generált szövegben.** Ez érvényes MINDEN generált tartalomra: marketing-poszt, leírás, teaser, dokumentum, commit-üzenet, dashboard-szöveg, bármi. Helyette: vessző, kettőspont, pontosvessző, pont vagy zárójel. A `--` (dupla kötőjel) szintén kerülendő. (User-preferencia, 2026-05-28.)
+
 ## 1. Szervezeti elv — Areas-dominant PARA
 
 A vault **PARA-szerű** struktúrában él, **DE módosítva** a felhasználó munkaszervezéséhez:
@@ -42,6 +46,7 @@ A BDOS kanonikus belépője: [`00_Prompts/BDOS/CLAUDE.md`](00_Prompts/BDOS/CLAUD
 - `00_Prompts/BDOS/CLAUDE.md` — BDOS belépő
 - `00_Prompts/BDOS/agents/` — kanonikus agent definíciók (ember-olvasható)
 - `00_Prompts/BDOS/00_AGENTS_INDEX.md` — meta-index minden agentről (verzió, státusz, hely)
+- `00_Prompts/BDOS/ARCHITECTURE_BOUNDARIES.md` — **forrás-az-igazságra térkép.** Operacionális állapot (log/task/board/index/sidecar) írása ELŐTT ezt nézd: melyik tároló kanonikus, mi derived.
 - `00_Prompts/BDOS/capabilities/` — projekt-független képesség-csomagok (pl. `web-publishing/` — AI microsite factory, kidolgozás alatt)
 - `00_Prompts/BDOS/pilots/` — élő pilot-pointerek (DH)
 - `.claude/agents/` — Claude Code runtime regisztráció (YAML config + thin pointer)
@@ -49,18 +54,19 @@ A BDOS kanonikus belépője: [`00_Prompts/BDOS/CLAUDE.md`](00_Prompts/BDOS/CLAUD
 ### Aktív agentek
 Az aktuális lista mindig itt: `00_Prompts/BDOS/00_AGENTS_INDEX.md`.
 
-Jelenleg (Phase 3.1 utáni verziók):
-- **Librarian** v0.7 — Knowledge Manager (6 mód + cache-first retrieve a vault-indexing capability-vel)
+Jelenleg (Phase 3.1 utáni verziók, 7 aktív agent):
+- **Librarian** v0.8 — Knowledge Manager (6 mód + cache-first retrieve a vault-indexing capability-vel)
 - **Maestro** v0.5 — Conductor + Reflective Nervous System (3 domain, 12 mód)
-- **Curator** v0.4 — Representation layer (dashboard) kurátor (7 mód)
-- **Presto** v0.5 — Marketing Cognition Layer + Distribution Engine (12 mód)
-- **Sage** v0.4 — Cognition Curator (5 mód + meta-learning loop, scheduling pending)
-- **Broker** v0.3 — Sales Engine Executor (9 mód kidolgozva v0.2-ben)
+- **Curator** v0.5 — Representation layer (dashboard) kurátor (7 mód)
+- **Presto** v0.5 — Marketing Cognition Layer + Distribution Engine (24 mód)
+- **Broker** v0.3 — Sales Engine Executor (9 mód)
+- **Forge** v0.1 — Practice Steward (capability-layer, módok v0.2-ben)
+- **Alfred** v0.3 — Executive Cognition Layer + Cognition Curator (12 mód). Alfred v0.3 absorbeálta a korábbi Sage agentet (2026-05-28): harvest, curate, chat, learn módok + meta-learning loop.
 
-Mind a 6 agent Phase 2.B (3 log-stream) + Phase 3.1 (description mandatory) compliant.
+Mind a 7 agent Phase 2.B (3 log-stream) + Phase 3.1 (description mandatory) compliant. Sage 2026-05-28-án deprecated, Alfred v0.3-ba merged.
 
 ### Slash command-ok
-`.claude/commands/` — gyors agent-meghívás. Példák: `/lib-find`, `/dash-build`, `/pres-today`, `/maestro-status`, `/sage-status`, `/sage-harvest`, `/sage-chat`.
+`.claude/commands/` — gyors agent-meghívás. Példák: `/lib-find`, `/dash-build`, `/pres-today`, `/maestro-status`, `/alf-harvest`, `/alf-chat`, `/alf-curate`.
 
 ## 3. Indexelési struktúra — két szint
 

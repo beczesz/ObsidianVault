@@ -1,3 +1,15 @@
+---
+title: "Göngyölt Hús"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Prepared meat product: seasoned ground pork rolled and cooked, sold by weight at 47.0 currency units per kg. Production notes indicate it cannot be sliced despite marketing claims."
+description_source: auto
+description_hash: 6494d57136fa226e
+id: 4c59ac85-f4df-4e02-ad9f-366110b16bec
+index_schema_version: 1
+bdos_index: true
+---
 # Göngyölt Hús
 
 ```yaml

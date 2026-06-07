@@ -2,6 +2,9 @@
 series: "Navigátor Közösség"
 episode: "EP02"
 title: "A 80/20-as szabály – A Pareto-elv mint univerzális alapelv"
+description: "A Pareto-elv (80/20-as szabály) bemutatása: történeti háttere, empirikus bizonyítékai emberi és természeti rendszerekben, valamint gyakorlati alkalmazása a tanulásban és döntéshozatalban. A sorozat második epizódja a fókusz alapelvét tárgyalja."
+description_source: auto
+description_hash: 29653671fc6cc833
 host: "Beczesz Szabolcs"
 youtube_id: "nojTSpITGsE"
 published: "2025-03-02"
@@ -30,7 +33,6 @@ created: "2026-04-06"
 id: 6ac62d69-5685-4c76-bac5-c919e3dc2ec5
 index_schema_version: 1
 ---
-
 # Közösség EP02 – A 80/20-as szabály: A Pareto-elv mint univerzális alapelv
 
 ## Sorozat kontextus

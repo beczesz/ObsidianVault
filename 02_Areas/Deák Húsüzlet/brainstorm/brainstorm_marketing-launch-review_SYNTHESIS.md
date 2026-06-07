@@ -1,4 +1,7 @@
 ---
+description: "Négy AI szintéziséből készült marketing launch értékelés, amely 6/10-es érdemjegyet ad a tervnek. Tartalmazza az erősségeket (offline-first, Founding 50 mechanika), kritikus hiányokat (konverzió, mérés, retention) és konkrét javítási javaslatokat hétfőig."
+description_source: auto
+description_hash: dbaefe2cc45e4787
 topic: DH Marketing Launch Terv Review
 created: 2026-04-26
 last_updated: 2026-04-26
@@ -6,7 +9,6 @@ status: concluded
 id: 474cf2ee-3d06-4050-9d3c-25692c8dd44b
 index_schema_version: 1
 ---
-
 # Marketing Launch Terv Értékelés — 4 AI Szintézis
 
 ## Csapat

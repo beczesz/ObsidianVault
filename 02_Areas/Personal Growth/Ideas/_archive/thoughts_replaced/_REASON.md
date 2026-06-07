@@ -1,10 +1,12 @@
 ---
+description: "Documents corrected extractions from a failed Sage smoke test where the frame was misaligned with user intent; catalyzed a schema upgrade to require decision trace logging for future theme selection reasoning."
+description_source: auto
+description_hash: 1364019c501012ed
 date: 2026-05-24
 event: thought_replaced
 id: e8e414ba-eff5-4889-8ce5-0c4e65e85368
 index_schema_version: 1
 ---
-
 # Why these thoughts were moved here
 
 These thoughts were extracted by Sage in the smoke test run (2026-05-24-smoke-test), but the **frame was wrong** — the user's actual focus in the chat was "middle management layer eltűnése + BDOS", not "editorial taste modeling".

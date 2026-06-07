@@ -1,3 +1,15 @@
+---
+title: "Csirke Mell Csont és Bőr Nélkül"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Boneless, skinless chicken breast product record for a food distributor, containing pricing, availability status, and bilingual descriptions for cooking applications."
+description_source: auto
+description_hash: f81b430cb28bb4c9
+id: 8e8c5261-bed6-43c8-a7f9-4631559f9b17
+index_schema_version: 1
+bdos_index: true
+---
 # Csirke Mell Csont és Bőr Nélkül
 
 ```yaml

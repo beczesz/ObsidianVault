@@ -1,10 +1,11 @@
 ---
-
+description: "Sales pipeline tracking sheet for managing B2B enterprise and mid-market outreach in Hungary; includes hot RFP opportunities, warm leads with hiring signals, cold prospects, and contacted accounts with follow-up dates and package pricing."
+description_source: auto
+description_hash: ed753eb561594293
 kanban-plugin: board
 id: 8ca957c9-252c-44f5-bbb5-3aa83ecb31ba
 index_schema_version: 1
 ---
-
 ## HOT - Outreach This Week
 
 - [ ] **Coca-Cola HBC (CCHBC)** #hot #enterprise #rfp #partner-channel #magyar-telekom #openminds #azure #aiops #agentic-ai #finops #lang-en @{2026-05-31} Enterprisesss RFP via Magyar Telekom NyRT. -> openminds.hu (Szurdi Miklos). Sonrisa asked to cover AIOps/Agentic AI/FinOps sub-bid. Financial proposal due end of May, tech presentation mid-June. Engagement starts 2027. OUTSIDE standard CPS ICP and packaging — partner sub-bid model needed. Awaiting Berecz Sandor (MT bid owner) outreach. [[Accounts/Leads/CCHBC/NOTES]]
@@ -37,6 +38,8 @@ index_schema_version: 1
 
 
 ## Discovery Call
+
+- [ ] **Merkantil Bank Zrt.** #discovery #banking #fintech #otp-group #ai-enablement #email-routing #aid #lang-hu #cross-unit #active-engagement @{2026-05-27} ACTIVE multi-workstream Sonrisa engagement since 2026-04-27. NOT cold lead. Email router proposal SENT 2026-05-21 (4,175,225 HUF + 1,412,600 HUF/m monthly framework), AI Enablement training in same docx. **CPS plugged in 2026-05-27 for AID infra deployment pricing — Discovery call TODAY 12:00 (Bán József + Miklós Nándor + Becze Szabolcs, Ceclan Sanyi sizing). EOD: number must reach Merkantil.** Constraint: banking compliance = on-prem inference, no public LLM. KodeSage LLM share NOT viable (model self-managed). Mirror Sonrisa-internal CPS AID stack. Analog: MVMI AzureDevOps Managed Service. Decision-maker side: Gábor (last name TBD, +36 70 394 1260). [[Accounts/Leads/Merkantil/NOTES]]
 
 
 

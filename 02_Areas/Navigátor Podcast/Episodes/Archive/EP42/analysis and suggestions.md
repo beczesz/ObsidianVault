@@ -1,3 +1,15 @@
+---
+title: "EP42 — Tippek értékelése és fejlesztési javaslatok"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Három szempont szerint (filozófia, példa, hasznosság) értékelt tippek az AI-használathoz: erős filozófiai alapelvek (morális iránytű, értelem vs. computation) kiváló konkrét példákkal (kínai postás, Notebook LM), fejlesztési javaslatokkal az absztrakció és taníthatóság javítására. Hallgatók, oktatók és AI-produktív munkavállalók számára."
+description_source: auto
+description_hash: ddc08be37d350389
+id: cbd9e0f4-c1c0-4b32-af09-f4e66a87ed88
+index_schema_version: 1
+bdos_index: true
+---
 # EP42 — Tippek értékelése és fejlesztési javaslatok
 
 > Minden tipp három szempont szerint értékelve (1-10):

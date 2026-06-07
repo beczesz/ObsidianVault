@@ -1,5 +1,8 @@
 ---
 title: "Deák Húsmíves — Message Library v1.0"
+description: "A Deák húsműves üzenetkönyvtáram 36 üzenetből áll hat kategóriában, mind Deák hangnemében és csatorna-javaslatokkal. Szabolcs eredeti üzenetét elemezve, ChatGPT és Claude kimutatta, hogy a Deák nem meggyőz vagy oktat, hanem micro-döntéseket könnyít meg; a core mondatok a konkrétságra, a bizalomra és a ritmus"
+description_source: auto
+description_hash: 89e57d6fd8880926
 version: 1.0
 date: 2026-04-23
 authors: ChatGPT (Deák GPT) + Claude (szintézis)
@@ -8,7 +11,6 @@ status: DRAFT
 id: 98a5d86d-527b-44f4-bd70-e80bd1a421b8
 index_schema_version: 1
 ---
-
 # Deák Húsmíves — Message Library v1.0
 
 > 36 üzenet, 6 kategóriában, Deák hangnemben, csatorna-javaslatokkal.

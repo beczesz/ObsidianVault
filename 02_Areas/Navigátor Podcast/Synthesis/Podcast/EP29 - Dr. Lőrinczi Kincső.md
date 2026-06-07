@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP29
 title: "Hogyan stabilizáljuk a vércukorszintünket? | Dr. Lőrinczi Kincső EP29"
+description: "Dr. Lőrinczi Kincső EP29 YouTube-os előadásáról szóló analitikai összefoglaló, amely a vércukorszint-stabilizálást tárgyalja Jessie Inchauspé Glükózforradalom könyve alapján: YouTube analytics adatok, szerző-demográfia, 10 gyakorlati tipp és glikáció-kockázatok. Endokrinológia, dietetika és metabolikus egészség"
+description_source: auto
+description_hash: cb382a67399061d3
 guest: "Dr. Lőrinczi Kincső"
 guest_title: "Diabetológus és dietetikus szakorvos"
 topic: "Vércukorszint stabilizálás — Jessie Inchauspé Glükózforradalom könyv + szakértői kommentár"
@@ -15,7 +18,6 @@ quality: deep
 id: 77085e71-6a36-4476-b2e8-05a81d169016
 index_schema_version: 1
 ---
-
 # EP29 — Dr. Lőrinczi Kincső: „Hogyan stabilizáljuk a vércukorszintünket?"
 
 ## YouTube Studio Analytics

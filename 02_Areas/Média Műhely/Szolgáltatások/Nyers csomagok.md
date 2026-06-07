@@ -1,4 +1,15 @@
-
+---
+title: "Nyers csomagok"
+date: 2026-01-27
+author: Becze Szabolcs
+status: active
+description: "Húsz négy típusú szolgáltatási csomag szakértőknek, vezetőknek és szervezeteknek podcast, videó és audio tartalomgyártáshoz, valamint szakterületspecifikus tudásátadáshoz és márkaépítéshez."
+description_source: auto
+description_hash: 746e7e195bc15384
+id: 3581bb75-facf-4d0c-bb0a-1daa9283c8fd
+index_schema_version: 1
+bdos_index: true
+---
 ## 1. Starter / Pilot csomag
 
 **Cél:** belépési küszöb csökkentése, kipróbálás  

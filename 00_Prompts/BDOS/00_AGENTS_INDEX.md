@@ -2,7 +2,7 @@
 title: 00_AGENTS_INDEX
 description: Meta-index minden BDOS agentről — canonical fájl + Claude Code registration + verzió + státusz egy helyen.
 generated_by: human-manual (v0.2 audit-tól: librarian audit mode)
-last_updated: 2026-05-24
+last_updated: 2026-05-30
 phase5_observability: 2026-05-24
 id: 62038833-2f95-41e5-bae0-a511af158fad
 index_schema_version: 1
@@ -11,6 +11,11 @@ index_schema_version: 1
 # Agents Index
 
 Minden BDOS agent egyetlen áttekintő listán. **Forráshely** az `audit` mód Librarian futása (a jövőben automatikusan frissül).
+
+> **2026-05-30 reconciliation (Claude audit):** Az index a tényleges canonical + registration + slash-command állapothoz lett igazítva. Két nyitott **verzió-szinkron sérülés** maradt, amit emberi döntés zár le (lásd a Presto és Broker bejegyzést):
+> - **Presto**: canonical **v0.9.0 / 24 mód**, registration **v0.6.0 / 19 mód** — a kettő NINCS szinkronban. A 26 élő `pres-*` slash command a canonical (v0.9.0) valóságát igazolja, tehát a registration a stale. Javasolt fix: registration → v0.9.0-ra húzni.
+> - **Broker**: canonical + registration szinkronban (**v0.3.3, 9 mód**), de már NEM placeholder — 12 élő `brk-*` parancs van. Az index frissítve.
+> - Tényleges slash-command összesen: **83** (pres 26, alf 18, maestro 14, brk 12, dash 7, lib 6).
 
 ## Konvenciók
 
@@ -40,7 +45,6 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
   - `/lib-tidy` — rendrakás (dry-run default, logol mindent)
 - **Capabilities (v0.5):** PDF olvasás `pdftotext`-tel (poppler), SRT szöveg-extrakció, two-tier retrieve (tier-1 vault root + tier-2 unit-szintű scoped indexek), kontextus-védelem (a hívó kontextusa érintetlen marad retrieve módban).
 - **Felelősség:** Knowledge Management — olvas, keres, rendez, takarít, integrál külső tartalmat, nagytakarít.
-- **Verzió-szinkron:** canonical v0.8.3 = registration v0.8.3 (updated above)
 - **Maintenance log:**
   - `2026-05-24: Phase 2.B rollout — Logging requirement + logs/ skeleton (v0.6)`
   - `2026-05-24: Phase 3 — cache-first retrieve protocol (v0.7)`
@@ -49,7 +53,7 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
   - `2026-05-24: Phase 5 — Observability v2. ## Observability v2 section added. Operational markdown DEPRECATED for new events. (v0.8.1)`
   - `2026-05-24: Schema realigned to brief — agent_events → agent_logs. 28 columns, 15 event types, 6 log levels. query_duration_ms added. (v0.8.2)`
   - `2026-05-24: Phase 6 — ## Scheduling v1 added. Schedulable modes: index/audit auto; tidy/deep-clean manual+approval. (v0.8.3)`
-- **Verzió-szinkron:** canonical v0.8.3 = registration v0.8.3
+- **Verzió-szinkron:** canonical v0.8.3 = registration v0.8.3 ✅
 
 ### Tier-2 scoped indexes (Librarian által karbantartva)
 
@@ -71,13 +75,13 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
 
 **Tier-2 jelöltek a következő körben:** Ignis Academy (22), Média Műhely (21) — még a 30-fájl küszöb alatt, de növekvő tendencia.
 
-### Maestro — v0.5.3
+### Maestro — v0.5.5
 
 - **Canonical:** `00_Prompts/BDOS/agents/maestro.md`
 - **Registration:** `.claude/agents/maestro.md`
 - **Status:** active
 - **Created:** 2026-05-14 (v0.1)
-- **Last updated:** 2026-05-24 (v0.5.3 — Phase 6 Scheduling v1)
+- **Last updated:** 2026-05-30 (v0.5.5)
 - **Model:** sonnet
 - **Tools (registered):** Read, Write, Edit, Glob, Grep, Bash
 - **Operation modes (12):** **Brand-to-Site domain (5):** `status`, `next`, `continue`, `start`, `audit`. **Agent Family domain (4):** `team-status`, `team-audit`, `team-promote`, `team-introduce`. **Observability domain (3, Phase 2 új v0.3):** `observe`, `reflect`, `optimize`.
@@ -88,13 +92,13 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
   - **Observability (v0.3 új):** Phase 2 alkotmány (`CONSTITUTION_PHASE_2.md`) végrehajtása. 3 mód: `observe` (aggregálja a 3 family log-streamet — Operational/Learning/Version — minden agent-ből; read-only riport), `reflect` (mélyebb minta-analízis: duplicated reasoning, token graveyards, prompt drift, collaboration failures stb. — javaslat-generálás), `optimize` (egy konkrét reflect-javaslat végrehajtása dry-run default + confirmation + Version Log audit-trail).
 - **Felelősség:** Karmester három domain-ben. NEM stratéga, NEM ízlés-bíró, NEM markdown-rendrakó (Librarian), NEM dashboard-építő (Curator), NEM marketing-futtató (Presto), NEM sales-futtató (Broker). **Önreflexív:** saját canonicalja IS része minden team-promote futásnak, és saját logjait is olvasja az observability módokban.
 - **Autonómia:** **Confirmation gate kötelező** minden végrehajtó akció előtt (`continue`, `start`, `team-promote`, `team-introduce`, `optimize`). Info-módok (`status`, `audit`, `team-status`, `team-audit`, `observe`, `reflect`) megerősítés nélkül futnak. Az `optimize` és `team-promote` **dry-run default**.
-- **Slash commands:** **Brand-to-Site (6):** `/maestro` (legacy), `/maestro-status`, `/maestro-next`, `/maestro-continue`, `/maestro-start`, `/maestro-audit`. **Agent Family (4):** `/maestro-team-status`, `/maestro-team-audit`, `/maestro-team-promote`, `/maestro-team-introduce`. **Observability (3):** `/maestro-observe`, `/maestro-reflect`, `/maestro-optimize`.
+- **Slash commands (14):** **Brand-to-Site (6):** `/maestro` (legacy), `/maestro-status`, `/maestro-next`, `/maestro-continue`, `/maestro-start`, `/maestro-audit`. **Agent Family (4):** `/maestro-team-status`, `/maestro-team-audit`, `/maestro-team-promote`, `/maestro-team-introduce`. **Observability (3):** `/maestro-observe`, `/maestro-reflect`, `/maestro-optimize`. **Egyéb (1):** `/maestro-portrait` (Pixar-stílusú agent-portré generálás).
 - **Példa-hívások:**
   - `/maestro-observe --since=2026-05-17` — utolsó hét aktivitás aggregálva
   - `/maestro-reflect --focus=workflow-bottlenecks` — bottleneck-elemzés + javaslat
   - `/maestro-optimize --recommendation_id=<slug>` — dry-run preview
   - `/maestro-optimize --recommendation_id=<slug> --apply` — végrehajt confirmation után
-- **Verzió-szinkron:** canonical v0.5.3 = registration v0.5.3
+- **Verzió-szinkron:** canonical v0.5.5 = registration v0.5.5 ✅
 - **Phase 2 állapot:** Phase 2.A kész (Maestro v0.3 + log schemas + observability módok). Phase 2.B (family-rollout) **KÉSZ** — minden agent Logging szekciót + logs/ skeletet kapott. Phase 2.C (token-mérés beüzemelése) **SUPERSEDED by Phase 5** — tokens now logged via agent_observability.db.
 - **Source-of-truth dokumentumok:**
   - `00_Prompts/BDOS/CONSTITUTION_PHASE_2.md` — Phase 2 alkotmány
@@ -109,15 +113,16 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
   - `2026-05-24: Phase 5 — Observability v2. ## Observability v2 section added. Global reader role documented. (v0.5.1)`
   - `2026-05-24: Schema realigned to brief — agent_events → agent_logs. Global reader now queries agent_logs table. (v0.5.2)`
   - `2026-05-24: Phase 6 — ## Scheduling v1 added. observe (daily auto), reflect (weekly auto), optimize/team-promote/team-introduce manual+approval. (v0.5.3)`
-- **Verzió-szinkron:** canonical v0.5.3 = registration v0.5.3
+  - `2026-05-30: index reconciled to canonical/registration v0.5.5 (drift fix); /maestro-portrait added to command list (14 total).`
+- **Verzió-szinkron:** canonical v0.5.5 = registration v0.5.5 ✅
 
-### Curator — v0.5.3
+### Curator — v0.5.4
 
 - **Canonical:** `00_Prompts/BDOS/agents/curator.md`
 - **Registration:** `.claude/agents/curator.md`
 - **Status:** active
 - **Created:** 2026-05-22 (v0.1)
-- **Last updated:** 2026-05-24 (v0.5.3 — Phase 6 Scheduling v1)
+- **Last updated:** 2026-05-25 (v0.5.4 — DS §4a card-copy-ref MANDATORY at build time)
 - **Model:** sonnet
 - **Tools (registered):** Read, Write, Edit, Glob, Grep, Bash
 - **Operation modes (7):** `survey`, `build`, `tend`, `retire`, `audit`, `serve`, `promote`
@@ -132,26 +137,29 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
   - „Curator, építs dashboardot a Navigátor analytics-hez" — új dashboard build a recept + design system szerint
   - „Curator, audit" — hét törvény + design-system drift mátrix
   - „Curator, serve" — lokális szerver indítása/megnyitása a 4321 porton
-- **Verzió-szinkron:** canonical v0.5.3 = registration v0.5.3
+- **Verzió-szinkron:** canonical v0.5.4 = registration v0.5.4
 - **Maintenance log:**
   - `2026-05-24: Phase 2.B rollout — Logging requirement + logs/ skeleton (v0.3)`
   - `2026-05-24: Phase 3.1 description mandate + version bump (v0.4)`
   - `2026-05-24: Phase 5 — Observability v2. ## Observability v2 section added. (v0.5.1)`
   - `2026-05-24: Schema realigned to brief — agent_events → agent_logs. dashboard_update event type for HTML bumps. (v0.5.2)`
   - `2026-05-24: Phase 6 — ## Scheduling v1 added. survey (weekly auto), audit (monthly auto), tend/build/promote/retire manual+approval. (v0.5.3)`
-- **Verzió-szinkron:** canonical v0.5.3 = registration v0.5.3
+  - `2026-05-25: Promote — DS §4a card-copy-ref MANDATORY at build time. build mode step 4b added explicit. (v0.5.4)`
+- **Verzió-szinkron:** canonical v0.5.4 = registration v0.5.4
 - **Capability:** `00_Prompts/BDOS/capabilities/vault-dashboards/CLAUDE.md` (Vault Dashboards v0.2) + format contract `02_Areas/Sonrisa/CPS/Sales/DASHBOARD_CONTRACT.md` + design system `_dashboards/_design/DESIGN_SYSTEM.md`
 
-### Presto — v0.5.3
+### Presto — canonical v0.9.0 / registration v0.6.0 ⚠️ NINCS SZINKRONBAN
 
-- **Canonical:** `00_Prompts/BDOS/agents/presto.md`
-- **Registration:** `.claude/agents/presto.md`
+> **⚠️ VERZIÓ-SZINKRON SÉRÜLÉS (nyitott, emberi döntés kell):** A canonical (`agents/presto.md`) **v0.9.0 / 24 mód**, a registration (`.claude/agents/presto.md`) **v0.6.0 / 19 mód**. A 26 élő `pres-*` slash command (seed, draft, prepare, approve, exhaust, publish, channel, insight, template, todo mind létezik) a canonical v0.9.0 valóságát igazolja → a **registration a stale**. **Javasolt fix:** registration leírás + version → v0.9.0-ra húzni (a 24-mód Marketing OS állapotra). Amíg ez nem történik meg, Claude Code a v0.6.0/19-mód leírást tölti be.
+
+- **Canonical:** `00_Prompts/BDOS/agents/presto.md` (v0.9.0)
+- **Registration:** `.claude/agents/presto.md` (v0.6.0 — STALE, frissítendő)
 - **Status:** active
 - **Created:** 2026-05-23 (v0.1 as Herald)
-- **Last updated:** 2026-05-24 (v0.5.3 — Phase 6 Scheduling v1)
+- **Last updated:** 2026-05-30 (index reconcile); canonical utolsó bump v0.9.0
 - **Model:** sonnet
 - **Tools (registered):** Read, Write, Edit, Glob, Grep, Bash
-- **Operation modes (12):** **Operational (7):** `status`, `today`, `plan`, `run`, `resume`, `measure`, `index`. **Cognition (5, v0.3 új):** `adapt` (Sage atomic → N platform variant), `reflect` (heti/havi strategic reflection — NEM optimization theater), `audience` (pattern-analízis Sage atomic-cross-link), `discover` (új platform signal-detector, 4-feltétel-szűrő), `learn` (audience-learning lifecycle).
+- **Operation modes (24, canonical v0.9.0):** **Operational (12):** `status`, `today`, `plan`, `seed`, `draft`, `prepare`, `approve`, `exhaust`, `run` (deprecated), `resume`, `measure`, `index`. **Cognition (5):** `adapt`, `reflect`, `audience`, `discover`, `learn`. **Marketing OS (7):** `publish`, `comment-scan`, `comment-reply`, `insight`, `template`, `channel`, `todo`. Publication-as-atom modell, 6-stage kanban (Seed/Draft/Prepared/Approval/Scheduled/Published).
 - **Pozíció:** Marketing Cognition Layer + Distribution Engine — a BDOS distribution cognition rétege. Maestro testvére (Maestro = build, Presto = run, Brand Spine Pulse). **v0.3 új:** több, mint executor — átalakítja Sage kogníciót audience-rezonanciává, közönséget tanul, és resonance-signal-eket küld vissza Sage-nek (permitted-flow modell).
 - **Capabilities (v0.3):**
   - **Marketing Engine (v0.2 óta):** Markdown-natív kampánymenedzsment per Area, cross-project index, Cowork `marketing` plugin 8 skilljére routing.
@@ -162,7 +170,7 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
   - **Visual asset workflow (v0.3 új):** `Campaigns/<slug>/assets/` mappa konvenció.
 - **Felelősség:** Marketing distribution + audience cognition. **NEM** publikál (publish/send mindig emberi akció), NEM ír Sage outputjába, NEM ír brand-stratégiát (az Maestro), NEM épít site-ot (az Maestro), NEM sales (az Broker).
 - **Autonómia:** `plan`, `run`, `resume`, `adapt`, `learn` (accept/reject/retire/edit) **confirmation-gate**. Info-módok (`status`, `today`, `measure`, `index`, `reflect`, `audience`, `discover`, `learnings` list) megerősítés nélkül. **Thinking Engine auto-hív** csak `discover`/`reflect` módokban.
-- **Slash commands (16):** **Operational (7):** `/pres-status`, `/pres-today`, `/pres-plan`, `/pres-run`, `/pres-resume`, `/pres-measure`, `/pres-index`. **Cognition (9, v0.3 új):** `/pres-adapt`, `/pres-reflect`, `/pres-audience`, `/pres-discover`, `/pres-learnings`, `/pres-learning-accept`, `/pres-learning-reject`, `/pres-learning-retire`, `/pres-learning-edit`.
+- **Slash commands (26):** **Pipeline (8):** `/pres-seed`, `/pres-draft`, `/pres-prepare`, `/pres-approve`, `/pres-publish`, `/pres-exhaust`, `/pres-run` (deprecated), `/pres-resume`. **Operational (5):** `/pres-status`, `/pres-today`, `/pres-plan`, `/pres-measure`, `/pres-index`. **Cognition (4):** `/pres-adapt`, `/pres-reflect`, `/pres-audience`, `/pres-discover`. **Marketing OS (4):** `/pres-channel`, `/pres-insight`, `/pres-template`, `/pres-todo`. **Learning-lifecycle (5):** `/pres-learnings`, `/pres-learning-accept`, `/pres-learning-reject`, `/pres-learning-retire`, `/pres-learning-edit`.
 - **Példa-hívások:**
   - `/pres-today` — mit kell ma mozdítani (operational)
   - `/pres-adapt --source=atomic/cognition-distribution-wall --platforms=LinkedIn,X,IG --area=ExarLabs` — Sage atomic → 3 platform draft
@@ -170,7 +178,7 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
   - `/pres-audience --area=ExarLabs --period=last90d --dimension=narrative` — pattern-analízis
   - `/pres-discover --area=Navigator --focus=niche-communities` — új platform signal (Thinking Engine auto-hív)
   - `/pres-learnings --proposed` — pending audience-learning review
-- **Verzió-szinkron:** canonical v0.5.3 = registration v0.5.3
+- **Verzió-szinkron:** ⚠️ canonical v0.9.0 ≠ registration v0.6.0 — SÉRÜLT, reconcile szükséges (lásd a figyelmeztetést a szekció elején)
 - **Maintenance log:**
   - `2026-05-24: rename Herald → Presto (rationale: family stylistic fit, Maestro/Presto duet, press + Pixar wordplay)`
   - `2026-05-24: v0.2 → v0.3 (Distribution Cognition Layer evolution — 5 új mód, Sage integráció, Thinking Engine integráció, audience-learnings rendszer, Phase 2 directive execution)`
@@ -179,57 +187,44 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
   - `2026-05-24: Phase 5 — Observability v2. ## Observability v2 section added. (v0.5.1)`
   - `2026-05-24: Schema realigned to brief — agent_events → agent_logs. publish_prepared/publish_completed events added. (v0.5.2)`
   - `2026-05-24: Phase 6 — ## Scheduling v1 added. today/index/measure/reflect/audience auto; plan/run/resume/adapt/learn manual+approval. (v0.5.3)`
-- **Verzió-szinkron:** canonical v0.5.3 = registration v0.5.3
+  - `2026-05-24 → 05-30: canonical evolved v0.6 → v0.9.0 (Marketing OS: publish/comment-scan/comment-reply/insight/template/channel/todo + pipeline seed/draft/prepare/approve/exhaust). Registration NEM követte (v0.6.0-on ragadt) — reconcile pending.`
+  - `2026-05-30: index reconciled — 24 mód, 26 slash command rögzítve; canonical↔registration mismatch flag-elve.`
 - **Capability:** `00_Prompts/BDOS/capabilities/marketing-engine/` (Marketing Engine v0.1) + Distribution Cognition Layer (v0.3-vel kerül be)
 - **Pilot Area:** ExarLabs (Fázis 2 — folyamatban)
 - **Folder skeleton:** `agents/presto/audience-learnings/{active,proposals,retired}/` + `agents/presto/discovery/` + `agents/presto/reflections/` (létrehozva 2026-05-24)
 - **Permitted-flow signal-inbox:** `02_Areas/Personal Growth/Ideas/_inbox/sage-signals/` (Sage-nek, Presto írja)
-### Sage — v0.4.3
+### ~~Sage — v0.4.3~~ DEPRECATED (2026-05-28 — merged into Alfred v0.3)
 
-- **Canonical:** `00_Prompts/BDOS/agents/sage.md`
-- **Registration:** `.claude/agents/sage.md`
-- **Design:** `00_Prompts/BDOS/agents/sage/SAGE_DESIGN_v0.1.md` (v0.2 állapotban)
-- **Status:** active (scheduler jobs seeded — harvest daily + curate weekly)
-- **Created:** 2026-05-24 (v0.2 — design + meta-learning loop együtt érkezett)
-- **Last updated:** 2026-05-24 (v0.4.3 — Phase 6 Scheduling v1)
-- **Model:** sonnet
-- **Tools (registered):** Read, Write, Edit, Glob, Grep, Bash
-- **Operation modes (5):** `harvest`, `curate`, `chat`, `learning-ops`, `index`/`status`/`summary`/`find`/`edit`/`promote`
-- **Pozíció:** Cognition Curator — a BDOS cognition layer-jének operátora. **NEM** publikál, **NEM** kommunikál külvilággal. Olvas, struktúrál, kapcsol, javasol. Csend default — inkább egy fontos signal, mint folyamatos zaj.
-- **Capabilities (v0.2):** Daily harvest a ChatGPT "Referencia chat"-ből (Chrome MCP) → strukturált gondolat-note-ok a `02_Areas/Personal Growth/Ideas/`-be. Atomic note ápolás (history-szekcióval). Heti curate (hétfő 06:05) — trend-analízis, kategória-revízió, kapcsolat-keresés, Librarian-kérések main Claude orchestrátoron át. **Meta-learning loop:** Sage saját munkájáról explicit, user-reviewable tanulságokat ír (`learnings/proposals|active|retired`), cap 15 / 2000 token preamble. Markdown-natív state, dashboard-ready (`state/last_run.md` single source of truth).
-- **Felelősség:** Cognition layer karbantartása. Distribution layer-rel fal van köztük (lásd cognition stack brainstorm).
-- **Autonómia:** `harvest` és `curate` **csend default** + notify csak ha minta van. `chat`/`edit`/`promote`/`curate` confirmation-gate. Info-módok (`status`, `summary`, `find`, `learnings`) megerősítés nélkül.
-- **Slash commands (14):** `/sage-status`, `/sage-harvest`, `/sage-curate`, `/sage-summary`, `/sage-find`, `/sage-chat`, `/sage-edit`, `/sage-promote`, `/sage-index`, `/sage-learnings`, `/sage-learning-accept`, `/sage-learning-reject`, `/sage-learning-retire`, `/sage-learning-edit` (mind LIVE 2026-05-24 óta).
-- **Példa-hívások:**
-  - `/sage-status` — utolsó futás riport, never_run figyelmeztetés (jelen állapot)
-  - `/sage-harvest` — kézi napi harvest a Referencia chatből
-  - `/sage-curate` — heti reflexió (drága, ~15-20 perc, confirmation kötelező)
-  - `/sage-chat` — beszélgetés a tudásbázisról
-  - `/sage-learnings --proposed` — pending learning-javaslatok review-ja
-- **Verzió-szinkron:** canonical v0.4.3 = registration v0.4.3; design fájl v0.2 — design doc külön verziózott
+- **Status:** DEPRECATED — capabilities absorbed into Alfred v0.3
+- **Deprecated at:** 2026-05-28
+- **Merged into:** Alfred v0.3 (`harvest`, `curate`, `chat`, `learn` módok)
+- **What transferred:**
+  - `harvest` mód (Referencia chat → Ideas/) → Alfred `harvest`
+  - `curate` mód (heti reflexió) → Alfred `curate`
+  - `chat` mód (knowledge-base párbeszéd) → Alfred `chat`
+  - `learning-ops` mód → Alfred `learn`
+  - `learnings/proposals/` (6 db) → `agents/alfred/learnings/proposals/`
+  - `state/last_seen.md` → `agents/alfred/state/last_seen.md`
+  - Scheduler jobs (sage-daily-harvest, sage-weekly-curate) → disabled; Alfred jobs seeded (alfred-daily-harvest, alfred-weekly-curate)
+  - `sage-signals/` mappa ownership → Alfred írja (mappa neve megmarad backward-compat)
+- **Files deleted:** `00_Prompts/BDOS/agents/sage.md`, `.claude/agents/sage.md`, `.claude/commands/sage-*.md` (14 db)
+- **Files kept (archive):** `00_Prompts/BDOS/agents/sage/` mappa marad (SAGE_DESIGN_v0.1.md, learnings, state, cron) — de Alfred a source-of-truth
 - **Maintenance log:**
-  - `2026-05-24: Phase 2.B rollout — Logging requirement + logs/ skeleton (v0.3)`
-  - `2026-05-24: Phase 3.1 description mandate + version bump (v0.4)`
-  - `2026-05-24: Phase 5 — Observability v2. ## Observability v2 section added. _journal/ alias note preserved. (v0.4.1)`
-  - `2026-05-24: Schema realigned to brief — agent_events → agent_logs. learning + reflection event types explicitly used. (v0.4.2)`
-  - `2026-05-24: Phase 6 — ## Scheduling v1 added. harvest (daily auto) + curate (weekly auto) seeded via seed_sage_jobs(). launchd deprecated. (v0.4.3)`
-- **Verzió-szinkron:** canonical v0.4.3 = registration v0.4.3
-- **Scheduling (Phase 6):** harvest (daily 04:00 UTC / 06:00 Budapest summer, `requires_approval=0`), curate (weekly Monday 04:05 UTC, `requires_approval=0`). Seeded via `scheduler.py seed_sage_jobs()`. Dashboard-resident — runs while server is active.
-- **Vault output home:** `02_Areas/Personal Growth/Ideas/` (`thoughts/`, `atomic/`, `_inbox/`, `_journal/`, `curate/`, `00_INDEX.md`, `00_CATEGORIES.md`)
-- **Dashboard-readiness:** lásd `SAGE_DESIGN_v0.1.md §7` — Curator későbbi input
+  - `2026-05-24: Phase 6 — ## Scheduling v1 added. harvest (daily auto) + curate (weekly auto) seeded via seed_sage_jobs(). (v0.4.3)`
+  - `2026-05-28: DEPRECATED — absorbed into Alfred v0.3 (Sage-Alfred merge)`
 
 ### Broker — v0.3.3
 
 - **Canonical:** `00_Prompts/BDOS/agents/broker.md`
 - **Registration:** `.claude/agents/broker.md`
-- **Status:** active (placeholder)
+- **Status:** active (v0.2 capability designed — már NEM placeholder)
 - **Created:** 2026-05-24 (v0.1)
-- **Last updated:** 2026-05-24 (v0.3.3 — Phase 6 Scheduling v1)
+- **Last updated:** 2026-05-30 (index reconcile; canonical+registration v0.3.3 szinkronban)
 - **Model:** sonnet
 - **Tools (registered):** Read, Write, Edit, Glob, Grep, Bash
-- **Pozíció:** Distribution layer sibling to Presto. Cognition (Sage) → distribution (Presto for marketing one-to-many, Broker for sales one-to-one). Fal a cognition és distribution rétegek között érvényes.
-- **Operation modes:** TBD — modes to be designed in v0.2. Várható irány: 7 mód, Presto mintájára, de sales one-to-one természetéhez igazítva.
-- **Slash commands:** None yet. Prefix reserved: `brk-` (pl. `/brk-status`, `/brk-today`, `/brk-run` — de NEM véglegesek, v0.2-ben jönnek).
+- **Pozíció:** Distribution layer sibling to Presto. Cognition (Sage/Alfred) → distribution (Presto for marketing one-to-many, Broker for sales one-to-one). Fal a cognition és distribution rétegek között érvényes.
+- **Operation modes (9):** **Operational (7):** `status`, `today`, `plan`, `run`, `resume`, `measure`, `index`. **Cognition (2):** `learn` (sales-learning lifecycle-ops), `reflect` (heti/havi sales strategic reflection). Per-Area state: `Sales/Cohorts/<slug>/COHORT.md`. Sales-learnings 8 típus: objection-pattern, cycle-timing, cohort-signal, outreach-tone, qualification-criteria, competitor-context, loss-pattern, referral-mechanic.
+- **Slash commands (12):** `/brk-status`, `/brk-today`, `/brk-plan`, `/brk-run`, `/brk-resume`, `/brk-measure`, `/brk-index`, `/brk-reflect`, `/brk-learnings`, `/brk-learning-accept`, `/brk-learning-reject`, `/brk-learning-retire`. (Mind LIVE.)
 - **Felelősség:** One-to-one sales activities — lead tracking, pipeline management, outreach drafts, deal status, follow-ups, proposal prep. Bidirectional: outbound + incoming prospect responses, objections, signals.
 - **Autonómia:** Confirmation-gate minden végrehajtó akció előtt. NEM küld ki üzenetet vagy zár le deal-t emberi jóváhagyás nélkül. NEM lép át marketing (Presto) vagy cognition (Sage) területre.
 - **Verzió-szinkron:** canonical v0.3.3 = registration v0.3.3
@@ -240,7 +235,67 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
   - `2026-05-24: Phase 5 — Observability v2. ## Observability v2 section added. (v0.3.1)`
   - `2026-05-24: Schema realigned to brief — agent_events → agent_logs. approval_requested replaces decision for confirmation gates. (v0.3.2)`
   - `2026-05-24: Phase 6 — ## Scheduling v1 added. today/index/measure/reflect auto; plan/run/resume/learn manual+approval. Outreach-always-human documented. (v0.3.3)`
-- **Verzió-szinkron:** canonical v0.3.3 = registration v0.3.3
+  - `2026-05-30: index reconcile — 9 mód + 12 élő brk-* parancs rögzítve (korábban tévesen "placeholder, 0 parancs"). canonical+registration v0.3.3 szinkronban.`
+- **Verzió-szinkron:** canonical v0.3.3 = registration v0.3.3 ✅
+
+### Forge — v0.1.1
+
+- **Canonical:** `00_Prompts/BDOS/agents/forge.md`
+- **Registration:** `.claude/agents/forge.md` (created 2026-05-30 via Maestro `team-introduce`, approved by user)
+- **Status:** active (placeholder)
+- **Created:** 2026-05-27 (v0.1.0)
+- **Last updated:** 2026-06-05 (v0.1.1 — bound external repositories §11)
+- **Model:** sonnet
+- **Tools (registered):** Read, Write, Edit, Glob, Grep, Bash
+- **Pozíció:** Capability layer — sibling to Broker. Broker = client-side movement (one-to-one), Forge = capability-side stewardship (cross-client practice area-k). Új réteg a BDOS-ban: a kognitív (Sage) + disztribúciós (Presto + Broker) mellé bekerül a kapacitás-réteg.
+- **Operation modes:** TBD — modes to be designed in v0.2 (Broker-pattern). Várható irány: 7 operational (`status`, `today`, `capture`, `refine`, `index`, `measure`, `handoff`) + 2 cognition (`learn`, `reflect`).
+- **Slash commands:** None yet. Prefix reserved: `forge-` (pl. `/forge-status`, `/forge-capture`, `/forge-refine`, `/forge-handoff` — de NEM véglegesek, v0.2-ben jönnek).
+- **Felelősség:** Cross-cutting practice area-k és kapacitás-területek karbantartása. Két flow:
+  - **Bottom-up** — kliens-engagementből származó megfigyelések, logok, tervezési minták filing-ja és refine-olása reusable pattern-né
+  - **Top-down** — külső research (vendor-eval, papers, conferences) filing-ja és refine-olása
+  - Cross-link engagementekkel `related-projects.md`-n keresztül (Broker territory átfedés)
+  - Handoff Brokerhez (proposal-template kész) vagy Presto-hoz (marketing-ready capability)
+- **Autonómia:** Confirmation-gate minden filing akció előtt (melyik area, melyik subfolder). NEM módosít kliens-state-fájlt (Broker territory), NEM generál outreach üzenetet (Broker/Presto territory), NEM hoz stratégiai döntést cégszinten (Maestro + user). PII-leak guard: kliens-specifikus részlet csak Broker-folderben, generikus pattern Forge-ben.
+- **Storage convention:** `02_Areas/<unit>/Practices/<area>/` per-unit per-area folder struktúrával (NOTES, _inbox, research, patterns, decisions, experiments, proposals, learnings, related-projects, open-questions). Cross-cutting meta-learnings `00_Prompts/BDOS/agents/forge/practice-learnings/` mappában.
+- **Két szintű learning architecture:**
+  - Per-area learning: `Practices/<area>/learnings/active|proposals|retired/`
+  - Cross-practice meta-learning: `agents/forge/practice-learnings/active|proposals|retired/`
+  - Mindkettő ugyanaz a `proposed → active → retired` lifecycle, max 15 active / 2000 token preamble (Sage konvenció, Broker-pattern)
+- **Verzió-szinkron:** canonical v0.1.1 = registration v0.1.1 ✅
+- **Bound repositories (v0.1.1 új):** practice area-k külső git repóhoz köthetők (`bound_repository` frontmatter a practice NOTES-ban). Kötelező git-protokoll: **pull-first, push-last**, soha force-push. Első binding: `ExarLabs/Practices/Microsites` → `Downloads/Work/ExarLabs/microsite-factory` (remote `ExarLabs/microsite-factory`, master, factory v0.6.0, 14 site). A `/microsite-build` skill + `impeccable` + `ui-ux-pro-max` ennek a repónak a `.claude/skills/`-jében él.
+- **Maintenance log:**
+  - `2026-05-27: v0.1.0 placeholder scaffold via team-introduce-pattern. Identity + Mission + Constraints + Anti-patterns + Storage Convention + Logging + Scheduling + Broker-integráció rögzítve. Slash prefix forge- reserved. Két példa practice area: CPS/Inference-Farm + ExarLabs/Microsites.`
+  - `2026-05-30: Runtime registration .claude/agents/forge.md created via Maestro team-introduce. User explicitly authorized. Canonical unchanged (v0.1.0). Registration id: 26d54e1a-2a57-4070-adb1-01aa67ead9ad.`
+  - `2026-06-05: v0.1.0 → v0.1.1 — Bound external repositories (§11). Microsite Factory repo a ExarLabs/Microsites practice area-hoz kötve. Git-protokoll: pull-first, push-last. Maestro tanítás, user explicit felhatalmazás. Canonical + registration + practice NOTES + version-log frissítve.`
+- **Practice area-k aktiválva (2):**
+  - `02_Areas/Sonrisa/CPS/Practices/Inference-Farm/` — Merkantil Discovery-triggered, maturity: `research`
+  - `02_Areas/ExarLabs/Practices/Microsites/` — **repo-bound** (microsite-factory v0.6.0), maturity: `patterns-emerging`
+
+### Alfred — v0.4.0
+
+- **Canonical:** `00_Prompts/BDOS/agents/alfred.md`
+- **Registration:** `.claude/agents/alfred.md` (v0.4.0 — updated 2026-06-07 Triage Engine)
+- **Status:** active
+- **Created:** 2026-05-28 (v0.1.0)
+- **Last updated:** 2026-06-07 (v0.4.0 — Cognitive Triage Engine: triage + next módok)
+- **Model:** sonnet
+- **Tools (registered):** Read, Write, Edit, Glob, Grep, Bash (+ Chrome MCP a harvest-csatornákhoz, + Gmail/Outlook/Yahoo MCP a triage-hez)
+- **Pozíció:** **Executive Cognition Layer + Cognition Curator + Triage Orchestrator** — a BDOS human interface rétege + Sage-merged kognitív kurátor + v0.4 Cognitive Triage Engine. Maestro a rendszerre néz; Alfred a gazdára.
+- **Operation modes (14):** `capture`, `sync`, `today`/`briefing`, `status`, `todo`, `remind`, `done`, `tasks` (v0.2 operative) + `harvest`, `curate`, `chat`, `learn` (v0.3 kognitív, Sage-merged) + **`triage`, `next`** (v0.4 Triage Engine).
+- **Két harvest-csatorna + email-triage:** `harvest` = ChatGPT "Referencia chat" (ötletek); `sync` = ChatGPT "Alfred Inbox" (ops dump); `triage` = email (Gmail/Outlook/Yahoo MCP) → multi-agent prepared-task dossziék.
+- **Triage Engine (v0.4):** óránként (scheduler) beolvassa az emaileket, kiszűri a választ igénylőket, és a Librariannel (mindig) + dinamikus domain-routinggal (Presto/Broker/Forge/Curator) prepared-task dossziékat készít (`tasks/`, `alfred.task.v1`): válasz-draft + actionable-ök. Multi-agent contribution-tracking közös `task_id`-vel (dosszié-timeline = SoT, agent_logs = queryable tükör). `next` = "van feladatom?" riport. SOHA nem küld, `--auto`-ban Gmail-be sem ír.
+- **Felelősség:** Frictionless capture + idea-harvest + personal ops + email-triage. NEM publikál, NEM küld, NEM ír más agent state-jébe. Email = untrusted input (prompt-injection védelem).
+- **Autonómia:** Confirmation-gate minden vault-mutáció elott. `capture`, info-módok (`tasks`/`today`/`status`/`next`), és `triage` (csak belső dosszié) megerosítés nélkül. `harvest`/`curate`/`triage` csend default.
+- **Slash commands (20, mind LIVE):** **Operative (9):** `/alf-capture`, `/alf-sync`, `/alf-today`, `/alf-status`, `/alf-todo`, `/alf-remind`, `/alf-done`, `/alf-tasks`, `/alf-recap`. **Triage (2):** `/alf-triage`, `/alf-next`. **Kognitív/Sage-merged (4):** `/alf-harvest`, `/alf-curate`, `/alf-chat`, `/alf-learn`. **Learning-lifecycle (5):** `/alf-learnings`, `/alf-learning-accept`, `/alf-learning-edit`, `/alf-learning-reject`, `/alf-learning-retire`.
+- **Verzió-szinkron:** canonical v0.4.0 = registration v0.4.0
+- **Maintenance log:**
+  - `2026-06-07: v0.4.0 — Cognitive Triage Engine. triage + next módok. Prepared-task dossier-réteg (tasks/, alfred.task.v1, §5b). Multi-agent contribution-tracking közös task_id-vel (§8). Scheduler: alfred-hourly-triage (interval 3600, enabled=0 smoke-tesztig) + cron/run_hourly_triage.sh. Heartbeat: state/triage_queue.md. Dashboard → napi cockpit v0.5.0 (Curator). §8 Phase 2→5/6 ref-fix. Slash: /alf-triage, /alf-next.`
+  - `2026-05-28: v0.3.0 — Sage-Alfred merge. harvest/curate/chat/learn absorbed. Két csatorna szeparálva. scheduler jobs: alfred-daily-harvest + alfred-weekly-curate. 6 Sage learning-proposal migrálva. sage-signals/ ownership transferred.`
+  - `2026-05-28: v0.2.0 — TODO-rendszer + intent-felismerés. 4 mag-mód. Registration létrehozva.`
+  - `2026-05-28: v0.1.0 scaffold.`
+  - `2026-05-28: 17 alf-* slash commands scaffolded (operative 8 + cognitive 4 + learning-lifecycle 5). All LIVE.`
+- **Storage home:** `02_Areas/Personal Growth/Alfred/` (+ `tasks/` dossziék, `state/triage_queue.md`) + `02_Areas/Personal Growth/Ideas/` (idea-output) + `agents/alfred/` (state, learnings, cron)
+- **Scheduling:** `alfred-daily-harvest` (daily 04:00 UTC) + `alfred-weekly-curate` (weekly Mon 04:05 UTC) + `alfred-hourly-triage` (interval 3600s, enabled=0). Seeded via `seed_alfred_cognition_jobs()` + `seed_alfred_triage_job()`.
 
 ## Planned agents
 
@@ -248,7 +303,9 @@ A két fájl `version:` mezőjének **szinkronban kell lennie**.
 
 ## Deprecated agents
 
-(Üres.)
+### Sage — DEPRECATED 2026-05-28
+
+Absorbed into Alfred v0.3. See the `~~Sage — v0.4.3~~` entry in Active agents above for the full transfer manifest.
 
 ---
 

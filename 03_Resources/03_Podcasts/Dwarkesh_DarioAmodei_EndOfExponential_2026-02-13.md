@@ -1,5 +1,8 @@
 ---
 title: "We Are Near the End of the Exponential"
+description: "Dwarkesh's 2026 interview with Anthropic CEO Dario Amodei on why AI scaling laws predict professional-level AGI within 1-3 years, featuring discussion of the Big Blob of Compute hypothesis, RL scaling, and the capability-to-product gap. For AI researchers, policymakers, and those tracking frontier AI development."
+description_source: auto
+description_hash: a0f86f53d894395c
 type: podcast
 author: "Dario Amodei"
 year: 2026
@@ -12,7 +15,6 @@ processed_by: "AI Speed-Reading Agent"
 id: 56af3b72-4492-455f-8cf9-78c79f3ac3b0
 index_schema_version: 1
 ---
-
 ```
 SAVE-TO: /03_Resources/03_Podcasts/
 FILES:

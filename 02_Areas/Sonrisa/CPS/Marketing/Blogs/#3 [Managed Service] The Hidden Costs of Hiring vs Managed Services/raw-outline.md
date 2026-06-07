@@ -1,3 +1,15 @@
+---
+title: "The Hidden Costs of Hiring vs. the Predictability of Managed Services"
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "Compares true all-in costs of hiring DevOps staff to transparent managed service pricing, analyzing salary, benefits, recruitment, turnover, and incident costs for CFOs and CTOs evaluating infrastructure budget allocation."
+description_source: auto
+description_hash: a35cd7cd1f183430
+id: a066306e-cfec-4f7b-a8f7-469cfae305f9
+index_schema_version: 1
+bdos_index: true
+---
 # The Hidden Costs of Hiring vs. the Predictability of Managed Services
 
 > **Series:** Managed Service Blog Series (3 of 3 — Closing Article)

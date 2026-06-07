@@ -1,3 +1,15 @@
+---
+title: "Pistyur Veronika — Interjú terv v3"
+date: 2026-03-07
+author: Becze Szabolcs
+status: active
+description: "Forgatókönyv Navigator Podcast interjúhoz Pistyur Veronikával, amely borítékos játékmechanikát alkalmaz: hét sima és egy különleges kérdés közül húz az interjúalany. A kérdések a sikerről szóló mítoszokat, a kisvárosi és kisebbségi létet, valamint a hagyatékot járják körül; a különleges boríték a mi lett volna"
+description_source: auto
+description_hash: 584f67387f82412f
+id: 5846b648-bbd7-43bb-8b67-ff98df065317
+index_schema_version: 1
+bdos_index: true
+---
 # Pistyur Veronika — Interjú terv v3
 **Navigator Podcast | Székelyudvarhely | Boríték-formátum**
 *7 sima boríték + 1 különleges*

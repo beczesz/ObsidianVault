@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Presence Graph — Cross-org social media presence matrix.        Version: 0.2.3
+  =============================================================================
+  Shows all organizations managed by Szabolcs Becze and their channel presence
+  across platforms (Facebook, Instagram, YouTube, TikTok, X, Spotify, Patreon).
+  Reads from: /02_Areas/*/presence.md (schema: presto.org-presence.v1)
+  Read-only. Edit presence.md files in Obsidian.
+
+  Audit trail:
+    0.2.3 (2026-05-29) tend: version-pill normalized family-wide. CSS: font-size 10.5px, padding 2px 8px, font-weight 500 (was 10px, 1px 7px, no weight). Markup: mono class added.
+    0.2.2 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app → .app-main + .app-shell layout. alfred-tasks.js added.
+    0.2.1 (2026-05-25) — promote: panel-anchor system (DS 0.8.0). Section IDs renamed to
+          panel-1-header-strip, panel-2-presence-matrix, panel-3-recovery-chains.
+          scroll-margin-top: 42px. JS references updated.
+    0.2.0 (2026-05-25) feature: clickable channel detail panel (inline expand).
+    0.1.0 (2026-05-25) initial: presence matrix, summary strip, recovery chain.
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presence Graph</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%23D97757' stroke-width='2.2'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  font-feature-settings: 'ss01', 'cv11', 'tnum' 0;
+  color: var(--ink-1);
+  background: var(--bg-page);
+  line-height: 1.45;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  transition: background var(--t-med), color var(--t-med);
+}
+.mono { font-family: 'JetBrains Mono', ui-monospace, Consolas, monospace; }
+.tabular { font-variant-numeric: tabular-nums; }
+.app-main { max-width: 1200px; padding: 28px 36px 96px; }
+
+/* ===== Masthead ===== */
+.masthead { margin-bottom: 28px; padding-bottom: 22px; border-bottom: 1px solid var(--line); }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px;
+}
+.home-link {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  text-decoration: none; padding: 5px 11px 5px 9px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); transition: all var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); transform: translateX(-2px); }
+.home-link svg { flex-shrink: 0; }
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+.eyebrow {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+}
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; letter-spacing: 0; font-weight: 500; }
+.masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; color: var(--ink-1); }
+.masthead h1 .accent { color: var(--accent); }
+.masthead .submeta { color: var(--ink-3); max-width: 700px; font-size: 14px; margin-top: 8px; line-height: 1.55; }
+
+/* ===== Summary strip ===== */
+.summary-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
+  margin-bottom: 32px;
+}
+.summary-stat {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 16px 20px;
+  box-shadow: var(--shadow-1);
+}
+.summary-stat .label {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 4px;
+}
+.summary-stat .value {
+  font-size: 28px; font-weight: 700; color: var(--ink-1);
+  font-variant-numeric: tabular-nums; line-height: 1.1;
+}
+.summary-stat .value.ok { color: var(--ok); }
+.summary-stat .value.warn { color: var(--warn); }
+.summary-stat .value.gap { color: var(--gap); }
+
+/* ===== Section headers ===== */
+.section-header {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .1em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.section-header .count {
+  font-family: 'JetBrains Mono', monospace; font-size: 10px;
+  background: var(--bg-sunken); border-radius: var(--radius-s);
+  padding: 1px 6px; color: var(--ink-3);
+}
+
+/* ===== Presence matrix ===== */
+.matrix-wrap {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); box-shadow: var(--shadow-1);
+  overflow: hidden; margin-bottom: 32px;
+}
+.matrix {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px;
+}
+.matrix thead th {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-4); font-weight: 500; padding: 12px 10px 10px;
+  text-align: center; border-bottom: 1px solid var(--line);
+  background: var(--bg-tint); white-space: nowrap;
+}
+.matrix thead th:first-child {
+  text-align: left; padding-left: 20px; min-width: 180px;
+}
+.matrix tbody tr {
+  transition: background var(--t-fast);
+}
+.matrix tbody tr:hover { background: var(--bg-tint); }
+.matrix tbody tr:not(:last-child) td { border-bottom: 1px solid var(--line-soft); }
+.matrix td {
+  padding: 14px 10px; text-align: center; vertical-align: middle;
+}
+.matrix td:first-child {
+  text-align: left; padding-left: 20px;
+}
+.matrix .org-name {
+  font-weight: 600; color: var(--ink-1); font-size: 14px;
+  display: block; margin-bottom: 2px;
+}
+.matrix .org-role {
+  font-size: 11px; color: var(--ink-4); text-transform: uppercase;
+  letter-spacing: .06em;
+}
+.matrix td:first-child { position: relative; }
+.matrix .card-copy-ref {
+  position: absolute; top: 50%; right: 8px; transform: translateY(-50%);
+  opacity: 0;
+}
+.matrix tr:hover .card-copy-ref { opacity: 1; }
+.matrix .card-copy-ref.copied { opacity: 1; }
+
+/* Status dots */
+.status-dot {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; border-radius: 50%;
+  font-size: 11px; font-weight: 600;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+  cursor: default; position: relative;
+}
+.status-dot:hover { transform: scale(1.15); }
+.status-dot:not(.dot-empty) { cursor: pointer; }
+.status-dot.selected {
+  transform: scale(1.2);
+  box-shadow: 0 0 0 3px var(--accent-tint), inset 0 0 0 2px currentColor;
+  z-index: 2;
+}
+.status-dot[data-tooltip]:hover::after {
+  content: attr(data-tooltip);
+  position: absolute; bottom: calc(100% + 6px); left: 50%;
+  transform: translateX(-50%); white-space: nowrap;
+  font-size: 11px; font-weight: 500; padding: 4px 10px;
+  background: var(--ink-1); color: var(--bg-page);
+  border-radius: var(--radius-s); pointer-events: none;
+  z-index: 10;
+}
+.dot-active {
+  background: var(--ok-tint); color: var(--ok);
+  box-shadow: inset 0 0 0 2px var(--ok);
+}
+.dot-recovery {
+  background: var(--gap-tint); color: var(--gap);
+  box-shadow: inset 0 0 0 2px var(--gap);
+}
+.dot-unknown {
+  background: var(--warn-tint); color: var(--warn);
+  box-shadow: inset 0 0 0 2px var(--warn);
+}
+.dot-planned {
+  background: var(--idle-tint); color: var(--idle);
+  box-shadow: inset 0 0 0 2px var(--idle);
+}
+.dot-empty {
+  background: transparent; color: var(--ink-5);
+}
+
+/* Platform icons in header */
+.platform-icon {
+  display: inline-block; width: 16px; height: 16px;
+  margin-bottom: 2px; opacity: 0.6;
+}
+
+/* ===== Recovery chain ===== */
+.recovery-section { margin-bottom: 32px; }
+.recovery-card {
+  position: relative;
+  background: var(--gap-tint); border: 1px solid rgba(192,57,43,.15);
+  border-radius: var(--radius-l); padding: 20px 24px;
+  box-shadow: var(--shadow-1);
+}
+.recovery-card .card-copy-ref {
+  position: absolute; top: 10px; right: 10px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 500; color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.recovery-card:hover .card-copy-ref { opacity: 1; }
+.recovery-card .card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.recovery-card .card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* ===== Panel Anchor System (DS 0.8.0) ===== */
+[id^="panel-"] { scroll-margin-top: 42px; }
+
+.recovery-title {
+  font-size: 14px; font-weight: 600; color: var(--gap);
+  margin-bottom: 10px;
+}
+.recovery-chain {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: var(--ink-2); line-height: 1.8;
+}
+.recovery-chain .arrow { color: var(--ink-4); margin: 0 4px; }
+.recovery-chain .blocked { color: var(--gap); font-weight: 600; }
+.recovery-chain .node {
+  display: inline-block; padding: 2px 8px;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-s); font-size: 11px;
+}
+.recovery-chain .node.blocked-node {
+  background: var(--gap-tint); border-color: rgba(192,57,43,.25);
+}
+
+/* ===== Channel detail panel (inline expand) ===== */
+.matrix .detail-row td {
+  padding: 0 20px 16px; background: var(--bg-tint);
+}
+.matrix tbody tr.detail-open { background: var(--bg-tint); }
+.detail-panel {
+  position: relative;
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 20px 24px;
+  box-shadow: var(--shadow-1); margin-top: 4px;
+}
+.detail-panel .card-copy-ref {
+  position: absolute; top: 12px; right: 12px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  font-weight: 500; color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.detail-panel:hover .card-copy-ref { opacity: 1; }
+.detail-panel .card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.detail-panel .card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+.detail-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.detail-platform {
+  font-size: 11px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-4); font-weight: 600;
+}
+.detail-name { font-size: 16px; font-weight: 600; color: var(--ink-1); }
+.detail-handle {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent);
+}
+.detail-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px 24px;
+}
+.detail-field .field-label {
+  font-size: 10px; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--ink-4); font-weight: 500; margin-bottom: 3px;
+}
+.detail-field .field-value {
+  font-size: 13px; color: var(--ink-2); word-break: break-word;
+}
+.detail-field .field-value a { color: var(--accent); text-decoration: none; }
+.detail-field .field-value a:hover { color: var(--accent-deep); text-decoration: underline; }
+.detail-empty { color: var(--ink-4); font-size: 12px; font-style: italic; }
+.channel-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 4px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 500; letter-spacing: .02em;
+}
+.chip-active { background: var(--ok-tint); color: var(--ok); }
+.chip-recovery { background: var(--gap-tint); color: var(--gap); }
+.chip-unknown { background: var(--warn-tint); color: var(--warn); }
+.chip-planned { background: var(--idle-tint); color: var(--idle); }
+
+/* ===== Legend ===== */
+.legend {
+  display: flex; gap: 20px; margin-top: 12px; margin-bottom: 24px;
+  font-size: 12px; color: var(--ink-3);
+}
+.legend-item { display: flex; align-items: center; gap: 6px; }
+.legend-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+}
+.legend-dot.lg-active { background: var(--ok); }
+.legend-dot.lg-recovery { background: var(--gap); }
+.legend-dot.lg-unknown { background: var(--warn); }
+.legend-dot.lg-planned { background: var(--idle); }
+
+/* ===== States ===== */
+.state {
+  text-align: center; padding: 60px 20px; color: var(--ink-4);
+  border: 1px dashed var(--line-soft); border-radius: var(--radius-l);
+  margin-top: 24px; font-size: 14px;
+}
+.state.error { color: var(--gap); border-color: rgba(192,57,43,.25); background: var(--gap-tint); }
+</style>
+</head>
+<body>
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<main class="app-main">
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <a class="home-link" href="/_dashboards/index.html" title="Back to Ideas Vault launcher">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+        Ideas Vault
+      </a>
+      <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
+        <span class="theme-icon">&#9790;</span>
+        <span class="theme-label">Dark</span>
+      </button>
+    </div>
+    <div class="eyebrow">
+      Presto &middot; Presence Graph
+      <span class="version-pill mono">v0.2.3</span>
+    </div>
+    <h1>Presence <span class="accent">Graph</span></h1>
+    <div class="submeta">All organizations and their social media channels, managed through one personal profile.</div>
+  </header>
+
+  <div id="panel-1-header-strip" class="summary-strip"></div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot lg-active"></span> Active</div>
+    <div class="legend-item"><span class="legend-dot lg-recovery"></span> Recovery needed</div>
+    <div class="legend-item"><span class="legend-dot lg-unknown"></span> Audit needed</div>
+    <div class="legend-item"><span class="legend-dot lg-planned"></span> Planned</div>
+  </div>
+
+  <div class="section-header">Presence matrix <span class="count" id="org-count">0</span></div>
+  <section id="panel-2-presence-matrix">
+    <div class="state" id="loading">Loading presence data...</div>
+  </section>
+
+  <section id="panel-3-recovery-chains" class="recovery-section" style="display:none;">
+    <div class="section-header">Recovery chains <span class="count" id="recovery-count">0</span></div>
+    <div id="recovery-content"></div>
+  </section>
+</main>
+<aside id="alfred-tasks-sidebar"></aside>
+</div>
+
+<script src="/_dashboards/_design/live-updates.js"></script>
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<script src="/_dashboards/_design/markdown-parser.js"></script>
+<script src="/_dashboards/_design/dom-utils.js"></script>
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
+
+<script>
+const DASH_STEM = 'presences';
+
+const PLATFORMS = [
+  { id: 'facebook', label: 'Facebook', abbr: 'FB' },
+  { id: 'instagram', label: 'Instagram', abbr: 'IG' },
+  { id: 'youtube', label: 'YouTube', abbr: 'YT' },
+  { id: 'tiktok', label: 'TikTok', abbr: 'TT' },
+  { id: 'x-twitter', label: 'X', abbr: 'X' },
+  { id: 'spotify', label: 'Spotify', abbr: 'SP' },
+  { id: 'patreon', label: 'Patreon', abbr: 'PA' },
+];
+
+const PRESENCE_SOURCES = [
+  '/02_Areas/Szem%C3%A9lyes/presence.md',
+  '/02_Areas/Navig%C3%A1tor%20Podcast/presence.md',
+  '/02_Areas/F%C3%B3kuszpont/presence.md',
+  '/02_Areas/ExarLabs/presence.md',
+  '/02_Areas/Mikado/presence.md',
+  '/02_Areas/Ignis/presence.md',
+  '/02_Areas/M%C3%A9dia%20M%C5%B1hely/presence.md',
+  '/02_Areas/Szem%C3%A9lyes/vezetok-imaja-presence.md',
+];
+
+let _presenceOrgs = [];
+let _activeDetail = null;
+
+function parseChannelsFromYaml(raw) {
+  const channels = [];
+  const yamlMatch = raw.match(/^---\n([\s\S]*?)\n---/);
+  if (!yamlMatch) return channels;
+  const yaml = yamlMatch[1];
+
+  const channelBlocks = yaml.split(/\n\s+-\s+platform:\s*/);
+  channelBlocks.shift();
+
+  for (const block of channelBlocks) {
+    const lines = block.split('\n');
+    const ch = { platform: lines[0].trim().replace(/["']/g, '') };
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i];
+      if (/^\s+-\s+platform:/.test(line)) break;
+      const m = line.match(/^\s+(\w[\w_-]*):\s*(.+)/);
+      if (m) {
+        let val = m[2].trim().replace(/^["']|["']$/g, '');
+        ch[m[1]] = val;
+      }
+    }
+    channels.push(ch);
+  }
+  return channels;
+}
+
+function inferStatus(channel) {
+  if (!channel.status) return 'unknown';
+  const s = channel.status.toLowerCase();
+  if (s === 'active') return 'active';
+  if (s.includes('recovery')) return 'recovery';
+  if (s === 'planned') return 'planned';
+  if (s === 'unknown' || s === 'inactive') return 'unknown';
+  return 'unknown';
+}
+
+async function fetchPresence(url) {
+  try {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const raw = await res.text();
+    const parsed = parseYamlFrontmatter(raw);
+    if (!parsed) return null;
+    const fm = parsed.frontmatter;
+    const channels = parseChannelsFromYaml(raw);
+    let platformsList = [];
+    if (typeof fm.platforms === 'string') {
+      platformsList = fm.platforms.replace(/[\[\]]/g, '').split(',').map(s => s.trim());
+    } else if (Array.isArray(fm.platforms)) {
+      platformsList = fm.platforms;
+    }
+    return {
+      org_name: fm.org_name || fm.title || '(unnamed)',
+      org_id: fm.org_id || toSlug(fm.org_name || ''),
+      role: fm.role || 'admin',
+      platforms: platformsList,
+      channels: channels,
+      source: url,
+    };
+  } catch (e) {
+    return null;
+  }
+}
+
+function getChannelForPlatform(org, platformId) {
+  return org.channels.find(c => c.platform === platformId) || null;
+}
+
+function renderSummary(orgs) {
+  const totalChannels = orgs.reduce((sum, o) => sum + o.channels.length, 0);
+  const issues = orgs.reduce((sum, o) =>
+    sum + o.channels.filter(c => inferStatus(c) === 'recovery').length, 0);
+  const auditsNeeded = orgs.reduce((sum, o) =>
+    sum + o.channels.filter(c => inferStatus(c) === 'unknown').length, 0);
+
+  document.getElementById('panel-1-header-strip').innerHTML = `
+    <div class="summary-stat">
+      <div class="label">Organizations</div>
+      <div class="value">${orgs.length}</div>
+    </div>
+    <div class="summary-stat">
+      <div class="label">Active channels</div>
+      <div class="value ok">${totalChannels}</div>
+    </div>
+    <div class="summary-stat">
+      <div class="label">Recovery needed</div>
+      <div class="value ${issues > 0 ? 'gap' : ''}">${issues}</div>
+    </div>
+    <div class="summary-stat">
+      <div class="label">Audit pending</div>
+      <div class="value ${auditsNeeded > 0 ? 'warn' : ''}">${auditsNeeded}</div>
+    </div>
+  `;
+}
+
+function renderMatrix(orgs) {
+  closeChannelDetail();
+  document.getElementById('org-count').textContent = orgs.length;
+
+  const section = document.getElementById('panel-2-presence-matrix');
+  const headerCells = PLATFORMS.map(p =>
+    `<th>${escapeHtml(p.abbr)}<br><span style="font-size:9px;text-transform:none;letter-spacing:0;font-weight:400;color:var(--ink-4)">${escapeHtml(p.label)}</span></th>`
+  ).join('');
+
+  const rows = orgs.map(org => {
+    const cells = PLATFORMS.map(p => {
+      const ch = getChannelForPlatform(org, p.id);
+      if (!ch) {
+        const hasPlatform = org.platforms.includes(p.id);
+        if (hasPlatform) {
+          return `<td><span class="status-dot dot-unknown" data-tooltip="${escapeHtml(p.label)}: audit needed">?</span></td>`;
+        }
+        return `<td><span class="status-dot dot-empty">&middot;</span></td>`;
+      }
+      const status = inferStatus(ch);
+      const name = ch.name || ch.handle || p.label;
+      const tooltip = `${escapeHtml(name)} (${status})`;
+      const icon = status === 'active' ? '&#10003;' : status === 'recovery' ? '!' : status === 'planned' ? '~' : '?';
+      return `<td><span class="status-dot dot-${status}" data-tooltip="${tooltip}" data-org-id="${escapeHtml(org.org_id)}" data-platform="${escapeHtml(p.id)}" onclick="handleDotClick(this)">${icon}</span></td>`;
+    }).join('');
+
+    return `
+      <tr data-card-id="org/${escapeHtml(org.org_id)}">
+        <td>
+          <span class="org-name">${escapeHtml(org.org_name)}</span>
+          <span class="org-role">${escapeHtml(org.role)}</span>
+          <button class="card-copy-ref" aria-label="Copy org ref" data-for-card onclick="event.stopPropagation()">
+            <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            copy ref
+          </button>
+        </td>
+        ${cells}
+      </tr>
+    `;
+  }).join('');
+
+  section.innerHTML = `
+    <div class="matrix-wrap">
+      <table class="matrix">
+        <thead>
+          <tr>
+            <th>Organization</th>
+            ${headerCells}
+          </tr>
+        </thead>
+        <tbody>
+          ${rows}
+        </tbody>
+      </table>
+    </div>
+  `;
+
+  wireCopyRef(section);
+}
+
+function handleDotClick(dotEl) {
+  const orgId = dotEl.getAttribute('data-org-id');
+  const platform = dotEl.getAttribute('data-platform');
+  if (!orgId || !platform) return;
+  if (_activeDetail && _activeDetail.orgId === orgId && _activeDetail.platform === platform) {
+    closeChannelDetail();
+    return;
+  }
+  openChannelDetail(orgId, platform, dotEl);
+}
+
+function openChannelDetail(orgId, platformId, dotEl) {
+  closeChannelDetail();
+  const org = _presenceOrgs.find(o => o.org_id === orgId);
+  if (!org) return;
+  const ch = org.channels.find(c => c.platform === platformId);
+  if (!ch) return;
+
+  dotEl.classList.add('selected');
+  const orgRow = dotEl.closest('tr');
+  orgRow.classList.add('detail-open');
+
+  const detailRow = document.createElement('tr');
+  detailRow.className = 'detail-row';
+  detailRow.innerHTML = `<td colspan="${PLATFORMS.length + 1}">${renderChannelDetail(org, ch)}</td>`;
+  orgRow.after(detailRow);
+  wireCopyRef(detailRow);
+
+  _activeDetail = { orgId, platform: platformId, rowEl: detailRow, dotEl };
+}
+
+function closeChannelDetail() {
+  if (!_activeDetail) return;
+  _activeDetail.dotEl.classList.remove('selected');
+  const orgRow = _activeDetail.rowEl.previousElementSibling;
+  if (orgRow) orgRow.classList.remove('detail-open');
+  _activeDetail.rowEl.remove();
+  _activeDetail = null;
+}
+
+function renderChannelDetail(org, ch) {
+  const status = inferStatus(ch);
+  const fields = [];
+  if (ch.name) fields.push({ label: 'Name', value: escapeHtml(ch.name) });
+  if (ch.handle) fields.push({ label: 'Handle', value: `<span class="mono">${escapeHtml(ch.handle)}</span>` });
+  if (ch.url) fields.push({ label: 'URL', value: `<a href="${escapeHtml(ch.url)}" target="_blank" rel="noopener">${escapeHtml(ch.url)}</a>` });
+  if (ch.type) fields.push({ label: 'Type', value: escapeHtml(ch.type) });
+  if (ch.email) fields.push({ label: 'Email', value: `<a href="mailto:${escapeHtml(ch.email)}">${escapeHtml(ch.email)}</a>` });
+  if (ch.phone) fields.push({ label: 'Phone', value: `<a href="tel:${escapeHtml(ch.phone)}">${escapeHtml(ch.phone)}</a>` });
+  if (ch.fallback_email) fields.push({ label: 'Fallback email', value: `<a href="mailto:${escapeHtml(ch.fallback_email)}">${escapeHtml(ch.fallback_email)}</a>` });
+  if (ch.access_via) fields.push({ label: 'Access via', value: escapeHtml(ch.access_via) });
+  if (ch.recovered) fields.push({ label: 'Recovered', value: escapeHtml(ch.recovered) });
+  if (ch.notes) fields.push({ label: 'Notes', value: escapeHtml(ch.notes) });
+
+  const cardId = `channel/${escapeHtml(org.org_id)}-${escapeHtml(ch.platform)}`;
+  return `
+    <div class="detail-panel" data-card-id="${cardId}">
+      <button class="card-copy-ref" aria-label="Copy channel ref" data-for-card onclick="event.stopPropagation()">
+        <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        copy ref
+      </button>
+      <div class="detail-header">
+        <span class="detail-platform">${escapeHtml(ch.platform)}</span>
+        ${ch.name ? `<span class="detail-name">${escapeHtml(ch.name)}</span>` : ''}
+        ${ch.handle ? `<span class="detail-handle">${escapeHtml(ch.handle)}</span>` : ''}
+        <span class="channel-chip chip-${status}">${status}</span>
+      </div>
+      ${fields.length > 0 ? `<div class="detail-grid">${fields.map(f => `
+        <div class="detail-field">
+          <div class="field-label">${f.label}</div>
+          <div class="field-value">${f.value}</div>
+        </div>`).join('')}
+      </div>` : '<div class="detail-empty">No details available. Edit presence.md to add channel info.</div>'}
+    </div>`;
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeChannelDetail();
+});
+
+function renderRecoveryChains(orgs) {
+  const recoveryOrgs = orgs.filter(o =>
+    o.channels.some(c => inferStatus(c) === 'recovery')
+  );
+
+  if (recoveryOrgs.length === 0) {
+    document.getElementById('panel-3-recovery-chains').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('panel-3-recovery-chains').style.display = '';
+  document.getElementById('recovery-count').textContent = recoveryOrgs.length;
+
+  const cards = recoveryOrgs.map(org => {
+    const blockedChannels = org.channels.filter(c => inferStatus(c) === 'recovery');
+    return blockedChannels.map(ch => `
+      <div class="recovery-card" data-card-id="recovery/${escapeHtml(org.org_id + '-' + ch.platform)}">
+        <button class="card-copy-ref" aria-label="Copy recovery ref" data-for-card onclick="event.stopPropagation()">
+          <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          copy ref
+        </button>
+        <div class="recovery-title">${escapeHtml(org.org_name)} / ${escapeHtml(ch.platform)}</div>
+        <div class="recovery-chain">
+          ${ch.recovery_chain ? ch.recovery_chain.split('→').map((node, i, arr) =>
+            `<span class="node ${i === 0 ? 'blocked-node' : ''}">${escapeHtml(node.trim())}</span>${i < arr.length - 1 ? '<span class="arrow">&rarr;</span>' : ''}`
+          ).join('') : `<span class="node blocked-node">${escapeHtml(ch.handle || ch.name || ch.platform)}</span> <span style="color:var(--ink-4);font-size:11px">${escapeHtml(ch.blocker || 'recovery details in presence.md')}</span>`}
+        </div>
+        ${ch.blocker ? `<div style="margin-top:8px;font-size:12px;color:var(--gap);font-weight:500">Blocker: ${escapeHtml(ch.blocker)}</div>` : ''}
+      </div>
+    `).join('');
+  }).join('');
+
+  document.getElementById('recovery-content').innerHTML = cards;
+  wireCopyRef(document.getElementById('recovery-content'));
+}
+
+async function refetchAndRender() {
+  try {
+    const results = await Promise.all(PRESENCE_SOURCES.map(fetchPresence));
+    const orgs = results.filter(Boolean);
+    _presenceOrgs = orgs;
+
+    if (orgs.length === 0) {
+      document.getElementById('panel-2-presence-matrix').innerHTML =
+        '<div class="state">No presence data found. Create presence.md files in your Area folders.</div>';
+      return;
+    }
+
+    const savedDetail = _activeDetail
+      ? { orgId: _activeDetail.orgId, platform: _activeDetail.platform } : null;
+
+    renderSummary(orgs);
+    renderMatrix(orgs);
+    renderRecoveryChains(orgs);
+
+    if (savedDetail) {
+      const dot = document.querySelector(`.status-dot[data-org-id="${savedDetail.orgId}"][data-platform="${savedDetail.platform}"]`);
+      if (dot) openChannelDetail(savedDetail.orgId, savedDetail.platform, dot);
+    }
+  } catch (e) {
+    document.getElementById('panel-2-presence-matrix').innerHTML =
+      `<div class="state error">Error loading data: ${escapeHtml(e.message)}</div>`;
+  }
+}
+
+LiveUpdates.subscribe(refetchAndRender);
+LiveUpdates.mountStatusIndicator(document.querySelector('.masthead-toprow'));
+refetchAndRender();
+</script>
+</body>
+</html>

@@ -1,4 +1,7 @@
 ---
+description: "Brainstorming session examining how DHOP could position itself in an energy crisis by leveraging local supply chains against multinational retailers' vulnerability, with research data on fuel-to-food price transmission and strategic positioning options for the pilot launch."
+description_source: auto
+description_hash: 45864bd69d47efe4
 topic: DHOP makrogazdasági válság-pozicionálás
 created: 2026-04-11
 last_updated: 2026-04-11
@@ -6,7 +9,6 @@ status: active
 id: 7f808a42-b736-46fc-b77d-baae5ea9f5be
 index_schema_version: 1
 ---
-
 # Brainstorm: DHOP szerepe egy energiaválságban — lokális piac vs. multik
 
 ## Sessions

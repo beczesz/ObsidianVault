@@ -1,3 +1,15 @@
+---
+title: "The Language of Creation — Matthieu Pageau (2018)"
+date: 2025-10-02
+author: Becze Szabolcs
+status: active
+description: "Matthieu Pageau's Eastern Orthodox allegorical commentary on Genesis interprets the Bible as a coherent symbolic system revealing metaphysical truth through cosmic dualities, offering readers tools to understand Scripture beyond materialist frameworks."
+description_source: auto
+description_hash: ff7c0897c59b2593
+id: 7c5bf931-1099-47a7-b2e1-75a38063e74f
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /03_Resources/02_Books/Matthieu Pageau - The Language of Creation/
 FILES:
   - The Language of Creation_ Cosmic Symbolism in Genesis_ A Commentary ( PDFDrive ).pdf

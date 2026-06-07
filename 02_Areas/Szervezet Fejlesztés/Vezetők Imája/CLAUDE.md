@@ -1,3 +1,15 @@
+---
+title: "Memória – Vezetők Imája"
+date: 2026-04-13
+author: Becze Szabolcs
+status: active
+description: "Szabolcs szervezésében 2021 februárja óta működő keresztény vezetői imacsoport dokumentációja, amely 48 alkalommal gyűlt össze. Házigazdák, lelkipásztorok, zenészek és témák nyilvántartása Google Drive, Sheet, Obsidian és Canva felületeken."
+description_source: auto
+description_hash: 87b97af3515f93be
+id: 65d21fcd-2144-450b-a4ea-b782c672b7c5
+index_schema_version: 1
+bdos_index: true
+---
 # Memória – Vezetők Imája
 
 ## A Projekt

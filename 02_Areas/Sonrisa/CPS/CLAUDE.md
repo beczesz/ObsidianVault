@@ -1,21 +1,61 @@
+---
+title: "CPS Working Memory"
+date: 2026-05-28
+author: Becze Szabolcs
+status: active
+description: "Session working memory for CPS Sales and Account Management engines. Contains session startup protocol (read TODAY.md and AM_TODAY.md queues), two-engine overview (Sales: lead acquisition; AM: project lifecycle), key file locations, kanban board rules, and dashboard mechanics for users managing the full customer lifecycle."
+description_source: auto
+description_hash: 0b8205bfdae70fa1
+id: 14ba3ef3-45ed-4f2c-a7de-c0779936c7f3
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Working Memory
 
 Avoid em Dashes
 
 ## Session Start Convention
 
-On every session start, BEFORE any task work, read `TODAY.md` at the vault root for the current day's action queue. Surface:
+On every session start, BEFORE any task work, read BOTH:
+- `TODAY.md` (CPS root) — Sales-engine action queue (lead outreach, follow-up nudges)
+- `AM_TODAY.md` (CPS root) — Account Management action queue (project lifecycle: kickoffs, renewals, escalations, post-call follow-ups)
+
+Surface from both:
 - Anything overdue (📅 dates earlier than today)
 - Anything due today
-- Open user-decisions blocking tomorrow's sends
+- Open user-decisions blocking the next action
 
-The TODAY.md file is the single source for what needs to happen today. After completing tasks, mark them done in TODAY.md with `[x]` + `✅ YYYY-MM-DD` and add a line under the "Done log" section.
+After completing tasks, mark them done in the relevant file with `[x]` + `✅ YYYY-MM-DD` and add a line under that file's "Done log" section.
+
+Sales vs AM separation:
+- If the work is **outbound lead acquisition** (LinkedIn outreach, follow-up nudges, scrape, prospect verification) → TODAY.md
+- If the work is **project / engagement management** (post-Won activities, renewals, client reviews, internal Sonrisa team coordination on a live engagement, scoping calls with established accounts) → AM_TODAY.md
+- Merkantil is the canonical bridge case: in Sales (Discovery Call) AND in AM (Backlog) simultaneously until CPS scope graduates.
 
 ## Quick Reference
 
 **Vision:** "We are the Backstage Crew who runs the show"
 **Mission:** Stabilitás, Innováció, Fejlődés
 **#1 Value:** Alázat - "Az lesz a legnagyobbra értékelve, aki a legalázatosabb"
+
+## Two engines: Sales + Account Management
+
+CPS runs **two parallel engines** that together cover the full customer lifecycle:
+
+| Engine | Scope | Source of truth (kanban) | Today queue | Dashboard |
+|---|---|---|---|---|
+| **Sales** | Cold prospect → Won (lead acquisition) | `Sales/Pipeline.md` | `TODAY.md` | `_dashboards/sales.html` |
+| **Account Management** | Backlog → Closed/Lost (project lifecycle) | `Accounts/Active/PROJECTS.md` | `AM_TODAY.md` | `_dashboards/account-management.html` |
+
+Both engines may carry the same lead/project simultaneously during the Sales→AM transition (e.g. a Discovery-stage lead in Sales can also be Backlog in AM). Sales focus is outbound + lead pipeline; AM focus is project lifecycle + delivery + renewal.
+
+**AM stages (10 columns):** Backlog → Initial meeting → Define project need → RFP / RFI → Won → Contracted → Delivery → Renewal → Closed → Lost. Lost is terminal (a project can land there from any upstream stage).
+
+**IMPORTANT (board-add rule, user 2026-05-28):** When introducing/onboarding a new project or account, do NOT auto-add it to a board (`Pipeline.md` or `Accounts/Active/PROJECTS.md`) by default. First create the NOTES.md + source docs, then **ASK the user whether it should go on the board and which stage**. The board is the user's working surface; they decide what lands on it. (Creating the lead/account file and gathering info is fine without asking; the board placement is the gated step.)
+
+**Dashboard note:** the AM dashboard (`_dashboards/account-management.html`) renders `PROJECTS.md` live via SSE (port 4322) + 8s poll fallback (served by dash-server on port 4321). If a freshly-added card does not appear, it is almost always a stale browser tab / dead events-server (4322), NOT a data problem — hard-refresh the page (dash-server 4321 must be up) and/or restart `_dashboards/_tools/start.ps1`.
+
+**AM card semantics:** one card = one engagement, not one account. Accounts with multiple engagements (e.g. MVMI Azure DevOps + Omni Support + Chaos Engineering Workshop) appear as multiple cards. Same `- [ ] **Project** #tags @{YYYY-MM-DD} teaser [[wiki-link]]` format as Pipeline.md.
 
 ## Sales Engine (start here for sales work)
 

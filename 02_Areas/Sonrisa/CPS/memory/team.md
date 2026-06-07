@@ -1,3 +1,15 @@
+---
+title: "Team Knowledge - UPDATED 2026-02-16"
+date: 2026-04-16
+author: Becze Szabolcs
+status: active
+description: "Comprehensive team roster documenting 13 engineers and contractor with detailed profiles of leadership, experienced members, and rising talent, plus recent departures and recruitment priorities. Use for hiring decisions, team planning, and understanding individual strengths and development needs."
+description_source: auto
+description_hash: acf7732e3a2bec65
+id: e330cf66-f692-4b1d-a680-08e194685664
+index_schema_version: 1
+bdos_index: true
+---
 # Team Knowledge - UPDATED 2026-02-16
 
 ## Current Team (~13 engineers + 1 contractor)

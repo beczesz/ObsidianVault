@@ -1,3 +1,15 @@
+---
+title: "Gyónás szövege"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Személyes bűnvallomási sablon checklist formátumban, amelyet egy katolikus hívő a gyónásra való felkészüléshez használ, felsorolva az utolsó gyónás óta elkövetett bűnöket és a megbánaságról szóló nyilatkozatot."
+description_source: auto
+description_hash: c951bb28f230b9a3
+id: 0fba261f-ce8d-44ae-b848-db06a217b033
+index_schema_version: 1
+bdos_index: true
+---
 Gyónás előtt: Gyónom a mindenható Istennek és neked, lelkiatyám, hogy utolsó gyónásomtól fogva ezeket a bűnöket követtem el: …
 
 ## 2025.12.22

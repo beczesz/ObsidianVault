@@ -1,3 +1,15 @@
+---
+title: "You Budgeted €70,000 for a DevOps Engineer. Here Is Why It Costs €150,000."
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "Comprehensive breakdown of true DevOps hiring costs for finance and engineering leaders, showing how salaries plus employer taxes, recruitment, onboarding, tooling, and management overhead inflate actual year-one expenses to 1.5-2x the base salary, with comparison to transparent managed service pricing."
+description_source: auto
+description_hash: 068e721aa5dd3bea
+id: f5cd3212-38fb-48ce-b193-d4493023c928
+index_schema_version: 1
+bdos_index: true
+---
 # You Budgeted €70,000 for a DevOps Engineer. Here Is Why It Costs €150,000.
 
 **Series:** Managed Service Series - Article 3 of 3

@@ -1,3 +1,15 @@
+---
+title: "WP41 – Fegyelem | Gergely István | EP41 — Teljes Metaadat Csomag"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Gergely István podcastjáról szóló metaadat-csomag, amely tartalmazza az EP41 Fegyelem epizód teljes YouTube-optimalizálási javaslatait: öt A/B tesztelt cím, öt hook-ötlet virális pontszámmal, thumbnail-szöveg-javaslatok és leírás-sablonok a 35-64 éves, önfejlesztés-érdekelt közönség számára"
+description_source: auto
+description_hash: 7830484bd30fc34e
+id: 0b69f569-77bf-4f11-94f3-8da0c56d6eec
+index_schema_version: 1
+bdos_index: true
+---
 # WP41 – Fegyelem | Gergely István | EP41 — Teljes Metaadat Csomag
 
 **Dátum:** 2026-04-19

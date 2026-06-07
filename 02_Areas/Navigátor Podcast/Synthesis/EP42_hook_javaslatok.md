@@ -1,3 +1,15 @@
+---
+title: "EP42 — MMA Harcosok | Cold Open / Hook Javaslatok (v2)"
+date: 2026-04-30
+author: Becze Szabolcs
+status: active
+description: "Szabolcs és vendégei, Ida Gabi és Kovács Krisztián ketrecharcosok számára készült EP42 cold open és hook javaslatait tartalmazza. Öt kiemelt idézet közül a legjobban performáló a kontrollált monstrum filozófiája, mely mítoszrombolást párosít a személyes vallomás erejével és összhangban van a csatorna női közönségének értékrendjével."
+description_source: auto
+description_hash: 3d3401b482e68584
+id: f502c1cf-5cee-44ea-a217-a54794c1f651
+index_schema_version: 1
+bdos_index: true
+---
 # EP42 — MMA Harcosok | Cold Open / Hook Javaslatok (v2)
 
 **Vendégek:** Ida Gabi & Kovács Krisztián (ketrecharcosok, Hargita Fight Night)

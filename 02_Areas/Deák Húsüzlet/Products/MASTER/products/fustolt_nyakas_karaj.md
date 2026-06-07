@@ -1,3 +1,15 @@
+---
+title: "Füstölt Nyakas Karaj"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Füstölt nyakas karaj termékadata, márványos szerkezettel és füstös ízzel, szeletelhető vagy egész formában elérhető."
+description_source: auto
+description_hash: 267f17046bfa61b3
+id: 1d9600a4-f86c-4a5a-9776-5c3fdf22f052
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Nyakas Karaj
 
 ```yaml

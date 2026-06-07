@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<!--
+  ExarLabs digitalizációs pályázat one-pager (HU) — v4
+  2026-05-30 — A LIVE Exar Design System hűséges alkalmazása (exarlabs.com / sites.exarlabs.com):
+  Bricolage Grotesque + Hanken Grotesk, committed navy + meleg clay (OKLCH), navy hero/footer sáv,
+  szekció-szín-ritmus, situation-chips, clay CTA. Narratíva: AIDA. PDF-be generálható (A4 print CSS).
+  RegioConsult: partnerként említve.
+-->
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digitalizációs pályázat helyi cégeknek | ExarLabs</title>
+<meta name="description" content="Akár 200 000 EUR vissza nem térítendő uniós támogatás a céged digitalizálására, a Régió Központ pályázatából. Az ExarLabs megépíti a rendszert, partnerünk intézi a pályázatot.">
+<meta property="og:title" content="Digitalizációs pályázat helyi cégeknek | ExarLabs">
+<meta property="og:description" content="Akár 200 000 EUR vissza nem térítendő uniós támogatás a céged digitalizálására. Az ExarLabs megépíti a rendszert, partnerünk intézi a pályázatot.">
+<meta property="og:image" content="exar-logo.png">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="exar-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ============================================================
+   * Exar Design System tokens (live, exarlabs.com)
+   * ========================================================== */
+  :root {
+    --navy-900: oklch(0.20 0.05 256);
+    --navy-800: oklch(0.26 0.07 256);
+    --navy-700: oklch(0.32 0.09 256);   /* THE logo navy — primary */
+    --navy-600: oklch(0.40 0.10 256);
+    --navy-300: oklch(0.72 0.07 256);
+    --navy-100: oklch(0.94 0.025 256);
+
+    --clay-600: oklch(0.62 0.13 50);
+    --clay-500: oklch(0.71 0.135 56);   /* accent — CTA */
+    --clay-400: oklch(0.80 0.115 60);
+    --clay-100: oklch(0.95 0.03 66);
+
+    --bg:          oklch(0.987 0.004 250);
+    --surface:     oklch(0.965 0.006 250);
+    --surface-2:   oklch(0.935 0.009 250);
+    --ink:         oklch(0.24 0.03 256);
+    --ink-muted:   oklch(0.44 0.03 256);
+    --line:        oklch(0.90 0.008 250);
+    --line-strong: oklch(0.83 0.012 250);
+    --on-navy:        oklch(0.97 0.01 250);
+    --on-navy-muted:  oklch(0.84 0.035 256);
+
+    --font-display: "Bricolage Grotesque", Georgia, serif;
+    --font-body: "Hanken Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+    --text-xs: 0.78rem; --text-sm: 0.88rem; --text-base: 1.0625rem; --text-lg: 1.1875rem;
+    --text-xl: 1.35rem; --text-2xl: 1.6rem; --text-3xl: 2rem; --text-4xl: 2.6rem;
+
+    --space-1: .25rem; --space-2: .5rem; --space-3: 1rem; --space-4: 1.5rem;
+    --space-5: 2rem; --space-6: 3rem; --space-7: 4rem; --space-8: 6rem;
+
+    --maxw: 68rem; --maxw-narrow: 44rem;
+    --radius-sm: 7px; --radius: 10px; --radius-lg: 16px;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1); --t: 180ms var(--ease);
+    --shadow-sm: 0 1px 2px oklch(0.20 0.05 256 / 0.06);
+    --shadow: 0 6px 24px oklch(0.20 0.05 256 / 0.10);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 5rem; -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; font-family: var(--font-body); font-size: var(--text-base); line-height: 1.6;
+    color: var(--ink); background: var(--bg);
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.07; letter-spacing: -0.02em; margin: 0 0 0.6rem; color: var(--ink); }
+  h1 { font-size: clamp(2.4rem, 5.2vw, 4rem); }
+  h2 { font-size: clamp(1.75rem, 3.6vw, 2.6rem); }
+  h3 { font-size: var(--text-xl); letter-spacing: -0.01em; }
+  p { margin: 0 0 1rem; max-width: 70ch; }
+  strong { font-weight: 700; }
+  a { color: var(--navy-700); text-decoration: underline; text-underline-offset: 2px; transition: color var(--t); }
+  a:hover { color: var(--navy-800); }
+  :focus-visible { outline: 3px solid var(--clay-500); outline-offset: 2px; border-radius: 3px; }
+
+  .container { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 1.5rem; }
+  .container-narrow { max-width: var(--maxw-narrow); }
+  section { padding: clamp(3rem, 7vw, 5.5rem) 0; }
+  .section-sub { color: var(--ink-muted); max-width: 62ch; font-size: var(--text-lg); margin-bottom: 2rem; }
+
+  /* Buttons */
+  .btn { display: inline-flex; align-items: center; gap: .5rem; padding: .9rem 1.5rem; border-radius: var(--radius-sm); font-family: var(--font-body); font-weight: 600; font-size: 1rem; text-decoration: none; border: 1.5px solid transparent; cursor: pointer; transition: transform var(--t), background var(--t), border-color var(--t); }
+  .btn:hover { transform: translateY(-2px); }
+  .btn-primary { background: var(--clay-500); color: var(--navy-900); border-color: var(--clay-500); }
+  .btn-primary:hover { background: var(--clay-400); border-color: var(--clay-400); }
+
+  /* Header */
+  .site-header { position: sticky; top: 0; z-index: 50; background: oklch(0.987 0.004 250 / 0.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .header-inner { display: flex; align-items: center; justify-content: space-between; padding: .8rem 0; }
+  .logo-link { display: flex; align-items: center; gap: .6rem; text-decoration: none; color: var(--ink); }
+  .logo-mark { width: 40px; height: 40px; display: block; }
+  .logo-wordmark { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; letter-spacing: -0.01em; }
+  .header-contact { font-weight: 600; font-size: .95rem; text-decoration: none; color: var(--navy-700); padding: .5rem 1rem; border-radius: var(--radius-sm); border: 1.5px solid var(--line-strong); transition: background var(--t), border-color var(--t); }
+  .header-contact:hover { background: var(--navy-100); border-color: var(--navy-700); }
+
+  /* Hero — committed navy band */
+  .hero { background: var(--navy-700); color: var(--on-navy); padding: clamp(3.5rem, 9vw, 7rem) 0; }
+  .hero h1 { color: var(--on-navy); max-width: 20ch; }
+  .hero-content { max-width: 56rem; }
+  .hero-content > * { animation: fade-up .7s var(--ease) both; }
+  .hero-content > *:nth-child(2) { animation-delay: .06s; }
+  .hero-content > *:nth-child(3) { animation-delay: .12s; }
+  .hero-content > *:nth-child(4) { animation-delay: .18s; }
+  @keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .hero-sub { font-size: clamp(1.1rem, 2vw, 1.3rem); color: var(--on-navy-muted); max-width: 60ch; margin-bottom: 1.4rem; }
+  .hero-sub strong { color: var(--on-navy); }
+  .hero-trust { font-size: .98rem; color: var(--on-navy-muted); font-weight: 500; display: flex; align-items: baseline; gap: .6rem; max-width: 56ch; }
+  .hero-trust::before { content: ""; flex: none; width: .55rem; height: .55rem; border-radius: 2px; background: var(--clay-500); transform: translateY(-0.1em); }
+  .hero-ctas { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-top: 1.8rem; }
+  .hero-secondary-link { color: var(--on-navy); font-weight: 600; text-decoration: none; border-bottom: 1.5px solid var(--clay-500); padding-bottom: 1px; }
+  .hero-secondary-link span { color: var(--on-navy-muted); border: 0; }
+
+  /* Opportunity */
+  .opportunity { background: var(--bg); }
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.6rem 1.4rem; margin: 1.5rem 0 2.6rem; }
+  .stat { padding-top: 1rem; border-top: 2px solid var(--navy-700); }
+  .stat .n { font-family: var(--font-display); font-size: clamp(1.8rem, 3.4vw, 2.6rem); font-weight: 700; color: var(--navy-800); line-height: 1.04; letter-spacing: -0.02em; }
+  .stat .l { font-size: .95rem; color: var(--ink-muted); margin-top: .4rem; }
+  @media (min-width: 820px) { .stats { grid-template-columns: repeat(4, 1fr); } }
+
+  .cols2 { display: grid; grid-template-columns: 1fr; gap: 2rem; }
+  @media (min-width: 760px) { .cols2 { grid-template-columns: 1fr 1fr; } }
+  .col h3 { color: var(--navy-800); margin-bottom: .8rem; }
+  .col ul { margin: 0; padding-left: 1.15rem; }
+  .col li { margin-bottom: .55rem; line-height: 1.5; }
+  .footnote { font-size: .9rem; color: var(--ink-muted); margin-top: 2rem; max-width: 74ch; }
+
+  /* Why now — surface band, situation chips */
+  .why { background: var(--surface); }
+  .why .lead { font-size: var(--text-lg); line-height: 1.6; max-width: 64ch; }
+  .chips { list-style: none; counter-reset: chip; padding: 0; margin: 1.8rem 0 0; display: grid; gap: .8rem; max-width: 52rem; }
+  .chips li { position: relative; padding: .95rem 1.2rem .95rem 3rem; background: var(--bg); border: 1px solid var(--line); border-radius: var(--radius); font-weight: 500; line-height: 1.5; }
+  .chips li::before { content: counter(chip); counter-increment: chip; position: absolute; left: 1rem; top: 1rem; width: 1.5rem; height: 1.5rem; border-radius: 999px; background: var(--navy-700); color: var(--on-navy); font-family: var(--font-display); font-size: .82rem; font-weight: 700; display: grid; place-items: center; }
+
+  /* Studio */
+  .studio { background: var(--bg); }
+  .studio p { font-size: var(--text-lg); line-height: 1.65; }
+  .studio em { font-family: var(--font-display); font-style: italic; color: var(--navy-700); }
+
+  /* Plan — navy-100 band, 3 steps */
+  .plan { background: var(--navy-100); }
+  .steps { display: grid; grid-template-columns: 1fr; gap: 2rem; margin-top: 1rem; }
+  @media (min-width: 760px) { .steps { grid-template-columns: repeat(3, 1fr); } }
+  .step { padding-top: 1.1rem; border-top: 2px solid var(--clay-500); }
+  .step .no { font-family: var(--font-display); font-size: 1.8rem; font-weight: 700; color: var(--clay-600); line-height: 1; }
+  .step h3 { color: var(--navy-800); margin: .5rem 0 .4rem; }
+  .step p { color: var(--ink-muted); margin: 0; }
+
+  /* Map — surface band, table */
+  .map { background: var(--surface); }
+  .map table { width: 100%; border-collapse: collapse; font-size: 1rem; margin-top: 1rem; }
+  .map th, .map td { text-align: left; padding: .9rem 1rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .map th { font-size: .85rem; color: var(--ink-muted); font-weight: 600; text-transform: uppercase; letter-spacing: .03em; }
+  .map td:first-child { font-weight: 600; color: var(--navy-800); width: 38%; }
+  @media (max-width: 620px) { .map th:last-child, .map td:last-child { display: none; } }
+
+  /* Partner */
+  .partner { background: var(--bg); }
+  .partner p { font-size: var(--text-lg); line-height: 1.65; max-width: 64ch; }
+  .partner .pname { font-family: var(--font-display); font-weight: 700; color: var(--navy-700); }
+
+  /* Contact — navy band */
+  .contact { background: var(--navy-700); color: var(--on-navy); }
+  .contact h2 { color: var(--on-navy); }
+  .contact p { color: var(--on-navy-muted); font-size: var(--text-lg); max-width: 56ch; }
+  .contact-lines { display: flex; flex-wrap: wrap; gap: 1rem 3.5rem; margin: 1.6rem 0 2rem; align-items: baseline; }
+  .contact-big { display: inline-block; font-family: var(--font-display); font-size: clamp(1.6rem, 3.4vw, 2.3rem); font-weight: 700; color: var(--clay-500); text-decoration: none; letter-spacing: -0.02em; }
+  .contact-big:hover { color: var(--clay-400); }
+  .contact-meta { font-size: .9rem; color: var(--on-navy-muted); margin: 0; }
+
+  /* Footer — deep navy band */
+  .site-footer { padding: 2.6rem 0; background: var(--navy-900); color: var(--on-navy-muted); }
+  .footer-inner { display: flex; flex-direction: column; gap: .6rem; }
+  @media (min-width: 640px) { .footer-inner { flex-direction: row; justify-content: space-between; align-items: center; } }
+  .footer-trust { font-family: var(--font-display); font-weight: 700; color: var(--on-navy); font-size: 1.05rem; }
+  .footer-legal { font-size: .85rem; margin: 0; }
+
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } }
+
+  @media print {
+    html { scroll-behavior: auto; }
+    .site-header { position: static; }
+    .hero-content > * { animation: none; }
+    section { padding: 2rem 0; }
+    .hero, .plan, .contact, .site-footer, .why, .map, .stat, .chips li { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .hero, .opportunity, .why, .plan, .map, .partner, .contact { break-inside: avoid; }
+    .header-contact, .btn { }
+  }
+  @page { size: A4; margin: 13mm; }
+</style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#kapcsolat" class="logo-link" aria-label="ExarLabs">
+        <img src="exar-logo.png" alt="ExarLabs" width="40" height="40" class="logo-mark">
+        <span class="logo-wordmark">ExarLabs</span>
+      </a>
+      <a href="#kapcsolat" class="header-contact">Kapcsolat</a>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Hero (Attention) — navy band -->
+    <section class="hero">
+      <div class="container hero-content">
+        <h1>Digitalizáld a céged akár 200&nbsp;000 euró uniós támogatásból.</h1>
+        <p class="hero-sub">A beruházás <strong>90 százalékát</strong> a Régió Központ digitalizációs pályázata fedezi. Az ExarLabs megépíti a rendszert, a pályázatírást és a lebonyolítást partnerünk intézi.</p>
+        <p class="hero-trust">A pályázati oldalt a RegioConsult, közel két évtized uniós tapasztalattal, intézi.</p>
+        <div class="hero-ctas">
+          <a href="#kapcsolat" class="btn btn-primary">Ingyenes jogosultság-ellenőrzés</a>
+          <a href="tel:+40740507135" class="hero-secondary-link"><span>Telefon:</span> 0740 507 135</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Opportunity (Interest) -->
+    <section class="opportunity">
+      <div class="container">
+        <h2>Mire lehet pályázni</h2>
+        <p class="section-sub">Programul Regiunea Centru 2021-2027, Prioritatea 2 „O Regiune Digitală", Acțiunea 2.2, Apel 2. A cél a meglévő céges folyamatok digitalizálása.</p>
+        <div class="stats">
+          <div class="stat"><div class="n">200&nbsp;000 EUR</div><div class="l">Maximális támogatás cégenként, minimum 15&nbsp;000 EUR</div></div>
+          <div class="stat"><div class="n">90%</div><div class="l">Támogatási arány, az önrész mindössze 10%</div></div>
+          <div class="stat"><div class="n">6 megye</div><div class="l">Alba, Brassó, Kovászna, Hargita, Maros, Szeben</div></div>
+          <div class="stat"><div class="n">24 hónap</div><div class="l">Maximális projektidőtartam</div></div>
+        </div>
+        <div class="cols2">
+          <div class="col">
+            <h3>Mit finanszíroz</h3>
+            <ul>
+              <li>ERP, CRM, folyamat-automatizálás (RPA)</li>
+              <li>Mesterséges intelligencia, chatbot</li>
+              <li>Weboldal, webshop, e-számlázás</li>
+              <li>Kiberbiztonság, IoT, felhőszolgáltatás</li>
+              <li>Munkavállalói képzés (maximum 5&nbsp;000 EUR)</li>
+            </ul>
+          </div>
+          <div class="col">
+            <h3>Ki pályázhat</h3>
+            <ul>
+              <li>Mikro-, kis- vagy középvállalkozás</li>
+              <li>Székhely a hat jogosult megye egyikében</li>
+              <li>Nem informatikai (TIC) fő tevékenység</li>
+              <li>Bevétel a bejegyzett tevékenységből</li>
+              <li>Rendelkezésre álló de minimis keret</li>
+            </ul>
+          </div>
+        </div>
+        <p class="footnote">A számok a hivatalos pályázati útmutató (Ghidul Solicitantului) konzultációs változata alapján tájékoztató jellegűek. A benyújtási határidő a végleges kiírásban jelenik meg, várhatóan 2026 nyarán.</p>
+      </div>
+    </section>
+
+    <!-- Why now (Interest) — surface band, chips -->
+    <section class="why">
+      <div class="container">
+        <h2>A felkészülés a kiírás megnyitása előtt dől el</h2>
+        <p class="lead">Aki a nyitáskor kezd kivitelezőt keresni, jó eséllyel lemarad egy egész ciklusról. Ha most összerakjuk a tervet, a kiírás megnyitásakor azonnal beadható.</p>
+        <ol class="chips">
+          <li>A pályázat benyújtásához kész projektterv és megbízható kivitelező kell, még a beadás előtt.</li>
+          <li>A keret véges, a benyújtási ablak rövid lesz, a beadás sorrendje pedig számít.</li>
+          <li>A scope megtervezése és az árajánlat hetek, nem napok kérdése.</li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- Studio (Desire) -->
+    <section class="studio">
+      <div class="container container-narrow">
+        <h2>Mi nem a technológiával kezdünk, hanem a problémával</h2>
+        <p>Az ExarLabs AI-natív szoftverstúdió Székelyudvarhelyről. Tízfős csapat, írott alkotmány 2015 óta. A nevünk latinul <em>Exercitus Arce</em>, a citadella serege: a megszerzett előnyt visszaforgatjuk a közösségbe és a partnerekbe.</p>
+        <p>AI-natív fejlesztéssel a Frappe platformon az, ami régen egy év volt, ma néhány hét. Ugyanaz a minőség, töredék idő alatt. A kódot te birtoklod, nincs platform-fogság.</p>
+      </div>
+    </section>
+
+    <!-- Plan (Desire) — navy-100 band, 3 steps -->
+    <section class="plan">
+      <div class="container">
+        <h2>Három lépés a támogatott digitalizációig</h2>
+        <div class="steps">
+          <div class="step">
+            <div class="no">1</div>
+            <h3>Jogosultság-ellenőrzés</h3>
+            <p>Egy rövid, ingyenes beszélgetésen kiderül, jogosult vagy-e, és mit érdemes digitalizálni a cégedben.</p>
+          </div>
+          <div class="step">
+            <div class="no">2</div>
+            <h3>Pályázat és projektterv</h3>
+            <p>A RegioConsult megírja a pályázatot, az ExarLabs megtervezi a digitális projektet és az árajánlatot.</p>
+          </div>
+          <div class="step">
+            <div class="no">3</div>
+            <h3>Megvalósítás</h3>
+            <p>A nyertes pályázat után megépítjük és átadjuk a megoldást, akár 90 százalék támogatásból.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Map (Desire) — surface band -->
+    <section class="map">
+      <div class="container">
+        <h2>Amire a cégednek szüksége van, az támogatható</h2>
+        <table>
+          <thead><tr><th>Amire szükséged van</th><th>ExarLabs megoldás</th><th>Pályázati kategória</th></tr></thead>
+          <tbody>
+            <tr><td>Vállalatirányítás, ügyfélkezelés</td><td>ERP / CRM (Frappe)</td><td>Belső digitális technológiák</td></tr>
+            <tr><td>Manuális folyamatok kiváltása</td><td>Folyamat-automatizálás (RPA)</td><td>Belső digitális technológiák</td></tr>
+            <tr><td>Online értékesítés, jelenlét</td><td>Weboldal, webshop, e-számlázás</td><td>Digitális kommunikáció</td></tr>
+            <tr><td>Intelligens ügyfélkiszolgálás</td><td>AI-megoldás, chatbot</td><td>Mesterséges intelligencia</td></tr>
+            <tr><td>A csapat felkészítése</td><td>Digitális képzés</td><td>Munkavállalói képzés</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Partner -->
+    <section class="partner">
+      <div class="container container-narrow">
+        <h2>A pályázatot tapasztalt partner intézi</h2>
+        <p>A pályázatírást és a teljes lebonyolítást a <span class="pname">RegioConsult</span> végzi, közel két évtizedes uniós pályázati gyakorlattal. Így a papírmunka és a fejlesztés is egy kézből, helyben megoldható: te a cégedre figyelsz.</p>
+      </div>
+    </section>
+
+    <!-- Contact (Action) — navy band -->
+    <section class="contact" id="kapcsolat">
+      <div class="container">
+        <h2>Tudjuk meg együtt, jogosult-e a céged</h2>
+        <p>Egy rövid, ingyenes beszélgetés alatt kiderül, mire pályázhatsz, és mi éri meg a cégednek. A kiírás nyitása előtt érdemes elkezdeni.</p>
+        <div class="contact-lines">
+          <a href="tel:+40740507135" class="contact-big">0740 507 135</a>
+          <a href="mailto:contact@exar.ro" class="contact-big">contact@exar.ro</a>
+        </div>
+        <p class="contact-meta">ExarGroups SRL (ExarLabs) · str. Orbán Balázs 9., Székelyudvarhely · Adószám: RO41839221</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <span class="footer-trust">ExarLabs &times; RegioConsult</span>
+      <p class="footer-legal">&copy; 2026 ExarGroups SRL · A pályázati adatok tájékoztató jellegűek (consultativ draft). De minimis rezsim.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,3 +1,15 @@
+---
+title: "A Navigátor Podcast Alkotmánya"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast alapító dokumentuma, amely egy interjúpodcast vízióját, misszióját és értékrendszerét definiálja: párbeszéd szakértőkkel az életvezetés alapelveinek közös keresésében."
+description_source: auto
+description_hash: 9fe38107b7ffab21
+id: aedea553-a676-46bc-8f6a-3f5d214a605b
+index_schema_version: 1
+bdos_index: true
+---
 # A Navigátor Podcast Alkotmánya
 
 ## Vízió

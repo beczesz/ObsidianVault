@@ -1,3 +1,15 @@
+---
+title: "Sonrisa Management Plugin"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Plugin providing three management workflows for Sonrisa CPS team: monthly timesheet statistics processing, interactive dashboard updates across Cowork and Excel environments, and contractor TIG verification with email drafting."
+description_source: auto
+description_hash: 40760e09fa2fed01
+id: d1c34f90-903e-4648-af9c-a24d2380b8ad
+index_schema_version: 1
+bdos_index: true
+---
 # Sonrisa Management Plugin
 
 Management workflows for the Sonrisa CPS team.

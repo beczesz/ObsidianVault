@@ -1,5 +1,8 @@
 ---
 title: "Design Brief — Facebook/Instagram Story"
+description: "Design brief for a Facebook/Instagram Story promoting the Founding 50 membership program. Specifies 1080×1920px vertical format with 5-second viewing time, minimal text (3-4 lines max), strong visual hook, and clear CTA directing to deakhus.ro."
+description_source: auto
+description_hash: 8b5fb3ffbc4a2747
 deliverable: Story formátumú grafika
 format: 1080×1920px (9:16 vertical)
 language: Magyar
@@ -7,7 +10,6 @@ date: 2026-04-22
 id: 18ee5b04-cba2-4a06-9d40-9068fce0286a
 index_schema_version: 1
 ---
-
 # Design Brief: Story — Founding 50
 
 ## Feladat

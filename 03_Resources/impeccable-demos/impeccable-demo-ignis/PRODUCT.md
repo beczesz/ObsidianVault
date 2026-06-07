@@ -1,8 +1,20 @@
+---
+title: "PRODUCT.md — Ignis Academy / online tanulóközpont (demó)"
+date: 2026-05-21
+author: Becze Szabolcs
+status: active
+description: "Ignis Academy online tanulóközpontjának bemutató oldala: nyugodt, anti-hype tervezés 35-55 éves KKV-vezetőknek, akik embert helyez az AI-t megelőzően. Brand, vizuális rendszer (okker, EB Garamond, 4 dimenzió-keretrendszer) és scope meghatározása."
+description_source: auto
+description_hash: 0c11eacfdd921471
+id: fdc2e16d-0643-457b-a353-ab4d34eff910
+index_schema_version: 1
+bdos_index: true
+---
 # PRODUCT.md — Ignis Academy / online tanulóközpont (demó)
 
 > Tanuló-demó. A brand valódi (a vault Ignis anyagából), a landing oldal és a képek
 > illusztrációk. Készült `/ui-ux-pro-max` + `/impeccable` + Librarian bemutatására.
-> Forrás: 02_Areas/Ignis/AI Course HBC/Pozicionalas/{DESIGN, brand-brief, PRODUCT, MESSAGING}.md
+> Forrás: 02_Areas/Ignis/Ignis Academy/2. szint/Pozicionalas/{DESIGN, brand-brief, PRODUCT, MESSAGING}.md
 > és 02_Areas/Ignis Academy/{CLAUDE, BMC}.md
 
 ## Register

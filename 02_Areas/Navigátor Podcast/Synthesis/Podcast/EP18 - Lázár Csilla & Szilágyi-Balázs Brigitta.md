@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP18
 title: "Digitális intelligencia: Az új kulcskompetencia | Lázár Csilla & Szilágyi-Balázs Brigitta | EP 18"
+description: "Kétvendéges epizód szülőknek és pedagógusoknak a digitális nevelésről: Lázár Csilla és Szilágyi-Balázs Brigitta a digitális intelligencia keretrendszerét (24 kompetencia, 8 terület), képernyőidő-kezelést és online biztonságot tárgyalnak gyakorlati tanácsokkal."
+description_source: auto
+description_hash: 23c26a8b6931f429
 guest: "Lázár Csilla & Szilágyi-Balázs Brigitta"
 guest_title: "Pedagógus, Spektrum Education Center vezető / Kommunikációs szakember, Juventuti Alapítvány digitális biztonsági programvezető"
 topic: "Digitális intelligencia — 24 kompetencia, szülői felelősség, online biztonság, generációs kihívások"
@@ -15,7 +18,6 @@ quality: deep
 id: 4036d9e5-ec4a-4efa-a12d-caf061840cac
 index_schema_version: 1
 ---
-
 # EP18 — Lázár Csilla & Szilágyi-Balázs Brigitta: „Nem az a kérdés, hogy mikor adjak telefont a gyerekemnek, hanem hogy készen áll-e rá."
 
 ## Vendég háttér

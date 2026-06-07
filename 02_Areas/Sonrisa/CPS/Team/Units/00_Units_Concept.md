@@ -1,3 +1,15 @@
+---
+title: "CPS Unit-alapú Működés"
+date: 2026-03-21
+author: Becze Szabolcs
+status: active
+description: "A CPS unit-alapú működési modelljének draft dokumentuma, amelyből a csapat megérthet egy kis, kliens-dedikált csapatokat létrehozó szervezési megközelítést és annak soft skill fejlesztési lehetőségeit."
+description_source: auto
+description_hash: 80e5ca0c940c58cc
+id: d2929f32-7210-489b-8a18-903c92ea63a2
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Unit-alapú Működés
 
 **Verzió:** 0.1 (draft - csapat workshopra)

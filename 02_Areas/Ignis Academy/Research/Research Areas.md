@@ -1,4 +1,7 @@
 ---
+description: "Comprehensive framework for an AI-powered educational system with five integrated modules: Dynamic Student Profiling, Adaptive Learning, Non-Linear Learning, AI-Assisted Human-Centered Learning, and Tutoring AI Assistant. Designed for educators, corporate trainers, and grant seekers developing personalized, technology-enabled learning solutions."
+description_source: auto
+description_hash: ffd01c181a25b1b1
 version: "1.0"
 Date: 2025-05-27
 Description: A conceptual framework for an AI-driven learning ecosystem that personalizes education through dynamic profiling, adaptive learning, and human-centered approaches.

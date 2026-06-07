@@ -2,6 +2,9 @@
 series: "7 Szokás"
 episode: "EP7"
 title: "Teremts szinergiát – Amikor 1+1 nem 2, hanem 100"
+description: "Ez a Navigátor Podcast 7. szokás epizódja, amely a szinergiát mutatja be természeti, technológiai és személyes példákon keresztül: amikor különböző erőforrások és nézőpontok kombinálódva 1+1-nél sokkal nagyobb eredményt hoznak. A korábbi szokások (nyer-nyer mentalitás, empatikus hallgatás) alapján működik és a harmadik út filozófiá"
+description_source: auto
+description_hash: d34be6d99319c4dd
 host: "Beczesz Szabolcs"
 source_book: "Stephen Covey – A kiemelkedően eredményes emberek 7 szokása"
 youtube_id: "zDaYvG6msPI"
@@ -31,7 +34,6 @@ created: "2026-04-06"
 id: c759a0a6-d0bd-4690-b20c-a934cb472659
 index_schema_version: 1
 ---
-
 # 7 Szokás EP7 – Teremts szinergiát: Amikor 1+1 nem 2, hanem 100
 
 ## Sorozat kontextus

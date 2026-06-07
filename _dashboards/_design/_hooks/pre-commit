@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# =============================================================================
+# Dashboard family pre-commit gate
+# =============================================================================
+# Runs _dashboards/_design/lint.mjs on every staged file under _dashboards/.
+# Exits non-zero if any staged dashboard has lint errors (strict mode is
+# OPT-IN via DASH_LINT_STRICT=1 env var to also fail on warnings).
+#
+# INSTALL:
+#   ln -s ../../_dashboards/_design/_hooks/pre-commit .git/hooks/pre-commit
+# OR (copy, not symlink):
+#   cp _dashboards/_design/_hooks/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+#
+# DISABLE FOR ONE COMMIT:
+#   git commit --no-verify
+#
+# STRICT MODE (treat warnings as failures):
+#   DASH_LINT_STRICT=1 git commit -m "..."
+# =============================================================================
+
+set -e
+
+# Find vault root (where _dashboards/ lives)
+VAULT_ROOT="$(git rev-parse --show-toplevel)"
+LINT="$VAULT_ROOT/_dashboards/_design/lint.mjs"
+
+if [ ! -f "$LINT" ]; then
+  # Lint script missing — silently skip (vault may not have dashboards yet)
+  exit 0
+fi
+
+# Collect staged dashboard files (added/modified/copied/renamed, not deleted)
+STAGED=$(git diff --cached --name-only --diff-filter=ACMR | grep -E "^_dashboards/.*\.html$" || true)
+
+if [ -z "$STAGED" ]; then
+  # No dashboard changes staged — nothing to lint
+  exit 0
+fi
+
+echo "Linting staged dashboard files…"
+echo "$STAGED" | sed 's|^_dashboards/||' | while read -r f; do
+  echo "  • $f"
+done
+
+# Run lint with appropriate strictness
+FLAGS="--quiet"
+if [ "${DASH_LINT_STRICT:-0}" = "1" ]; then
+  FLAGS="$FLAGS --strict"
+fi
+
+# Build positional args (paths relative to _dashboards/)
+RELPATHS=$(echo "$STAGED" | sed 's|^_dashboards/||' | tr '\n' ' ')
+
+# shellcheck disable=SC2086
+(cd "$VAULT_ROOT" && node "$LINT" $FLAGS $RELPATHS) || {
+  echo ""
+  echo "✗ Dashboard lint failed. Commit blocked."
+  echo "  → Run:    node _dashboards/_design/lint.mjs <file>     (full report)"
+  echo "  → Bypass: git commit --no-verify                       (NOT recommended)"
+  exit 1
+}
+
+echo "✓ Dashboard lint passed."

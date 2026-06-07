@@ -1,3 +1,15 @@
+---
+title: "North Star Metric   KPI   v.2.4"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Framework defining North Star Metrics for Ignis Academy, specifying Monthly Active Users calculation, Session Time estimation using reading/typing speeds, and Session Quality scoring with fraud detection for measuring real learner value delivery."
+description_source: auto
+description_hash: fb4ce923a59024b4
+id: bd0203d3-5d27-4379-8532-75101850c341
+index_schema_version: 1
+bdos_index: true
+---
 ## **1. Purpose**
 
 The purpose of this document is to define the **North Star Metrics (NSM)** for Ignis Academy. These metrics serve as the primary indicators of value creation and sustainable growth for the platform. They align product development, content strategy, and sales efforts around measurable learner and client outcomes.

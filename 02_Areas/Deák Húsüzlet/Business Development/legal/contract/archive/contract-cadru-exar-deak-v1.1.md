@@ -1,5 +1,8 @@
 ---
 title: "Contract-Cadru de Colaborare și Prestări Servicii Digitale"
+description: "Template cadru pentru colaborare digitală între EXARGROUPS (dezvoltator platformă) și DEAK PROD (vânzător online de produse), specificând obligații, remunerație variabilă și termeni de reziliere cu preaviz de 30 zile."
+description_source: auto
+description_hash: 6f2471e42c274f9b
 version: "1.1"
 status: DRAFT
 created: 2026-04-16
@@ -18,7 +21,6 @@ changelog:
 id: a53cd719-8265-47e3-b452-45c5bc4e361f
 index_schema_version: 1
 ---
-
 # CONTRACT-CADRU DE COLABORARE ȘI PRESTĂRI SERVICII DIGITALE
 
 **(pe durată nedeterminată)**

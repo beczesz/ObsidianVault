@@ -1,12 +1,14 @@
 ---
 title: "Brand Review — Marketing anyagok audit a Brand Voice v2.0 alapján"
+description: "Comprehensive audit of marketing materials against Brand Voice v2.0, documenting which assets align with the new framework, identifying minor text updates needed in campaign briefs and messaging pillars, and confirming no blocking inconsistencies exist across brand documentation."
+description_source: auto
+description_hash: 905edb819af50321
 date: 2026-04-23
 reviewer: Claude (Orchestrator)
 scope: Meglévő marketing anyagok konzisztencia-ellenőrzése az új Brand Voice v2.0 ellen
 id: 0724f955-6196-4729-9484-d6d10c8bdb79
 index_schema_version: 1
 ---
-
 # Brand Review — Marketing Anyagok Audit
 
 ## Áttekintett anyagok

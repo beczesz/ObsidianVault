@@ -1,3 +1,15 @@
+---
+title: "Cloud Platform Services (CPS)"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "CPS is Sonrisa's managed cloud and DevOps service unit delivering scalable fixed-fee support packages, cloud engineering projects, and architecture advisory through structured team-based engagement models across AWS, Azure, GCP, and Oracle Cloud platforms."
+description_source: auto
+description_hash: 08d8fad36cee7f7b
+id: d483cc76-2921-47e3-a98a-858e05b4f104
+index_schema_version: 1
+bdos_index: true
+---
 # Cloud Platform Services (CPS)
 
 ## Short Operational Context (AI Version)

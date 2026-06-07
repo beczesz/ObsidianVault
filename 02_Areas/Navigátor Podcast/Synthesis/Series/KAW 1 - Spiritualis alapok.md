@@ -2,6 +2,9 @@
 series: "Kingdom at Work (Betenbough Módszer)"
 episode: "1. fejezet"
 title: "Spirituális alapok – A kapcsolatalapú vezetés kézikönyve"
+description: "A Betenbough Companies vezetési filozófiájának alapjaira épülő podcast-epizód: hogyan válnak a törzsi vezetési elvek írásbeli kézikönyvvé, és miért igényel a spirituális vezetés vezetői mentorálást és személyes alkalmazást."
+description_source: auto
+description_hash: 0a04fdec204278f9
 host: "Beczesz Szabolcs"
 source_book: "Betenbough Companies – Kingdom at Work: Vezetői útmutató"
 youtube_id: "lHllPYWcdxM"
@@ -30,7 +33,6 @@ created: "2026-04-06"
 id: ff82b1a9-6026-4270-8a55-c51ed8dacaf3
 index_schema_version: 1
 ---
-
 # KAW 1. fejezet – Spirituális alapok: A kapcsolatalapú vezetés kézikönyve
 
 ## Sorozat kontextus

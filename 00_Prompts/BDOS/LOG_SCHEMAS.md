@@ -39,7 +39,7 @@ This SQLite database is the canonical, machine-queryable operational observabili
 CREATE TABLE IF NOT EXISTS agent_logs (
   id                    INTEGER PRIMARY KEY AUTOINCREMENT,
   timestamp             TEXT    NOT NULL,                   -- ISO-8601 UTC
-  agent_name            TEXT    NOT NULL CHECK(agent_name IN ('librarian','maestro','curator','sage','presto','broker')),
+  agent_name            TEXT    NOT NULL CHECK(agent_name IN ('librarian','maestro','curator','presto','broker','alfred','forge')),
   agent_id              TEXT,                               -- optional stable UUID for the agent instance
   agent_version         TEXT,                               -- e.g. 0.7.0
   task_id               TEXT,                               -- groups events within one task
@@ -184,8 +184,8 @@ The `agent_name` field for scheduler infrastructure events is `'maestro'` (the s
 | Tag value | When present |
 |---|---|
 | `scheduler` | All scheduler events — always present on every scheduler-emitted row |
-| `job:sage-daily-harvest` | Sage daily harvest dispatch / completion / skip |
-| `job:sage-weekly-curate` | Sage weekly curate dispatch / completion / skip |
+| `job:alfred-daily-harvest` | Alfred daily harvest dispatch / completion / skip |
+| `job:alfred-weekly-curate` | Alfred weekly curate dispatch / completion / skip |
 | `job:maestro-daily-observe` | Maestro daily observe (not yet seeded — example) |
 | `job:librarian-weekly-index` | Librarian weekly global re-index (not yet seeded — example) |
 | `job:presto-daily-today` | Presto daily campaign-check (not yet seeded — example) |
@@ -202,7 +202,7 @@ The `agent_name` field for scheduler infrastructure events is `'maestro'` (the s
 SELECT * FROM agent_logs WHERE tags LIKE '%"scheduler"%' ORDER BY timestamp DESC;
 
 -- Sage harvest runs only
-SELECT * FROM agent_logs WHERE tags LIKE '%"job:sage-daily-harvest"%' ORDER BY timestamp DESC;
+SELECT * FROM agent_logs WHERE tags LIKE '%"job:alfred-daily-harvest"%' ORDER BY timestamp DESC;
 
 -- All failed scheduler dispatches
 SELECT * FROM agent_logs
@@ -218,7 +218,7 @@ WHERE tags LIKE '%"scheduler"%' AND status = 'failure' ORDER BY timestamp DESC;
 **`scheduled_jobs` — job registry (17 columns):**
 
 ```
-job_id TEXT UNIQUE           -- stable slug (e.g. 'sage-daily-harvest')
+job_id TEXT UNIQUE           -- stable slug (e.g. 'alfred-daily-harvest')
 job_name TEXT                -- human label
 agent_name TEXT              -- owning agent
 description TEXT             -- optional longer description
@@ -290,7 +290,7 @@ Minden agent home alatt:
         └── <YYYY-MM>.md
 ```
 
-**Megjegyzés Sage-re:** Sage jelenleg `02_Areas/Personal Growth/Ideas/_journal/<YYYY-MM>.md`-be ír. Phase 2.B family-rollout-kor ezt vagy migrálj-uk az új konvencióhoz, vagy alias-eljük. Ez a fájl a kanonikus path-t definiálja.
+**Megjegyzés (Sage-Alfred migráció):** Sage legacy `_journal/` stream-je `02_Areas/Personal Growth/Ideas/_journal/<YYYY-MM>.md`-ben él, megmarad archívumként. Alfred az `agents/alfred/logs/` konvenciót követi Phase 2.B óta.
 
 ---
 
@@ -332,7 +332,7 @@ A YAML blokk-konvenció:
 
 **Mit logol:** meaningful work execution — egy slash command futása / agent invocation / scheduled task fire.
 
-**Granularitás:** egy log entry per agent-invocation. NEM minden tool-call. Egy `/sage-harvest` futás = 1 bejegyzés, sub-statisztikákkal.
+**Granularitás:** egy log entry per agent-invocation. NEM minden tool-call. Egy `/alf-harvest` futás = 1 bejegyzés, sub-statisztikákkal.
 
 ### Schema — `bdos.operational.log.v1`
 
@@ -342,7 +342,7 @@ ts: <ISO 8601 with timezone>
 op_id: <unique slug, pl. "sage-harvest-2026-05-24-0600">
 agent: <agent-name>
 mode: <which mode was invoked, pl. "harvest" | "curate" | "team-status">
-command: "<the slash command or invocation, pl. /sage-harvest>"
+command: "<the slash command or invocation, pl. /alf-harvest>"
 model: <claude-sonnet-4-6 | claude-opus-4-7 | etc.>
 tokens:
   input: null              # Phase 2.C-ben feltöltődik
@@ -371,10 +371,10 @@ notes: <optional one-line note>
 ```yaml
 event: operation
 ts: 2026-05-24T06:00:42+02:00
-op_id: sage-harvest-2026-05-24-0600
-agent: sage
+op_id: alfred-harvest-2026-05-24-0600
+agent: alfred
 mode: harvest
-command: "/sage-harvest"
+command: "/alf-harvest"
 model: claude-sonnet-4-6
 tokens:
   input: null
@@ -385,7 +385,7 @@ category: scheduled-harvest
 duration_ms: 412000
 trigger:
   type: cron
-  source: "launchd com.becze.sage-daily-harvest 06:00 Europe/Bucharest"
+  source: "launchd com.becze.alfred-daily-harvest 06:00 Europe/Bucharest"
 inputs:
   - references_seen: 2
 outputs:
@@ -399,7 +399,7 @@ downstream_effects:
   - "state/last_run.md updated"
 outcome: success
 errors: []
-notes: "First scheduled harvest after launchd setup"
+notes: "First scheduled harvest after alfred-daily-harvest setup (migrated from Sage)"
 ```
 
 ---
@@ -453,12 +453,12 @@ actioned_at: null
 related_learnings: []
 ```
 
-### Megjegyzés Sage existing learnings-rel
+### Megjegyzés az agent learnings-rendszerrol
 
-Sage rendelkezik egy létező `learnings/proposals|active|retired/` rendszerrel. Ezek **PROMOTE**-ot kapnak a Learning Log-ból (egy nyitott learning ami beigazolódik → active learning). Azaz:
+Alfred (és Presto, Broker, Forge) rendelkezik egy `learnings/proposals|active|retired/` rendszerrel (Sage innovációja, Phase 2.B-ben kiterjesztve). Ezek **PROMOTE**-ot kapnak a Learning Log-ból (egy nyitott learning ami beigazolódik → active learning). Azaz:
 
 - **Learning Log** = nyers reflection-stream (minden agent)
-- **Sage learnings/** = kifejlesztett user-reviewed taste-modeling (csak Sage Phase 1-ben, Phase 2.B-ben minden agent kaphat hasonlót)
+- **Agent learnings/** = kifejlesztett user-reviewed taste-modeling (Alfred örökli a Sage-tól, más agenteknél is elérheto)
 
 ---
 

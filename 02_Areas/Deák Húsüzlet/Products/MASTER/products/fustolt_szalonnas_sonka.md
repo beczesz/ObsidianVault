@@ -1,3 +1,15 @@
+---
+title: "Füstölt Szalonnás Sonka"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Smoked ham with bacon, priced at 48 kg, used as base ingredient for cold platters and sandwiches with rich flavor profile."
+description_source: auto
+description_hash: 0963e62aa63b344b
+id: 14db320c-2eb2-450b-84c1-96264ae0511e
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Szalonnás Sonka
 
 ```yaml

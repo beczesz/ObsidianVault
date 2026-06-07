@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<!--
+  =============================================================================
+  Personal Growth — Weight & Habits Dashboard.   Version: 0.4.2
+  =============================================================================
+  Renders live from vault markdown. Zero hardcoded weight values or habit
+  completion data — everything is fetched and parsed at runtime.
+
+  Data sources (all via LiveUpdates.subscribe + SSE push):
+    Daily notes: /05_DailyNotes/YYYY/Mon/YYYY-MM-DD.md  (last ~400 days)
+      Parse pattern: body line  "Weight:: <number>"
+    Habit files (7 total):
+      /02_Areas/Personal Growth/Habits/#1 🌅.md
+      /02_Areas/Personal Growth/Habits/#2 💊.md
+      /02_Areas/Personal Growth/Habits/#3 🏃.md
+      /02_Areas/Personal Growth/Habits/#4 🧊.md
+      /02_Areas/Personal Growth/Habits/#5 📖.md
+      /02_Areas/Personal Growth/Habits/#6 📊.md
+      /02_Areas/Personal Growth/Habits/#7 📚.md
+      YAML frontmatter: entries: [YYYY-MM-DD, ...]
+
+  Weight parser note:
+    The user stores weight as a Dataview inline field: "Weight:: 92.65"
+    NOT in YAML frontmatter. The parser uses:
+      /^Weight::\s*([\d.]+)/m  on the full file body.
+    Documented here as new convention per DASHBOARD_CONTRACT §11.
+
+  Layout (3 tabs):
+    1. Weight      — Line chart (raw + EMA-14) + Bar chart (30-day EMA delta)
+                     Range toggle: 30d / 90d / 6m / 1y / All
+    2. Weekly Matrix — HTML table: 5-week window, daily weights, weekly avg,
+                     WoW delta, 8-week linear regression forecast (2-3 weeks)
+    3. Habits      — 7 habit × 120-day heatmap, current streak, longest streak
+
+  Read-only. Edit markdown in Obsidian — dashboard auto-syncs within 8s.
+  Served by _dashboards/_tools/dash-server.mjs (port 4321).
+
+  Audit trail:
+    0.4.2 (2026-05-29) tend: version-pill normalized family-wide. CSS: ink-3, bg-elev, font-size 10.5px, padding 2px 8px, border-radius 999px (was ink-4, bg-sunken, 10px, radius-s). Markup: mono class added.
+    0.4.1 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app -> .app-main + .app-shell layout. alfred-tasks.js added.
+    0.4.0 (2026-05-25) tend: habits alignment fix (table-layout fixed + colgroup for pixel-perfect
+          header/body column sync), auto-scroll-to-latest on render (scrollLeft = scrollWidth
+          – clientWidth, requestAnimationFrame, fires on range toggle too), drag-to-scroll
+          support on .habits-scroll-wrap (mouse-drag horizontal pan, grab/grabbing cursor,
+          user-select:none, 1.5× speed multiplier). .card-copy-ref stopPropagation already
+          in clipboard.js — drag does not interfere with copy-ref.
+    0.3.1 (2026-05-25) refactor: extract canonical :root + dark + @media tokens → /_design/tokens.css (DS 0.7.0 engine extraction, Sprint 2a)
+    0.3.0 (2026-05-25) tend: habits panel — Obsidian Habit Tracker visual style ported (streak
+          pills + dot for single days + streak length numbers), range toggle added
+          (30/90/6m/1y/All, default 90), horizontal scroll with sticky habit-name column,
+          per-row card-copy-ref removed (single card-id on outer container per user request),
+          date header row with day numbers (bold on Mondays, weekend cols tinted).
+    0.2.1 (2026-05-25) refactor: extract setTheme/copyText/wireCopyRef → /_design/{theme,clipboard}.js (DS 0.7.0 engine extraction, Sprint 1)
+    0.1.0 (2026-05-25) — initial build. Personal Growth area dashboard.
+          Weight line+delta charts (Chart.js), Weekly Matrix with linear
+          regression forecast, Habits heatmap (120 days, 7 habits).
+          Admin bar (DS 0.6.0). Dark theme, LiveUpdates.subscribe.
+          Registered in launcher index.html → 0.8.2.
+    0.1.1 (2026-05-25) — tend: card-copy-ref added per DS 4a. Every bounded
+          card-like element now carries data-card-id + hover copy-ref button:
+          4 stat cards (stats/latest-weight, stats/trend-30d, stats/delta-30d,
+          stats/habits-today), 2 chart cards (charts/weight-line,
+          charts/weight-delta), weekly matrix card (matrix/weekly), habits
+          outer card (habits/all), 7 individual habit rows
+          (habits/reggeli … habits/tanulas). Total: 15 card IDs.
+          DASH_STEM already defined. position:relative ensured on all containers.
+          copyText + wireCopyRef helpers added. wireCopyRef called after
+          renderHabits() innerHTML assignment.
+    0.2.0 (2026-05-25) — tend: chart styles ported verbatim from Obsidian
+          _views/weight-chart and _views/weight-delta (DS-independent rgba
+          colors, gridlines, hover-all-values interaction mode, full annotation
+          set). Line chart: Weight dataset rgba(130,160,210,0.6) blue with
+          fill, EMA-14 rgba(239,68,68,1) red thick; interaction mode:index
+          intersect:false for hover-all; minLine/maxLine vertical annotations
+          green/red with labels; trendMinLine horizontal dashed red with
+          dynamic label (today all-time low or Min trend +delta); y/x grid
+          rgba(100,100,100,0.1); legend bottom; title includes reading count.
+          Bar chart: migrated from monthly-bucket logic to day-by-day EMA delta
+          vs 30d ago (matching view.js exactly); green rgba(34,197,94,0.7) down,
+          red rgba(239,68,68,0.7) up; zeroLine annotation; range toggle 30d/
+          90d/6m/1y/All; legend bottom; tooltip sign+kg vs EMA 30 days ago.
+
+  Conventions: see _dashboards/_design/DESIGN_SYSTEM.md (DS 0.6.0).
+  =============================================================================
+-->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personal Growth</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23faf9f5'/%3E%3Cpath d='M8 22 L14 12 L18 17 L22 8' fill='none' stroke='%23D97757' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='22' cy='8' r='2' fill='%23D97757'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<!-- Theme init — must run before paint (DS 0.3.0) -->
+<script>
+(function(){
+  var t;
+  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
+  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
+  document.documentElement.dataset.theme = t;
+})();
+</script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+/* Surfaces — cream paper */
+
+  /* Ink scale (1 darkest → 5 lightest) */
+
+  /* Lines */
+
+  /* Accent — terracotta */
+
+  /* Status */
+
+  /* Elevation */
+  --shadow-3: 0 12px 32px rgba(20,20,19,.10), 0 4px 12px rgba(20,20,19,.06);
+
+  /* Radius */
+
+  /* Motion */
+}
+
+/* ===== Dark theme override (DS 0.3.0) ===== */
+:root[data-theme="dark"] {
+--shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.30);
+}
+
+/* System-aware fallback */
+html { font-size: 15px; }
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-feature-settings: 'ss01','cv11';
+  background: var(--bg-page);
+  color: var(--ink-1);
+  line-height: 1.45;
+  min-height: 100vh;
+}
+
+.app-main { max-width: 1200px; padding: 28px 36px 96px; }
+
+/* ===== Home link ===== */
+.home-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 10px 5px 8px;
+  border: 1px solid var(--line); border-radius: 999px;
+  background: var(--bg-elev); text-decoration: none;
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+}
+.home-link:hover { color: var(--accent-deep); border-color: var(--accent); background: var(--accent-tint); }
+.home-link svg { flex-shrink: 0; opacity: .65; }
+
+/* ===== Theme toggle ===== */
+.theme-toggle {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 12px; font-weight: 500; color: var(--ink-3);
+  padding: 5px 11px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+  cursor: pointer; user-select: none;
+}
+.theme-toggle:hover { color: var(--accent-deep); border-color: var(--accent); }
+.theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 999px; }
+
+/* ===== Masthead ===== */
+.masthead { margin-bottom: 32px; }
+.masthead-toprow {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; margin-bottom: 14px; flex-wrap: wrap;
+}
+.masthead-toprow-left { display: flex; align-items: center; gap: 8px; }
+.masthead-toprow-right { display: flex; align-items: center; gap: 8px; }
+.eyebrow {
+  font-size: 11px; font-weight: 500; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ink-4); margin-bottom: 6px;
+}
+.masthead h1 {
+  font-size: clamp(28px, 3.2vw, 40px); font-weight: 700;
+  letter-spacing: -0.02em; line-height: 1.1; color: var(--ink-1);
+  margin-bottom: 8px;
+}
+.masthead h1 .accent { color: var(--accent); }
+.submeta {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13px; color: var(--ink-3); flex-wrap: wrap;
+}
+.submeta .dot { width: 3px; height: 3px; border-radius: 50%; background: var(--ink-5); }
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; letter-spacing: 0; font-weight: 500; }
+
+/* ===== Tab navigation ===== */
+.tab-nav {
+  display: flex; gap: 4px; border-bottom: 1px solid var(--line);
+  margin-bottom: 28px; overflow-x: auto;
+}
+.tab-btn {
+  font-size: 13px; font-weight: 500; color: var(--ink-3);
+  padding: 8px 16px; border: none; background: none;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  cursor: pointer; white-space: nowrap;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.tab-btn:hover { color: var(--ink-1); }
+.tab-btn[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ===== Cards / panels ===== */
+.card {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 20px 22px 18px;
+  box-shadow: var(--shadow-1);
+  position: relative; /* required for .card-copy-ref absolute positioning */
+}
+.card + .card { margin-top: 16px; }
+.card-title {
+  font-size: 13px; font-weight: 600; color: var(--ink-2);
+  margin-bottom: 14px; letter-spacing: .01em;
+}
+
+/* ===== Stats row ===== */
+.stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.stat-card {
+  background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-l); padding: 16px 18px;
+  box-shadow: var(--shadow-1);
+  position: relative; /* required for .card-copy-ref */
+}
+
+/* (habit-row removed — habits now rendered as table rows) */
+
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+/* Card container MUST have position: relative */
+.card-copy-ref {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  opacity: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 7px;
+  background: var(--bg-elev);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-m);
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  color: var(--ink-3);
+  cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap;
+  z-index: 2;
+  line-height: 1;
+}
+/* Show on card hover or keyboard focus-within */
+.stat-card:hover .card-copy-ref,
+.stat-card:focus-within .card-copy-ref,
+.card:hover .card-copy-ref,
+.card:focus-within .card-copy-ref {
+  opacity: 1;
+}
+.card-copy-ref:hover {
+  background: var(--bg-sunken);
+  border-color: var(--accent);
+  color: var(--accent-deep);
+}
+.card-copy-ref.copied {
+  background: var(--ok-tint);
+  border-color: rgba(31,122,77,.3);
+  color: var(--ok);
+  opacity: 1;
+}
+.stat-label { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-4); margin-bottom: 6px; }
+.stat-value { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 700; color: var(--ink-1); line-height: 1; }
+.stat-sub { font-size: 11px; color: var(--ink-4); margin-top: 4px; }
+.stat-ok .stat-value { color: var(--ok); }
+.stat-warn .stat-value { color: var(--warn); }
+.stat-gap .stat-value { color: var(--gap); }
+
+/* ===== Range toggle ===== */
+.range-toggle { display: flex; gap: 4px; margin-bottom: 16px; flex-wrap: wrap; }
+.range-btn {
+  font-size: 11px; font-weight: 500; color: var(--ink-3);
+  padding: 4px 10px; border: 1px solid var(--line);
+  border-radius: 999px; background: var(--bg-elev);
+  cursor: pointer; transition: all var(--t-fast);
+}
+.range-btn:hover { color: var(--accent); border-color: var(--accent); }
+.range-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
+
+/* ===== Chart wrapper ===== */
+.chart-wrap { position: relative; height: 260px; margin-bottom: 6px; }
+.chart-wrap-small { position: relative; height: 160px; margin-bottom: 6px; }
+
+/* ===== Weekly matrix ===== */
+.matrix-table {
+  width: 100%; border-collapse: collapse; font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+}
+.matrix-table th {
+  text-align: center; padding: 6px 8px; font-weight: 600; font-size: 11px;
+  color: var(--ink-4); text-transform: uppercase; letter-spacing: .06em;
+  border-bottom: 1px solid var(--line);
+}
+.matrix-table th:first-child { text-align: left; font-family: 'Inter', sans-serif; }
+.matrix-table td {
+  text-align: center; padding: 7px 8px; color: var(--ink-2);
+  border-bottom: 1px solid var(--line-soft); font-size: 12px;
+}
+.matrix-table td:first-child { text-align: left; font-family: 'Inter', sans-serif; font-size: 12px; color: var(--ink-3); font-weight: 500; }
+.matrix-table tr:last-child td { border-bottom: none; }
+.matrix-table .cell-empty { color: var(--ink-5); }
+.matrix-table .cell-avg { font-weight: 600; color: var(--ink-1); }
+.matrix-table .cell-delta-ok { color: var(--ok); font-weight: 600; }
+.matrix-table .cell-delta-gap { color: var(--gap); font-weight: 600; }
+.matrix-table .cell-delta-neut { color: var(--ink-4); }
+.matrix-table .row-forecast { background: var(--bg-tint); }
+.matrix-table .row-forecast td { color: var(--ink-4); font-style: italic; }
+.matrix-table .row-forecast td:first-child { color: var(--accent); font-style: normal; font-weight: 500; }
+.matrix-table .today-cell { background: var(--accent-tint); font-weight: 700; color: var(--accent-deep); }
+
+/* ===== Habits tracker (Obsidian-style streak pills) ===== */
+.habits-range-toggle { display: flex; gap: 4px; margin-bottom: 14px; flex-wrap: wrap; }
+
+/* Scroll container: name column sticky, grid scrolls horizontally */
+.habits-scroll-wrap {
+  overflow-x: auto;
+  cursor: grab;
+  user-select: none;
+}
+.habits-scroll-wrap.dragging {
+  cursor: grabbing;
+}
+.habits-tracker-table {
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: fixed;
+  width: max-content;
+  min-width: 100%;
+}
+
+/* Header row (day numbers) */
+.habits-tracker-table thead th {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--ink-4);
+  text-align: center;
+  padding: 0 0 6px;
+  /* width controlled by <colgroup> — do not set width here */
+  white-space: nowrap;
+  border-bottom: 1px solid var(--line-soft);
+  overflow: hidden;
+}
+.habits-tracker-table thead th.th-monday { font-weight: 700; color: var(--ink-2); }
+.habits-tracker-table thead th.th-weekend { background: var(--bg-tint); }
+/* Name column header (sticky) */
+.habits-tracker-table thead th.th-name {
+  position: sticky;
+  left: 0;
+  z-index: 3;
+  background: var(--bg-elev);
+  text-align: left;
+  /* width controlled by <colgroup> */
+  padding-right: 10px;
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--ink-4);
+}
+
+/* Data rows */
+.habits-tracker-table tbody tr { height: 28px; }
+.habits-tracker-table tbody td {
+  padding: 2px 1px;
+  vertical-align: middle;
+  text-align: center;
+}
+/* Sticky name column */
+.habits-tracker-table tbody td.td-name {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: var(--bg-elev);
+  text-align: left;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-2);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  /* width controlled by <colgroup> */
+  padding-right: 10px;
+}
+/* Weekend column tint */
+.habits-tracker-table tbody td.td-weekend { background: var(--bg-tint); }
+.habits-tracker-table tbody td.td-name.td-weekend { background: var(--bg-elev); } /* name col always clean */
+
+/* Cell container — each td holds one .hc wrapper */
+.hc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 22px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Empty cell: faint circle border */
+.hc-empty {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: transparent;
+}
+
+/* Single isolated done day: filled dot */
+.hc-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: .85;
+}
+
+/* Streak pill segments — pill spans multiple cells via connected rectangles */
+/* Left end of a streak */
+.hc-pill-left {
+  position: absolute;
+  left: 50%; right: 0; top: 50%;
+  height: 16px;
+  transform: translateY(-50%);
+  background: var(--accent);
+  border-radius: 8px 0 0 8px;
+}
+/* Middle of a streak */
+.hc-pill-mid {
+  position: absolute;
+  left: 0; right: 0; top: 50%;
+  height: 16px;
+  transform: translateY(-50%);
+  background: var(--accent);
+  border-radius: 0;
+}
+/* Right end of a streak (also shows streak number if >= 2) */
+.hc-pill-right {
+  position: absolute;
+  left: 0; right: 50%; top: 50%;
+  height: 16px;
+  transform: translateY(-50%);
+  background: var(--accent);
+  border-radius: 0 8px 8px 0;
+}
+/* Streak length label — overlaid on the rightmost pill cell */
+.hc-streak-num {
+  position: absolute;
+  top: 50%;
+  /* center over the right half of this cell (right pill) */
+  right: 50%;
+  transform: translate(50%, -50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 1;
+  line-height: 1;
+}
+/* For a single-cell streak (left+right combined = full pill) */
+.hc-pill-solo {
+  position: absolute;
+  left: 25%; right: 25%; top: 50%;
+  height: 16px;
+  transform: translateY(-50%);
+  background: var(--accent);
+  border-radius: 8px;
+}
+
+/* Today highlight ring */
+.hc-today::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 2px solid var(--accent);
+  pointer-events: none;
+}
+
+/* ===== Loading / empty ===== */
+.loading-msg { color: var(--ink-4); font-size: 13px; padding: 32px 0; text-align: center; }
+
+/* ===== Responsive ===== */
+@media (max-width: 640px) {
+  .app-main { padding: 20px 16px 64px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
+  .habit-name { width: 90px; }
+}
+</style>
+</head>
+<body>
+<!-- Admin bar (DS 0.6.0) -->
+<div id="bdos-admin-bar"></div>
+
+<div class="app-shell">
+<div class="app-main">
+  <!-- ===== Masthead ===== -->
+  <header class="masthead">
+    <div class="masthead-toprow">
+      <div class="masthead-toprow-left">
+        <a class="home-link" href="/_dashboards/index.html" title="Back to the vault home dashboard">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+          Ideas Vault
+        </a>
+      </div>
+      <div class="masthead-toprow-right">
+        <span id="liveStatusMount"></span>
+        <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
+          <span class="theme-icon">&#9790;</span>
+          <span class="theme-label">Dark</span>
+        </button>
+      </div>
+    </div>
+    <p class="eyebrow">Personal Growth</p>
+    <h1><span class="accent">Weight</span> &amp; Habits</h1>
+    <div class="submeta">
+      <span id="lastUpdated">Loading&hellip;</span>
+      <span class="dot"></span>
+      <span class="version-pill mono">v0.4.2</span>
+    </div>
+  </header>
+
+  <!-- ===== Stats row ===== -->
+  <div class="stats-row" id="statsRow">
+    <div class="stat-card" data-card-id="stats/latest-weight">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy ref</button>
+      <div class="stat-label">Latest Weight</div><div class="stat-value" id="statLatest">—</div><div class="stat-sub" id="statLatestDate">—</div>
+    </div>
+    <div class="stat-card" id="statTrendCard" data-card-id="stats/trend-30d">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy ref</button>
+      <div class="stat-label">EMA-14 Trend</div><div class="stat-value" id="statTrend">—</div><div class="stat-sub" id="statTrendDir">—</div>
+    </div>
+    <div class="stat-card" data-card-id="stats/delta-30d">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy ref</button>
+      <div class="stat-label">30-Day Delta</div><div class="stat-value" id="statDelta30">—</div><div class="stat-sub">vs 30 days ago</div>
+    </div>
+    <div class="stat-card" data-card-id="stats/habits-today">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy ref</button>
+      <div class="stat-label">Habits Today</div><div class="stat-value" id="statHabitsToday">—</div><div class="stat-sub" id="statHabitsSub">—</div>
+    </div>
+  </div>
+
+  <!-- ===== Tab navigation ===== -->
+  <nav class="tab-nav" role="tablist" aria-label="Dashboard sections">
+    <button class="tab-btn" id="tab-weight" role="tab" aria-selected="true" aria-controls="panel-weight">Weight</button>
+    <button class="tab-btn" id="tab-matrix" role="tab" aria-selected="false" aria-controls="panel-matrix">Weekly Matrix</button>
+    <button class="tab-btn" id="tab-habits" role="tab" aria-selected="false" aria-controls="panel-habits">Habits</button>
+  </nav>
+
+  <!-- ===== Tab 1: Weight ===== -->
+  <div class="tab-panel active" id="panel-weight" role="tabpanel" aria-labelledby="tab-weight">
+    <div class="card" data-card-id="charts/weight-line">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy ref</button>
+      <div class="card-title">Daily Weight + EMA-14 Trend</div>
+      <div class="range-toggle" id="rangeToggle">
+        <button class="range-btn" data-days="30">30d</button>
+        <button class="range-btn active" data-days="90">90d</button>
+        <button class="range-btn" data-days="180">6m</button>
+        <button class="range-btn" data-days="365">1y</button>
+        <button class="range-btn" data-days="0">All</button>
+      </div>
+      <div class="chart-wrap"><canvas id="chartLine"></canvas></div>
+    </div>
+    <div class="card" style="margin-top:16px;" data-card-id="charts/weight-delta">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy ref</button>
+      <div class="card-title">Monthly EMA-14 Delta (green = down, red = up)</div>
+      <div class="range-toggle" id="rangeToggleBar">
+        <button class="range-btn" data-days="30">30d</button>
+        <button class="range-btn active" data-days="90">90d</button>
+        <button class="range-btn" data-days="180">6m</button>
+        <button class="range-btn" data-days="365">1y</button>
+        <button class="range-btn" data-days="0">All</button>
+      </div>
+      <div class="chart-wrap-small"><canvas id="chartBar"></canvas></div>
+    </div>
+  </div>
+
+  <!-- ===== Tab 2: Weekly Matrix ===== -->
+  <div class="tab-panel" id="panel-matrix" role="tabpanel" aria-labelledby="tab-matrix">
+    <div class="card" data-card-id="matrix/weekly">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy ref</button>
+      <div class="card-title">5-Week Window — Daily Weights, Weekly Averages &amp; Forecast</div>
+      <div id="matrixTable"><p class="loading-msg">Loading weight data&hellip;</p></div>
+    </div>
+  </div>
+
+  <!-- ===== Tab 3: Habits ===== -->
+  <div class="tab-panel" id="panel-habits" role="tabpanel" aria-labelledby="tab-habits">
+    <div class="card" data-card-id="habits/all">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>copy ref</button>
+      <div class="card-title">Habit Tracker</div>
+      <div class="habits-range-toggle" id="habitsRangeToggle">
+        <button class="range-btn" data-days="30">30d</button>
+        <button class="range-btn active" data-days="90">90d</button>
+        <button class="range-btn" data-days="180">6m</button>
+        <button class="range-btn" data-days="365">1y</button>
+        <button class="range-btn" data-days="0">All</button>
+      </div>
+      <div class="habits-scroll-wrap">
+        <div id="habitGrid"><p class="loading-msg">Loading habit data&hellip;</p></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end .app-main -->
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
+
+<!-- Chart.js + annotation plugin -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3"></script>
+
+<!-- Live updates shared helper (DS 0.4.0+) -->
+<script src="/_dashboards/_design/live-updates.js"></script>
+
+<script>
+// =============================================================================
+// Personal Growth Dashboard — v0.3.0
+// Weight parser: /^Weight::\s*([\d.]+)/m  (Dataview inline field, NOT frontmatter)
+// Habit parser: YAML frontmatter  entries: [YYYY-MM-DD, ...]
+// =============================================================================
+
+const DASH_STEM = 'personal-growth';
+
+/* Clipboard helpers (copyText, wireCopyRef): /_dashboards/_design/clipboard.js (DS 0.7.0, Sprint 1) */
+// ===== Canonical clipboard helper (DS 0.2.0) =====
+
+
+// Wire copy-ref on all static cards once DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+  wireCopyRef(document.body);
+});
+
+// ===== Config =====
+const TODAY_STR = (() => {
+  const d = new Date();
+  return d.toISOString().slice(0,10);
+})();
+const DAYS_BACK = 400;   // how many daily notes to try
+let gHabitRangeDays = 90; // habits range (default 90d, 0 = all)
+
+const HABIT_FILES = [
+  { path: '/02_Areas/Personal Growth/Habits/%231%20%F0%9F%8C%85.md', name: '#1 Reggel' },
+  { path: '/02_Areas/Personal Growth/Habits/%232%20%F0%9F%92%8A.md', name: '#2 Vitamin' },
+  { path: '/02_Areas/Personal Growth/Habits/%233%20%F0%9F%8F%83.md', name: '#3 Mozgas' },
+  { path: '/02_Areas/Personal Growth/Habits/%234%20%F0%9F%A7%8A.md', name: '#4 Hideg' },
+  { path: '/02_Areas/Personal Growth/Habits/%235%20%F0%9F%93%96.md', name: '#5 Olvases' },
+  { path: '/02_Areas/Personal Growth/Habits/%236%20%F0%9F%93%8A.md', name: '#6 Adatok' },
+  { path: '/02_Areas/Personal Growth/Habits/%237%20%F0%9F%93%9A.md', name: '#7 Tanulas' },
+];
+
+// ===== State =====
+let gWeightData = [];     // [{date, value}] sorted ascending
+let gHabitData  = [];     // [{name, entries: Set<string>}]
+let gRangeDays  = 90;
+let gLineChart  = null;
+let gBarChart   = null;
+
+// ===== Utilities =====
+function addDays(dateStr, n) {
+  const d = new Date(dateStr + 'T12:00:00Z');
+  d.setUTCDate(d.getUTCDate() + n);
+  return d.toISOString().slice(0,10);
+}
+function subDays(dateStr, n) { return addDays(dateStr, -n); }
+function daysBetween(a, b) {
+  return Math.round((new Date(b+'T12:00:00Z') - new Date(a+'T12:00:00Z')) / 86400000);
+}
+function isoMonday(dateStr) {
+  const d = new Date(dateStr + 'T12:00:00Z');
+  const day = d.getUTCDay(); // 0=Sun, 1=Mon, ...
+  const diff = (day === 0) ? -6 : 1 - day;
+  return addDays(dateStr, diff);
+}
+function weekLabel(mondayStr) {
+  const d = new Date(mondayStr + 'T12:00:00Z');
+  return d.toLocaleDateString('hu-HU', { month: 'short', day: 'numeric', timeZone: 'UTC' });
+}
+
+// ===== EMA calculator =====
+function calcEMA(data, period) {
+  // data: [{date, value}] ascending. Returns [{date, ema}]
+  if (!data.length) return [];
+  const k = 2 / (period + 1);
+  const result = [];
+  let ema = data[0].value;
+  for (let i = 0; i < data.length; i++) {
+    if (i === 0) { result.push({ date: data[i].date, ema }); continue; }
+    ema = data[i].value * k + ema * (1 - k);
+    result.push({ date: data[i].date, ema });
+  }
+  return result;
+}
+
+// ===== Linear regression =====
+function linReg(xy) {
+  // xy: [{x, y}] where x is numeric (e.g. day index)
+  const n = xy.length;
+  if (n < 2) return null;
+  let sx=0, sy=0, sxy=0, sxx=0;
+  for (const p of xy) { sx+=p.x; sy+=p.y; sxy+=p.x*p.y; sxx+=p.x*p.x; }
+  const slope = (n*sxy - sx*sy) / (n*sxx - sx*sx);
+  const intercept = (sy - slope*sx) / n;
+  return { slope, intercept };
+}
+
+// ===== Weight parser =====
+// Parses "Weight:: 92.65" inline Dataview field from daily note body
+function parseWeight(md) {
+  const m = md.match(/^Weight::\s*([\d.]+)/m);
+  return m ? parseFloat(m[1]) : null;
+}
+
+// ===== Habit parser =====
+// Parses YAML frontmatter entries: [YYYY-MM-DD, ...]
+function parseHabitEntries(md) {
+  const entries = new Set();
+  // Extract frontmatter block
+  const fm = md.match(/^---\s*\n([\s\S]*?)\n---/);
+  if (!fm) return entries;
+  const yaml = fm[1];
+  // Parse entries list — lines like "  - YYYY-MM-DD"
+  const lines = yaml.split('\n');
+  let inEntries = false;
+  for (const line of lines) {
+    if (/^entries\s*:/.test(line)) { inEntries = true; continue; }
+    if (inEntries) {
+      const m = line.match(/^\s+-\s+(\d{4}-\d{2}-\d{2})/);
+      if (m) { entries.add(m[1]); continue; }
+      // If non-list line encountered, stop
+      if (!/^\s+-\s+/.test(line) && line.trim()) { inEntries = false; }
+    }
+  }
+  return entries;
+}
+
+// ===== Daily note path builder =====
+function dailyNotePath(dateStr) {
+  const [y, m, d] = dateStr.split('-');
+  const mon = ['', 'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'][parseInt(m)];
+  return `/05_DailyNotes/${y}/${mon}/${dateStr}.md`;
+}
+
+// ===== Fetch with no-store =====
+async function fetchText(path) {
+  const r = await fetch(path, { cache: 'no-store' });
+  if (!r.ok) return null;
+  return r.text();
+}
+
+// ===== Load weight data from daily notes =====
+async function loadWeightData() {
+  const results = [];
+  // Fetch in batches of 10 to avoid too many concurrent requests
+  const dates = [];
+  for (let i = 0; i < DAYS_BACK; i++) {
+    dates.push(subDays(TODAY_STR, i));
+  }
+  // Process in batches
+  const BATCH = 15;
+  for (let b = 0; b < dates.length; b += BATCH) {
+    const batch = dates.slice(b, b + BATCH);
+    const fetched = await Promise.all(batch.map(async (date) => {
+      const path = dailyNotePath(date);
+      const md = await fetchText(path);
+      if (!md) return null;
+      const w = parseWeight(md);
+      if (w == null) return null;
+      return { date, value: w };
+    }));
+    for (const r of fetched) {
+      if (r) results.push(r);
+    }
+  }
+  // Sort ascending
+  results.sort((a,b) => a.date < b.date ? -1 : 1);
+  return results;
+}
+
+// ===== Load habit data =====
+async function loadHabitData() {
+  const results = [];
+  // Fetch habits with actual file names (encoded)
+  const actualFiles = [
+    { path: null, name: '#1 Reggel' },
+    { path: null, name: '#2 Vitamin' },
+    { path: null, name: '#3 Mozgas' },
+    { path: null, name: '#4 Hideg' },
+    { path: null, name: '#5 Olvases' },
+    { path: null, name: '#6 Adatok' },
+    { path: null, name: '#7 Tanulas' },
+  ];
+  const fileNames = [
+    '#1 🌅', '#2 💊', '#3 🏃',
+    '#4 🧊', '#5 📖', '#6 📊', '#7 📚'
+  ];
+  const displayNames = [
+    '#1 Reggeli', '#2 Vitamin', '#3 Mozgás', '#4 Hidegzuhany',
+    '#5 Olvasás', '#6 Adatok', '#7 Tanulás'
+  ];
+  const fetches = fileNames.map((name, i) => {
+    const encoded = encodeURIComponent(name);
+    return fetchText(`/02_Areas/Personal%20Growth/Habits/${encoded}.md`);
+  });
+  const texts = await Promise.all(fetches);
+  for (let i = 0; i < texts.length; i++) {
+    const md = texts[i];
+    if (!md) {
+      results.push({ name: displayNames[i], entries: new Set() });
+      continue;
+    }
+    const entries = parseHabitEntries(md);
+    results.push({ name: displayNames[i], entries });
+  }
+  return results;
+}
+
+// ===== Render stats row =====
+function renderStats() {
+  if (!gWeightData.length) return;
+  const latest = gWeightData[gWeightData.length - 1];
+  document.getElementById('statLatest').textContent = latest.value.toFixed(2) + ' kg';
+  document.getElementById('statLatestDate').textContent = latest.date;
+
+  const ema14 = calcEMA(gWeightData, 14);
+  const latestEMA = ema14[ema14.length - 1]?.ema;
+  if (latestEMA != null) {
+    document.getElementById('statTrend').textContent = latestEMA.toFixed(2) + ' kg';
+    // Compare EMA now vs 7 days ago
+    const ema7ago = ema14.find(e => e.date === subDays(TODAY_STR, 7));
+    if (ema7ago) {
+      const diff = latestEMA - ema7ago.ema;
+      const dir = diff < 0 ? '▼ csökkent' : diff > 0 ? '▲ nőtt' : '→ stabil';
+      document.getElementById('statTrendDir').textContent = dir;
+      const card = document.getElementById('statTrendCard');
+      card.className = 'stat-card' + (diff < -0.1 ? ' stat-ok' : diff > 0.1 ? ' stat-gap' : '');
+    }
+  }
+
+  // 30-day delta
+  const d30 = gWeightData.find(d => d.date >= subDays(TODAY_STR, 32));
+  if (d30) {
+    const delta = latest.value - d30.value;
+    const el = document.getElementById('statDelta30');
+    el.textContent = (delta >= 0 ? '+' : '') + delta.toFixed(2) + ' kg';
+    el.style.color = delta < 0 ? 'var(--ok)' : delta > 0 ? 'var(--gap)' : 'var(--ink-3)';
+  }
+
+  // Habits today
+  if (gHabitData.length) {
+    const doneToday = gHabitData.filter(h => h.entries.has(TODAY_STR)).length;
+    document.getElementById('statHabitsToday').textContent = doneToday + '/' + gHabitData.length;
+    document.getElementById('statHabitsSub').textContent = 'completed today';
+    const elStat = document.querySelector('#statsRow .stat-card:last-child');
+    if (elStat) elStat.className = 'stat-card' + (doneToday === gHabitData.length ? ' stat-ok' : doneToday >= 4 ? '' : ' stat-warn');
+  }
+
+  document.getElementById('lastUpdated').textContent = 'Updated ' + new Date().toLocaleTimeString();
+}
+
+// ===== Render line chart =====
+// Colors and config ported verbatim from 02_Areas/Personal Growth/_views/weight-chart/view.js
+function renderLineChart() {
+  const ctx = document.getElementById('chartLine').getContext('2d');
+  if (gLineChart) { gLineChart.destroy(); gLineChart = null; }
+
+  // Full EMA-14 on complete dataset (needed for trendMinAllTime)
+  const ema14Full = calcEMA(gWeightData, 14);
+  const trendMinAllTime = ema14Full.length
+    ? parseFloat(Math.min(...ema14Full.map(e => e.ema)).toFixed(1))
+    : null;
+  const trendToday = ema14Full.length ? ema14Full[ema14Full.length - 1].ema : null;
+
+  // trendMinLabel — same logic as view.js lines 60-71
+  const trendMinLabel = (() => {
+    if (trendMinAllTime == null) return '';
+    if (trendToday != null && Math.abs(trendToday - trendMinAllTime) < 0.05) {
+      return `Today all-time low: ${trendMinAllTime}`;
+    }
+    if (trendToday != null) {
+      const d = parseFloat((trendToday - trendMinAllTime).toFixed(1));
+      const sign = d >= 0 ? '+' : '';
+      return `Min trend ${trendMinAllTime} (Today ${sign}${d})`;
+    }
+    return `Min trend ${trendMinAllTime}`;
+  })();
+
+  // Slice to selected range
+  let data = gWeightData;
+  if (gRangeDays > 0) {
+    const cutoff = subDays(TODAY_STR, gRangeDays);
+    data = data.filter(d => d.date >= cutoff);
+  }
+  if (!data.length) return;
+
+  const ema14Map = new Map(ema14Full.map(e => [e.date, e.ema]));
+  const labels  = data.map(d => d.date);
+  const rawVals = data.map(d => d.value);
+  const emaVals = data.map(d => {
+    const v = ema14Map.get(d.date);
+    return v != null ? parseFloat(v.toFixed(1)) : null;
+  });
+
+  // Min/max of visible slice
+  const minVal = Math.min(...rawVals);
+  const maxVal = Math.max(...rawVals);
+  const minIdx = labels[rawVals.indexOf(minVal)];
+  const maxIdx = labels[rawVals.lastIndexOf(maxVal)];
+
+  // y-axis bounds — same formula as view.js
+  const pad = 0.5;
+  const yMin = Math.floor(Math.min(minVal, ...emaVals.filter(v => v != null), trendMinAllTime ?? Infinity) - pad);
+  const yMax = Math.ceil(Math.max(maxVal, ...emaVals.filter(v => v != null)) + pad);
+
+  const titleText = `Weight + Trend — ${gRangeDays === 0 ? 'All time' : 'Last ' + gRangeDays + ' days'} · ${data.length} readings`;
+
+  gLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Weight (kg)',
+          data: rawVals,
+          borderColor: 'rgba(130, 160, 210, 0.6)',
+          backgroundColor: 'rgba(130, 160, 210, 0.1)',
+          borderWidth: 1.5,
+          tension: 0.3,
+          pointRadius: 1,
+          pointHitRadius: 18,
+          fill: true,
+        },
+        {
+          label: 'Trend (EMA-14)',
+          data: emaVals,
+          borderColor: 'rgba(239, 68, 68, 1)',
+          borderWidth: 3,
+          pointRadius: 0,
+          pointHitRadius: 18,
+          fill: false,
+        },
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'bottom' },
+        title: { display: true, text: titleText, font: { size: 13 } },
+        tooltip: {
+          padding: 10,
+          titleFont: { size: 13 },
+          bodyFont:  { size: 13 },
+          callbacks: {
+            label: (ctx) => `${ctx.dataset.label}: ${ctx.parsed.y} kg`
+          }
+        },
+        annotation: {
+          annotations: {
+            minLine: {
+              type: 'line',
+              xMin: minIdx, xMax: minIdx,
+              borderColor: 'rgba(34, 197, 94, 0.6)',
+              borderWidth: 2,
+              label: {
+                display: true,
+                content: minVal + ' kg',
+                position: 'start',
+                backgroundColor: 'rgba(34, 197, 94, 0.7)',
+              }
+            },
+            maxLine: {
+              type: 'line',
+              xMin: maxIdx, xMax: maxIdx,
+              borderColor: 'rgba(239, 68, 68, 0.6)',
+              borderWidth: 2,
+              label: {
+                display: true,
+                content: maxVal + ' kg',
+                position: 'start',
+                backgroundColor: 'rgba(239, 68, 68, 0.7)',
+              }
+            },
+            trendMinLine: {
+              type: 'line',
+              yMin: trendMinAllTime, yMax: trendMinAllTime,
+              borderColor: 'rgba(239, 68, 68, 0.35)',
+              borderWidth: 2,
+              borderDash: [6, 4],
+              label: {
+                display: trendMinLabel !== '',
+                content: trendMinLabel,
+                position: 'start',
+                backgroundColor: 'rgba(239, 68, 68, 0.45)',
+                color: '#fff',
+                font: { size: 11 }
+              }
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          min: yMin,
+          max: yMax,
+          title: { display: true, text: 'kg' },
+          grid: { display: true, color: 'rgba(100,100,100,0.1)' }
+        },
+        x: {
+          ticks: { maxTicksLimit: 8, maxRotation: 45 },
+          grid: { display: true, color: 'rgba(100,100,100,0.1)' }
+        }
+      }
+    }
+  });
+}
+
+// ===== Render bar chart (30-day EMA delta) =====
+// Logic and colors ported verbatim from 02_Areas/Personal Growth/_views/weight-delta/view.js
+// Migrated from monthly-bucket logic to day-by-day EMA delta vs WINDOW_DAYS ago.
+const BAR_WINDOW_DAYS = 30;
+let gBarRangeDays = 90; // default range for bar chart
+
+function buildBarData(rangeDays) {
+  if (!gWeightData.length) return { labels: [], deltas: [] };
+
+  const ISO_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
+  const ema14 = calcEMA(gWeightData, 14);
+
+  // Build ema map
+  const emaMap = {};
+  for (const e of ema14) {
+    if (ISO_DATE_RE.test(e.date)) emaMap[e.date] = parseFloat(e.ema.toFixed(2));
+  }
+
+  // Build all-dates delta array (day-by-day delta vs BAR_WINDOW_DAYS ago)
+  const allLabels = [];
+  const allDeltas = [];
+  for (const e of ema14) {
+    if (!ISO_DATE_RE.test(e.date)) continue;
+    const d = new Date(e.date);
+    if (isNaN(d.getTime())) continue;
+    const past = new Date(d);
+    past.setDate(past.getDate() - BAR_WINDOW_DAYS);
+
+    // Fuzzy match ±3 days (same logic as view.js)
+    let prevEma = null;
+    for (let offset = 0; offset <= 3; offset++) {
+      const try1 = new Date(past);
+      try1.setDate(try1.getDate() + offset);
+      if (!isNaN(try1.getTime())) {
+        const k1 = try1.toISOString().slice(0, 10);
+        if (emaMap[k1] != null) { prevEma = emaMap[k1]; break; }
+      }
+      if (offset > 0) {
+        const try2 = new Date(past);
+        try2.setDate(try2.getDate() - offset);
+        if (!isNaN(try2.getTime())) {
+          const k2 = try2.toISOString().slice(0, 10);
+          if (emaMap[k2] != null) { prevEma = emaMap[k2]; break; }
+        }
+      }
+    }
+    if (prevEma !== null) {
+      allLabels.push(e.date);
+      allDeltas.push(parseFloat((emaMap[e.date] - prevEma).toFixed(1)));
+    }
+  }
+
+  // Slice to range
+  if (rangeDays === 0) return { labels: allLabels, deltas: allDeltas };
+  const today = new Date(); today.setHours(0,0,0,0);
+  const cutoff = new Date(today); cutoff.setDate(today.getDate() - rangeDays);
+  const labels = [], deltas = [];
+  for (let i = 0; i < allLabels.length; i++) {
+    const d = new Date(allLabels[i]);
+    if (!isNaN(d.getTime()) && d >= cutoff) {
+      labels.push(allLabels[i]);
+      deltas.push(allDeltas[i]);
+    }
+  }
+  return { labels, deltas };
+}
+
+function renderBarChart() {
+  const ctx = document.getElementById('chartBar').getContext('2d');
+  if (gBarChart) { gBarChart.destroy(); gBarChart = null; }
+  if (!gWeightData.length) return;
+
+  const { labels, deltas } = buildBarData(gBarRangeDays);
+  if (!deltas.length) return;
+
+  const colors = deltas.map(d => d <= 0 ? 'rgba(34, 197, 94, 0.7)' : 'rgba(239, 68, 68, 0.7)');
+  const yMin = Math.floor(Math.min(...deltas) - 0.5);
+  const yMax = Math.ceil(Math.max(...deltas) + 0.5);
+  const titleText = `Monthly Trend (${BAR_WINDOW_DAYS}d EMA-14 delta) — ${gBarRangeDays === 0 ? 'All time' : 'Last ' + gBarRangeDays + 'd'}`;
+
+  gBarChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: `${BAR_WINDOW_DAYS}d EMA delta (kg)`,
+        data: deltas,
+        backgroundColor: colors,
+        borderColor: colors,
+        borderWidth: 1,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom' },
+        title: { display: true, text: titleText, font: { size: 13 } },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const v = ctx.parsed.y;
+              const sign = v >= 0 ? '+' : '';
+              return `${sign}${v} kg vs EMA ${BAR_WINDOW_DAYS} days ago`;
+            }
+          }
+        },
+        annotation: {
+          annotations: {
+            zeroLine: {
+              type: 'line',
+              yMin: 0, yMax: 0,
+              borderColor: 'rgba(100,100,100,0.8)',
+              borderWidth: 2,
+            }
+          }
+        }
+      },
+      scales: {
+        y: {
+          min: yMin, max: yMax,
+          title: { display: true, text: 'kg' },
+          grid: { color: 'rgba(100,100,100,0.1)' }
+        },
+        x: { ticks: { maxTicksLimit: 10, maxRotation: 45 } }
+      }
+    }
+  });
+}
+
+// ===== Render weekly matrix =====
+function renderMatrix() {
+  const el = document.getElementById('matrixTable');
+  if (!gWeightData.length) {
+    el.innerHTML = '<p class="loading-msg">No weight data found.</p>';
+    return;
+  }
+
+  const weightMap = new Map(gWeightData.map(d => [d.date, d.value]));
+  const DAYS = ['H', 'K', 'Sz', 'Cs', 'P', 'Sz', 'V']; // Mon=0 … Sun=6
+
+  // Build 5 complete weeks ending this week
+  const todayMonday = isoMonday(TODAY_STR);
+  const weeks = [];
+  for (let w = 4; w >= 0; w--) {
+    const mon = addDays(todayMonday, -w * 7);
+    const days = [];
+    for (let d = 0; d < 7; d++) {
+      days.push(addDays(mon, d));
+    }
+    weeks.push({ mon, days });
+  }
+
+  // Compute weekly averages from actual data
+  const weekAvgs = weeks.map(({ days }) => {
+    const vals = days.map(d => weightMap.get(d)).filter(v => v != null);
+    return vals.length ? vals.reduce((a,b) => a+b, 0) / vals.length : null;
+  });
+
+  // 8-week linear regression for forecast
+  // Use last 8 weeks of Monday dates + their avg weight
+  const regPoints = [];
+  for (let w = 7; w >= 0; w--) {
+    const mon = addDays(todayMonday, -w * 7);
+    const days7 = Array.from({ length: 7 }, (_, d) => addDays(mon, d));
+    const vals = days7.map(d => weightMap.get(d)).filter(v => v != null);
+    if (vals.length >= 3) {
+      regPoints.push({ x: 8 - w, y: vals.reduce((a,b) => a+b,0)/vals.length });
+    }
+  }
+  const reg = regPoints.length >= 3 ? linReg(regPoints) : null;
+
+  // Forecast 2 weeks ahead
+  const forecastWeeks = [1, 2].map(fw => {
+    const mon = addDays(todayMonday, fw * 7);
+    const days = Array.from({ length: 7 }, (_, d) => addDays(mon, d));
+    const predictedAvg = reg ? reg.slope * (9 + fw) + reg.intercept : null;
+    return { mon, days, predictedAvg };
+  });
+
+  // Build table HTML
+  let html = '<table class="matrix-table"><thead><tr>';
+  html += '<th>Week</th>';
+  for (const d of DAYS) html += `<th>${d}</th>`;
+  html += '<th>Avg</th><th>Delta</th></tr></thead><tbody>';
+
+  let prevAvg = null;
+  weeks.forEach(({ mon, days }, wi) => {
+    html += '<tr>';
+    html += `<td>${weekLabel(mon)}</td>`;
+    days.forEach(date => {
+      const v = weightMap.get(date);
+      const isToday = date === TODAY_STR;
+      if (v != null) {
+        html += `<td class="${isToday ? 'today-cell' : ''}">${v.toFixed(2)}</td>`;
+      } else {
+        html += `<td class="${isToday ? 'today-cell' : 'cell-empty'}">—</td>`;
+      }
+    });
+    const avg = weekAvgs[wi];
+    html += avg != null ? `<td class="cell-avg">${avg.toFixed(2)}</td>` : '<td class="cell-empty">—</td>';
+    // WoW delta
+    if (avg != null && prevAvg != null) {
+      const d = avg - prevAvg;
+      const cls = d < -0.05 ? 'cell-delta-ok' : d > 0.05 ? 'cell-delta-gap' : 'cell-delta-neut';
+      html += `<td class="${cls}">${d >= 0 ? '+' : ''}${d.toFixed(2)}</td>`;
+    } else {
+      html += '<td class="cell-empty">—</td>';
+    }
+    if (avg != null) prevAvg = avg;
+    html += '</tr>';
+  });
+
+  // Forecast rows
+  forecastWeeks.forEach(({ mon, days, predictedAvg }, fi) => {
+    html += '<tr class="row-forecast">';
+    html += `<td>Forecast +${fi+1}w</td>`;
+    for (let d = 0; d < 7; d++) html += '<td>—</td>';
+    html += predictedAvg != null ? `<td class="cell-avg">${predictedAvg.toFixed(2)}</td>` : '<td>—</td>';
+    if (predictedAvg != null && prevAvg != null) {
+      const dd = predictedAvg - prevAvg;
+      html += `<td>${dd >= 0 ? '+' : ''}${dd.toFixed(2)}</td>`;
+      prevAvg = predictedAvg;
+    } else {
+      html += '<td>—</td>';
+    }
+    html += '</tr>';
+  });
+
+  html += '</tbody></table>';
+  el.innerHTML = html;
+}
+
+// ===== Habit display names with emoji (extracted from file names) =====
+const HABIT_DISPLAY = [
+  '🌅 Reggeli',
+  '💊 Vitamin',
+  '🏃 Mozgás',
+  '🧊 Hidegzuhany',
+  '📖 Olvasás',
+  '📊 Adatok',
+  '📚 Tanulás',
+];
+
+// ===== computeStreaks: for each date in the window, compute streak segment type =====
+// Returns an array of objects per date:
+//   { done, segType: 'none'|'dot'|'left'|'mid'|'right'|'solo', streakLen, isStreakEnd }
+// streakLen is the length of the streak this cell belongs to (only meaningful at right/solo)
+function computeStreaks(entries, dates) {
+  // Build a quick lookup for the full entries set (not just window) for streak counting
+  const result = [];
+  for (let i = 0; i < dates.length; i++) {
+    const date = dates[i];
+    const done = entries.has(date);
+    if (!done) {
+      result.push({ done: false, segType: 'none' });
+      continue;
+    }
+    const prevDone = i > 0 ? entries.has(dates[i - 1]) : false;
+    const nextDone = i < dates.length - 1 ? entries.has(dates[i + 1]) : false;
+
+    let segType;
+    if (!prevDone && !nextDone) segType = 'dot';      // isolated
+    else if (!prevDone && nextDone) segType = 'left';  // start of streak
+    else if (prevDone && nextDone) segType = 'mid';    // middle
+    else segType = 'right';                             // end of streak
+
+    result.push({ done: true, segType });
+  }
+
+  // Second pass: compute streak length for 'right' and 'dot' cells
+  // Walk backwards from each right/dot to find streak start
+  for (let i = 0; i < result.length; i++) {
+    const seg = result[i];
+    if (seg.segType === 'right' || seg.segType === 'dot') {
+      // Count backward
+      let len = 1;
+      let j = i - 1;
+      while (j >= 0 && result[j].done) { len++; j--; }
+      // Also check if streak continues beyond window start
+      if (seg.segType === 'right' || (seg.segType === 'dot' && len === 1)) {
+        // For streak that starts before window: check the day before dates[0]
+        if (j < 0) {
+          // reached window start — check if entries has dates before window
+          const windowStart = dates[0];
+          let extraDate = subDays(windowStart, 1);
+          while (entries.has(extraDate)) { len++; extraDate = subDays(extraDate, 1); }
+        }
+      }
+      seg.streakLen = len;
+    }
+  }
+  return result;
+}
+
+// ===== Render habits tracker (Obsidian-style streak pills) =====
+function renderHabits() {
+  const el = document.getElementById('habitGrid');
+  if (!gHabitData.length) {
+    el.innerHTML = '<p class="loading-msg">No habit data found.</p>';
+    return;
+  }
+
+  // Build date window
+  const numDays = gHabitRangeDays > 0
+    ? gHabitRangeDays
+    : (() => {
+        // "All" — find earliest entry across all habits
+        let earliest = TODAY_STR;
+        for (const h of gHabitData) {
+          for (const e of h.entries) { if (e < earliest) earliest = e; }
+        }
+        return daysBetween(earliest, TODAY_STR) + 1;
+      })();
+
+  const dates = [];
+  for (let i = numDays - 1; i >= 0; i--) dates.push(subDays(TODAY_STR, i));
+
+  // Build column metadata: day-of-week, day-of-month
+  const colMeta = dates.map(d => {
+    const dt = new Date(d + 'T12:00:00Z');
+    const dow = dt.getUTCDay(); // 0=Sun,1=Mon,...,6=Sat
+    const dayNum = dt.getUTCDate();
+    const isMonday = dow === 1;
+    const isWeekend = dow === 0 || dow === 6;
+    return { d, dow, dayNum, isMonday, isWeekend };
+  });
+
+  // ---- Build table ----
+  let html = '<table class="habits-tracker-table">';
+
+  // Colgroup — explicit column widths (fixes header/body alignment with table-layout:fixed)
+  const COL_NAME_W = 130; // px — sticky name column
+  const COL_DAY_W  = 26;  // px — each day column
+  html += '<colgroup>';
+  html += `<col style="width:${COL_NAME_W}px">`;
+  for (let i = 0; i < dates.length; i++) {
+    html += `<col style="width:${COL_DAY_W}px">`;
+  }
+  html += '</colgroup>';
+
+  // Header row — day numbers
+  html += '<thead><tr>';
+  html += '<th class="th-name">Habit</th>';
+  for (const { dayNum, isMonday, isWeekend } of colMeta) {
+    const cls = [isMonday ? 'th-monday' : '', isWeekend ? 'th-weekend' : ''].filter(Boolean).join(' ');
+    html += `<th${cls ? ` class="${cls}"` : ''}>${dayNum}</th>`;
+  }
+  html += '</tr></thead>';
+
+  // Body rows — one per habit
+  html += '<tbody>';
+  gHabitData.forEach((habit, hi) => {
+    const entries = habit.entries;
+    const displayName = HABIT_DISPLAY[hi] || habit.name;
+    // Truncate label to ~16 chars
+    const label = displayName.length > 16 ? displayName.slice(0, 15) + '…' : displayName;
+
+    const segs = computeStreaks(entries, dates);
+
+    html += '<tr>';
+    html += `<td class="td-name" title="${displayName}">${label}</td>`;
+
+    for (let i = 0; i < dates.length; i++) {
+      const { isWeekend } = colMeta[i];
+      const seg = segs[i];
+      const isToday = dates[i] === TODAY_STR;
+      const tdCls = ['td-cell', isWeekend ? 'td-weekend' : ''].filter(Boolean).join(' ');
+
+      let inner = '';
+      if (!seg.done) {
+        inner = `<div class="hc${isToday ? ' hc-today' : ''}"><div class="hc-empty"></div></div>`;
+      } else if (seg.segType === 'dot') {
+        inner = `<div class="hc${isToday ? ' hc-today' : ''}"><div class="hc-dot"></div></div>`;
+      } else if (seg.segType === 'left') {
+        inner = `<div class="hc${isToday ? ' hc-today' : ''}"><div class="hc-pill-left"></div></div>`;
+      } else if (seg.segType === 'mid') {
+        inner = `<div class="hc${isToday ? ' hc-today' : ''}"><div class="hc-pill-mid"></div></div>`;
+      } else if (seg.segType === 'right') {
+        const len = seg.streakLen || 1;
+        const numHtml = len >= 2
+          ? `<span class="hc-streak-num">${len}</span>`
+          : '';
+        inner = `<div class="hc${isToday ? ' hc-today' : ''}"><div class="hc-pill-right"></div>${numHtml}</div>`;
+      }
+
+      html += `<td class="${tdCls}" title="${dates[i]}">${inner}</td>`;
+    }
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+
+  el.innerHTML = html;
+  wireCopyRef(el);
+
+  // Auto-scroll to the rightmost (latest) day after render
+  const wrap = document.querySelector('.habits-scroll-wrap');
+  if (wrap) {
+    requestAnimationFrame(() => {
+      wrap.scrollLeft = wrap.scrollWidth - wrap.clientWidth;
+    });
+  }
+}
+
+// ===== Drag-to-scroll on habits scroll container (initialised once) =====
+let _dragScrollInitialised = false;
+function initDragScroll() {
+  if (_dragScrollInitialised) return;
+  const el = document.querySelector('.habits-scroll-wrap');
+  if (!el) return;
+  _dragScrollInitialised = true;
+  let isDown = false, startX, scrollLeft;
+  el.addEventListener('mousedown', (e) => {
+    // Don't hijack copy-ref button clicks — clipboard.js stopPropagation handles
+    // the button itself, but we also guard here so a drag starting ON the button
+    // doesn't lock the scroll state unexpectedly.
+    if (e.target.closest('.card-copy-ref')) return;
+    isDown = true;
+    el.classList.add('dragging');
+    startX = e.pageX - el.offsetLeft;
+    scrollLeft = el.scrollLeft;
+    e.preventDefault();
+  });
+  el.addEventListener('mouseleave', () => { isDown = false; el.classList.remove('dragging'); });
+  el.addEventListener('mouseup',    () => { isDown = false; el.classList.remove('dragging'); });
+  el.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - el.offsetLeft;
+    const walk = (x - startX) * 1.5;
+    el.scrollLeft = scrollLeft - walk;
+  });
+}
+
+// Initialise drag-scroll once the DOM is ready (the wrap element is static HTML)
+document.addEventListener('DOMContentLoaded', initDragScroll);
+
+// ===== Range toggle — line chart =====
+document.getElementById('rangeToggle').addEventListener('click', e => {
+  const btn = e.target.closest('.range-btn');
+  if (!btn) return;
+  gRangeDays = parseInt(btn.dataset.days, 10);
+  document.querySelectorAll('#rangeToggle .range-btn').forEach(b => b.classList.toggle('active', b === btn));
+  renderLineChart();
+});
+
+// ===== Range toggle — bar chart =====
+document.getElementById('rangeToggleBar').addEventListener('click', e => {
+  const btn = e.target.closest('.range-btn');
+  if (!btn) return;
+  gBarRangeDays = parseInt(btn.dataset.days, 10);
+  document.querySelectorAll('#rangeToggleBar .range-btn').forEach(b => b.classList.toggle('active', b === btn));
+  renderBarChart();
+});
+
+// ===== Range toggle — habits =====
+document.getElementById('habitsRangeToggle').addEventListener('click', e => {
+  const btn = e.target.closest('.range-btn');
+  if (!btn) return;
+  gHabitRangeDays = parseInt(btn.dataset.days, 10);
+  document.querySelectorAll('#habitsRangeToggle .range-btn').forEach(b => b.classList.toggle('active', b === btn));
+  renderHabits();
+});
+
+// ===== Tab switching =====
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.setAttribute('aria-selected', 'false'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.setAttribute('aria-selected', 'true');
+    document.getElementById(btn.getAttribute('aria-controls')).classList.add('active');
+  });
+});
+
+// ===== Theme toggle =====
+/* Theme toggle: moved to /_dashboards/_design/theme.js (DS 0.7.0, Sprint 1) */
+
+// ===== Main poll =====
+async function refetchAndRender() {
+  try {
+    // Load in parallel
+    const [weight, habits] = await Promise.all([
+      loadWeightData(),
+      loadHabitData(),
+    ]);
+    gWeightData = weight;
+    gHabitData = habits;
+    renderStats();
+    renderLineChart();
+    renderBarChart();
+    renderMatrix();
+    renderHabits();
+  } catch(err) {
+    console.error('[personal-growth] render error:', err);
+    document.getElementById('lastUpdated').textContent = 'Error: ' + err.message;
+  }
+}
+
+// ===== Boot =====
+refetchAndRender();
+LiveUpdates.subscribe(refetchAndRender);
+LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
+
+</script>
+
+<!-- Admin bar (DS 0.6.0) -->
+<!-- theme.js + clipboard.js (DS 0.7.0, Sprint 1 engine) -->
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
+
+</body>
+</html>

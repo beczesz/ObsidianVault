@@ -1,5 +1,8 @@
 ---
 title: "Van egy rossz tulajdonságunk: szakmai féltékenység — Fazakas Szabolcs"
+description: "Fazakas Szabolcs animációs kreatívjaként és a Legendárium projektvezetőjeként beszél a podcast-epizódban a magyar kreatív iparban elterjedt szakmai féltékenységről, valamint az amatőr és profi animátorok közötti feszültségekről."
+description_source: auto
+description_hash: 80e8298f9f2371ed
 guest: "Fazakas Szabolcs"
 date: "2025-03-15"
 series: "Csakabaj S02E06"
@@ -10,7 +13,6 @@ host: "Józsa Levi"
 id: 7f36ca78-5683-4256-9533-ffe766346f99
 index_schema_version: 1
 ---
-
 ## ALAPADATOK
 
 | Mező | Érték |

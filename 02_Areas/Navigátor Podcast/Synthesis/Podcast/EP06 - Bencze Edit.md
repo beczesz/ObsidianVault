@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP07
 title: "6. Bencze Edit: Az identitáskrízis"
+description: "Bencze Edit pasztorálpszichológus első megjelenése a Navigátor Podcastban az identitáskrízisről, amely egy sorozat alapozó epizódja lett és kiegyensúlyozott férfi-női közönséget vonzott."
+description_source: auto
+description_hash: 643f56759ca40b95
 guest: "Bencze Edit"
 guest_title: "Pasztorálpszichológus, coach, családterapeuta"
 topic: "Identitáskrízis — létértelem-keresés, személyidentitás vs. szerep, rendszerszemlélet, spirituális fejlődés"
@@ -23,7 +26,6 @@ series: "Bencze-trilógia (EP07 → EP14 → EP28)"
 id: 6a99c853-ce83-4b34-823b-ff1ace890354
 index_schema_version: 1
 ---
-
 # EP07 — Bencze Edit: Az identitáskrízis
 
 ## Alapadatok

@@ -1,5 +1,8 @@
 ---
 title: "Case Study: OKFŐ - Azure DevOps Server Implementáció"
+description: "Állami egészségügyi intézmény elavult fejlesztési platformjának lecserélése on-premises Azure DevOps Server-re, beleértve demo, teszt és éles környezeteket, CI/CD pipeline-okat és 2 éves tanácsadási támogatást."
+description_source: auto
+description_hash: 32c18284d0730ab7
 id: cs-005
 industry: healthcare
 size: "Large enterprise, national government institution"
@@ -12,7 +15,6 @@ status: active
 author: Sonrisa CPS
 index_schema_version: 1
 ---
-
 # Case Study: OKFŐ - Azure DevOps Server Implementáció
 
 > **One-liner for outreach:** "Magyarország kórházhálózatának elavult fejlesztési életciklus-rendszerét leváltottuk egy modern, földi Azure DevOps Server környezetre -- demo, teszt és éles környezet, CI/CD folyamatok, 2 éves tanácsadással."

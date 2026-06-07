@@ -1,4 +1,7 @@
 ---
+description: "Csakabaj S01E22 a család szociális szerkezetét feltáró panel-beszélgetés, melyben esküvőszervezők és egy közvetítő barát az esküvőtervezés rejtett dinamikáit, az anyák valódi hatalmát és a ültetési rend politikáját boncolgatják."
+description_source: auto
+description_hash: 850b29a2487fae68
 version: 1.0
 type: csakabaj-synthesis
 episode: 22
@@ -11,7 +14,6 @@ synthesis_status: gold_standard
 id: 34c5eefd-b4be-42c6-a2dc-5265e6e73457
 index_schema_version: 1
 ---
-
 # Csakabaj S01E22 — Hogyan rontsd el az esküvődet?
 **Guests:** Gábor Lajos, Miklós Csongor, Józsa Levente (panel) | **Host:** Józsa Levi  
 **Date:** 2024-10-16 | **Duration:** 152 minutes | **SRT Entries:** 3,813

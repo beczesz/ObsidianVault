@@ -1,4 +1,7 @@
 ---
+description: "Robotics infrastructure startup with $7.2M pre-seed, scaling 15 to 30 engineers. No active DevOps hiring despite infrastructure complexity; founders likely doing platform work. Parked to monitor for real hiring signals before cold outreach."
+description_source: auto
+description_hash: 2d3c2682a24310fb
 type: lead
 id: allonic
 company: "Allonic"
@@ -38,7 +41,6 @@ validated: 2026-04-01
 last_signal_check: 2026-05-20
 index_schema_version: 1
 ---
-
 # Allonic
 
 ## Signal

@@ -2,6 +2,9 @@
 series: "Navigátor Közösség"
 episode: "EP01"
 title: "A növekedés Alapelve – Miért nincs gyors megoldás?"
+description: "A Közösség sorozat első epizódja az alapelvek természetét és a növekedés fokozatosságának princípiumát tárgyalja, kitérve arra, hogy munka és fegyelem nélkül nincs tartós eredmény. Szabolcs Patreon közösségével megosztott tantárgy és inspiráció azon hallgatóknak, akik az alapelvek gyakorlati alkalmazásában szeretnének fejlődni."
+description_source: auto
+description_hash: c68d2b09c510323f
 host: "Beczesz Szabolcs"
 youtube_id: "spnaohDzF1I"
 published: "2025-02-15"
@@ -30,7 +33,6 @@ created: "2026-04-06"
 id: 6ab6c5d0-34ac-47ab-800a-e4c2927f1e55
 index_schema_version: 1
 ---
-
 # Közösség EP01 – A növekedés Alapelve: Miért nincs gyors megoldás?
 
 ## Sorozat kontextus

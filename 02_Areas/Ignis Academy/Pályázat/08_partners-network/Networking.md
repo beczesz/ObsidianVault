@@ -1,3 +1,15 @@
+---
+title: "Networking"
+date: 2026-05-11
+author: Becze Szabolcs
+status: active
+description: "Contact list of mentors, academic partners, pilot companies, administrative contacts, and technical specialists; includes workshop details for an AI in education event in Csíkszereda on December 4, 2025, as part of the AI Empower Erasmus+ project."
+description_source: auto
+description_hash: 29730fdc4c054791
+id: 16f43bfa-33d0-4be6-8a72-391bed937347
+index_schema_version: 1
+bdos_index: true
+---
 ### Mentors
 
 1. Ray Lundy

@@ -1,3 +1,15 @@
+---
+title: "Füstölt Fehér Karaj"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Füstölt fehér karaj termék oldal, amely súly szerinti árazást, szeletelési opciót és készletkezelést tartalmaz. Webshop termékadat-sémában strukturált csemege termék leírása magyar és román nyelvű metaadatokkal."
+description_source: auto
+description_hash: 3f86d8025af42931
+id: 69db00fe-1378-49d6-bb0a-94d3dd26e68d
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Fehér Karaj
 
 ```yaml

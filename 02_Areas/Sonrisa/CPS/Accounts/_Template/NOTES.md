@@ -1,3 +1,15 @@
+---
+title: "[Account Name]"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "A company profile template tracking active customer accounts with key metrics, contract details, contact information, status updates, and profitability data for account management and relationship monitoring."
+description_source: auto
+description_hash: fce7621bc03e717c
+id: 7f3d98c3-2f64-4b4a-84ab-84150f9a10e0
+index_schema_version: 1
+bdos_index: true
+---
 # [Account Name]
 
 ## Quick Info

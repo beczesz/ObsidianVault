@@ -1,3 +1,15 @@
+---
+title: "Build Process -- Technical Specification"
+date: 2026-04-22
+author: Becze Szabolcs
+status: active
+description: "Technical specification for building an Excel activity report from Sontime export files, detailing data extraction, sheet generation, pivot table patching, and final ZIP assembly for data and team management sheets."
+description_source: auto
+description_hash: a1741cbeea7e9fb8
+id: 91061b58-0827-4dc9-bc37-0d983f9fcfbe
+index_schema_version: 1
+bdos_index: true
+---
 # Build Process -- Technical Specification
 
 ## Source Data Structure

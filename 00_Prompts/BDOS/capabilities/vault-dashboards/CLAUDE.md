@@ -64,6 +64,7 @@ When unsure, start with pattern 2 (single file). Promote to pattern 1 only when 
 2. **Design the schema.** Frontmatter fields + (if needed) body sections. Keep frontmatter shallow where possible. Document required vs optional fields.
 3. **Create the source markdown** from existing vault material. Do not duplicate, reformat or summarize the canonical content into the dashboard source, and link the deep reference files via `obsidian://` deep links.
 4. **Scaffold the HTML**: doctype + version comment header + head (fonts, tokens) + masthead (home button, eyebrow, title, version pill, sync indicator) + content containers.
+4b. **Add card copy-ref (MANDATORY — DS §4a — NO EXCEPTIONS):** Define `const DASH_STEM = '<stem>'`. Add the `.card-copy-ref` CSS block (verbatim from `DESIGN_SYSTEM.md §4a`). Add `copyText` + `wireCopyRef` JS helpers. Add `data-card-id` attribute and a `<button class="card-copy-ref">` inside every bounded card-like element. Call `wireCopyRef(containerEl)` after rendering. Verify before declaring build complete.
 5. **Copy the parser(s)** needed for the chosen pattern.
 6. **Write render functions**: widgets row (overview metrics) + the main view (cards / board / table). Keep them pure functions of the parsed data so polling can re-render idempotently.
 7. **Wire the sync loop**: `pollVault` fetches, parses, sets the global data array, calls render, updates the sync indicator. Boot with one immediate poll then `startPolling` + `startTicker`.

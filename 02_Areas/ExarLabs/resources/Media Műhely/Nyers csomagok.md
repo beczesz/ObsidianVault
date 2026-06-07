@@ -1,4 +1,15 @@
-
+---
+title: "Nyers csomagok"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Húsz négy szokványos csomag podcast és videótartalom gyártásához, melyek különböző szervezeteknek (cégek, NGO-k, intézmények) szolgálnak célfeladatokhoz: vezetői kommunikáció, tudásmegosztás, toborzás, közösségépítés, értékesítés támogatása."
+description_source: auto
+description_hash: 746e7e195bc15384
+id: 0f51b269-2f72-4f61-b270-ac6f038853b3
+index_schema_version: 1
+bdos_index: true
+---
 ## 1. Starter / Pilot csomag
 
 **Cél:** belépési küszöb csökkentése, kipróbálás  

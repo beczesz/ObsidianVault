@@ -1,3 +1,15 @@
+---
+title: "Monthly Update Brief (MUB) - Generation Instructions"
+date: 2026-04-22
+author: Becze Szabolcs
+status: active
+description: "Structured instructions for generating monthly update briefs from timesheet data: a markdown document that maps raw CPS entries to five hour categories (Billable, Internal, Sick+Leave, MVMI Availability, Other) and aggregates them by project and person. Used by Szabolcs to prepare dashboard update inputs."
+description_source: auto
+description_hash: 6171a4f00908e7cb
+id: 102766d2-a4d8-4f86-9ec1-71775a9eb6df
+index_schema_version: 1
+bdos_index: true
+---
 # Monthly Update Brief (MUB) - Generation Instructions
 
 **Version:** 0.2

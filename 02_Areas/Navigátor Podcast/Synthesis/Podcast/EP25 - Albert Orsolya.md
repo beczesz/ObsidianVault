@@ -1,6 +1,9 @@
 ---
 episode: EP25
 title: "Versben élni – Színpad, anyaság és költészet a mindennapokban"
+description: "Székelyudvarhelyi színésznő, anyaság és költészeti missziója: hogyan hozza be a kortárs verseket a hétköznapokba, illetve miként egyeztet össze pályát, családot és kulturális vállalkozást. Intim személyes és tudományos perspektívák."
+description_source: auto
+description_hash: 8428605f74f2b635
 guest: "Albert Orsolya"
 guest_title: "Színművésznő, Figurastúdió / Pirospont Produkció alapító"
 youtube_id: "-CBBMeGz6bI"
@@ -30,7 +33,6 @@ created: "2026-04-06"
 id: 2bc9e556-e410-41a0-b435-512c822fad5e
 index_schema_version: 1
 ---
-
 # EP25 – Versben élni: Színpad, anyaság és költészet a mindennapokban
 
 ## Vendég kontextus

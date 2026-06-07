@@ -1,3 +1,15 @@
+---
+title: "DH Screen Catalog — Workflow Documentation"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Metadata-driven UI screen catalog deployment system for design workflows. Documents HTML screen metadata format, manifest generation, index.html preview interface, and separate Claude Design/CoWork agent responsibilities with strict deploy authorization rules."
+description_source: auto
+description_hash: e6221d8f1bf515f0
+id: 4c325dc6-06cc-4ec9-82b3-9f2798bd31d2
+index_schema_version: 1
+bdos_index: true
+---
 # DH Screen Catalog — Workflow Documentation
 
 > **Státusz:** Aktív  

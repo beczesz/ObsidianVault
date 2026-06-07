@@ -1,4 +1,15 @@
-
+---
+title: "Ce a fost taiat"
+date: 2026-05-11
+author: Becze Szabolcs
+status: active
+description: "Sumar al tăierii de buget într-un proiect de inovație AI: 640.000 RON pentru servicii externalizate (cercetare contractuală, consultanță) și 85.000 RON pentru reducerea tarifului managerului proiect, cu strategie de contestare bazată pe necesitatea validării științifice independente și parteneriate internaționale."
+description_source: auto
+description_hash: a792e5ca9c89ebd6
+id: d89071f3-619f-4fcf-93ee-dc41f4d8749f
+index_schema_version: 1
+bdos_index: true
+---
 # Ce a fost taiat
 #### A. Servicii Externalizate (Impact Major: ~640.000 RON)
 

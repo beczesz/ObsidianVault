@@ -1,3 +1,15 @@
+---
+title: "**Key Capabilities**"
+date: 2025-11-26
+author: Becze Szabolcs
+status: active
+description: "AWS cost optimization service offering comprehensive spending analysis, right-sizing, automation, and governance support using AWS native tools and certified FinOps expertise to reduce waste and improve operational efficiency."
+description_source: auto
+description_hash: 3175f43bb82da6c3
+id: 3c69c89b-360f-4c0a-89c6-cb6421475fd0
+index_schema_version: 1
+bdos_index: true
+---
 AWS Cloud Cost Optimization Services provides structured, transparent, and sustainable cost management for your AWS environment. We analyze and optimize spending using AWS Cost Explorer, AWS Budgets, AWS Cost Anomaly Detection, AWS Compute Optimizer, AWS Trusted Advisor, and the AWS Cost and Usage Report (CUR).
 
 Organizations frequently encounter hidden cost drivers, over-provisioned resources, idle workloads, misconfigured Savings Plans or Reserved Instances, and inconsistent tagging practices. These issues contribute to budget overruns and reduced operational efficiency. CPS addresses these challenges with certified FinOps expertise and a standardized optimization model aligned with AWS best practices.

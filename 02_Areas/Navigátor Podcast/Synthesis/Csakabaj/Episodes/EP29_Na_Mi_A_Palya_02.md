@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Solo episode where Józsa Levi reflects on practical technology questions facing parents and educators, including phones in schools and social media's role in fundraising, modeling nuanced thinking without false expertise."
+description_source: auto
+description_hash: 0c29d7af24251baf
+id: 7a90955f-88af-47c7-8513-e7c8d45b4525
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP29 | Na mi a pálya? S01E02

@@ -1,3 +1,15 @@
+---
+title: "Pistyur Veronika — Interjú terv v4"
+date: 2026-03-07
+author: Becze Szabolcs
+status: active
+description: "Interjúforgatókönyv a Navigator Podcast Székelyudvarhelyi adásához, ahol Pistyur Veronika hat sima borítékból húz kérdéseket, majd egy arany borítékot (melynek tartalmát még nem finalizálták). Szabolcs és az interjúcsapat részére iránymutatás az interjú szerkezetéről, bevezetéséről és a hat kérdés tematikájáról: k"
+description_source: auto
+description_hash: ef803f238474e6e6
+id: 858604ad-1a82-4100-acd4-dd0c6542a774
+index_schema_version: 1
+bdos_index: true
+---
 # Pistyur Veronika — Interjú terv v4
 **Navigator Podcast | Székelyudvarhely | Boríték-formátum**
 *6 sima boríték + 1 arany*

@@ -1,3 +1,15 @@
+---
+title: "Video script"
+date: 2026-05-19
+author: Becze Szabolcs
+status: active
+description: "Script for a youth event promoting Jesus-focused adoration and prayer, featuring musician Csiszér Laci, alternating testimonies between two speakers, and culminating in peaceful Eucharistic contemplation imagery."
+description_source: auto
+description_hash: f2d0d36059dbcbb2
+id: 404a5db4-6739-4000-ae7e-60bf49ed5372
+index_schema_version: 1
+bdos_index: true
+---
 **Az egyházunk legnagyobb misztériuma azaz, hogy hogyan és miért halt meg értünk Jézus, és mégis hogyan élhet köztünk és bennünk ma is.
 
 Az Úr napja egy fontos ünnepünk amikor lelkünket újra fókuszálhatjuk a legfontosabbra, amikor megújulhatunk Jézusban és amikor vissza emlékezhetünk arra, hogy kik is vagyunk mi valójában.

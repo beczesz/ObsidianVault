@@ -1,3 +1,15 @@
+---
+title: "CPS Monthly Process"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Monthly workflow for CPS timesheets and billing. Szabolcs runs four phases: statistics processing via Cowork, brief generation and dashboard writing, TIG contractor review, with file uploads to SharePoint and progress tracking via Status column."
+description_source: auto
+description_hash: 0446466244c041d1
+id: 002b1cf7-aa0c-416f-a4da-69665385906a
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Monthly Process
 
 **Owner:** Szabolcs

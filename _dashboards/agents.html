@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   =============================================================================
-  Agent Team — Cheat Sheet.   Version: 0.2.1
+  Agent Team — Cheat Sheet.   Version: 0.3.1
   =============================================================================
   Renders from:
     /00_Prompts/BDOS/00_AGENTS_INDEX.md  (## Active agents section)
@@ -11,6 +11,19 @@
   Read-only. Edit 00_AGENTS_INDEX.md in Obsidian.
 
   Audit trail:
+    0.3.1 (2026-05-29) tend: version-pill normalized family-wide. CSS: font-size 10.5px, padding 2px 8px, font-weight 500 (was 10px, 1px 7px, no weight). Markup: mono class added.
+    0.3.0 (2026-05-28) feat: agent avatar hero in detail drawer (large 150px
+          portrait, radial accent-tint glow, terracotta signature ring, rise-in
+          motion) + 50px card thumbnails. Avatars served from
+          /00_Prompts/BDOS/agents/<slug>/avatar.png; monogram fallback on 404.
+          Drawer .drawer-head → .drawer-hero (centered). /impeccable craft pass.
+          fix: parser used Perl \Z/\z anchors (literal letters in JS) — section
+          truncated at the first capital "Z", dropping 5 of 7 agents. Replaced
+          with "\n## "/"\n### " + end-of-string ($). All 7 active agents now render.
+    0.2.5 (2026-05-25) — promote: panel-anchor system (DS 0.8.0) — scroll-margin-top: 42px.
+          agentsGrid → panel-1-agents-grid ID rename. JS reference updated.
+    0.2.4 (2026-05-25) refactor: extract canonical :root + dark + @media tokens → /_design/tokens.css (DS 0.7.0 engine extraction, Sprint 2a)
+    0.2.3 (2026-05-25) refactor: extract setTheme/copyText/wireCopyRef → /_design/{theme,clipboard}.js (DS 0.7.0 engine extraction, Sprint 1)
     0.1.0 (2026-05-22) — initial build: Agent Team cheat sheet,
           parses 00_AGENTS_INDEX.md. Three active agents rendered:
           Librarian (v0.5), Maestro (v0.1), Curator (v0.2). Card layout
@@ -25,6 +38,9 @@
           description, all 9 modes/4 agents, and per-slash-command frontmatter
           description + one example invocation (lazy-fetched from
           .claude/commands/*.md). Maintains markdown-driven principle.
+    0.2.6 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app → .app-main + .app-shell layout. alfred-tasks.js added.
+    0.2.2 (2026-05-25) — promote: admin-bar.js (DS 0.6.0) replaces ops-header.js.
+          #bdos-ops-header → #bdos-admin-bar. Fixed dark WP-style top bar, 34px.
     0.2.1 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
           Card collapsed view uses Pozíció one-liner (replaces longer Felelősség
           block). Drawer: keyboard-accessible (Enter/Space), Esc + scrim-click
@@ -53,100 +69,38 @@
   document.documentElement.dataset.theme = t;
 })();
 </script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-  /* Surfaces — cream paper */
-  --bg-page:   #faf9f5;
-  --bg-elev:   #ffffff;
-  --bg-sunken: #f3f1ea;
-  --bg-tint:   #f5f4ef;
+/* Surfaces — cream paper */
 
   /* Ink scale (1 darkest → 5 lightest) */
-  --ink-1: #141413;
-  --ink-2: #3a3a37;
-  --ink-3: #6d6d6a;
-  --ink-4: #9c9c98;
-  --ink-5: #c8c8c2;
 
   /* Lines */
-  --line:      #e5e4df;
-  --line-soft: #efede7;
 
   /* Accent — terracotta */
-  --accent:      #D97757;
-  --accent-deep: #b35a3f;
-  --accent-tint: #fbeee6;
 
   /* Status */
-  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
-  --warn:      #b07a18;  --warn-tint: #fbf2dc;
-  --gap:       #c0392b;  --gap-tint:  #fbeae6;
-  --idle:      #7a7a76;  --idle-tint: #efeeeb;
 
   /* Elevation */
-  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
-  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
   --shadow-3: 0 12px 32px rgba(20,20,19,.10), 0 4px 12px rgba(20,20,19,.06);
 
   /* Radius */
-  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
 
   /* Motion */
-  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
-  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
   --t-slow: 320ms cubic-bezier(.16,.84,.32,1);
 }
 
 /* ===== Dark theme override (DS 0.3.0) ===== */
 :root[data-theme="dark"] {
-  --bg-page:   #1a1916;
-  --bg-elev:   #232220;
-  --bg-sunken: #2c2a26;
-  --bg-tint:   #262420;
-  --ink-1: #f5f4ef;
-  --ink-2: #d6d4ce;
-  --ink-3: #a8a6a0;
-  --ink-4: #7c7a74;
-  --ink-5: #54524d;
-  --line:      #36342f;
-  --line-soft: #2c2a26;
-  --accent:      #e08a6a;
-  --accent-deep: #f0a085;
-  --accent-tint: #3a2a22;
-  --ok:        #5cc08a;  --ok-tint:   #1e3329;
-  --warn:      #d6a94a;  --warn-tint: #352c18;
-  --gap:       #e57c6e;  --gap-tint:  #3a221e;
-  --idle:      #9a9892;  --idle-tint: #2a2925;
-  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-  --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
+--shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg-page:   #1a1916;
-    --bg-elev:   #232220;
-    --bg-sunken: #2c2a26;
-    --bg-tint:   #262420;
-    --ink-1: #f5f4ef;
-    --ink-2: #d6d4ce;
-    --ink-3: #a8a6a0;
-    --ink-4: #7c7a74;
-    --ink-5: #54524d;
-    --line:      #36342f;
-    --line-soft: #2c2a26;
-    --accent:      #e08a6a;
-    --accent-deep: #f0a085;
-    --accent-tint: #3a2a22;
-    --ok:        #5cc08a;  --ok-tint:   #1e3329;
-    --warn:      #d6a94a;  --warn-tint: #352c18;
-    --gap:       #e57c6e;  --gap-tint:  #3a221e;
-    --idle:      #9a9892;  --idle-tint: #2a2925;
-    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-    --shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
-  }
+--shadow-3: 0 12px 32px rgba(0,0,0,.50), 0 4px 12px rgba(0,0,0,.35);
+}
 }
 
 html { font-size: 15px; }
@@ -164,7 +118,7 @@ body {
 .tabular { font-variant-numeric: tabular-nums; }
 a { color: inherit; text-decoration: none; }
 
-.app { max-width: 1200px; margin: 0 auto; padding: 28px 36px 96px; }
+.app-main { max-width: 1200px; padding: 28px 36px 96px; }
 
 /* ===== Masthead ===== */
 .masthead { padding-bottom: 22px; border-bottom: 1px solid var(--line); margin-bottom: 28px; }
@@ -196,11 +150,7 @@ a { color: inherit; text-decoration: none; }
   color: var(--ink-4); font-weight: 500; margin-bottom: 8px;
   display: flex; align-items: center; gap: 10px;
 }
-.version-pill {
-  font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-3);
-  background: var(--bg-elev); border: 1px solid var(--line); padding: 1px 7px;
-  border-radius: 999px; letter-spacing: 0; text-transform: none;
-}
+.version-pill { font-family: 'JetBrains Mono', monospace; font-size: 10.5px; color: var(--ink-3); background: var(--bg-elev); border: 1px solid var(--line); padding: 2px 8px; border-radius: 999px; letter-spacing: 0; font-weight: 500; }
 .masthead h1 { font-size: clamp(28px, 3.2vw, 40px); font-weight: 700; letter-spacing: -0.02em; line-height: 1.05; }
 .masthead h1 .accent { color: var(--accent); }
 .masthead .submeta {
@@ -249,6 +199,9 @@ a { color: inherit; text-decoration: none; }
 .card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
 .card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
 
+/* ===== Panel Anchor System (DS 0.8.0) ===== */
+[id^="panel-"] { scroll-margin-top: 42px; }
+
 /* ===== Agent cards grid ===== */
 .agents-grid {
   display: grid;
@@ -278,7 +231,22 @@ a { color: inherit; text-decoration: none; }
 .agent-card .card-body { padding: 22px 22px 20px; display: flex; flex-direction: column; flex-grow: 1; gap: 0; }
 
 /* Card header */
-.agent-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 4px; }
+.agent-head { display: flex; align-items: center; gap: 13px; margin-bottom: 14px; }
+.agent-thumb {
+  width: 50px; height: 50px; flex-shrink: 0;
+  border-radius: 13px; object-fit: cover;
+  border: 1px solid var(--line); background: var(--bg-sunken);
+  box-shadow: var(--shadow-1);
+}
+.agent-thumb-fallback {
+  width: 50px; height: 50px; flex-shrink: 0;
+  border-radius: 13px; display: none;
+  align-items: center; justify-content: center;
+  background: var(--accent-tint); color: var(--accent-deep);
+  font-size: 22px; font-weight: 700; box-shadow: var(--shadow-1);
+}
+.agent-head-text { flex-grow: 1; min-width: 0; }
+.agent-head-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; }
 .agent-name { font-size: 22px; font-weight: 700; letter-spacing: -0.01em; }
 .status-badge {
   font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
@@ -286,7 +254,7 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex; align-items: center; gap: 5px; color: var(--ok); background: var(--ok-tint);
 }
 .status-badge::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
-.agent-version-line { font-size: 12px; color: var(--ink-4); margin-bottom: 12px; }
+.agent-version-line { font-size: 12px; color: var(--ink-4); margin-top: 2px; }
 
 /* Role / description — card collapsed view uses Pozíció one-liner */
 .agent-role { font-size: 13px; color: var(--ink-3); line-height: 1.5; margin-bottom: 16px; }
@@ -427,21 +395,60 @@ a { color: inherit; text-decoration: none; }
 }
 .drawer.is-open { transform: translateX(0); }
 
-.drawer-head {
-  padding: 22px 28px 18px;
+/* Drawer hero — large agent portrait (DS-local, v0.3.0) */
+.drawer-hero {
+  position: relative;
+  padding: 38px 28px 24px;
   border-bottom: 1px solid var(--line);
-  display: grid; grid-template-columns: 1fr auto;
-  gap: 12px; align-items: start;
-  flex-shrink: 0; background: var(--bg-page);
+  flex-shrink: 0;
+  text-align: center;
+  background:
+    radial-gradient(135% 105% at 50% -12%, var(--accent-tint), transparent 62%),
+    var(--bg-page);
 }
-.drawer-head h2 {
-  font-size: 26px; font-weight: 700; letter-spacing: -0.02em;
-  line-height: 1.15; color: var(--ink-1);
+.drawer-avatar-frame {
+  position: relative;
+  width: 150px; height: 150px;
+  margin: 0 auto 18px;
 }
-.drawer-head .drawer-meta {
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 6px;
+.drawer-avatar {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  border-radius: 28px;
+  box-shadow: var(--shadow-3);
+  background: var(--bg-sunken);
+}
+.drawer-avatar-frame::after {
+  content: '';
+  position: absolute; inset: -7px;
+  border-radius: 34px;
+  border: 1.5px solid var(--accent);
+  opacity: .34;
+  pointer-events: none;
+}
+.drawer-avatar-fallback {
+  display: none; align-items: center; justify-content: center;
+  width: 100%; height: 100%;
+  border-radius: 28px;
+  background: var(--accent-tint); color: var(--accent-deep);
+  font-size: 60px; font-weight: 700; line-height: 1;
+  box-shadow: var(--shadow-3);
+}
+.drawer.is-open .drawer-avatar-frame { animation: avatar-rise var(--t-slow) both; }
+@keyframes avatar-rise {
+  from { opacity: 0; transform: translateY(12px) scale(.94); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+.drawer-hero h2 {
+  font-size: 28px; font-weight: 700; letter-spacing: -0.02em;
+  line-height: 1.1; color: var(--ink-1);
+}
+.drawer-hero .drawer-meta {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; flex-wrap: wrap; margin-top: 10px;
 }
 .drawer-close {
+  position: absolute; top: 18px; right: 18px; z-index: 2;
   appearance: none; border: 1px solid var(--line); background: var(--bg-elev);
   width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
   display: inline-flex; align-items: center; justify-content: center;
@@ -531,14 +538,15 @@ a { color: inherit; text-decoration: none; }
   .drawer { width: 100vw; }
 }
 @media (max-width: 560px) {
-  .app { padding: 18px 16px 80px; }
+  .app-main { padding: 18px 16px 80px; }
   .summary-stats { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
 <body>
-<div id="bdos-ops-header"></div>
-<div class="app">
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<div class="app-main">
 
   <header class="masthead">
     <div class="masthead-toprow">
@@ -555,7 +563,7 @@ a { color: inherit; text-decoration: none; }
     </div>
     <div class="eyebrow">
       <span>BDOS · Agent Team</span>
-      <span class="version-pill">v0.2.0</span>
+      <span class="version-pill mono">v0.3.1</span>
     </div>
     <h1>Agent Team <span class="accent">.</span></h1>
     <div class="submeta">
@@ -571,7 +579,7 @@ a { color: inherit; text-decoration: none; }
     </div>
   </header>
 
-  <section class="agents-grid" id="agentsGrid" aria-label="Active agents"></section>
+  <section class="agents-grid" id="panel-1-agents-grid" aria-label="Active agents"></section>
 
   <section id="summarySection" style="display:none">
     <div class="summary-band">
@@ -589,6 +597,8 @@ a { color: inherit; text-decoration: none; }
   </section>
 
 </div>
+<aside id="alfred-tasks-sidebar"></aside>
+</div>
 
 <!-- Scrim + Drawer (same pattern as sales.html) -->
 <div class="scrim" id="scrim"></div>
@@ -603,14 +613,17 @@ a { color: inherit; text-decoration: none; }
    followed by a bullet list. Stops at next ### or end of section.
    ============================================================ */
 function parseAgentsIndex(md) {
-  // Extract the ## Active agents section only
-  const sectionMatch = md.match(/^## Active agents\s*\n([\s\S]*?)(?=^## |\Z)/m);
+  // Extract the ## Active agents section only.
+  // NB: JS has no \Z/\z anchors — they match literal letters. Terminate the
+  // section at the next "## " heading or true end-of-string ($, no /m flag).
+  const sectionMatch = md.match(/## Active agents\s*\n([\s\S]*?)(?=\n## |$)/);
   if (!sectionMatch) return [];
   const section = sectionMatch[1];
 
-  // Split into agent blocks at ### headings
+  // Split into agent blocks at ### headings.
+  // Block ends at the next "### " heading or end-of-string ($, no /m flag).
   const agentBlocks = [];
-  const agentRegex = /^### ([^\n]+)\n([\s\S]*?)(?=^### |\z)/gm;
+  const agentRegex = /(?:^|\n)### ([^\n]+)\n([\s\S]*?)(?=\n### |$)/g;
   let match;
   while ((match = agentRegex.exec(section)) !== null) {
     const header = match[1].trim();
@@ -791,6 +804,7 @@ const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
 
 const SOURCE_FILE = '/00_Prompts/BDOS/00_AGENTS_INDEX.md';
 const DASH_STEM = 'agents';
+/* Clipboard helpers (copyText, wireCopyRef): /_dashboards/_design/clipboard.js (DS 0.7.0, Sprint 1) */
 let POLL_INTERVAL_MS = 8000;
 
 let AGENTS = [];
@@ -816,20 +830,6 @@ function toSlug(s) {
 /* ============================================================
    Copy to clipboard utility
    ============================================================ */
-function copyText(text, el) {
-  navigator.clipboard.writeText(text).then(() => {
-    el.classList.add('copied');
-    setTimeout(() => el.classList.remove('copied'), 1600);
-  }).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); } catch(e) {}
-    document.body.removeChild(ta);
-    el.classList.add('copied');
-    setTimeout(() => el.classList.remove('copied'), 1600);
-  });
-}
 
 /* ============================================================
    Render — Card view
@@ -837,7 +837,7 @@ function copyText(text, el) {
    mode chips, slash-command chips. NO full capability block.
    ============================================================ */
 function renderAgents() {
-  const grid = $('#agentsGrid');
+  const grid = $('#panel-1-agents-grid');
   const summarySection = $('#summarySection');
 
   if (!AGENTS.length) {
@@ -883,6 +883,8 @@ function renderAgentCard(agent) {
   const roleHtml = roleText ? `<div class="agent-role">${escapeHtml(roleText)}</div>` : '';
 
   const cardId = toSlug(agent.name);
+  const avatarUrl = `/00_Prompts/BDOS/agents/${cardId}/avatar.png`;
+  const initial = escapeHtml((agent.name || '?').charAt(0).toUpperCase());
   return `
     <article class="agent-card" data-card-id="${escapeHtml(cardId)}" data-agent-name="${escapeHtml(agent.name)}"
              role="button" tabindex="0" aria-label="Open ${escapeHtml(agent.name)} detail">
@@ -893,10 +895,17 @@ function renderAgentCard(agent) {
       <div class="stripe"></div>
       <div class="card-body">
         <div class="agent-head">
-          <span class="agent-name">${escapeHtml(agent.name)}</span>
-          <span class="status-badge">${escapeHtml(agent.status || 'active')}</span>
+          <img class="agent-thumb" src="${avatarUrl}" alt="" loading="lazy"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+          <span class="agent-thumb-fallback" aria-hidden="true">${initial}</span>
+          <div class="agent-head-text">
+            <div class="agent-head-top">
+              <span class="agent-name">${escapeHtml(agent.name)}</span>
+              <span class="status-badge">${escapeHtml(agent.status || 'active')}</span>
+            </div>
+            <div class="agent-version-line mono">v${escapeHtml(agent.version)}</div>
+          </div>
         </div>
-        <div class="agent-version-line mono">v${escapeHtml(agent.version)}</div>
         ${roleHtml}
         ${modesHtml}
         ${cmdsHtml}
@@ -1077,18 +1086,25 @@ function renderDrawerSkeleton(agent) {
        </div>`
     : '';
 
+  const slug = toSlug(agent.name);
+  const avatarUrl = `/00_Prompts/BDOS/agents/${slug}/avatar.png`;
+  const initial = escapeHtml((agent.name || '?').charAt(0).toUpperCase());
+
   return `
-    <div class="drawer-head">
-      <div>
-        <h2>${escapeHtml(agent.name)}</h2>
-        <div class="drawer-meta">
-          <span class="version-pill mono">v${escapeHtml(agent.version)}</span>
-          <span class="status-badge">${escapeHtml(agent.status || 'active')}</span>
-        </div>
-      </div>
+    <div class="drawer-hero">
       <button class="drawer-close" aria-label="Close detail">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
       </button>
+      <div class="drawer-avatar-frame">
+        <img class="drawer-avatar" src="${avatarUrl}" alt="${escapeHtml(agent.name)} portrait"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+        <span class="drawer-avatar-fallback" aria-hidden="true">${initial}</span>
+      </div>
+      <h2>${escapeHtml(agent.name)}</h2>
+      <div class="drawer-meta">
+        <span class="version-pill mono">v${escapeHtml(agent.version)}</span>
+        <span class="status-badge">${escapeHtml(agent.status || 'active')}</span>
+      </div>
     </div>
     <div class="drawer-body">
       ${pozicioHtml}
@@ -1285,31 +1301,14 @@ function connectEventStream() {
   connectEventStream();
 })();
 
-/* ===== Theme toggle (DS 0.3.0) ===== */
-function setTheme(t) {
-  document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('dash-theme', t); } catch(e) {}
-  const btn = document.getElementById('themeToggle');
-  if (btn) {
-    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
-    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
-    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-  }
-}
-document.getElementById('themeToggle').addEventListener('click', function() {
-  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-});
-window.addEventListener('storage', function(e) {
-  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
-});
-(function initTheme() {
-  var t;
-  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
-  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
-  setTheme(t);
-})();
+/* Theme toggle: moved to /_dashboards/_design/theme.js (DS 0.7.0, Sprint 1) */
 </script>
-<!-- ops-header.js (DS 0.5.0) -->
-<script src="/_dashboards/_design/ops-header.js"></script>
+<!-- theme.js + clipboard.js (DS 0.7.0, Sprint 1 engine) -->
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<!-- admin-bar.js (DS 0.6.0) -->
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
 </body>
 </html>

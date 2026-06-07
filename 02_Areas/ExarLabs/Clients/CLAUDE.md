@@ -1,3 +1,15 @@
+---
+title: "Memory — Clients Workspace"
+date: 2026-04-14
+author: Becze Szabolcs
+status: active
+description: "Central hub for ExarLabs client work managed by Szabolcs Becze, organizing contracts, deliverables, and correspondence for each client including current FedEx engagement via Prototype Iteration."
+description_source: auto
+description_hash: 53afc28fff1954b4
+id: 98281bb1-6633-4dc7-b3e0-2b26d7df1874
+index_schema_version: 1
+bdos_index: true
+---
 # Memory — Clients Workspace
 
 ## Purpose

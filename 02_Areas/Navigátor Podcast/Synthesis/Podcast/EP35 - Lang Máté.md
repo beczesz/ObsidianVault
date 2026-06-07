@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP35
 title: "„Már nem elég olcsóbbnak lenni" – Miért veszíti el versenyképességét a helyi IT? | Lang Máté | EP35"
+description: "Lang Máté interjúja az erdélyi IT-szektor versenyképességi válságáról: az olcsó munkaerőre épülő outsourcing modell fenntarthatatlanná válik, mivel nyugati árakhoz közelednek, miközben hozzáadott érték nem nőtt. Budapest és nemzetközi startup-tapasztalatok alapján globális perspektíva a helyi piac jövőjéről."
+description_source: auto
+description_hash: 8ad631c0e4bee529
 guest: "Lang Máté"
 guest_title: "Binatch Agency alapító, CTO háttérrel, startup-tapasztalattal (London/NY/Singapore/Kolozsvár)"
 topic: "IT outsourcing vészharang — értéklánc, versenyképesség, lusta macskák vs éhes farkasok, Dubai ökoszisztéma, AI szorzó, startup kultúra"
@@ -15,7 +18,6 @@ quality: deep
 id: 6cd05413-9fdc-4600-b7e2-50c5833978cf
 index_schema_version: 1
 ---
-
 # EP35 — Lang Máté: „Már nem elég olcsóbbnak lenni" — Miért veszíti el versenyképességét a helyi IT?
 
 ## Vendég háttér

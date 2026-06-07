@@ -1,3 +1,15 @@
+---
+title: "MVMI Omni Support -- Chaos Engineering Workshop"
+date: 2026-04-13
+author: Becze Szabolcs
+status: active
+description: "Chaos engineering workshop az MVMI Omni Support csapatának 3 hetes intenzív képzése, amely gyakorlati szimulációkkal felkészíti az operátorokat önálló incidenskezelésre az OpenShift-alapú omnichannel platformon. Két fázisból áll: elméleti oktatás majd szimulált outage-szcenáriók, ahol az MVMI csapat gyakorol CPS támogatással."
+description_source: auto
+description_hash: 00e760bf1d16d50c
+id: fbb08f3a-aefe-4107-bf76-52655c131b1c
+index_schema_version: 1
+bdos_index: true
+---
 # MVMI Omni Support -- Chaos Engineering Workshop
 
 ## Quick Info

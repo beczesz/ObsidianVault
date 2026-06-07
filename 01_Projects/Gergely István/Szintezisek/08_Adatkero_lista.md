@@ -1,5 +1,8 @@
 ---
 title: "Adatkérő lista a tulajdonosnak — mit exportáljon és miért"
+description: "Adott 5 aggregált riporthoz szükséges 4 adatkérés részletezése: telephelyi árrés-bontás, számlaszintű vevő-önköltség lista, cikk-kategória megfeleltetés és opcionális cikkszintű telephely-bontás, mind meglévő rendszerből exportálható."
+description_source: auto
+description_hash: 6932923dcdbe8797
 type: data-request
 project: Gergely István
 created: 2026-05-21
@@ -7,7 +10,6 @@ tags: [data-request, next-steps]
 id: b4125b11-c689-491f-b5fb-0c1fcc4da790
 index_schema_version: 1
 ---
-
 # Adatkérő lista — pontosan mit kérjünk, és miért
 
 A jelenlegi 5 fájl **összegzett (aggregált) riport**. A mélyebb elemzéshez 4 dologra van szükség.

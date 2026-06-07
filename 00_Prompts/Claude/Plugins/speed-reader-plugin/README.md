@@ -1,3 +1,15 @@
+---
+title: "Speed Reader Plugin"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Obsidian plugin that converts books, podcasts, and articles into structured notes using multi-agent AI analysis and PARA organization. Includes context research, chapter breakdown, quote extraction, and optional Google Drive backup."
+description_source: auto
+description_hash: e6e275cd4b43dd1f
+id: 0568e169-0576-49dd-9cae-a23cbcff4519
+index_schema_version: 1
+bdos_index: true
+---
 # Speed Reader Plugin
 
 **Version:** 0.7.0

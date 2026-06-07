@@ -1,3 +1,15 @@
+---
+title: "Summary"
+date: 2026-05-03
+author: Becze Szabolcs
+status: active
+description: "Analysis of Pageau's newsletter architecture showing how he builds a five-phase argument from the ARC paper diagnosis through cultural symptoms to a subsidiarity framework, using strategic links to deepen reader engagement and set up next week's solution."
+description_source: auto
+description_hash: 2840cdcd18e26a18
+id: e5f23485-cf29-4d05-850f-4f5c3abcd1d5
+index_schema_version: 1
+bdos_index: true
+---
 Now I need to decode those tracked links to find what they actually point to. Let me resolve them.The tracking URLs are MailerLite redirects — I can't decode the actual destinations. Let me search for what each linked phrase points to in Pageau's content ecosystem.Now let me build the visual idea map and walk you through the arc.The newsletter moves through five distinct phases, each building on the last, with Pageau embedding specific links at strategic moments to let readers go deeper. Here's the arc:
 
 **Phase 1 — The Thesis (Opening)**

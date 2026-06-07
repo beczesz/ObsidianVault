@@ -1,4 +1,7 @@
 ---
+description: "Chemaxon is a Budapest-based chemistry SaaS firm acquired by Certara in 2022; the original DevOps hiring signal is stale but the engineering team still exists and likely faces post-acquisition cloud-ops autonomy or cost-discipline challenges."
+description_source: auto
+description_hash: 81a26f9fc9a692e4
 type: lead
 id: chemaxon
 company: "Chemaxon"
@@ -41,7 +44,6 @@ validated: 2026-05-11
 last_signal_check: 2026-05-18
 index_schema_version: 1
 ---
-
 # Chemaxon
 
 ## Signal

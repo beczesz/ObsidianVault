@@ -1,5 +1,8 @@
 ---
 title: "Case Study: Onriva/myRiva - Travel Platform AWS Operations"
+description: "Onriva case study documenting how CPS stabilized AWS operations for a US travel platform by implementing standardized CI/CD pipelines, blue/green deployments, and runbook documentation, leveraging EU timezone coverage for off-peak maintenance windows."
+description_source: auto
+description_hash: cb36190972c9d81a
 id: cs-003
 industry: saas
 size: "~80 EC2 instances, small-medium company"
@@ -12,7 +15,6 @@ status: active
 author: Sonrisa CPS
 index_schema_version: 1
 ---
-
 # Case Study: Onriva/myRiva - Travel Platform AWS Operations
 
 > **One-liner for outreach:** "We took over AWS operations for a US travel platform (80 EC2 instances, 9 databases, 50+ Lambdas) -- stabilized deployments, eliminated manual steps, and run all maintenance outside their business hours from our EU timezone."

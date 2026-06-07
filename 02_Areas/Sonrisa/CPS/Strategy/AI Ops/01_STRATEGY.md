@@ -37,7 +37,7 @@ Notes: API key check and Chrome browser listing were both denied by the auto-mod
 These are the already-started pieces the new direction sits on top of:
 
 - **Agentic AIOps tier model** (the first productized form): [../../Accounts/Leads/CCHBC/brainstorm_cchbc-aiops-tiers.md](../../Accounts/Leads/CCHBC/brainstorm_cchbc-aiops-tiers.md)
-- **Inference substrate, live on AWS**: [../../Services/Inference Farm/Description.md](../../Services/Inference%20Farm/Description.md) (Sonrisa LLMaaS) + [../../Services/Inference Farm/LLMaaS — ACE Opportunity Summary.md](../../Services/Inference%20Farm/LLMaaS%20%E2%80%94%20ACE%20Opportunity%20Summary.md)
+- **Inference substrate, live on AWS**: [../../Practices/Inference-Farm/proposals/01-sonrisa-llmaas-platform-description.md](../../Practices/Inference-Farm/proposals/01-sonrisa-llmaas-platform-description.md) (Sonrisa LLMaaS) + [../../Practices/Inference-Farm/proposals/02-aws-ace-opportunity-summary.md](../../Practices/Inference-Farm/proposals/02-aws-ace-opportunity-summary.md)
 - **FinOps / cost optimization service**: [../../Services/Cost optimization/](../../Services/Cost%20optimization/)
 - **Unified strategic journey (the prior roadmap this extends)**: [../Roadmap.md](../Roadmap.md)
 - **Business model canvas**: [../BMC v1.3.md](../BMC%20v1.3.md)

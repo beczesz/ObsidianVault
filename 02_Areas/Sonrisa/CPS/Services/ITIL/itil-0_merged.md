@@ -1,3 +1,15 @@
+---
+title: "SLA System --- Internal Unified Version (v1)"
+date: 2026-02-18
+author: Becze Szabolcs
+status: active
+description: "Unified internal framework defining what SLA-based managed services mean for the organization: incident definitions, response targets, priority levels, and responsibility boundaries. Guides operations teams and customers on commitments, exclusions, and success metrics."
+description_source: auto
+description_hash: f27edf8a1cf7bde5
+id: e62bd2e3-9cff-49d3-a444-14c27785f21e
+index_schema_version: 1
+bdos_index: true
+---
 # SLA System --- Internal Unified Version (v1)
 
 *(Merged and aligned from internal drafts)*

@@ -1,3 +1,15 @@
+---
+title: "Contract Review: MSA & SOW — ProSharp / Sonrisa"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Technical analysis of Pro-Sharp/Sonrisa MSA and SOW contracts covering master service agreement terms, statement of work pricing changes, IP transfer risks, and non-compete restrictions affecting developer hiring for three years post-engagement."
+description_source: auto
+description_hash: 4f1a1c1e2d685cc3
+id: 8c313948-d595-4d22-be9c-bb508dfd615e
+index_schema_version: 1
+bdos_index: true
+---
 # Contract Review: MSA & SOW — ProSharp / Sonrisa
 
 **Reviewer:** Claude (on behalf of Szabolcs Becze)

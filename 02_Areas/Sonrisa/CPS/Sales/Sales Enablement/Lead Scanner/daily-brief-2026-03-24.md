@@ -1,12 +1,14 @@
 ---
 title: CPS Lead Scanner Daily Brief - 2026-03-24
+description: "Daily scan of CPS lead database yielded zero new leads; 14 companies screened and disqualified. Access to key Hungarian and Romanian job boards blocked, limiting discovery. One existing HOT lead (Greenergy-Service Kft) remains active; recommend monitoring through early April before outreach."
+description_source: auto
+description_hash: 82c48d8af81a7a2f
 date: 2026-03-24
 profile: Profile #1 - The Replacement Hire
 scanner: automated
 id: cbe96c9f-65dd-43c0-bb1d-53893da59fa5
 index_schema_version: 1
 ---
-
 # CPS Daily Lead Scanner Brief - March 24, 2026
 
 ## Executive Summary

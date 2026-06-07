@@ -1,3 +1,15 @@
+---
+title: "Tasks"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "A personal task tracker documenting the completion of AI tips organized by four ethical dimensions (Physical/Ethos, Intellectual/Logos, Emotional/Pathos, Spiritual/Thelos) for an advanced AI usage guide. Most tasks are marked complete with specific tips developed and integrated."
+description_source: auto
+description_hash: ec40c9ae7c326c81
+id: 2f768087-d1b1-4ac5-8d75-4d81c31c28d6
+index_schema_version: 1
+bdos_index: true
+---
 # Tasks
 
 ## In Progress

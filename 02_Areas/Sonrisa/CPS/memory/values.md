@@ -1,3 +1,15 @@
+---
+title: "CPS Values - Részletes"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "Részletes lebontás a CPS szervezet hat alapvétő értékéről: alázat, proaktivitás, tervezés, személyes kapcsolatok, nyertes-nyertes mentalitás és folytonos fejlődés. Recruitment kérdéseket is tartalmaz az értékek felmérésére."
+description_source: auto
+description_hash: 4791266534f24faa
+id: 1cb5eb5c-4d37-4570-99e8-b2deac162e7e
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Values - Részletes
 
 ## 1. Alázat ⭐ (#1 Priority)

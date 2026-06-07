@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast — PopScore & HostScore Elemzés"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Navigátor Podcast EP41 (Fegyelem) és EP42 (MMA) részletes elemzése PopScore és HostScore mutatókkal: hallgatói vonzerő, alkalmazhatóság, mélység, illetve szabolcsi moderátori teljesítmény szakadatok és javaslatok alapján."
+description_source: auto
+description_hash: e0e8959410303d42
+id: 979d7978-35f1-4e38-8eb9-b88a15952b64
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast — PopScore & HostScore Elemzés
 
 > EP41 Fegyelem | EP42 MMA (Harcosok)

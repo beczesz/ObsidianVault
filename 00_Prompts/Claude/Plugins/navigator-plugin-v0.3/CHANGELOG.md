@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast Plugin — Changelog"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast Plugin verzióváltozásait dokumentálja, amely epizódanalízist, metaadat-generálást és csatorna-intelligencia funkciókat támogat. A v0.3 verzió összeköti az előzetes publikálást és utólagos elemzést, új batch feldolgozási képességekkel és adat-vezérelt guidance-al."
+description_source: auto
+description_hash: d477e5ed493ed201
+id: 4601d566-acfd-4007-b291-75963eb82111
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast Plugin — Changelog
 
 ## v0.3.0 (2026-04-06) — „Intelligens Motor"

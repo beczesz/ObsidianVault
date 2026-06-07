@@ -1,4 +1,7 @@
 ---
+description: "Brainstorming session notes capturing AI-generated insights on brand voice redesign for a meat e-commerce platform targeting small towns, including messaging pillars, localization strategy, and early adopter marketing approach based on research findings."
+description_source: auto
+description_hash: ab4fde70fd6b11f9
 topic: Brand Voice v2.0 -- Kisvárosi Early Adopter Marketing Kampány
 created: 2026-04-23
 last_updated: 2026-04-23
@@ -6,7 +9,6 @@ status: concluded
 id: 32509664-6270-4396-b5fa-77023b567cd3
 index_schema_version: 1
 ---
-
 # Brainstorm: Brand Voice v2.0 + Early Adopter Marketing Kampány
 
 ## Sessions

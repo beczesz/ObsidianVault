@@ -1,3 +1,15 @@
+---
+title: "Phase 2 -- Dashboard Update Process"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Monthly process for updating the CPS dashboard with current month project data: the skill compares new actuals against dashboard history, handles row insertion and formula copying, and manages review status through state columns. Szabolcs uses Claude for Excel to avoid file-locking conflicts."
+description_source: auto
+description_hash: bf98fbe900ad5b01
+id: b7670952-4811-4c25-a9ac-84a190d58307
+index_schema_version: 1
+bdos_index: true
+---
 # Phase 2 -- Dashboard Update Process
 
 **Owner:** Szabolcs

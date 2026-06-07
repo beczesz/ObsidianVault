@@ -4,6 +4,25 @@
 
 ---
 
+## Scheduling Rule (2026-05-26 óta érvényes)
+
+**MAX 2 archív Spotify-művelet hetente.**
+
+| Hét típusa | Max archív op |
+|---|---|
+| Új epizód launch hét (EP43, EP44, ...) | **1** archív op |
+| Normál hét (csak archive content) | **2** archív op |
+
+"Archív op" = bármilyen Spotify-action a régi epizódokhoz (archive upload VAGY date-fix).
+
+**Indok:** elkerülni a Spotify-pipeline és az új-EP-launch wave interference-ét. Túl sok Spotify-művelet egy héten cognitive overload (az MP3 export, upload, ellenőrzés mind manuális, mind időigényes).
+
+**Default ütemezés:** Thursday = archive upload (Navigator-FB runbook szerint), Saturday = date-fix (ha kell) — de csak normál heteken.
+
+**Cross-link:** [Marketing/Runbooks/episode-launch.md](Marketing/Runbooks/episode-launch.md) — a launch-week-rule visszahivatkozása.
+
+---
+
 ## 1. Meglévő Spotify epizódok — Dátum korrekció
 
 | EP | Vendég | Spotify dátum (HIBÁS) | YouTube dátum (HELYES) | Státusz |

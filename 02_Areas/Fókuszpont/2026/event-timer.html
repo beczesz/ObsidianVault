@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fókuszpont 2026, Időkövető</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Brand: Fókuszpont 2026 primary #003f5c, expressed in OKLCH,
+         neutrals tinted toward the brand hue (233). No #000 / #fff. */
+      --brand:        oklch(0.42 0.078 233);
+      --brand-light:  oklch(0.68 0.110 230);
+      --brand-dim:    oklch(0.42 0.078 233 / 0.22);
+      --on-brand:     oklch(0.98 0.004 233);
+
+      --bg:           oklch(0.17 0.015 233);
+      --surface:      oklch(0.22 0.018 233);
+      --surface2:     oklch(0.27 0.020 233);
+      --border:       oklch(0.33 0.022 233);
+
+      --text:         oklch(0.96 0.006 233);
+      --text-muted:   oklch(0.70 0.025 233);
+      --accent-light: oklch(0.80 0.090 225);
+
+      --success:      oklch(0.74 0.130 158);
+      --warning:      oklch(0.82 0.150 78);
+      --danger:       oklch(0.68 0.190 25);
+
+      --radius:       12px;
+      --ease:         cubic-bezier(0.16, 0.84, 0.32, 1);
+
+      --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Consolas, monospace;
+      --sans: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    /* ── Header ── */
+    header { text-align: center; margin-bottom: 20px; }
+
+    header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-light);
+    }
+
+    header .clock {
+      font-family: var(--mono);
+      font-size: 2.4rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 6px;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Tabs ── */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      width: 100%;
+      max-width: 560px;
+      margin-bottom: 16px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px 8px 0 0;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      cursor: pointer;
+      padding: 10px 16px;
+      transition: color 0.18s var(--ease), background 0.18s var(--ease), border-color 0.18s var(--ease);
+      font-family: inherit;
+    }
+
+    .tab-btn.active {
+      background: var(--brand);
+      border-color: var(--brand-light);
+      color: var(--on-brand);
+    }
+
+    /* ── Tab panels ── */
+    .tab-panel { display: none; width: 100%; max-width: 560px; }
+    .tab-panel.active { display: block; }
+
+    /* ── Timer card ── */
+    .main-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 28px 28px 24px;
+      margin-bottom: 16px;
+    }
+
+    .item-index {
+      font-family: var(--mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .item-title {
+      font-size: 1.7rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+
+    .item-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.45;
+    }
+
+    .timer-display {
+      font-family: var(--mono);
+      font-size: clamp(4.5rem, 16vw, 9rem);
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      line-height: 1;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      transition: color 0.4s var(--ease);
+    }
+
+    .timer-display.warning { color: var(--warning); }
+    .timer-display.danger  { color: var(--danger); }
+    .timer-display.ended   { color: var(--danger); animation: pulse 1s ease-in-out infinite; }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    .progress-wrap {
+      background: var(--surface2);
+      border-radius: 100px;
+      height: 8px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .progress-bar {
+      height: 100%;
+      border-radius: 100px;
+      background: var(--brand-light);
+      transition: width 0.5s linear, background 0.4s var(--ease);
+    }
+
+    .progress-bar.warning { background: var(--warning); }
+    .progress-bar.danger  { background: var(--danger); }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    button {
+      border: none;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 10px 18px;
+      transition: transform 0.1s var(--ease), background 0.18s var(--ease), opacity 0.2s var(--ease);
+      font-family: inherit;
+    }
+
+    button:active { transform: scale(0.96); }
+    button:disabled { opacity: 0.3; cursor: not-allowed; transform: none; }
+
+    .btn-play {
+      background: var(--brand);
+      color: var(--on-brand);
+      padding: 12px 36px;
+      font-size: 1rem;
+      border: 1px solid var(--brand-light);
+    }
+
+    .btn-play:hover { background: var(--brand-light); }
+    .btn-play.playing { background: var(--warning); border-color: var(--warning); color: oklch(0.22 0.05 78); }
+
+    .btn-nav {
+      background: var(--surface2);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+
+    .btn-nav:hover:not(:disabled) { border-color: var(--brand-light); }
+
+    .btn-adj {
+      background: var(--surface2);
+      color: var(--accent-light);
+      border: 1px solid var(--border);
+      font-size: 0.82rem;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .btn-adj:hover { border-color: var(--brand-light); }
+
+    .ended-banner {
+      display: none;
+      text-align: center;
+      background: oklch(0.68 0.19 25 / 0.12);
+      border: 1px solid var(--danger);
+      border-radius: 8px;
+      color: var(--danger);
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 10px 16px;
+      margin-bottom: 16px;
+      letter-spacing: 0.04em;
+    }
+
+    .ended-banner.visible { display: block; }
+
+    /* ── Schedule list ── */
+    .schedule-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0 0 var(--radius) var(--radius);
+      overflow: hidden;
+    }
+
+    .schedule-section-header {
+      padding: 12px 20px;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .schedule-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 13px 20px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      transition: background 0.15s var(--ease);
+    }
+
+    .schedule-item:last-child { border-bottom: none; }
+    .schedule-item:hover { background: var(--surface2); }
+
+    /* Current item: background tint + brand-coloured time, no side-stripe. */
+    .schedule-item.current { background: var(--brand-dim); }
+    .schedule-item.current .sched-time  { color: var(--brand-light); font-weight: 700; }
+    .schedule-item.current .sched-title { color: var(--text); }
+
+    .schedule-item.done { opacity: 0.4; }
+
+    .sched-time {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      padding-top: 2px;
+      min-width: 50px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sched-body { flex: 1; }
+
+    .sched-title {
+      font-size: 0.94rem;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    .sched-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .sched-dur {
+      font-family: var(--mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      padding-top: 2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ── Editor tab ── */
+    .editor-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 20px;
+    }
+
+    .editor-help {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      line-height: 1.65;
+    }
+
+    .editor-help code {
+      font-family: var(--mono);
+      background: var(--surface2);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: 0.78rem;
+      color: var(--accent-light);
+    }
+
+    textarea#agendaEditor {
+      width: 100%;
+      min-height: 340px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 0.84rem;
+      line-height: 1.6;
+      padding: 14px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s var(--ease);
+    }
+
+    textarea#agendaEditor:focus { border-color: var(--brand-light); }
+
+    .editor-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 14px;
+      align-items: center;
+    }
+
+    .btn-apply {
+      background: var(--brand);
+      color: var(--on-brand);
+      border: 1px solid var(--brand-light);
+      padding: 10px 26px;
+    }
+
+    .btn-apply:hover { background: var(--brand-light); }
+
+    .editor-status {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .editor-status.ok    { color: var(--success); }
+    .editor-status.error { color: var(--danger); }
+
+    @media (max-width: 480px) {
+      .item-title { font-size: 1.35rem; }
+      header .clock { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Fókuszpont 2026</h1>
+  <div class="clock" id="clock">--:--:--</div>
+</header>
+
+<!-- Tab buttons -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="switchTab('timer')">Timer</button>
+  <button class="tab-btn" onclick="switchTab('editor')">Szerkesztő</button>
+</div>
+
+<!-- Tab: Timer + Program -->
+<div class="tab-panel active" id="tab-timer">
+  <div class="main-card">
+    <div class="item-index" id="itemIndex">1 / 9</div>
+    <div class="item-title" id="itemTitle">--</div>
+    <div class="item-subtitle" id="itemSubtitle">--</div>
+
+    <div class="ended-banner" id="endedBanner">IDŐ LEJÁRT. Lépj a következő pontra.</div>
+
+    <div class="timer-display" id="timerDisplay">00:00</div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar" id="progressBar" style="width:100%"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-nav" id="btnPrev" onclick="navigate(-1)">Előző</button>
+      <button class="btn-play" id="btnPlay" onclick="togglePlay()">Indít</button>
+      <button class="btn-nav" id="btnNext" onclick="navigate(1)">Következő</button>
+      <button class="btn-adj" onclick="adjustTime(-1)">−1 perc</button>
+      <button class="btn-adj" onclick="adjustTime(1)">+1 perc</button>
+    </div>
+  </div>
+  <div class="schedule-card">
+    <div class="schedule-section-header">Program</div>
+    <div id="scheduleList"></div>
+  </div>
+</div>
+
+<!-- Tab: Editor -->
+<div class="tab-panel" id="tab-editor">
+  <div class="editor-card">
+    <p class="editor-help">
+      Illeszd be a programot, soronként egy pont.<br>
+      Formátum: <code>HH:MM | Cím | Közreműködő | perc</code><br>
+      Pl.: <code>19:45 | ÉNEK | Csiszér László | 15</code><br>
+      Az "Alkalmaz" gomb a timert azonnal frissíti (nem menti el).
+    </p>
+    <textarea id="agendaEditor"></textarea>
+    <div class="editor-actions">
+      <button class="btn-apply" onclick="applyEditorAgenda()">Alkalmaz</button>
+      <span class="editor-status" id="editorStatus"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Default agenda (Fókuszpont 2026 fixed program) ──
+const DEFAULT_AGENDA = [
+  { startTime: "19:45", title: "ÉNEK",            subtitle: "Csiszér László",                                                  duration: 15 },
+  { startTime: "20:00", title: "KÖSZÖNTÉS",        subtitle: "Becze Szabolcs és Júlia / Márton József főesperes",              duration: 15 },
+  { startTime: "20:15", title: "TANÚSÁGTÉTELEK",   subtitle: "Gergely Dávid és Tóth Jácinta",                                  duration: 30 },
+  { startTime: "20:45", title: "ÉNEK",             subtitle: "Csiszér László",                                                  duration: 15 },
+  { startTime: "21:00", title: "BESZÉLGETÉS A PÜSPÖK ATYÁVAL – fiatalok kérdeznek", subtitle: "Fábry Kornél ppk., Péter Géza és Péter Ágota", duration: 45 },
+  { startTime: "21:45", title: "ÉNEK",             subtitle: "Csiszér László",                                                  duration: 15 },
+  { startTime: "22:00", title: "SZENTSÉGIMÁDÁS",   subtitle: "Ilonka Eszter, Nagy Mátyás, Vass Réka, Fábry Kornél ppk.",       duration: 45 },
+  { startTime: "22:45", title: "ÉNEK – DICSŐÍTÉS", subtitle: "Csiszér László",                                                  duration: 15 },
+  { startTime: "23:00", title: "AGAPÉ",            subtitle: "Szülők",                                                          duration: 30 },
+];
+
+let AGENDA = DEFAULT_AGENDA.map(item => ({ ...item }));
+
+// ── State ──
+let currentIndex = 0;
+let remainingSeconds = 0;
+let totalSeconds = 0;
+let isPlaying = false;
+let intervalId = null;
+
+// ── Tabs ──
+function switchTab(name) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  const names = ['timer', 'editor'];
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', names[i] === name);
+  });
+  if (name === 'editor') populateEditor();
+}
+
+// ── Editor ──
+function agendaToText(agenda) {
+  return agenda.map(item =>
+    `${item.startTime} | ${item.title} | ${item.subtitle} | ${item.duration}`
+  ).join('\n');
+}
+
+function populateEditor() {
+  const ta = document.getElementById('agendaEditor');
+  if (!ta.dataset.dirty) ta.value = agendaToText(AGENDA);
+  ta.addEventListener('input', () => { ta.dataset.dirty = '1'; }, { once: true });
+}
+
+function applyEditorAgenda() {
+  const lines = document.getElementById('agendaEditor').value
+    .split('\n')
+    .map(l => l.trim())
+    .filter(l => l.length > 0 && !l.startsWith('#'));
+
+  const parsed = [];
+  const errors = [];
+
+  lines.forEach((line, idx) => {
+    const parts = line.split('|').map(p => p.trim());
+    if (parts.length < 4) {
+      errors.push(`${idx + 1}. sor: kevés oszlop`);
+      return;
+    }
+    const duration = parseInt(parts[3], 10);
+    if (isNaN(duration) || duration <= 0) {
+      errors.push(`${idx + 1}. sor: érvénytelen perc`);
+      return;
+    }
+    parsed.push({ startTime: parts[0], title: parts[1], subtitle: parts[2], duration });
+  });
+
+  const statusEl = document.getElementById('editorStatus');
+
+  if (errors.length > 0) {
+    statusEl.className = 'editor-status error';
+    statusEl.textContent = 'Hiba: ' + errors.join('; ');
+    return;
+  }
+
+  if (parsed.length === 0) {
+    statusEl.className = 'editor-status error';
+    statusEl.textContent = 'Üres program, semmi sem változott.';
+    return;
+  }
+
+  AGENDA = parsed;
+  loadItem(0);
+
+  const ta = document.getElementById('agendaEditor');
+  delete ta.dataset.dirty;
+  ta.value = agendaToText(AGENDA);
+
+  statusEl.className = 'editor-status ok';
+  statusEl.textContent = `Kész: ${parsed.length} pont betöltve.`;
+  setTimeout(() => { statusEl.textContent = ''; statusEl.className = 'editor-status'; }, 3000);
+}
+
+// ── Timer ──
+function formatTime(secs) {
+  const m = Math.floor(Math.abs(secs) / 60);
+  const s = Math.abs(secs) % 60;
+  const sign = secs < 0 ? "-" : "";
+  return `${sign}${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
+}
+
+function loadItem(index) {
+  stopTimer();
+  currentIndex = index;
+  const item = AGENDA[index];
+  totalSeconds = item.duration * 60;
+  remainingSeconds = totalSeconds;
+
+  document.getElementById("itemIndex").textContent = `${index + 1} / ${AGENDA.length}`;
+  document.getElementById("itemTitle").textContent = item.title;
+  document.getElementById("itemSubtitle").textContent = item.subtitle;
+  document.getElementById("btnPlay").textContent = "Indít";
+  document.getElementById("btnPlay").classList.remove("playing");
+  document.getElementById("endedBanner").classList.remove("visible");
+  document.getElementById("btnPrev").disabled = index === 0;
+  document.getElementById("btnNext").disabled = index === AGENDA.length - 1;
+
+  updateDisplay();
+  renderSchedule();
+}
+
+function updateDisplay() {
+  const display = document.getElementById("timerDisplay");
+  const bar     = document.getElementById("progressBar");
+
+  display.textContent = formatTime(remainingSeconds);
+
+  const pct = totalSeconds > 0 ? (remainingSeconds / totalSeconds) * 100 : 0;
+  bar.style.width = Math.max(0, pct) + "%";
+
+  display.className = "timer-display";
+  bar.className = "progress-bar";
+
+  if (remainingSeconds <= 0) {
+    display.classList.add("ended");
+    bar.classList.add("danger");
+  } else if (pct <= 15) {
+    display.classList.add("danger");
+    bar.classList.add("danger");
+  } else if (pct <= 30) {
+    display.classList.add("warning");
+    bar.classList.add("warning");
+  }
+}
+
+function startTimer() {
+  isPlaying = true;
+  document.getElementById("btnPlay").textContent = "Szünet";
+  document.getElementById("btnPlay").classList.add("playing");
+  intervalId = setInterval(() => {
+    remainingSeconds--;
+    updateDisplay();
+    if (remainingSeconds <= 0 && isPlaying) {
+      stopTimer();
+      document.getElementById("endedBanner").classList.add("visible");
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  isPlaying = false;
+  clearInterval(intervalId);
+  intervalId = null;
+  document.getElementById("btnPlay").textContent = "Indít";
+  document.getElementById("btnPlay").classList.remove("playing");
+}
+
+function togglePlay() {
+  if (isPlaying) {
+    stopTimer();
+  } else {
+    document.getElementById("endedBanner").classList.remove("visible");
+    startTimer();
+  }
+}
+
+function navigate(dir) {
+  const next = currentIndex + dir;
+  if (next >= 0 && next < AGENDA.length) {
+    loadItem(next);
+  }
+}
+
+function adjustTime(minutes) {
+  remainingSeconds += minutes * 60;
+  if (remainingSeconds < 0) remainingSeconds = 0;
+  if (remainingSeconds > 0) {
+    document.getElementById("endedBanner").classList.remove("visible");
+  }
+  updateDisplay();
+}
+
+function renderSchedule() {
+  const list = document.getElementById("scheduleList");
+  list.innerHTML = AGENDA.map((item, i) => {
+    let cls = "";
+    if (i === currentIndex) cls = "current";
+    else if (i < currentIndex) cls = "done";
+    return `
+      <div class="schedule-item ${cls}" onclick="loadItem(${i})">
+        <div class="sched-time">${item.startTime}</div>
+        <div class="sched-body">
+          <div class="sched-title">${item.title}</div>
+          <div class="sched-sub">${item.subtitle}</div>
+        </div>
+        <div class="sched-dur">${item.duration} p</div>
+      </div>`;
+  }).join("");
+}
+
+// ── Clock ──
+function updateClock() {
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2, "0");
+  const m = String(now.getMinutes()).padStart(2, "0");
+  const s = String(now.getSeconds()).padStart(2, "0");
+  document.getElementById("clock").textContent = `${h}:${m}:${s}`;
+}
+
+loadItem(0);
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+
+</body>
+</html>

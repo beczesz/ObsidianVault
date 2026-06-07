@@ -1,3 +1,15 @@
+---
+title: "Chaos Engineering Workshop"
+date: 2026-04-13
+author: Becze Szabolcs
+status: active
+description: "Intenzív 3 hetes chaos engineering workshop az MVMI Omnichannel platform üzemeltetői csapatának, majd folyamatos éves program. Tartalma: oktatási fázis monitoring és incidenskezelésről, gyakorlati szimuláció GameDay-kkel, éves szerviz kerettel."
+description_source: auto
+description_hash: b4bbeab496b3878e
+id: cae1e0be-dca5-46bf-9131-5958029c01ed
+index_schema_version: 1
+bdos_index: true
+---
 # Chaos Engineering Workshop
 
 **Omnichannel platform felkészítési program**

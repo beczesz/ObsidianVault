@@ -1,3 +1,15 @@
+---
+title: "Exar Labs – 24 hónapos stratégiai irány (2026–2028)"
+date: 2026-03-16
+author: Becze Szabolcs
+status: active
+description: "Az Exar Labs 24 hónapos stratégiája az outsourcing modellből való kilépést és közvetlen ügyfélprojektek felé való elmozdulást tervezi; AI-alapú fejlesztési hatékonyság, pilot projektek és tudásmegosztás képezik a három pillért. Vállalatvezetők és stratégiai tervezők számára."
+description_source: auto
+description_hash: 0a2ee32a5e579eaa
+id: d94ab1fa-9a53-49d3-93a2-bde1b4de7190
+index_schema_version: 1
+bdos_index: true
+---
 # Exar Labs – 24 hónapos stratégiai irány (2026–2028)
 
 ## 1. Stratégiai alapelv

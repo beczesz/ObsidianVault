@@ -1,3 +1,15 @@
+---
+title: "EP44 – Fegyelem és szolgálat | Alapgondolatok"
+date: 2026-04-22
+author: Becze Szabolcs
+status: active
+description: "Ez egy podcast-interjú alapgondolatai egy 55 éves férfiról, aki a fegyelem és szolgálat kapcsolatát vizsgálja: a külső és belső fegyelem különbségét, hogyan teremti meg a szabadságot az önkontroll, valamint a szokások szerepét az akaraton, képességen és tudáson keresztül. Podcast-szerkesztők és interjúzók számára."
+description_source: auto
+description_hash: 3a44c94a6d570d38
+id: 59070024-33be-48e4-b601-00ab2462062c
+index_schema_version: 1
+bdos_index: true
+---
 # EP44 – Fegyelem és szolgálat | Alapgondolatok
 
 *Forrás: ChatGPT brainstorm session (https://chatgpt.com/share/69b8d251-c2e0-800a-af10-2f7227ae1c4a)*

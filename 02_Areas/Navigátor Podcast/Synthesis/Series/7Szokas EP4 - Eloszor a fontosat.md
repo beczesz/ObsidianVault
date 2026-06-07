@@ -2,6 +2,9 @@
 series: "7 Szokás"
 episode: "EP4"
 title: "Először a fontosat – A prioritizálás művészete"
+description: "A Stephen Covey-féle harmadik szokás (Először a fontos) gyakorlati alkalmazásáról szóló epizód, amely a sürgős-fontos mátrixon, delegáláson és időmenedzsment-generációkon keresztül tanítja meg a nézőknek a prioritizálás és fókusz művészetét személyes és üzleti kontextusban."
+description_source: auto
+description_hash: c6a6f4f42aa9dcfe
 host: "Beczesz Szabolcs"
 source_book: "Stephen Covey – A kiemelkedően eredményes emberek 7 szokása"
 youtube_id: "QnklQ1xRmMc"
@@ -31,7 +34,6 @@ created: "2026-04-06"
 id: e6495314-4989-443f-921a-8964b1d37cac
 index_schema_version: 1
 ---
-
 # 7 Szokás EP4 – Először a fontosat: A prioritizálás művészete
 
 ## Sorozat kontextus

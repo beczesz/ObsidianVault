@@ -1,3 +1,15 @@
+---
+title: "PRODUCT.md — IGNIS professional / Elektromobilitás szakképzés (demó)"
+date: 2026-05-21
+author: Becze Szabolcs
+status: active
+description: "IGNIS professional elektromobilitási szakképzés bemutatkozó oldala; sötét navy design tűz-akcentokkal, amely 21 alkalmas program tananyagát és gyakorlati kimenetet prezentálja karrierváltó szakembereknek és pályakezdőknek, magabiztos és lendületes tónusban."
+description_source: auto
+description_hash: e14bdce8bc47f48c
+id: 4e5d7493-6c40-475d-a23a-6ae584cd60b9
+index_schema_version: 1
+bdos_index: true
+---
 # PRODUCT.md — IGNIS professional / Elektromobilitás szakképzés (demó)
 
 > Tanuló-demó, 4. variáns. A paletta a valódi logóból származtatva:

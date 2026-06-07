@@ -1,3 +1,15 @@
+---
+title: "Brand — Deák Húsmíves"
+date: 2026-04-23
+author: Becze Szabolcs
+status: active
+description: "Deák Húsmíves teljes brand rendszere: brand voice dokumentum, messaging stratégia, vizuális identitás, adalékanyag kutatás és brand audit egy helyen, verziókezeléssel és hierarchiával."
+description_source: auto
+description_hash: 61cfb746effccc1f
+id: 5f97c8f7-1c05-4736-93b0-2ac065586042
+index_schema_version: 1
+bdos_index: true
+---
 # Brand — Deák Húsmíves
 
 A Deák Húsmíves teljes brand rendszere egy helyen.

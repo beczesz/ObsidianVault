@@ -1,3 +1,15 @@
+---
+title: "Sertés Szalámi"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Tradicionálisan érlelt sertésszalámi termékleírás vékonyra szeletelhető verzióban; magában foglalja az árképzést, készletállapotot és vastagság opciót a product management számára."
+description_source: auto
+description_hash: 6cec14f1978a10d8
+id: 54ed6ca3-23ff-46eb-ab52-bc28ef254f87
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Szalámi
 
 ```yaml

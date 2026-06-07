@@ -1,3 +1,15 @@
+---
+title: "Sertés Apróhús"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Sertés apróhús termékkarta: vegyes húsdarabok pörköltnek és ragúnak, 21 forint/kg, friss készletből. Termelői információk és használati esetek magyar és román nyelvű leírásokkal."
+description_source: auto
+description_hash: 44848402a36196cd
+id: f834c6d0-5245-43e8-a1af-9416720810be
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Apróhús
 
 ```yaml

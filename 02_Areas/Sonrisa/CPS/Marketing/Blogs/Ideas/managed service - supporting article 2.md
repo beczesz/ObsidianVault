@@ -1,3 +1,15 @@
+---
+title: "The Hidden Costs of Hiring vs. the Predictability of Managed Services"
+date: 2026-03-25
+author: Becze Szabolcs
+status: active
+description: "Compares total cost of ownership for hiring DevOps engineers versus managed services, breaking down hidden recruitment, onboarding, tooling, and downtime costs. Targets CFOs and CTOs making infrastructure budget decisions with transparent pricing models and scenarios for when each option wins."
+description_source: auto
+description_hash: a35cd7cd1f183430
+id: a987795f-7d0e-4bf3-aa16-4f20fa642326
+index_schema_version: 1
+bdos_index: true
+---
 # The Hidden Costs of Hiring vs. the Predictability of Managed Services
 
 > **Series:** Managed Service Blog Series (3 of 3 — Closing Article)

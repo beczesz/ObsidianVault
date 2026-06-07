@@ -1,4 +1,7 @@
 ---
+description: "Interjú az autizmusról, amely az autizmus idegrendszeri sajátosságaként határozza meg, nem betegségként; tárgyalja a maszkolás pszichológiai terheit, a szülői bűntudatot és a közösségi elfogadás szükségességét."
+description_source: auto
+description_hash: 22b9b5f382a8da3f
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
@@ -13,7 +16,6 @@ synthesis_status: Complete
 id: 92d69e8c-34aa-49d9-934e-5e8c4fae6f82
 index_schema_version: 1
 ---
-
 ## Alapadatok
 
 | Attribútum | Érték |

@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Balázs Aaron, AI expert, discusses artificial intelligence's actual capabilities, realistic timelines, and gap between hype and reality with host Józsa Levi, who asks the questions intelligent lay listeners want answered about AI's implications and future impact."
+description_source: auto
+description_hash: 5ee36e38ee6150ee
+id: d3778e3d-1585-4360-bd04-926b0f7691e4
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP32 | Szülinap-hét #4

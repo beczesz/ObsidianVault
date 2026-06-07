@@ -1,9 +1,11 @@
 ---
+description: "A podcast sorozat produkciós munkafolyamata, amely nyomon követi a vendégek felkéréseit, epizódok felvételét és publikálását, valamint kapcsolódó YouTube-tartalom készítésének lépéseit."
+description_source: auto
+description_hash: 2d45fcf3f7e3116c
 kanban-plugin: board
 id: 0ee5f9f4-4704-47b5-bd33-8b9ccb1c3b94
 index_schema_version: 1
 ---
-
 ## Backlog
 
 - [ ] Deé Ágnes – Az őszinteség luxus vagy erő? vendég felkérés 📅 2026-05-20 

@@ -1,4 +1,7 @@
 ---
+description: "Podcast-epizód Bartha Bálinttal az ultra-futásról mint lelki gyakorlatról, ahol a természet, közösség és testünk üzenetei a verseny valódi értelme. Intim dialógus a fájdalomról mint információról és önmagunkkal való kapcsolatról."
+description_source: auto
+description_hash: 569bff5df4eb9ea0
 version: 1.0
 type: csakabaj-synthesis
 episode: 24
@@ -11,7 +14,6 @@ synthesis_status: gold_standard
 id: e48d94e3-fc69-4333-88b7-56014fb7a3c1
 index_schema_version: 1
 ---
-
 # Csakabaj S01E24 — Természet, közösség, verseny önmagunkkal
 **Guest:** Bartha Bálint (ultra-futás, természet) | **Host:** Józsa Levi  
 **Date:** 2024-11-13 | **Duration:** 53 minutes | **SRT Entries:** 1,070

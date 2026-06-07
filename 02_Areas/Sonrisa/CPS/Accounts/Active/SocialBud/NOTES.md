@@ -1,3 +1,15 @@
+---
+title: "SocialBud"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "An active managed DevOps service client that turned profitable after initial losses, managed by Kovacs Marcell and Pap David with minimal oversight from Szabolcs. Key metrics and contract details remain to be documented."
+description_source: auto
+description_hash: 66967a38583c1b49
+id: 79c213e3-bc58-4c15-b224-ae08d0700d92
+index_schema_version: 1
+bdos_index: true
+---
 # SocialBud
 
 ## Quick Info

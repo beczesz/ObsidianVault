@@ -1,6 +1,9 @@
 ---
 episode: EP24
 title: "A valóság színpadra állítva – A függőségről őszintén"
+description: "Faragó Zénó és Fodor Alain Leonard monodráma-projektje Kubisin Viktor heroinfüggőségéről, amely drogprevenciós eszközként működik iskolákban. Az epizód a konkrét függőségtől az általános függőségi mintázatok (pornó, AI, közösségi média) felé tágul, végül a transzcendenciára mint gyógyítóforrásra mutat."
+description_source: auto
+description_hash: e170a78c40f79f28
 guest: "Faragó Zénó & Fodor Alain Leonard"
 guest_title: "Rendező & Színész (Figurastúdió)"
 youtube_id: "X3Rhtpal5tA"
@@ -30,7 +33,6 @@ created: "2026-04-06"
 id: 60602fc2-c0ad-4a9e-b23a-592fed00b25b
 index_schema_version: 1
 ---
-
 # EP24 – A valóság színpadra állítva: A függőségről őszintén
 
 ## Vendég kontextus

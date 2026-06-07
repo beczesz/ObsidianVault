@@ -2,6 +2,9 @@
 series: "Kingdom at Work (Betenbough Módszer)"
 episode: "2. fejezet"
 title: "Amiben hiszünk – A zárt kéz és a nyitott kéz teológiája"
+description: "A Betenbough Companies hitvallásának két részéből álló keretrendszere: a zárt kéz tartalmazza az alapvető hitelveket, amelyekben nincs kompromisszum, a nyitott kéz pedig a vitázható kérdéseket, amely az egységet nem veszélyezteti."
+description_source: auto
+description_hash: 4dbeeea9ba83e8ff
 host: "Beczesz Szabolcs"
 source_book: "Betenbough Companies – Kingdom at Work: Vezetői útmutató"
 youtube_id: "6q1TSHg_7WE"
@@ -30,7 +33,6 @@ created: "2026-04-06"
 id: 2dadeed7-3057-404b-a2f9-b7f7333e1abe
 index_schema_version: 1
 ---
-
 # KAW 2. fejezet – Amiben hiszünk: A zárt kéz és a nyitott kéz teológiája
 
 ## Sorozat kontextus

@@ -1,4 +1,7 @@
 ---
+description: "Mélyinterjú Illyés Gergelyvel az ellenzéki szövetség pragmatikus alapjairól, erkölcsi dilemmáiról és a magyar politikai koalíciókat szervező erőfeszítésekről, amelyek a 2024-es választások körül játszódnak."
+description_source: auto
+description_hash: f4f415ec0b230d20
 version: 1.0
 type: csakabaj-synthesis
 episode: 23
@@ -11,7 +14,6 @@ synthesis_status: gold_standard
 id: 99b20837-005e-41d5-801b-ac791724b71b
 index_schema_version: 1
 ---
-
 # Csakabaj S01E23 — Váratlan szövetségek és furcsa fordulatok
 **Guest:** Illyés Gergely (politika, választások) | **Host:** Józsa Levi  
 **Date:** 2024-10-30 | **Duration:** 140 minutes | **SRT Entries:** 3,621

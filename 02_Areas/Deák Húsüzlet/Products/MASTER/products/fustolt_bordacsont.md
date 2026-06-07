@@ -1,3 +1,15 @@
+---
+title: "Füstölt Bordacsont"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Füstölt bordacsont termékadat, 16 euró/kg áron, bablevesbe és káposztás ételekhez használt alapanyagként jellemezve. Készletgazdálkodási és termékinformációs adatbázisba való bejegyzéshez, belső kóddal és elérhetőségi státusszal."
+description_source: auto
+description_hash: e786ed8ac10bc905
+id: 9d6c29f0-d163-42c2-b85c-4a27dae31bd0
+index_schema_version: 1
+bdos_index: true
+---
 # Füstölt Bordacsont
 
 ```yaml

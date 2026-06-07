@@ -1,5 +1,8 @@
 ---
 title: "The Leader Who Had No Title"
+description: "Robin Sharma's 2010 leadership fable arguing that leadership is a choice available to everyone regardless of title, using four acronym frameworks (IMAGE, SPARK, HUMAN, SHINE) delivered through mentor-guided encounters with ordinary workers who achieve extraordinary results."
+description_source: auto
+description_hash: 70af3a2a284214ec
 type: book
 author: "Robin Sharma"
 year: 2010
@@ -11,7 +14,6 @@ processed_by: "AI Speed-Reading Agent"
 id: c09ea4e0-ee22-4c52-bb0d-f6930c44ea3c
 index_schema_version: 1
 ---
-
 SAVE-TO: /03_Resources/02_Books/Robin Sharma - The Leader Who Had No Title/
 FILES:
   - The_Leader_Who_Had_No_Title_Robin_Sharma_2010.md

@@ -1,6 +1,9 @@
 ---
 episode: EP33
 title: "„A langyos víz a legnagyobb veszély" – Dr. Charaf Hassan radikális víziója a BME jövőjéről"
+description: "A BME rektora, Dr. Charaf Hassan radikális intézményi átalakulási tervét ismerteti: vállalatfenntartású modellre váltás, közalkalmazotti rendszer felszámolása, és a QS top 100-ba kerülés 6 év alatt. Szoftveripar-inspirálta vezetési szemlélettel küzd a langyos vízzel, a complacency ellen."
+description_source: auto
+description_hash: 53dc50e5099c74f7
 guest: "Dr. Charaf Hassan"
 role: "BME rektora (2024. július 1-től)"
 guest_background: "Libanonban született, 1986-ban érkezett Magyarországra állami ösztöndíjjal. Villamosmérnöki kar, kitüntetéses diploma, teljes ranglétra: tanársegéd → csoportvezető → tanszékvezető → DK → rektor. Szoftveres háttér, Microsoft/Nokia ipari partnerségek úttörője."
@@ -26,7 +29,6 @@ cluster_episodes: [EP33, EP30, EP31, EP21]
 id: 6bd3f02f-af2e-4c0c-9715-53de11932139
 index_schema_version: 1
 ---
-
 # EP33 — „A langyos víz a legnagyobb veszély" – Dr. Charaf Hassan
 
 ## Bevezető kontextus

@@ -1,5 +1,8 @@
 ---
 title: "Design Brief — Bolt Plakát A3"
+description: "Design brief a Deák Húsmíves A3-as plakátjához, amely a bolt pultja mögött vagy bejáratnál kerül kihelyezésre. A plakát feladata az online rendelési lehetőség és a Founding 50 program népszerűsítése a bolti vásárlók körében nagy, szkenelhető QR kóddal és konzisztens design nyelvvel."
+description_source: auto
+description_hash: a1f8d4c2ed586e67
 deliverable: In-store plakát a 3 Deák boltba
 format: 297×420mm (A3, álló)
 language: Magyar
@@ -7,7 +10,6 @@ date: 2026-04-22
 id: 5a1810de-667e-43e3-bdd3-d88c4cfa8995
 index_schema_version: 1
 ---
-
 # Design Brief: Bolt Plakát (A3) — Founding 50
 
 ## Feladat

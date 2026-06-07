@@ -1,4 +1,7 @@
 ---
+description: "Assessment of maturity rankings and audience overlap across three presences: Sonrisa Enterprise AI (high maturity for outbound campaigns), Navigátor Podcast (high maturity for audience stewardship), and Personal Builder (low maturity, unpackaged)."
+description_source: auto
+description_hash: 67977fc656007e6c
 schema: presto.strategic-prep-synthesis.v1
 date: 2026-05-24
 phase: strategic-prep-1
@@ -6,7 +9,6 @@ presences_assessed: 3
 id: 44befc3f-0b7c-4c4d-8811-9b362ca14571
 index_schema_version: 1
 ---
-
 # Strategic Prep Phase 1 — Cross-Presence Synthesis
 
 > User-directed Strategic Preparation Phase. Multi-mode (audience + discover + reflect). Output: assessment only. No campaigns started, no drafts produced. Phase 2.B compliant.

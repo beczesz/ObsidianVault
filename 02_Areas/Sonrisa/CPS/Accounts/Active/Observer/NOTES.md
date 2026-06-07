@@ -1,3 +1,15 @@
+---
+title: "Observer"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Account tracking for Observer, a media company where CPS completed a hostile vendor takeover and 4TB AWS EKS migration in three months. Pending cost optimization report and post-mortem evaluation for senior management accountability review."
+description_source: auto
+description_hash: 45d911017dade1ea
+id: 909c4f81-7e45-4861-af1f-cda4f9055f55
+index_schema_version: 1
+bdos_index: true
+---
 # Observer
 
 ## Quick Info

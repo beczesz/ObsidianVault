@@ -1,11 +1,13 @@
 ---
+description: "A Sage projekt legutóbbi ChatGPT állapotának pillanatképe, amely új beszélgetéseket detektál, hetente követi a tartalomváltozást és lehetővé teszi hivatkozások azonosítását az aktuális chatekre."
+description_source: auto
+description_hash: c1909602c4b20a4e
 schema: sage.chatgptsnapshot.v1
 captured_at: null
 projects: []
 id: be73fd42-7b6b-4281-be70-2f19970f0f19
 index_schema_version: 1
 ---
-
 # Sage — ChatGPT Snapshot
 
 A legutóbb látott ChatGPT projekt + chat sorrend. Sage minden harvest futás elején lemásolja az aktuális állapotot, hogy:

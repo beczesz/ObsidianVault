@@ -1,5 +1,8 @@
 ---
 title: "DH wireframe → approved screen base mapping"
+description: "Reference guide mapping wireframe views to approved screen bases for DH feature development. Designers use this table to identify which existing screen template each new feature view should build upon, ensuring visual consistency and reusing established UI patterns across the product."
+description_source: auto
+description_hash: e3b383af831ea11d
 version: 1.0
 date: 2026-05-09
 status: living document
@@ -10,7 +13,6 @@ purpose: |
 id: bfd28a87-f79b-4b7b-8b4e-2863bb4596c4
 index_schema_version: 1
 ---
-
 # DH wireframe → approved screen base mapping
 
 > **Hogyan használd:** Új feature wireframe készítésekor először nézd meg, melyik view-ja melyik approved screen-re épül. A "Default base" oszlop mindig autoritatív, kivéve ha a feature spec mást ír elő.

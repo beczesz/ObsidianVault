@@ -1,4 +1,7 @@
 ---
+description: "Checklist a Deák Húsmíves online rendelési platform jogi megfelelőségéhez: Privacy Policy kész, de hiányoznak az ÁSZF, Impresszum, GDPR consentok és app store compliance dokumentumok. Tartalmazza a határidőket (v0.3 beta, v0.4 app launch) és a Jira ticketeket."
+description_source: auto
+description_hash: 2e114103f9eef888
 file: legal.md
 version: v1.2
 date: 2026-04-20
@@ -7,7 +10,6 @@ owner: Szabolcs
 id: 8c3361c8-91ed-424a-b72c-5295ad49ac37
 index_schema_version: 1
 ---
-
 # DH Pilot — Jogi követelmények és teendők
 
 ## Összefoglaló

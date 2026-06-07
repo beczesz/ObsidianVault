@@ -1,3 +1,15 @@
+---
+title: "AWS Cost Analysis Report"
+date: 2026-01-26
+author: Becze Szabolcs
+status: active
+description: "Financial report analyzing AWS spending patterns across eu-west-1 region for October-December 2025, detailing costs by service, identifying optimization opportunities, and recommending reserved instances and lifecycle policies for cost reduction."
+description_source: auto
+description_hash: ea8eca1a4e727dfc
+id: b94ebfc5-b582-479a-b2ca-868a99cf34fe
+index_schema_version: 1
+bdos_index: true
+---
 # AWS Cost Analysis Report
 
 **Report Period:** October 16, 2025 - January 16, 2026 (Last 3 Months)  

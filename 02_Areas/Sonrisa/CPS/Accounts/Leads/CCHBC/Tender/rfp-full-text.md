@@ -1,3 +1,15 @@
+---
+title: "rfp full text"
+date: 2026-05-20
+author: Becze Szabolcs
+status: active
+description: "Full request for proposal from Coca-Cola HBC for managed cloud platform services covering Azure infrastructure operations, DevOps automation, cost optimization, observability, and 24/7 support with future GCP readiness."
+description_source: auto
+description_hash: 1c66d3561f7b5985
+id: 4fe08f18-1eaf-441a-a6fc-702014f4c6f6
+index_schema_version: 1
+bdos_index: true
+---
 Cloud Platform Management - Requirements
 
 Executive Summary

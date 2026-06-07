@@ -1,3 +1,15 @@
+---
+title: "Monthly Update Brief (MUB) -- Generation Instructions"
+date: 2026-04-22
+author: Becze Szabolcs
+status: active
+description: "Instructions for generating the Monthly Update Brief, a structured markdown document that converts Phase 1 pivot tables into text format for dashboard updates. Contains MUB structure, source data specifications, billable vs internal task categorization rules, and aggregation logic for client projects."
+description_source: auto
+description_hash: f1a8152375627ca9
+id: 51f5fb45-df5b-47ea-a4fd-e9be34291c58
+index_schema_version: 1
+bdos_index: true
+---
 # Monthly Update Brief (MUB) -- Generation Instructions
 
 **Version:** 0.1

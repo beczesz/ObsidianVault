@@ -1,5 +1,8 @@
 ---
 title: Microsite Factory — Startup ötlet index
+description: "ExarLabs startup ötlete: AI-asszisztált microsite gyár, amely üzleti briefből 20-30 perc alatt egyedi marketing weboldalt készít kisvállalkozások számára. BMC-t dolgoznak ki iteratívan, többügynök csapattal (Claude, ChatGPT, Perplexity, Gemini), magyar piacra célozva előbb fogászatok."
+description_source: auto
+description_hash: 0a9e5b51eb1a38f2
 type: index
 status: active
 created: 2026-05-16
@@ -8,7 +11,6 @@ owner: Szabolcs (ExarLabs)
 id: b18b53a3-5ed8-42ce-a339-943c4642312c
 index_schema_version: 1
 ---
-
 # Microsite Factory — Startup index
 
 > ExarLabs új startup ötlet: AI-asszisztált microsite gyár kisvállalkozásoknak. Egy üzleti briefből 20-30 perc alatt egyedi, stratégiailag átgondolt marketing weboldal — nem template, nem drag-and-drop.

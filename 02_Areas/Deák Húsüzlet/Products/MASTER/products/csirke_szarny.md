@@ -1,3 +1,15 @@
+---
+title: "Csirke Szárny"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Csirke szárny termékadatlap: friss csirkehús kategóriában, 16 forint/kg áron, grillezésre, sütésre és levesbe alkalmas. Készletkezelési és árkalkulációs rendszerben használatos."
+description_source: auto
+description_hash: 5c3bdb5942a83658
+id: 4e2a1f2b-b662-4a51-bb5a-c94acd7d7dc9
+index_schema_version: 1
+bdos_index: true
+---
 # Csirke Szárny
 
 ```yaml

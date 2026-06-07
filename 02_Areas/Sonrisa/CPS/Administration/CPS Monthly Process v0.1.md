@@ -1,3 +1,15 @@
+---
+title: "CPS Monthly Process v0.1"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Szabolcs's monthly administrative workflow for CPS spanning three phases: Phase 1 processes raw timesheets in Cowork to produce base file, TAM report, and structured Monthly Update Brief; Phase 2 uses Claude for Excel with a skill to update the CPS dashboard project-by-project; Phase 3 cross-references contractor TIG documents for Account Manager verification emails."
+description_source: auto
+description_hash: 74854c15f0191487
+id: 0e09788a-a6c9-465c-a81f-fa5996694b2f
+index_schema_version: 1
+bdos_index: true
+---
 # CPS Monthly Process v0.1
 
 **Owner:** Szabolcs

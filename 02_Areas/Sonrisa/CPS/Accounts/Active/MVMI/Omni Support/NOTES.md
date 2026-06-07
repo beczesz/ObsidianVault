@@ -1,3 +1,15 @@
+---
+title: "MVMI - Omni Support (Energy OpenShift)"
+date: 2026-04-13
+author: Becze Szabolcs
+status: active
+description: "Active OpenShift migration and operations support for MVMI's energy platform serving millions of households, with achievements including bi-weekly releases and zero downtime maintenance. Includes separate chaos engineering workshop sub-engagement and requires documentation of scope, SLA, team composition, and contract terms."
+description_source: auto
+description_hash: 1578247adfb4acfa
+id: 5feddea7-5bf3-4975-918d-c6b05e5a08f1
+index_schema_version: 1
+bdos_index: true
+---
 # MVMI - Omni Support (Energy OpenShift)
 
 ## Quick Info

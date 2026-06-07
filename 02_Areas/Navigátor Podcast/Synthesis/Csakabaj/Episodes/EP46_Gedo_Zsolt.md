@@ -1,11 +1,13 @@
 ---
+description: "Csakabaj Podcast Season 3 première featuring filmmaker Gedő Zsolt discussing creative mastery, public vulnerability, and sustaining artistic practice through failure and audience reception gaps."
+description_source: auto
+description_hash: 0cf93032262f8f09
 version: 1.0
 type: csakabaj-synthesis
 quality: Gold Standard
 id: 703b5901-0cf6-4cce-95e8-eaed3f65ba88
 index_schema_version: 1
 ---
-
 # Csakabaj Podcast — Season 3
 
 ## Episode EP46 | S03E01: Gedő Zsolt

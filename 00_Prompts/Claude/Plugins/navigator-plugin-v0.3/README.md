@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast Plugin v0.3 — „Intelligens Motor""
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast plugin v0.3 dokumentációja: teljes asszisztens YouTube metadatához, epizódszintézishez és csatorna-audithoz, amely 52 epizódból nyert csatorna-intelligenciát használ. Podcast-készítők és csatorna-menedzserek számára."
+description_source: auto
+description_hash: 7915bf583b7fd6eb
+id: 13c11820-0770-499a-a893-7bb9633d55f3
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast Plugin v0.3 — „Intelligens Motor"
 
 A Navigátor Podcast teljes asszisztense: YouTube metadata generálás, epizód szintézis,

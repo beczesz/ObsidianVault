@@ -1,3 +1,15 @@
+---
+title: "Sonrisa LLMaaS Landing Page — Structure & Copy (v2)"
+date: 2026-03-31
+author: Becze Szabolcs
+status: active
+description: "Sonrisa's landing page v2 pitches a private AI platform with two offerings: a shared €500/mo starter plan and dedicated managed infrastructure from €1000+ setup."
+description_source: auto
+description_hash: 7f99aed482eb34eb
+id: 13a9fe06-fc2c-4fc1-88a3-b6ccf529ab87
+index_schema_version: 1
+bdos_index: true
+---
 # Sonrisa LLMaaS Landing Page — Structure & Copy (v2)
 
 **Strategic positioning:** "Your own AI. We manage it."
@@ -312,8 +324,8 @@ We'll help you figure that out.
 
 The following files still contain the outdated "40-60% cheaper" claim and token-based pricing:
 
-1. **Services/Inference Farm/Description.md** — Lines: "20-30% higher costs than self-hosted alternatives", "40-60% cheaper than OpenAI equivalent", entire Business Impact / Cost Savings table
-2. **Services/Inference Farm/LLMaaS — ACE Opportunity Summary.md** — Lines: "40-60% savings", "Reducing OpenAI/Azure spend" as customer value
+1. **Practices/Inference-Farm/proposals/01-sonrisa-llmaas-platform-description.md** — Lines: "20-30% higher costs than self-hosted alternatives", "40-60% cheaper than OpenAI equivalent", entire Business Impact / Cost Savings table
+2. **Practices/Inference-Farm/proposals/02-aws-ace-opportunity-summary.md** — Lines: "40-60% savings", "Reducing OpenAI/Azure spend" as customer value
 3. **BMC v1.3.md** — Check if cost claims are referenced in value proposition section
 
 These should be updated before any customer-facing presentations.

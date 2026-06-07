@@ -1,3 +1,15 @@
+---
+title: "Tepertőnek való Szalonna"
+date: 2026-05-07
+author: Becze Szabolcs
+status: active
+description: "Tepertőkhöz való friss szalonna, nyári szezonális termék kilogrammonkénti áron, amely tepertő készítéshez alkalmazható és jelenleg elérhető."
+description_source: auto
+description_hash: fcd4ca60dd5a063f
+id: c5b54c0a-1c81-430a-abf7-7d25fad5ee9c
+index_schema_version: 1
+bdos_index: true
+---
 # Tepertőnek való Szalonna
 
 ```yaml

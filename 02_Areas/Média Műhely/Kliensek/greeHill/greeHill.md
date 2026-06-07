@@ -1,3 +1,15 @@
+---
+title: "greeHill — Client Profile"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Technical profile for urban tree management software company greeHill; contacts include Gyula Fekete (CIO, co-founder) and Daniela Bruse (global head of communications)."
+description_source: auto
+description_hash: 2cd1e2e46e9adf3f
+id: 882994db-e017-4947-bc18-7c03953d2cc3
+index_schema_version: 1
+bdos_index: true
+---
 # greeHill — Client Profile
 
 ## Company

@@ -1,4 +1,15 @@
-
+---
+title: "Tanciknak üzenet"
+date: 2026-04-23
+author: Becze Szabolcs
+status: active
+description: "Jelzés az iskolának Anna azonosított bullying-ból, amely során több fiú (Baczó, Lukács, Farkas) rúgta, lökte és zárta ki őt. A szülők személyes megbeszélést kérnek, hogy megelőzzék a helyzet súlyosbodását."
+description_source: auto
+description_hash: ea1a1722b2c302cd
+id: 5c2194af-4a3e-4a74-9192-68d6a3c30dd8
+index_schema_version: 1
+bdos_index: true
+---
 Kedves Tancik, 
 
 A mai nap Anna amikor hazajött elmesélte, hogy két fiú is megrúgta őt hátulról (Baczó Csanád, Lukács Attila), valamint volt még egy fiú aki a falnak lökte (Farkas Vince). Kértük, hogy mesélje el, hogy mi történt mire elmondta, hogy többen kizárták a játékból és beszóltak neki az elmúlt napokban. 

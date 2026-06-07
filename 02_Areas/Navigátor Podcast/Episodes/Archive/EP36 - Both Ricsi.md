@@ -1,4 +1,15 @@
-
+---
+title: "EP36   Both Ricsi"
+date: 2026-02-13
+author: Becze Szabolcs
+status: active
+description: "Ricsi biodata, podcast outline és dietetikai tanácsok egy irodai dolgozók energiaszintjét és életminőségét javító epizódhoz, marginálisjavaslatok filozófiájára építve."
+description_source: auto
+description_hash: 1ebbfbd5ea8fea9d
+id: 4c66577a-704d-4ac7-af39-de709b9cf59c
+index_schema_version: 1
+bdos_index: true
+---
 ## Bio
 Dietetikus, alkalmazott táplálkozástudományi szakember és szemelyi edző végzettségem van, de nem vallom magam a “hagyományos dietetikusok” közé. Funkcionálisan és hollisztikusan, egészében érdekel az emberi szervezet és annak működése, egészség fenntartása vagy esetekben annak visszaállítása. A Fit&Healthy étrend-kiegészítő bolt és webáruház tulajdonosa vagyok.
 

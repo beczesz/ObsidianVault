@@ -1,5 +1,8 @@
 ---
 title: "Adaos total 2025 — árrés kategóriánként"
+description: "A 2025-ös kiskereskedelmi árrés-elemzés 55 árucsoport szerinti bontásban, amely megmutatja, hogy a cigaretta nagy forgalmat de alacsony árrést hoz (4,9%), míg az italok, friss áru és édesség adja a valódi profitot (22–30% között). Az elemzés kitér az árrésdinamikára és stratégiai növekedési lehetőségekre"
+description_source: auto
+description_hash: 4c62d8adce8b946a
 type: synthesis
 project: Gergely István
 source_file: "Adaos total 2025xlsx.xlsx"
@@ -10,7 +13,6 @@ tags: [synthesis, margin, retail, categories]
 id: f1d24f29-e7f3-49f6-96d9-55304ee9306a
 index_schema_version: 1
 ---
-
 # Adaos total 2025 — kiskereskedelmi árrés árucsoportonként
 
 ## Mit tartalmaz

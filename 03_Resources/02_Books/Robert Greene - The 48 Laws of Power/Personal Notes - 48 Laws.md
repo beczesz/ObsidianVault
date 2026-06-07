@@ -1,3 +1,15 @@
+---
+title: "Gondolatok"
+date: 2025-09-28
+author: Becze Szabolcs
+status: active
+description: "Olvasói jegyzetei Greene The 48 Laws of Power című könyvéről, amely erkölcsi dilemmákat és gyakorlati alkalmazásokat vizsgál a hatalmi dinamikákat keresztény értékek lencséjén keresztül."
+description_source: auto
+description_hash: e82a49a6ff99e38a
+id: f3512679-56a4-485b-9492-13e545a8b09c
+index_schema_version: 1
+bdos_index: true
+---
 # Gondolatok
 Tags: #atomic  #ethics
 

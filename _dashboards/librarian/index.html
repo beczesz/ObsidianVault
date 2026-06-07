@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <!--
   =============================================================================
-  Librarian — Knowledge Manager Observatory.   Version: 0.5.1
+  Librarian — Knowledge Manager Observatory.   Version: 0.8.1
   =============================================================================
   The Librarian Dashboard is the representation layer for the BDOS Knowledge
   Manager (Librarian v0.6). It visualizes the vault's retrieval infrastructure:
@@ -46,6 +46,83 @@
   Visual tone: library / archivist — calm, organized, structured.
 
   Audit trail:
+    0.8.1 (2026-05-29) tend: Live Search panel (panel-13-live-search) moved to the top,
+          now the first content block directly after the masthead, before the Panel 1
+          header strip. Search-first layout per user request. Markup move only, no JS/CSS change.
+    0.8.0 (2026-05-29) tend: destructive removal of 3 header cards (tier2-count,
+          version, freshness) and 8 panels (2 tier1-index, 3 tier2-units,
+          4 tier2-candidates, 5 knowledge-map, 6 open-questions, 7 vault-gaps,
+          8 recent-activity, 9 ops-reference). Dead JS removed: parseTier2,
+          getFreshness, renderTier2, parseIndexForPARA, renderTier1,
+          parseKnowledgeMap, renderKnowledgeMap, parseOpenQuestions,
+          renderOpenQuestions, parseGaps, renderGaps, parseYamlFrontmatter,
+          parseMarkdownSections, openChangelog, closeChangelog, fetchChangelog,
+          parseVersionLog, renderChangelog, changelog modal event listeners.
+          Dead CSS removed: tier2-table, para-grid, domain-list, qg-list,
+          candidates-grid, mode-list, activity log (kept: panels 10,11 use it),
+          changelog modal, phase-banner. pollVault() now fetches only
+          AGENT_PROFILES_FILE. widget-strip grid shrunk to single-card layout.
+          Surviving panels: 1 (total-files only), 10, 11, 12, 13.
+    0.7.0 (2026-05-29) tend: Phase 2 UI build. (1) vault_stats.json wired to
+          Total Files Indexed (indexed/total pct + gauge bar), Tier-2 Units Active,
+          Index Freshness — all cards now live from sidecar, no hardcodes. (2) Librarian
+          Version pill → clickable changelog modal: fetches version-log YAML blocks from
+          00_Prompts/BDOS/agents/librarian/logs/version/2026-05.md, renders timeline; real
+          version v0.8.3 from frontmatter now shown (stale v0.6 removed). (3) (i) info
+          icons on all 13 panels — reusable .panel-info CSS + tooltip JS. (4) Stale
+          hardcodes removed (tier2Count was 11, freshCount was uncalculated; phase-banner
+          CSS kept but class unused — no visible change). (5) Panel 12: animated retrieval
+          pipeline diagram (file→parse→FTS5→BM25→results) — pure SVG + CSS + JS. (6) Panel
+          13: live search card — debounced /api/search, result list with area chips + path
+          links; typing lights up pipeline diagram stages. (7) dash-server.mjs: /api/search
+          appends telemetry event to agent_logs.json sidecar (agent_name=librarian,
+          mode=retrieve, query_duration_ms, result_count, basis FTS5 BM25); Logs panel
+          renders these as retrieval rows (Q ms column already existed).
+    0.6.4 (2026-05-29) FIX: copy-ref + live-sync were dead. Boot called wireCopyRef() (clipboard.js) and LiveUpdates.subscribe() (live-updates.js) inline, BEFORE those engine scripts loaded -> ReferenceError killed the boot tail. Moved the engine-dependent boot calls into a deferred <script> after the src tags. pollVault()/loadLogsPanel() stay inline for initial paint. Same defect fixed in broker + curator.
+    0.6.3 (2026-05-29) tend: masthead version-pill restored. Chip re-added to eyebrow (was removed in 0.5.8). Markup: version-pill mono chip beside "BDOS · Knowledge Manager". Panel-1 libVersion widget kept (both coexist, consistent with family standard).
+    0.6.2 (2026-05-28) tend: masthead avatar now shows the real Pixar portrait
+      (/00_Prompts/BDOS/agents/librarian/avatar.png) filling the 64px circle; emoji
+      📚 kept as 404 fallback. Avatar render no longer sets textContent (would wipe
+      the <img>); profile.color still tints the ring.
+    0.6.1 (2026-05-28) promoted: Alfred Tasks Sidebar (DS 0.9.0). .app -> .app-main + .app-shell layout. alfred-tasks.js added.
+    0.6.0 (2026-05-25) — promote DS 0.8.9: inline wirePanelAnchors() removed;
+          now auto-wired by /_design/clipboard.js. Modifier-key pass-through
+          (Cmd/Ctrl/middle-click open natively) + a11y attributes set at
+          wire time (aria-label, title).
+    0.5.9 (2026-05-25) — tend: two bug fixes.
+          Bug 1 (panel anchor clipboard): .panel-anchor <a> elements had no
+          click handler — clicking only set the URL hash via native anchor
+          behaviour; clipboard.writeText was never called. Fixed: added
+          wirePanelAnchors() which intercepts clicks on every .panel-anchor,
+          calls navigator.clipboard.writeText(full URL with hash), then
+          briefly swaps the badge text to "✓" for 1.5s before restoring the
+          original "#N" label. URL hash still updates via location.hash.
+          Bug 2 (Librarian Version widget showing stale/wrong value): the
+          version was parsed from 00_AGENTS_INDEX.md using a regex that
+          expected a "version:" key-value line inside a "### Librarian"
+          section — but the index stores it inline as "### Librarian — v0.8.3"
+          (no separate key), so the regex never matched and the widget stayed
+          at the hardcoded HTML fallback "v0.6". Fixed: LIBRARIAN_FILE
+          (/00_Prompts/BDOS/agents/librarian.md) is now fetched in
+          pollVault() and parseYamlFrontmatter() extracts the version field
+          directly from the canonical frontmatter. Render: "v" + version.
+    0.5.8 (2026-05-25) — tend: masthead cleanup. Eyebrow version-pill removed (redundant with Panel 1 widget).
+          Submeta row 1 shortened to "Vault retrieval & indexing infrastructure".
+          agentVersion span removed from submeta (redundant with Panel 1 Librarian Version widget).
+          Panel 1 "Librarian Version" widget sub-text: "6 modes · Phase 2.B" badge added.
+    0.5.7 (2026-05-25) refactor: extract canonical :root + dark + @media tokens → /_design/tokens.css (DS 0.7.0 engine extraction, Sprint 2a)
+    0.5.6 (2026-05-25) refactor: extract setTheme/copyText/wireCopyRef → /_design/{theme,clipboard}.js (DS 0.7.0 engine extraction, Sprint 1)
+    0.5.5 (2026-05-25) — tend: card-copy-ref added per DS 4a (promote audit rollout).
+          .card-copy-ref CSS + copyText + wireCopyRef helpers added.
+          data-card-id on 12 bounded cards: 4 widgets (header/tier2-count/version/freshness),
+          2 candidate-cards (ignis-academy, media-muhely), 6 mode-items (index, retrieve,
+          tidy, audit, integrate, deep-clean). position:relative on .widget,
+          .candidate-card, .mode-item. wireCopyRef(document) called on boot.
+    0.5.4 (2026-05-25) — tend: panel anchor system. Every panel wrapper gets
+          id="panel-N-<slug>" + a hover .panel-anchor #N link in each header.
+          Clicking the #N badge sets the URL hash → shareable/linkable panel ref.
+          11 panels anchored (panel-1-header-strip … panel-11-logs). New pattern —
+          not yet in DESIGN_SYSTEM.md; candidate for promote rollout.
         0.5.0 (2026-05-24) — tend: schema realigned to brief (agent_events → agent_logs).
           log_level/input_tokens/output_tokens/total_tokens column names, error/critical levels,
           15 event types. query_duration_ms exposed in Logs panel (Librarian perf metric).
@@ -70,6 +147,9 @@
           operations modes reference (6 modes). Schema-aware parsers for tier-2
           table from 00_AGENTS_INDEX.md. Graceful never_run empty-state on all
           log-driven panels. DS 0.3.0 aligned.
+    0.5.3 (2026-05-25) — promote: Fix: agent_name field name in logs filter (e.agent → e.agent_name); removed stale Phase 2 banner. Promote rollout.
+    0.5.2 (2026-05-25) — promote: admin-bar.js (DS 0.6.0) replaces ops-header.js.
+          #bdos-ops-header → #bdos-admin-bar. Fixed dark WP-style top bar, 34px.
     0.5.1 (2026-05-24) — promote: ops-header strip injected (DS 0.5.0).
 
   Conventions: see _dashboards/_design/DESIGN_SYSTEM.md (DS 0.3.0).
@@ -93,86 +173,9 @@
   document.documentElement.dataset.theme = t;
 })();
 </script>
+<link rel="stylesheet" href="/_dashboards/_design/tokens.css">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  /* Surfaces — cream paper */
-  --bg-page:   #faf9f5;
-  --bg-elev:   #ffffff;
-  --bg-sunken: #f3f1ea;
-  --bg-tint:   #f5f4ef;
-
-  /* Ink scale (1 darkest → 5 lightest) */
-  --ink-1: #141413;
-  --ink-2: #3a3a37;
-  --ink-3: #6d6d6a;
-  --ink-4: #9c9c98;
-  --ink-5: #c8c8c2;
-
-  /* Lines */
-  --line:      #e5e4df;
-  --line-soft: #efede7;
-
-  /* Accent — terracotta */
-  --accent:      #D97757;
-  --accent-deep: #b35a3f;
-  --accent-tint: #fbeee6;
-
-  /* Status */
-  --ok:        #1f7a4d;  --ok-tint:   #e6f3ec;
-  --warn:      #b07a18;  --warn-tint: #fbf2dc;
-  --gap:       #c0392b;  --gap-tint:  #fbeae6;
-  --idle:      #7a7a76;  --idle-tint: #efeeeb;
-
-  /* Elevation */
-  --shadow-1: 0 1px 2px rgba(20,20,19,.04), 0 1px 1px rgba(20,20,19,.02);
-  --shadow-2: 0 4px 14px rgba(20,20,19,.07), 0 2px 4px rgba(20,20,19,.04);
-
-  /* Radius */
-  --radius-s: 4px;  --radius-m: 6px;  --radius-l: 10px;  --radius-xl: 14px;
-
-  /* Motion */
-  --t-fast: 120ms cubic-bezier(.2,.7,.3,1);
-  --t-med:  220ms cubic-bezier(.2,.7,.3,1);
-}
-
-/* ===== Dark theme override (DS 0.3.0) ===== */
-:root[data-theme="dark"] {
-  --bg-page:   #1a1916;
-  --bg-elev:   #232220;
-  --bg-sunken: #2c2a26;
-  --bg-tint:   #262420;
-  --ink-1: #f5f4ef;
-  --ink-2: #d6d4ce;
-  --ink-3: #a8a6a0;
-  --ink-4: #7c7a74;
-  --ink-5: #54524d;
-  --line:      #36342f;
-  --line-soft: #2c2a26;
-  --accent:      #e08a6a;
-  --accent-deep: #f0a085;
-  --accent-tint: #3a2a22;
-  --ok:        #5cc08a;  --ok-tint:   #1e3329;
-  --warn:      #d6a94a;  --warn-tint: #352c18;
-  --gap:       #e57c6e;  --gap-tint:  #3a221e;
-  --idle:      #9a9892;  --idle-tint: #2a2925;
-  --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-  --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg-page:   #1a1916; --bg-elev:   #232220; --bg-sunken: #2c2a26; --bg-tint:   #262420;
-    --ink-1: #f5f4ef; --ink-2: #d6d4ce; --ink-3: #a8a6a0; --ink-4: #7c7a74; --ink-5: #54524d;
-    --line: #36342f; --line-soft: #2c2a26;
-    --accent: #e08a6a; --accent-deep: #f0a085; --accent-tint: #3a2a22;
-    --ok: #5cc08a; --ok-tint: #1e3329; --warn: #d6a94a; --warn-tint: #352c18;
-    --gap: #e57c6e; --gap-tint: #3a221e; --idle: #9a9892; --idle-tint: #2a2925;
-    --shadow-1: 0 1px 2px rgba(0,0,0,.30), 0 1px 1px rgba(0,0,0,.20);
-    --shadow-2: 0 4px 14px rgba(0,0,0,.40), 0 2px 4px rgba(0,0,0,.25);
-  }
-}
-
 html { font-size: 15px; }
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
@@ -190,9 +193,8 @@ a { color: inherit; text-decoration: none; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: var(--radius-s); }
 button { font: inherit; background: transparent; border: 0; color: inherit; cursor: pointer; }
 
-.app {
+.app-main {
   max-width: 1200px;
-  margin: 0 auto;
   padding: 28px 36px 96px;
 }
 
@@ -231,13 +233,6 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .submeta { font-size: 14px; color: var(--ink-3); display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 .submeta-item { display: flex; align-items: center; gap: 5px; }
 
-/* ===== Phase 2 Banner ===== */
-.phase-banner {
-  background: var(--warn-tint); border: 1px solid rgba(176,122,24,.25); border-radius: var(--radius-l);
-  padding: 10px 16px; margin-bottom: 24px; font-size: 12.5px; color: var(--warn);
-  display: flex; align-items: center; gap: 10px;
-}
-.phase-banner strong { font-weight: 600; }
 
 /* ===== Sync status ===== */
 .sync-status { display: flex; align-items: center; gap: 8px; font-size: 11.5px; color: var(--ink-4); margin-top: 14px; }
@@ -253,8 +248,42 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .section-head h2 { font-family: 'Lora', Georgia, serif; font-size: 18px; font-weight: 600; color: var(--ink-1); }
 .section-head .count-badge { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-4); background: var(--bg-sunken); border: 1px solid var(--line); padding: 1px 7px; border-radius: 999px; }
 
+/* ===== Panel anchor (0.5.4) ===== */
+/* Panels that carry an id="panel-N-<slug>" expose a hover #N badge in their header.
+   The badge is an <a href="#panel-N-<slug>"> that sets the URL hash on click.
+   scroll-margin-top clears the fixed 34px admin bar + 8px breathing room. */
+[id^="panel-"] { scroll-margin-top: 42px; }
+.panel-anchor {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; font-weight: 600;
+  color: var(--ink-5);
+  background: transparent;
+  border: none;
+  padding: 1px 4px;
+  border-radius: var(--radius-s);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--t-fast), color var(--t-fast), background var(--t-fast);
+  white-space: nowrap;
+  cursor: pointer;
+  line-height: 1;
+  flex-shrink: 0;
+}
+.panel-anchor-host:hover .panel-anchor,
+.panel-anchor-host:focus-within .panel-anchor {
+  opacity: 1;
+}
+.panel-anchor:hover {
+  color: var(--accent-deep);
+  background: var(--accent-tint);
+}
+/* Section-head variant: anchor sits at the end of the flex row */
+.section-head .panel-anchor { align-self: center; margin-left: 2px; }
+/* Panel-head variant: anchor sits after the title text */
+.panel-head .panel-anchor { margin-left: 2px; }
+
 /* ===== Widget strip ===== */
-.widget-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+.widget-strip { display: grid; grid-template-columns: minmax(220px, 360px); gap: 14px; margin-bottom: 28px; }
 .widget { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius-l); padding: 16px 18px 14px; }
 .widget-label { font-size: 11px; text-transform: uppercase; letter-spacing: .1em; color: var(--ink-4); font-weight: 500; margin-bottom: 6px; }
 .widget-value { font-family: 'JetBrains Mono', monospace; font-size: 26px; font-weight: 500; color: var(--ink-1); line-height: 1.1; }
@@ -268,61 +297,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .panel-head { font-family: 'Lora', Georgia, serif; font-size: 14px; font-weight: 600; color: var(--ink-1); margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--line-soft); display: flex; align-items: center; gap: 8px; }
 .panel-head .badge { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-4); background: var(--bg-sunken); border: 1px solid var(--line); padding: 1px 6px; border-radius: 99px; font-weight: 500; }
 
-/* ===== Tier-2 table ===== */
-.tier2-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-.tier2-table th { font-size: 10.5px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-4); font-weight: 500; padding: 0 10px 8px 0; text-align: left; border-bottom: 1px solid var(--line); }
-.tier2-table td { padding: 9px 10px 9px 0; border-bottom: 1px solid var(--line-soft); vertical-align: middle; }
-.tier2-table tr:last-child td { border-bottom: none; }
-.scope-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-2); }
-.file-count { font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--ink-1); font-weight: 500; }
-.index-version { font-family: 'JetBrains Mono', monospace; font-size: 11px; color: var(--ink-4); }
-.fresh-dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
-.fresh-dot.fresh { background: var(--ok); }
-.fresh-dot.stale { background: var(--warn); }
-.fresh-dot.very-stale { background: var(--gap); }
-
-/* ===== PARA bar ===== */
-.para-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.para-item { background: var(--bg-sunken); border: 1px solid var(--line-soft); border-radius: var(--radius-m); padding: 10px 12px; }
-.para-item-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--ink-4); font-weight: 500; margin-bottom: 4px; }
-.para-item-value { font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 500; color: var(--ink-1); }
-.para-item-sub { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
-.para-bar-row { margin-top: 10px; }
-.para-bar-label { display: flex; justify-content: space-between; font-size: 11.5px; color: var(--ink-3); margin-bottom: 4px; }
-.para-bar-track { height: 6px; background: var(--bg-sunken); border-radius: 99px; overflow: hidden; }
-.para-bar-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width var(--t-med); }
-
-/* ===== Domain list ===== */
-.domain-list { list-style: none; }
-.domain-item { display: flex; align-items: center; justify-content: space-between; padding: 7px 0; border-bottom: 1px solid var(--line-soft); font-size: 13px; }
-.domain-item:last-child { border-bottom: none; }
-.domain-name { color: var(--ink-2); font-weight: 500; }
-.domain-count { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--ink-4); background: var(--bg-sunken); padding: 1px 7px; border-radius: 99px; }
-
-/* ===== Questions / Gaps list ===== */
-.qg-list { list-style: none; }
-.qg-item { padding: 8px 0; border-bottom: 1px solid var(--line-soft); font-size: 13px; color: var(--ink-2); line-height: 1.4; }
-.qg-item:last-child { border-bottom: none; }
-.qg-item .qg-domain { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-4); background: var(--bg-sunken); padding: 1px 6px; border-radius: 4px; margin-right: 6px; }
-
-/* ===== Candidate chips ===== */
-.candidates-grid { display: flex; gap: 12px; flex-wrap: wrap; }
-.candidate-card { background: var(--bg-sunken); border: 1px solid var(--line); border-radius: var(--radius-m); padding: 12px 16px; flex: 1; min-width: 160px; }
-.candidate-name { font-size: 13px; font-weight: 600; color: var(--ink-1); margin-bottom: 4px; }
-.candidate-count { font-family: 'JetBrains Mono', monospace; font-size: 20px; font-weight: 500; color: var(--accent); }
-.candidate-label { font-size: 11px; color: var(--ink-4); margin-top: 2px; }
-.candidate-bar-track { height: 4px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 8px; }
-.candidate-bar-fill { height: 100%; border-radius: 99px; }
-.candidate-bar-fill.approaching { background: var(--warn); }
-
-/* ===== Mode reference ===== */
-.mode-list { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.mode-item { background: var(--bg-sunken); border: 1px solid var(--line-soft); border-radius: var(--radius-m); padding: 10px 14px; }
-.mode-name { font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent-deep); font-weight: 500; margin-bottom: 3px; }
-.mode-desc { font-size: 12.5px; color: var(--ink-3); line-height: 1.4; }
-.mode-slash { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ink-5); margin-top: 3px; }
-
-/* ===== Activity log ===== */
+/* ===== Activity log (used by panels 10, 11) ===== */
 .activity-empty { text-align: center; padding: 32px 20px; color: var(--ink-4); }
 .activity-empty .empty-icon { font-size: 28px; margin-bottom: 8px; opacity: .4; }
 .activity-empty p { font-size: 13px; line-height: 1.5; }
@@ -340,9 +315,12 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   display: inline-flex; align-items: center; justify-content: center;
   font-size: 32px; flex-shrink: 0;
   border: 2px solid transparent;
+  overflow: hidden;
   transition: box-shadow var(--t-fast);
 }
 .agent-avatar:hover { box-shadow: var(--shadow-2); }
+.agent-avatar-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.agent-avatar-emoji { display: none; width: 100%; height: 100%; align-items: center; justify-content: center; }
 
 /* ===== Capabilities panel (added 0.2.0) ===== */
 .cap-section { margin-bottom: 16px; }
@@ -372,18 +350,129 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
 .trace-val.yes { color: var(--ok); font-weight: 600; }
 .trace-val.no  { color: var(--ink-5); }
 
+/* ===== Card copy-ref button (DS 0.2.0) ===== */
+/* Card container MUST have position: relative */
+.card-copy-ref {
+  position: absolute; top: 10px; right: 10px; opacity: 0;
+  display: inline-flex; align-items: center; gap: 4px;
+  padding: 3px 7px; background: var(--bg-elev); border: 1px solid var(--line);
+  border-radius: var(--radius-m); font-size: 10px;
+  font-family: 'JetBrains Mono', monospace; font-weight: 500;
+  color: var(--ink-3); cursor: pointer;
+  transition: opacity var(--t-fast), background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+  white-space: nowrap; z-index: 2; line-height: 1;
+}
+.widget:hover .card-copy-ref,
+.widget:focus-within .card-copy-ref { opacity: 1; }
+.card-copy-ref:hover { background: var(--bg-sunken); border-color: var(--accent); color: var(--accent-deep); }
+.card-copy-ref.copied { background: var(--ok-tint); border-color: rgba(31,122,77,.3); color: var(--ok); opacity: 1; }
+
+/* position:relative required on card containers with copy-ref */
+.widget { position: relative; }
+
+/* ===== (i) Panel info icons ===== */
+.panel-info {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 15px; height: 15px; border-radius: 50%;
+  border: 1.5px solid var(--ink-5); color: var(--ink-4);
+  font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700; font-style: normal;
+  cursor: help; flex-shrink: 0; position: relative; user-select: none;
+  transition: border-color var(--t-fast), color var(--t-fast);
+  line-height: 1;
+}
+.panel-info:hover { border-color: var(--accent); color: var(--accent-deep); }
+.panel-info::after {
+  content: attr(data-tip);
+  position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%);
+  background: var(--ink-1); color: var(--bg-page);
+  font-size: 11.5px; font-weight: 400; font-family: 'Inter', sans-serif;
+  line-height: 1.5; white-space: normal; width: 220px; text-align: left;
+  padding: 7px 10px; border-radius: var(--radius-m);
+  opacity: 0; pointer-events: none;
+  transition: opacity var(--t-fast); z-index: 30;
+  letter-spacing: 0; text-transform: none;
+}
+.panel-info:hover::after { opacity: 1; }
+/* Widget-level info icon */
+.widget-info-row { display: flex; align-items: center; gap: 5px; margin-bottom: 6px; }
+.widget-info-row .widget-label { margin-bottom: 0; }
+
+/* ===== Gauge bar (items 1–3) ===== */
+.widget-gauge { height: 4px; background: var(--line); border-radius: 99px; overflow: hidden; margin-top: 8px; }
+.widget-gauge-fill { height: 100%; background: var(--accent); border-radius: 99px; transition: width var(--t-med); }
+
+
+/* ===== Pipeline diagram (Panel 12) ===== */
+.pipeline-panel { margin-bottom: 24px; }
+.pipeline-svg-wrap { overflow-x: auto; padding: 8px 0 4px; }
+.pipeline-svg-wrap svg { min-width: 580px; display: block; margin: 0 auto; }
+.pipe-stage { cursor: help; }
+.pipe-stage rect { transition: fill var(--t-fast); }
+.pipe-stage:hover rect { fill: var(--accent-tint) !important; }
+.pipe-arrow { stroke: var(--ink-5); }
+.pipe-pulse {
+  animation: pipePulse 2.4s ease-in-out infinite;
+}
+@keyframes pipePulse {
+  0%   { opacity: 0; offset-distance: 0%; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { opacity: 0; offset-distance: 100%; }
+}
+.pipe-stage-tooltip {
+  position: fixed; background: var(--ink-1); color: var(--bg-page);
+  font-size: 11.5px; line-height: 1.5; padding: 8px 12px;
+  border-radius: var(--radius-m); max-width: 240px; pointer-events: none;
+  z-index: 100; opacity: 0; transition: opacity var(--t-fast);
+  white-space: normal;
+}
+.pipe-stage-tooltip.visible { opacity: 1; }
+
+/* ===== Live search panel (Panel 13) ===== */
+.search-panel { margin-bottom: 24px; }
+.search-input-row { display: flex; gap: 10px; margin-bottom: 14px; }
+.search-input {
+  flex: 1; font-family: 'Inter', sans-serif; font-size: 14px;
+  padding: 9px 14px; border: 1.5px solid var(--line);
+  border-radius: var(--radius-m); background: var(--bg-elev);
+  color: var(--ink-1); outline: none;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.search-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-tint); }
+.search-input::placeholder { color: var(--ink-5); }
+.search-results-meta { font-size: 12px; color: var(--ink-4); margin-bottom: 10px; font-family: 'JetBrains Mono', monospace; }
+.search-result-list { list-style: none; }
+.search-result-item {
+  padding: 10px 0; border-bottom: 1px solid var(--line-soft);
+  display: flex; flex-direction: column; gap: 3px;
+}
+.search-result-item:last-child { border-bottom: none; }
+.sr-title { font-size: 13.5px; font-weight: 600; color: var(--accent-deep); }
+.sr-title a { color: inherit; text-decoration: none; }
+.sr-title a:hover { text-decoration: underline; }
+.sr-desc { font-size: 12.5px; color: var(--ink-2); line-height: 1.4; }
+.sr-meta { display: flex; gap: 6px; flex-wrap: wrap; }
+.sr-chip {
+  font-size: 10px; font-family: 'JetBrains Mono', monospace;
+  padding: 1px 7px; border-radius: 99px; border: 1px solid var(--line);
+  background: var(--bg-sunken); color: var(--ink-4);
+}
+.sr-chip.area { background: var(--accent-tint); border-color: rgba(217,119,87,.2); color: var(--accent-deep); }
+.sr-path { font-size: 10.5px; color: var(--ink-5); font-family: 'JetBrains Mono', monospace; }
+.search-empty { text-align: center; padding: 24px 0; color: var(--ink-4); font-size: 13px; }
+.search-loading { color: var(--ink-4); font-size: 13px; font-style: italic; padding: 8px 0; }
+
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
-  .app { padding: 20px 18px 64px; }
-  .widget-strip { grid-template-columns: repeat(2, 1fr); }
+  .app-main { padding: 20px 18px 64px; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
-  .mode-list { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
-<div id="bdos-ops-header"></div>
-<div class="app">
+<div id="bdos-admin-bar"></div>
+<div class="app-shell">
+<div class="app-main">
 
   <!-- ===== Masthead ===== -->
   <header class="masthead">
@@ -393,7 +482,7 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
         Ideas Vault
       </a>
       <div style="display:flex;align-items:center;gap:12px;">
-        <span class="agent-avatar" id="agentAvatar" title="Librarian" style="background:rgba(139,111,78,.12);border-color:rgba(139,111,78,.3);">📚</span>
+        <span class="agent-avatar" id="agentAvatar" title="Librarian" style="background:rgba(139,111,78,.12);border-color:rgba(139,111,78,.3);"><img class="agent-avatar-img" src="/00_Prompts/BDOS/agents/librarian/avatar.png" alt="Librarian" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"><span class="agent-avatar-emoji" aria-hidden="true">📚</span></span>
         <span id="liveStatusMount"></span>
         <button class="theme-toggle" id="themeToggle" aria-label="Switch to dark theme" title="Toggle day / night theme">
           <span class="theme-icon">&#9790;</span>
@@ -404,15 +493,14 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     <div class="eyebrow">
       <span class="dot"></span>
       BDOS · Knowledge Manager
-      <span class="version-pill mono" id="versionPill">v0.4.0</span>
+      <span class="version-pill mono">v0.8.1</span>
     </div>
     <h1 class="serif">Librarian <span class="accent">Observatory</span></h1>
     <div class="submeta">
       <span class="submeta-item">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-        Knowledge Manager — vault retrieval layer
+        Vault retrieval &amp; indexing infrastructure
       </span>
-      <span class="submeta-item" id="agentVersion">agent v0.6</span>
       <span class="submeta-item" id="lastActivity">loading…</span>
     </div>
     <div class="sync-status">
@@ -424,229 +512,43 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
     </div>
   </header>
 
-  <!-- ===== Phase 2 Banner ===== -->
-  <div class="phase-banner">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <span><strong>Phase 2.B active.</strong> Structured logging schemas live. Operational logs folder exists but is currently empty — activity will appear here after Librarian's first logged invocation. Phase 2.C (token intelligence) pending.</span>
+  <!-- Panel 13: Live Search (moved to top, 0.8.1) -->
+  <div class="panel full search-panel panel-anchor-host" id="panel-13-live-search">
+    <div class="panel-head serif">
+      Live Search
+      <span class="badge">FTS5 · /api/search</span>
+      <i class="panel-info" data-tip="Real-time vault search via GET /api/search?q=. Debounced 300ms. Results: title, description, area chip, path link. Each search logs a telemetry event to the Logs panel (Q ms column).">i</i>
+      <a class="panel-anchor" href="#panel-13-live-search" title="Link to this panel">#13</a>
+    </div>
+    <div class="search-input-row">
+      <input type="search" id="searchInput" class="search-input" placeholder="Search vault… (e.g. cognition, sprint, podcast)" autocomplete="off" spellcheck="false">
+    </div>
+    <div class="search-results-meta" id="searchMeta" style="display:none;"></div>
+    <ul class="search-result-list" id="searchResults"></ul>
   </div>
 
   <!-- ===== Panel 1: Header strip widgets ===== -->
-  <div class="widget-strip" id="widgetStrip">
-    <div class="widget">
-      <div class="widget-label">Total Files Indexed</div>
+  <div class="widget-strip" id="panel-1-header-strip">
+    <div class="widget" data-card-id="header/total-files">
+      <button class="card-copy-ref" aria-label="Kártya-azonosító másolása" data-for-card><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> copy ref</button>
+      <div class="widget-info-row">
+        <div class="widget-label">Total Files Indexed</div>
+        <i class="panel-info" data-tip="indexed / total vault markdown files (excl. archive). Coverage % from vault_stats.json, regenerated on each indexing run.">i</i>
+      </div>
       <div class="widget-value mono" id="totalFiles">—</div>
-      <div class="widget-sub">across all tier-2 units</div>
-    </div>
-    <div class="widget">
-      <div class="widget-label">Tier-2 Units Active</div>
-      <div class="widget-value mono" id="tier2Count">11</div>
-      <div class="widget-sub">scoped indexes live</div>
-    </div>
-    <div class="widget">
-      <div class="widget-label">Librarian Version</div>
-      <div class="widget-value mono" id="libVersion">v0.6</div>
-      <div class="widget-sub" id="libModes">6 operation modes</div>
-    </div>
-    <div class="widget">
-      <div class="widget-label">Index Freshness</div>
-      <div class="widget-value mono" id="freshCount">—</div>
-      <div class="widget-sub">units with fresh index (&lt;30d)</div>
+      <div class="widget-sub" id="totalFilesSub">of all vault markdown (excl. archive)</div>
+      <div class="widget-gauge"><div class="widget-gauge-fill" id="totalFilesGauge" style="width:0%"></div></div>
     </div>
   </div>
 
-  <!-- ===== Panels 2 & 3: Tier-1 + Tier-2 ===== -->
-  <div class="grid-2">
-
-    <!-- Panel 2: Tier-1 Index Overview -->
-    <div class="panel">
-      <div class="panel-head serif">
-        Tier-1 Global Index
-        <span class="badge">vault root</span>
-      </div>
-      <div id="tier1Content">
-        <div class="para-grid" id="paraGrid">
-          <div class="para-item">
-            <div class="para-item-label">01 Projects</div>
-            <div class="para-item-value mono" id="paraProjects">—</div>
-            <div class="para-item-sub">active project files</div>
-          </div>
-          <div class="para-item">
-            <div class="para-item-label">02 Areas</div>
-            <div class="para-item-value mono" id="paraAreas">—</div>
-            <div class="para-item-sub">ongoing responsibilities</div>
-          </div>
-          <div class="para-item">
-            <div class="para-item-label">03 Resources</div>
-            <div class="para-item-value mono" id="paraResources">—</div>
-            <div class="para-item-sub">reference material</div>
-          </div>
-          <div class="para-item">
-            <div class="para-item-label">04 Archive</div>
-            <div class="para-item-value mono" id="paraArchive">—</div>
-            <div class="para-item-sub">inactive / closed</div>
-          </div>
-        </div>
-        <div class="para-bar-row" style="margin-top:14px;">
-          <div class="para-bar-label"><span>Vault distribution</span><span id="totalVaultFiles">total: —</span></div>
-          <div class="para-bar-track"><div class="para-bar-fill" id="areasBar" style="width:60%"></div></div>
-        </div>
-        <div style="font-size:11.5px;color:var(--ink-4);margin-top:6px" id="indexMeta">Source: <span class="mono">/00_INDEX.md</span></div>
-      </div>
-    </div>
-
-    <!-- Panel 5 (side): Knowledge Map top domains -->
-    <div class="panel">
-      <div class="panel-head serif">
-        Knowledge Map
-        <span class="badge">cross-domain</span>
-      </div>
-      <ul class="domain-list" id="domainList">
-        <li class="domain-item" style="color:var(--ink-4);font-size:12.5px;border:none;">loading knowledge map…</li>
-      </ul>
-      <div style="font-size:11.5px;color:var(--ink-4);margin-top:10px;">Source: <span class="mono">/00_KNOWLEDGE_MAP.md</span></div>
-    </div>
-
-  </div>
-
-  <!-- Panel 3: Tier-2 Scoped Units -->
-  <div class="panel full">
-    <div class="section-head">
-      <h2 class="serif">Tier-2 Scoped Units</h2>
-      <span class="count-badge mono" id="tier2Badge">11 active</span>
-    </div>
-    <table class="tier2-table">
-      <thead>
-        <tr>
-          <th>Scope</th>
-          <th>Files</th>
-          <th>Index Version</th>
-          <th>Last Run</th>
-          <th>Freshness</th>
-        </tr>
-      </thead>
-      <tbody id="tier2Body">
-        <tr><td colspan="5" style="color:var(--ink-4);font-size:12.5px;padding:12px 0;">loading tier-2 units…</td></tr>
-      </tbody>
-    </table>
-    <div style="font-size:11px;color:var(--ink-5);margin-top:10px;">
-      Freshness: <span style="color:var(--ok)">●</span> fresh (&lt;30d) &nbsp; <span style="color:var(--warn)">●</span> stale (30-90d) &nbsp; <span style="color:var(--gap)">●</span> very stale (&gt;90d)
-      &nbsp;&nbsp;Source: <span class="mono">/00_Prompts/BDOS/00_AGENTS_INDEX.md</span>
-    </div>
-  </div>
-
-  <!-- Panel 4: Tier-2 Candidates -->
-  <div class="panel full" style="margin-bottom:24px;">
-    <div class="panel-head serif">
-      Tier-2 Candidates
-      <span class="badge">approaching threshold</span>
-    </div>
-    <p style="font-size:12.5px;color:var(--ink-3);margin-bottom:14px;">Units approaching the 30-file threshold for scoped indexing. Once they exceed 30 files or gain a <span class="mono" style="font-size:11px">01_PROJECT_STATE.md</span>, they qualify for a dedicated tier-2 index.</p>
-    <div class="candidates-grid" id="candidatesGrid">
-      <div class="candidate-card">
-        <div class="candidate-name">Ignis Academy</div>
-        <div class="candidate-count">22</div>
-        <div class="candidate-label">files (threshold: 30)</div>
-        <div class="candidate-bar-track"><div class="candidate-bar-fill approaching" style="width:73%"></div></div>
-      </div>
-      <div class="candidate-card">
-        <div class="candidate-name">Média Műhely</div>
-        <div class="candidate-count">21</div>
-        <div class="candidate-label">files (threshold: 30)</div>
-        <div class="candidate-bar-track"><div class="candidate-bar-fill approaching" style="width:70%"></div></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Panels 6 & 7: Open Questions + Gaps -->
-  <div class="grid-2">
-
-    <!-- Panel 6: Open Questions -->
-    <div class="panel">
-      <div class="panel-head serif">
-        Open Questions
-        <span class="badge" id="questionsCount">loading…</span>
-      </div>
-      <ul class="qg-list" id="questionsList">
-        <li class="qg-item" style="color:var(--ink-4);">loading…</li>
-      </ul>
-      <div style="font-size:11.5px;color:var(--ink-4);margin-top:10px;">Source: <span class="mono">/00_OPEN_QUESTIONS.md</span></div>
-    </div>
-
-    <!-- Panel 7: Gaps -->
-    <div class="panel">
-      <div class="panel-head serif">
-        Vault Gaps
-        <span class="badge" id="gapsCount">loading…</span>
-      </div>
-      <ul class="qg-list" id="gapsList">
-        <li class="qg-item" style="color:var(--ink-4);">loading…</li>
-      </ul>
-      <div style="font-size:11.5px;color:var(--ink-4);margin-top:10px;">Source: <span class="mono">/00_GAPS.md</span></div>
-    </div>
-
-  </div>
-
-  <!-- Panel 8: Recent Activity (Phase 2.B) -->
-  <div class="panel full">
-    <div class="panel-head serif">
-      Recent Activity
-      <span class="badge">Phase 2.B operational log</span>
-    </div>
-    <div id="activityContent">
-      <div class="activity-empty">
-        <div class="empty-icon">&#128218;</div>
-        <p>No operational log entries yet.</p>
-        <p>The log folder exists at <span class="mono" style="font-size:11px">/00_Prompts/BDOS/agents/librarian/logs/operational/</span> and is ready to receive entries.</p>
-        <p class="phase-note">Phase 2.B active — logs will appear here after Librarian's first invocation.</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Panel 9: Operations Modes Reference -->
-  <div class="panel full">
-    <div class="panel-head serif">
-      Operation Modes Reference
-      <span class="badge">Librarian v0.6 — 6 modes</span>
-    </div>
-    <div class="mode-list">
-      <div class="mode-item">
-        <div class="mode-name">index</div>
-        <div class="mode-desc">Reads a scope, generates 5 index files (INDEX, KNOWLEDGE_MAP, DECISIONS_INDEX, OPEN_QUESTIONS, GAPS). Rare — weekly or monthly.</div>
-        <div class="mode-slash mono">/lib-index</div>
-      </div>
-      <div class="mode-item">
-        <div class="mode-name">retrieve</div>
-        <div class="mode-desc">Context-protection mode. Reads vault on behalf of caller — returns filtered summary. Two-tier algorithm: tier-1 for global queries, tier-2 for unit-specific.</div>
-        <div class="mode-slash mono">/lib-find</div>
-      </div>
-      <div class="mode-item">
-        <div class="mode-name">tidy</div>
-        <div class="mode-desc">Housekeeping — orphan files, broken links, byte-identical duplicates. Dry-run default. Logs every action with undo commands.</div>
-        <div class="mode-slash mono">/lib-tidy</div>
-      </div>
-      <div class="mode-item">
-        <div class="mode-name">audit</div>
-        <div class="mode-desc">Vault health report — stale files, missing frontmatter, structure anomalies, agent meta-index maintenance. Monthly cadence.</div>
-        <div class="mode-slash mono">/lib-audit</div>
-      </div>
-      <div class="mode-item">
-        <div class="mode-name">integrate</div>
-        <div class="mode-desc">Surveys external folders (Downloads, Desktop, Documents) and proposes vault-integration for relevant files. Never moves anything autonomously.</div>
-        <div class="mode-slash mono">/lib-integrate</div>
-      </div>
-      <div class="mode-item">
-        <div class="mode-name">deep-clean</div>
-        <div class="mode-desc">Deep cleanup — byte-identical duplicates, empty files, temp files, stale-status archives. Cross-reference check before every move/delete. Dry-run default.</div>
-        <div class="mode-slash mono">/lib-deepclean</div>
-      </div>
-    </div>
-  </div>
 
   <!-- Panel 10: Capabilities (added 0.2.0 — live from AGENT_PROFILES.md) -->
-  <div class="panel full" id="capPanel">
+  <div class="panel full panel-anchor-host" id="panel-10-capabilities">
     <div class="panel-head serif">
       Capabilities
       <span class="badge">live from AGENT_PROFILES.md</span>
+      <i class="panel-info" data-tip="Librarian's registered tools, MCPs, APIs, plugins, and slash commands. Live from /00_Prompts/BDOS/AGENT_PROFILES.md, auto-refresh 8s.">i</i>
+      <a class="panel-anchor" href="#panel-10-capabilities" title="Link to this panel">#10</a>
     </div>
     <div id="capContent">
       <div class="activity-empty">
@@ -658,88 +560,110 @@ button { font: inherit; background: transparent; border: 0; color: inherit; curs
   </div>
 
   <!-- Panel 11: Logs (added 0.4.0 — agent_observability sidecar) -->
-  <div class="panel full" id="logsPanel">
+  <div class="panel full panel-anchor-host" id="panel-11-logs">
     <div class="panel-head serif">
       Logs
       <span class="badge" id="logsPanelBadge">loading…</span>
+      <i class="panel-info" data-tip="Librarian agent observability events from agent_observability.db (sidecar: agent_logs.json). Includes retrieval telemetry — the Q ms column shows FTS5 BM25 query latency for each /api/search call.">i</i>
+      <a class="panel-anchor" href="#panel-11-logs" title="Link to this panel">#11</a>
     </div>
     <div id="logsContent">
       <div class="activity-empty"><div class="empty-icon">◎</div><p>Loading sidecar…</p></div>
     </div>
   </div>
 
-</div><!-- /app -->
+  <!-- Panel 12: Retrieval Pipeline Diagram -->
+  <div class="panel full pipeline-panel panel-anchor-host" id="panel-12-pipeline">
+    <div class="panel-head serif">
+      Retrieval Pipeline
+      <span class="badge">FTS5 / BM25</span>
+      <i class="panel-info" data-tip="End-to-end retrieval path: markdown file → frontmatter parse → FTS5 index (vault.db) → BM25 ranked query → results. Hover a stage for scoring details. Lights up when a search is running.">i</i>
+      <a class="panel-anchor" href="#panel-12-pipeline" title="Link to this panel">#12</a>
+    </div>
+    <div class="pipeline-svg-wrap">
+      <svg id="pipelineSvg" viewBox="0 0 620 110" width="620" height="110" xmlns="http://www.w3.org/2000/svg" aria-label="Retrieval pipeline diagram">
+        <!-- Stage boxes -->
+        <g class="pipe-stage" data-tip="Vault markdown file. Source of truth — never written to by the dashboard. Contains YAML frontmatter (title, description, tags, area, category)." id="ps-file">
+          <rect x="10" y="30" width="90" height="50" rx="8" fill="var(--bg-elev)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="55" y="52" text-anchor="middle" font-size="10" font-family="Inter,sans-serif" fill="var(--ink-3)" font-weight="600">Markdown</text>
+          <text x="55" y="66" text-anchor="middle" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--ink-4)">.md file</text>
+        </g>
+        <!-- Arrow 1 -->
+        <line x1="100" y1="55" x2="128" y2="55" stroke="var(--line)" stroke-width="1.5" marker-end="url(#arr)"/>
+        <g class="pipe-stage" data-tip="Frontmatter parser: reads YAML block (title, description, tags, area, category, status). Lenient — tolerates Hungarian typographic quotes. Feeds FTS5 weighted columns." id="ps-parse">
+          <rect x="130" y="30" width="100" height="50" rx="8" fill="var(--bg-elev)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="180" y="52" text-anchor="middle" font-size="10" font-family="Inter,sans-serif" fill="var(--ink-3)" font-weight="600">Frontmatter</text>
+          <text x="180" y="66" text-anchor="middle" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--ink-4)">parse</text>
+        </g>
+        <!-- Arrow 2 -->
+        <line x1="230" y1="55" x2="258" y2="55" stroke="var(--line)" stroke-width="1.5" marker-end="url(#arr)"/>
+        <g class="pipe-stage" data-tip="FTS5 full-text index in vault.db (SQLite). Rebuilt incrementally by the indexing daemon. Indexed columns: title (×10), description (×8), tags (×4), body (×1). 1 928 files indexed." id="ps-fts5">
+          <rect x="260" y="20" width="100" height="70" rx="8" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="1.5"/>
+          <text x="310" y="48" text-anchor="middle" font-size="10" font-family="Inter,sans-serif" fill="var(--accent-deep)" font-weight="700">FTS5 Index</text>
+          <text x="310" y="62" text-anchor="middle" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--accent-deep)">vault.db</text>
+          <text x="310" y="76" text-anchor="middle" font-size="8" font-family="JetBrains Mono,monospace" fill="var(--accent-deep)" opacity=".7">SQLite</text>
+        </g>
+        <!-- Arrow 3 -->
+        <line x1="360" y1="55" x2="388" y2="55" stroke="var(--line)" stroke-width="1.5" marker-end="url(#arr)"/>
+        <g class="pipe-stage" data-tip="BM25 ranking: title×10 / description×8 / tags×4 / body×1. Higher weight = higher rank when the query matches that column. Returns top-N results sorted by rank (lower = better in SQLite FTS5)." id="ps-bm25">
+          <rect x="390" y="30" width="100" height="50" rx="8" fill="var(--bg-elev)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="440" y="52" text-anchor="middle" font-size="10" font-family="Inter,sans-serif" fill="var(--ink-3)" font-weight="600">BM25 rank</text>
+          <text x="440" y="66" text-anchor="middle" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--ink-4)">query</text>
+        </g>
+        <!-- Arrow 4 -->
+        <line x1="490" y1="55" x2="518" y2="55" stroke="var(--line)" stroke-width="1.5" marker-end="url(#arr)"/>
+        <g class="pipe-stage" data-tip="JSON results array: [{path, title, description, category, area, rank}]. Served by /api/search on this server (port 4321). Telemetry logged to agent_logs.json on every call." id="ps-results">
+          <rect x="520" y="30" width="90" height="50" rx="8" fill="var(--bg-elev)" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="565" y="52" text-anchor="middle" font-size="10" font-family="Inter,sans-serif" fill="var(--ink-3)" font-weight="600">Results</text>
+          <text x="565" y="66" text-anchor="middle" font-size="9" font-family="JetBrains Mono,monospace" fill="var(--ink-4)">JSON</text>
+        </g>
+        <!-- Arrowhead marker -->
+        <defs>
+          <marker id="arr" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto">
+            <path d="M0,0 L7,3.5 L0,7 Z" fill="var(--ink-5)"/>
+          </marker>
+        </defs>
+        <!-- Pulse dots (animated, one per segment) -->
+        <circle id="pulse1" r="5" fill="var(--accent)" opacity="0">
+          <animateMotion dur="2.4s" repeatCount="indefinite" begin="0s">
+            <mpath href="#ppath1"/>
+          </animateMotion>
+          <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.05;0.1;0.9;1" dur="2.4s" repeatCount="indefinite" begin="0s"/>
+        </circle>
+        <circle id="pulse2" r="5" fill="var(--accent)" opacity="0">
+          <animateMotion dur="2.4s" repeatCount="indefinite" begin="0.48s">
+            <mpath href="#ppath1"/>
+          </animateMotion>
+          <animate attributeName="opacity" values="0;0;1;1;0" keyTimes="0;0.05;0.1;0.9;1" dur="2.4s" repeatCount="indefinite" begin="0.48s"/>
+        </circle>
+        <!-- Motion path across all stages -->
+        <path id="ppath1" d="M100,55 L520,55" fill="none" stroke="none"/>
+      </svg>
+    </div>
+    <div style="font-size:11px;color:var(--ink-5);margin-top:4px;">
+      BM25 weights: <span class="mono" style="font-size:10.5px;">title×10 · description×8 · tags×4 · body×1</span>
+      &nbsp;·&nbsp; Source: <span class="mono" style="font-size:10.5px;">capabilities/vault-indexing/query.py</span>
+    </div>
+    <!-- tooltip div -->
+    <div id="pipeTooltip" class="pipe-stage-tooltip"></div>
+  </div>
+
+</div><!-- end .app-main -->
+<aside id="alfred-tasks-sidebar"></aside>
+</div><!-- end .app-shell -->
 
 <script>
 /* ===== DASH STEM ===== */
 const DASH_STEM = 'librarian';
 
+/* Clipboard helpers (copyText, wireCopyRef): /_dashboards/_design/clipboard.js (DS 0.7.0, Sprint 1) */
 /* ===== SOURCE FILES ===== */
-const AGENTS_INDEX_FILE  = '/00_Prompts/BDOS/00_AGENTS_INDEX.md';
-const INDEX_FILE         = '/00_INDEX.md';
-const KNOWLEDGE_MAP_FILE = '/00_KNOWLEDGE_MAP.md';
-const OPEN_Q_FILE        = '/00_OPEN_QUESTIONS.md';
-const GAPS_FILE          = '/00_GAPS.md';
-const LIBRARIAN_FILE     = '/00_Prompts/BDOS/agents/librarian.md';
-const OPS_LOG_GLOB_BASE  = '/00_Prompts/BDOS/agents/librarian/logs/operational/';
 const AGENT_PROFILES_FILE = '/00_Prompts/BDOS/AGENT_PROFILES.md';
 const AGENT_NAME_IN_PROFILES = 'Librarian';
 
 /* ===== DATA STATE ===== */
-let lastAgentsContent   = null;
-let lastIndexContent    = null;
-let lastKmapContent     = null;
-let lastQContent        = null;
-let lastGapsContent     = null;
 let lastProfilesContent = null;
 
-/* ===== YAML FRONTMATTER PARSER ===== */
-function parseYamlFrontmatter(md) {
-  if (!md) return {};
-  const m = md.match(/^---\r?\n([\s\S]*?)\r?\n---/);
-  if (!m) return {};
-  const yaml = m[1];
-  const result = {};
-  const lines = yaml.split('\n');
-  let i = 0;
-  while (i < lines.length) {
-    const line = lines[i];
-    const kv = line.match(/^(\w[\w-]*):\s*(.*)/);
-    if (!kv) { i++; continue; }
-    const key = kv[1];
-    let val = kv[2].trim();
-    if (val === '' && i + 1 < lines.length && lines[i+1].startsWith('  -')) {
-      const arr = [];
-      i++;
-      while (i < lines.length && lines[i].match(/^\s+-/)) {
-        arr.push(lines[i].replace(/^\s+-\s*/, '').trim());
-        i++;
-      }
-      result[key] = arr; continue;
-    }
-    if (val.startsWith('[') && val.endsWith(']')) {
-      result[key] = val.slice(1,-1).split(',').map(x => x.trim().replace(/^['"]|['"]$/g,''));
-    } else {
-      val = val.replace(/#(?![0-9a-fA-F]{3,6}\b).*/,'').trim().replace(/^['"]|['"]$/g,'');
-      result[key] = val;
-    }
-    i++;
-  }
-  return result;
-}
-
-/* ===== MARKDOWN SECTION PARSER ===== */
-function parseMarkdownSections(body) {
-  const sections = {};
-  const lines = body.split('\n');
-  let current = null;
-  for (const line of lines) {
-    const h = line.match(/^#{1,3}\s+(.*)/);
-    if (h) { current = h[1].trim(); sections[current] = []; continue; }
-    if (current) sections[current].push(line);
-  }
-  return sections;
-}
 
 /* ===== HELPERS ===== */
 function el(id) { return document.getElementById(id); }
@@ -774,197 +698,6 @@ function resetSyncBar(interval) {
 }
 if (el('syncBarWrap')) el('syncBarWrap').onclick = () => { pollVault(); resetSyncBar(POLL_INTERVAL); };
 
-/* ===== TIER-2 PARSER ===== */
-function parseTier2FromAgentsIndex(md) {
-  const units = [];
-  const tableRegex = /\|\s*`?([^|`]+)`?\s*\|\s*(\d+)\s*\|\s*([^|]+)\|\s*([^|]+)\|/g;
-  let m;
-  // Find the tier-2 table section
-  const tier2Section = md.match(/### Tier-2 scoped indexes[\s\S]*?(?=###|$)/);
-  if (!tier2Section) return units;
-  const section = tier2Section[0];
-  while ((m = tableRegex.exec(section)) !== null) {
-    const scope = m[1].trim();
-    const files = parseInt(m[2]);
-    const version = m[3].trim();
-    const lastRun = m[4].trim();
-    if (scope.startsWith('Scope') || scope === '---') continue;
-    units.push({ scope, files, version, lastRun });
-  }
-  return units;
-}
-
-function getFreshness(lastRun) {
-  // Parse date from "2026-05-11" format
-  const d = new Date(lastRun.replace(/\s.*/,''));
-  if (isNaN(d)) return 'unknown';
-  const now = new Date('2026-05-24');
-  const daysDiff = Math.floor((now - d) / (1000 * 86400));
-  if (daysDiff < 30) return 'fresh';
-  if (daysDiff < 90) return 'stale';
-  return 'very-stale';
-}
-
-function renderTier2(units) {
-  const tbody = el('tier2Body');
-  if (!units.length) {
-    tbody.innerHTML = '<tr><td colspan="5" style="color:var(--ink-4);font-size:12.5px;padding:12px 0;">No tier-2 units found in AGENTS_INDEX.</td></tr>';
-    return;
-  }
-  let total = 0;
-  let freshCount = 0;
-  let html = '';
-  units.forEach(u => {
-    total += u.files;
-    const f = getFreshness(u.lastRun);
-    if (f === 'fresh') freshCount++;
-    const dotClass = f === 'fresh' ? 'fresh' : f === 'stale' ? 'stale' : 'very-stale';
-    html += `<tr>
-      <td><span class="scope-name">${escHtml(u.scope)}</span></td>
-      <td><span class="file-count">${u.files}</span></td>
-      <td><span class="index-version">${escHtml(u.version)}</span></td>
-      <td style="font-size:12px;color:var(--ink-3);" class="mono">${escHtml(u.lastRun)}</td>
-      <td><span class="fresh-dot ${dotClass}" title="${f}"></span></td>
-    </tr>`;
-  });
-  tbody.innerHTML = html;
-  el('totalFiles').textContent = total.toLocaleString();
-  el('freshCount').textContent = freshCount + '/' + units.length;
-  el('tier2Count').textContent = units.length;
-  el('tier2Badge').textContent = units.length + ' active';
-}
-
-/* ===== PARSE 00_INDEX.MD for PARA distribution ===== */
-function parseIndexForPARA(md) {
-  const result = { projects: '—', areas: '—', resources: '—', archive: '—', total: '—' };
-  if (!md) return result;
-  // Look for file count patterns like "180 files" or "| 180 |"
-  const projectsM = md.match(/01[_\s]Projects[^\n]*?(\d+)\s*files?/i) || md.match(/Projects[^\n]*\|\s*(\d+)/i);
-  const areasM    = md.match(/02[_\s]Areas[^\n]*?(\d+)\s*files?/i)    || md.match(/Areas[^\n]*\|\s*(\d+)/i);
-  const resourcesM= md.match(/03[_\s]Resources[^\n]*?(\d+)\s*files?/i)|| md.match(/Resources[^\n]*\|\s*(\d+)/i);
-  const archiveM  = md.match(/04[_\s]Archive[^\n]*?(\d+)\s*files?/i)  || md.match(/Archive[^\n]*\|\s*(\d+)/i);
-  const totalM    = md.match(/file_count:\s*(\d+)/i)                  || md.match(/total[^:]*:\s*(\d+)/i);
-  if (projectsM) result.projects = projectsM[1];
-  if (areasM)    result.areas    = areasM[1];
-  if (resourcesM)result.resources= resourcesM[1];
-  if (archiveM)  result.archive  = archiveM[1];
-  if (totalM)    result.total    = totalM[1];
-  return result;
-}
-
-function renderTier1(md) {
-  const para = parseIndexForPARA(md);
-  el('paraProjects').textContent  = para.projects;
-  el('paraAreas').textContent     = para.areas;
-  el('paraResources').textContent = para.resources;
-  el('paraArchive').textContent   = para.archive;
-  el('totalVaultFiles').textContent = para.total !== '—' ? 'total: ' + para.total : 'total: —';
-  // Area bar width
-  if (para.areas !== '—' && para.total !== '—') {
-    const pct = Math.round(parseInt(para.areas) / parseInt(para.total) * 100);
-    el('areasBar').style.width = pct + '%';
-  }
-  el('indexMeta').innerHTML = `Source: <span class="mono">/00_INDEX.md</span>`;
-}
-
-/* ===== PARSE KNOWLEDGE MAP domains ===== */
-function parseKnowledgeMap(md) {
-  const domains = [];
-  if (!md) return domains;
-  // Look for domain entries like "**Sonrisa** (N refs)" or table rows
-  const patterns = [
-    /\|\s*\*?\*?([^|*]+)\*?\*?\s*\|\s*(\d+)/g,
-    /[-*]\s+\*?\*?([^*:(]+)\*?\*?[^(]*\((\d+)\s*refs?\)/gi,
-    /\*?\*?([A-Za-záéíóöőüű\s]+)\*?\*?[:\s]+(\d+)\s*refs?/gi,
-  ];
-  for (const re of patterns) {
-    let m;
-    while ((m = re.exec(md)) !== null) {
-      const name = m[1].trim();
-      const count = parseInt(m[2]);
-      if (name && count > 0 && !name.includes('---') && name.length < 40) {
-        domains.push({ name, count });
-      }
-    }
-    if (domains.length >= 3) break;
-  }
-  domains.sort((a,b) => b.count - a.count);
-  return domains.slice(0, 10);
-}
-
-function renderKnowledgeMap(md) {
-  const domains = parseKnowledgeMap(md);
-  const list = el('domainList');
-  if (!domains.length) {
-    list.innerHTML = '<li class="domain-item" style="color:var(--ink-4);font-size:12.5px;border:none;">Knowledge map loaded — domain count data not in parseable format. Open <span class="mono" style="font-size:11px">/00_KNOWLEDGE_MAP.md</span> to view.</li>';
-    return;
-  }
-  list.innerHTML = domains.map(d =>
-    `<li class="domain-item"><span class="domain-name">${escHtml(d.name)}</span><span class="domain-count">${d.count}</span></li>`
-  ).join('');
-}
-
-/* ===== PARSE OPEN QUESTIONS ===== */
-function parseOpenQuestions(md) {
-  const items = [];
-  if (!md) return items;
-  const lines = md.split('\n');
-  let currentDomain = '';
-  for (const line of lines) {
-    const h = line.match(/^#{1,3}\s+(.*)/);
-    if (h) { currentDomain = h[1].trim(); continue; }
-    const q = line.match(/^[-*]\s+(.+)/);
-    if (q) items.push({ domain: currentDomain, text: q[1].trim() });
-    const checkbox = line.match(/^-\s+\[ \]\s+(.+)/);
-    if (checkbox) items.push({ domain: currentDomain, text: checkbox[1].trim() });
-  }
-  return items.slice(0, 12);
-}
-
-function renderOpenQuestions(md) {
-  const items = parseOpenQuestions(md);
-  const list = el('questionsList');
-  const badge = el('questionsCount');
-  if (!items.length) {
-    list.innerHTML = '<li class="qg-item" style="color:var(--ink-4);">No open questions found, or file is empty.</li>';
-    badge.textContent = '0';
-    return;
-  }
-  badge.textContent = items.length;
-  list.innerHTML = items.map(i =>
-    `<li class="qg-item">${i.domain ? `<span class="qg-domain">${escHtml(i.domain.substring(0,20))}</span>` : ''}${escHtml(i.text)}</li>`
-  ).join('');
-}
-
-/* ===== PARSE GAPS ===== */
-function parseGaps(md) {
-  const items = [];
-  if (!md) return items;
-  const lines = md.split('\n');
-  let currentDomain = '';
-  for (const line of lines) {
-    const h = line.match(/^#{1,3}\s+(.*)/);
-    if (h) { currentDomain = h[1].trim(); continue; }
-    const g = line.match(/^[-*]\s+(.+)/);
-    if (g) items.push({ domain: currentDomain, text: g[1].trim() });
-  }
-  return items.slice(0, 10);
-}
-
-function renderGaps(md) {
-  const items = parseGaps(md);
-  const list = el('gapsList');
-  const badge = el('gapsCount');
-  if (!items.length) {
-    list.innerHTML = '<li class="qg-item" style="color:var(--ink-4);">No gaps found, or file is empty.</li>';
-    badge.textContent = '0';
-    return;
-  }
-  badge.textContent = items.length;
-  list.innerHTML = items.map(i =>
-    `<li class="qg-item">${i.domain ? `<span class="qg-domain">${escHtml(i.domain.substring(0,20))}</span>` : ''}${escHtml(i.text)}</li>`
-  ).join('');
-}
 
 /* ===== FETCH HELPER ===== */
 async function fetchFile(path) {
@@ -978,55 +711,8 @@ async function fetchFile(path) {
 /* ===== POLL VAULT ===== */
 async function pollVault() {
   setSyncState('syncing');
-  let changed = false;
 
-  const [agentsContent, indexContent, kmapContent, qContent, gapsContent, profilesContent] = await Promise.all([
-    fetchFile(AGENTS_INDEX_FILE),
-    fetchFile(INDEX_FILE),
-    fetchFile(KNOWLEDGE_MAP_FILE),
-    fetchFile(OPEN_Q_FILE),
-    fetchFile(GAPS_FILE),
-    fetchFile(AGENT_PROFILES_FILE),
-  ]);
-
-  if (agentsContent !== lastAgentsContent) {
-    lastAgentsContent = agentsContent;
-    changed = true;
-    if (agentsContent) {
-      const units = parseTier2FromAgentsIndex(agentsContent);
-      renderTier2(units);
-      // Parse librarian version
-      const vm = agentsContent.match(/### Librarian[^#]*version[^:]*:\s*([^\n]+)/i);
-      if (vm) el('libVersion').textContent = 'v' + vm[1].trim().replace(/^v/,'');
-    }
-  }
-
-  if (indexContent !== lastIndexContent) {
-    lastIndexContent = indexContent;
-    changed = true;
-    if (indexContent) renderTier1(indexContent);
-  }
-
-  if (kmapContent !== lastKmapContent) {
-    lastKmapContent = kmapContent;
-    changed = true;
-    if (kmapContent) renderKnowledgeMap(kmapContent);
-    else el('domainList').innerHTML = '<li class="domain-item" style="color:var(--ink-4);font-size:12.5px;border:none;">00_KNOWLEDGE_MAP.md not found — run <span class="mono" style="font-size:11px">/lib-index</span> to generate.</li>';
-  }
-
-  if (qContent !== lastQContent) {
-    lastQContent = qContent;
-    changed = true;
-    if (qContent) renderOpenQuestions(qContent);
-    else { el('questionsList').innerHTML = '<li class="qg-item" style="color:var(--ink-4);">00_OPEN_QUESTIONS.md not found.</li>'; el('questionsCount').textContent = '—'; }
-  }
-
-  if (gapsContent !== lastGapsContent) {
-    lastGapsContent = gapsContent;
-    changed = true;
-    if (gapsContent) renderGaps(gapsContent);
-    else { el('gapsList').innerHTML = '<li class="qg-item" style="color:var(--ink-4);">00_GAPS.md not found.</li>'; el('gapsCount').textContent = '—'; }
-  }
+  const profilesContent = await fetchFile(AGENT_PROFILES_FILE);
 
   if (profilesContent !== lastProfilesContent) {
     lastProfilesContent = profilesContent;
@@ -1046,45 +732,8 @@ function startPolling(interval) {
   }, interval);
 }
 
-/* ===== THEME TOGGLE (DS 0.3.0) ===== */
-function setTheme(t) {
-  document.documentElement.dataset.theme = t;
-  try { localStorage.setItem('dash-theme', t); } catch(e) {}
-  const btn = el('themeToggle');
-  if (btn) {
-    btn.querySelector('.theme-icon').textContent = t === 'dark' ? '☀' : '☾';
-    btn.querySelector('.theme-label').textContent = t === 'dark' ? 'Light' : 'Dark';
-    btn.setAttribute('aria-label', t === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
-  }
-}
-el('themeToggle').addEventListener('click', function() {
-  setTheme(document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark');
-});
-window.addEventListener('storage', function(e) {
-  if (e.key === 'dash-theme' && e.newValue) setTheme(e.newValue);
-});
-(function initTheme() {
-  var t;
-  try { t = localStorage.getItem('dash-theme'); } catch(e) {}
-  if (!t) { t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light'; }
-  setTheme(t);
-})();
+/* Theme toggle: moved to /_dashboards/_design/theme.js (DS 0.7.0, Sprint 1) */
 
-/* ===== CLIPBOARD HELPER ===== */
-function copyText(text, elBtn) {
-  navigator.clipboard.writeText(text).then(() => {
-    elBtn.classList.add('copied');
-    setTimeout(() => elBtn.classList.remove('copied'), 1600);
-  }).catch(() => {
-    const ta = document.createElement('textarea');
-    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
-    document.body.appendChild(ta); ta.select();
-    try { document.execCommand('copy'); } catch(e) {}
-    document.body.removeChild(ta);
-    elBtn.classList.add('copied');
-    setTimeout(() => elBtn.classList.remove('copied'), 1600);
-  });
-}
 
 /* ===== AGENT PROFILES — parser + renderer (added 0.2.0) ===== */
 function parseAgentProfile(md, agentName) {
@@ -1144,7 +793,8 @@ function renderCapabilities(profile) {
   // Update avatar in masthead
   const av = el('agentAvatar');
   if (av) {
-    av.textContent = profile.emoji;
+    // avatar is now an <img> + emoji fallback; update the fallback, never textContent (would wipe the img)
+    const _emo = av.querySelector('.agent-avatar-emoji'); if (_emo) _emo.textContent = profile.emoji;
     av.style.background = hexToRgba(profile.color, 0.12);
     av.style.borderColor = hexToRgba(profile.color, 0.35);
   }
@@ -1210,7 +860,7 @@ const LOGS_SIDECAR_URL = '/_dashboards/_design/agent_logs.json';
 let logsLastTs = null;
 
 function renderLogsPanel(events) {
-  const agentEvents = events.filter(e => e.agent === LOGS_AGENT);
+  const agentEvents = events.filter(e => e.agent_name === LOGS_AGENT);
   const badge = document.getElementById('logsPanelBadge');
   const wrap  = document.getElementById('logsContent');
   if (!agentEvents.length) {
@@ -1301,14 +951,181 @@ async function loadLogsPanel() {
   } catch(e) {}
 }
 
+/* ===== Canonical clipboard helper (DS 0.2.0) ===== */
+function copyText(text, el) {
+  navigator.clipboard.writeText(text).then(() => {
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); } catch(e) {}
+    document.body.removeChild(ta);
+    el.classList.add('copied');
+    setTimeout(() => el.classList.remove('copied'), 1600);
+  });
+}
+
+
+/* ===== VAULT STATS (items 1–3) ===== */
+const VAULT_STATS_FILE = '/_dashboards/_design/vault_stats.json';
+let lastVaultStats = null;
+
+async function loadVaultStats() {
+  try {
+    const r = await fetch(VAULT_STATS_FILE, { cache: 'no-store' });
+    if (!r.ok) return;
+    const stats = await r.json();
+    if (JSON.stringify(stats) === JSON.stringify(lastVaultStats)) return;
+    lastVaultStats = stats;
+    renderVaultStats(stats);
+  } catch(e) {}
+}
+
+function renderVaultStats(s) {
+  // Card 1: Total Files Indexed
+  const indexed = s.indexed_count ?? s.total_md_files ?? 0;
+  const total   = s.total_md_files ?? 0;
+  const pct     = total > 0 ? Math.round((indexed / total) * 100) : 0;
+  el('totalFiles').textContent = indexed.toLocaleString() + ' / ' + total.toLocaleString() + ' (' + pct + '%)';
+  el('totalFilesGauge').style.width = pct + '%';
+}
+
+
+/* ===== PIPELINE DIAGRAM tooltips (item 7) ===== */
+(function() {
+  const tip = el('pipeTooltip');
+  if (!tip) return;
+  document.querySelectorAll('.pipe-stage').forEach(stage => {
+    stage.addEventListener('mouseenter', function(e) {
+      tip.textContent = this.dataset.tip || '';
+      tip.classList.add('visible');
+      moveTip(e);
+    });
+    stage.addEventListener('mousemove', moveTip);
+    stage.addEventListener('mouseleave', function() {
+      tip.classList.remove('visible');
+    });
+  });
+  function moveTip(e) {
+    tip.style.left = (e.clientX + 14) + 'px';
+    tip.style.top  = (e.clientY - 32) + 'px';
+  }
+})();
+
+/* ===== LIVE SEARCH (item 8) ===== */
+(function() {
+  const input   = el('searchInput');
+  const meta    = el('searchMeta');
+  const list    = el('searchResults');
+  const STAGES  = ['ps-file','ps-parse','ps-fts5','ps-bm25','ps-results'];
+  let debounce  = null;
+  let activeStage = -1;
+
+  function lightStage(idx) {
+    STAGES.forEach((id, i) => {
+      const g = document.getElementById(id);
+      if (!g) return;
+      const rect = g.querySelector('rect');
+      if (!rect) return;
+      if (i <= idx) {
+        rect.style.fill = 'var(--accent-tint)';
+        rect.style.stroke = 'var(--accent)';
+      } else {
+        rect.style.fill = '';
+        rect.style.stroke = '';
+      }
+    });
+    activeStage = idx;
+  }
+
+  function resetStages() { lightStage(-1); }
+
+  if (!input) return;
+
+  input.addEventListener('input', function() {
+    clearTimeout(debounce);
+    const q = this.value.trim();
+    if (!q) {
+      meta.style.display = 'none';
+      list.innerHTML = '';
+      resetStages();
+      return;
+    }
+    // Light up stages progressively while typing
+    lightStage(0);
+    debounce = setTimeout(() => doSearch(q), 300);
+  });
+
+  async function doSearch(q) {
+    lightStage(1);
+    meta.style.display = 'block';
+    meta.textContent = 'Searching…';
+    list.innerHTML = '<li class="search-loading">querying FTS5…</li>';
+    lightStage(2);
+    try {
+      const t0 = Date.now();
+      const r  = await fetch('/api/search?q=' + encodeURIComponent(q) + '&limit=15', { cache: 'no-store' });
+      lightStage(3);
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const results = await r.json();
+      const dur = Date.now() - t0;
+      lightStage(4);
+      renderSearchResults(results, q, dur);
+    } catch(e) {
+      resetStages();
+      meta.textContent = 'Search error: ' + e.message;
+      list.innerHTML = '<li class="search-empty">Could not reach /api/search. Is the server running on port 4321?</li>';
+    }
+  }
+
+  function renderSearchResults(results, q, dur) {
+    if (!results || !results.length) {
+      meta.textContent = 'No results for "' + escHtml(q) + '"';
+      list.innerHTML = '<li class="search-empty">No matching files in the vault index.</li>';
+      return;
+    }
+    meta.textContent = results.length + ' result' + (results.length !== 1 ? 's' : '') + ' · ' + dur + 'ms · BM25 ranked';
+    list.innerHTML = results.map(r => {
+      const path = r.path || '';
+      const href = '/' + path.replace(/^\//, '');
+      const area = r.area ? `<span class="sr-chip area">${escHtml(r.area)}</span>` : '';
+      const cat  = r.category ? `<span class="sr-chip">${escHtml(r.category)}</span>` : '';
+      const desc = r.description ? `<div class="sr-desc">${escHtml(r.description.slice(0, 160))}</div>` : '';
+      return `<li class="search-result-item">
+        <div class="sr-title"><a href="${escHtml(href)}" target="_blank">${escHtml(r.title || path)}</a></div>
+        ${desc}
+        <div class="sr-meta">${area}${cat}</div>
+        <div class="sr-path">${escHtml(path)}</div>
+      </li>`;
+    }).join('');
+  }
+})();
+
 /* ===== BOOT — DS 0.4.0 event-driven live updates ===== */
+/* wirePanelAnchors() — auto-wired by /_design/clipboard.js (DS 0.8.9) */
+/* Initial paint only. The engine-dependent boot (wireCopyRef + LiveUpdates)
+   runs in the deferred block below, after clipboard.js + live-updates.js load. */
 pollVault();
 loadLogsPanel();
-LiveUpdates.subscribe(() => { pollVault(); loadLogsPanel(); });
-LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
+loadVaultStats();
 </script>
 <script src="/_dashboards/_design/live-updates.js"></script>
-<!-- ops-header.js (DS 0.5.0) -->
-<script src="/_dashboards/_design/ops-header.js"></script>
+<!-- theme.js + clipboard.js (DS 0.7.0, Sprint 1 engine) -->
+<script src="/_dashboards/_design/theme.js"></script>
+<script src="/_dashboards/_design/clipboard.js"></script>
+<!-- admin-bar.js (DS 0.6.0) -->
+<script src="/_dashboards/_design/admin-bar.js"></script>
+<!-- alfred-tasks.js (DS 0.9.0) — Alfred Tasks Sidebar -->
+<script src="/_dashboards/_design/alfred-tasks.js"></script>
+<!-- Deferred boot (DS 0.6.4) — MUST run after the engine scripts above: wireCopyRef
+     lives in clipboard.js, LiveUpdates in live-updates.js. Running it inline above
+     threw a ReferenceError and silently killed both copy-ref and live sync. -->
+<script>
+  wireCopyRef(document);
+  LiveUpdates.subscribe(() => { pollVault(); loadLogsPanel(); loadVaultStats(); });
+  LiveUpdates.mountStatusIndicator(document.getElementById('liveStatusMount'));
+</script>
 </body>
 </html>

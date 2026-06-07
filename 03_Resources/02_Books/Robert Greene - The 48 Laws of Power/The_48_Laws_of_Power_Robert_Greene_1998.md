@@ -1,3 +1,15 @@
+---
+title: "The 48 Laws of Power — Robert Greene (1998)"
+date: 2025-09-01
+author: Becze Szabolcs
+status: active
+description: "A comprehensive study of Robert Greene's 1998 bestseller outlining 48 maxims for understanding and navigating power dynamics, drawn from historical figures and political theory, intended for ambitious readers in business, leadership and entertainment sectors."
+description_source: auto
+description_hash: 2dfd89f48c73790b
+id: 2cdb2e03-81a9-41b2-89dc-e942f24d36b0
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /02_Books/Robert Greene - The 48 Laws of Power/
 FILES:
   - The_48_Laws_of_Power_Robert_Greene_1998.md

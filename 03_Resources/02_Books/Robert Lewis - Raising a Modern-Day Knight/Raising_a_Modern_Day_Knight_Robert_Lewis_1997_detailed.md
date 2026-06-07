@@ -1,3 +1,15 @@
+---
+title: "Raising a Modern‑Day Knight — Robert Lewis (1997)"
+date: 2025-10-29
+author: Becze Szabolcs
+status: active
+description: "Christian parenting guide arguing that fathers must intentionally define manhood, establish moral codes, and create ceremonies to guide sons into responsible adulthood, drawing from medieval knighthood traditions and the author's pastoral experience."
+description_source: auto
+description_hash: d865d88ed820bcd8
+id: e1d404c0-16d7-4014-81d8-306ebe4d2520
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /02_Books/Robert Lewis - Raising a Modern-Day Knight/
 
 ---

@@ -1,3 +1,15 @@
+---
+title: "Tasks"
+date: 2026-03-11
+author: Becze Szabolcs
+status: active
+description: "Personal task management system tracking active client work and deliverables for a media production business, including client onboarding, content releases, branding work, and administrative items organized by status."
+description_source: auto
+description_hash: 6fd9c1385a0c0878
+id: 6ab33fdc-4d1e-4b72-85c5-5b1bd2af1bf5
+index_schema_version: 1
+bdos_index: true
+---
 # Tasks
 
 ## Active

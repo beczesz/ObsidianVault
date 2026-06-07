@@ -1,5 +1,8 @@
 ---
 title: "A Transtelexszel is...csakabaj — Fordított Szerepek"
+description: "Fordított szerepek közötti podcast-epizód, ahol a Transtelex csapat interjúzza a Csakabaj műsorvezetőjét, Józsa Levit. Mélyreható beszélgetés a podcastozásról, moderáció asszimmetriájáról és hosszú formátumú média filozófiájáról."
+description_source: auto
+description_hash: 0249a6cc43659ace
 guest: "Transtelex (Gábor Lajos, Miklós Csongor, et al.)"
 date: "2025-03-22"
 series: "Csakabaj S02E07"
@@ -11,7 +14,6 @@ format: "Role-Reversal Cross-Over"
 id: 1c710dbf-096c-4ad2-8a9a-06414e025431
 index_schema_version: 1
 ---
-
 ## ALAPADATOK
 
 | Mező | Érték |

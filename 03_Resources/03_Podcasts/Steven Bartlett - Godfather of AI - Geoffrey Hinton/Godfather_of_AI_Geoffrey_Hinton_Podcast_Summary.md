@@ -1,3 +1,15 @@
+---
+title: "Godfather of AI: I Tried to Warn Them, But We’ve Already Lost Control! — The Diary of a CEO"
+date: 2025-09-11
+author: Becze Szabolcs
+status: active
+description: "Geoffrey Hinton, the pioneering neural networks researcher, discusses his warnings about uncontrolled AI development with Steven Bartlett, covering existential risks including misinformation, cybersecurity threats, job displacement, and a 20% extinction probability."
+description_source: auto
+description_hash: fe47e73c3b6d68cb
+id: e07d83bb-5615-47ff-b8ba-5e1c25d797c4
+index_schema_version: 1
+bdos_index: true
+---
 SAVE-TO: /03_Podcasts/Steven Bartlett - The Diary of a CEO - Godfather of AI/
 FILES:
   - Godfather_of_AI_Geoffrey_Hinton_Podcast_Summary.md

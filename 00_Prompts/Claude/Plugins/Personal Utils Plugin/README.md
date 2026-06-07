@@ -1,3 +1,15 @@
+---
+title: "Personal Utils Plugin"
+date: 2026-04-21
+author: Becze Szabolcs
+status: active
+description: "Szabolcs' automation plugin for daily routines: morning briefing aggregating calendar and news, podcast monitoring with email categorization and YouTube stats tracking, and systematic Yahoo Mail cleanup with unsubscribe automation and state persistence."
+description_source: auto
+description_hash: 95c7c7b303ce1b71
+id: bed95a60-3275-4bff-98f4-fc910a83db8d
+index_schema_version: 1
+bdos_index: true
+---
 # Personal Utils Plugin
 
 Szabolcs személyes automatizmusai — napi rutinok, inbox kezelés, podcast monitoring.

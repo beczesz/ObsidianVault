@@ -1,5 +1,8 @@
 ---
 title: "Design Brief — Facebook Poszt"
+description: "Facebook post graphic design brief for Deák Húsmíves founding member offer: 1080×1080px square announcing online ordering system with exclusive perks for first 50 customers. Target audience: potential Székely customers seeking to register on deakhus.ro platform."
+description_source: auto
+description_hash: c9eb06dfe5dccd19
 deliverable: Facebook kampány poszt kép
 format: 1080×1080px (négyzet, optimális FB feed-ben)
 language: Magyar
@@ -7,7 +10,6 @@ date: 2026-04-22
 id: 99aa1a92-40ed-4cc0-b7bf-915d4ec2fa39
 index_schema_version: 1
 ---
-
 # Design Brief: Facebook Poszt — Founding 50
 
 ## Feladat

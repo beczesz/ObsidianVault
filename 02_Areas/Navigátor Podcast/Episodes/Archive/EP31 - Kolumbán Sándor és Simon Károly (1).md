@@ -1,5 +1,15 @@
-
-
+---
+title: "EP31   Kolumbán Sándor és Simon Károly (1)"
+date: 2026-02-13
+author: Becze Szabolcs
+status: active
+description: "Podcast episode discussion notes with Kolumbán Sándor and Simon Károly covering AI's impact on local tech projects, education, hardware innovation, and the upcoming Digital Székelyföld conference, featuring pros and cons of AI development."
+description_source: auto
+description_hash: 33ed5875b153d62a
+id: eb72d485-5b51-410c-9b3d-3e30933cca37
+index_schema_version: 1
+bdos_index: true
+---
 ## TODO
 - [x] Visszajelezni az epizóddal kapcsolatban 📅 2025-10-13
 - [x] publikálni az epizódot 📅 2025-10-15

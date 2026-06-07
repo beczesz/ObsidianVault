@@ -1,0 +1,42 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "event-timer",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4322", "--directory", "02_Areas/Fókuszpont/2026"],
+      "port": 4322
+    },
+    {
+      "name": "fokuszpont-microsite",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4323", "--directory", "/Users/becze-mac/Downloads/Work/ExarLabs/microsite-factory/sites/fokuszpont-2026/src"],
+      "port": 4323
+    },
+    {
+      "name": "ignis-academy",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4324", "--directory", "/Users/becze-mac/Downloads/Work/ExarLabs/microsite-factory/sites/ignis-academy/src"],
+      "port": 4324
+    },
+    {
+      "name": "digitalizare",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4325", "--directory", "/Users/becze-mac/Downloads/Work/ExarLabs/microsite-factory/sites/digitalizare/src"],
+      "port": 4325
+    },
+    {
+      "name": "proposals",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4519", "--directory", "/Users/becze-mac/Downloads/Work/ExarLabs/sonrisa-partner-header"],
+      "port": 4519
+    },
+    {
+      "name": "dashboards",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["_dashboards/_tools/dash-server.mjs"],
+      "port": 4321,
+      "autoPort": true
+    }
+  ]
+}

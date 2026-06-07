@@ -1,3 +1,15 @@
+---
+title: "Claude -- Személyes Tudásbázis"
+date: 2026-05-24
+author: Becze Szabolcs
+status: active
+description: "Ez a felhasználó Claude és Cowork pluginok használatáról készített személyes tudásbázisa, amely a telepített eszközöket, promptolási technikákat és munkamenet sablonokat katalogizálja."
+description_source: auto
+description_hash: c727c91f65c99866
+id: 440bfbd8-1511-48d2-95a7-c90f7ec87464
+index_schema_version: 1
+bdos_index: true
+---
 # Claude -- Személyes Tudásbázis
 
 > Utolsó frissítés: 2026-03-23

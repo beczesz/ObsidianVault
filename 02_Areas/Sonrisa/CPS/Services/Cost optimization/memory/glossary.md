@@ -1,3 +1,15 @@
+---
+title: "Glossary"
+date: 2026-02-26
+author: Becze Szabolcs
+status: active
+description: "Reference guide defining key terminology across company structure, services, technical concepts and strategic concepts for a cloud cost optimization platform, useful for team members and stakeholders understanding Sonrisa's Health Check and CPS offerings."
+description_source: auto
+description_hash: 163a15687e5f012d
+id: a0dfe26a-9686-4753-8b9e-ac4541fc862e
+index_schema_version: 1
+bdos_index: true
+---
 # Glossary
 
 ## Company & Organization

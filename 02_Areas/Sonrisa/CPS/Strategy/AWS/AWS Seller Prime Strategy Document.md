@@ -1,3 +1,15 @@
+---
+title: "AWS Seller Prime Strategy Document"
+date: 2025-12-10
+author: Becze Szabolcs
+status: active
+description: "Sonrisa Technologies' managed AWS services strategy document outlining a 2026 marketplace entry via free cost assessments converting to paid managed service subscriptions priced €990-€6,000 monthly for mid-market and enterprise customers lacking internal DevOps capacity."
+description_source: auto
+description_hash: 5b2b0dd7e62fc4a5
+id: b6516870-7c65-4132-b868-f7439c825b51
+index_schema_version: 1
+bdos_index: true
+---
 # AWS Seller Prime Strategy Document
 
 ## Sonrisa Cloud Platform Services (CPS)

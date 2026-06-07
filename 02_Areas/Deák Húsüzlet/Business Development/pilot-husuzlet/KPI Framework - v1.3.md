@@ -1,5 +1,8 @@
 ---
 title: DH Metrics & KPI Framework
+description: "Framework a DH metrics és KPI rendszerhez, amely a pilótfázisban a visszatérési rátát (Second Order Rate) méri North Star KPI-ként. Operációs csapatoknak és product menedzsereknek szól az acquisition, activation, retention és operáció rétegek monitorozásához."
+description_source: auto
+description_hash: 19d9b1be5c79a4a7
 version: 1.3
 date: 2026-04-15
 project: DH (Deák Húsmíves Online Platform)
@@ -8,7 +11,6 @@ status: LIVE — Firebase + UTM/QR tracking aktív
 id: 40324ce8-e0ff-4f71-8967-b6df3392c509
 index_schema_version: 1
 ---
-
 # DH Metrics & KPI Framework
 ### Pilot fázis — max 3 hónap (cél: ≥50 reg + ≥20 visszatérő)
 

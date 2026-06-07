@@ -1,3 +1,15 @@
+---
+title: "Navigátor Podcast — Videó Re-optimalizálási Terv"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "A Navigátor Podcast 196 videójának újbevizsgálati stratégiája, amely YouTube-algoritmus-optimalizálás tudományos hátterét, taktikai eszköztárát (cím, thumbnail, leírás, Community Tab, Shorts) és kategóriánkénti ajánlásokat tartalmazza főleg alulteljesítő tartalmak felfuttatásához. Csatornagarzdák és tartalomszerkesztők számára készült"
+description_source: auto
+description_hash: dfb59be8f4f62f83
+id: f6158cee-3723-4a15-aabe-d81c5e62655d
+index_schema_version: 1
+bdos_index: true
+---
 # Navigátor Podcast — Videó Re-optimalizálási Terv
 
 **Dátum:** 2026. április 6. **Csatorna:** Navigátor Podcast | 5 780 feliratkozó | 353K össznézettség | 196 videó

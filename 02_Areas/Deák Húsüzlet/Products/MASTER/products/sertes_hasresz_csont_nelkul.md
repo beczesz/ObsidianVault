@@ -1,3 +1,15 @@
+---
+title: "Sertés Hasrész Csontnélkül"
+date: 2026-05-09
+author: Becze Szabolcs
+status: active
+description: "Boneless pork belly with skin, sold by weight at 26 HU/kg, available sliced and marinated; popular for grilling and roasting with customizable thickness and marinade options."
+description_source: auto
+description_hash: 871754ab023f1753
+id: 1858cc78-1e2a-4fea-b343-7dfdf8fd6af9
+index_schema_version: 1
+bdos_index: true
+---
 # Sertés Hasrész Csontnélkül
 
 ```yaml

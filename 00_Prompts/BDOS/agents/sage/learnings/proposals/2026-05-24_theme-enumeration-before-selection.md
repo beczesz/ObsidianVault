@@ -1,4 +1,7 @@
 ---
+description: "Mandatory enumeration of all candidate themes before selection in Sage harvest; primary thematic focus often implicit in chat structure, not literal keywords. Decision trace schema updated with minimum three candidates marked for primacy, novelty, and readiness."
+description_source: auto
+description_hash: ee27b33554e7aa4e
 schema: sage.learning.v1
 slug: theme-enumeration-before-selection
 type: prompt-weakness
@@ -17,7 +20,6 @@ retired_reason: null
 id: eb7121d3-e5a9-405c-9717-9e8dae014f24
 index_schema_version: 1
 ---
-
 ## A tanulság
 
 Sage harvest-során **kötelező enumerálni MINDEN candidate témát** a chatben mielőtt választ. Egy "új-de-mellékes" téma soha nem ér többet egy "primary-de-részben-fedett" témánál.

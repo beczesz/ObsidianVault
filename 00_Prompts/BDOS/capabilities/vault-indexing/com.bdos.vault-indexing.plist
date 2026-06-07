@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  BDOS vault-indexing — macOS LaunchAgent (auto-start at login).
+
+  This machine is the SCHEDULER OWNER: start.sh runs launch.py WITHOUT
+  --no-scheduler, so the cron scheduler runs here (and ONLY here).
+
+  Install (run on the Mac):
+    cp "com.bdos.vault-indexing.plist" ~/Library/LaunchAgents/
+    launchctl load -w ~/Library/LaunchAgents/com.bdos.vault-indexing.plist
+
+  Uninstall:
+    launchctl unload -w ~/Library/LaunchAgents/com.bdos.vault-indexing.plist
+    rm ~/Library/LaunchAgents/com.bdos.vault-indexing.plist
+
+  NOTE: at login Google Drive may not have mounted the vault yet. start.sh →
+  launch.py is idempotent, so if the first run is too early just re-run start.sh,
+  or rely on the next login. (KeepAlive is intentionally false to avoid a crash
+  loop while the vault is still syncing.)
+-->
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.bdos.vault-indexing</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/bash</string>
+    <string>/Users/becze-mac/My Drive (beczesz.szabolcs@gmail.com)/0. Ideas Vault/00_Prompts/BDOS/capabilities/vault-indexing/start.sh</string>
+  </array>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <false/>
+  <key>StandardOutPath</key>
+  <string>/tmp/bdos-vault-indexing.out</string>
+  <key>StandardErrorPath</key>
+  <string>/tmp/bdos-vault-indexing.err</string>
+</dict>
+</plist>

@@ -1,11 +1,13 @@
 ---
 title: CPS Competitor Scan - Week of 2026-03-24
+description: "Weekly competitive intelligence tracking six DevOps service providers, documenting four significant changes including new AI service offerings from Dedicatted and DevOPSGroup, expanded AWS competencies at Kloia, and verified pricing stability at Palark, with strategic implications for CPS's market positioning in enterprise deals and EMEA territory."
+description_source: auto
+description_hash: 624922d162ba2853
 date: 2026-03-24
 author: Automated scan (CPS weekly task)
 id: f5bbb5b5-eab1-4522-9cb6-bcdc1b6b18e8
 index_schema_version: 1
 ---
-
 # CPS Competitor Scan - Week of 2026-03-24
 
 > **Scan method:** WebFetch blocked by network proxy (same as last week); data gathered via WebSearch.

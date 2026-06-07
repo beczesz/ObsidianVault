@@ -1,3 +1,15 @@
+---
+title: "2025 10 16 RegioConsult"
+date: 2026-05-11
+author: Becze Szabolcs
+status: active
+description: "RegioConsult assessment requirements for AI-Enhanced Learning Platform project, including TRL 3 prototype evidence, novelty documentation, partnership agreements, and technical validation materials with specific deliverables and responsible parties."
+description_source: auto
+description_hash: 221f1f67e820feb7
+id: efe27ee9-1401-4c04-9dd3-2e3b552a49e4
+index_schema_version: 1
+bdos_index: true
+---
 1. **Vă rugăm să transmiteți dovezi clare privind funcționarea prototipului la nivel TRL 3. Este necesară prezentarea documentelor tehnice și a rapoartelor de testare care să confirme că sistemul integrat a fost validat în laborator, în sensul definit de Comisia Europeană pentru TRL 3. Vă rugăm să detaliați rezultatele măsurătorilor efectuate, inclusiv cele privind timpii de răspuns ai algoritmilor de personalizare, stabilitatea fluxurilor de date între modulele AI, latența și fiabilitatea interacțiunii conversaționale, precum și metodologia de testare și condițiile concrete în care s-a realizat această validare. Totodată, vă rugăm să transmiteți dovezi suplimentare privind utilizarea prototipului în scenarii de testare controlată, cum ar fi capturi de ecran, rapoarte de validare sau procese-verbale întocmite de entități independente.**
    
    - [ ] 8-10 screenshot

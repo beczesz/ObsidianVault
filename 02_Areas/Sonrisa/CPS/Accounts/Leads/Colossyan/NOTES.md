@@ -1,4 +1,7 @@
 ---
+description: "Colossyan is an AI video synthesis startup (~50 employees, Series A, Budapest HQ) with GPU-heavy AWS EKS infrastructure and open Platform Engineer roles. Parked for monitoring until engineering leadership surfaces or funding news emerges; wrong buyer persona and closed warm path make current outreach inefficient."
+description_source: auto
+description_hash: 2dc174f88cfce2f6
 type: lead
 id: colossyan
 company: "Colossyan"
@@ -42,7 +45,6 @@ validated: 2026-05-18
 last_signal_check: 2026-05-18
 index_schema_version: 1
 ---
-
 # Colossyan
 
 ## Signal

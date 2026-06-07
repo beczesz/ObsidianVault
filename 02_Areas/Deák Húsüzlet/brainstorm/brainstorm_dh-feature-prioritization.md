@@ -1,4 +1,7 @@
 ---
+description: "A DH platform Sprint 4 prioritási rangsora, amit ChatGPT és Perplexity AI-val közösen felállított egy csapat. Tartalmazza a tiered feature listát, a pilot KPI-kra fókuszált fő elveket és az egyesített javaslat a második rendelés valószínűségének növelésére."
+description_source: auto
+description_hash: d399d1394a71e342
 topic: DH Feature Prioritization — Sprint 4/5/Backlog
 created: 2026-05-01
 last_updated: 2026-05-01
@@ -6,7 +9,6 @@ status: active
 id: e2da6b87-cf00-41db-b263-4e7eaede6c2f
 index_schema_version: 1
 ---
-
 # Brainstorm: DH Feature Prioritization
 
 ## Team

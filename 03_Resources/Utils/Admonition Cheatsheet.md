@@ -1,3 +1,15 @@
+---
+title: "📌 Admonition Cheatsheet"
+date: 2025-09-14
+author: Becze Szabolcs
+status: active
+description: "Quick reference guide for Obsidian admonition syntax, showing all available callout types from Note to Quote with their specific use cases for organizing vault content."
+description_source: auto
+description_hash: a7b6f56a26565208
+id: f8b2adc3-33d7-48d7-b612-178ceb061ae1
+index_schema_version: 1
+bdos_index: true
+---
 # 📌 Admonition Cheatsheet
 
 > [!note] Note

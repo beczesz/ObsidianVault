@@ -1,5 +1,8 @@
 ---
 title: "Big Blob of Compute Hypothesis"
+description: "Dario Amodei's framework proposing that AI progress depends primarily on seven stable factors, compute, data, duration, objective functions, and engineering stability, rather than algorithmic breakthroughs. Relevant to researchers studying scaling laws and AI development trajectories."
+description_source: auto
+description_hash: 9b40ce49d7fa7003
 type: atomic
 tags: ["atomic", "AI", "scaling", "compute", "machine-learning", "AGI"]
 status: "triaged"
@@ -9,7 +12,6 @@ processed_by: "AI Speed-Reading Agent"
 id: 6d420fbf-64b6-4106-8f0b-ff5c5e59c1ce
 index_schema_version: 1
 ---
-
 # Big Blob of Compute Hypothesis
 
 ## Definition

@@ -1,4 +1,7 @@
 ---
+description: "Voiceover script for Reel #1 with whisper-level intonation guidance for Barna atya, featuring six philosophical questions leading to a Jesus-focused brand statement, including precise timings, breath marks, and performance notes for three recording takes."
+description_source: auto
+description_hash: 82600b7fc71df2ee
 type: voiceover-plotter
 reel: "#1 — Vertikális"
 version: v1 FINAL — papnak / hangfelvételhez
@@ -7,7 +10,6 @@ duration: 30s
 id: 7ae06b78-abdc-403e-bdd5-23933c910717
 index_schema_version: 1
 ---
-
 # Reel #1 — Voiceover script (Barna atyának)
 
 > **Megjegyzés:** Suttogás-szint. Soha nem prédikáció. **Kérdező hang, nem szónoki.** Mintha valaki tényleg az ember lelkébe nézne. A `[..]` 1-2 mp szünet, a `[…]` ~3 mp csend / lélegzés. Az aláhúzott szavakon enyhe hangsúly.

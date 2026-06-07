@@ -1,6 +1,9 @@
 ---
 schema: sage.atomic.v1
 title: Editorial taste modeling — az AI az embertől tanul ízlést
+description: "Az AI-asszisztált szerkesztési rendszerekben a hosszú távú érték az AI ízlésének megtanulásában rejlik: a jóváhagyási minták, elutasítások és preferenciák explicit szabályokká válnak, miközben az AI-generált tartalom költsége csökken."
+description_source: auto
+description_hash: 2b582a7ce7af0b7f
 slug: editorial-taste-modeling
 note_revision: 1
 status: nascent
@@ -13,7 +16,6 @@ source_thoughts:
 id: 72db6dee-3631-4323-8126-7d609e4326c7
 index_schema_version: 1
 ---
-
 ## A gondolat (absztrakt)
 Egy AI-asszisztált editorial rendszerben a leglényegesebb hosszú távú érték nem a generált tartalom mennyisége vagy minősége, hanem hogy az AI **az embertől tanul ízlést** — a jóváhagyási minták, elutasítási döntések, átírási preferenciák és hangnem-választások explicit pattern-ekké válnak. Az AI-generált tartalom árát az LLM-ek tovább csökkentik; az editorial judgment ára növekszik.
 

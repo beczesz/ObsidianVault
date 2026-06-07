@@ -1,3 +1,15 @@
+---
+title: "Microsite Factory — Üzleti terv és piackutatás"
+date: 2026-05-16
+author: Becze Szabolcs
+status: active
+description: "Magyar AI-asszisztált microsite gyár kisvállalkozásoknak, mely 30 perc alatt stratégiailag átgondolt, egyedi weboldalt készít."
+description_source: auto
+description_hash: 33ae601b584fb0d7
+id: c0e88f89-f090-4aae-9cba-594ef8419e6d
+index_schema_version: 1
+bdos_index: true
+---
 # Microsite Factory — Üzleti terv és piackutatás
 
 **Készült:** 2026-05-15

@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP37
 title: "Évekig lehet így élni… csak nem érdemes - Hogyan indul el valójában a kiégés"
+description: "Episode 37 podcast analytics and burnout content analysis tracking audience reach (6.4K views, 1.7K watch hours), engagement metrics, and a winning A/B test title."
+description_source: auto
+description_hash: 8cb0cb2b8d897652
 guest: "Brutbányai Melinda & Elekes István"
 guest_title: "Reziliencia 21 Intézet — szociális munkás/mentálhigiénés szakember & mérnök/HR/szervezetfejlesztő"
 topic: "Kiégés (burnout) — felismerés, megelőzés, egyéni és szervezeti szint"
@@ -15,7 +18,6 @@ quality: deep
 id: 4945f137-417b-4840-ba0c-eb34275d7624
 index_schema_version: 1
 ---
-
 # EP37 — Kiégés: „Évekig lehet így élni… csak nem érdemes"
 
 ## YouTube Studio Analytics

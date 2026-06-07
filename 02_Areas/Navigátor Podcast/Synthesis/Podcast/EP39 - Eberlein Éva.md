@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP39
 title: "„Az első találkozás 10 éves korban volt" – Mit okoz ez a fejlődő agyban | Eberlein Éva | EP39"
+description: "Eberlein Éva identitáscoach szexuális nevelésről, pornográfia-exponáltságról és digitális veszélyekről beszél, a saját identitásküzdelmét 20 éves ifjúsági munkatapasztalatával összekötve. Szülőknek, pedagógusoknak és a szexuális nevelésben érdekelteknek készült."
+description_source: auto
+description_hash: 6f26187e2933d19e
 guest: "Eberlein Éva"
 guest_title: "Identitás coach, Emberi Méltóság Központ vezetője, ifjúsági nevelő"
 topic: "Szexuális nevelés, pornográfia hatásai, digitális veszélyek, nemi identitás, gyermekvédelem"
@@ -15,7 +18,6 @@ quality: gold-standard
 id: 116dec7d-03ac-4af6-b4ff-acd984214a36
 index_schema_version: 1
 ---
-
 # EP39 — Eberlein Éva: „Az első találkozás 10 éves korban volt" — Mit okoz ez a fejlődő agyban
 
 ## Vendég háttér

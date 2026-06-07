@@ -1,3 +1,15 @@
+---
+title: "Csakabaj Podcast — Gold Standard Episode Synthesis"
+date: 2026-04-09
+author: Becze Szabolcs
+status: active
+description: "Metaanalízis a Csakabaj Podcast 27. epizódjáról, ahol Józsa Levi és Becze Szabolcs a podcastingről beszélgetnek: közösség, autenticitás, üzleti modell és hosszúforma médium. Podcastkészítőknek és a magyar podcastökoszisztéma iránt érdeklődőknek értékes tanulságok."
+description_source: auto
+description_hash: c1edd28c623f9bf3
+id: fc825a0f-96cb-4595-a846-1c8c6a877422
+index_schema_version: 1
+bdos_index: true
+---
 # Csakabaj Podcast — Gold Standard Episode Synthesis
 
 ## EP27 | Hogyan születik egy podcast

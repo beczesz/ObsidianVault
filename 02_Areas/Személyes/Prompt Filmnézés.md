@@ -1,3 +1,15 @@
+---
+title: "Prompt Filmnézés"
+date: 2026-02-02
+author: Becze Szabolcs
+status: active
+description: "Szűrt filmjavaslatok a feleség számára: intuitív tanulást, mély kapcsolatokat, esztétikát és spirituális fejlődést hangsúlyozó, erőszak-mentes alkotások 2000 után, 7+ IMDB értékeléssel, amely a megtestesülést és empátiát helyezi előtérbe a mechanikus világlátás helyett."
+description_source: auto
+description_hash: 52ebeeee5c4b0fc8
+id: bc04a55e-f7bc-40ee-b5ac-d4ead911603a
+index_schema_version: 1
+bdos_index: true
+---
 ## A film leírása
 
 A feleségemmel nézem a filmet aki nem szereti az erőszakot, keressük a személyes fejlődést. Nagyon szereti pl. a Devil Wears Prada-t. Építész a feleségem, szóval a divat, épületek szép belső tereket szereti. Ezenkívül van 3 gyermekünk az érzelmes kompelx belső kapcsolatokat is szereti.

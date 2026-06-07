@@ -1,3 +1,15 @@
+---
+title: "Partner solutions"
+date: 2025-12-09
+author: Becze Szabolcs
+status: active
+description: "A Solution is a service offering registered in AWS Partner Central that appears in the searchable Partner Solutions Finder, enabling AWS sales teams and customers to discover your managed services."
+description_source: auto
+description_hash: a3feec1933efe625
+id: 951cb828-5ea9-4474-88ba-08100d2d6f6e
+index_schema_version: 1
+bdos_index: true
+---
 ### What It Is
 
 A **Solution** is your company's service offering registered in AWS Partner Central. It appears in the **AWS Partner Solutions Finder** — the searchable directory AWS customers and AWS sales teams use to find qualified partners for specific needs.

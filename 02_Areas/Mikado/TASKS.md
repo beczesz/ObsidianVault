@@ -1,3 +1,15 @@
+---
+title: "Tasks"
+date: 2026-02-16
+author: Becze Szabolcs
+status: active
+description: "Personal task management system tracking a founder clients marketing campaign with weekly deliverables, ongoing content and lead management responsibilities, and completed launch activities."
+description_source: auto
+description_hash: c5d8cc05ff2781e6
+id: 1d6f8222-cdd5-426d-a67a-12c87810d44e
+index_schema_version: 1
+bdos_index: true
+---
 # Tasks
 
 ## In Progress

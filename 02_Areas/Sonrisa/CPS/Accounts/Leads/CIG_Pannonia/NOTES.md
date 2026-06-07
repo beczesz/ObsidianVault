@@ -1,4 +1,7 @@
 ---
+description: "CIG Pannonia outreach campaign targeting IT leadership (Attila Zankai, László Pataki) at a 217-person Budapest insurance company for NIS2/DORA compliance and Azure DevOps managed services, tracking connect requests, Sales Navigator InMail, and follow-up cadence through May 2026."
+description_source: auto
+description_hash: 128f6277aca6d83b
 type: lead
 id: cigpannonia
 company: "CIG Pannonia"
@@ -40,7 +43,6 @@ created: 2026-03-24
 last_signal_check: 2026-05-18
 index_schema_version: 1
 ---
-
 # CIG Pannonia
 
 ## Signal

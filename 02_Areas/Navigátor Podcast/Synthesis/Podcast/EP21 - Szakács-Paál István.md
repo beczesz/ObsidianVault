@@ -4,6 +4,9 @@ date: 2026-04-06
 type: episode-synthesis
 episode: EP21
 title: "Indul az Audit? | Szakács-Paál István | EP 21"
+description: "A Navigátor Podcast EP21-ben Szakács-Paál István székelyudvarhelyi polgármester az első négy hónapot értékeli. Az elemzés YouTube-analytics alapján: 4,231 nézés, kimagasló 14:50 átlagos megtekintési idő, 80% erdélyi közönség, Facebook-megosztásokból erős külső forgalom és 71,7% férfi nézőarány jellem"
+description_source: auto
+description_hash: 4a3bd1714a4c39da
 guest: "Szakács-Paál István"
 guest_title: "Székelyudvarhely polgármestere"
 topic: "Önkormányzati átvilágítás — első 4 hónap, költségvetési deficit, hitelfelvétel, nagy projektek, hivatali kultúra"
@@ -15,7 +18,6 @@ quality: deep
 id: a7f39713-f1db-41f4-ad8b-a4b5ef914665
 index_schema_version: 1
 ---
-
 # EP21 — Szakács-Paál István: „Indul az Audit?" — Az első négy hónap a városházán
 
 ## YouTube Studio Analytics

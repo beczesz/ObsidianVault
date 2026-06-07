@@ -1,12 +1,14 @@
 ---
 title: CPS Daily Lead Scanner - Daily Brief
+description: "Daily scan of DevOps hiring opportunities in Hungary and Romania found zero new ICP-matching leads among seven screened companies, all disqualified for being too large or recruitment agencies. Two existing warm leads require LinkedIn follow-ups tomorrow; market remains dominated by large enterprises and staffing firms."
+description_source: auto
+description_hash: 485117c8e9d4582a
 date: 2026-03-30
 profile: "Profile #1: The Replacement Hire"
 scanner_version: automated
 id: 720e811b-93b6-42be-a59c-0dd9a986ea6a
 index_schema_version: 1
 ---
-
 # Daily Lead Scanner Brief - 2026-03-30 (Monday)
 
 ## Summary

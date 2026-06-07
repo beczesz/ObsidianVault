@@ -1,12 +1,14 @@
 ---
 title: CPS Daily Lead Brief
+description: "Daily lead summary for CPS business development: identifies 5 qualified companies actively hiring or expanding that could benefit from managed AWS services, with actionable outreach strategies, contact targets, and suggested engagement packages for each prospect."
+description_source: auto
+description_hash: ce934379de243074
 date: 2026-03-18
 leads_found: 5
 hot_leads: 3
 id: e3f2ad6a-12e1-44dd-97a2-b6ad643bab68
 index_schema_version: 1
 ---
-
 # CPS Daily Lead Brief - 2026-03-18
 
 ## Summary

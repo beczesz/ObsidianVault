@@ -1,4 +1,7 @@
 ---
+description: "A Navigátor Podcast csatornáról készített átfogó audit, amely epizódok nézettségét, közönségét, algoritmusszerepét és forgalmi mintáit elemzi. Az audit fő hipotézise, hogy a csatorna igazi közönsége nem a deklarált vállalkozók, hanem az egészség és pszichológia iránt érdeklődő 45+ éves nők, akiknek a hosszú távú algoritm"
+description_source: auto
+description_hash: 9c7bcb83fe568bc2
 version: 0.2
 date: 2026-04-06
 type: cross-episode-synthesis
@@ -13,7 +16,6 @@ episodes_analyzed:
 id: 82f065ba-99b2-4783-bfff-005ed9e99fc0
 index_schema_version: 1
 ---
-
 # Navigátor Podcast — Általános szintézis és megfigyelések
 
 > Ez a dokumentum a csatorna audit során epizódról epizódra gyűjtött átfogó megfigyeléseket tartalmazza.
