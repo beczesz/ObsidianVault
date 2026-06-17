@@ -22,8 +22,14 @@
     {
       "name": "digitalizare",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "4325", "--directory", "/Users/becze-mac/Downloads/Work/ExarLabs/microsite-factory/sites/digitalizare/src"],
+      "runtimeArgs": ["-m", "http.server", "4325", "--directory", "/Users/becze-mac/Downloads/munka/ExarLabs/microsite-factory/sites/digitalizare/src"],
       "port": 4325
+    },
+    {
+      "name": "digitalizare-gw",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4327", "--directory", "/Users/becze-mac/Downloads/munka/ExarLabs/microsite-factory/sites/digitalizare-gw/src"],
+      "port": 4327
     },
     {
       "name": "proposals",
@@ -32,11 +38,29 @@
       "port": 4519
     },
     {
+      "name": "ignis-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4329", "--directory", "/Users/becze-mac/Downloads/munka/ExarLabs/microsite-factory/sites/ignis-academy/src"],
+      "port": 4329
+    },
+    {
+      "name": "ignis-deck",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4326", "--directory", "02_Areas/Ignis/Ignis Academy/1. szint/Prezentáció/ignis-deck"],
+      "port": 4326
+    },
+    {
       "name": "dashboards",
       "runtimeExecutable": "node",
       "runtimeArgs": ["_dashboards/_tools/dash-server.mjs"],
       "port": 4321,
       "autoPort": true
+    },
+    {
+      "name": "gerdit-dashboard",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "4330", "--directory", "01_Projects/Gergely István"],
+      "port": 4330
     }
   ]
 }
