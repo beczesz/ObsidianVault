@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ignis Academy — Regio tananyag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  .ignis-page{
+    --navy:oklch(0.18 0.035 250);--navy-light:oklch(0.22 0.03 250);--navy-surface:oklch(0.25 0.025 250);
+    --red:oklch(0.52 0.2 28);--orange:oklch(0.72 0.17 55);--yellow:oklch(0.86 0.17 90);
+    --text-primary:oklch(0.92 0.005 250);--text-secondary:oklch(0.7 0.01 250);--text-muted:oklch(0.55 0.015 250);
+    font-family:'Barlow',system-ui,sans-serif;background:var(--navy);color:var(--text-primary);
+    line-height:1.7;min-height:100vh;-webkit-font-smoothing:antialiased;
+  }
+  .ignis-page a{color:inherit;text-decoration:none}
+  .ignis-hero{display:flex;flex-direction:column;align-items:center;padding:clamp(3rem,8vw,6rem) clamp(1.5rem,5vw,3rem) clamp(1rem,3vw,2rem)}
+  .wm{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:.02em}
+  .wm .dot{color:var(--orange)}
+  .kick{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.9rem;letter-spacing:.14em;text-transform:uppercase;color:var(--orange);margin-top:.6rem}
+  .ignis-divider{width:clamp(120px,20vw,200px);height:3px;margin:clamp(1.5rem,4vw,3rem) auto;background:linear-gradient(90deg,var(--yellow),var(--orange),var(--red));border:none;border-radius:2px}
+  .ignis-intro{max-width:640px;margin:0 auto;padding:0 clamp(1.5rem,5vw,3rem);text-align:center}
+  .ignis-intro h1{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:clamp(2rem,4.5vw,3.2rem);letter-spacing:.02em;margin-bottom:1rem;line-height:1.15}
+  .ignis-intro p{font-size:clamp(1rem,1.8vw,1.15rem);color:var(--text-secondary);line-height:1.8}
+  .wrap{max-width:640px;margin:0 auto;padding:clamp(2.5rem,6vw,4rem) clamp(1.5rem,5vw,3rem) clamp(4rem,8vw,6rem)}
+  .label{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;color:var(--orange);margin-bottom:1.25rem}
+  /* jelszó-kapu */
+  .gate{background:var(--navy-light);border:1px solid oklch(0.3 0.02 250);border-radius:10px;padding:clamp(1.5rem,4vw,2.25rem)}
+  .gate p{color:var(--text-secondary);margin-bottom:1.2rem;font-size:.98rem}
+  .gate-row{display:flex;gap:.75rem}
+  .gate input{flex:1;min-width:0;background:var(--navy);border:1px solid oklch(0.34 0.02 250);border-radius:8px;color:var(--text-primary);font-family:'Barlow',sans-serif;font-size:1.05rem;padding:.7rem 1rem}
+  .gate input:focus{outline:none;border-color:var(--orange)}
+  .btn{display:inline-flex;align-items:center;gap:.5rem;font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.95rem;letter-spacing:.04em;text-transform:uppercase;color:var(--navy);background:var(--orange);padding:.7rem 1.4rem;border-radius:8px;border:none;cursor:pointer;transition:background .25s,transform .2s}
+  .btn:hover{background:var(--yellow);transform:translateY(-1px)}
+  .gate-err{color:var(--red);font-size:.9rem;margin-top:.8rem;min-height:1.2em}
+  .shake{animation:shake .35s}
+  @keyframes shake{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(4px)}50%{transform:translateX(-6px)}}
+  /* letöltések */
+  #downloads{display:none}
+  #downloads.on{display:block;animation:fade .4s ease}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .file{display:flex;align-items:center;gap:clamp(1rem,2.5vw,1.5rem);background:var(--navy-light);padding:clamp(1.25rem,3vw,1.75rem);border-radius:10px;border:1px solid oklch(0.3 0.02 250);transition:border-color .3s,background .3s}
+  .file:hover{border-color:oklch(0.4 0.04 55);background:var(--navy-surface)}
+  .file-icon{flex-shrink:0;width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:oklch(0.28 0.03 250);border-radius:8px}
+  .file-icon svg{width:24px;height:24px}
+  .file-info{flex:1;min-width:0}
+  .file-name{font-weight:600;font-size:clamp(1rem,2vw,1.1rem);line-height:1.3}
+  .file-meta{display:flex;align-items:center;gap:.75rem;margin-top:.3rem}
+  .badge{font-family:'Barlow Condensed',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--navy);background:var(--orange);padding:.15rem .5rem;border-radius:4px;line-height:1.5}
+  .file-desc{font-size:.85rem;color:var(--text-muted)}
+  .ghost{margin-top:1rem;background:transparent;border:1px solid oklch(0.4 0.03 250);color:var(--text-primary)}
+  .ghost:hover{background:var(--navy-surface);color:var(--text-primary)}
+  .ignis-footer{text-align:center;padding:2rem clamp(1.5rem,5vw,3rem);border-top:1px solid oklch(0.25 0.02 250)}
+  .ignis-footer p{font-size:.8rem;color:var(--text-muted)}
+  @media(max-width:520px){.file{flex-direction:column;align-items:flex-start;gap:1rem}.file-action{align-self:stretch;width:100%}.file .btn{width:100%;justify-content:center}}
+</style>
+</head>
+<body>
+<div class="ignis-page">
+  <section class="ignis-hero">
+    <div class="wm">Ignis Academy<span class="dot">.</span></div>
+    <div class="kick">AI Haladó · Regio Consult</div>
+  </section>
+  <hr class="ignis-divider">
+  <section class="ignis-intro">
+    <h1>Tananyag letöltése</h1>
+    <p>A RegioConsult AI Haladó képzés segédanyaga: a Napsugár-példakészlet, amivel élőben együtt dolgozunk a workshopon. Írd be a képzésen kapott jelszót, majd töltsd le a csomagot.</p>
+  </section>
+  <section class="wrap">
+    <div class="gate" id="gate">
+      <div class="label">Belépés</div>
+      <p>A tananyag jelszóval védett. A jelszót a képzésen kapod meg.</p>
+      <div class="gate-row">
+        <input id="pw" type="password" placeholder="Jelszó" autocomplete="off" aria-label="Jelszó">
+        <button class="btn" id="go" type="button">Belépés</button>
+      </div>
+      <div class="gate-err" id="err"></div>
+    </div>
+
+    <div id="downloads">
+      <div class="label">Elérhető anyagok</div>
+      <a href="Regio-Tananyag-v0.1.zip" class="file" download>
+        <div class="file-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.72 0.17 55)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><path d="M12 18v-6"/><path d="m9 15 3 3 3-3"/></svg>
+        </div>
+        <div class="file-info">
+          <div class="file-name">Regio Tananyag — v0.1</div>
+          <div class="file-meta"><span class="badge">zip</span><span class="file-desc">Napsugár sandbox, sablonok, szkennelt ajánlat, monitoring</span></div>
+        </div>
+        <div class="file-action">
+          <span class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Letöltés</span>
+        </div>
+      </a>
+      <a href="../deck-regio/index.html" class="file" target="_blank" style="margin-top:1rem">
+        <div class="file-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="oklch(0.72 0.17 55)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <div class="file-info">
+          <div class="file-name">Prezentáció megnyitása</div>
+          <div class="file-meta"><span class="badge">deck</span><span class="file-desc">A Haladó · Regio diasor új lapon</span></div>
+        </div>
+        <div class="file-action"><span class="btn ghost">Megnyitás</span></div>
+      </a>
+    </div>
+  </section>
+  <footer class="ignis-footer"><p>&copy; 2026 Ignis Academy. Minden jog fenntartva.</p></footer>
+</div>
+<script>
+  (function(){
+    var PW='ignis387';
+    var gate=document.getElementById('gate'), dl=document.getElementById('downloads'),
+        pw=document.getElementById('pw'), go=document.getElementById('go'), err=document.getElementById('err');
+    function unlock(){ gate.style.display='none'; dl.classList.add('on'); }
+    function tryPw(){
+      if(pw.value.trim()===PW){ err.textContent=''; unlock(); }
+      else { err.textContent='Hibás jelszó. Próbáld újra.'; gate.classList.remove('shake'); void gate.offsetWidth; gate.classList.add('shake'); }
+    }
+    go.addEventListener('click', tryPw);
+    pw.addEventListener('keydown', function(e){ if(e.key==='Enter') tryPw(); });
+  })();
+</script>
+</body>
+</html>

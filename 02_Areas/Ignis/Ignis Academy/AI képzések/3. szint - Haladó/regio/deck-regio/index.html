@@ -1,0 +1,2008 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ignis Academy · Haladó · Regio Consult</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  /* ===== Ignis Academy design tokens (mirror of 1. szint / Alapozó deck) ===== */
+  :root{
+    --navy:#0f1b2d; --navy-mid:#1a2a42;
+    --red:#d92027; --red-hover:#b81a20;
+    --yellow:#f5c518; --orange:#e87a20;
+    --off-white:#f0efe8; --text-on-dark:#e8e5da;
+    --font-head:'Space Grotesk',-apple-system,sans-serif;
+    --font-body:'Source Sans 3',-apple-system,sans-serif;
+    --font-mono:'JetBrains Mono',ui-monospace,monospace;
+    /* Haladó (Műhely) vezérszín = narancs, a szint-badge rendszer szerint */
+    --lead:var(--orange);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box}
+  html,body{height:100%;background:#05080d;font-family:var(--font-body)}
+
+  /* Stage scales a fixed 1920x1080 slide to fit any viewport (letterboxed). */
+  #stage{position:fixed;inset:0;display:grid;place-items:center;overflow:hidden}
+  .slide{
+    position:absolute;width:1920px;height:1080px;
+    background:var(--navy);color:var(--text-on-dark);
+    overflow:hidden;display:none;transform-origin:center center;
+  }
+  .slide.active{display:block}
+
+  /* ---- shared building blocks ---- */
+  .pad{position:absolute;inset:0;padding:128px 140px;display:flex;flex-direction:column}
+  .kicker{
+    font-family:var(--font-mono);font-size:24px;font-weight:500;
+    letter-spacing:.18em;text-transform:uppercase;color:var(--yellow);
+  }
+  h1{font-family:var(--font-head);font-weight:700;line-height:1.04;letter-spacing:-.015em;color:#fff;}
+  .sub{font-family:var(--font-body);line-height:1.5;color:color-mix(in oklch,var(--text-on-dark) 85%,transparent);}
+  .meta{font-family:var(--font-mono);font-size:24px;letter-spacing:.04em;color:color-mix(in oklch,var(--text-on-dark) 70%,transparent);}
+  .bar{width:96px;height:8px;background:var(--lead);display:block}
+
+  .wordmark{display:flex;align-items:center;gap:18px}
+  .wordmark .glyph{width:auto;height:46px;display:block}
+  .wordmark .name{font-family:var(--font-head);font-weight:700;font-size:30px;letter-spacing:-.01em;color:#fff}
+  .geo{position:absolute;display:block}
+  .footrow{position:absolute;left:140px;right:140px;bottom:96px;display:flex;align-items:flex-end;justify-content:space-between;}
+  .pageno{position:absolute;right:56px;bottom:44px;font-family:var(--font-mono);font-size:20px;letter-spacing:.06em;color:#7c8794;z-index:5}
+
+  /* ============ SLIDE 1 — WELCOME ============ */
+  #h1 .pad{justify-content:center;max-width:1180px}
+  #h1 .kicker{margin-bottom:40px}
+  #h1 h1{font-size:88px;max-width:1180px}
+  #h1 .bar{margin:48px 0}
+  #h1 .sub{font-size:38px;max-width:920px}
+  #h1 .geo{right:120px;top:50%;transform:translateY(-50%);width:560px;height:560px;opacity:.97}
+
+  /* ============ REUSABLE BLOCK SLIDE TYPES (örökölve az Alapozóból, jövőbeli diákhoz) ============ */
+  /* dark block-intro */
+  .t-intro .pad{justify-content:center}
+  .t-intro .kicker{margin-bottom:28px}
+  .t-intro h1{font-size:90px;max-width:1320px}
+  .t-intro .bar{margin:44px 0}
+  .t-intro .sub{font-size:34px;max-width:1180px}
+  /* light theory/content */
+  .t-light{background:var(--off-white);color:#0d1520}
+  .t-light .pad{justify-content:center}
+  .t-light .kicker{color:var(--lead);margin-bottom:24px}
+  .t-light h1{color:#0d1520;font-size:70px;margin-bottom:36px;max-width:1520px}
+  .t-light .body{font-family:var(--font-body);font-size:36px;line-height:1.5;color:#2a3340;max-width:1320px}
+  .t-light .body b{color:var(--lead);font-family:var(--font-head);font-weight:700}
+  .t-light .wordmark .name{color:#0d1520}
+  .t-light .meta{color:#5a6577}
+  /* role badge */
+  .rolebadge{align-self:flex-start;font-family:var(--font-mono);font-weight:500;font-size:21px;letter-spacing:.12em;text-transform:uppercase;padding:8px 16px;margin-bottom:26px}
+  .rolebadge.demo{background:var(--red);color:#fff}
+  .rolebadge.ex{background:var(--yellow);color:var(--navy)}
+  /* prompt box */
+  .prompt{background:var(--navy);color:#e8e5da;font-family:var(--font-mono);font-size:26px;line-height:1.45;padding:30px 36px;max-width:1520px;white-space:pre-wrap;border-left:5px solid var(--lead)}
+  .prompt + .prompt{margin-top:20px}
+  .prompt .c{color:#8a94a2}
+  .promptcap{font-family:var(--font-body);font-size:27px;color:#3a4453;margin-top:26px;max-width:1320px}
+  .promptcap b{color:var(--lead);font-family:var(--font-head);font-weight:700}
+  /* dark accent quote */
+  .t-accent .pad{justify-content:center}
+  .t-accent .kicker{margin-bottom:34px}
+  .t-accent .q{font-family:var(--font-head);font-weight:700;font-size:98px;line-height:1.1;color:#fff;max-width:1520px;letter-spacing:-.015em}
+  .t-accent .q em{color:var(--yellow);font-style:normal}
+  /* break */
+  .t-break .pad{justify-content:center;align-items:center;text-align:center}
+  .t-break .big{font-family:var(--font-head);font-weight:700;font-size:150px;color:#fff;letter-spacing:-.02em;line-height:1}
+  .t-break .bsub{font-family:var(--font-mono);font-size:32px;letter-spacing:.12em;text-transform:uppercase;color:var(--yellow);margin-top:24px}
+
+  /* ============ SLIDE 2 — ÖT SZINT, EGY FEJLŐDÉSI ÚT (light, a Mester #m2 alapján) ============ */
+  #h2{background:var(--off-white);color:#0d1520}
+  #h2 .pad{justify-content:center}
+  #h2 .kicker{color:var(--red);margin-bottom:26px}
+  #h2 h1{color:#0d1520;font-size:72px;margin-bottom:18px}
+  #h2 .intro{font-family:var(--font-body);font-size:28px;line-height:1.4;color:#5a6577;max-width:1320px;margin-bottom:60px}
+  #h2 .intro b{color:#0d1520;font-family:var(--font-head);font-weight:700}
+  #h2 .wordmark .name{color:#0d1520}
+  #h2 .meta{color:#5a6577}
+  /* 5-szintes fejlődési út (path5 + pnode) */
+  .path5{position:relative;display:grid;grid-template-columns:repeat(5,1fr);margin-top:56px;max-width:1660px}
+  .path5 .pline{position:absolute;top:92px;left:10%;right:10%;height:4px;border-radius:2px;background:linear-gradient(90deg,#FEF102,#F6821F,#ED1B24,#D22332,#9B7BE6);opacity:.92;z-index:0}
+  .pnode{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;text-align:center;padding:0 16px}
+  .pnode .ptag{height:26px;margin-bottom:16px;font-family:var(--font-mono);font-size:15px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+  .pnode .pdot{width:100px;height:100px;display:flex;align-items:center;justify-content:center}
+  .pnode .pdot i{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:700;font-size:38px;font-style:normal;color:#0d1520;box-shadow:0 6px 22px rgba(0,0,0,.28)}
+  .pnode.l1 .pdot i{background:#FEF102}
+  .pnode.l2 .pdot i{background:#F6821F}
+  .pnode.l3 .pdot i{background:#ED1B24;color:#fff}
+  .pnode.l4 .pdot i{background:#D22332;color:#fff}
+  .pnode.l5 .pdot i{background:#9B7BE6;color:#fff}
+  .pnode.now .pdot i{width:96px;height:96px;font-size:46px;box-shadow:0 0 0 7px rgba(217,122,32,.20),0 8px 32px rgba(0,0,0,.42)}
+  .pnode .pname{margin-top:22px;font-family:var(--font-head);font-weight:700;font-size:25px;line-height:1.12}
+  .pnode .pdesc{margin-top:11px;font-family:var(--font-body);font-size:18px;line-height:1.34;max-width:300px}
+  #h2 .pname{color:#0d1520}
+  #h2 .pdesc{color:#3a4453}
+  #h2 .ptag{color:#5a6577}
+  #h2 .pnode.now .ptag{color:var(--orange)}
+  #h2 .pnode.ahead{opacity:.92}
+
+  /* ============ SLIDE 3 — MIT TANULTUNK AZ ALAPOZÓN (light, a Mester #m4 alapján) ============ */
+  #h3{background:var(--off-white);color:#0d1520}
+  #h3 .pad{justify-content:center}
+  #h3 .kicker{color:var(--red);margin-bottom:22px}
+  #h3 h1{color:#0d1520;font-size:66px;margin-bottom:64px;max-width:1500px}
+  #h3 .caps{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;max-width:1660px}
+  #h3 .cap{display:flex;flex-direction:column;gap:16px}
+  #h3 .cap .n{font-family:var(--font-head);font-weight:700;font-size:28px;color:#fff;background:var(--red);width:58px;height:58px;display:flex;align-items:center;justify-content:center}
+  #h3 .cap:nth-child(1) .n{background:var(--red)}
+  #h3 .cap:nth-child(2) .n{background:var(--orange)}
+  #h3 .cap:nth-child(3) .n{background:#c9a200}
+  #h3 .cap:nth-child(4) .n{background:#3a4453}
+  #h3 .cap .ct{font-family:var(--font-head);font-weight:700;font-size:29px;color:#0d1520;line-height:1.1}
+  #h3 .cap .cd{font-family:var(--font-body);font-size:22px;line-height:1.4;color:#3a4453}
+  #h3 .wordmark .name{color:#0d1520}
+  #h3 .meta{color:#5a6577}
+
+  /* ============ SLIDE 4 — A HALADÓ SZINT VÍZIÓJA (dark, a Mester #m5 alapján) ============ */
+  #h4 .pad{justify-content:center}
+  #h4 .kicker{margin-bottom:22px}
+  #h4 h1{font-size:72px;margin-bottom:20px}
+  #h4 .lead{font-family:var(--font-body);font-size:31px;line-height:1.4;color:color-mix(in oklch,var(--text-on-dark) 85%,transparent);max-width:1480px;margin-bottom:54px}
+  #h4 .lead b{color:var(--yellow);font-family:var(--font-head);font-weight:700}
+  #h4 .cols{display:grid;grid-template-columns:1fr 1fr;gap:96px;max-width:1660px}
+  #h4 .col h3{font-family:var(--font-head);font-weight:700;font-size:38px;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:16px}
+  #h4 .col h3::before{content:"";width:20px;height:20px;flex:0 0 auto}
+  #h4 .col.kb h3::before{background:var(--red)}
+  #h4 .col.ag h3::before{background:var(--orange)}
+  #h4 .col .csub{font-family:var(--font-mono);font-size:20px;letter-spacing:.04em;color:color-mix(in oklch,var(--text-on-dark) 60%,transparent);margin:0 0 26px 36px}
+  #h4 .col ul{list-style:none;display:flex;flex-direction:column;gap:18px}
+  #h4 .col li{font-family:var(--font-body);font-size:27px;line-height:1.3;color:#e8e5da;padding-left:36px;position:relative}
+  #h4 .col li::before{content:"";position:absolute;left:0;top:11px;width:13px;height:13px;background:var(--red)}
+  #h4 .col.ag li::before{background:var(--orange)}
+  #h4 .col li .s{display:block;font-family:var(--font-mono);font-size:19px;color:color-mix(in oklch,var(--text-on-dark) 65%,transparent);margin-top:7px;line-height:1.3;letter-spacing:.02em}
+
+  /* ============ SLIDE 5 — A JÖVŐ MUNKÁJA (videó demó) ============ */
+  #h5 .pad{justify-content:center}
+  #h5 .vrow{display:grid;grid-template-columns:1fr auto;align-items:center;gap:96px;max-width:1660px}
+  #h5 .vtext{max-width:780px}
+  #h5 .kicker{margin-bottom:26px}
+  #h5 h1{font-size:78px;line-height:1.05;max-width:780px}
+  #h5 .bar{margin:42px 0 0}
+  #h5 .vid{width:660px;height:auto;display:block;border:1px solid rgba(232,229,218,.16);box-shadow:0 26px 72px rgba(0,0,0,.55);background:#05080d}
+
+  /* ============ SLIDE 6 — IPARI ↔ KOGNITÍV FORRADALOM (scrollozható idővonal) ============ */
+  #h6 .pad{padding:56px 120px 150px;display:flex;flex-direction:column}
+  #h6 .tl-head{flex:0 0 auto;width:100%;max-width:1660px;margin:0 auto}
+  #h6 .kicker{margin-bottom:16px}
+  #h6 h1{font-size:58px;line-height:1.04;margin-bottom:8px}
+  #h6 h1 .arr{color:var(--orange);font-style:normal}
+  #h6 .tl-sub{font-family:var(--font-body);font-size:26px;color:color-mix(in oklch,var(--text-on-dark) 58%,transparent);margin-bottom:26px}
+  #h6 .tl-cols{display:grid;grid-template-columns:1fr 80px 1fr;align-items:center;padding-bottom:16px;border-bottom:1px solid rgba(232,229,218,.12)}
+  #h6 .cl{font-family:var(--font-mono);font-size:20px;font-weight:500;letter-spacing:.14em;text-transform:uppercase}
+  #h6 .cl.left{text-align:right;color:var(--yellow)}
+  #h6 .cl.right{text-align:left;color:var(--orange)}
+  /* scroll viewport — a dia tartalma ezen belül görgethető */
+  #h6 .tl-scroll{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;width:100%;max-width:1660px;margin:0 auto;padding:34px 4px 8px;
+    scrollbar-width:thin;scrollbar-color:rgba(232,229,218,.3) transparent}
+  #h6 .tl-scroll::-webkit-scrollbar{width:10px}
+  #h6 .tl-scroll::-webkit-scrollbar-thumb{background:rgba(232,229,218,.22);border-radius:5px}
+  #h6 .tl-scroll::-webkit-scrollbar-track{background:transparent}
+  /* timeline + középső gerinc */
+  #h6 .tl{position:relative}
+  #h6 .tl::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-1px);
+    background:linear-gradient(to bottom,transparent 0%,rgba(232,229,218,.18) 4%,rgba(232,229,218,.18) 96%,transparent 100%)}
+  #h6 .trow{display:grid;grid-template-columns:1fr 80px 1fr;align-items:center;margin-bottom:42px}
+  #h6 .trow:last-child{margin-bottom:6px}
+  #h6 .dot{width:16px;height:16px;border-radius:50%;background:var(--navy);border:2px solid rgba(232,229,218,.3);margin:0 auto;position:relative;z-index:2}
+  #h6 .ev{padding:22px 26px;background:rgba(232,229,218,.045);border:1px solid rgba(232,229,218,.09);border-radius:14px}
+  #h6 .ev.steam{grid-column:1;text-align:right;border-left:3px solid var(--yellow)}
+  #h6 .ev.ai{grid-column:3;text-align:left;border-right:3px solid var(--orange)}
+  #h6 .ev .d{font-family:var(--font-mono);font-size:18px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px}
+  #h6 .ev.steam .d{color:var(--yellow)}
+  #h6 .ev.ai .d{color:var(--orange)}
+  #h6 .ev .tx{font-family:var(--font-body);font-size:23px;line-height:1.48;color:color-mix(in oklch,var(--text-on-dark) 92%,transparent)}
+  #h6 .ev .tx strong{color:#fff;font-family:var(--font-head);font-weight:700}
+  /* kiemelt sorok (kombinatorikus robbanás + eredmény) */
+  #h6 .ev.steam.hl{background:color-mix(in oklch,var(--yellow) 13%,transparent);border-color:color-mix(in oklch,var(--yellow) 35%,transparent)}
+  #h6 .ev.ai.hl{background:color-mix(in oklch,var(--orange) 13%,transparent);border-color:color-mix(in oklch,var(--orange) 35%,transparent)}
+  #h6 .trow.hl .dot{background:var(--orange);border-color:var(--orange);box-shadow:0 0 18px rgba(232,122,32,.55)}
+
+  /* ============ SLIDE 7 — FELVÁLTVA DOLGOZUNK (módszer, dark) ============ */
+  #h7 .pad{justify-content:center}
+  #h7 .kicker{margin-bottom:20px}
+  #h7 h1{font-size:72px;margin-bottom:22px}
+  #h7 .lead{font-family:var(--font-body);font-size:30px;line-height:1.42;color:color-mix(in oklch,var(--text-on-dark) 85%,transparent);max-width:1480px;margin-bottom:54px}
+  #h7 .lead b{color:var(--yellow);font-family:var(--font-head);font-weight:700}
+  #h7 .duo{display:grid;grid-template-columns:1fr 1fr;gap:80px;max-width:1600px}
+  #h7 .duo .card{border-top:3px solid;padding-top:26px}
+  #h7 .duo .a{border-color:var(--yellow)}
+  #h7 .duo .b{border-color:var(--orange)}
+  #h7 .duo h3{font-family:var(--font-head);font-weight:700;font-size:38px;color:#fff;margin-bottom:8px}
+  #h7 .duo .csub{font-family:var(--font-mono);font-size:21px;letter-spacing:.03em;color:color-mix(in oklch,var(--text-on-dark) 62%,transparent);margin-bottom:22px}
+  #h7 .duo p.x{font-family:var(--font-body);font-size:28px;line-height:1.42;color:#e8e5da}
+
+  /* ============ SLIDE 8 — A FŐSZEREPLŐ: Napsugár Tejüzem (light, facts) ============ */
+  #h8{background:var(--off-white);color:#0d1520}
+  #h8 .pad{justify-content:center}
+  #h8 .kicker{color:var(--red);margin-bottom:22px}
+  #h8 h1{color:#0d1520;font-size:66px;margin-bottom:16px;max-width:1400px}
+  #h8 .sub2{font-family:var(--font-body);font-size:27px;line-height:1.4;color:#5a6577;max-width:1320px;margin-bottom:48px}
+  #h8 .facts{display:grid;grid-template-columns:repeat(3,1fr);gap:22px 30px;max-width:1620px}
+  #h8 .fact{background:#fff;border:1px solid #d7dbe2;border-left:4px solid var(--orange);padding:22px 26px}
+  #h8 .fact .k{display:block;font-family:var(--font-mono);font-size:17px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:8px}
+  #h8 .fact .v{font-family:var(--font-body);font-size:25px;line-height:1.3;color:#0d1520}
+  #h8 .fact .v b{font-family:var(--font-head);font-weight:700}
+  #h8 .wordmark .name{color:#0d1520}
+  #h8 .meta{color:#5a6577}
+
+  /* ============ SLIDE 9 — A KÜLDETÉS (mission, dark) ============ */
+  #h9 .pad{justify-content:center}
+  #h9 .kicker{margin-bottom:24px}
+  #h9 h1{font-size:82px;margin-bottom:30px}
+  #h9 .mlead{font-family:var(--font-head);font-weight:500;font-size:40px;line-height:1.2;color:var(--yellow);max-width:1300px;margin-bottom:40px}
+  #h9 .mbox{font-family:var(--font-body);font-size:32px;line-height:1.45;color:#e8e5da;max-width:1320px;border-left:5px solid var(--orange);padding:8px 0 8px 32px}
+  #h9 .mbox b{font-family:var(--font-head);font-weight:700;color:#fff}
+
+  /* ============ SLIDE 10 — A MAI NAP: 6 FÁZIS (light, flow) — Mester M3 minta ============ */
+  #h10{background:var(--off-white);color:#0d1520}
+  #h10 .pad{justify-content:center;padding:96px 110px}
+  #h10 .kicker{color:var(--red);margin-bottom:18px}
+  #h10 h1{color:#0d1520;font-size:62px;margin-bottom:16px;max-width:1660px}
+  #h10 .intro2{font-family:var(--font-body);font-size:26px;line-height:1.4;color:#5a6577;max-width:1680px;margin-bottom:40px}
+  #h10 .intro2 b{color:#0d1520;font-family:var(--font-head);font-weight:700}
+  #h10 .flow{display:grid;grid-template-columns:repeat(3,1fr);gap:24px 30px;max-width:1700px}
+  #h10 .fstep{border:1px solid #d0d4dc;background:#fff;border-left:4px solid var(--orange);padding:22px 26px;display:flex;flex-direction:column;gap:7px}
+  #h10 .fstep .fn{font-family:var(--font-mono);font-weight:500;font-size:18px;letter-spacing:.1em;text-transform:uppercase;color:var(--orange)}
+  #h10 .fstep .ft{font-family:var(--font-head);font-weight:700;font-size:27px;color:#0d1520;line-height:1.05}
+  #h10 .fstep .fd{font-family:var(--font-body);font-size:20px;line-height:1.32;color:#3a4453}
+  #h10 .wordmark .name{color:#0d1520}
+  #h10 .meta{color:#5a6577}
+
+  /* ============ SLIDE 11 — A TÉT: 4 óra vs 160 óra (dark, vs) ============ */
+  #h11 .pad{justify-content:center}
+  #h11 .kicker{margin-bottom:20px}
+  #h11 h1{font-size:66px;margin-bottom:56px;max-width:1500px}
+  #h11 .vs{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:60px;max-width:1500px}
+  #h11 .vcard{padding:48px 56px;text-align:center;border:1px solid rgba(232,229,218,.12)}
+  #h11 .vcard.ai{background:color-mix(in oklch,var(--orange) 13%,transparent);border-color:color-mix(in oklch,var(--orange) 36%,transparent)}
+  #h11 .vcard .num{font-family:var(--font-head);font-weight:700;font-size:100px;line-height:1;letter-spacing:-.02em}
+  #h11 .vcard.ai .num{color:var(--orange)}
+  #h11 .vcard.human .num{color:color-mix(in oklch,var(--text-on-dark) 58%,transparent)}
+  #h11 .vcard .lab{font-family:var(--font-body);font-size:26px;color:#e8e5da;margin-top:16px}
+  #h11 .vcard .lab b{color:#fff;font-family:var(--font-head);font-weight:700}
+  #h11 .vmid{font-family:var(--font-head);font-weight:700;font-size:44px;color:color-mix(in oklch,var(--text-on-dark) 52%,transparent)}
+  #h11 .vfoot{margin-top:44px;font-family:var(--font-mono);font-size:26px;letter-spacing:.04em;color:var(--yellow);text-align:center;max-width:1500px}
+
+  /* ============ SLIDE 13 — AMIT MA HAZAVISZEL (light, two cards) ============ */
+  #h13{background:var(--off-white);color:#0d1520}
+  #h13 .pad{justify-content:center}
+  #h13 .kicker{color:var(--red);margin-bottom:22px}
+  #h13 h1{color:#0d1520;font-size:64px;margin-bottom:50px;max-width:1500px}
+  #h13 .tw{display:grid;grid-template-columns:1fr 1fr;gap:44px;max-width:1620px}
+  #h13 .twc{background:#fff;border:1px solid #d7dbe2;border-top:4px solid var(--orange);padding:34px 38px}
+  #h13 .twc .tt{font-family:var(--font-head);font-weight:700;font-size:30px;color:#0d1520;margin-bottom:14px}
+  #h13 .twc .td{font-family:var(--font-body);font-size:24px;line-height:1.45;color:#3a4453}
+  #h13 .twc .td b{font-family:var(--font-head);font-weight:700;color:#0d1520}
+  #h13 .wordmark .name{color:#0d1520}
+  #h13 .meta{color:#5a6577}
+
+  /* ============ SLIDE 14 — ÖSSZEGZÉS (light, caps) ============ */
+  #h14{background:var(--off-white);color:#0d1520}
+  #h14 .pad{justify-content:center}
+  #h14 .kicker{color:var(--red);margin-bottom:22px}
+  #h14 h1{color:#0d1520;font-size:66px;margin-bottom:62px;max-width:1500px}
+  #h14 .caps{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;max-width:1660px}
+  #h14 .cap{display:flex;flex-direction:column;gap:16px}
+  #h14 .cap .n{font-family:var(--font-head);font-weight:700;font-size:28px;color:#fff;width:58px;height:58px;display:flex;align-items:center;justify-content:center}
+  #h14 .cap:nth-child(1) .n{background:var(--red)}
+  #h14 .cap:nth-child(2) .n{background:var(--orange)}
+  #h14 .cap:nth-child(3) .n{background:#c9a200}
+  #h14 .cap:nth-child(4) .n{background:#3a4453}
+  #h14 .cap .ct{font-family:var(--font-head);font-weight:700;font-size:29px;color:#0d1520;line-height:1.1}
+  #h14 .cap .cd{font-family:var(--font-body);font-size:22px;line-height:1.4;color:#3a4453}
+  #h14 .wordmark .name{color:#0d1520}
+  #h14 .meta{color:#5a6577}
+
+  /* ============ SLIDE 15 — HOL VAGYUNK MOST (light, path5 reuse) ============ */
+  #h15{background:var(--off-white);color:#0d1520}
+  #h15 .pad{justify-content:center}
+  #h15 .kicker{color:var(--red);margin-bottom:26px}
+  #h15 h1{color:#0d1520;font-size:72px;margin-bottom:18px}
+  #h15 .intro2{font-family:var(--font-body);font-size:28px;line-height:1.4;color:#5a6577;max-width:1380px}
+  #h15 .intro2 b{color:#0d1520;font-family:var(--font-head);font-weight:700}
+  #h15 .pname{color:#0d1520}
+  #h15 .pdesc{color:#3a4453}
+  #h15 .ptag{color:#5a6577}
+  #h15 .pnode.now .ptag{color:var(--orange)}
+  #h15 .pnode.done .ptag{color:#2a8c4a}
+  #h15 .pnode.ahead{opacity:.9}
+  #h15 .wordmark .name{color:#0d1520}
+  #h15 .meta{color:#5a6577}
+
+  /* ============ SLIDE 16 — KÖVETKEZŐ LÉPÉS: MESTER (dark, promo) ============ */
+  .t-promo .pad{justify-content:center}
+  .t-promo .kicker{margin-bottom:24px}
+  .t-promo h1{font-size:80px;max-width:1320px;margin-bottom:26px}
+  .t-promo .psub{font-family:var(--font-body);font-size:34px;line-height:1.45;color:color-mix(in oklch,var(--text-on-dark) 85%,transparent);max-width:1300px;margin-bottom:42px}
+  .t-promo .psub b{color:var(--yellow);font-family:var(--font-head);font-weight:700}
+  .t-promo .plist{display:flex;flex-direction:column;gap:16px;margin-bottom:46px}
+  .t-promo .pli{font-family:var(--font-body);font-size:31px;color:#e8e5da;display:flex;gap:18px;align-items:baseline;max-width:1300px}
+  .t-promo .pli::before{content:"";width:14px;height:14px;background:var(--orange);flex:0 0 auto;position:relative;top:6px}
+  .t-promo .url{align-self:flex-start;font-family:var(--font-mono);font-size:27px;background:var(--yellow);color:var(--navy);padding:13px 22px;font-weight:500}
+
+  /* ============ SLIDE 17 — KÖSZÖNÖM (dark, geo + idézet) ============ */
+  #h17 .pad{justify-content:center;max-width:1300px}
+  #h17 .kicker{margin-bottom:34px}
+  #h17 h1{font-size:94px;line-height:1.02}
+  #h17 .bar{margin:44px 0}
+  #h17 .closing{font-family:var(--font-head);font-weight:500;font-size:44px;line-height:1.25;color:var(--yellow);max-width:1180px}
+  #h17 .geo{right:120px;bottom:120px;width:440px;height:440px;opacity:.18}
+
+  /* ============ FELADAT-SZEKCIÓK (F1-F6): feladat → animáció-koncepció → animáció ============ */
+  /* -- 1) feladat-dia (dark, nagy fázis-szám watermark) -- */
+  .t-task .pad{justify-content:center}
+  .t-task .kicker{margin-bottom:24px;position:relative;z-index:1}
+  .t-task .bar{margin:0 0 38px;position:relative;z-index:1}
+  .t-task .tasknum{position:absolute;right:80px;top:50%;transform:translateY(-50%);font-family:var(--font-head);font-weight:700;font-size:400px;line-height:.8;color:color-mix(in oklch,var(--orange) 14%,transparent);letter-spacing:-.04em;z-index:0;pointer-events:none;user-select:none}
+  .t-task h1{font-size:92px;line-height:1.02;margin-bottom:26px;max-width:1300px;position:relative;z-index:1}
+  .t-task .taskdesc{font-family:var(--font-body);font-size:36px;line-height:1.4;color:color-mix(in oklch,var(--text-on-dark) 86%,transparent);max-width:1200px;position:relative;z-index:1}
+  .t-task .taskdesc b{color:var(--yellow);font-family:var(--font-head);font-weight:700}
+
+  /* -- 2) animáció-koncepció dia (dark, 3-beat storyboard) -- */
+  .t-concept .pad{justify-content:center}
+  .t-concept .kicker{margin-bottom:20px}
+  .t-concept h1{font-size:62px;line-height:1.05;margin-bottom:24px;max-width:1520px}
+  .t-concept .conlead{font-family:var(--font-body);font-size:29px;line-height:1.42;color:color-mix(in oklch,var(--text-on-dark) 85%,transparent);max-width:1520px;margin-bottom:50px}
+  .t-concept .conlead b{color:var(--yellow);font-family:var(--font-head);font-weight:700}
+  .t-concept .beats{display:grid;grid-template-columns:repeat(3,1fr);gap:44px;max-width:1620px}
+  .t-concept .beat{border-top:3px solid var(--orange);padding-top:24px;display:flex;flex-direction:column;gap:12px}
+  .t-concept .beat .bn{font-family:var(--font-head);font-weight:700;font-size:22px;color:var(--navy);background:var(--orange);width:46px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:50%}
+  .t-concept .beat .bt{font-family:var(--font-head);font-weight:700;font-size:28px;color:#fff}
+  .t-concept .beat .bd{font-family:var(--font-body);font-size:23px;line-height:1.4;color:color-mix(in oklch,var(--text-on-dark) 78%,transparent)}
+
+  /* -- 3) animáció-dia keret (dark, fix 1720x648 színpad) -- */
+  .t-anim .pad{justify-content:flex-start;align-items:center;padding:60px 0 0}
+  .t-anim .animhead{width:1720px;margin-bottom:16px}
+  .t-anim .animhead .kicker{margin-bottom:12px}
+  .t-anim .animhead h1{font-size:52px;line-height:1.04}
+  .t-anim .animstage{position:relative;width:1720px;height:648px;border:1px solid rgba(232,229,218,.1);background:rgba(232,229,218,.025);overflow:hidden;cursor:pointer}
+  .t-anim .animhint{width:1720px;text-align:center;margin-top:14px;font-family:var(--font-mono);font-size:20px;letter-spacing:.06em;color:color-mix(in oklch,var(--text-on-dark) 48%,transparent)}
+
+  /* -- F1 animáció: 21 kaotikus fájl rendeződik mappákba + CLAUDE.md -- */
+  #f1stage .folder{position:absolute;top:16px;transform:translateX(-50%);font-family:var(--font-mono);font-size:19px;font-weight:500;letter-spacing:.04em;color:var(--orange);opacity:0;transition:opacity .5s ease .35s;white-space:nowrap;text-align:center}
+  #f1stage .folder::after{content:"";display:block;height:3px;background:var(--orange);opacity:.5;margin-top:8px}
+  #f1stage.go .folder{opacity:1}
+  #f1stage .file{position:absolute;top:0;left:0;font-family:var(--font-mono);font-size:15px;color:#dfe3ea;background:#16233a;border:1px solid rgba(232,229,218,.14);border-left:3px solid var(--yellow);padding:7px 11px;white-space:nowrap;will-change:transform;transition:transform .9s cubic-bezier(.45,.05,.2,1)}
+  #f1stage.go .file{border-left-color:var(--orange)}
+  #f1stage .claudemd{position:absolute;left:50%;bottom:22px;transform:translate(-50%,18px);background:var(--navy);border:2px solid var(--orange);box-shadow:0 0 32px rgba(232,122,32,.45);padding:14px 30px;font-family:var(--font-head);font-weight:700;font-size:30px;color:#fff;text-align:center;opacity:0;transition:opacity .55s ease .85s,transform .55s ease .85s;z-index:6}
+  #f1stage .claudemd span{display:block;font-family:var(--font-mono);font-weight:400;font-size:15px;color:var(--yellow);margin-top:3px;letter-spacing:.02em}
+  #f1stage.go .claudemd{opacity:1;transform:translate(-50%,0)}
+
+  /* -- F2 animáció: meeting-leirat → feladatok -- */
+  #f2stage .f2-grid{display:grid;grid-template-columns:1fr 1fr;height:100%}
+  #f2stage .f2-col{padding:26px 32px;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+  #f2stage .f2-col.tr{border-right:1px solid rgba(232,229,218,.1)}
+  #f2stage .f2-h{font-family:var(--font-mono);font-size:18px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--orange);margin-bottom:18px}
+  #f2stage .f2-lines{display:flex;flex-direction:column;gap:10px}
+  #f2stage .f2-line{font-family:var(--font-body);font-size:20px;line-height:1.3;color:color-mix(in oklch,var(--text-on-dark) 78%,transparent);padding:9px 14px;border-left:3px solid transparent;transition:background .4s,border-color .4s,color .4s}
+  #f2stage .f2-line.hit{background:color-mix(in oklch,var(--orange) 12%,transparent);border-left-color:var(--orange);color:#fff}
+  #f2stage .f2-todos{display:flex;flex-direction:column;gap:13px}
+  #f2stage .f2-todo{display:flex;align-items:center;gap:16px;background:#16233a;border:1px solid rgba(232,229,218,.14);border-left:3px solid var(--orange);padding:15px 20px;opacity:0;transform:translateX(28px);transition:opacity .5s,transform .5s}
+  #f2stage .f2-todo.in{opacity:1;transform:none}
+  #f2stage .f2-todo .box{width:26px;height:26px;border:2px solid var(--orange);flex:0 0 auto;display:flex;align-items:center;justify-content:center;color:var(--orange);font-size:17px;font-weight:700}
+  #f2stage .f2-todo .tt{font-family:var(--font-body);font-size:21px;color:#e8e5da}
+
+  /* -- F3 animáció: 94 oldal pásztázása → eligibility checklist -- */
+  #f3stage .f3-grid{display:grid;grid-template-columns:.82fr 1fr;height:100%}
+  #f3stage .f3-doc{position:relative;padding:24px 30px;border-right:1px solid rgba(232,229,218,.1);overflow:hidden}
+  #f3stage .f3-h{font-family:var(--font-mono);font-size:18px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:18px}
+  #f3stage .f3-pages{display:flex;flex-direction:column;gap:12px}
+  #f3stage .f3-pages i{display:block;height:9px;width:100%;background:rgba(232,229,218,.1);border-radius:2px}
+  #f3stage .f3-pages i:nth-child(3n){width:78%}
+  #f3stage .f3-pages i:nth-child(4n){width:93%}
+  #f3stage .f3-pages i:nth-child(5n){width:66%}
+  #f3stage .f3-scan{position:absolute;left:0;right:0;top:62px;height:48px;background:linear-gradient(180deg,transparent,color-mix(in oklch,var(--orange) 22%,transparent),transparent);border-top:2px solid var(--orange);border-bottom:2px solid var(--orange);opacity:0;transform:translateY(0);transition:transform 3.2s linear,opacity .3s;pointer-events:none}
+  #f3stage.scanning .f3-scan{opacity:1}
+  #f3stage .f3-list{padding:24px 30px;display:flex;flex-direction:column;overflow:hidden}
+  #f3stage .f3-items{display:flex;flex-direction:column;gap:10px}
+  #f3stage .f3-item{display:flex;align-items:center;gap:14px;padding:11px 16px;background:#16233a;border:1px solid rgba(232,229,218,.12);opacity:0;transform:translateY(12px);transition:opacity .4s,transform .4s}
+  #f3stage .f3-item.in{opacity:1;transform:none}
+  #f3stage .f3-item .mk{width:26px;height:26px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;border-radius:50%}
+  #f3stage .f3-item.ok .mk{background:#1f7a44;color:#fff}
+  #f3stage .f3-item.miss .mk{background:var(--red);color:#fff}
+  #f3stage .f3-item .tx{font-family:var(--font-body);font-size:20px;color:#e8e5da}
+  #f3stage .f3-item .tag{margin-left:auto;font-family:var(--font-mono);font-size:14px;letter-spacing:.04em;text-transform:uppercase}
+  #f3stage .f3-item.ok .tag{color:#3fae6e}
+  #f3stage .f3-item.miss .tag{color:#e8736b}
+  #f3stage .f3-sum{margin-top:auto;font-family:var(--font-head);font-weight:700;font-size:25px;color:#fff;opacity:0;transition:opacity .5s}
+  #f3stage .f3-sum.in{opacity:1}
+  #f3stage .f3-sum b{color:#e8736b}
+
+  /* -- F4 animáció: dokumentumok keresztolvasása → rejtett kockázat -- */
+  #f4stage{padding:30px 36px;display:flex;flex-direction:column}
+  #f4stage .f4-h{font-family:var(--font-mono);font-size:18px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:22px}
+  #f4stage .f4-row{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  #f4stage .f4-card{background:#16233a;border:1px solid rgba(232,229,218,.13);border-top:3px solid rgba(232,229,218,.2);padding:20px 22px;transition:border-color .4s,box-shadow .4s,transform .4s}
+  #f4stage .f4-card.read{border-top-color:var(--orange);box-shadow:0 0 0 1px color-mix(in oklch,var(--orange) 30%,transparent)}
+  #f4stage .f4-card.flag{border-top-color:var(--red);box-shadow:0 0 26px color-mix(in oklch,var(--red) 38%,transparent);transform:translateY(-6px)}
+  #f4stage .f4-card .ct{font-family:var(--font-head);font-weight:700;font-size:23px;color:#fff;margin-bottom:6px}
+  #f4stage .f4-card .cm{font-family:var(--font-mono);font-size:14px;color:color-mix(in oklch,var(--text-on-dark) 55%,transparent);margin-bottom:16px}
+  #f4stage .f4-card i{display:block;height:7px;background:rgba(232,229,218,.1);border-radius:2px;margin-bottom:8px}
+  #f4stage .f4-card i:nth-child(odd){width:84%}
+  #f4stage .f4-risk{margin:auto auto 8px;max-width:1320px;display:flex;align-items:flex-start;gap:20px;background:color-mix(in oklch,var(--red) 12%,transparent);border:1px solid color-mix(in oklch,var(--red) 40%,transparent);border-left:5px solid var(--red);padding:22px 28px;opacity:0;transform:translateY(16px);transition:opacity .55s,transform .55s}
+  #f4stage .f4-risk.in{opacity:1;transform:none}
+  #f4stage .f4-risk .ic{font-size:34px;line-height:1;color:var(--red)}
+  #f4stage .f4-risk .rt{font-family:var(--font-body);font-size:24px;line-height:1.4;color:#fff}
+  #f4stage .f4-risk .rt b{font-family:var(--font-head);font-weight:700;color:#e8736b}
+
+  /* -- F5 animáció: mellékletek → csomag + beadási űrlap -- */
+  #f5stage{display:grid;grid-template-columns:.8fr 1fr;height:100%}
+  #f5stage .f5-col{padding:24px 30px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+  #f5stage .f5-col.l{border-right:1px solid rgba(232,229,218,.1)}
+  #f5stage .f5-h{font-family:var(--font-mono);font-size:18px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:18px}
+  #f5stage .f5-pile{position:relative;flex:1}
+  #f5stage .f5-piece{position:absolute;left:6px;right:6px;background:#16233a;border:1px solid rgba(232,229,218,.14);border-left:3px solid var(--orange);padding:12px 18px;font-family:var(--font-mono);font-size:16px;color:#dfe3ea;opacity:0;transform:translateY(-14px);transition:opacity .4s,transform .4s}
+  #f5stage .f5-piece.in{opacity:1;transform:none}
+  #f5stage .f5-count{margin-top:14px;font-family:var(--font-head);font-weight:700;font-size:22px;color:#fff}
+  #f5stage .f5-form{display:flex;flex-direction:column;gap:12px}
+  #f5stage .f5-field{display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(232,229,218,.12);padding-bottom:11px}
+  #f5stage .f5-field .fl{font-family:var(--font-mono);font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:color-mix(in oklch,var(--text-on-dark) 55%,transparent);width:210px;flex:0 0 auto}
+  #f5stage .f5-field .fv{font-family:var(--font-body);font-size:21px;color:#fff;flex:1;opacity:0;transform:translateX(-8px);transition:opacity .4s,transform .4s}
+  #f5stage .f5-field.done .fv{opacity:1;transform:none}
+  #f5stage .f5-field .fc{width:24px;height:24px;flex:0 0 auto;border-radius:50%;background:#1f7a44;color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;opacity:0;transform:scale(.5);transition:opacity .3s,transform .3s}
+  #f5stage .f5-field.done .fc{opacity:1;transform:none}
+  #f5stage .f5-stamp{position:absolute;right:34px;bottom:24px;font-family:var(--font-head);font-weight:700;font-size:29px;color:#fff;background:#1f7a44;padding:12px 26px;transform:rotate(-6deg) scale(.6);opacity:0;transition:opacity .4s,transform .4s;box-shadow:0 10px 32px rgba(0,0,0,.45)}
+  #f5stage .f5-stamp.in{opacity:1;transform:rotate(-6deg) scale(1)}
+
+  /* -- F6 animáció: régi weboldal → új, letisztult oldal -- */
+  #f6stage{padding:24px 30px;display:flex;flex-direction:column}
+  #f6stage .f6-h{font-family:var(--font-mono);font-size:18px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--orange);margin-bottom:16px;transition:color .4s}
+  #f6stage.go .f6-h{color:#3fae6e}
+  #f6stage .f6-browser{flex:1;border:1px solid rgba(232,229,218,.16);border-radius:8px;overflow:hidden;display:flex;flex-direction:column;background:#0b1320}
+  #f6stage .f6-bar{display:flex;align-items:center;gap:8px;padding:11px 16px;background:#1a2738;border-bottom:1px solid rgba(232,229,218,.12)}
+  #f6stage .f6-bar .dot{width:12px;height:12px;border-radius:50%;background:#3a4453}
+  #f6stage .f6-bar .url{margin-left:14px;font-family:var(--font-mono);font-size:14px;color:#8a94a2}
+  #f6stage .f6-view{position:relative;flex:1;overflow:hidden}
+  #f6stage .f6-page{position:absolute;inset:0;transition:opacity .8s ease}
+  #f6stage .f6-old{background:#f0efe8;color:#2a3340;padding:26px 34px;text-align:center;opacity:1}
+  #f6stage.go .f6-old{opacity:0}
+  #f6stage .f6-old .ot{font-family:var(--font-head);font-weight:700;font-size:30px;color:#0d1520;margin-bottom:12px}
+  #f6stage .f6-old .obv{font-family:var(--font-mono);font-size:19px;letter-spacing:.04em;color:#5a6577;margin-bottom:16px}
+  #f6stage .f6-old .obox{display:none}
+  #f6stage .f6-old .oblock{font-family:var(--font-mono);font-size:16px;line-height:1.9;color:#3a4453;max-width:660px;margin:0 auto 14px;text-align:left}
+  #f6stage .f6-old .obtn{display:inline-block;background:#d7dbe2;color:#2a3340;padding:7px 20px;font-family:var(--font-mono);font-size:15px;letter-spacing:.06em;margin-bottom:12px}
+  #f6stage .f6-old .ovis{font-family:var(--font-mono);font-size:13px;color:#7c8794}
+  #f6stage .f6-new{background:linear-gradient(160deg,#13233b,#0b1320);opacity:0}
+  #f6stage.go .f6-new{opacity:1}
+  #f6stage .f6-new .nnav{display:flex;align-items:center;justify-content:space-between;padding:15px 28px;border-bottom:1px solid rgba(232,229,218,.1)}
+  #f6stage .f6-new .nnav .nb{font-family:var(--font-head);font-weight:700;font-size:20px;color:#fff}
+  #f6stage .f6-new .nnav .nl{display:flex;gap:22px;font-family:var(--font-body);font-size:15px;color:color-mix(in oklch,var(--text-on-dark) 70%,transparent)}
+  #f6stage .f6-new .nhero{padding:28px 34px 16px}
+  #f6stage .f6-new .nhero h3{font-family:var(--font-head);font-weight:700;font-size:36px;line-height:1.05;color:#fff;margin-bottom:12px;letter-spacing:-.01em}
+  #f6stage .f6-new .nhero p{font-family:var(--font-body);font-size:18px;color:color-mix(in oklch,var(--text-on-dark) 78%,transparent);max-width:580px;margin-bottom:18px}
+  #f6stage .f6-new .nhero .ncta{display:inline-block;background:var(--orange);color:var(--navy);font-family:var(--font-head);font-weight:700;font-size:17px;padding:11px 24px}
+  #f6stage .f6-new .ncards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:6px 34px 28px}
+  #f6stage .f6-new .ncards .nc{background:rgba(232,229,218,.05);border:1px solid rgba(232,229,218,.1);border-top:3px solid var(--orange);padding:15px 18px}
+  #f6stage .f6-new .ncards .nc b{display:block;font-family:var(--font-head);font-weight:700;font-size:18px;color:#fff;margin-bottom:6px}
+  #f6stage .f6-new .ncards .nc span{font-family:var(--font-body);font-size:14px;line-height:1.35;color:color-mix(in oklch,var(--text-on-dark) 70%,transparent)}
+  #f6stage .f6-scan{position:absolute;left:0;right:0;top:0;height:60px;background:linear-gradient(180deg,transparent,color-mix(in oklch,var(--orange) 30%,transparent),transparent);border-top:2px solid var(--orange);border-bottom:2px solid var(--orange);opacity:0;transform:translateY(0);pointer-events:none;z-index:3}
+  #f6stage.scanning .f6-scan{opacity:1}
+
+  /* -- fragment reveal: sorok egyenként, diaváltásra jönnek be -- */
+  .frag{opacity:0;transform:translateY(14px);transition:opacity .45s ease,transform .45s ease}
+  .frag.shown{opacity:1;transform:none}
+
+  /* -- SLIDE 12: A sebesség nem az egyetlen hozadék (reveal) -- */
+  #h12 .pad{justify-content:center}
+  #h12 .kicker{margin-bottom:24px}
+  #h12 h1{font-size:78px;line-height:1.05}
+  #h12 .bar{margin:40px 0 50px}
+  #h12 .benefits{display:flex;flex-direction:column;gap:26px}
+  #h12 .benefits .b{font-family:var(--font-head);font-weight:700;font-size:60px;line-height:1;color:#fff;display:flex;align-items:center;gap:30px}
+  #h12 .benefits .b::before{content:"";width:24px;height:24px;background:var(--orange);flex:0 0 auto}
+
+  /* -- TANANYAG URL + jelszó dia (vetítéshez, nagyban) -- */
+  #hurl .pad{justify-content:center}
+  #hurl .kicker{margin-bottom:22px}
+  #hurl h1{font-size:60px;margin-bottom:58px;max-width:1320px}
+  #hurl .urlbox{display:flex;align-items:center;gap:30px;max-width:1620px;margin-bottom:30px}
+  #hurl .urlbox .ub-label{font-family:var(--font-mono);font-size:25px;letter-spacing:.08em;text-transform:uppercase;color:color-mix(in oklch,var(--text-on-dark) 58%,transparent);width:170px;flex:0 0 auto}
+  #hurl .urlbox .ub-val{font-family:var(--font-mono);font-weight:500;font-size:54px;color:#fff;background:var(--navy-mid);border-left:6px solid var(--orange);padding:18px 32px;flex:1;word-break:break-all;line-height:1.1}
+  #hurl .urlbox.pw .ub-val{font-size:78px;letter-spacing:.06em;color:var(--yellow);background:color-mix(in oklch,var(--yellow) 9%,var(--navy-mid));border-left-color:var(--yellow)}
+
+  /* -- Markdown magyarázó: PDF vs MD lap, kattintásra "a motorháztető alatt" -- */
+  #hmd .pad{justify-content:flex-start;align-items:center;padding:52px 0 0}
+  #hmd .mdhead{width:1180px;margin-bottom:14px;text-align:center}
+  #hmd .mdhead .kicker{margin-bottom:12px}
+  #hmd .mdhead h1{font-size:52px}
+  #hmd .mdhead .mdsub{font-family:var(--font-body);font-size:23px;color:color-mix(in oklch,var(--text-on-dark) 70%,transparent);margin-top:10px}
+  #hmd .md-cards{display:flex;gap:90px;justify-content:center;align-items:flex-start;margin-top:6px}
+  #hmd .md-col{display:flex;flex-direction:column;align-items:center;gap:15px}
+  #hmd .md-card{width:470px;height:642px;perspective:1700px;cursor:pointer}
+  #hmd .md-inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.4,.05,.2,1)}
+  #hmd .md-card.flipped .md-inner{transform:rotateY(180deg)}
+  #hmd .md-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;border-radius:5px;box-shadow:0 22px 54px rgba(0,0,0,.5)}
+  #hmd .md-front{background:#fff;color:#1a1a1a;padding:42px 40px}
+  #hmd .md-front .doc-t{font-family:var(--font-head);font-weight:700;font-size:28px;color:#0d1520;margin-bottom:6px}
+  #hmd .md-front .doc-meta{font-family:var(--font-body);font-size:14px;color:#999;margin-bottom:22px;padding-bottom:14px;border-bottom:2px solid #e6e6e6}
+  #hmd .md-front h4{font-family:var(--font-head);font-weight:700;font-size:19px;color:#0d1520;margin:18px 0 9px}
+  #hmd .md-front p{font-family:var(--font-body);font-size:15px;line-height:1.55;color:#333;margin-bottom:12px}
+  #hmd .md-front b{color:#0d1520}
+  #hmd .md-front ul{margin:0 0 12px 20px}
+  #hmd .md-front li{font-family:var(--font-body);font-size:15px;line-height:1.55;color:#333}
+  #hmd .md-back{transform:rotateY(180deg);background:#0b1320;padding:24px 24px;display:flex;flex-direction:column}
+  #hmd .md-back .src-h{font-family:var(--font-mono);font-size:13px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;flex:0 0 auto}
+  #hmd .md-back pre{font-family:var(--font-mono);font-size:12.5px;line-height:1.5;white-space:pre-wrap;word-break:break-word;overflow:hidden;flex:1;margin:0}
+  #hmd .pdf .md-back{border-top:4px solid var(--red)}
+  #hmd .pdf .md-back .src-h{color:#e8736b}
+  #hmd .pdf .md-back pre{color:#5e6b7d}
+  #hmd .mdf .md-back{border-top:4px solid #3fae6e}
+  #hmd .mdf .md-back .src-h{color:#3fae6e}
+  #hmd .mdf .md-back pre{color:#cfe8d8}
+  #hmd .mdf .md-back pre .k{color:var(--orange)}
+  #hmd .mdf .md-back pre .b{color:var(--yellow)}
+  #hmd .md-label{font-family:var(--font-mono);font-size:19px;letter-spacing:.03em;color:color-mix(in oklch,var(--text-on-dark) 62%,transparent);text-align:center;font-weight:500}
+
+  /* -- Obsidian magyarázó: forrás/olvasó kapcsoló + wikilink-navigáció -- */
+  #hob .pad{justify-content:flex-start;align-items:center;padding:50px 0 0}
+  #hob .obhead{width:1620px;margin-bottom:16px}
+  #hob .obhead .kicker{margin-bottom:12px}
+  #hob .obhead h1{font-size:50px}
+  #hob .obhead .obsub{font-family:var(--font-body);font-size:22px;color:color-mix(in oklch,var(--text-on-dark) 68%,transparent);margin-top:8px}
+  #hob .obwin{width:1620px;height:606px;background:#1e1e2e;border:1px solid rgba(232,229,218,.14);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.5)}
+  #hob .obbar{display:flex;align-items:center;gap:8px;padding:11px 16px;background:#181825;border-bottom:1px solid rgba(232,229,218,.1)}
+  #hob .obbar .d{width:12px;height:12px;border-radius:50%;background:#3a3a4a}
+  #hob .obbar .t{margin-left:14px;font-family:var(--font-mono);font-size:14px;color:#8a8aa0}
+  #hob .obbody{flex:1;display:grid;grid-template-columns:236px 1fr;min-height:0}
+  #hob .obside{background:#181825;border-right:1px solid rgba(232,229,218,.08);padding:18px 14px;display:flex;flex-direction:column;gap:3px}
+  #hob .obside .sh{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:#6a6a80;margin-bottom:8px}
+  #hob .obside .note{font-family:var(--font-body);font-size:17px;color:#bcbcd0;padding:8px 12px;border-radius:6px;cursor:pointer}
+  #hob .obside .note:hover{background:#26263a}
+  #hob .obside .note.active{background:#2a2a40;color:#fff}
+  #hob .obmain{position:relative;overflow:hidden;display:flex;flex-direction:column}
+  #hob .obtoolbar{display:flex;align-items:center;justify-content:space-between;padding:13px 26px;border-bottom:1px solid rgba(232,229,218,.07)}
+  #hob .obtoolbar .fn{font-family:var(--font-mono);font-size:15px;color:#9a9ab0}
+  #hob .obtoggle{display:flex;border:1px solid rgba(232,229,218,.16);border-radius:7px;overflow:hidden;cursor:pointer}
+  #hob .obtoggle span{padding:7px 16px;font-family:var(--font-mono);font-size:14px;color:#9a9ab0;transition:background .2s}
+  #hob .obtoggle span.on{background:var(--orange);color:#12121c;font-weight:600}
+  #hob .obcontent{flex:1;padding:26px 38px;overflow:auto}
+  #hob .obcontent.src{font-family:var(--font-mono);font-size:17px;line-height:1.65;color:#cdd6f4;white-space:pre-wrap}
+  #hob .obcontent.src .k{color:var(--orange)}
+  #hob .obcontent.src .l{color:#89b4fa}
+  #hob .obcontent.src .bb{color:var(--yellow)}
+  #hob .obcontent.read{font-family:var(--font-body);font-size:19px;line-height:1.6;color:#cdd6f4}
+  #hob .obcontent.read h2{font-family:var(--font-head);font-weight:700;font-size:30px;color:#fff;margin:0 0 14px}
+  #hob .obcontent.read h3{font-family:var(--font-head);font-weight:700;font-size:22px;color:#e8e5da;margin:22px 0 9px}
+  #hob .obcontent.read p{margin:0 0 13px}
+  #hob .obcontent.read strong{color:#fff}
+  #hob .obcontent.read ul{margin:0 0 13px 22px}
+  #hob .obcontent.read li{margin-bottom:5px}
+  #hob .obcontent.read a.wl{color:#89b4fa;text-decoration:none;border-bottom:1px solid rgba(137,180,250,.4);cursor:pointer}
+  #hob .obcontent.read a.wl:hover{background:rgba(137,180,250,.16)}
+  #hob .obbadges{display:flex;gap:14px;width:1620px;margin-top:15px;justify-content:center}
+  #hob .obbadges .bdg{font-family:var(--font-mono);font-size:17px;padding:9px 18px;border-radius:7px}
+  #hob .obbadges .bdg.f{background:rgba(232,122,32,.14);color:var(--orange);border:1px solid rgba(232,122,32,.32)}
+  #hob .obbadges .bdg.n{background:rgba(137,180,250,.14);color:#89b4fa;border:1px solid rgba(137,180,250,.32)}
+
+  /* -- Skill/Plugin/Connector áttekintő (3 kártya) -- */
+  #hspc .pad{justify-content:center}
+  #hspc .kicker{margin-bottom:22px}
+  #hspc h1{font-size:62px;margin-bottom:16px}
+  #hspc .spclead{font-family:var(--font-body);font-size:26px;line-height:1.4;color:color-mix(in oklch,var(--text-on-dark) 78%,transparent);max-width:1440px;margin-bottom:46px}
+  #hspc .trio{display:grid;grid-template-columns:repeat(3,1fr);gap:34px;max-width:1680px}
+  #hspc .tc{background:rgba(232,229,218,.04);border:1px solid rgba(232,229,218,.1);border-top:4px solid var(--orange);padding:30px 32px;display:flex;flex-direction:column}
+  #hspc .tc:nth-child(2){border-top-color:var(--red)}
+  #hspc .tc:nth-child(3){border-top-color:var(--yellow)}
+  #hspc .tc .tn{font-family:var(--font-head);font-weight:700;font-size:32px;color:#fff;margin-bottom:5px}
+  #hspc .tc .ta{font-family:var(--font-mono);font-size:17px;margin-bottom:18px;color:var(--orange)}
+  #hspc .tc:nth-child(2) .ta{color:#e8736b}
+  #hspc .tc:nth-child(3) .ta{color:var(--yellow)}
+  #hspc .tc .td{font-family:var(--font-body);font-size:22px;line-height:1.45;color:#e8e5da;margin-bottom:18px}
+  #hspc .tc .td b{color:#fff;font-family:var(--font-head);font-weight:700}
+  #hspc .tc .te{font-family:var(--font-body);font-size:19px;line-height:1.4;color:color-mix(in oklch,var(--text-on-dark) 70%,transparent);border-left:3px solid rgba(232,229,218,.2);padding-left:14px;margin-top:auto}
+
+  /* -- Skill/Plugin/Connector "aktiváld" interaktív sablon (D2-D4) -- */
+  .t-cap .pad{justify-content:center}
+  .t-cap .kicker{margin-bottom:20px}
+  .t-cap h1{font-size:62px;margin-bottom:18px}
+  .t-cap .caplead{font-family:var(--font-body);font-size:28px;line-height:1.42;color:color-mix(in oklch,var(--text-on-dark) 84%,transparent);max-width:1480px;margin-bottom:44px}
+  .t-cap .caplead b{color:var(--yellow);font-family:var(--font-head);font-weight:700}
+  .t-cap .capflow{display:flex;align-items:stretch;gap:28px;max-width:1660px}
+  .t-cap .capcard{flex:1;background:#16233a;border:1px solid rgba(232,229,218,.1);padding:26px 30px;display:flex;flex-direction:column}
+  .t-cap .capcard .ch{font-family:var(--font-mono);font-size:16px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:14px}
+  .t-cap .capcard .cl{font-family:var(--font-body);font-size:22px;line-height:1.5;color:#e8e5da}
+  .t-cap .capcard .cl b{color:#fff;font-family:var(--font-head);font-weight:700}
+  .t-cap .capcard.before{border-top:3px solid #6b7a8d}
+  .t-cap .capcard.before .ch{color:#8a94a2}
+  .t-cap .capcard.after{border-top:3px solid var(--orange);opacity:.22;transition:opacity .55s ease}
+  .t-cap .capcard.after.on{opacity:1}
+  .t-cap .capcard.after .ch{color:var(--orange)}
+  .t-cap .capmid{flex:0 0 220px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center}
+  .t-cap .capitem{font-family:var(--font-mono);font-size:18px;line-height:1.4;color:var(--yellow)}
+  .t-cap .capadd{font-family:var(--font-head);font-weight:700;font-size:21px;color:var(--navy);background:var(--orange);border:none;padding:13px 26px;cursor:pointer;border-radius:6px;transition:background .3s,color .3s}
+  .t-cap .capadd.done{background:#1f7a44;color:#fff}
+
+  /* ===== Mester deckbol athozott diak CSS (M5, KO, AIV, MC) ===== */
+  /* ============ SLIDE M5 — ÚJ TÍPUSÚ MUNKAMÓDSZER (dark) ============ */
+  #m5 .pad{justify-content:center}
+  #m5 .kicker{margin-bottom:22px}
+  #m5 h1{font-size:72px;margin-bottom:20px}
+  #m5 .lead{font-family:var(--font-body);font-size:31px;line-height:1.4;color:color-mix(in oklch,var(--text-on-dark) 85%,transparent);max-width:1480px;margin-bottom:54px}
+  #m5 .lead b{color:var(--yellow);font-family:var(--font-head);font-weight:700}
+  #m5 .cols{display:grid;grid-template-columns:1fr 1fr;gap:96px;max-width:1660px}
+  #m5 .col h3{font-family:var(--font-head);font-weight:700;font-size:38px;color:#fff;margin-bottom:6px;display:flex;align-items:center;gap:16px}
+  #m5 .col h3::before{content:"";width:20px;height:20px;flex:0 0 auto}
+  #m5 .col.kb h3::before{background:var(--red)}
+  #m5 .col.ag h3::before{background:var(--yellow)}
+  #m5 .col .csub{font-family:var(--font-mono);font-size:20px;letter-spacing:.04em;color:color-mix(in oklch,var(--text-on-dark) 60%,transparent);margin:0 0 26px 36px}
+  #m5 .col ul{list-style:none;display:flex;flex-direction:column;gap:18px}
+  #m5 .col li{font-family:var(--font-body);font-size:27px;line-height:1.3;color:#e8e5da;padding-left:36px;position:relative}
+  #m5 .col li::before{content:"";position:absolute;left:0;top:11px;width:13px;height:13px;background:var(--red)}
+  #m5 .col.ag li::before{background:var(--yellow)}
+  #m5 .col li .s{display:block;font-family:var(--font-mono);font-size:19px;color:color-mix(in oklch,var(--text-on-dark) 65%,transparent);margin-top:7px;line-height:1.3;letter-spacing:.02em}
+  /* ============ SLIDE KO — ÉLŐ TUDÁSTÁR (interaktív canvas animáció) ============ */
+  #ko .pad{padding:0}
+  #ko canvas{position:absolute;inset:0;width:1920px;height:1080px;display:block;z-index:1}
+  #ko .ko-head{position:absolute;top:96px;left:140px;z-index:3}
+  #ko .ko-head h1{color:#fff;font-size:62px;margin-top:12px}
+  #ko .ko-controls{position:absolute;left:140px;bottom:150px;display:flex;align-items:center;gap:16px;z-index:3}
+  #ko .ko-btn{font-family:var(--font-mono);font-size:21px;font-weight:500;letter-spacing:.03em;background:rgba(255,255,255,.08);color:#e8e5da;border:1px solid rgba(255,255,255,.30);padding:14px 22px;cursor:pointer;display:inline-flex;align-items:center;gap:11px;transition:background .15s,border-color .15s,color .15s}
+  #ko .ko-btn:hover{background:var(--red);border-color:var(--red);color:#fff}
+  #ko .ko-btn .ic{font-size:23px;line-height:1}
+  #ko .ko-tip{font-family:var(--font-mono);font-size:16px;color:#67718420;letter-spacing:.03em}
+  #ko .ko-tip{color:#6b7686}
+  #ko .ko-legend{position:absolute;right:140px;bottom:150px;display:grid;grid-template-columns:1fr 1fr;gap:12px 30px;z-index:3}
+  #ko .ko-legend .lg{font-family:var(--font-mono);font-size:18px;color:#aeb6c2;display:flex;align-items:center;gap:11px}
+  #ko .ko-legend .lg i{width:15px;height:15px;border-radius:50%;display:block;flex:none}
+  #ko .footrow{z-index:3}
+  /* ============ SLIDE AIV — AI Natív vállalat (interaktív munkafolyamat) ============ */
+  #aiv .pad{padding:0}
+  #aiv canvas{position:absolute;inset:0;width:1920px;height:1080px;display:block;z-index:1;cursor:pointer}
+  #aiv .aiv-head{position:absolute;top:96px;left:140px;z-index:3}
+  #aiv .aiv-head h1{color:#fff;font-size:60px;margin-top:12px}
+  #aiv .aiv-status{position:absolute;left:50%;transform:translateX(-50%);bottom:118px;z-index:3;display:flex;align-items:center;gap:16px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.22);padding:15px 28px;max-width:1280px}
+  #aiv .aiv-step{font-family:var(--font-mono);font-size:18px;font-weight:600;color:var(--yellow);white-space:nowrap}
+  #aiv .aiv-cap{font-family:var(--font-body);font-size:25px;color:#e8e5da;line-height:1.2}
+  #aiv .aiv-legend{position:absolute;right:140px;bottom:124px;display:grid;grid-template-columns:1fr 1fr;gap:12px 30px;z-index:3}
+  #aiv .aiv-legend .lg{font-family:var(--font-mono);font-size:17px;color:#aeb6c2;display:flex;align-items:center;gap:11px}
+  #aiv .aiv-legend .lg i{width:16px;height:16px;display:block;flex:none}
+  #aiv .aiv-legend .dPerson{border-radius:50%;background:#8b94a4}
+  #aiv .aiv-legend .dAgent{border-radius:50%;background:#ED1B24}
+  #aiv .aiv-legend .dDb{border-radius:3px;background:#3FB6B6}
+  #aiv .aiv-legend .dHub{background:#fff;clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+  #aiv .footrow{z-index:3}
+  #m1 .tier,#m27 .tier,#mc3b .tier{align-self:flex-start;font-family:var(--font-mono);font-weight:500;font-size:22px;letter-spacing:.14em;text-transform:uppercase;background:var(--red);color:#fff;padding:9px 18px;margin-bottom:30px}
+  #mc3b .geo,#qa .geo{right:120px;top:50%;transform:translateY(-50%);width:520px;height:520px;opacity:.9}
+
+  #hint{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);font-family:var(--font-mono);font-size:13px;letter-spacing:.06em;color:#3a4453;z-index:10;user-select:none}
+</style>
+</head>
+<body>
+<div id="stage">
+
+  <!-- ===================== SLIDE 1 : WELCOME ===================== -->
+  <section class="slide active" id="h1">
+    <div class="pad">
+      <span class="kicker">AI Kompetencia Program · Haladó</span>
+      <h1>A 10x produktivitás&#8209;növekedés kora</h1>
+      <span class="bar"></span>
+      <p class="sub">A Haladó egy négyórás workshop, ahol egy új munkamódszert tanulunk meg, és eszközöket kaptok a kezetekbe, hogy a RegioConsult&#8209;rendszeretekben 10x produktívabbak lehessetek. Nem csak új eszközökkel ismerkedtek, hanem betekintést is kaptok abba, milyen lesz a jövő.</p>
+    </div>
+    <svg class="geo" viewBox="0 0 576 765" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="576,0 192,382 383,573 576,765" fill="#D22332"/>
+      <polygon points="192,765 383,573 576,765" fill="#ED1B24"/>
+      <polygon points="192,382 383,573 192,765" fill="#F6821F"/>
+      <polygon points="192,382 0,573 192,765" fill="#FEF102"/>
+    </svg>
+    <div class="footrow">
+      <div class="wordmark">
+        <svg class="glyph" viewBox="0 0 576 765" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="576,0 192,382 383,573 576,765" fill="#D22332"/><polygon points="192,765 383,573 576,765" fill="#ED1B24"/><polygon points="192,382 383,573 192,765" fill="#F6821F"/><polygon points="192,382 0,573 192,765" fill="#FEF102"/>
+        </svg>
+        <span class="name">Ignis Academy</span>
+      </div>
+      <span class="meta">Haladó · Regio Consult</span>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 2 : ÖT SZINT, EGY FEJLŐDÉSI ÚT ===================== -->
+  <section class="slide" id="h2">
+    <div class="pad">
+      <span class="kicker">AI Kompetencia Program</span>
+      <h1>Öt szint, egy fejlődési út</h1>
+      <p class="intro">Ez az az öt szintes út, amit az Ignis Academy tanít. Ma a <b>Haladót</b> kapjátok, a Regio Consult napi munkájára szabva: az AI&#8209;ból a saját, strukturált rendszeretek mellé állított munkatársat építünk, ami valódi feladatokat vesz le rólatok.</p>
+      <div class="path5">
+        <div class="pline"></div>
+        <div class="pnode l1 ahead"><span class="ptag">A programban</span><span class="pdot"><i>1</i></span><span class="pname">Bevezető az AI&#8209;ba</span><span class="pdesc">Alap promptolási technikák, időtálló gondolkodás.</span></div>
+        <div class="pnode l2 ahead"><span class="ptag">A programban</span><span class="pdot"><i>2</i></span><span class="pname">AI alapok</span><span class="pdesc">A mindennapi munka AI&#8209;eszközei, magabiztos használat.</span></div>
+        <div class="pnode l3 now"><span class="ptag">Ma itt</span><span class="pdot"><i>3</i></span><span class="pname">Haladó</span><span class="pdesc">A saját rendszeretek mellé állított AI, valódi napi munkával.</span></div>
+        <div class="pnode l4 ahead"><span class="ptag">Előtted</span><span class="pdot"><i>4</i></span><span class="pname">Mester</span><span class="pdesc">Saját operációs rendszer: tudástár és agentek, amik helyetted dolgoznak.</span></div>
+        <div class="pnode l5 ahead"><span class="ptag">Előtted</span><span class="pdot"><i>5</i></span><span class="pname">AI Natív cég</span><span class="pdesc">A szervezet szintje: agentek a cégen belül is dolgoznak.</span></div>
+      </div>
+    </div>
+    <div class="footrow">
+      <div class="wordmark">
+        <svg class="glyph" viewBox="0 0 576 765" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="576,0 192,382 383,573 576,765" fill="#D22332"/><polygon points="192,765 383,573 576,765" fill="#ED1B24"/><polygon points="192,382 383,573 192,765" fill="#F6821F"/><polygon points="192,382 0,573 192,765" fill="#FEF102"/>
+        </svg>
+        <span class="name">Ignis Academy</span>
+      </div>
+      <span class="meta">A fejlődési út</span>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 3 : MIT TANULTUNK AZ ALAPOZÓN ===================== -->
+  <section class="slide" id="h3">
+    <div class="pad">
+      <span class="kicker">30 másodperc · AI-alapelvek</span>
+      <h1>Három alapelv, amire építünk</h1>
+      <div class="caps">
+        <div class="cap"><span class="n">1</span><span class="ct">Ethos · felelősség</span><span class="cd">Te maradsz a felelős gazda: jó kontextust adsz az AI&#8209;nak (a cég sztenderdje egy kontextus&#8209;fájlban), és tiéd a szakmai iránytű a kész anyag fölött.</span></div>
+        <div class="cap"><span class="n">2</span><span class="ct">Logos · megértés</span><span class="cd">Bármit megtanulsz vele: előbb térkép, aztán mélyítés; analógiát kérsz, amíg bekattan; amit nem értesz, nem engeded ki a kezedből.</span></div>
+        <div class="cap"><span class="n">3</span><span class="ct">Pathos · empátia</span><span class="cd">Az AI nem barát: megtartod az emberi hangot, ami áttör, jelen vagy az ügyfélnél, és felismered az AI&#8209;írta szöveget.</span></div>
+        <div class="cap"><span class="n">4</span><span class="ct">Thelos · küldetés</span><span class="cd">Sokat generálsz, és az ítéleted választ; véded a csendet és a flow&#8209;t; a szakmai cél a tiéd marad.</span></div>
+      </div>
+    </div>
+    <div class="footrow">
+      <div class="wordmark">
+        <svg class="glyph" viewBox="0 0 576 765" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="576,0 192,382 383,573 576,765" fill="#D22332"/><polygon points="192,765 383,573 576,765" fill="#ED1B24"/><polygon points="192,382 383,573 192,765" fill="#F6821F"/><polygon points="192,382 0,573 192,765" fill="#FEF102"/>
+        </svg>
+        <span class="name">Ignis Academy</span>
+      </div>
+      <span class="meta">Három alapelv</span>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 4 : A HALADÓ SZINT VÍZIÓJA ===================== -->
+  <section class="slide" id="h4">
+    <div class="pad">
+      <span class="kicker">A Haladó víziója</span>
+      <h1>A Haladó szint víziója</h1>
+      <p class="lead">A <b>saját Regio&#8209;rendszeretek</b> mellett ott dolgozik egy AI, ami <b>igazi munkát</b> végez a ti fájljaitokon: a szkennelt ajánlattól a kész monitoringig, egyetlen délelőtt alatt.</p>
+      <div class="cols">
+        <div class="col kb">
+          <h3>A rendszer, amit ismer</h3>
+          <p class="csub">a memória és a kontextus</p>
+          <ul>
+            <li>Markdown: az AI és az ember közös nyelve<span class="s">a sztenderd, a szabályok, a kulcsadatok egy helyen</span></li>
+            <li>CLAUDE.md: a Regio sztenderdje, amit az AI bármikor visszaolvas</li>
+            <li>Nem tranzakció, hanem rendszer: a következő projektnél is emlékszik</li>
+          </ul>
+        </div>
+        <div class="col ag">
+          <h3>Az AI Cowork</h3>
+          <p class="csub">dolgozik, nem csak válaszol</p>
+          <ul>
+            <li>Beolvassa a szkennelt ajánlatot, és használható adatot csinál belőle</li>
+            <li>Átlát a fájlokon: az ajánlatkérést és az ajánlatot együtt nézi, és megtalálja az eltérést<span class="s">amit tételről tételre kézzel keresnél</span></li>
+            <li>Kitölti a deviz&#8209;sablont, és felépíti a monitoringot</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footrow">
+      <div class="wordmark">
+        <svg class="glyph" viewBox="0 0 576 765" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="576,0 192,382 383,573 576,765" fill="#D22332"/><polygon points="192,765 383,573 576,765" fill="#ED1B24"/><polygon points="192,382 383,573 192,765" fill="#F6821F"/><polygon points="192,382 0,573 192,765" fill="#FEF102"/>
+        </svg>
+        <span class="name">Ignis Academy</span>
+      </div>
+      <span class="meta">A Haladó víziója</span>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 5 : A JÖVŐ MUNKÁJA (videó) ===================== -->
+  <section class="slide" id="h5">
+    <div class="pad">
+      <div class="vrow">
+        <div class="vtext">
+          <h1>Ilyen a jövő munkája az AI&#8209;jal</h1>
+          <span class="bar"></span>
+        </div>
+        <video class="vid" src="assets/jovo-munkaja.mp4" autoplay muted loop playsinline preload="auto"></video>
+      </div>
+    </div>
+    <div class="footrow">
+      <div class="wordmark">
+        <svg class="glyph" viewBox="0 0 576 765" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="576,0 192,382 383,573 576,765" fill="#D22332"/><polygon points="192,765 383,573 576,765" fill="#ED1B24"/><polygon points="192,382 383,573 192,765" fill="#F6821F"/><polygon points="192,382 0,573 192,765" fill="#FEF102"/>
+        </svg>
+        <span class="name">Ignis Academy</span>
+      </div>
+      <span class="meta">A jövő munkája</span>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 6 : IPARI ↔ KOGNITÍV FORRADALOM (scrollozható idővonal) ===================== -->
+  <section class="slide" id="h6">
+    <div class="pad">
+      <div class="tl-head">
+        <span class="kicker">A nagy párhuzam</span>
+        <h1>Ipari forradalom <span class="arr">↔</span> Kognitív forradalom</h1>
+        <p class="tl-sub">Két korszak. Egy minta.</p>
+        <div class="tl-cols">
+          <div class="cl left">⚙ Gőzgép korszak</div>
+          <div></div>
+          <div class="cl right">AI + lokális workflow ◆</div>
+        </div>
+      </div>
+      <div class="tl-scroll noadvance">
+        <div class="tl">
+
+          <div class="trow">
+            <div class="ev steam"><div class="d">Kr. u. 1. század</div><div class="tx"><strong>Hérón</strong> leír egyszerű gőzzel működő szerkezeteket. Érdekes technikai kuriózum, de nincs gyakorlati gazdasági hatása.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai"><div class="d">1950–2020</div><div class="tx"><strong>AI kutatás évtizedei.</strong> Sok ígéret, sok hype, de kevés valódi mindennapi workflow&#8209;integráció.</div></div>
+          </div>
+
+          <div class="trow">
+            <div class="ev steam"><div class="d">1698</div><div class="tx"><strong>Thomas Savery</strong> első gyakorlati gőzgépe bányavíz kiszivattyúzására. Szűk niche probléma megoldása.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai"><div class="d">2010-es évek</div><div class="tx"><strong>Markdown</strong> széles körben elterjed fejlesztői és tudáskezelési környezetben. Egyszerű, ember- és gépolvasható standard formátummá válik.</div></div>
+          </div>
+
+          <div class="trow">
+            <div class="ev steam"><div class="d">1712</div><div class="tx"><strong>Thomas Newcomen</strong> első iparilag használható gőzgépe. Már működőképes, de még nehézkes és specializált.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai"><div class="d">2020</div><div class="tx"><strong>Obsidian megjelenése.</strong> A lokális markdown&#8209;alapú tudásgráf széles körben használhatóvá válik.</div></div>
+          </div>
+
+          <div class="trow">
+            <div class="ev steam"><div class="d">1760–1780</div><div class="tx"><strong>James Watt</strong> hatékonyabbá teszi a gőzgépet. Már nem csak vizet pumpál, hanem általános energiaforrássá válik.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai"><div class="d">2022. november</div><div class="tx"><strong>ChatGPT indulása.</strong> Az LLM&#8209;ek tömegesen elérhetővé válnak. Az AI először kerül tömegek kezébe.</div></div>
+          </div>
+
+          <div class="trow">
+            <div class="ev steam"><div class="d">1770–1800</div><div class="tx"><strong>Precíziós esztergák és szerszámgépek</strong> megjelenése (Henry Maudslay és mások). Standardizált, pontos alkatrészgyártás válik lehetővé.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai"><div class="d">2023–2025</div><div class="tx"><strong>AI workflow kultúra</strong> kialakulása. Prompt engineering, markdown workflow, knowledge base&#8209;ek, AI&#8209;assisted dokumentáció terjedése.</div></div>
+          </div>
+
+          <div class="trow hl">
+            <div class="ev steam hl"><div class="d">1800-as évek eleje</div><div class="tx"><strong>Gőzgép + szerszámgépek kombinációja.</strong> Megindul az ipari robbanás: gyárak, vasút, tömegtermelés.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai hl"><div class="d">2025–2026</div><div class="tx"><strong>Local AI workflow korszak.</strong> Az AI hozzáfér a lokális fájlrendszerhez, több fájlhoz, workflow&#8209;khoz, böngészőhöz.</div></div>
+          </div>
+
+          <div class="trow">
+            <div class="ev steam"><div class="d">A kombinatorikus robbanás kezdete</div><div class="tx">amikor a gőzgép és a precíziós szerszámgép egymást kezdi erősíteni.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai"><div class="d">2026. február</div><div class="tx"><strong>A kombinatorikus robbanás kezdete:</strong> amikor az LLM + Markdown + Obsidian + lokális filesystem + agentic AI együtt kezd működni.</div></div>
+          </div>
+
+          <div class="trow">
+            <div class="ev steam"><div class="d">Az eredmény</div><div class="tx">Gyárak, automatizáció, tömegtermelés, modern ipar.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai"><div class="d">Az eredmény</div><div class="tx"><strong>„Cognitive operating system":</strong> AI&#8209;alapú munkarendszerek, automatizált tudásmunka, agentic workflow&#8209;k.</div></div>
+          </div>
+
+          <div class="trow">
+            <div class="ev steam"><div class="d">A gőzgép önmagában még nem volt elég</div><div class="tx">A forradalmat az infrastruktúra és a szerszámgépek hozták el.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai"><div class="d">A chatbot önmagában még nem volt elég</div><div class="tx">A forradalmat a workflow, a memória és a lokális operációs réteg hozza el.</div></div>
+          </div>
+
+          <div class="trow">
+            <div class="ev steam"><div class="d">A szerszámgép</div><div class="tx">lehetővé tette új gépek gyártását.</div></div>
+            <div class="dot"></div>
+            <div class="ev ai"><div class="d">Az AI workflow rendszer</div><div class="tx">lehetővé teszi új workflow&#8209;k, pluginok és tudásrendszerek gyártását.</div></div>
+          </div>
+
+          <div class="trow hl">
+            <div class="ev steam hl"><div class="d">Eredmény</div><div class="tx"><strong>Ipari infrastruktúra született.</strong></div></div>
+            <div class="dot"></div>
+            <div class="ev ai hl"><div class="d">Eredmény</div><div class="tx"><strong>Kognitív infrastruktúra születik.</strong></div></div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="footrow">
+      <div class="wordmark">
+        <svg class="glyph" viewBox="0 0 576 765" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="576,0 192,382 383,573 576,765" fill="#D22332"/><polygon points="192,765 383,573 576,765" fill="#ED1B24"/><polygon points="192,382 383,573 192,765" fill="#F6821F"/><polygon points="192,382 0,573 192,765" fill="#FEF102"/>
+        </svg>
+        <span class="name">Ignis Academy</span>
+      </div>
+      <span class="meta">A nagy párhuzam</span>
+    </div>
+  </section>
+
+  <!-- ===================== SLIDE 7 : FELVÁLTVA DOLGOZUNK (módszer) ===================== -->
+  <section class="slide" id="h7">
+    <div class="pad">
+      <span class="kicker">A mai módszer</span>
+      <h1>Felváltva dolgozunk</h1>
+      <p class="lead">Nem tananyagot hallgatsz, hanem <b>végigélsz egy munkanapot</b>. A nagy képet kivetítve együtt visszük, a gépen pedig te dolgozol, párban és egyénileg.</p>
+      <div class="duo">
+        <div class="card a">
+          <h3>Kivetítve, együtt</h3>
+          <p class="csub">a fő narratív szál</p>
+          <p class="x">Az elméletet és a döntéseket közösen visszük végig, kérdésekkel és élő Q&amp;A-val.</p>
+        </div>
+        <div class="card b">
+          <h3>Cowork + Microsoft 365</h3>
+          <p class="csub">a gépen, a kezedben</p>
+          <p class="x">A lépéseket te csinálod meg a saját gépeden, a OneDrive / SharePoint fájlokon és Markdownban, kétfős csapatokban és egyénileg is. (Az Obsidian opcionális, barátságos szerkesztő hozzá.)</p>
+        </div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Felváltva dolgozunk</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 8 : A FŐSZEREPLŐ — Napsugár Tejüzem ===================== -->
+  <section class="slide" id="h8">
+    <div class="pad">
+      <span class="kicker">A főszereplő</span>
+      <h1>Napsugár Tejüzem, egy Regio-projekt</h1>
+      <p class="sub2">Ma a saját világotok: egy fiktív, de tipikus Regio-projekt, a Napsugár Tejüzem tejfeldolgozó-beruházása. Ti vagytok a projektet vivő tanácsadók. Ez a kiindulópont, innen indul a négy óra.</p>
+      <div class="facts">
+        <div class="fact"><span class="k">Beneficiar</span><span class="v"><b>SC Napsugár Tejüzem SRL</b></span></div>
+        <div class="fact"><span class="k">Helyszín</span><span class="v">Cristuru Secuiesc, Harghita</span></div>
+        <div class="fact"><span class="k">Projekt</span><span class="v">Tejfeldolgozó-bővítés (extindere fabrică)</span></div>
+        <div class="fact"><span class="k">Beruházás</span><span class="v"><b>~7,68 M lei</b> (cu TVA, 19%)</span></div>
+        <div class="fact"><span class="k">Finanszírozás</span><span class="v">PNRR-szerű építési beruházás</span></div>
+        <div class="fact"><span class="k">A ti szerepetek</span><span class="v">A projektet vivő tanácsadó: Regio Consult, 3 iroda, 21 fő, strukturált sztenderd</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A főszereplő · Napsugár Tejüzem</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 9 : A KÜLDETÉS ===================== -->
+  <section class="slide" id="h9">
+    <div class="pad">
+      <span class="kicker">A feladatod</span>
+      <h1>A küldetés: három napi gond, AI-jal</h1>
+      <p class="mlead">A Napsugár-projekten három visszatérő gondot oldunk meg, végig a saját sztenderdetek szerint.</p>
+      <p class="mbox"><b>1.</b> A szkennelt, kép&#8209;only ajánlatból használható adat lesz. <b>2.</b> A levédett, képletvezérelt deviz&#8209;sablont forrásból kitöltjük. <b>3.</b> A kivitelezést a szerződéshez mérve követjük egy Centralizatorban.</p>
+    </div>
+    <div class="footrow"><span class="meta">A küldetés · három gond</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 10 : A MAI NAP — 6 FÁZIS ===================== -->
+  <section class="slide" id="h10">
+    <div class="pad">
+      <span class="kicker">A mai nap · a film</span>
+      <h1>Hat fázis, egy történet</h1>
+      <p class="intro2">A saját sztenderdetektől a kész monitoringig hat lépésben jutunk el. Ez a mai <b>négy óra</b> íve.</p>
+      <div class="flow">
+        <div class="fstep"><span class="fn">F1 · Sztenderd</span><span class="ft">Betanítás a struktúrára</span><span class="fd">A strukturált RC mappa- és dokumentum-sztenderd → gyökér-CLAUDE.md és projekt-CLAUDE.md-k, a cég memóriája.</span></div>
+        <div class="fstep"><span class="fn">F2 · TODO-k</span><span class="ft">Egyeztetés → feladatok</span><span class="fd">Egy ügyfél-egyeztetés leiratából feladatlista, ami a munkamenetek között is megmarad.</span></div>
+        <div class="fstep"><span class="fn">F3 · Szkennelt PDF</span><span class="ft">Ajánlat → adat</span><span class="fd">Szkennelt, kép-only ajánlat → OCR → strukturált md tábla, kontroll-összeggel.</span></div>
+        <div class="fstep"><span class="fn">F4 · Összevetés</span><span class="ft">Ajánlatkérés vs. ajánlat</span><span class="fd">Az AI a devizt és az ajánlatot együtt nézi, és megtalálja a tételes eltérést, a hiányt.</span></div>
+        <div class="fstep"><span class="fn">F5 · Deviz-sablon</span><span class="ft">Kitöltés forrásból</span><span class="fd">Üres, levédett deviz-sablon + forrás-ajánlat → az AI kitölti a szürke cellákat, a Deviz General magától aggregál.</span></div>
+        <div class="fstep"><span class="fn">F6 · Monitoring</span><span class="ft">Centralizator kitöltése</span><span class="fd">md + üres Centralizator → SL1/SL2/SL3 részteljesítés és Rest de executat, magától.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A mai nap · hat fázis</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 11 : A TÉT — 4 vs 160 óra ===================== -->
+  <section class="slide" id="h11">
+    <div class="pad">
+      <span class="kicker">A tét</span>
+      <h1>Négy óra vagy százhatvan</h1>
+      <div class="vs">
+        <div class="vcard ai"><div class="num">4 óra</div><div class="lab"><b>Cowork + M365</b> és te</div></div>
+        <div class="vmid">vs</div>
+        <div class="vcard human"><div class="num">160 óra</div><div class="lab">kézi ellenőrzés, sablonépítés, monitoring</div></div>
+      </div>
+      <p class="vfoot">Ugyanaz a kész, ellenőrzött anyag. Negyvenszeres különbség.</p>
+    </div>
+    <div class="footrow"><span class="meta">A tét · 4 vs 160 óra</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 12 : A SEBESSÉG NEM AZ EGYETLEN HOZADÉK (reveal) ===================== -->
+  <section class="slide" id="h12">
+    <div class="pad">
+      <span class="kicker">Mélyebbre</span>
+      <h1>A sebesség nem az<br>egyetlen hozadék</h1>
+      <span class="bar"></span>
+      <div class="benefits">
+        <div class="frag b">Fókuszáltság</div>
+        <div class="frag b">Türelmesség</div>
+        <div class="frag b">Bölcsesség</div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A lényeg</span></div>
+  </section>
+
+  <!-- ===================== SLIDE : TANANYAG URL + JELSZÓ ===================== -->
+  <section class="slide" id="hurl">
+    <div class="pad">
+      <span class="kicker">A mai tananyag</span>
+      <h1>Töltsd le, és kövesd élőben</h1>
+      <div class="urlbox"><span class="ub-label">Cím</span><span class="ub-val">ignis.academy/regio/tananyag</span></div>
+      <div class="urlbox pw"><span class="ub-label">Jelszó</span><span class="ub-val">ignis387</span></div>
+    </div>
+    <div class="footrow"><span class="meta">Letöltendő tananyag</span></div>
+  </section>
+
+  <!-- ===================== F1 / a : FELADAT ===================== -->
+  <section class="slide t-task" id="f1a">
+    <div class="tasknum">F1</div>
+    <div class="pad">
+      <span class="kicker">1. fázis · 6-ból</span>
+      <span class="bar"></span>
+      <h1>Tanítsd be az AI-t a strukturált rendszeredre</h1>
+      <p class="taskdesc">A Regio sztenderdjéből (mappa- és dokumentum-konvenció) egy gyökér-<b>CLAUDE.md</b> és projekt-CLAUDE.md-k lesznek, a cég memóriája és szabálykönyve.</p>
+    </div>
+    <div class="footrow"><span class="meta">F1 · Sztenderd</span></div>
+  </section>
+
+  <!-- ===================== F1 / b : ANIMÁCIÓ-KONCEPCIÓ ===================== -->
+  <section class="slide t-concept" id="f1b">
+    <div class="pad">
+      <span class="kicker">Mit fogunk csinálni? · F1</span>
+      <h1>Leírod a sztenderdet, az AI megtanulja</h1>
+      <p class="conlead">Odaadod az AI&#8209;nak a belső sztenderd dokumentumot és a mappa-konvenciót, és megkéred, hogy írja le egy <b>CLAUDE.md</b>-be. Te döntöd el a szabályokat, az AI leírja őket, és onnantól úgy dolgozik, mint egy betanított junior kolléga. Az animáció ezt mutatja meg.</p>
+      <div class="beats">
+        <div class="beat"><span class="bn">1</span><span class="bt">Odaadod</span><span class="bd">A belső sztenderdet és egy projekt-mappát kontextusként megosztasz.</span></div>
+        <div class="beat"><span class="bn">2</span><span class="bt">Leíratod</span><span class="bd">Az AI a strukturált mapparendszert és a szabályokat markdownba önti.</span></div>
+        <div class="beat"><span class="bn">3</span><span class="bt">CLAUDE.md</span><span class="bd">Megszületik a cég memóriája, amit az AI minden projektnél visszaolvas.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A feladat · F1</span></div>
+  </section>
+
+  <!-- ===================== F1 / c : ÉLŐ ANIMÁCIÓ ===================== -->
+  <section class="slide t-anim" id="f1c">
+    <div class="pad">
+      <div class="animhead">
+        <span class="kicker">Egy animáció többet mond ezer szónál · F1</span>
+        <h1>Sztenderdből memória</h1>
+      </div>
+      <div class="animstage noadvance" id="f1stage">
+        <div class="claudemd">CLAUDE.md<span>a cég sztenderdje, leírva</span></div>
+      </div>
+      <div class="animhint" id="f1hint">Kattints a rendezéshez</div>
+    </div>
+    <div class="footrow"><span class="meta">F1 · élő animáció</span></div>
+  </section>
+
+  <!-- ===================== SLIDE : MARKDOWN — PDF VS MD ===================== -->
+  <section class="slide" id="hmd">
+    <div class="pad">
+      <div class="mdhead">
+        <span class="kicker">A közös nyelv</span>
+        <h1>Mi van a dokumentum alatt?</h1>
+        <p class="mdsub">Két ugyanúgy kinéző dokumentum. De ami alattuk van, ég és föld. Kattints rájuk.</p>
+      </div>
+      <div class="md-cards noadvance">
+        <div class="md-col">
+          <div class="md-card pdf">
+            <div class="md-inner">
+              <div class="md-face md-front">
+                <div class="doc-t">Üzleti terv</div>
+                <div class="doc-meta">Napsugár Tejüzem SRL · 2026</div>
+                <h4>Összefoglaló</h4>
+                <p>A <b>Napsugár Tejüzem</b> a tejfeldolgozó kapacitását bővíti egy PNRR-szerű beruházásból.</p>
+                <h4>A projekt</h4>
+                <ul><li>Hala bővítés</li><li>Új berendezések</li><li>~7,68 M lei (cu TVA)</li></ul>
+                <p>A cél a <b>fenntartható</b>, versenyképes működés.</p>
+              </div>
+              <div class="md-face md-back">
+                <div class="src-h">uzleti_terv.pdf · forrás</div>
+                <pre>%PDF-1.7
+%âãÏÓ
+1 0 obj
+&lt;&lt;/Type/Catalog/Pages 2 0 R&gt;&gt;
+endobj
+4 0 obj
+&lt;&lt;/Length 1843/Filter/FlateDecode&gt;&gt;
+stream
+xœ•TÉnÛ0­½K/Ð'Eö²hQÈ¡@Ñœ²d¹ÒÈ'©8þ}‡
+²œ¦@/¼™7ßÌ‡‹Û¼ÿØÿàJFIFÿÛC$.'",#(7)
+,0144µ¶·4ŒÊ°•Ïiÿ®Üq£;Ø…¬z½¦Ý«Š2þ
+H‚ä9Æ¬b«—Ò®Ð3ªqÆ‘Üô,b÷€…ñ
+endstream
+endobj
+trailer
+&lt;&lt;/Root 1 0 R/Size 9&gt;&gt;
+%%EOF</pre>
+              </div>
+            </div>
+          </div>
+          <div class="md-label" data-for="pdf">PDF · kattints, mi van alatta</div>
+        </div>
+        <div class="md-col">
+          <div class="md-card mdf">
+            <div class="md-inner">
+              <div class="md-face md-front">
+                <div class="doc-t">Üzleti terv</div>
+                <div class="doc-meta">Napsugár Tejüzem SRL · 2026</div>
+                <h4>Összefoglaló</h4>
+                <p>A <b>Napsugár Tejüzem</b> a tejfeldolgozó kapacitását bővíti egy PNRR-szerű beruházásból.</p>
+                <h4>A projekt</h4>
+                <ul><li>Hala bővítés</li><li>Új berendezések</li><li>~7,68 M lei (cu TVA)</li></ul>
+                <p>A cél a <b>fenntartható</b>, versenyképes működés.</p>
+              </div>
+              <div class="md-face md-back">
+                <div class="src-h">uzleti_terv.md · forrás</div>
+                <pre><span class="k"># Üzleti terv</span>
+
+<span class="b">**Napsugár Tejüzem SRL**</span> · 2026
+
+<span class="k">## Összefoglaló</span>
+
+A <span class="b">**Napsugár Tejüzem**</span> a tejfeldolgozó
+kapacitását bővíti egy PNRR-szerű beruházásból.
+
+<span class="k">## A projekt</span>
+
+<span class="k">-</span> Hala bővítés
+<span class="k">-</span> Új berendezések
+<span class="k">-</span> ~7,68 M lei (cu TVA)
+
+A cél a <span class="b">**fenntartható**</span>,
+versenyképes működés.</pre>
+              </div>
+            </div>
+          </div>
+          <div class="md-label" data-for="mdf">Markdown · kattints, mi van alatta</div>
+        </div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Markdown · a közös nyelv</span></div>
+  </section>
+
+  <!-- ===================== SLIDE : OBSIDIAN — MIÉRT JÓ ===================== -->
+  <section class="slide" id="hob">
+    <div class="pad">
+      <div class="obhead">
+        <span class="kicker">A szerkesztő</span>
+        <h1>Obsidian: opcionális szerkesztő</h1>
+        <p class="obsub">A Markdown a közös nyelv, ami a fájlrendszereteken és a SharePointon él. Az Obsidian csak egy opcionális, barátságos szerkesztő hozzá: formázva látod, és a jegyzeteid össze vannak kötve. Próbáld ki: válts módot, kattints a linkekre.</p>
+      </div>
+      <div class="obwin noadvance">
+        <div class="obbar"><span class="d"></span><span class="d"></span><span class="d"></span><span class="t">Obsidian · Napsugár projekt</span></div>
+        <div class="obbody">
+          <div class="obside" id="obside"><div class="sh">Jegyzetek</div></div>
+          <div class="obmain">
+            <div class="obtoolbar">
+              <span class="fn" id="obfn">CLAUDE.md</span>
+              <div class="obtoggle" id="obtoggle"><span data-mode="read" class="on">Olvasó</span><span data-mode="src">Forrás</span></div>
+            </div>
+            <div class="obcontent read" id="obcontent"></div>
+          </div>
+        </div>
+      </div>
+      <div class="obbadges">
+        <span class="bdg f">✦ Formázás: amit írsz, azt rendezve látod</span>
+        <span class="bdg n">✦ Navigáció: a [[linkek]] összekötik a jegyzeteket</span>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Obsidian · a szerkesztő</span></div>
+  </section>
+
+  <!-- ===================== SLIDE : OBSIDIAN ÉLŐ DEMÓ ===================== -->
+  <section class="slide t-concept" id="hobd">
+    <div class="pad">
+      <span class="kicker">Élő demó</span>
+      <h1>Most élőben: Obsidian</h1>
+      <p class="conlead">Megnyitom a Napsugár projekt jegyzeteit, és valódi fájlokon megmutatom, amit az imént kipróbáltál: a <b>formázást</b> és a <b>navigációt</b>.</p>
+      <div class="beats">
+        <div class="beat"><span class="bn">1</span><span class="bt">Formázás</span><span class="bd">Forrás → Olvasó mód: a nyers Markdown azonnal letisztult dokumentum.</span></div>
+        <div class="beat"><span class="bn">2</span><span class="bt">Navigáció</span><span class="bd">A [[wikilinkek]] és a backlinkek: egy kattintás a kapcsolódó jegyzetre.</span></div>
+        <div class="beat"><span class="bn">3</span><span class="bt">Gráf nézet</span><span class="bd">A jegyzetek hálózata egy pillantásra, ahogy a tudás összeáll.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Élő demó · Obsidian</span></div>
+  </section>
+
+  <!-- ===================== F2 / a : FELADAT ===================== -->
+  <section class="slide t-task" id="f2a">
+    <div class="tasknum">F2</div>
+    <div class="pad">
+      <span class="kicker">2. fázis · 6-ból</span>
+      <span class="bar"></span>
+      <h1>Rend a TODO-k között</h1>
+      <p class="taskdesc">Egy meeting-leiratból strukturált feladatlista lesz, ami a <b>munkamenetek között is megmarad</b>.</p>
+    </div>
+    <div class="footrow"><span class="meta">F2 · TODO-k</span></div>
+  </section>
+
+  <!-- ===================== F2 / b : ANIMÁCIÓ-KONCEPCIÓ ===================== -->
+  <section class="slide t-concept" id="f2b">
+    <div class="pad">
+      <span class="kicker">Mit fogunk csinálni? · F2</span>
+      <h1>A meetingből számon kérhető lista</h1>
+      <p class="conlead">Bemásolod egy ügyfél-projekt egyeztetés nyers leiratát, és megkéred az AI-t, hogy szedje ki belőle a teendőket. Strukturált feladatlista lesz, ami a Productivity pluginnak köszönhetően a következő alkalomra is megmarad. Az animáció ezt mutatja meg.</p>
+      <div class="beats">
+        <div class="beat"><span class="bn">1</span><span class="bt">Beadod a leiratot</span><span class="bd">Az egyeztetés nyers szövegét odaadod, ahogy elhangzott.</span></div>
+        <div class="beat"><span class="bn">2</span><span class="bt">Kiszedeted a teendőket</span><span class="bd">Az AI felismeri a döntéseket és a feladatokat.</span></div>
+        <div class="beat"><span class="bn">3</span><span class="bt">Megmarad</span><span class="bd">A lista a munkamenetek között is megmarad, nem felejtődik el.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A feladat · F2</span></div>
+  </section>
+
+  <!-- ===================== F2 / c : ÉLŐ ANIMÁCIÓ ===================== -->
+  <section class="slide t-anim" id="f2c">
+    <div class="pad">
+      <div class="animhead">
+        <span class="kicker">Egy animáció többet mond ezer szónál · F2</span>
+        <h1>Meeting → feladatok</h1>
+      </div>
+      <div class="animstage noadvance" id="f2stage">
+        <div class="f2-grid">
+          <div class="f2-col tr"><div class="f2-h">Meeting-leirat</div><div class="f2-lines" id="f2lines"></div></div>
+          <div class="f2-col td"><div class="f2-h">Feladatok · <span id="f2count">0</span></div><div class="f2-todos" id="f2todos"></div></div>
+        </div>
+      </div>
+      <div class="animhint" id="f2hint">Kattints a kinyeréshez</div>
+    </div>
+    <div class="footrow"><span class="meta">F2 · élő animáció</span></div>
+  </section>
+
+  <!-- ===================== F3 / a : FELADAT ===================== -->
+  <section class="slide t-task" id="f3a">
+    <div class="tasknum">F3</div>
+    <div class="pad">
+      <span class="kicker">3. fázis · 6-ból</span>
+      <span class="bar"></span>
+      <h1>Szkennelt ajánlat → használható adat</h1>
+      <p class="taskdesc">Egy 200 oldalas, kép&#8209;only szkennelt ajánlatból <b>strukturált md tábla</b> lesz: OCR egyszer, mentés md-be, kontroll-összeggel ellenőrizve.</p>
+    </div>
+    <div class="footrow"><span class="meta">F3 · Szkennelt PDF</span></div>
+  </section>
+
+  <!-- ===================== F3 / b : ANIMÁCIÓ-KONCEPCIÓ ===================== -->
+  <section class="slide t-concept" id="f3b">
+    <div class="pad">
+      <span class="kicker">Mit fogunk csinálni? · F3</span>
+      <h1>Formátum-triázs és egyszeri OCR</h1>
+      <p class="conlead">Előbb megnézed, vektoros vagy szkennelt-e a fájl. A szkennelt, kép&#8209;only ajánlatot az AI OCR-ezi, strukturált md táblává alakítja, és a végén egy kontroll-összeggel ellenőrzi. OCR-ezel egyszer, md-be mentesz, onnantól a tiszta adatot olvasod. Az animáció ezt mutatja meg.</p>
+      <div class="beats">
+        <div class="beat"><span class="bn">1</span><span class="bt">Triázs</span><span class="bd">Vektoros (majdnem ingyen, pontos) vagy szkennelt (kép, OCR kell)?</span></div>
+        <div class="beat"><span class="bn">2</span><span class="bt">OCR egyszer</span><span class="bd">A kép-oldalakból strukturált md tábla lesz, mentve a projektbe.</span></div>
+        <div class="beat"><span class="bn">3</span><span class="bt">Token-mérleg</span><span class="bd">~2 300 képtoken/oldal helyett ~600 token md. Soha nem fizeted újra az OCR-t.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A feladat · F3</span></div>
+  </section>
+
+  <!-- ===================== F3 / c : ÉLŐ ANIMÁCIÓ ===================== -->
+  <section class="slide t-anim" id="f3c">
+    <div class="pad">
+      <div class="animhead">
+        <span class="kicker">Egy animáció többet mond ezer szónál · F3</span>
+        <h1>Szkennelt oldalak → md tábla</h1>
+      </div>
+      <div class="animstage noadvance" id="f3stage">
+        <div class="f3-grid">
+          <div class="f3-doc">
+            <div class="f3-h">Szkennelt ajánlat · <span id="f3page">1</span>/200 oldal</div>
+            <div class="f3-pages" id="f3pages"></div>
+            <div class="f3-scan" id="f3scan"></div>
+          </div>
+          <div class="f3-list">
+            <div class="f3-h">OCR → md tábla</div>
+            <div class="f3-items" id="f3items"></div>
+            <div class="f3-sum" id="f3sum"></div>
+          </div>
+        </div>
+      </div>
+      <div class="animhint" id="f3hint">Kattints az OCR-hez</div>
+    </div>
+    <div class="footrow"><span class="meta">F3 · élő animáció</span></div>
+  </section>
+
+  <!-- ===================== F4 / a : FELADAT ===================== -->
+  <section class="slide t-task" id="f4a">
+    <div class="tasknum">F4</div>
+    <div class="pad">
+      <span class="kicker">4. fázis · 6-ból</span>
+      <span class="bar"></span>
+      <h1>Ajánlatkérés vs. ajánlat tételes összevetése</h1>
+      <p class="taskdesc">Az AI egyszerre nézi az ajánlatkérést (deviz) és a beérkezett ajánlatot, és megtalálja a <b>tételes eltérést</b>, a hiányt.</p>
+    </div>
+    <div class="footrow"><span class="meta">F4 · Összevetés</span></div>
+  </section>
+
+  <!-- ===================== F4 / b : ANIMÁCIÓ-KONCEPCIÓ ===================== -->
+  <section class="slide t-concept" id="f4b">
+    <div class="pad">
+      <span class="kicker">Mit fogunk csinálni? · F4</span>
+      <h1>Két forrás, egy átlátás</h1>
+      <p class="conlead">Odaadod az AI-nak az ajánlatkérést (a devizt) és a beérkezett ajánlatot, plusz a centralizatort. Megkéred, hogy vesse össze őket tételről tételre, és mondja meg, hol az <b>eltérés</b>: mennyiség, egységár, vagy hiányzó tétel. Az animáció ezt mutatja meg.</p>
+      <div class="beats">
+        <div class="beat"><span class="bn">1</span><span class="bt">Beadod a forrásokat</span><span class="bd">Deviz, ajánlat, centralizator, egyszerre.</span></div>
+        <div class="beat"><span class="bn">2</span><span class="bt">Együtt nézeted</span><span class="bd">Az AI tételről tételre összeveti a kódokat és az árakat.</span></div>
+        <div class="beat"><span class="bn">3</span><span class="bt">Megtalálod az eltérést</span><span class="bd">Felszínre kerül a különbség, amit kézzel keresve kihagynál.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A feladat · F4</span></div>
+  </section>
+
+  <!-- ===================== F4 / c : ÉLŐ ANIMÁCIÓ ===================== -->
+  <section class="slide t-anim" id="f4c">
+    <div class="pad">
+      <div class="animhead">
+        <span class="kicker">Egy animáció többet mond ezer szónál · F4</span>
+        <h1>Két forrás, egy tételes eltérés</h1>
+      </div>
+      <div class="animstage noadvance" id="f4stage">
+        <div class="f4-h">Az AI egyszerre olvassa mind a négyet</div>
+        <div class="f4-row">
+          <div class="f4-card"><div class="ct">Ajánlatkérés (deviz)</div><div class="cm">deviz_general.xlsx</div><i></i><i></i><i></i></div>
+          <div class="f4-card"><div class="ct">Beérkezett ajánlat</div><div class="cm">oferta_Napsugar.md</div><i></i><i></i><i></i></div>
+          <div class="f4-card"><div class="ct">Centralizator</div><div class="cm">centralizator.xlsx</div><i></i><i></i><i></i></div>
+          <div class="f4-card"><div class="ct">Contract</div><div class="cm">contract.pdf</div><i></i><i></i><i></i></div>
+        </div>
+        <div class="f4-risk" id="f4risk"><span class="ic">⚠</span><span class="rt"></span></div>
+      </div>
+      <div class="animhint" id="f4hint">Kattints az összevetéshez</div>
+    </div>
+    <div class="footrow"><span class="meta">F4 · élő animáció</span></div>
+  </section>
+
+  <!-- ===================== SLIDE : SKILL / PLUGIN / CONNECTOR (áttekintő) ===================== -->
+  <section class="slide" id="hspc">
+    <div class="pad">
+      <span class="kicker">Alapfogalmak</span>
+      <h1>Skill, Plugin és Connector</h1>
+      <p class="spclead">Három mód, hogy az AI többet tudjon, mint alapból. Egy mondatban: a Skill megtanít, a Plugin új képességet ad, a Connector pedig összeköt egy rendszerrel.</p>
+      <div class="trio">
+        <div class="tc">
+          <div class="tn">Skill</div>
+          <div class="ta">recept az AI-nak</div>
+          <div class="td">Egy csomag tudás és <b>lépéssor</b>, ami megtanítja egy feladatra, hogy mindig ugyanúgy, jól csinálja. Team planen az egész csapat megosztja.</div>
+          <div class="te">Pl. egy deviz-kitöltő skill, amit egyszer megírtok, és mind a 21-en használtok.</div>
+        </div>
+        <div class="tc">
+          <div class="tn">Plugin</div>
+          <div class="ta">új képesség</div>
+          <div class="td">Egy modul, ami <b>új dolgot ad</b> az AI-hoz, amire alapból nem volt képes.</div>
+          <div class="te">Pl. a Legal plugin: szerződéseket néz át és kockázatot jelez.</div>
+        </div>
+        <div class="tc">
+          <div class="tn">Connector</div>
+          <div class="ta">híd egy rendszerhez</div>
+          <div class="td">Összeköti az AI-t egy <b>külső rendszerrel</b>, hogy ott is lásson és dolgozzon.</div>
+          <div class="te">Pl. az Outlook connector: olvassa és keresi az emailjeidet.</div>
+        </div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Alapfogalmak · Skill / Plugin / Connector</span></div>
+  </section>
+
+  <!-- ===================== SLIDE : MI EGY SKILL (interaktív) ===================== -->
+  <section class="slide t-cap" id="hcskill">
+    <div class="pad">
+      <span class="kicker">Alapfogalom · Skill</span>
+      <h1>Mi egy Skill?</h1>
+      <p class="caplead">A Skill egy <b>recept az AI-nak</b>: egy csomag tudás és lépéssor, ami megtanítja egy konkrét feladatra. Team planen megosztható. Kattints az „Aktiváld"-ra.</p>
+      <div class="capflow noadvance">
+        <div class="capcard before"><div class="ch">Claude önmagában</div><div class="cl">„Töltsd ki a devizt" parancsra <b>általános</b> választ ad, minden alkalommal kicsit másképp.</div></div>
+        <div class="capmid"><div class="capitem">+ Deviz-kitöltő<br>skill</div><button class="capadd" type="button">Aktiváld</button></div>
+        <div class="capcard after"><div class="ch">Claude + Skill</div><div class="cl">Követi a <b>receptet</b>: kapitulus-logika, szürke input-cellák, TVA, eligibil-bontás, mindig ugyanúgy, megbízhatóan.</div></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Alapfogalom · Skill</span></div>
+  </section>
+
+  <!-- ===================== SLIDE : MI EGY PLUGIN — Legal (interaktív) ===================== -->
+  <section class="slide t-cap" id="hcplugin">
+    <div class="pad">
+      <span class="kicker">Alapfogalom · Plugin</span>
+      <h1>Mi egy Plugin? (Legal)</h1>
+      <p class="caplead">A Plugin <b>új képességet ad</b> az AI-hoz, amire alapból nem volt képes. Telepítsd a Legal plugint.</p>
+      <div class="capflow noadvance">
+        <div class="capcard before"><div class="ch">Claude önmagában</div><div class="cl">A szerződésről <b>általánosságban</b> beszél, de nincs jogi-ellenőrző munkafolyamata.</div></div>
+        <div class="capmid"><div class="capitem">+ Legal<br>plugin</div><button class="capadd" type="button">Telepítsd</button></div>
+        <div class="capcard after"><div class="ch">Claude + Legal plugin</div><div class="cl">Végigmegy a <b>finanszírozási szerződésen</b>, és kiemeli: a fenntartási kötelezettség hosszabb, mint egy vállalt határidő. Kockázat!</div></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Alapfogalom · Plugin</span></div>
+  </section>
+
+  <!-- ===================== SLIDE : MI EGY CONNECTOR — Outlook (interaktív) ===================== -->
+  <section class="slide t-cap" id="hcconn">
+    <div class="pad">
+      <span class="kicker">Alapfogalom · Connector</span>
+      <h1>Mi egy Connector? (Outlook)</h1>
+      <p class="caplead">A Connector <b>összeköti az AI-t egy külső rendszerrel</b>, hogy ott is lásson és dolgozzon. Csatlakoztasd az Outlookot.</p>
+      <div class="capflow noadvance">
+        <div class="capcard before"><div class="ch">Claude önmagában</div><div class="cl">Nem fér hozzá a postafiókodhoz, csak amit kézzel bemásolsz neki.</div></div>
+        <div class="capmid"><div class="capitem">+ Outlook<br>connector</div><button class="capadd" type="button">Csatlakoztasd</button></div>
+        <div class="capcard after"><div class="ch">Claude + Outlook</div><div class="cl">Rákeres a <b>postafiókodban</b>: megtalálja a tervező emailjét a Napsugár ajánlatról, és kiszedi belőle a teendőket.</div></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Alapfogalom · Connector</span></div>
+  </section>
+
+  <!-- ===================== F5 / a : FELADAT ===================== -->
+  <section class="slide t-task" id="f5a">
+    <div class="tasknum">F5</div>
+    <div class="pad">
+      <span class="kicker">5. fázis · 6-ból</span>
+      <span class="bar"></span>
+      <h1>Deviz-sablon kitöltése forrásból</h1>
+      <p class="taskdesc">Üres, levédett <b>deviz-sablon</b> + forrás-ajánlat: az AI kitölti a szürke input-cellákat, a Deviz General magától aggregál (TVA, total). Ez a WOW-blokk.</p>
+    </div>
+    <div class="footrow"><span class="meta">F5 · Deviz-sablon</span></div>
+  </section>
+
+  <!-- ===================== F5 / b : ANIMÁCIÓ-KONCEPCIÓ ===================== -->
+  <section class="slide t-concept" id="f5b">
+    <div class="pad">
+      <span class="kicker">Mit fogunk csinálni? · F5</span>
+      <h1>Kitöltöd a levédett deviz-sablont</h1>
+      <p class="conlead">Odaadod az AI-nak az üres, levédett deviz-sablont és a forrás-ajánlatot, plusz egy skillt, ami elmagyarázza a deviz felépítését. Az AI csak a szürke input-cellákat tölti ki, a képletekhez nem nyúl, és a Deviz General magától aggregál. Az animáció ezt mutatja meg.</p>
+      <div class="beats">
+        <div class="beat"><span class="bn">1</span><span class="bt">Beadod a forrást</span><span class="bd">A tételes ajánlat: objektum, mennyiség, egységár.</span></div>
+        <div class="beat"><span class="bn">2</span><span class="bt">Kitölteted a szürke cellákat</span><span class="bd">Az AI a védett képleteket tiszteletben tartja, csak inputot ír.</span></div>
+        <div class="beat"><span class="bn">3</span><span class="bt">Magától aggregál</span><span class="bd">TVA, eligibil-bontás, TOTAL: a Deviz General magától áll össze.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A feladat · F5</span></div>
+  </section>
+
+  <!-- ===================== F5 / c : ÉLŐ ANIMÁCIÓ ===================== -->
+  <section class="slide t-anim" id="f5c">
+    <div class="pad">
+      <div class="animhead">
+        <span class="kicker">Egy animáció többet mond ezer szónál · F5</span>
+        <h1>Forrás → szürke cellák → kész deviz</h1>
+      </div>
+      <div class="animstage noadvance" id="f5stage">
+        <div class="f5-col l">
+          <div class="f5-h">Forrás-ajánlat · tételek</div>
+          <div class="f5-pile" id="f5pile"></div>
+          <div class="f5-count" id="f5count">0 / 8 tétel</div>
+        </div>
+        <div class="f5-col r">
+          <div class="f5-h">Kitöltött deviz general</div>
+          <div class="f5-form" id="f5form"></div>
+          <div class="f5-stamp" id="f5stamp">Aggregálva ✓</div>
+        </div>
+      </div>
+      <div class="animhint" id="f5hint">Kattints a kitöltéshez</div>
+    </div>
+    <div class="footrow"><span class="meta">F5 · élő animáció</span></div>
+  </section>
+
+  <!-- ===================== F6 / a : FELADAT ===================== -->
+  <section class="slide t-task" id="f6a">
+    <div class="tasknum">F6</div>
+    <div class="pad">
+      <span class="kicker">6. fázis · 6-ból</span>
+      <span class="bar"></span>
+      <h1>Monitoring: Centralizator kitöltése</h1>
+      <p class="taskdesc">A md-adatból és az üres Centralizatorból <b>kitöltött monitoring</b> lesz: SL1/SL2/SL3 részteljesítés és a Rest de executat magától.</p>
+    </div>
+    <div class="footrow"><span class="meta">F6 · Monitoring</span></div>
+  </section>
+
+  <!-- ===================== F6 / b : ANIMÁCIÓ-KONCEPCIÓ ===================== -->
+  <section class="slide t-concept" id="f6b">
+    <div class="pad">
+      <span class="kicker">Mit fogunk csinálni? · F6</span>
+      <h1>Az üres Centralizatorból kész monitoring</h1>
+      <p class="conlead">Odaadod az AI-nak a md-be mentett szerződéses adatot és az üres Centralizator-táblát. Az AI soronként (deviz-kódonként) beírja a szerződéses értéket, majd az SL1/SL2/SL3 részteljesítésekből a Rest de executat magától adódik. Az animáció ezt mutatja meg.</p>
+      <div class="beats">
+        <div class="beat"><span class="bn">1</span><span class="bt">Contract-oszlop</span><span class="bd">Az AI beírja a szerződéses értéket deviz-kódonként.</span></div>
+        <div class="beat"><span class="bn">2</span><span class="bt">SL részteljesítés</span><span class="bd">SL1/SL2/SL3 dátumozott situații de lucrări sorról sorra.</span></div>
+        <div class="beat"><span class="bn">3</span><span class="bt">Rest de executat</span><span class="bd">A hátralévő rész magától számolódik, követhetően.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A feladat · F6</span></div>
+  </section>
+
+  <!-- ===================== F6 / c : ÉLŐ ANIMÁCIÓ ===================== -->
+  <section class="slide t-anim" id="f6c">
+    <div class="pad">
+      <div class="animhead">
+        <span class="kicker">Egy animáció többet mond ezer szónál · F6</span>
+        <h1>Üres Centralizator → kész monitoring</h1>
+      </div>
+      <div class="animstage noadvance" id="f6stage">
+        <div class="f6-h" id="f6h">Üres Centralizator · kitöltés</div>
+        <div class="f6-browser">
+          <div class="f6-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span><span class="url" id="f6url">Centralizator_URES.xlsx</span></div>
+          <div class="f6-view">
+            <div class="f6-page f6-old">
+              <div class="ot">Centralizator · Napsugár Tejüzem</div>
+              <div class="obv">Cod · Contract · SL1 · SL2 · SL3 · Rest</div>
+              <div class="obox"></div>
+              <div class="oblock">4.1.1 Hala de procesare · ... · ... · ... · ... · ...<br>4.1.2 Depozit frigorific · ... · ... · ... · ... · ...<br>4.1.3 Centrală termică · ... · ... · ... · ... · ...<br>4.1.4 Amenajări exterioare · ... · ... · ... · ... · ...<br>Üres sorok: a szerződéses érték és az SL-ek még nincsenek kitöltve.</div>
+              <div class="obtn">ÜRES TÁBLA</div>
+              <div class="ovis">Kitöltve: 0 / 8 sor</div>
+            </div>
+            <div class="f6-page f6-new">
+              <div class="nnav"><span class="nb">Centralizator · kész</span><span class="nl"><span>Contract</span><span>SL1–SL3</span><span>Rest</span></span></div>
+              <div class="nhero"><h3>Monitoring, sorról sorra<br>kitöltve</h3><p>Deviz-kódonként a szerződéses érték, a részteljesítések és a hátralévő rész, magától számolva.</p><span class="ncta">TOTAL: 5 375 000 lei</span></div>
+              <div class="ncards"><div class="nc"><b>Contract</b><span>Szerződéses érték deviz-kódonként.</span></div><div class="nc"><b>SL1 / SL2 / SL3</b><span>Dátumozott részteljesítések.</span></div><div class="nc"><b>Rest de executat</b><span>A hátralévő rész, automatikusan.</span></div></div>
+            </div>
+            <div class="f6-scan" id="f6scan"></div>
+          </div>
+        </div>
+      </div>
+      <div class="animhint" id="f6hint">Kattints a kitöltéshez</div>
+    </div>
+    <div class="footrow"><span class="meta">F6 · élő animáció</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 13 : AMIT MA HAZAVISZEL ===================== -->
+  <section class="slide" id="h13">
+    <div class="pad">
+      <span class="kicker">Amit ma hazaviszel</span>
+      <h1>A munka holnap is veled marad</h1>
+      <div class="tw">
+        <div class="twc"><div class="tt">Az egy dolog, amit elviszel</div><div class="td">Írd be a saját Coworködbe, <b>anonim</b>. Aki akarja, megosztja. A mai élmény mellett a módszer is veled marad: CLAUDE.md a sztenderdből, deviz-sablon kitöltés, szkennelt → md, monitoring.</div></div>
+        <div class="twc"><div class="tt">Otthoni gyakorlás</div><div class="td"><b>Bónusz feladatok</b> várnak a Tananyag mappában. Ne a Napsugár-példát másold, vidd át a saját projektjeidre és a megosztott skillekre.</div></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Amit hazaviszel</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 14 : ÖSSZEGZÉS ===================== -->
+  <section class="slide" id="h14">
+    <div class="pad">
+      <span class="kicker">Összegzés · Haladó</span>
+      <h1>Mit tanultunk ma?</h1>
+      <div class="caps">
+        <div class="cap"><span class="n">1</span><span class="ct">Sztenderd mint kontextus</span><span class="cd">A strukturált RC-rendszert és szabályokat CLAUDE.md-be írod, és az AI onnantól úgy dolgozik, mint egy betanított kolléga.</span></div>
+        <div class="cap"><span class="n">2</span><span class="ct">Szkennelt → adat</span><span class="cd">Formátum-triázs és egyszeri OCR: a kép-only ajánlatból strukturált md tábla, kontroll-összeggel.</span></div>
+        <div class="cap"><span class="n">3</span><span class="ct">Sablon-kitöltés</span><span class="cd">A levédett deviz-sablon szürke celláit az AI kitölti forrásból, a Deviz General magától aggregál. Megosztott skill.</span></div>
+        <div class="cap"><span class="n">4</span><span class="ct">Monitoring</span><span class="cd">A Centralizator felépítése a deviz-kódokból: SL1/SL2/SL3 és Rest de executat, követhetően.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">Összegzés · Haladó</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 15 : HOL VAGYUNK MOST ===================== -->
+  <section class="slide" id="h15">
+    <div class="pad">
+      <span class="kicker">Hol tartasz most</span>
+      <h1>Egy szinttel feljebb</h1>
+      <p class="intro2">A Haladót ma letettétek: a saját rendszeretek mellé állított AI megvan. Ha egyszer tovább akartok lépni, ott a <b>Mester</b>: saját operációs rendszer és agentek, amik helyettetek dolgoznak.</p>
+      <div class="path5">
+        <div class="pline"></div>
+        <div class="pnode l1 ahead"><span class="ptag">Mögötted</span><span class="pdot"><i>1</i></span><span class="pname">Bevezető az AI&#8209;ba</span><span class="pdesc">Alap promptolási technikák, időtálló gondolkodás.</span></div>
+        <div class="pnode l2 ahead"><span class="ptag">Mögötted</span><span class="pdot"><i>2</i></span><span class="pname">AI alapok</span><span class="pdesc">A mindennapi munka AI&#8209;eszközei, magabiztos használat.</span></div>
+        <div class="pnode l3 done"><span class="ptag">Ma kész</span><span class="pdot"><i>3</i></span><span class="pname">Haladó</span><span class="pdesc">Személyes tudásrendszer és AI&#8209;asszisztens, valódi munkával.</span></div>
+        <div class="pnode l4 now"><span class="ptag">Következő</span><span class="pdot"><i>4</i></span><span class="pname">Mester</span><span class="pdesc">Saját operációs rendszer: tudástár és agentek, amik helyetted dolgoznak.</span></div>
+        <div class="pnode l5 ahead"><span class="ptag">Előtted</span><span class="pdot"><i>5</i></span><span class="pname">AI Natív cég</span><span class="pdesc">A szervezet szintje: agentek a cégen belül is dolgoznak.</span></div>
+      </div>
+    </div>
+    <div class="footrow"><span class="meta">A fejlődési út</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 16 : KÖVETKEZŐ LÉPÉS — MESTER (promo) ===================== -->
+  <section class="slide t-promo" id="h16">
+    <div class="pad">
+      <span class="kicker">Hova tovább · opció a jövőre</span>
+      <h1>A következő lépés: agentek</h1>
+      <p class="psub">Ma az <b>alapokat és az eszközöket</b> kaptátok, agentek nélkül. Ha egyszer tovább akartok lépni, a strukturált rendszeretekre érdemes lenne agenteket írni (pl. egy indexelő és egy lektor agent), amik maguktól dolgoznak. Ez már a <b>Mester</b> szint terepe, nem a mai anyagé.</p>
+      <div class="plist">
+        <div class="pli">Indexelő agent: a projektek és a sztenderd naprakészen</div>
+        <div class="pli">Lektor agent: minden dokumentum a sztenderd szerint?</div>
+      </div>
+      <span class="url">ignis.academy/kepzesek</span>
+    </div>
+    <div class="footrow"><span class="meta">Hova tovább · agentek</span></div>
+  </section>
+
+  <section class="slide t-promo" id="mc5">
+    <div class="pad">
+      <span class="kicker">ExarLabs · ha egyszer kell</span>
+      <h1>Weboldal, ha egyszer fejlesztés kell</h1>
+      <p class="psub">Ti a saját szakmátok profijai vagytok. Ha viszont egyszer egy modern weboldalra lenne szükségetek: egyedi, nem sablon, a kód a tiétek, nincs vendor lock-in.</p>
+      <span class="url">sites.exarlabs.com</span>
+    </div>
+    <div class="footrow"><span class="meta">ExarLabs · weboldal</span></div>
+  </section>
+
+  <section class="slide t-promo" id="mc6">
+    <div class="pad">
+      <span class="kicker">ExarLabs · ha egyszer kell</span>
+      <h1>Egyedi szoftver, ha egyszer kell</h1>
+      <div class="plist">
+        <div class="pli">ERP, vállalatirányítási rendszer</div>
+        <div class="pli">CRM, ügyfélkapcsolat-kezelés</div>
+        <div class="pli">Egyedi belső rendszerek</div>
+      </div>
+      <p class="psub">Nem üzleti ajánlat, csak jelzés: ha egyszer egyedi fejlesztésre lenne szükségetek, van kihez fordulni.</p>
+    </div>
+    <div class="footrow"><span class="meta">ExarLabs · egyedi szoftver</span></div>
+  </section>
+
+  <section class="slide t-accent" id="mc7">
+    <div class="pad">
+      <span class="kicker">Beszéljünk</span>
+      <div class="q">Kérdések?</div>
+    </div>
+    <div class="footrow"><span class="meta">Q&amp;A</span></div>
+  </section>
+
+  <!-- ===================== SLIDE 17 : KÖSZÖNÖM ===================== -->
+  <section class="slide" id="h17">
+    <div class="pad">
+      <span class="kicker">Haladó · 3. szint</span>
+      <h1>Köszönjük,<br>hogy itt voltatok!</h1>
+      <span class="bar"></span>
+      <p class="closing">„Nem az nyer, aki használja az AI-t. Hanem aki rendszert épít belőle."</p>
+    </div>
+    <svg class="geo" viewBox="0 0 576 765" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <polygon points="576,0 192,382 383,573 576,765" fill="#D22332"/><polygon points="192,765 383,573 576,765" fill="#ED1B24"/><polygon points="192,382 383,573 192,765" fill="#F6821F"/><polygon points="192,382 0,573 192,765" fill="#FEF102"/>
+    </svg>
+    <div class="footrow"><span class="meta">ignis.academy · hello@exar.ro</span></div>
+  </section>
+
+</div>
+<div id="hint">← / → diák között · 1920×1080</div>
+
+<script>
+  const slides=[...document.querySelectorAll('.slide')];
+  const GLYPH='<svg class="glyph" viewBox="0 0 576 765" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><polygon points="576,0 192,382 383,573 576,765" fill="#D22332"/><polygon points="192,765 383,573 576,765" fill="#ED1B24"/><polygon points="192,382 383,573 192,765" fill="#F6821F"/><polygon points="192,382 0,573 192,765" fill="#FEF102"/></svg><span class="name">Ignis Academy</span>';
+  slides.forEach((el,k)=>{
+    const p=document.createElement('div');p.className='pageno';p.textContent=String(k+1).padStart(2,'0');el.appendChild(p);
+    el.querySelectorAll('.footrow').forEach(f=>{ if(!f.querySelector('.wordmark')){ const w=document.createElement('div');w.className='wordmark';w.innerHTML=GLYPH;f.insertBefore(w,f.firstChild);} });
+  });
+  let i=0;
+  function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);slides.forEach(el=>el.style.transform=`scale(${s})`);}
+  function show(n){i=(n+slides.length)%slides.length;slides.forEach((el,k)=>el.classList.toggle('active',k===i));try{history.replaceState(null,'','#'+(i+1));}catch(_){}slides[i].querySelectorAll('.frag').forEach(function(f){f.classList.remove('shown');});var _v=slides[i].querySelector('video');if(_v){try{_v.currentTime=0;_v.play();}catch(_2){}}try{dispatchEvent(new CustomEvent('slideshown',{detail:slides[i].id}));}catch(_3){}}
+  addEventListener('resize',fit);
+  // Presenter-remote / laser pointer támogatás: a legtöbb távirányító PageDown/PageUp-ot küld, nem nyilat.
+  var NEXT=['ArrowRight','ArrowDown','PageDown',' ','Spacebar','Enter'];
+  var PREV=['ArrowLeft','ArrowUp','PageUp','Backspace'];
+  // Fragment-tudatos léptetés: ha a dián van még rejtett .frag, előbb azt mutatja meg, csak utána vált diát.
+  function goNext(){var c=slides[i];var f=c.querySelector('.frag:not(.shown)');if(f){f.classList.add('shown');return;}show(i+1);}
+  function goPrev(){var c=slides[i];var sh=c.querySelectorAll('.frag.shown');if(sh.length){sh[sh.length-1].classList.remove('shown');return;}show(i-1);}
+  addEventListener('keydown',function(e){
+    if(NEXT.indexOf(e.key)>-1){e.preventDefault();goNext();}
+    else if(PREV.indexOf(e.key)>-1){e.preventDefault();goPrev();}
+  });
+  // Klikk a dián = következő (vagy a következő fragment); jobbklikk = előző.
+  // Szövegkijelölés esetén NE lépjen: csak a kijelölés nélküli, tiszta kattintás vált diát.
+  addEventListener('click',function(e){
+    var sel=window.getSelection?window.getSelection().toString():'';
+    if(sel&&sel.trim())return;
+    if(!e.target.closest('a')&&!e.target.closest('.noadvance')) goNext();
+  });
+  addEventListener('contextmenu',function(e){ e.preventDefault(); goPrev(); });
+  fit();
+  // Reload-megőrzés: ha #N van az URL-ben, ott folytatjuk (nem ugrik az elejére).
+  var _h=parseInt((location.hash||'').replace(/[^0-9]/g,''),10);
+  show(Number.isFinite(_h)&&_h>=1&&_h<=slides.length?_h-1:0);
+
+  // ===================== F1 ANIMÁCIÓ — fájlok rendeződése =====================
+  (function(){
+    var stage=document.getElementById('f1stage'); if(!stage) return;
+    var slideEl=document.getElementById('f1c');
+    var W=1720,H=648;
+    var folders=['Cerere de finanțare','Contract de finanțare','Dosare de achiziții','Cereri de plată','Monitorizare'];
+    var defs=[
+      ['Cerere_ISz.pdf',0],['Editabil_v3.docx',0],['Documente de lucru.xlsx',0],['Scan_semnat.pdf',0],['Anexa_B.xlsx',0],
+      ['Contract_finantare.pdf',1],['Act_aditional_1.pdf',1],['Proiect_tehnic.pdf',1],['DG_deviz.xlsx',1],
+      ['04.01_DAC.pdf',2],['04.02_DAP.pdf',2],['04.03_DAD.pdf',2],['04.05_DAF.pdf',2],
+      ['Cerere_plata_1.pdf',3],['Factura_SL1.pdf',3],['Centralizator.xlsx',3],['Rambursare.docx',3],
+      ['Monitorizare_SL.xlsx',4],['Situatie_lucrari.pdf',4],['Raport_progres.docx',4],['Foto_santier.jpg',4]
+    ];
+    var colW=W/folders.length;
+    folders.forEach(function(n,i){
+      var fh=document.createElement('div'); fh.className='folder';
+      fh.textContent=n; fh.style.left=(i*colW+colW/2)+'px';
+      stage.appendChild(fh);
+    });
+    var counts={};
+    var files=defs.map(function(d,idx){
+      var el=document.createElement('div'); el.className='file'; el.textContent=d[0];
+      var cx=20+Math.random()*(W-240), cy=72+Math.random()*(H-170), cr=Math.random()*36-18;
+      var fi=d[1]; var row=(counts[fi]=(counts[fi]||0)+1)-1;
+      var ox=fi*colW+16, oy=66+row*48;
+      el.dataset.cx=cx; el.dataset.cy=cy; el.dataset.cr=cr; el.dataset.ox=ox; el.dataset.oy=oy;
+      el.style.transform='translate('+cx+'px,'+cy+'px) rotate('+cr+'deg)';
+      el.style.transitionDelay=(idx*20)+'ms';
+      stage.appendChild(el);
+      return el;
+    });
+    var ordered=false;
+    function apply(){
+      files.forEach(function(el){
+        if(ordered) el.style.transform='translate('+el.dataset.ox+'px,'+el.dataset.oy+'px) rotate(0deg)';
+        else el.style.transform='translate('+el.dataset.cx+'px,'+el.dataset.cy+'px) rotate('+el.dataset.cr+'deg)';
+      });
+      stage.classList.toggle('go',ordered);
+      var h=document.getElementById('f1hint'); if(h) h.textContent=ordered?'Kattints a káoszhoz':'Kattints a rendezéshez';
+    }
+    function play(on){ ordered=on; apply(); }
+    function trigger(){ play(false); setTimeout(function(){ play(true); },550); }
+    addEventListener('slideshown',function(e){ if(e.detail==='f1c') trigger(); });
+    if(slideEl.classList.contains('active')) trigger();
+    stage.addEventListener('click',function(e){ e.stopPropagation(); play(!ordered); });
+  })();
+
+  // ===================== F2 ANIMÁCIÓ — meeting → feladatok =====================
+  (function(){
+    var stage=document.getElementById('f2stage'); if(!stage) return;
+    var slideEl=document.getElementById('f2c');
+    var linesEl=document.getElementById('f2lines'), todosEl=document.getElementById('f2todos'), countEl=document.getElementById('f2count');
+    var data=[
+      {t:'Kolléga: A Napsugár deviz-sablont mikorra tudjuk kitölteni?'},
+      {t:'Projektvezető: Előbb kell a szkennelt ajánlat OCR-je.', task:'Szkennelt ajánlat OCR-je'},
+      {t:'Kolléga: A tervezőtől kérjünk vektoros vagy Excel exportot.', task:'Vektoros export a tervezőtől'},
+      {t:'Projektvezető: A kitöltött Teleki-példát Ildikó pénteken küldi.'},
+      {t:'Kolléga: Az ajánlatkérést és az ajánlatot tételesen vessük össze.', task:'Ajánlatkérés vs. ajánlat összevetése'},
+      {t:'Projektvezető: A Centralizatort is fel kell építeni a szerződéshez.', task:'Centralizator felépítése'},
+      {t:'Kolléga: A leadási határidőt tegyük be mindenki naptárába.', task:'Határidő a naptárba'}
+    ];
+    var lineEls=data.map(function(d){
+      var el=document.createElement('div'); el.className='f2-line'; el.textContent=d.t;
+      linesEl.appendChild(el); return el;
+    });
+    var built=false, count=0;
+    function reset(){
+      built=false; count=0; countEl.textContent='0'; todosEl.innerHTML='';
+      lineEls.forEach(function(el){ el.classList.remove('hit'); });
+      var h=document.getElementById('f2hint'); if(h) h.textContent='Kattints a kinyeréshez';
+    }
+    function run(){
+      if(built) return; built=true;
+      var delay=400;
+      data.forEach(function(d,idx){
+        if(!d.task) return;
+        setTimeout(function(){
+          lineEls[idx].classList.add('hit');
+          var c=document.createElement('div'); c.className='f2-todo';
+          c.innerHTML='<span class="box">✓</span><span class="tt"></span>';
+          c.querySelector('.tt').textContent=d.task;
+          todosEl.appendChild(c);
+          setTimeout(function(){ c.classList.add('in'); },20);
+          count++; countEl.textContent=String(count);
+        }, delay);
+        delay+=560;
+      });
+      var h=document.getElementById('f2hint'); if(h) setTimeout(function(){ h.textContent='Kattints az újrajátszáshoz'; }, delay);
+    }
+    function trigger(){ reset(); setTimeout(run,450); }
+    addEventListener('slideshown',function(e){ if(e.detail==='f2c') trigger(); });
+    if(slideEl.classList.contains('active')) trigger();
+    stage.addEventListener('click',function(e){ e.stopPropagation(); if(built) trigger(); else run(); });
+  })();
+
+  // ===================== F3 ANIMÁCIÓ — kiírás pásztázás → jogosultság =====================
+  (function(){
+    var stage=document.getElementById('f3stage'); if(!stage) return;
+    var slideEl=document.getElementById('f3c');
+    var pagesEl=document.getElementById('f3pages'), itemsEl=document.getElementById('f3items'), scan=document.getElementById('f3scan'), pageEl=document.getElementById('f3page'), sumEl=document.getElementById('f3sum');
+    for(var k=0;k<22;k++){ pagesEl.appendChild(document.createElement('i')); }
+    var reqs=[
+      {t:'4.1.1 Hala de procesare · cantitate + preț', ok:true},
+      {t:'4.1.2 Depozit frigorific · valoare', ok:true},
+      {t:'Amenajări exterioare · valoare', ok:true},
+      {t:'Oldal 137: elmosódott bélyegző, kézi ellenőrzés', ok:false},
+      {t:'Oldal 182: rossz szkennelés, újra kell', ok:false},
+      {t:'Centrală termică · UM + cantitate', ok:true},
+      {t:'TOTAL ofertă · kontroll-összeg', ok:true}
+    ];
+    var built=false, pageTimer=null;
+    function reset(){
+      built=false; itemsEl.innerHTML=''; sumEl.classList.remove('in'); sumEl.textContent='';
+      stage.classList.remove('scanning'); scan.style.transition='none'; scan.style.transform='translateY(0)';
+      pageEl.textContent='1'; if(pageTimer){ clearInterval(pageTimer); pageTimer=null; }
+      void stage.offsetWidth;
+      var h=document.getElementById('f3hint'); if(h) h.textContent='Kattints az OCR-hez';
+    }
+    function run(){
+      if(built) return; built=true;
+      stage.classList.add('scanning');
+      scan.style.transition='transform 3.2s linear';
+      setTimeout(function(){ scan.style.transform='translateY(470px)'; },30);
+      var p=1; pageTimer=setInterval(function(){ p+=Math.ceil(Math.random()*14); if(p>=200){ p=200; clearInterval(pageTimer); } pageEl.textContent=String(p); },120);
+      var miss=0, delay=600;
+      reqs.forEach(function(r){
+        if(!r.ok) miss++;
+        setTimeout(function(){
+          var el=document.createElement('div'); el.className='f3-item '+(r.ok?'ok':'miss');
+          el.innerHTML='<span class="mk">'+(r.ok?'✓':'✕')+'</span><span class="tx"></span><span class="tag">'+(r.ok?'kinyerve':'kézzel')+'</span>';
+          el.querySelector('.tx').textContent=r.t;
+          itemsEl.appendChild(el);
+          setTimeout(function(){ el.classList.add('in'); },20);
+        }, delay);
+        delay+=420;
+      });
+      setTimeout(function(){
+        sumEl.innerHTML='~2 300 képtoken/oldal → <b>~600 token md</b>. '+miss+' oldal kézi ellenőrzésre.';
+        sumEl.classList.add('in');
+        var h=document.getElementById('f3hint'); if(h) h.textContent='Kattints az újrajátszáshoz';
+      }, delay+250);
+    }
+    function trigger(){ reset(); setTimeout(run,450); }
+    addEventListener('slideshown',function(e){ if(e.detail==='f3c') trigger(); });
+    if(slideEl.classList.contains('active')) trigger();
+    stage.addEventListener('click',function(e){ e.stopPropagation(); if(built) trigger(); else run(); });
+  })();
+
+  // ===================== F4 ANIMÁCIÓ — keresztolvasás → kockázat =====================
+  (function(){
+    var stage=document.getElementById('f4stage'); if(!stage) return;
+    var slideEl=document.getElementById('f4c');
+    var cards=[].slice.call(stage.querySelectorAll('.f4-card'));
+    var risk=document.getElementById('f4risk');
+    var RT='A <b>4.6 Active necorporale</b> tételt (szoftver, 60 000 lej) a deviz general tartalmazza, de az ajánlat NEM. A fájlokat külön olvasva ez az eltérés kimaradt volna.';
+    var built=false;
+    function reset(){
+      built=false; cards.forEach(function(c){ c.classList.remove('read','flag'); });
+      risk.classList.remove('in'); risk.querySelector('.rt').innerHTML='';
+      var h=document.getElementById('f4hint'); if(h) h.textContent='Kattints az összevetéshez';
+    }
+    function run(){
+      if(built) return; built=true;
+      var d=450;
+      cards.forEach(function(c){ setTimeout(function(){ c.classList.add('read'); }, d); d+=450; });
+      setTimeout(function(){ cards[0].classList.add('flag'); cards[1].classList.add('flag'); }, d+250);
+      setTimeout(function(){
+        risk.querySelector('.rt').innerHTML=RT; risk.classList.add('in');
+        var h=document.getElementById('f4hint'); if(h) h.textContent='Kattints az újrajátszáshoz';
+      }, d+800);
+    }
+    function trigger(){ reset(); setTimeout(run,450); }
+    addEventListener('slideshown',function(e){ if(e.detail==='f4c') trigger(); });
+    if(slideEl.classList.contains('active')) trigger();
+    stage.addEventListener('click',function(e){ e.stopPropagation(); if(built) trigger(); else run(); });
+  })();
+
+  // ===================== F5 ANIMÁCIÓ — csomag összeállítás + űrlap =====================
+  (function(){
+    var stage=document.getElementById('f5stage'); if(!stage) return;
+    var slideEl=document.getElementById('f5c');
+    var pile=document.getElementById('f5pile'), form=document.getElementById('f5form'), countEl=document.getElementById('f5count'), stamp=document.getElementById('f5stamp');
+    var pieces=['Hala · construcții','Depozit · construcții','Centrală termică','Amenajări exterioare','Utilaje cu montaj','Dotări','Proiectare','Organizare de șantier'];
+    var fields=[
+      ['Beneficiar','Napsugár Tejüzem SRL'],['Cap 4 · investiția de bază','5 435 000 lei'],['TOTAL fără TVA','6 455 000 lei'],
+      ['TVA 19%','1 226 450 lei'],['TOTAL cu TVA','7 681 450 lei'],['Cellák','csak szürke input']
+    ];
+    var pieceEls=pieces.map(function(p,k){
+      var el=document.createElement('div'); el.className='f5-piece'; el.textContent=p;
+      el.style.top=(k*52)+'px'; pile.appendChild(el); return el;
+    });
+    var fieldEls=fields.map(function(f){
+      var el=document.createElement('div'); el.className='f5-field';
+      el.innerHTML='<span class="fl"></span><span class="fv"></span><span class="fc">✓</span>';
+      el.querySelector('.fl').textContent=f[0]; el.querySelector('.fv').textContent=f[1];
+      form.appendChild(el); return el;
+    });
+    var built=false;
+    function reset(){
+      built=false; pieceEls.forEach(function(e){ e.classList.remove('in'); });
+      fieldEls.forEach(function(e){ e.classList.remove('done'); });
+      stamp.classList.remove('in'); countEl.textContent='0 / 8 tétel';
+      var h=document.getElementById('f5hint'); if(h) h.textContent='Kattints a kitöltéshez';
+    }
+    function run(){
+      if(built) return; built=true;
+      var d=350, c=0;
+      pieceEls.forEach(function(e){ setTimeout(function(){ e.classList.add('in'); c++; countEl.textContent=c+' / 8 tétel'; }, d); d+=230; });
+      var fd=d+250;
+      fieldEls.forEach(function(e){ setTimeout(function(){ e.classList.add('done'); }, fd); fd+=380; });
+      setTimeout(function(){ stamp.classList.add('in'); var h=document.getElementById('f5hint'); if(h) h.textContent='Kattints az újrajátszáshoz'; }, fd+250);
+    }
+    function trigger(){ reset(); setTimeout(run,450); }
+    addEventListener('slideshown',function(e){ if(e.detail==='f5c') trigger(); });
+    if(slideEl.classList.contains('active')) trigger();
+    stage.addEventListener('click',function(e){ e.stopPropagation(); if(built) trigger(); else run(); });
+  })();
+
+  // ===================== F6 ANIMÁCIÓ — régi → új weboldal =====================
+  (function(){
+    var stage=document.getElementById('f6stage'); if(!stage) return;
+    var slideEl=document.getElementById('f6c');
+    var hEl=document.getElementById('f6h'), urlEl=document.getElementById('f6url'), scan=document.getElementById('f6scan');
+    var built=false;
+    function reset(){
+      built=false; stage.classList.remove('go','scanning');
+      scan.style.transition='none'; scan.style.transform='translateY(0)';
+      hEl.textContent='Üres Centralizator · kitöltés'; urlEl.textContent='Centralizator_URES.xlsx';
+      void stage.offsetWidth;
+      var h=document.getElementById('f6hint'); if(h) h.textContent='Kattints a kitöltéshez';
+    }
+    function run(){
+      if(built) return; built=true;
+      stage.classList.add('scanning');
+      scan.style.transition='transform 1.5s linear';
+      setTimeout(function(){ scan.style.transform='translateY(360px)'; },30);
+      setTimeout(function(){
+        stage.classList.remove('scanning');
+        stage.classList.add('go');
+        hEl.textContent='Kész monitoring';
+        urlEl.textContent='Centralizator_KITOLTOTT.xlsx';
+        var h=document.getElementById('f6hint'); if(h) h.textContent='Kattints az újrajátszáshoz';
+      }, 1750);
+    }
+    function trigger(){ reset(); setTimeout(run,450); }
+    addEventListener('slideshown',function(e){ if(e.detail==='f6c') trigger(); });
+    if(slideEl.classList.contains('active')) trigger();
+    stage.addEventListener('click',function(e){ e.stopPropagation(); if(built) trigger(); else run(); });
+  })();
+
+  // ===================== MARKDOWN dia — kártya-pörgetés =====================
+  (function(){
+    var slide=document.getElementById('hmd'); if(!slide) return;
+    var cards=[].slice.call(slide.querySelectorAll('.md-card'));
+    var HINT={pdf:'PDF · kattints, mi van alatta', mdf:'Markdown · kattints, mi van alatta'};
+    var DONE={pdf:'PDF · gépi kód, olvashatatlan', mdf:'Markdown · még mindig olvasható'};
+    var COL={pdf:'#e8736b', mdf:'#3fae6e'};
+    function typeOf(c){ return c.classList.contains('pdf')?'pdf':'mdf'; }
+    function lbl(t){ return slide.querySelector('.md-label[data-for="'+t+'"]'); }
+    function reset(){ cards.forEach(function(c){ c.classList.remove('flipped'); var t=typeOf(c), l=lbl(t); if(l){ l.textContent=HINT[t]; l.style.color=''; } }); }
+    cards.forEach(function(c){ c.addEventListener('click', function(e){ e.stopPropagation();
+      var t=typeOf(c), f=c.classList.toggle('flipped'), l=lbl(t);
+      if(l){ l.textContent=f?DONE[t]:HINT[t]; l.style.color=f?COL[t]:''; }
+    }); });
+    addEventListener('slideshown', function(e){ if(e.detail==='hmd') reset(); });
+  })();
+
+  // ===================== OBSIDIAN dia — forrás/olvasó + wikilink-navigáció =====================
+  (function(){
+    var slide=document.getElementById('hob'); if(!slide) return;
+    var NOTES={
+      'CLAUDE':{file:'CLAUDE.md',md:'# Regio Consult · sztenderd\n\n## A cég\nEU pályázati tanácsadó, **3 iroda, 21 fő**, strukturált sztenderd.\n\n## Kulcs-jegyzetek\n- [[Sztenderd]] mappa- és dokumentum-konvenció\n- [[Egyeztetes]] a Napsugár-projekt egyeztetése\n- [[Deviz]] a deviz general felépítése\n\n## Szabály\nMinden szabály ide kerül, hogy az AI **emlékezzen**.'},
+      'Sztenderd':{file:'Sztenderd.md',md:'# Sztenderd\n\n## Mappa-konvenció\nCerere de finanțare → Editabil → **Scan** → Semnat.\n\n## Kapcsolódik\nRészletek: [[Deviz]]\nVissza: [[CLAUDE]]'},
+      'Egyeztetes':{file:'Egyeztetes.md',md:'# Egyeztetés · Napsugár\n\n## Teendők\n- Szkennelt ajánlat OCR-je\n- Deviz-sablon kitöltése\n\n## Kapcsolódik\n[[Deviz]] és [[CLAUDE]]'},
+      'Deviz':{file:'Deviz.md',md:'# Deviz general\n\n## Napsugár Tejüzem\n**~7,68 M lei** cu TVA, 7 kapitulus.\n\n## Adatok\nSztenderd: [[Sztenderd]]\nKontextus: [[CLAUDE]]'}
+    };
+    var side=document.getElementById('obside'), content=document.getElementById('obcontent'), fn=document.getElementById('obfn'), toggle=document.getElementById('obtoggle');
+    var cur='CLAUDE', mode='read';
+    Object.keys(NOTES).forEach(function(id){
+      var n=document.createElement('div'); n.className='note'; n.textContent=NOTES[id].file; n.dataset.note=id;
+      n.addEventListener('click', function(e){ e.stopPropagation(); open(id); });
+      side.appendChild(n);
+    });
+    function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+    function inl(s){ return esc(s).replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>').replace(/\[\[([^\]]+)\]\]/g,'<a class="wl" data-note="$1">$1</a>'); }
+    function renderRead(md){
+      var out='', inList=false;
+      md.split('\n').forEach(function(ln){
+        if(/^## /.test(ln)){ if(inList){out+='</ul>';inList=false;} out+='<h3>'+inl(ln.slice(3))+'</h3>'; }
+        else if(/^# /.test(ln)){ if(inList){out+='</ul>';inList=false;} out+='<h2>'+inl(ln.slice(2))+'</h2>'; }
+        else if(/^- /.test(ln)){ if(!inList){out+='<ul>';inList=true;} out+='<li>'+inl(ln.slice(2))+'</li>'; }
+        else if(ln.trim()===''){ if(inList){out+='</ul>';inList=false;} }
+        else { if(inList){out+='</ul>';inList=false;} out+='<p>'+inl(ln)+'</p>'; }
+      });
+      if(inList)out+='</ul>';
+      return out;
+    }
+    function renderSrc(md){
+      return esc(md)
+        .replace(/(^|\n)(#{1,2} [^\n]*)/g,'$1<span class="k">$2</span>')
+        .replace(/(^|\n)(- [^\n]*)/g,'$1<span class="bb">$2</span>')
+        .replace(/\*\*([^*<]+)\*\*/g,'<span class="bb">**$1**</span>')
+        .replace(/\[\[([^\]]+)\]\]/g,'<span class="l">[[$1]]</span>');
+    }
+    function paint(){
+      var n=NOTES[cur]; fn.textContent=n.file;
+      content.className='obcontent '+(mode==='read'?'read':'src');
+      content.innerHTML = mode==='read'?renderRead(n.md):renderSrc(n.md);
+      content.scrollTop=0;
+      [].forEach.call(side.querySelectorAll('.note'),function(el){ el.classList.toggle('active',el.dataset.note===cur); });
+      [].forEach.call(toggle.querySelectorAll('span'),function(el){ el.classList.toggle('on',el.dataset.mode===mode); });
+      if(mode==='read'){ [].forEach.call(content.querySelectorAll('a.wl'),function(a){ a.addEventListener('click',function(e){ e.stopPropagation(); var t=a.dataset.note; if(NOTES[t]) open(t); }); }); }
+    }
+    function open(id){ cur=id; paint(); }
+    toggle.addEventListener('click', function(e){ e.stopPropagation(); var s=e.target.closest('span'); if(s){ mode=s.dataset.mode; paint(); } });
+    function reset(){ cur='CLAUDE'; mode='read'; paint(); }
+    addEventListener('slideshown', function(e){ if(e.detail==='hob') reset(); });
+    paint();
+  })();
+
+  // ===================== SKILL/PLUGIN/CONNECTOR — "aktiváld" interakció =====================
+  (function(){
+    [['hcskill','Aktiváld','Aktiválva ✓'],['hcplugin','Telepítsd','Telepítve ✓'],['hcconn','Csatlakoztasd','Csatlakoztatva ✓']].forEach(function(cfg){
+      var id=cfg[0], slide=document.getElementById(id); if(!slide) return;
+      var btn=slide.querySelector('.capadd'), after=slide.querySelector('.capcard.after');
+      function reset(){ after.classList.remove('on'); btn.classList.remove('done'); btn.textContent=cfg[1]; }
+      btn.addEventListener('click', function(e){ e.stopPropagation(); after.classList.add('on'); btn.classList.add('done'); btn.textContent=cfg[2]; });
+      addEventListener('slideshown', function(e){ if(e.detail===id) reset(); });
+      reset();
+    });
+  })();
+
+</script>
+</body>
+</html>
