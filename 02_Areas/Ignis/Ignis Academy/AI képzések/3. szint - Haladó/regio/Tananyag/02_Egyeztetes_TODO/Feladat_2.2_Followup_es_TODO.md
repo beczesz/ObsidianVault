@@ -3,7 +3,7 @@ title: "Feladat 2.2: Follow-up dokumentum a feladatlistából (STÁCIÓ)"
 date: 2026-07-01
 author: Becze Szabolcs
 status: active
-description: "F2 stáció: a résztvevők a kinyert Napsugár-feladatlista alapján egy saját follow-up dokumentumot készíttetnek az AI-val (rövid státusz-jegyzet a beneficiárnak vagy egy feladat-kártya a felelősnek), a belső Verdana 9 sztenderdet követve. Az első saját, sztenderd-konform kimenet."
+description: "F2 stáció: a résztvevők a kinyert Napsugár-feladatlista alapján egy státusz-jegyzetet készíttetnek a beneficiárnak, KÖTELEZŐEN a hivatalos RC_Template_URES.docx üres templatből (RegioConsult fejléc + lábléc + Verdana 9 Black Text 1 Lighter 25%). Nem nulláról, hanem a brandelt templatet kitöltve, a standard elnevezéssel a 10_Monitorizare mappába mentve. Az első saját, brand-konform kimenet."
 id: c29a4468-0137-4b18-9f8c-6e7a5f9d4d2a
 index_schema_version: 1
 bdos_index: true
@@ -17,39 +17,43 @@ tags: [ignis-academy, halado, regio-consult, f2, feladat, station]
 
 ## Szituáció
 
-Megvan a mentett feladatlista. A napi munkában ebből valami kimegy: egy rövid státusz-jegyzet a beneficiárnak (mi az állás, mit várunk tőle), vagy egy tömör feladat-kártya a felelős kollégának. Ezt eddig kézzel fogalmaztad. Most az AI megírja, a listából, a ti formátumotokban.
+Megvan a mentett feladatlista. A napi munkában ebből kimegy egy dokumentum a beneficiárnak. De a RegioConsult-nál **minden kimenő dokumentumnak kötelezően a hivatalos üres templatből kell indulnia:** `RC_Template_URES.docx`. Ez tartalmazza a RegioConsult **fejlécet** (logó), a **láblécet** (www.regioconsult.ro + a három iroda) és az alap **Verdana 9 (Black Text 1 Lighter 25%)** formátumot. Nem írunk dokumentumot nulláról: a templatet töltjük ki.
 
 ---
 
 ## A stáció prompt
 
-Válaszd az egyiket (vagy csináld meg mindkettőt, ha marad idő):
-
-**A) Státusz-jegyzet a beneficiárnak:**
+**A) Státusz-jegyzet a beneficiárnak (a template-ből, KÖTELEZŐ):**
 ```
+Nyisd meg a RC_Template_URES.docx üres templatet, és ABBA írd a dokumentumot.
+NE készíts újat nulláról: a templatben már benne van a kötelező RegioConsult
+fejléc, lábléc és a Verdana 9 (Black Text 1 Lighter 25%) formátum.
+
 A feladatok_Napsugar.md alapján írj egy rövid, professzionális státusz-jegyzetet
-a beneficiárnak (Napsugár Tejüzem ügyvezetése). Térj ki arra, hogy szükségünk van
-a tisztázásukra a 4.6 Active necorporale (szoftver) tétel ügyében, ami a
-devizben szerepel, de az ajánlatból hiányzik. Hangnem: kollegális, világos.
-A belső sztenderdet kövesd (Verdana 9), a végén az aláírás-blokk helye.
+a beneficiárnak (Napsugár Tejüzem ügyvezetése). Térj ki a 4.6 Active necorporale
+(szoftver) tétel tisztázására, ami a devizben szerepel, de az ajánlatból hiányzik.
+Hangnem: kollegális, világos. A végén az aláírás-blokk helye.
+
+Mentsd a projekt 10_Monitorizare mappájába a standard elnevezéssel
+(sorszám_KÓD_dokumentumnév_Iniciálé_dátum).
 ```
 
-**B) Feladat-kártya a felelősnek:**
+**B) Feladat-kártya a felelősnek (belső munkajegyzet):**
 ```
 A feladatok_Napsugar.md-ből emeld ki a Kingára osztott feladatokat, és
-készíts egy tömör feladat-kártyát neki: mit, mire, milyen forrásból, milyen
-határidővel. Legyen egyértelmű és cselekvő. Verdana 9 formátum.
+készíts egy tömör, cselekvő feladat-kártyát: mit, mire, milyen forrásból,
+milyen határidővel. Ez belső munkajegyzet, ide a template nem kötelező.
 ```
 
 ---
 
 ## Elvárt eredmény
-Egy kész, sztenderd-konform dokumentum, amit valóban ki lehetne küldeni. Fontos tapasztalat: az AI a **mentett projekt-kontextusból** dolgozik, nem kellett újra elmondanod a hátteret.
+Egy kész, **RegioConsult-branddel** (fejléc + lábléc), Verdana 9 (Black Text 1 Lighter 25%) formátumú dokumentum, ami a **template-ből** készült, a standard elnevezéssel a helyén (`10_Monitorizare`). NEM egy nulláról gyártott, brand nélküli fájl. Fontos tapasztalat: az AI a **mentett projekt-kontextusból** dolgozik, és a **kötelező templatet** használja.
 
 ---
 
 ## Miért ez a stáció
-A feladatlista önmagában belső eszköz. Az érték akkor jön, amikor ebből **azonnal lesz kimenő kommunikáció**, a ti formátumotokban. A workshop első saját, sztenderd-konform kimenete: te vezeted az AI-t, az AI a ti szabályaitok szerint ír.
+A feladatlista önmagában belső eszköz. Az érték akkor jön, amikor ebből **azonnal lesz kimenő kommunikáció**, a ti hivatalos arculatotokban. A **kötelező template** a lényeg: egy ügyfélnek menő dokumentum sosem lehet brand nélküli, nulláról gyártott fájl. A RegioConsult fejléc és lábléc, a Verdana 9 formátum minden kimenő dokumentumon egységes. Az AI a template-et tölti ki, te vezeted, és a végeredmény azonnal kiküldhető, arculat-helyesen.
 
 ---
 
@@ -60,4 +64,4 @@ Ha a hangnem nem stimmel, ne írd át kézzel: mondd meg az AI-nak (*„egy fokk
 - `Feladat_2.5_Bonusz_Email_szal_TODO.md`, email-szálból teendők
 - `Feladat_2.3_Bonusz_Sajat_egyeztetes.md`, a saját megbeszélésed feldolgozása
 
-**Verzió:** 1.0 (Regio adaptáció)
+**Verzió:** 2.0 (kötelező RC template)

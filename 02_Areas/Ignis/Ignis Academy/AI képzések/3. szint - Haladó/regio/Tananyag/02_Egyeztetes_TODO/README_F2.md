@@ -44,7 +44,7 @@ A résztvevők stációja: mindenki készít egy saját follow-up dokumentumot (
 
 ## Átmenet F3-ba
 
-*„A teendők megvannak, mentve. És rögtön az első a listán a legkeményebb: Kinga szerint a kivitelező ajánlata csak egy 200 oldalas szkennelt PDF. Kézzel kellene összevetni. Mit tud ezzel kezdeni az AI?"*
+*„A teendők megvannak, mentve. De honnan jön be egyáltalán a munka? Emailben. Épp most jelezte a kivitelező, hogy küldi az ajánlatot. Kössük össze az AI-t a rendszereitekkel (MS365 connector), lássuk élőben, ahogy befut az email, és közben ismerjük meg a skilleket és a pluginokat is, amikkel az egészet felturbózzátok."*
 
 ## Asset-ek
 - `egyeztetes_Napsugar.md`, a nyers egyeztetés-leirat (a demó forrása).

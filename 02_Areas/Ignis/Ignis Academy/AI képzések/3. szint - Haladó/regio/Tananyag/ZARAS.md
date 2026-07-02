@@ -1,9 +1,9 @@
 ---
 title: "Zárás: amit hazaviszel + hova tovább"
-date: 2026-07-01
+date: 2026-07-02
 author: Becze Szabolcs
 status: active
-description: "A Regio haladó workshop záró összefoglalója: a 4 óra alatt bejárt teljes lánc (struktúra betanítása → egyeztetés → szkennelt PDF → összevetés → deviz-skill → monitoring), a fő hazavihető tanulságok, és a Haladó-scope explicit határa (agentet nem építünk), plusz a Mester felé mutató, halk jövőbeli opció (indexelő + lektor agent)."
+description: "A Regio haladó workshop záró összefoglalója: a 4 óra alatt bejárt teljes lánc (rendrakás + CLAUDE.md → egyeztetés → connectorok/skillek/pluginok → szkennelt PDF → deviz-értelmezés + összevetés → deviz-skill killer-demo), a fő hazavihető tanulságok, és a Haladó-scope explicit határa (agentet nem építünk), plusz a Mester felé mutató, halk jövőbeli opció (saját megosztható RC-pluginok + indexelő/lektor agent)."
 id: 013748e4-0586-4e72-8ff9-1a3c9d5e2b0f
 index_schema_version: 1
 bdos_index: true
@@ -15,12 +15,12 @@ tags: [ignis-academy, halado, regio-consult, zaras, osszegzes]
 
 Egyetlen projekten (Napsugár Tejüzem), a saját strukturált rendszeredben:
 
-1. **F1, Betanítottad** az AI-t a struktúrádra (CLAUDE.md szabálykönyv, párhuzamos, nem-romboló).
+1. **F1, Rendbe raktad** és betanítottad a struktúrát (standard-audit, CLAUDE.md szabálykönyv-lánc, párhuzamos, nem-romboló).
 2. **F2, Megjegyeztetted** a teendőket (egyeztetés → mentett, session-ök közt élő feladatlista).
-3. **F3, Kiolvastál** egy szkennelt ajánlatot használható adattá, őszintén látva a határt (OCR, token-mérleg).
-4. **F4, Összevetetted** az ajánlatkérést az ajánlattal, és megtaláltad a 60 000 lej eltérést.
-5. **F5, Kitöltetted** a levédett deviz-templétet egy skillel, amit a csapatod is használhat (a killer-demo).
-6. **F6, Követted** a kivitelezést a Centralizatorban, és generáltál egy dokumentumot a saját sztenderdedben.
+3. **F3, Bekötötted** az AI-t a rendszereitekbe (MS365 connector, befutott az ajánlat), és megismerted a skilleket és pluginokat.
+4. **F4, Kiolvastál** egy szkennelt ajánlatot használható adattá, őszintén látva a határt (OCR, token-mérleg).
+5. **F5, Értelmezted** a HG 907 devizt, és összevetetted az ajánlattal, megtalálva a 60 000 lej eltérést.
+6. **F6, Kitöltetted** a levédett deviz-templétet egy skillel, amit a csapatod is megoszthat (a killer-demo, a csúcspont).
 
 ## A négy fő tanulság
 
@@ -35,11 +35,11 @@ Ez a **Haladó** szint volt. **Agentet nem építettünk**, mert az egy külön 
 
 ## Hova tovább (halk jövőbeli opció)
 
-A strukturált rendszeretek kifejezetten ideális egy jövőbeli **agent**-nek:
+Az F3-ban láttad az irányt: a **saját, megosztható RC-pluginok**. A strukturált rendszeretek ráadásul kifejezetten ideális egy jövőbeli **agent**-nek is:
 - egy **indexelő agent**, ami a lokális fájltömeget gyorsan beindexeli és kereshetővé teszi,
 - egy **lektor agent**, ami folyamatosan ellenőrzi, hogy minden a sztenderd szerint áll-e.
 
-Ezt a Haladón nem építjük meg, de látod az irányt. Ez a Mester szint.
+Ezt a Haladón nem építjük meg, de látod az irányt. Ez a Mester szint: saját pluginok és agentek a Regio Consult munkafolyamataira.
 
 ---
 

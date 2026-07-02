@@ -4,7 +4,7 @@ date: 2026-07-01
 author: Becze Szabolcs
 status: active
 version: 1.0
-description: "Ez egy 4 órás interaktív AI workshop tananyaga a Regio Consult pályázati tanácsadó csapatnak. A résztvevők a saját, strukturált projekt-felépítésükre ültetnek AI-t (Cowork), és a napi 3 fő fájdalmukat oldják meg egyetlen összefüggő fiktív projekten (Napsugár Tejüzem): szkennelt PDF kiolvasása, levédett deviz-templét kitöltése skillel, monitoring Centralizator követése. 6 fázisos, élő demó-alapú curriculum, az eredeti Haladó (TransOffice) pedagógiájára építve, Regio-adaptálva."
+description: "Ez egy 4 órás interaktív AI workshop tananyaga a Regio Consult pályázati tanácsadó csapatnak. A résztvevők a saját, strukturált projekt-felépítésükre ültetnek AI-t (Cowork), és a napi fő fájdalmukat oldják meg egyetlen összefüggő fiktív projekten (Napsugár Tejüzem): rendrakás + CLAUDE.md-lánc, egyeztetés → feladatlista, connectorok/skillek/pluginok, szkennelt PDF kiolvasása, deviz-értelmezés + ajánlat-összevetés, és a killer-demó: levédett deviz-templét kitöltése skillel. 6 fázisos, élő demó-alapú curriculum, az eredeti Haladó (TransOffice) pedagógiájára építve, Regio-adaptálva."
 id: 2f9c1e84-7a63-4d21-b8e6-5c0a9f3d2b17
 index_schema_version: 1
 bdos_index: true
@@ -50,12 +50,12 @@ A 2026-06-29-i igényfelmérő meetingből, a Regio saját prioritási sorrendj�
 ### Oktatóként
 1. Olvasd el a `00_Bevezetes/Ceg_leiras_Regio_Napsugar.md` fájlt: a fiktív cég és a Napsugár projekt teljes kontextusa.
 2. Menj végig a 6 fázis (01 → 06) `README_FX.md` és `Feladat_X.X.md` fájljain.
-3. A `Napsugar_projekt/` mappa a workshop **kiindulási környezete**: a Regio strukturált rendszerét hűen tükröző, fiktív projekt-sandbox.
-4. A workshop során a Cowork-kel ezeken a fájlokon dolgozunk: betanítjuk a struktúrát, kiolvasunk, összevetünk, kitöltünk, követünk.
+3. A `RegioConsult/` mappa a workshop **kiindulási környezete**: 3 projekt (2 rendezett + a káosz Napsugár), a belső standard (`Internal_Standard.docx`) és a kötelező üres template (`RC_Template_URES.docx`).
+4. A workshop során a Cowork-kel ezeken a fájlokon dolgozunk: auditálunk, rendet rakunk, bekötünk, kiolvasunk, összevetünk, kitöltünk.
 
 ### Résztvevőként
-1. Nyisd meg a `Napsugar_projekt/` mappát a Cowork-ben: ez lesz a projekt-környezeted.
-2. Kövesd a feladatleírásokat fázisonként (`01_Struktura_CLAUDE` → `06_Monitoring`).
+1. Nyisd meg a `RegioConsult/` mappát a Cowork-ben: ez lesz a munkakörnyezeted.
+2. Kövesd a feladatleírásokat fázisonként (`01_Struktura_CLAUDE` → `06_Deviz_Skill`).
 3. Minden fázisnak van egy `README_FX.md` (áttekintés) és 2-3 `Feladat_X.X.md` (konkrét feladat, copy-paste prompttal).
 
 ---
@@ -68,23 +68,23 @@ Tananyag/
 ├── 00_Bevezetes/
 │   └── Ceg_leiras_Regio_Napsugar.md          ← A fiktív cég + Napsugár projekt kontextusa
 │
-├── Napsugar_projekt/                        ← A KIINDULÁSI KÖRNYEZET (RC strukturált rendszer)
-│   ├── CLAUDE.md                             ← gyökér-szabálykönyv
+├── RegioConsult/                            ← A KIINDULÁSI KÖRNYEZET (RC strukturált rendszer)
+│   ├── Internal_Standard.docx                ← a belső standard (a mérce, F1-audit)
+│   ├── RC_Template_URES.docx                 ← a kötelező üres template (fejléc/lábléc)
 │   ├── 00_General_info/
-│   └── Projects/THR_Napsugar_Tejuzem/        ← a projekt, saját CLAUDE.md-vel
-│       ├── 01_Cerere_de_finantare/           (Anexa B üzleti terv, deviz)
-│       ├── 02_Editabil/                      (kanonikus deviz general)
-│       ├── 08_Dosare_de_achizitii/04.04_DAL_Lucrari/
-│       │   ├── Scan/                         (szkennelt kivitelezői ajánlat)
-│       │   └── Editabil/                     (OCR-eredmény + forrás)
-│       └── 10_Monitorizare/                  (Centralizator, SL-követés)
+│   └── Projects/
+│       ├── PAN_Malomkert_Panzio/             ← rendezett, compliant referencia
+│       ├── KER_Zold_Kerteszet/               ← rendezett, compliant referencia
+│       └── THR_Napsugar_Tejuzem/             ← a KÁOSZ (F1 rendrakás tárgya), saját CLAUDE.md
+│           ├── 02_Editabil/                  (hiteles HG 907 kiírás-deviz)
+│           └── 08_Dosare_de_achizitii/04.04_DAL_Lucrari/  (szkennelt ajánlat + OCR-md + antemăsurătoare)
 │
-├── 01_Struktura_CLAUDE/                     ← F1: Tanítsd be az AI-t a struktúrádra (25p)
+├── 01_Struktura_CLAUDE/                     ← F1: Rendrakás + standard-audit + CLAUDE.md-lánc (35p)
 ├── 02_Egyeztetes_TODO/                      ← F2: Rend a TODO-k között (25p)
-├── 03_Szkennelt_PDF/                        ← F3: Szkennelt ajánlat → adat (35p)
-├── 04_Osszevetes/                           ← F4: Ajánlatkérés vs. ajánlat (25p)
-├── 05_Deviz_Skill/                          ← F5: Deviz-templét kitöltő skill (45p, KILLER)
-├── 06_Monitoring/                           ← F6: Centralizator + dokumentum-generálás (25p)
+├── 03_Connectors_Skills_Plugins/            ← F3: Connectorok, skillek, pluginok (30p)
+├── 04_Szkennelt_PDF/                        ← F4: Szkennelt ajánlat → adat (35p)
+├── 05_Osszevetes/                           ← F5: Deviz-értelmezés + ajánlat-összevetés (30p)
+├── 06_Deviz_Skill/                          ← F6: Deviz-templét kitöltő skill (45p, KILLER)
 └── _gyakorlo_peldak/                         ← minta bemenetek a "saját fájlos" otthoni bónuszokhoz
 ```
 
@@ -94,24 +94,26 @@ Tananyag/
 
 | # | Fázis | Idő | Lényeg | Fő eszköz |
 |---|-------|-----|--------|-----------|
-| **F1** | Tanítsd be az AI-t a struktúrádra | 25p | A strukturált RC-rendszer leírása egymásba ágyazott CLAUDE.md-kben | Cowork alapok, fájlrendszer, OneDrive/SharePoint, markdown, CLAUDE.md |
+| **F1** | Rendrakás + standard-audit | 35p | A strukturált RC-rendszer auditja, rendrakás, egymásba ágyazott CLAUDE.md-lánc | Cowork alapok, fájlrendszer, OneDrive/SharePoint, markdown, CLAUDE.md |
 | **F2** | Rend a TODO-k között | 25p | Egyeztetés-leirat → mentett, session-ök közt élő feladatlista | Productivity / kontextus-perzisztencia |
-| **F3** | Szkennelt ajánlat → adat | 35p | 200 oldalas kép-PDF reality-check: mit tud OCR, mit nem | OCR, vektoros vs. szkennelt, formátum-triázs, token-mérleg |
-| **F4** | Ajánlatkérés vs. ajánlat | 25p | Deviz + OCR-md tételes összevetése, eltérés-kimutatás | Több forrás keresztellenőrzése, Excel-elemzés |
-| **F5** | Deviz-templét kitöltő skill | 45p | Levédett templét kitöltése forrásból egy team-skillel | **Skill-írás 101**, levédett cellák, csapat-megosztás |
-| **F6** | Monitoring + dokumentum-generálás | 25p | Centralizator kitöltése, számla/dokumentum a saját sztenderdben | Ismétlődő Excel-kitöltés, PDF/dokumentum-generálás |
+| **F3** | Connectorok, skillek, pluginok | 30p | A rendszer kinyílik: MS365 connector (befut az ajánlat), skillek és pluginok elméletben + gyakorlatban | Connector (MS365), skill-alapok, pluginok, a saját RC-pluginok iránya |
+| **F4** | Szkennelt ajánlat → adat | 35p | 200 oldalas kép-PDF reality-check: mit tud OCR, mit nem | OCR, vektoros vs. szkennelt, formátum-triázs, token-mérleg |
+| **F5** | Deviz-értelmezés + ajánlat-összevetés | 30p | Az AI érti a HG 907 devizt, majd tételesen összeveti az ajánlattal, eltérés-kimutatás | Excel-értés, több forrás keresztellenőrzése |
+| **F6** | Deviz-templét kitöltő skill | 45p | Levédett templét kitöltése forrásból egy team-skillel (a workshop csúcspontja) | **Skill éles használata**, levédett cellák, csapat-megosztás |
 
 ---
 
 ## Mit fogsz csinálni
 
 A workshop végére (4 óra alatt):
-1. **Betanítod** az AI-t a Regio strukturált rendszerére (CLAUDE.md szabálykönyv, párhuzamos mappa, a meglévőt nem bolygatva).
-2. **Kiolvasol** egy szkennelt ajánlatot használható adattá, és őszintén látod hol a határ.
-3. **Összeveted** az ajánlatkérést az ajánlattal tételesen, és megtalálod az eltérést, amit kézzel kihagynál.
-4. **Kitöltesz** egy levédett deviz-templétet forrásból, egy **skillel**, amit a csapatod megoszthat.
-5. **Követed** a kivitelezést egy monitoring Centralizatorban, és generálsz egy dokumentumot a saját sztenderdedben.
-6. **Átéled** mit jelent az AI-val együtt dolgozni a saját rendszereden: nem tool-tanulás, hanem perspektíva-váltás.
+1. **Rendbe rakod** és betanítod a Regio strukturált rendszerét az AI-nak (standard-audit, CLAUDE.md szabálykönyv-lánc, a meglévőt nem bolygatva).
+2. **Rendet raksz a teendők között**: egy egyeztetés-leiratból session-ök közt élő feladatlistát csinálsz.
+3. **Bekötöd** az AI-t a rendszereitekbe (MS365 connector), és megismered a **skilleket és pluginokat** elméletben és gyakorlatban.
+4. **Kiolvasol** egy szkennelt ajánlatot használható adattá, és őszintén látod hol a határ.
+5. **Értelmezed** a HG 907 devizt, és tételesen **összeveted** az ajánlattal, megtalálva az eltérést, amit kézzel kihagynál.
+6. **Kitöltesz** egy levédett deviz-templétet forrásból, egy **skillel**, amit a csapatod megoszthat (a workshop csúcspontja).
+
+És a legfontosabb: **átéled** mit jelent az AI-val együtt dolgozni a saját rendszereden, nem tool-tanulás, hanem perspektíva-váltás.
 
 ---
 
@@ -132,4 +134,4 @@ A tananyagot kizárólag a Regio Consult csapata használhatja a workshopon és 
 
 ---
 
-**Verzió:** 1.0 (Regio adaptáció) · **Készítette:** Ignis Academy · **Kapcsolat:** hello@exar.ro · **Utolsó frissítés:** 2026-07-01
+**Verzió:** 1.1 (F3 Connectors/Skills/Plugins beszúrva, Monitoring kivéve) · **Készítette:** Ignis Academy · **Kapcsolat:** hello@exar.ro · **Utolsó frissítés:** 2026-07-02

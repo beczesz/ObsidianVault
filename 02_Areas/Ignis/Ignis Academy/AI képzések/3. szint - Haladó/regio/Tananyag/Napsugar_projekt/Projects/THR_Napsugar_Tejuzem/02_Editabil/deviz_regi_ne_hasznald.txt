@@ -1,3 +1,0 @@
-Ez egy szándékosan ROSSZ nevű, átmeneti fájl (gyakorló-hiba az 1.5 Lektor feladathoz).
-A sztenderd elnevezés: sorszám_dokumentumnév_Iniciálé_dátum (pl. 01.b_THR_Deviz_general_ISZ_30.06.2026).
-Ez a név ezt megsérti, plusz .txt egy Editabil mappában. Az AI-nak ezt kell elkapnia.
